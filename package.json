@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "import-posts": "node scripts/import-posts.mjs",
+    "convert-posts": "node scripts/convert-posts.mjs",
     "deploy": "scripts/deploy.sh"
   },
   "dependencies": {

@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+  // Get all blog posts
+  const allPosts = await getCollection('blog');
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
+  );
+  
+  // Define pagination
+  const postsPerPage = 10;
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+  
+  // Generate pages 2, 3, 4, etc. (page 1 is handled by /blog/index.astro)
+  return Array.from({ length: totalPages - 1 }).map((_, i) => {
+    const pageNumber = i + 2; // Start from page 2
+    const start = (pageNumber - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    
+    return {
+      params: { page: pageNumber.toString() },
+      props: { 
+        posts: sortedPosts.slice(start, end),
+        currentPage: pageNumber,
+        totalPages
+      }
+    };
+  });
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+---
+
+<BaseLayout title={`Blog Posts - Page ${currentPage}`}>
+  <div class="blog-content">
+    <h1 class="page-title">Blog Posts</h1>
+    
+    <div id="post-list">
+      {posts.map((post) => (
+        <div class="post-preview">
+          <h2>
+            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+          </h2>
+          
+          <div class="post-meta">
+            <i class="far fa-clock"></i>
+            <span class="post-date">
+              <FormattedDate date={post.data.pubDate} />
+            </span>
+          </div>
+          
+          <div class="post-content">
+            <p>{post.data.description}</p>
+          </div>
+          
+          <a href={`/blog/${post.slug}/`} class="read-more">Read more →</a>
+        </div>
+      ))}
+    </div>
+    
+    <div class="pagination">
+      {currentPage > 1 && (
+        <a href={`/blog${currentPage - 1 === 1 ? '' : '/' + (currentPage - 1)}`}>
+          ← Previous
+        </a>
+      )}
+      
+      {Array.from({ length: totalPages }).map((_, i) => (
+        <a 
+          href={`/blog${i === 0 ? '' : '/' + (i + 1)}`}
+          class={currentPage === i + 1 ? 'active' : ''}
+        >
+          {i + 1}
+        </a>
+      ))}
+      
+      {currentPage < totalPages && (
+        <a href={`/blog/${currentPage + 1}`}>
+          Next →
+        </a>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .post-preview {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-preview:last-child {
+    border-bottom: none;
+  }
+  
+  .post-preview h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .post-meta {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .post-content {
+    margin: 1rem 0;
+  }
+  
+  .read-more {
+    display: inline-block;
+    font-weight: 500;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    gap: 0.5rem;
+  }
+  
+  .pagination a {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #212529;
+    text-decoration: none;
+  }
+  
+  .pagination a.active {
+    background-color: var(--accent);
+    color: white;
+  }
+  
+  .pagination a:hover:not(.active) {
+    background-color: #e9ecef;
+  }
+</style>

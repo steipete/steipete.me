@@ -3,9 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+// Get all blog posts and sort by date
+let allPosts = await getCollection('blog');
+allPosts = allPosts.sort(
+	(a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
 );
+
+// Pagination settings
+const postsPerPage = 10;
+const totalPages = Math.ceil(allPosts.length / postsPerPage);
+const currentPage = 1;
+const posts = allPosts.slice(0, postsPerPage);
 ---
 
 <BaseLayout title="Blog Posts">
@@ -34,6 +42,31 @@ const posts = (await getCollection('blog')).sort(
 				</div>
 			))}
 		</div>
+		
+		{totalPages > 1 && (
+			<div class="pagination">
+				{currentPage > 1 && (
+					<a href={`/blog${currentPage - 1 === 1 ? '' : '/' + (currentPage - 1)}`}>
+						← Previous
+					</a>
+				)}
+				
+				{Array.from({ length: totalPages }).map((_, i) => (
+					<a 
+						href={`/blog${i === 0 ? '' : '/' + (i + 1)}`}
+						class={currentPage === i + 1 ? 'active' : ''}
+					>
+						{i + 1}
+					</a>
+				))}
+				
+				{currentPage < totalPages && (
+					<a href={`/blog/${currentPage + 1}`}>
+						Next →
+					</a>
+				)}
+			</div>
+		)}
 	</div>
 </BaseLayout>
 
@@ -66,5 +99,29 @@ const posts = (await getCollection('blog')).sort(
 	.read-more {
 		display: inline-block;
 		font-weight: 500;
+	}
+	
+	.pagination {
+		display: flex;
+		justify-content: center;
+		margin-top: 3rem;
+		gap: 0.5rem;
+	}
+	
+	.pagination a {
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		background-color: #f8f9fa;
+		color: #212529;
+		text-decoration: none;
+	}
+	
+	.pagination a.active {
+		background-color: var(--accent);
+		color: white;
+	}
+	
+	.pagination a:hover:not(.active) {
+		background-color: #e9ecef;
 	}
 </style>
