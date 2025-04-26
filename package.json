@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "import-posts": "node scripts/import-posts.mjs",
+    "deploy": "scripts/deploy.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.5",

@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
@@ -13,73 +13,51 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
 
 	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
+		<Sidebar />
+		<div id="main-wrapper">
+			<main>
+				<article class="post">
+					<h1 class="post-title">{title}</h1>
+					
+					<div class="post-meta">
+						<span>
+							Posted on <FormattedDate date={pubDate} />
+							{updatedDate && (
+								<span class="last-updated-on">
+									· Updated on <FormattedDate date={updatedDate} />
+								</span>
+							)}
+						</span>
 					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
+					
+					{heroImage && (
+						<div class="hero-image">
+							<img src={heroImage} alt="" />
+						</div>
+					)}
+					
+					<div class="post-content">
+						<slot />
+					</div>
+				</article>
+				
+				<Footer />
+			</main>
+		</div>
+
+		<script>
+			// Mobile sidebar toggle
+			const sidebarToggle = document.createElement('button');
+			sidebarToggle.classList.add('sidebar-toggle');
+			sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
+			document.body.appendChild(sidebarToggle);
+			
+			sidebarToggle.addEventListener('click', () => {
+				document.getElementById('sidebar').classList.toggle('show');
+			});
+		</script>
 	</body>
 </html>

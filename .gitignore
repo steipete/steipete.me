@@ -12,13 +12,28 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
 .env.production
 
 # macOS-specific files
 .DS_Store
+
+# Vercel
+.vercel/
+
+# Temporary directories used for importing posts
+temp-*/
+
+# Editor directories and files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # jetbrains setting folder
 .idea/

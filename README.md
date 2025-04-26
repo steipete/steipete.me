@@ -1,68 +1,63 @@
-# Astro Starter Kit: Blog
+# Peter Steinberger's Personal Website
 
-```sh
-npm create astro@latest -- --template blog
-```
+This is the source code for my personal website, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## About
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## Features
 
-Features:
-
-- ✅ Minimal styling (make it your own!)
+- ✅ Modern, fast, and responsive website built with Astro
+- ✅ Blog with full markdown support
 - ✅ 100/100 Lighthouse performance
 - ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+- ✅ Sitemap and RSS feed support
+- ✅ Import of posts from previous blogs
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project Structure
 
 ```text
-├── public/
+├── public/           # Static assets like images
+├── scripts/          # Utility scripts
 ├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+│   ├── components/   # Reusable UI components
+│   ├── content/      # Blog posts and content collections
+│   │   ├── blog/     # Blog posts in Markdown format
+│   │   └── config.ts # Content configuration
+│   ├── layouts/      # Page layouts
+│   └── pages/        # Pages and routes
+├── astro.config.mjs  # Astro configuration
+├── vercel.json       # Vercel deployment configuration
+└── package.json      # Project dependencies and scripts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command                   | Action                                            |
+| :------------------------ | :------------------------------------------------ |
+| `npm install`             | Installs dependencies                             |
+| `npm run dev`             | Starts local dev server at `localhost:4321`       |
+| `npm run build`           | Build the production site to `./dist/`            |
+| `npm run preview`         | Preview the build locally, before deploying       |
+| `npm run import-posts`    | Import posts from GitHub repositories             |
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Import Blog Posts
 
-Any static assets, like images, can be placed in the `public/` directory.
+This project includes a script to import blog posts from my previous GitHub repositories:
 
-## 🧞 Commands
+```bash
+npm run import-posts
+```
 
-All commands are run from the root of the project, from a terminal:
+This will fetch and convert posts from:
+- https://github.com/steipete/steipete.com
+- https://github.com/steipete/petersteinberger.com
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Deployment
 
-## 👀 Want to learn more?
+This site is set up for easy deployment on Vercel. Just connect your GitHub repository to Vercel, and it will automatically build and deploy the site when changes are pushed.
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## License
 
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+The content of this project is copyrighted by Peter Steinberger. The code is licensed under the MIT license.

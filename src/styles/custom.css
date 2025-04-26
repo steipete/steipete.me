@@ -1,0 +1,272 @@
+/* Custom styles for steipete.me-like layout */
+
+:root {
+  --sidebar-width: 260px;
+  --topbar-height: 3rem;
+  --content-max-width: 800px;
+  --sidebar-bg: #f8f9fa;
+  --text-color: #212529;
+  --link-color: #007bff;
+  --hover-color: #0056b3;
+  --light-gray: #adb5bd;
+  --box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile sidebar toggle button */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 992px) {
+  .sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Base styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+/* Sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--box-shadow);
+}
+
+#profile-wrapper {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+#avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+}
+
+#avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#site-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+#site-subtitle {
+  font-size: 0.9rem;
+  color: var(--light-gray);
+  font-style: italic;
+}
+
+.nav-link {
+  color: var(--text-color);
+  padding: 0.5rem 0;
+  border-radius: 0.25rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--link-color);
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.social-links {
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-links a {
+  font-size: 1.2rem;
+  color: var(--light-gray);
+}
+
+.social-links a:hover {
+  color: var(--link-color);
+}
+
+/* Main content area */
+main {
+  max-width: var(--content-max-width);
+  margin-left: calc(var(--sidebar-width) + 2rem);
+  padding: 2rem 0;
+}
+
+@media (max-width: 992px) {
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.35s ease;
+  }
+
+  main {
+    margin-left: 2rem;
+  }
+  
+  #sidebar.show {
+    transform: translateX(0);
+  }
+}
+
+/* Post styles */
+.post-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: var(--light-gray);
+  margin-bottom: 1.5rem;
+}
+
+.post-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  margin: 1.5rem 0;
+}
+
+.post-content h2 {
+  font-size: 1.7rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.post-content h3 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.post-preview {
+  margin-bottom: 3rem;
+}
+
+.post-preview h1 {
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-preview .post-content {
+  font-size: 1rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sidebar-bg: #212529;
+    --text-color: #e9ecef;
+    --link-color: #6ea8fe;
+    --hover-color: #9ec5fe;
+    --light-gray: #ced4da;
+  }
+  
+  body {
+    background-color: #343a40;
+  }
+}
+
+/* Code blocks */
+pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  color: #d63384;
+  padding: 0.2em 0.4em;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+}
+
+pre code {
+  color: inherit;
+  padding: 0;
+  background-color: transparent;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a {
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--sidebar-bg);
+}
+
+.pagination a:hover {
+  background-color: var(--link-color);
+  color: white;
+  text-decoration: none;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--light-gray);
+  font-size: 0.9rem;
+}

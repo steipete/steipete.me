@@ -1,0 +1,84 @@
+---
+import { SITE_TITLE } from '../consts';
+---
+
+<div id="sidebar">
+  <div id="nav-wrapper">
+    <div id="profile-wrapper" class="d-flex flex-column">
+      <div id="avatar" class="d-flex justify-content-center">
+        <a href="/" alt="avatar">
+          <img src="/profile.jpg" alt="Peter Steinberger's avatar">
+        </a>
+      </div>
+      <div class="profile-text mt-3">
+        <div id="site-title">
+          <a href="/">{SITE_TITLE}</a>
+        </div>
+        <div id="site-subtitle" class="font-italic">
+          iOS Developer, Entrepreneur, and Open Source Contributor
+        </div>
+      </div>
+    </div>
+    
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a href="/" class="nav-link">
+          <i class="fa-fw fas fa-home"></i>
+          <span>HOME</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/blog" class="nav-link">
+          <i class="fa-fw fas fa-pen-nib"></i>
+          <span>BLOG</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/about" class="nav-link">
+          <i class="fa-fw fas fa-info"></i>
+          <span>ABOUT</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="sidebar-bottom">
+    <div class="social-links">
+      <a href="https://github.com/steipete" target="_blank">
+        <i class="fab fa-github-alt"></i>
+      </a>
+      <a href="https://twitter.com/steipete" target="_blank">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/steipete/" target="_blank">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="mailto:steipete@gmail.com">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="/rss.xml" target="_blank">
+        <i class="fas fa-rss"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add active class to current page
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === '/' && currentPath === '/') {
+        link.classList.add('active');
+      } else if (href !== '/' && currentPath.startsWith(href)) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+
+<!-- Load FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
