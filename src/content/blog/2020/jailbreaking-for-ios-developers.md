@@ -13,6 +13,8 @@ tags:
   - Tweaks
   - SSL-Kill-Switch
   - Cydia
+  - iOS-Customization
+  - Developer-Tools
 source: steipete.com
 AIDescription: true
 ---

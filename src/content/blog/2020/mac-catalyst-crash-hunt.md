@@ -13,6 +13,8 @@ tags:
   - Race-Condition
   - XPC
   - Hopper
+  - Swift
+  - Disassembly
 source: steipete.com
 AIDescription: true
 ---
