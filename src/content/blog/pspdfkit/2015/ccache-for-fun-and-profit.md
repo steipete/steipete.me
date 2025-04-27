@@ -1,13 +1,13 @@
 ---
-title: "Using ccache for Fun and Profit"
+title: Using ccache for Fun and Profit
 pubDate: 2015-10-06T12:00:00.000Z
-description: "At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with PSPDFKit 5 for iOS: the addition of a complete PDF renderer slowed down compile times a lot. READMORE"
+description: "At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with PSPDFKit\_5 for iOS: the addition of a complete PDF renderer slowed down compile times a lot. READMORE"
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with PSPDFKit 5 for iOS: the addition of a complete PDF renderer slowed down compile times a lot. READMORE]
 
 At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with [PSPDFKit 5 for iOS](/blog/2015/pspdfkit-ios-5-0/): the addition of a complete PDF renderer slowed down compile times a lot.
 READMORE

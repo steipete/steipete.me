@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 4.2 for iOS"
+title: PSPDFKit 4.2 for iOS
 pubDate: 2015-02-03T12:00:00.000Z
-description: "PSPDFKit 4.2 is the result of more than 2 months of hard work and working with our customers to build the best version of PSPDFKit so far. READMORE"
+description: >-
+  PSPDFKit 4.2 is the result of more than 2 months of hard work and working with
+  our customers to build the best version of PSPDFKit so far. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[PSPDFKit 4.2 is the result of more than 2 months of hard work and working with our customers to build the best version of PSPDFKit so far. READMORE]
 
 PSPDFKit 4.2 is the result of more than 2 months of hard work and working with our customers to build the best version of PSPDFKit so far.
 READMORE

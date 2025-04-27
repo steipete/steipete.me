@@ -1,14 +1,17 @@
 ---
-title: 'Swifty Objective-C'
+title: Swifty Objective-C
 pubDate: 2016-05-26T12:10:00.000Z
-description: 'Objective-C originates from the early 1980s, and while the language has evolved a lot over the years, it's still no match for really modern languag...'
+description: >-
+  Objective-C originates from the early 1980s, and while the language has
+  evolved a lot over the years, it's still no match for really modern languages
+  like Swift.
 tags:
   - iOS
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Objective-C originates from the early 1980s, and while the language has evolved a lot over the years, it's still no match for really modern languag...]
 
 
 Objective-C originates from the early 1980s, and while the language has evolved a lot over the years, it's still no match for really modern languages like Swift. With Swift 3.0 on the horizon, it's smart to write new apps in Swift. However at PSPDFKit, we are still firmly in the Objective-C world. We build and distribute a binary framework to render and edit PDF documents. Getting all the PDF details right is a complex problem. In addition to core PDF functionality, we also offer a lot of UI classes to help with typical use cases. This results in a code base that is around 600k lines — a mix of [shared C++ code][cross-platform] and Objective-C++ for UI and wrapped models. Our headers are entirely modern Objective-C [annotated with generics and nullability](/blog/2015/pspdfkit-ios-5-0/) to ensure everything works great with Swift. Even though we are currently still stuck in the Objective-C world, it is not all that grim! With some ingenuity one can leverage many of the benefits of Swift even in a code base like ours. Here we'll list some of the approaches we use to bring the old and new world closer together.

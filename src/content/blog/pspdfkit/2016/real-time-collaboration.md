@@ -1,13 +1,16 @@
 ---
-title: "Real-time collaboration, Apple, and you"
+title: 'Real-time collaboration, Apple, and you'
 pubDate: 2016-09-08T12:00:00.000Z
-description: "Yesterday at the Apple Event, next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web."
+description: >-
+  Yesterday at the Apple Event, next to iPhone 7 and Apple Watch Series 2, Apple
+  announced something interesting: real-time collaboration for iWork across Mac,
+  iPad, iPhone and the web.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Yesterday at the Apple Event, next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web.]
 
 Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web.
 

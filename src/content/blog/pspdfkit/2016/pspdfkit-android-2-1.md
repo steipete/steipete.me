@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 2.1 for Android"
+title: PSPDFKit 2.1 for Android
 pubDate: 2016-01-27T12:00:00.000Z
-description: "The PSPDFKit Android team has been working hard to bring you the next release – PSPDFKit 2.1 for Android – with many features and improvements. READMORE"
+description: >-
+  The PSPDFKit Android team has been working hard to bring you the next release
+  – PSPDFKit 2.1 for Android – with many features and improvements. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[The PSPDFKit Android team has been working hard to bring you the next release – PSPDFKit 2.1 for Android – with many features and improvements. READMORE]
 
 The PSPDFKit Android team has been working hard to bring you the next release – PSPDFKit 2.1 for Android – with many features and improvements.
 READMORE

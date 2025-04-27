@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 1.2 for Android"
+title: PSPDFKit 1.2 for Android
 pubDate: 2015-06-03T12:00:00.000Z
-description: "The 1.2 release for Android is our biggest release yet. Our team has done an amazing job and it's time for us to show you some of the highlights in this version. READMORE"
+description: >-
+  The 1.2 release for Android is our biggest release yet. Our team has done an
+  amazing job and it's time for us to show you some of the highlights in this
+  version. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[The 1.2 release for Android is our biggest release yet. Our team has done an amazing job and it's time for us to show you some of the highlights in this version. READMORE]
 
 The 1.2 release for Android is our biggest release yet. Our team has done an amazing job and it's time for us to show you some of the highlights in this version.
 READMORE

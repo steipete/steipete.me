@@ -1,13 +1,17 @@
 ---
-title: "PSPDFKit 5.1 for iOS"
+title: PSPDFKit 5.1 for iOS
 pubDate: 2015-12-22T12:00:00.000Z
-description: "With PSPDFKit 5.1, we focused on improving the overall drawing experience, easier integration, better iOS 9 adaptivity, improving the night mode as well as tweaking many details in the annotation editing/creation experience. READMORE"
+description: >-
+  With PSPDFKit 5.1, we focused on improving the overall drawing experience,
+  easier integration, better iOS 9 adaptivity, improving the night mode as well
+  as tweaking many details in the annotation editing/creation experience.
+  READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[With PSPDFKit 5.1, we focused on improving the overall drawing experience, easier integration, better iOS 9 adaptivity, improving the night mode as well as tweaking many details in the annotation editing/creation experience. READMORE]
 
 With PSPDFKit 5.1, we focused on improving the overall drawing experience, easier integration, better iOS 9 adaptivity, improving the night mode as well as tweaking many details in the annotation editing/creation experience.
 READMORE

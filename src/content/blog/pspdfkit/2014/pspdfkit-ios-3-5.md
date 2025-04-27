@@ -1,13 +1,19 @@
 ---
-title: "PSPDFKit 3.5 for iOS"
+title: PSPDFKit 3.5 for iOS
 pubDate: 2014-02-12T09:02:00.000Z
-description: "PSPDFKit 3.5 features some exciting changes that make it more delightful to use. We also worked on quite a few under-the-hood tweaks, modularizing internals and preparing it for further exciting improvements. With 3.5, it's now a lot easier to write a custom annotation toolbar, as we've introduced a new state manager (PSPDFAnnotationStateManager) that helps with annotation creation. This is the base for some great new features that will land in 3.6."
+description: >-
+  PSPDFKit 3.5 features some exciting changes that make it more delightful to
+  use. We also worked on quite a few under-the-hood tweaks, modularizing
+  internals and preparing it for further exciting improvements. With 3.5, it's
+  now a lot easier to write a custom annotation toolbar, as we've introduced a
+  new state manager (PSPDFAnnotationStateManager) that helps with annotation
+  creation. This is the base for some great new features that will land in 3.6.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[PSPDFKit 3.5 features some exciting changes that make it more delightful to use. We also worked on quite a few under-the-hood tweaks, modularizing internals and preparing it for further exciting improvements. With 3.5, it's now a lot easier to write a custom annotation toolbar, as we've introduced a new state manager (PSPDFAnnotationStateManager) that helps with annotation creation. This is the base for some great new features that will land in 3.6.]
 
 PSPDFKit 3.5 features some exciting changes that make it more delightful to use. We also worked on quite a few under-the-hood tweaks, modularizing internals and preparing it for further exciting improvements. With 3.5, it's now *a lot* easier to write a custom annotation toolbar, as we've introduced a new state manager (PSPDFAnnotationStateManager) that helps with annotation creation. This is the base for some great new features that will land in 3.6.
 

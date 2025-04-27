@@ -1,15 +1,17 @@
 ---
 title: 'Marzipan: Porting iOS Apps to the Mac'
 pubDate: 2018-09-20T12:00:00.000Z
-description: 'With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet s...'
+description: >-
+  With macOS Mojave, Apple is adding support to run UIKit apps on macOS without
+  the requirement of rewriting the UI in AppKit. While this isn’t yet s...
 tags:
   - iOS
   - macOS
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet s...]
 
 
 With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet something that’s officially supported for third-party developers, let’s explore what to expect in 2019 and how to try it out today.

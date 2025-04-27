@@ -1,13 +1,16 @@
 ---
-title: 'How to Use Slack and Not Go Crazy'
+title: How to Use Slack and Not Go Crazy
 pubDate: 2018-06-21T12:00:00.000Z
-description: 'Communicating well is one of the [key attributes of highly effective teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40 peopl...'
+description: >-
+  Communicating well is one of the [key attributes of highly effective
+  teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40
+  peopl...
 tags:
   - Company
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Communicating well is one of the [key attributes of highly effective teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40 peopl...]
 
 
 Communicating well is one of the [key attributes of highly effective teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40 people at PSPDFKit, and because we’re spread across many countries and time zones, it’s a challenge to keep everyone in the loop. For a long time, we were small enough that email worked well. As we grew, we progressed to a single room in [Campfire](https://basecamp.com/retired/campfire) (now retired). But eventually we moved — like so many other companies — to Slack.

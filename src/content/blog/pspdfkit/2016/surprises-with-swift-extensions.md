@@ -1,13 +1,16 @@
 ---
-title: "Surprises with Swift Extensions"
+title: Surprises with Swift Extensions
 pubDate: 2016-03-24T12:00:00.000Z
-description: "tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use @objc(prefix_name) to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime. READMORE"
+description: >-
+  tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You
+  can use @objc(prefix_name) to keep the name pretty in Swift and expose a
+  prefixed version for the ObjC runtime. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use @objc(prefix_name) to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime. READMORE]
 
 tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use `@objc(prefix_name)` to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime.
 READMORE

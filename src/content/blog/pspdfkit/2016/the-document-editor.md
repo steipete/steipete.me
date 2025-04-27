@@ -1,13 +1,20 @@
 ---
-title: "The Document Editor"
+title: The Document Editor
 pubDate: 2016-03-31T12:00:00.000Z
-description: "With the release of PSPDFKit 5.3 for iOS and PSPDFKit 2.3 for Android we're not only launching large updates to our SDK for both platforms, we're—for the first time—also launching a completely new component simlutaneously on both platforms. This was a collaboration amongst almost 20 people, separated into multiple teams, and we were only able to pull this off in a relatively short timeframe due to the substantial amount of code shared between the two platforms. READMORE"
+description: >-
+  With the release of PSPDFKit 5.3 for iOS and PSPDFKit 2.3 for Android we're
+  not only launching large updates to our SDK for both platforms, we're—for the
+  first time—also launching a completely new component simlutaneously on both
+  platforms. This was a collaboration amongst almost 20 people, separated into
+  multiple teams, and we were only able to pull this off in a relatively short
+  timeframe due to the substantial amount of code shared between the two
+  platforms. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[With the release of PSPDFKit 5.3 for iOS and PSPDFKit 2.3 for Android we're not only launching large updates to our SDK for both platforms, we're—for the first time—also launching a completely new component simlutaneously on both platforms. This was a collaboration amongst almost 20 people, separated into multiple teams, and we were only able to pull this off in a relatively short timeframe due to the substantial amount of code shared between the two platforms. READMORE]
 
 With the release of PSPDFKit 5.3 for iOS and PSPDFKit 2.3 for Android we're not only launching large updates to our SDK for both platforms, we're—for the first time—also launching a completely new component simlutaneously on both platforms. This was a collaboration amongst almost 20 people, separated into multiple teams, and we were only able to pull this off in a relatively short timeframe due to the substantial amount of code shared between the two platforms.
 READMORE

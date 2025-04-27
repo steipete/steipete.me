@@ -1,14 +1,16 @@
 ---
-title: 'Investigating Thread Safety of UIImage'
+title: Investigating Thread Safety of UIImage
 pubDate: 2016-06-30T12:00:00.000Z
-description: '`UIImage` is one of the most important classes in UIKit. When compared to browsers, image handling on iOS is still quite tricky. Loading even a med...'
+description: >-
+  `UIImage` is one of the most important classes in UIKit. When compared to
+  browsers, image handling on iOS is still quite tricky. Loading even a med...
 tags:
   - iOS
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[`UIImage` is one of the most important classes in UIKit. When compared to browsers, image handling on iOS is still quite tricky. Loading even a med...]
 
 
 `UIImage` is one of the most important classes in UIKit. When compared to browsers, image handling on iOS is still quite tricky. Loading even a medium-sized image on the main thread will likely take longer than 16.6 milliseconds. Naturally, people identify this as an issue and move [image](https://bpoplauschi.wordpress.com/2014/03/21/ios-image-caching-sdwebimage-vs-fastimage/) [creation](https://www.objc.io/issues/5-ios7/iOS7-hidden-gems-and-workarounds/) to [background](https://github.com/AFNetworking/AFNetworking/blob/09658b352a496875c91cc33dd52c3f47b9369945/AFNetworking/AFURLResponseSerialization.m#L442-518) [threads](https://stackoverflow.com/questions/10149165/uiimage-decompression-causing-scrolling-lag).

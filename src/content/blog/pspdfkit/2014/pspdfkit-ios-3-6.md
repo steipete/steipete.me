@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 3.6 for iOS"
+title: PSPDFKit 3.6 for iOS
 pubDate: 2014-03-30T17:11:00.000Z
-description: "We're really proud to present our 3.6 release just a month after the 3.5 milestone. Next to it being fully compatible and tested with iOS 7.1 & Xcode 5.1, it has some amazing new features:"
+description: >-
+  We're really proud to present our 3.6 release just a month after the 3.5
+  milestone. Next to it being fully compatible and tested with iOS 7.1 & Xcode
+  5.1, it has some amazing new features:
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[We're really proud to present our 3.6 release just a month after the 3.5 milestone. Next to it being fully compatible and tested with iOS 7.1 & Xcode 5.1, it has some amazing new features:]
 
 We're really proud to present our 3.6 release just a month after the 3.5 milestone. Next to it being fully compatible and tested with iOS 7.1 & Xcode 5.1, it has some amazing new features:
 

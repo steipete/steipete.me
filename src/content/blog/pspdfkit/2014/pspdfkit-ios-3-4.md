@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 3.4 for iOS"
+title: PSPDFKit 3.4 for iOS
 pubDate: 2014-01-15T09:39:00.000Z
-description: "Version 3.4 isn't yet released, but here's a preview of some small and big details that we improved in this version."
+description: >-
+  Version 3.4 isn't yet released, but here's a preview of some small and big
+  details that we improved in this version.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Version 3.4 isn't yet released, but here's a preview of some small and big details that we improved in this version.]
 
 Version 3.4 isn't yet released, but here's a preview of some small and big details that we improved in this version.
 

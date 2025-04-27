@@ -1,14 +1,16 @@
 ---
-title: 'Binary Frameworks in Swift'
+title: Binary Frameworks in Swift
 pubDate: 2018-01-29T12:00:00.000Z
-description: 'Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/s...'
+description: >-
+  Apple introduced Swift in 2014, and it quickly replaced the 34-year-old
+  Objective-C. Swift is a modern, [open source](https://developer.apple.com/s...
 tags:
   - iOS
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/s...]
 
 
 Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/swift/blog/?id=34) language that pushes safe programming patterns and adds modern features to make programming easier, more flexible, and more fun.

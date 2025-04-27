@@ -1,13 +1,18 @@
 ---
-title: "PSPDFKit 2.2 for Android"
+title: PSPDFKit 2.2 for Android
 pubDate: 2016-02-18T06:00:00.000Z
-description: "Our newest release of PSPDFKit 2.2 for Android comes with many improvements on annotation editing, search and the public API. READMORE We've gone ahead and outlined a few of the new features for both you and your users can enjoy. As always, you can find find the list of all changes in our changelog for version 2.2."
+description: >-
+  Our newest release of PSPDFKit 2.2 for Android comes with many improvements on
+  annotation editing, search and the public API. READMORE We've gone ahead and
+  outlined a few of the new features for both you and your users can enjoy. As
+  always, you can find find the list of all changes in our changelog for version
+  2.2.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Our newest release of PSPDFKit 2.2 for Android comes with many improvements on annotation editing, search and the public API. READMORE We've gone ahead and outlined a few of the new features for both you and your users can enjoy. As always, you can find find the list of all changes in our changelog for version 2.2.]
 
 Our newest release of PSPDFKit 2.2 for Android comes with many improvements on annotation editing, search and the public API.
 READMORE

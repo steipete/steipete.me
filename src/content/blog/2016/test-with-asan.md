@@ -1,15 +1,17 @@
 ---
-title: 'Running tests with Clang Address Sanitizer'
+title: Running tests with Clang Address Sanitizer
 pubDate: 2016-10-18T12:00:00.000Z
-description: 'Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race condit...'
+description: >-
+  Clang has powerful sanitizers that help you find bugs faster, fix them with
+  more confidence, and find all these impossible-to-reproduce race condit...
 tags:
   - iOS
   - Android
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race condit...]
 
 
 Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race conditions. These tools are [extremely powerful](https://research.google.com/pubs/archive/35604.pdf) and mature and exist in various forms since 2010. These tools are so incredibly useful that we collected our experiences using them, [between iOS, Android and our C++ core](/blog/2016/a-pragmatic-approach-to-cross-platform/), to help you through some gotchas.

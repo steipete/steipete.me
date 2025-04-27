@@ -1,5 +1,5 @@
 ---
-title: 'Hardcore Debugging - Heavy Weapons for Hard Bugs'
+title: Hardcore Debugging - Heavy Weapons for Hard Bugs
 pubDate: 2018-03-07T12:00:00.000Z
 description: '## Tracking Retain/Release'
 tags:
@@ -7,9 +7,9 @@ tags:
   - Development
   - WebAssembly
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[## Tracking Retain/Release]
 
 
 ## Tracking Retain/Release

@@ -1,13 +1,13 @@
 ---
-title: "PSPDFKit 5.2 for iOS"
+title: PSPDFKit 5.2 for iOS
 pubDate: 2016-02-17T12:00:00.000Z
-description: "!Selection Knobs"
+description: '!Selection Knobs'
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[!Selection Knobs]
 
 ## Improved Theming
 Text and annotation selection now use `tintColor`, enabling easier theming by inheriting color from superviews. Selection color can be customized individually by setting `tintColor` on `PSPDFTextSelectionView`, `PSPDFSelectionView` and `PSPDFResizableView`.

@@ -1,13 +1,15 @@
 ---
-title: 'A Pragmatic Approach to Cross-Platform'
+title: A Pragmatic Approach to Cross-Platform
 pubDate: 2016-04-13T06:00:00.000Z
-description: 'At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the ...'
+description: >-
+  At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the
+  browser](/web). Yet, invisible to the user, all share a large part of the ...
 tags:
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the ...]
 
 
 At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the codebase. This wasn’t always the case. Here’s what we learned over the last few years.

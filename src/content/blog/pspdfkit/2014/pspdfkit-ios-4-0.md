@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 4.0 for iOS"
+title: PSPDFKit 4.0 for iOS
 pubDate: 2014-09-23T12:00:00.000Z
-description: "Version 4.0 is a major new release. We've created a convenient migration guide to make upgrading as simple as possible."
+description: >-
+  Version 4.0 is a major new release. We've created a convenient migration guide
+  to make upgrading as simple as possible.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Version 4.0 is a major new release. We've created a convenient migration guide to make upgrading as simple as possible.]
 
 Version 4.0 is a major new release. We've created [a convenient migration guide](/guides/ios/current/migration-guides/pspdfkit-40-migration-guide/) to make upgrading as simple as possible.
 

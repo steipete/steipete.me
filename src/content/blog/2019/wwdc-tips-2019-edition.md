@@ -1,14 +1,16 @@
 ---
 title: 'WWDC for First-Timers, 2019 Edition'
 pubDate: 2019-05-30T12:00:00.000Z
-description: 'Since Apple’s Worldwide Developers Conference is just around the corner, it’s time for yet another one of these helpful WWDC articles. I’ve been to...'
+description: >-
+  Since Apple’s Worldwide Developers Conference is just around the corner, it’s
+  time for yet another one of these helpful WWDC articles. I’ve been to...
 tags:
   - iOS
   - Development
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Since Apple’s Worldwide Developers Conference is just around the corner, it’s time for yet another one of these helpful WWDC articles. I’ve been to...]
 
 
 Since Apple’s Worldwide Developers Conference is just around the corner, it’s time for yet another one of these helpful WWDC articles. I’ve been to almost every WWDC since 2010 and learned quite a bit over the years. So let’s dive right in!

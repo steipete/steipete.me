@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 4.1 for iOS"
+title: PSPDFKit 4.1 for iOS
 pubDate: 2014-11-05T12:00:00.000Z
-description: "Version 4.1 features many detail improvements and we've updated everything to work well with the new iOS 8.1. Here are some of the highlights:"
+description: >-
+  Version 4.1 features many detail improvements and we've updated everything to
+  work well with the new iOS 8.1. Here are some of the highlights:
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Version 4.1 features many detail improvements and we've updated everything to work well with the new iOS 8.1. Here are some of the highlights:]
 
 Version 4.1 features many detail improvements and we've updated everything to work well with the new iOS 8.1. Here are some of the highlights:
 

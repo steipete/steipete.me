@@ -1,14 +1,16 @@
 ---
-title: 'How We Work at PSPDFKit'
+title: How We Work at PSPDFKit
 pubDate: 2019-07-03T07:00:00.000Z
-description: 'Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person t...'
+description: >-
+  Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work
+  many times. Transitioning from a company consisting of a single person t...
 tags:
   - Company
   - Culture
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person t...]
 
 
 Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person to one with more than 40 people requires change, and even more so when expanding from just iOS to Android, Web, Windows, and macOS.

@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 5.0 for iOS"
+title: PSPDFKit 5.0 for iOS
 pubDate: 2015-09-28T12:00:00.000Z
-description: "PSPDFKit 5 for iOS - the next major version of our PDF SDK - is around the corner, and we're happy to give you a preview of what you can expect from this version."
+description: >-
+  PSPDFKit 5 for iOS - the next major version of our PDF SDK - is around the
+  corner, and we're happy to give you a preview of what you can expect from this
+  version.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[PSPDFKit 5 for iOS - the next major version of our PDF SDK - is around the corner, and we're happy to give you a preview of what you can expect from this version.]
 
 PSPDFKit 5 for iOS - the next major version of our PDF SDK - is around the corner, and we're happy to give you a preview of what you can expect from this version.
 

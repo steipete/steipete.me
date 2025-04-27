@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 1.3 for Android"
+title: PSPDFKit 1.3 for Android
 pubDate: 2015-08-19T12:00:00.000Z
-description: "With version 1.3 for Android, we continue to iterate, while also preparing for the big v2 update that will include annotation editing later in September. READMORE"
+description: >-
+  With version 1.3 for Android, we continue to iterate, while also preparing for
+  the big v2 update that will include annotation editing later in September.
+  READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[With version 1.3 for Android, we continue to iterate, while also preparing for the big v2 update that will include annotation editing later in September. READMORE]
 
 With version 1.3 for Android, we continue to iterate, while also preparing for the big v2 update that will include annotation editing later in September.
 READMORE

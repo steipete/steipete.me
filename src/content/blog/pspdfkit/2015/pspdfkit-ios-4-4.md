@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 4.4 for iOS"
+title: PSPDFKit 4.4 for iOS
 pubDate: 2015-04-29T12:00:00.000Z
-description: "We are happy to finally ship PSPDFKit 4.4 for iOS. This release comes as a new dynamic framework and includes many detailed improvements. It's over 1000 commits more than PSPDFKit 4.3.5 for iOS. READMORE"
+description: >-
+  We are happy to finally ship PSPDFKit 4.4 for iOS. This release comes as a new
+  dynamic framework and includes many detailed improvements. It's over 1000
+  commits more than PSPDFKit 4.3.5 for iOS. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[We are happy to finally ship PSPDFKit 4.4 for iOS. This release comes as a new dynamic framework and includes many detailed improvements. It's over 1000 commits more than PSPDFKit 4.3.5 for iOS. READMORE]
 
 We are happy to finally ship PSPDFKit 4.4 for iOS. This release comes as a new dynamic framework and includes many detailed improvements. It's over 1000 commits more than PSPDFKit 4.3.5 for iOS.
 READMORE

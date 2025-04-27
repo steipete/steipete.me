@@ -1,15 +1,17 @@
 ---
-title: 'Challenges of Adopting Drag and Drop'
+title: Challenges of Adopting Drag and Drop
 pubDate: 2018-11-07T08:10:00.000Z
-description: 'Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] ...'
+description: >-
+  Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer
+  (3.0)][]. In both of these releases, we improved our [Document Editor][] ...
 tags:
   - iOS
   - Development
   - Objective-C
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] ...]
 
 
 Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] to support [drag and drop][] for iPads on iOS 11 and above.

@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 3.7 for iOS"
+title: PSPDFKit 3.7 for iOS
 pubDate: 2014-07-22T20:14:00.000Z
-description: "PSPDFKit 3.7 is another great milestone and adds a few long-requested features and improvements:"
+description: >-
+  PSPDFKit 3.7 is another great milestone and adds a few long-requested features
+  and improvements:
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[PSPDFKit 3.7 is another great milestone and adds a few long-requested features and improvements:]
 
 PSPDFKit 3.7 is another great milestone and adds a few long-requested features and improvements:
 

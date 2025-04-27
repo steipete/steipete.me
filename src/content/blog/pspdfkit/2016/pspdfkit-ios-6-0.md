@@ -1,13 +1,19 @@
 ---
-title: "PSPDFKit 6 for iOS"
+title: PSPDFKit 6 for iOS
 pubDate: 2016-09-23T12:00:00.000Z
-description: "Today we're releasing <a href=\"/try\">PSPDFKit 6 for iOS</a>. It's fully optimized for Xcode 8 and iOS 10, comes with improved API for Swift 3, faster rendering, various fixes, and a visual refresh. These updates make it our best release so far. As usual, our versioning scheme supports the current and previous iOS versions. We fully support iOS 9, while also focusing on many new features that iOS 10 offers."
+description: >-
+  Today we're releasing <a href="/try">PSPDFKit 6 for iOS</a>. It's fully
+  optimized for Xcode 8 and iOS 10, comes with improved API for Swift 3, faster
+  rendering, various fixes, and a visual refresh. These updates make it our best
+  release so far. As usual, our versioning scheme supports the current and
+  previous iOS versions. We fully support iOS 9, while also focusing on many new
+  features that iOS 10 offers.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Today we're releasing <a href="/try">PSPDFKit 6 for iOS</a>. It's fully optimized for Xcode 8 and iOS 10, comes with improved API for Swift 3, faster rendering, various fixes, and a visual refresh. These updates make it our best release so far. As usual, our versioning scheme supports the current and previous iOS versions. We fully support iOS 9, while also focusing on many new features that iOS 10 offers.]
 
 Today we're releasing <a href="/try">PSPDFKit 6 for iOS</a>. It's fully optimized for Xcode 8 and iOS 10, comes with improved API for Swift 3, faster rendering, various fixes, and a visual refresh. [These updates make it our best release so far](/changelog/ios/#6.0.0). As usual, our [versioning scheme](/guides/ios/current/announcements/version-support/) supports the current and previous iOS versions. We fully support iOS 9, while also focusing on many new features that iOS 10 offers.
 

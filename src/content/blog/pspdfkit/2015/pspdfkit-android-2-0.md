@@ -1,13 +1,13 @@
 ---
-title: "PSPDFKit 2.0 for Android"
+title: PSPDFKit 2.0 for Android
 pubDate: 2015-12-07T12:00:00.000Z
-description: "We’re proud to announce the immediate availability of PSPDFKit 2.0 for Android with support for creating and editing annotations. We know a lot of people were waiting for this release, and we took the time to ensure it’s great. Here are the highlights. READMORE"
+description: "We’re proud to announce the immediate availability of PSPDFKit\_2.0 for Android with support for creating and editing annotations. We know a lot of people were waiting for this release, and we took the time to ensure it’s great. Here are the highlights. READMORE"
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[We’re proud to announce the immediate availability of PSPDFKit 2.0 for Android with support for creating and editing annotations. We know a lot of people were waiting for this release, and we took the time to ensure it’s great. Here are the highlights. READMORE]
 
 We’re proud to announce the immediate availability of PSPDFKit 2.0 for Android with support for creating and editing annotations. We know a lot of people were waiting for this release, and we took the time to ensure it’s great. Here are the highlights.
 READMORE

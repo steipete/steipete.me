@@ -1,13 +1,17 @@
 ---
-title: "PSPDFKit 3.3 for iOS"
+title: PSPDFKit 3.3 for iOS
 pubDate: 2013-12-29T08:00:00.000Z
-description: "The year 2014 just started but we've been mighty busy tweaking and improving our PDF SDK. PSPDFKit 3.3 adds support for the upcoming iOS 7.1, can read and verify digital signatures and has a super long list of big and small improvements."
+description: >-
+  The year 2014 just started but we've been mighty busy tweaking and improving
+  our PDF SDK. PSPDFKit 3.3 adds support for the upcoming iOS 7.1, can read and
+  verify digital signatures and has a super long list of big and small
+  improvements.
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[The year 2014 just started but we've been mighty busy tweaking and improving our PDF SDK. PSPDFKit 3.3 adds support for the upcoming iOS 7.1, can read and verify digital signatures and has a super long list of big and small improvements.]
 
 The year 2014 just started but we've been mighty busy tweaking and improving our PDF SDK. PSPDFKit 3.3 adds support for the upcoming iOS 7.1, can read and verify digital signatures and has a super long list of big and small improvements.
 

@@ -1,13 +1,16 @@
 ---
-title: "PSPDFKit 1.4 for Android"
+title: PSPDFKit 1.4 for Android
 pubDate: 2015-09-24T12:00:00.000Z
-description: "Just when you get used to the improvements we made in the last release, we surprise you with more on Android. With another great update just released, we’re really improving things all over the place on Android. READMORE"
+description: >-
+  Just when you get used to the improvements we made in the last release, we
+  surprise you with more on Android. With another great update just released,
+  we’re really improving things all over the place on Android. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[Just when you get used to the improvements we made in the last release, we surprise you with more on Android. With another great update just released, we’re really improving things all over the place on Android. READMORE]
 
 Just when you get used to the improvements we made in the last release, we surprise you with more on Android. With another great update just released, we’re really improving things all over the place on Android.
 READMORE

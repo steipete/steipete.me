@@ -1,13 +1,15 @@
 ---
-title: "PSPDFKit 4.3 for iOS"
+title: PSPDFKit 4.3 for iOS
 pubDate: 2015-03-06T12:00:00.000Z
-description: "In PSPDFKit 4.3 we focussed on stability and detail improvements touching all parts of the framework. It's a highly recommended update. READMORE"
+description: >-
+  In PSPDFKit 4.3 we focussed on stability and detail improvements touching all
+  parts of the framework. It's a highly recommended update. READMORE
 tags:
   - pspdfkit
 source: pspdfkit.com
+AIDescription: true
 ---
 
-::ai[In PSPDFKit 4.3 we focussed on stability and detail improvements touching all parts of the framework. It's a highly recommended update. READMORE]
 
 In PSPDFKit 4.3 we focussed on stability and detail improvements touching all parts of the framework. It's a highly recommended update.
 READMORE
