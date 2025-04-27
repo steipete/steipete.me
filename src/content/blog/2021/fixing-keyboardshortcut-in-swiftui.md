@@ -1,7 +1,7 @@
 ---
 title: Fixing keyboardShortcut in SwiftUI
 pubDate: 2021-01-31T11:30:00.000Z
-description: 'This article investigates and resolves a specific bug with iOS 14's keyboardShortcut functionality in SwiftUI. Through careful debugging and reverse engineering, I identify why keyboard shortcuts work in SwiftUI app lifecycle but fail when integrating SwiftUI into UIKit apps. The investigation traces the issue to a missing internal state change in UIHostingController and provides a simple workaround that triggers the correct behavior. The post includes detailed debugging steps using LLDB and Hopper, explaining the internals of SwiftUI's keyboard shortcut handling mechanism.'
+description: "This article investigates and resolves a specific bug with iOS 14's keyboardShortcut functionality in SwiftUI. Through careful debugging and reverse engineering, I identify why keyboard shortcuts work in SwiftUI app lifecycle but fail when integrating SwiftUI into UIKit apps. The investigation traces the issue to a missing internal state change in UIHostingController and provides a simple workaround that triggers the correct behavior. The post includes detailed debugging steps using LLDB and Hopper, explaining the internals of SwiftUI's keyboard shortcut handling mechanism."
 heroImage: /assets/img/2021/fixing-keyboardshortcut-in-swiftui/header.png
 tags:
   - iOS
