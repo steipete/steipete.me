@@ -15,13 +15,13 @@ Version 4.1 features many detail improvements and we've updated everything to wo
 
 You'll love this new default. Your drawings will look much more realistic, and are still fully backwards compatible to 3rd-party apps.
 
-![Natural Drawing](/images/blog/2014/pspdfkit-4-1/natural-drawing.gif)
+![Natural Drawing](/assets/img/pspdfkit/2014/pspdfkit-4-1/natural-drawing.gif)
 
 ## Text Selection Tweaks
 
 We now snap to full words by default. This can be disabled with the `textSelectionShouldSnapToWords` however we believe it's a great new default and enhances the user experience.
 
-![Text Selection](/images/blog/2014/pspdfkit-4-1/text-selection.gif)
+![Text Selection](/assets/img/pspdfkit/2014/pspdfkit-4-1/text-selection.gif)
 
 ## Localization Pluralization
 

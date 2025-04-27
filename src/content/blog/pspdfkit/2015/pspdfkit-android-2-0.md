@@ -22,19 +22,19 @@ Annotations are saved into the PDF document and are compatible with any complian
 
 ### Ink Annotations
 
-![Adding ink annotation](/images/blog/2015/pspdfkit-android-2-0/add_ink_annotation.gif)
+![Adding ink annotation](/assets/img/pspdfkit/2015/pspdfkit-android-2-0/add_ink_annotation.gif)
 
 ### Note Annotations
 
-![Adding note](/images/blog/2015/pspdfkit-android-2-0/add_note.gif)
+![Adding note](/assets/img/pspdfkit/2015/pspdfkit-android-2-0/add_note.gif)
 
 ### Free Text Annotations
 
-![Free text](/images/blog/2015/pspdfkit-android-2-0/free_text.gif)
+![Free text](/assets/img/pspdfkit/2015/pspdfkit-android-2-0/free_text.gif)
 
 ### Highlight Annotations
 
-![Highlighting text selection](/images/blog/2015/pspdfkit-android-2-0/highlight_text_selection.gif)
+![Highlighting text selection](/assets/img/pspdfkit/2015/pspdfkit-android-2-0/highlight_text_selection.gif)
 
 ## Exposing Annotation Objects
 

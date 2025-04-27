@@ -43,7 +43,7 @@ Update (May 2019): With Swift 5 out, using Swift as the radar language for examp
 
 I often add a big button named "Press me to crash" or "Tap for tears." Make it obvious. An alert that explains the thing a bit more on load is also very very useful. Here’s how we explain [rdar://20020818](http://openradar.appspot.com/20020818).
 
-![rdar://20020818](/images/blog/2016/bug-reports/radar-sample.png)
+![rdar://20020818](/assets/img/pspdfkit/2016/bug-reports/radar-sample.png)
 
 ### Add humor
 
@@ -76,7 +76,7 @@ Sometimes radars get pushed back as we’re reporting a crash and even include a
 
 Whenever Apple releases a new major version of its OS - test early! Chances that your bug gets fixed when you report it in Seed 1 are much more likely than when the GM is just a few weeks away.
 
-![Timing is Key](/images/blog/2016/bug-reports/timing-is-key.png)
+![Timing is Key](/assets/img/pspdfkit/2016/bug-reports/timing-is-key.png)
 
 ### Here’s an [incomplete list](http://openradar.appspot.com/search?query=PSPDFKit) of bugs the PSPDFKit team wrote this year (crossed out radars are fixed)
 
@@ -160,7 +160,7 @@ ul { font-size:14px; }
 
 Filing radars is worth it, even if it seems like a black hole at the first look. Sometimes it takes a while, but critical issues often get fixed.
 
-![Radar works](/images/blog/2016/bug-reports/radar-works.png)
+![Radar works](/assets/img/pspdfkit/2016/bug-reports/radar-works.png)
 
 ### I really need this fixed!
 

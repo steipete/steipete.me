@@ -16,13 +16,13 @@ READMORE
 
 Scrolling logic has been completely revamped internally, featuring a greatly improved UI and paving the way for future customizability. The most noticeable difference is the improved continuous scroll mode - pages are now aligned side by side and handled as a whole, meaning you can scroll pages while they are zoomed or see multiple pages at once.
 
-![Improved scrolling](/images/blog/2015/pspdfkit-android-1-3/new_scroll.gif)
+![Improved scrolling](/assets/img/pspdfkit/2015/pspdfkit-android-1-3/new_scroll.gif)
 
 ## More Fluid Text Selection
 
 Text selection is now much more fluid – the user can pan and zoom the page while selecting text.
 
-![More Fluid Text Selection](/images/blog/2015/pspdfkit-android-1-3/fluid_text_selection.gif)
+![More Fluid Text Selection](/assets/img/pspdfkit/2015/pspdfkit-android-1-3/fluid_text_selection.gif)
 
 ## Content Providers
 

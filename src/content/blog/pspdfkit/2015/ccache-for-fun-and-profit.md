@@ -53,7 +53,7 @@ You also need to define the `CC` variable in Xcode. At [PSPDFKit](https://pspdfk
 
 `CC = "$(SRCROOT)/../Resources/ccache-clang";`
 
-![Xcode with CC defined](/images/blog/2015/ccache/ccache-clang.png)
+![Xcode with CC defined](/assets/img/pspdfkit/2015/ccache/ccache-clang.png)
 
 That’s all! The next full rebuild will actually be a bit slower, and you can run `ccache -s` to see if things are actually working. Initially there should be a lot cache misses, but when the cache starts to fill up subsequent compilations will run *a lot* faster.
 

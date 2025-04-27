@@ -22,19 +22,19 @@ We also took time to annotate our entire header set with [symbol visibility](htt
 
 ## Dashed Lines
 
-![Color Presets](/images/blog/2015/pspdfkit-4-4/linedashstyle.gif)
+![Color Presets](/assets/img/pspdfkit/2015/pspdfkit-4-4/linedashstyle.gif)
 
 We have had partial support for custom line dash styles for a while, but such support was not included in the Inspector. With the 4.4 release we have added complete line dash support as well as add a nice way to select it. We also did some other all around visual improvements in the Inspector as well.
 
 ## Color Presets
 
-![Color Presets](/images/blog/2015/pspdfkit-4-4/colorpresets.gif)
+![Color Presets](/assets/img/pspdfkit/2015/pspdfkit-4-4/colorpresets.gif)
 
 While 4.3 had color presets for text, the 4.4 release now enables presets for almost all annotation types. This can be customized per type, using the `typesShowingColorPresets` property.
 
 ## Vertical Scrobble Bar
 
-![Vertical Scrobble Bar](/images/blog/2015/pspdfkit-4-4/scrobblebarvertical.gif)
+![Vertical Scrobble Bar](/assets/img/pspdfkit/2015/pspdfkit-4-4/scrobblebarvertical.gif)
 
 It is now really easy to place the scrobble bar vertically. What previously required a good deal of custom code before, now runs out-of-the-box.
 

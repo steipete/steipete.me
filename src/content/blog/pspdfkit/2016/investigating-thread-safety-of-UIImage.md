@@ -33,7 +33,7 @@ So, back to the original issue - how does several threads accessing the static b
 
 If we take a closer look at the crash stack trace we notice that it occurs during the deallocation of `UITraitCollection` with `pointer being freed was not allocated` printed out in the console. This indicates that the problem might be a race that causes a fresh `UITraitCollection` object to be over-released.
 
-![Crash](/images/blog/2016/investigating-thread-saftey-of-UIImage/crash.png)
+![Crash](/assets/img/pspdfkit/2016/investigating-thread-saftey-of-UIImage/crash.png)
 
 This bug must be fairly new. At some point, `imageWithData:` and `imageWithCGImage:` were meant to be thread safe, since the underlying CoreGraphics calls are all thread safe. But then, retina came, and deadlines, the code got more complex, suddenly images had a scale and an implicit trait environment (so they can swap out when the environment changes), and someone needed to create a `UITraitCollection` object.
 
@@ -64,7 +64,7 @@ objc[47357]: Class _NSZombie_UIImage is implemented in both ?? and ??. One of th
 
 As soon as we enable the thread sanitizer and/or zombies, it does not crash anymore. Disabling that and playing with it some more showed something interesting in the stack trace:
 
-![Backtrace](/images/blog/2016/investigating-thread-saftey-of-UIImage/bt.png)
+![Backtrace](/assets/img/pspdfkit/2016/investigating-thread-saftey-of-UIImage/bt.png)
 
 `UITraitCollectionCacheForBuiltinStorage`. The fun thing here is that this method lazily initializes a dictionary, using `dispatch_once` to make it thread safe, but then calls `void CFDictionarySetValue ( CFMutableDictionaryRef theDict, const void *key, const void *value );` without any locking protecting it. Here `value` is the new trait collection that is created and then set. Now, we race in the dictionary setter and an object gets over-released and we crash in `object_dispose`.
 

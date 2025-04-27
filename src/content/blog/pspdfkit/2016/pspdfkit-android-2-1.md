@@ -18,7 +18,7 @@ This release adds powerful PDF indexing capabilities via the `PSPDFLibrary` clas
 
 Indexed Full-Text Search is an optional feature — [contact our sales team](mailto:sales@pspdfkit.com) for details. You can find more about this in [our guide on document indexing and searching](https://pspdfkit.com/guides/android/current/features/indexed-full-text-search/).
 
-![Full-text search in catalog app](/images/blog/2016/pspdfkit-android-2-1/full_text_search_landscape.gif)
+![Full-text search in catalog app](/assets/img/pspdfkit/2016/pspdfkit-android-2-1/full_text_search_landscape.gif)
 
 ## PDF Editing
 
@@ -32,7 +32,7 @@ Indexed Full-Text Search is an optional feature — [contact our sales team](mai
 
 For more information, you can have a look at our [our Document Processing guide](https://pspdfkit.com/guides/android/current/features/document-processing/) or at the `DocumentProcessingExample` inside the catalog app (which shows page extraction, compound document merging, annotation flattening, and annotation deletion).
 
-![processing documents](/images/blog/2016/pspdfkit-android-2-1/document-processing.png)
+![processing documents](/assets/img/pspdfkit/2016/pspdfkit-android-2-1/document-processing.png)
 
 ## Incremental Annotation Saving
 
@@ -44,7 +44,7 @@ There are a few exceptions where incremental saving is not possible, such as enc
 
 The new _annotation list_ was added to the existing `PSPDFOutlineView` allowing users to quickly navigate annotations in the document. The annotation list is configurable, allowing you to display only the annotation types you need, or even hide the list completely. Have a look at the new `enableAnnotationList`, `disableAnnotationList`, and `listedAnnotationTypes` setters on `PSPDFActivityConfiguration`.
 
-![Annotation list](/images/blog/2016/pspdfkit-android-2-1/annotation_list.gif)
+![Annotation list](/assets/img/pspdfkit/2016/pspdfkit-android-2-1/annotation_list.gif)
 
 ## Migration to AppCompat-v7
 

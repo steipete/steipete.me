@@ -18,17 +18,17 @@ READMORE
 
 iOS 9 introduced new multitasking modes on iPad. This means the user interface can change on the fly and must be ready to adapt: a popover can morph into a full screen view and back during its lifetime. We took our entire controller presentation and re-built everything with the new iOS 8 APIs to be ready for this change. As we have a large library of UI components, this was a massive undertaking. We see this as an investment for the future, since a modern API is less likely to break in future versions than the old calls. We couldn’t be happier to finally drop `UIPopoverController` and its many friends. Unfortunately, as with any new API, there are quite a few bugs and issues in Apple’s new presentation system. We’ve reported more than ten Radars on this issue alone during the iOS 9 beta. None of the Radars have been fixed yet so we’ve been working overtime on workarounds for these UIKit issues to make sure everything works great. As a user, this means a more consistent presentation and popovers that will not disappear on rotation. As a developer, it’s now easier to interact with the presentation system and PSPDFKit is fully ready to handle iPad Slide Over and Split View.
 
-![Adaptivity and Multitasking](/images/blog/2015/pspdfkit-5-0/adaptivity-multitasking.gif)
+![Adaptivity and Multitasking](/assets/img/pspdfkit/2015/pspdfkit-5-0/adaptivity-multitasking.gif)
 
 ## Adaptive Toolbars
 
 A big chunk of the adaptivity work was dedicated to the annotation toolbar. The toolbar could already adapt its content based on the device type and automatically collapse overflowing items, if screen real-estate is tight. In version 5 we brought that support to a whole new level. The annotation toolbar API has been refactored, so it can now be configured with a set of `PSPDFAnnotationToolbarConfiguration` objects, each defining a custom toolbar layout. The toolbar then automatically calculates which configuration to pick based on the available space. All you have to do is pick the toolbar items and groups that best suit your needs. And since we already pre-bundled the toolbar with some great defaults, you don't even have to do that! This not only improves the toolbar with iPad multitasking, but also ensures we leverage the extra space that becomes available when rotating an iPhone to landscape or moving the toolbar to the vertical position.
 
-![Adaptive Toolbars](/images/blog/2015/pspdfkit-5-0/adaptive-toolbars.gif)
+![Adaptive Toolbars](/assets/img/pspdfkit/2015/pspdfkit-5-0/adaptive-toolbars.gif)
 
 Similar changes have been made internally in `PSPDFFreeTextAccessoryView`. In addition to making sure that the accessory view is fully adaptive, we also re-configured it so it now shows the handy in-place popover pickers whenever there is enough space, which makes quick changes even more convenient.
 
-![Accessory View](/images/blog/2015/pspdfkit-5-0/accessory-view.png)
+![Accessory View](/assets/img/pspdfkit/2015/pspdfkit-5-0/accessory-view.png)
 
 Although navigation bar items are typically outside the reach of PSPDFKit, we also chose to improve on UIKit’s shortcomings in this regard and make it easy for you to adapt to size-changes on the navigation bar. Take a look at the `PSCKioskPDFViewController` example to see exactly how you can pull that off.
 
@@ -36,7 +36,7 @@ Although navigation bar items are typically outside the reach of PSPDFKit, we al
 
 PSPDFKit has had tabs for quickly switching between documents since version 1.10 was released in May 2012. Phew, that was a long time ago! However, we’ve never really been happy with this feature and always felt like we could do so much better. After receiving quite a few requests to improve things here, we finally decided it was time. With version 5, we re-wrote the whole system from scratch based on `UICollectionView`. Tabs are now faster, look much better and also animate. Drag-and-drop reordering, automatic shrinking and an overview list make it easy to handle lots of documents at once. We took a hard look at Safari for iOS and took the parts we liked best about it and expanded those with our own ideas. If you are displaying multiple documents at the same time, give our tab controller another try — it’s really great! We even went so far as to work on the color logic, so tabs adapt to your color scheme and are always readable.
 
-![Tabs](/images/blog/2015/pspdfkit-5-0/tabs.gif)
+![Tabs](/assets/img/pspdfkit/2015/pspdfkit-5-0/tabs.gif)
 
 ## Encryption
 
@@ -46,7 +46,7 @@ We replaced `CGPDFDataProvider` with our own, new `PSPDFDataProvider` and added 
 
 We’re proud to have supported document-wide undo and redo since PSPDFKit 2.4. Though there have been numerous improvements to this under-the-hood since 2.4, with version 5 we’ve made our biggest improvement yet. Before version 5, single ink strokes could be undone while drawing but as soon as the object was committed and saved, you could only undo the entire object. This has always been a source of frustration for us and we knew we could do better. It was definitely a challenge but we re-engineered undo to allow steps into objects while maintaining exceptional performance and memory usage. The result is now a unified and complete undo experience, just like you have come to expect from major desktop applications like Photoshop or Word.
 
-![Unified Undo and Redo](/images/blog/2015/pspdfkit-5-0/unified-undo-redo.gif)
+![Unified Undo and Redo](/assets/img/pspdfkit/2015/pspdfkit-5-0/unified-undo-redo.gif)
 
 ## iOS 9
 

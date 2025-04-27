@@ -27,7 +27,7 @@ We use Facebook's [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-
 
 These are *the real integration tests* - they allow you to test your application like your users would. They cover the most with the least code, but are also - usually - fragile and the slowest to run. UI tests are not something that is easy in Apple-Land. (Android has it's own issues which we'll blog about very soon as part of this testing series.) We’ve been using a fork of [KIF](https://github.com/PSPDFKit-labs/KIF) since 2014, and while there's a lot of hackery going on, it has served us well. You can automate test flows, it’s open source and very hack-able but it has been a cause of frustration as well since we have had countless times where UI tests were flaky. Only now, two years later, we finally have things in a state that is reliable and fast, and I’m here to share what we’ve learned so that you don't have to suffer through yet another red build.
 
-![Ludicrous Speed](/images/blog/2016/running-ui-tests-with-ludicrous-speed/spaceballs-ludicrous-speed.gif)
+![Ludicrous Speed](/assets/img/pspdfkit/2016/running-ui-tests-with-ludicrous-speed/spaceballs-ludicrous-speed.gif)
 
 ## What about Apple's UI Testing framework?
 

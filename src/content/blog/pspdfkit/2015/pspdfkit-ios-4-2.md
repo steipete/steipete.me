@@ -16,21 +16,21 @@ READMORE
 
 We've spent a lot of time to improve the experience on creating free text annotations - now there's a great toolbar that offers the most used settings right away. Changing the font now just takes two taps and you don't have to exit edit mode to change the size.
 
-![Free Text Annotation Toolbar](/images/blog/2015/pspdfkit-4-2/free-text-annotation-toolbar.gif)
+![Free Text Annotation Toolbar](/assets/img/pspdfkit/2015/pspdfkit-4-2/free-text-annotation-toolbar.gif)
 
 ## Resizable Half-Modal Inspector
 
 Our half-modal inspector that is displayed on iPhone learned some new tricks and automatically sizes itself based on the content displayed - and it's also resizable. We've also improved the way the scroll bar handles moving the content when a keyboard or the inspector is visible.
 
-![Resizable Half-Modal Inspector](/images/blog/2015/pspdfkit-4-2/half-modal-inspector.gif)
+![Resizable Half-Modal Inspector](/assets/img/pspdfkit/2015/pspdfkit-4-2/half-modal-inspector.gif)
 
 ## Scrobble Bar Tweaks
 
 Daniel, one of our new engineers, spent over two weeks just on the scrobble bar alone. The result is the same control, but improved in pretty much every way. It loads faster, thumbnails are perfectly overlaid with the current position view and if you show two pages at once, the bar will correctly reflect that. Details matter.
 
-![Old Scrobble Bar](/images/blog/2015/pspdfkit-4-2/scrobble-bar-old.png)
+![Old Scrobble Bar](/assets/img/pspdfkit/2015/pspdfkit-4-2/scrobble-bar-old.png)
 
-![New Scrobble Bar](/images/blog/2015/pspdfkit-4-2/scrobble-bar-new.png)
+![New Scrobble Bar](/assets/img/pspdfkit/2015/pspdfkit-4-2/scrobble-bar-new.png)
 
 
 ## Modern WebKit &amp; the Gallery

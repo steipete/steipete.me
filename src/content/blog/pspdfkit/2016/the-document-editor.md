@@ -28,7 +28,7 @@ With the Document Editor you can add, remove, reorder, clone and rotate pages an
 
 The `PSPDFViewController` now shows the status of loaded documents and correctly reports things like unreadable documents to the user. While working on that we also gave our password enter view a facelift to better match the modern iOS UI syle.
 
-![Document States](/images/blog/2016/the-document-editor/document-states.gif)
+![Document States](/assets/img/pspdfkit/2016/the-document-editor/document-states.gif)
 
 ### Zooming Search Results
 
@@ -40,13 +40,13 @@ The search popover is now cached, so re-opening it not only remembers the last s
 
 Searching across multiple lines for words that are separated with a dash now works more reliably, and we're getting significantly better results than Preview or even Adobe Acrobat. We also made various improvements to the optional indexed search implemented in `PSPDFLibrary`.
 
-![Searching](/images/blog/2016/the-document-editor/pspdf-search.gif)
+![Searching](/assets/img/pspdfkit/2016/the-document-editor/pspdf-search.gif)
 
 ### Exporting Pages
 
 We've tweaked our sharing dialog used for sending a message or an email to allow exact configuration of the export page range. While you could only choose between visible pages and the whole document before, it’s now possible to select a custom page range, too.
 
-![Email Range Selection](/images/blog/2016/the-document-editor/email-range.gif)
+![Email Range Selection](/assets/img/pspdfkit/2016/the-document-editor/email-range.gif)
 
 ### Bar Button Item API
 
@@ -70,7 +70,7 @@ With the 2.3 update, we now handle document permissions (like limitations to cop
 
 The new `PSPDFDrawable` allows the drawing of arbitrary content on top of rendered pages. There's also a convenient `PSPDFDrawableProvider` which can serve one or multiple drawables for a page, and which can be managed via `PSPDFFragment#registerDrawableProvider`, `PSPDFFragment#unregisterDrawableProvider`, and `PSPDFFragment#clearDrawableProviders`. The new `PSPDFSearchResultHighlighter` (which is a `PSPDFDrawableProvider`) is one good example of the capabilities of this new API, and shows rendering of objects in PDF coordinates and even drawable animations.
 
-![PSPDFSearchResultHighlighter](/images/blog/2016/the-document-editor/search-result-highlighting.gif)
+![PSPDFSearchResultHighlighter](/assets/img/pspdfkit/2016/the-document-editor/search-result-highlighting.gif)
 
 ### New Search API
 
@@ -82,7 +82,7 @@ We've also moved the `PSPDFSearchViewInline` and `PSPDFSearchViewModular` search
 
 The new `PSPDFFragment#scrollTo` allows scrolling to any rect on the page. With `PSPDFActivity#setHudViewMode(HudViewMode)` the HUD can be shown/hidden programmatically, and there's also a new `PSPDFKitActivityConfiguration#setHudViewMode(int)` that makes showing/hiding HUD and system bars configurable. We now also allow automatically showing of the HUD at the first and last page of the document using `HUDViewMode#HUD_VIEW_MODE_AUTOMATIC_BORDER_PAGES`.
 
-![PSPDFSearchResultHighlighter](/images/blog/2016/the-document-editor/hud-at-first-page.gif)
+![PSPDFSearchResultHighlighter](/assets/img/pspdfkit/2016/the-document-editor/hud-at-first-page.gif)
 
 ### Details
 

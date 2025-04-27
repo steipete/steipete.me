@@ -16,16 +16,16 @@ READMORE
 ## Annotation User Experience Improvements
 The annotation selection knobs work better now, especially backgrounds that would clash with the tintColor, and the object selection was also slightly tweaked—it now prioritizes objects that are not yet saved.
 
-![Selection Knobs](/images/blog/2016/pspdfkit-5-2/selection-knobs.gif)
+![Selection Knobs](/assets/img/pspdfkit/2016/pspdfkit-5-2/selection-knobs.gif)
 
 We also improved the shape guides (when drawing ovals and rectangles) and their snapping behaviour during resizing operations. Combined, these make for a much nicer user experience.
 
-![Selection Knobs](/images/blog/2016/pspdfkit-5-2/shape-guides.gif)
+![Selection Knobs](/assets/img/pspdfkit/2016/pspdfkit-5-2/shape-guides.gif)
 
 ## Color Presets
 Color presets can now be reset to the default value through a long press of the preset button.
 
-![Reset Color Preset](/images/blog/2016/pspdfkit-5-2/reset-preset.gif)
+![Reset Color Preset](/assets/img/pspdfkit/2016/pspdfkit-5-2/reset-preset.gif)
 
 ## App-Extension Ready
 The SDK now only requires app-extension-safe API and automatically detects if in extension mode.

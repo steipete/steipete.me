@@ -70,7 +70,7 @@ libc++abi.dylib: terminating with uncaught exception of type NSException
 
 Since previous attempts to build a sample app failed, I started the other way around, with moving all relevant code into the app delegate and slowly trimming down on classes, without touching any of the 3rd-party dependencies. A very slow and cumbersome process. Of course I scanned all the files for categories but apart from a few harmless looking extensions the app was all Swift - some very neat MVVM and reactive programming in there. Interestingly enough, things stopped crashing once I did that. Ha - so it really had to be something in the app that was causing the crash. I looked through all the files but everything looked innocent. Then I took a closer look at `UIViewController+Containment.swift`, and added a breakpoint there...
 
-![](/images/blog/2016/swift-extensions.png)
+![](/assets/img/pspdfkit/2016/swift-extensions.png)
 
 That was it. These seemingly innocent extensions were overriding private API. Apple's private API detection is not super sophisticated and wasn't triggered when the app was uploaded to the App Store. It's also not a public symbol so there were no warnings, not even a log message. Unprefixed categories are always dangerous, especially on classes that you do not own, like `UIViewController`. In PSPDFKit, we use categories for shared code, but prefix any method with `pspdf_` to be absolutely sure we do not hit any name clashes. It's certainly not pretty, and prefixes in Swift look even more alien, yet as you can see in this bug hunt, they are definitely necessary.
 

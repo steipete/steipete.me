@@ -21,7 +21,7 @@ It's been a long time coming and with this release you can finally write into en
 
 Up until now, bookmarks were saved in a separate file that was stored on the device. While this worked great, they were not part of the document when people sent it via email or shared it with friends. We went the extra mile here and fixed this issue [in a way that is even compatible with Apple Preview](/blog/2016/just-a-simple-bookmark/). You don't have to do anything to see this change - bookmarks work like before, they're now just part of the document. There's also a better way to bookmark pages with a new configurable bookmark indicator button that can optionally be displayed over a page.
 
-![Bookmarks](/images/blog/2016/pspdfkit-6-0/bookmark.png)
+![Bookmarks](/assets/img/pspdfkit/2016/pspdfkit-6-0/bookmark.png)
 
 ### iOS 10
 
@@ -31,7 +31,7 @@ The first iOS 10 only feature we're adopting is the new `UIFeedbackGenerator`. Y
 
 External iPad keyboards are getting increasingly more popular, especially after the release of Apple's own Smart Keyboard. We've followed Apple's lead by improving our support for keyboard shortcuts. You can now easily flick through pages, select text, toggle the annotation toolbar, and activate search directly using only the keyboard. Our keyboard support has also improved under the hood, making it more reliable and prepared for future extensibility.
 
-![Keyboard Shortcuts](/images/blog/2016/pspdfkit-6-0/keyboard.gif)
+![Keyboard Shortcuts](/assets/img/pspdfkit/2016/pspdfkit-6-0/keyboard.gif)
 
 ### API modernization and Swift 3
 
@@ -53,7 +53,7 @@ On the UX side we improved our smart zoom gesture. Zooming out should now work m
 
 In this version, [`PSPDFSettingsViewController`](/api/ios/Classes/PSPDFSettingsViewController.html) gained the ability to switch between different page modes, allowing your users to, for example, always view pages in the two page up mode (especially useful for those huge iPad Pros!).
 
-![Page Mode](/images/blog/2016/pspdfkit-6-0/pageMode.gif)
+![Page Mode](/assets/img/pspdfkit/2016/pspdfkit-6-0/pageMode.gif)
 
 ### Tiny cuts
 

@@ -13,7 +13,7 @@ Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/
 
 So far there’s no beta available, but Apple demonstrated how it’d work by editing a set of Keynote slides on stage. Users will be able to add text, images, and animations to their documents in real time on all platforms that Apple supports.
 
-![iWork Real-time collaboration](/images/blog/2016/real-time-collaboration/iwork-real-time-collaboration.png)
+![iWork Real-time collaboration](/assets/img/pspdfkit/2016/real-time-collaboration/iwork-real-time-collaboration.png)
 
 [Image by The Verge](http://www.theverge.com/2016/9/7/12836660/apple-real-time-collaboration-iwork)
 

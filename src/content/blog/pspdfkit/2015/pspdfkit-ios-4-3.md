@@ -16,7 +16,7 @@ READMORE
 
 The `PSPDFViewController` now maintains a global list of back/forward items which allows a more efficient navigation in PDFs. This can be configured in `PSPDFConfiguration` and supports all common action types, such as pages, URLs and even jumps to other documents. Much like in a browser, a long-press will open a menu to choose from the complete history.
 
-![ Persistent Back/Forward Buttons](/images/blog/2015/pspdfkit-4-3/back-button.gif)
+![ Persistent Back/Forward Buttons](/assets/img/pspdfkit/2015/pspdfkit-4-3/back-button.gif)
 
 
 ## Nullability and Swift
