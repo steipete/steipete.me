@@ -19,7 +19,7 @@ interface Site {
 export const SITE: Site = {
   title: 'Peter Steinberger',
   description: 'iOS developer, entrepreneur, founder of PSPDFKit (acquired), vibe coding my next project',
-  href: 'https://steipete.com',
+  href: 'https://steipete.me',
   author: 'Peter Steinberger',
   locale: 'en-US',
   postsPerPage: 10,
@@ -51,7 +51,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'Twitter',
   },
   {
-    href: 'https://bsky.app/profile/steipete.com',
+    href: 'https://bsky.app/profile/steipete.me',
     label: 'BlueSky',
   },
   {

@@ -6,13 +6,13 @@ import BaseHead from '../components/BaseHead.astro'
 import '../styles/tailwind.css'
 import '../styles/typography.css'
 
-const { isWide = false, title, description } = Astro.props
+const { isWide = false, title, description, canonicalURL } = Astro.props
 ---
 
 <!doctype html>
 <html lang={SITE.locale}>
   <head>
-    <BaseHead title={title} description={description}>
+    <BaseHead title={title} description={description} canonicalURL={canonicalURL}>
       <slot name="head" />
     </BaseHead>
   </head>
