@@ -1,0 +1,58 @@
+---
+// The content prop will contain the rendered MDX/Markdown
+const { content } = Astro.props;
+---
+
+<div class="mdx-content">
+  {content}
+</div>
+
+<script>
+  // Find all Twitter embed placeholders and replace them with the actual component
+  document.addEventListener('DOMContentLoaded', () => {
+    const mdxContent = document.querySelector('.mdx-content');
+    if (!mdxContent) return;
+
+    // Look for paragraphs with Twitter embeds
+    const twitterEmbedRegex = /{% twitter (https:\/\/[^\s]+) %}/;
+
+    // Find all paragraphs that might contain a Twitter embed
+    const paragraphs = mdxContent.querySelectorAll('p');
+
+    paragraphs.forEach(paragraph => {
+      const content = paragraph.innerHTML;
+      const match = content.match(twitterEmbedRegex);
+
+      if (match && match[1]) {
+        const tweetUrl = match[1];
+
+        // Create a placeholder for the tweet
+        const placeholder = document.createElement('div');
+        placeholder.className = 'twitter-tweet-placeholder';
+        placeholder.dataset.tweetUrl = tweetUrl;
+        placeholder.innerHTML = `
+          <blockquote class="twitter-tweet">
+            <a href="${tweetUrl}">Loading tweet...</a>
+          </blockquote>
+        `;
+
+        // Replace the paragraph with our placeholder
+        paragraph.replaceWith(placeholder);
+      }
+    });
+
+    // Now load the Twitter widgets script to render the tweets
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    document.head.appendChild(script);
+  });
+</script>
+
+<style>
+  .twitter-tweet-placeholder {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import { Tweet } from 'astro-embed';
+
+const { url } = Astro.props;
+
+// Extract tweet ID from the URL
+let tweetId = url;
+
+// If it's a full URL, extract just the ID or use the full URL (both work with astro-embed)
+if (url.includes('twitter.com') || url.includes('x.com')) {
+  // Strip any query parameters or fragments
+  tweetId = url.split('?')[0].split('#')[0];
+}
+---
+
+<div class="twitter-embed">
+  <Tweet id={tweetId} />
+</div>
+
+<style>
+  .twitter-embed {
+    margin: 2rem 0;
+  }
+</style>
