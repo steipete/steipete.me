@@ -62,6 +62,14 @@
     code {
       @apply bg-gray-100 dark:bg-gray-800 relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words text-gray-900 dark:text-gray-100;
     }
+    
+    pre {
+      @apply !bg-gray-50 dark:!bg-gray-900 !border !border-gray-200 dark:!border-gray-700 !rounded-md !p-4 !my-4 !overflow-x-auto;
+    }
+    
+    pre code {
+      @apply !bg-transparent !p-0 !text-gray-800 dark:!text-gray-200 !block;
+    }
 
     blockquote {
       @apply text-gray-500 dark:text-gray-400 my-6 border-l-2 pl-6;
