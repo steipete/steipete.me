@@ -1,15 +1,16 @@
 ---
 title: How to macOS Core Dump
 pubDate: 2020-05-21T08:30:00.000Z
-description: >-
-  A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may
-  commets wee left, i which I kept pigig Apple ad epotig o this issue, ad afte
-  tyig a...
+description: "Follow my journey into the mysterious world of macOS kernel core dumps after Apple's cryptic response to my kernel panic report. I decipher the meaning of debug boot arguments like 0x104c44, explore how to capture kernel crash information, and explain exactly what flags like DB_KERN_DUMP_ON_PANIC and DB_REBOOT_POST_CORE do. This technical deep-dive provides a practical guide to enabling kernel debugging and capturing core dumps, useful for anyone experiencing persistent kernel panics on their Mac."
 heroImage: /assets/img/2020/appleintelframebuffer/feedback.png
 tags:
-  - bugs
-  - development
+  - macOS
+  - Debugging
+  - Kernel
+  - Core Dump
+  - Apple
 source: steipete.com
+AIDescription: true
 ---
 
 <style type="text/css">

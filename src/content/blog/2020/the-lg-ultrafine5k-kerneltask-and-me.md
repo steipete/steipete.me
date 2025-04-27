@@ -1,13 +1,16 @@
 ---
 title: 'The LG UltraFine 5K, kernel_task, and Me'
 pubDate: 2020-05-19T06:00:00.000Z
-description: >-
-  A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy
-  edig.
+description: "Journey through my four-year saga with the LG UltraFine 5K display, from initial excitement to troubleshooting numerous issues across multiple MacBook Pro generations. I uncover how the display's problems evolved from Wi-Fi interference and ghosting to causing system slowdowns with excessive kernel_task CPU usage. The surprising solution? Simply plugging the monitor into the right side of the MacBook. This detailed account includes insights on thermal sensors, power delivery challenges, and brightness bugs, offering practical advice for anyone using this temperamental but beautiful display."
 heroImage: /assets/img/2020/appleintelframebuffer/lg-box.jpg
 tags:
-  - hardware
+  - Apple
+  - Hardware
+  - macOS
+  - Troubleshooting
+  - LG UltraFine
 source: steipete.com
+AIDescription: true
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:

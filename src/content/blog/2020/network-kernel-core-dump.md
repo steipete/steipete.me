@@ -1,11 +1,16 @@
 ---
 title: "Network Kernel Core Dump"
 pubDate: 2020-05-21T10:00:00.000Z
-description: "A week after Apple's initial macOS Core Dump reply, I received a detailed explanation about the process of capturing kernel dumps via networking and a second Mac."
+description: "Learn the exact procedure for capturing macOS kernel core dumps over a network connection using two Macs. Following up on my previous kernel panic investigation, I share Apple's detailed instructions for setting up a core dump server on one Mac while configuring the problematic machine to transmit dumps when it crashes. This step-by-step guide covers everything from creating the /PanicDumps directory and configuring launchd services to setting the correct nvram boot arguments. The technique requires a wired Ethernet connection and provides a valuable troubleshooting method for persistent kernel issues."
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
 tags:
-  - development
+  - macOS
+  - Debugging
+  - Kernel
+  - Core Dump
+  - Networking
 source: steipete.com
+AIDescription: true
 ---
 
 A week after Apple's initial "macOS Core Dump" reply, and me sending a lot of questions their way, I got a really nice, human reply that explains the process via networking and a second Mac.

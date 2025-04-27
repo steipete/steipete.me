@@ -1,11 +1,16 @@
 ---
 title: Updating macOS on a Hackintosh
 pubDate: 2020-06-01T08:00:00.000Z
-description: 'With macOS 10.15.5 out, it was time to update my Hackintosh again.'
+description: "Follow my step-by-step process for safely updating macOS on a custom-built Hackintosh system. I walk through updating OpenCore bootloader and essential kexts before attempting the macOS 10.15.5 upgrade, explaining how to create a bootable USB drive for testing, carefully update the complex config.plist file, and verify your system's compatibility. This practical guide includes tips for using tools like OCConfigCompare, upgrading to newer versions of AppleALC, Lilu, WhateverGreen, and other critical components, plus real-world insights from someone who balances Hackintosh use alongside genuine Apple hardware."
 heroImage: /assets/img/2020/hackintosh/opencore-config.png
 tags:
-  - hardware
+  - macOS
+  - Hackintosh
+  - OpenCore
+  - Hardware
+  - System Updates
 source: steipete.com
+AIDescription: true
 ---
 
 With macOS 10.15.5 out, it was time to update my Hackintosh again. This does take a bit more preparation than updating genuine Mac hardware. Since a few folks on Twitter were curious, here’s how this works.

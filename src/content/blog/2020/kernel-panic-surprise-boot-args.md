@@ -1,11 +1,16 @@
 ---
 title: Kernel Panics and Surprise boot-args
 pubDate: 2020-05-20T08:00:00.000Z
-description: 'On March 24, 2020, my 16-inch MacBook Pro greeted me with a kernel panic.'
+description: "Investigate a series of mysterious kernel panics on my 16-inch MacBook Pro that began with macOS 10.15.4. I discover my repaired MacBook came back with surprising and potentially security-weakening boot arguments like rootless=0 and kext-dev-mode=1. This technical exploration decodes what each of these undocumented boot-args actually does, from agc and smc settings to watchdog and nvme parameters. Learn how Apple repair centers might unintentionally leave debugging flags enabled and how to safely clear them through Recovery Mode."
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
 tags:
-  - personal
+  - macOS
+  - Kernel
+  - Security
+  - Boot Arguments
+  - Debugging
 source: steipete.com
+AIDescription: true
 ---
 
 On March 24, 2020, my 16-inch MacBook Pro greeted me with a kernel panic. I ignored it the first time, but it started to become an everyday thing. There I was, having enjoyed a short moment of a bug-free setup, and it was interrupted yet again.

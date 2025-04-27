@@ -1,13 +1,17 @@
 ---
 title: The Great Mac Catalyst Text Input Crash Hunt
 pubDate: 2020-05-29T22:00:00.000Z
-description: 'As of macOS 10.15.4, text input in Mac Catalyst apps sometimes crashes.'
+description: "Investigate a persistent crash in Mac Catalyst apps' text input system affecting macOS 10.15.4. Through runtime inspection and disassembly, I identify a race condition in Apple's RemoteTextInput framework where the documentState property is accessed from both the main thread and XPC background threads without proper synchronization. My deep-dive analysis explains how to detect this threading issue using conditional breakpoints, examine the call stack with Hopper, and implement a clean solution with os_unfair_lock to make the property access thread-safe. This article offers both technical insights into UIKit/AppKit bridging and a practical fix for developers experiencing the same problem."
 heroImage: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
 tags:
-  - iOS
-  - development
-  - hacks
+  - macOS
+  - Mac Catalyst
+  - Debugging
+  - Threading
+  - SwizzlingAIDescription
+  - Crash Fix
 source: steipete.com
+AIDescription: true
 ---
 
 <style type="text/css">
