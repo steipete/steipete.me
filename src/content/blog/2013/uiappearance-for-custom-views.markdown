@@ -1,9 +1,14 @@
 ---
-layout: post
 title: "UIAppearance for Custom Views"
-date: 2013-02-12 14:31
-comments: true
-categories:
+pubDate: 2013-02-12T14:31:00.000Z
+description: "Harness the power of UIAppearance for your custom views to create consistent styling across your iOS app. I explore how this often underutilized API works behind the scenes, share implementation requirements beyond just applying UI_APPEARANCE_SELECTOR, and reveal important gotchas like containment path considerations. Learn how to properly adopt appearance proxies in your custom components while understanding the performance implications and handling special cases to enable theme switching at runtime."
+tags:
+  - iOS
+  - UIKit
+  - styling
+  - UIAppearance
+source: petersteinberger.com
+AIDescription: true
 ---
 
 UIAppearance is hardly a new technology, since it was first introduced at WWDC 2011, but it still doesn't have the adoption it deserves (guilty as charged here as well). Since most apps are IOS 5 only now, there's no excuse anymore to not adopt it. Also, chances are quite high that at least some properties of your classes already support UIAppearance implicitly, since the preprocessor macro to 'enable' UIAppearance is actually defined to be empty:
