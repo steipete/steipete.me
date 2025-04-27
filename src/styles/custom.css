@@ -226,6 +226,8 @@ pre {
   padding: 1rem;
   border-radius: 0.25rem;
   overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 code {
@@ -238,9 +240,27 @@ code {
 }
 
 pre code {
-  color: inherit;
+  color: #212529;
   padding: 0;
   background-color: transparent;
+  display: block;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre {
+    background-color: #2d3338;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  pre code {
+    color: #e9ecef;
+  }
+  
+  code {
+    color: #f8c8da;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 }
 
 /* Pagination */
