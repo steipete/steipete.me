@@ -3,9 +3,12 @@ title: "How To Center Content Within UIScrollView"
 pubDate: 2013-02-21T12:07:00.000Z
 description: "Master the art of properly centering content in UIScrollView with this deep dive into implementation approaches. After exploring various methods like subclassing layoutSubviews and overriding setContentOffset, I reveal why using contentInset is the superior solution. Through real-world examples from developing PSPDFKit, I demonstrate how each approach affects zooming behavior, gesture recognition, and other scrollview interactions, helping you avoid subtle bugs that even Apple's documentation doesn't address."
 tags:
-  - iOS
+  - iOS-Development
   - UIKit
   - UIScrollView
+  - Zooming
+  - PSPDFKit
+  - Best-Practices
 source: petersteinberger.com
 AIDescription: true
 ---

@@ -3,11 +3,14 @@ title: "Fixing UITextView On iOS 7"
 pubDate: 2014-01-08T20:03:00.000Z
 description: "Discover how I tackled the notoriously buggy UITextView in iOS 7 which suffered from severe scrolling and content positioning issues when using contentInset. I walk through the creation of PSPDFTextView, a drop-in replacement that fixes multiple scrolling problems including caret position tracking, proper handling of new lines, and content inset awareness. This solution arose from community collaboration after Apple failed to address these critical bugs even in iOS 7.1 beta releases."
 tags:
-  - iOS
+  - iOS-Development
   - UIKit
   - UITextView
   - TextKit
-  - Bug Fix
+  - Bug-Fixes
+  - iOS-7
+  - PSPDFKit
+  - Open-Source
 source: petersteinberger.com
 AIDescription: true
 ---

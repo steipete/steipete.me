@@ -3,9 +3,11 @@ title: "Don't Call willChangeValueForKey Unless It's Really Needed"
 pubDate: 2012-04-05T15:27:00.000Z
 description: "Dive into the subtle details of Key-Value Observing (KVO) in Objective-C, where I clarify a common misconception about willChangeValueForKey and didChangeValueForKey. Learn why these manual notifications are unnecessary when using setter methods, how automatic change notifications actually work, and when manual KVO notifications are genuinely needed. This technical deep dive includes real-world examples from popular open-source projects that get this wrong."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
   - KVO
+  - Memory-Management
+  - Best-Practices
 source: petersteinberger.com
 AIDescription: true
 ---

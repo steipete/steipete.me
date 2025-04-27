@@ -3,12 +3,15 @@ title: "Researching ResearchKit"
 pubDate: 2015-04-14T21:46:00.000Z
 description: "Take an in-depth technical exploration of Apple's ResearchKit, their first major open-source project on GitHub. I analyze the codebase to uncover interesting implementation details including their approach to detecting first responders, dynamic type support, secure coding practices, and accessibility implementation. This comprehensive code review reveals practical solutions to common iOS development challenges, clever workarounds for radar issues, and interesting findings like how Apple implements HTML-to-PDF conversion and custom shader-based video tinting for animations."
 tags:
-  - iOS
+  - iOS-Development
   - ResearchKit
-  - Open Source
-  - Code Review
+  - Open-Source
+  - Code-Review
   - Swift
   - Objective-C
+  - Accessibility
+  - Dynamic-Type
+  - NSSecureCoding
 source: petersteinberger.com
 AIDescription: true
 ---

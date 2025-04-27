@@ -1,20 +1,20 @@
 ---
 title: On Using Apple Silicon Mac Mini for Continuous Integration
 pubDate: 2020-12-14T09:30:00.000Z
-description: "Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbs..."
+description: 'This article documents my experience integrating Apple Silicon M1 Mac minis into our continuous integration system. It explores the promised performance benefits and actual benchmarks while detailing numerous technical challenges encountered during setup. I cover working around Rosetta 2 limitations, detecting Apple Silicon in scripts, handling APFS container differences, and addressing various Xcode, memory, and test issues specific to the M1. The article provides practical solutions and code snippets for teams transitioning CI infrastructure to Apple Silicon, along with performance comparisons showing where the M1 excels and where Intel Macs still have advantages, especially for older iOS simulator versions.'
 heroImage: /assets/img/2020/apple-silicon-ci/trippin.png
 tags:
-  - iOS
+  - Apple-Silicon
+  - Continuous-Integration
   - macOS
-  - Swift
-  - Objective-C
-  - SwiftUI
-  - Debugging
+  - M1
   - Performance
+  - Rosetta2
+  - Automation
+  - DevOps
   - Xcode
-  - Jailbreaking
-  - Apple Silicon
 source: steipete.com
+AIDescription: true
 ---
 
 Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbsp;TB SSD, 1&nbsp;GbE).

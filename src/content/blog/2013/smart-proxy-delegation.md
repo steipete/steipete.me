@@ -3,10 +3,13 @@ title: "Smart Proxy Delegation"
 pubDate: 2013-07-30T18:28:00.000Z
 description: "Streamline your delegate pattern implementation in Objective-C with a clever proxy approach that eliminates repetitive boilerplate code. I present a complete solution that handles method forwarding, respects the respondsToSelector check, properly manages weak references to avoid retain cycles, and even supports block-based callbacks. This technique significantly reduces code verbosity while maintaining safety and readability, making delegate calls as simple as a direct message send."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
-  - design patterns
-  - delegates
+  - Design-Patterns
+  - Delegates
+  - NSProxy
+  - Message-Forwarding
+  - PSPDFKit
 source: petersteinberger.com
 AIDescription: true
 ---

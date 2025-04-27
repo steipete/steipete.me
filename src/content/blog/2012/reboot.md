@@ -4,6 +4,9 @@ title: "Reboot"
 date: 2012-04-05 00:35
 comments: true
 categories: 
+description: "This post marks the reboot of my blog where I plan to share iOS development insights and personal thoughts. After feedback about my frequent tweeting, I'm creating a space for longer-form content beyond Twitter's character limits. The previous blog content has been archived as it would have required significant updates."
+tags: ["Blog", "Personal", "Twitter", "iOS-Development"]
+AIDescription: true
 ---
 
 I've rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that apparently [I tweet too much](http://twitter.com/amyhoy/status/185733715874422784) (*cough* Amy *cough*)

@@ -3,10 +3,12 @@ title: "Hacking Block Support Into UIMenuItem"
 pubDate: 2012-07-17T16:22:00.000Z
 description: "Dive into the inner workings of iOS's responder chain as I implement block support for UIMenuItem. I explore how UIMenuController targets actions through the responder chain, analyze Apple's design choice of omitting the target parameter, and create a cleaner API with blocks. This technical deep-dive includes implementation details for a swizzling-based solution, handling memory management challenges, and ensuring backward compatibility while maintaining app store safety."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
   - UIKit
   - Blocks
+  - Method-Swizzling
+  - Responder-Chain
 source: petersteinberger.com
 AIDescription: true
 ---

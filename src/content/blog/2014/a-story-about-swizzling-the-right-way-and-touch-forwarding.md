@@ -3,12 +3,14 @@ title: "A Story About Swizzling \"the Right Way™\" and Touch Forwarding"
 pubDate: 2014-07-04T12:17:00.000Z
 description: "Dive into the intricacies of method swizzling in Objective-C as I troubleshoot a mysterious crash that occurs when my Aspects library interacts with New Relic's SDK. I explore how UIKit's touch forwarding system relies on the _cmd parameter, which traditional swizzling breaks by changing selector references. Through detailed analysis of the iOS runtime's touch handling mechanisms, I demonstrate a better swizzling approach that preserves _cmd integrity. This technical deep-dive includes disassembly of UIKit's forwardTouchMethod function and practical code examples for safer method replacement."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
   - Runtime
-  - Swizzling
-  - Touch Handling
+  - Method-Swizzling
+  - Touch-Handling
   - Aspects
+  - Debugging
+  - Reverse-Engineering
 source: petersteinberger.com
 AIDescription: true
 ---

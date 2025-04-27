@@ -3,12 +3,13 @@ title: "Adding Keyboard Shortcuts To UIAlertView"
 pubDate: 2013-03-06T22:38:00.000Z
 description: "Speed up your iOS development workflow by adding keyboard shortcuts to UIAlertView and UIActionSheet. Inspired by Flipboard's approach shared at NSConference, I demonstrate how to intercept keyboard events to make simulators respond to Enter and Escape keys. This technique uses private APIs and direct memory access, making it unsuitable for production apps, but it's a powerful developer productivity hack for testing. I provide a complete implementation with the necessary safety precautions for different iOS versions."
 tags:
-  - iOS
+  - iOS-Development
   - UIKit
-  - debugging
-  - development
-  - hacks
-  - private-api
+  - Debugging
+  - Productivity
+  - Private-API
+  - NSConference
+  - Method-Swizzling
 source: petersteinberger.com
 AIDescription: true
 ---

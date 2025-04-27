@@ -3,11 +3,13 @@ title: "Retrofitting containsString: on iOS 7"
 pubDate: 2014-07-17T23:40:00.000Z
 description: "Learn how to elegantly backport iOS 8's convenient NSString containsString: method to iOS 7 with minimal code and maximum compatibility. I present a clean implementation that uses the Objective-C runtime to conditionally add this method only on iOS 7 devices, ensuring it won't conflict with Apple's native implementation on newer systems. This technique demonstrates how to safely extend foundation classes with future APIs while maintaining forward compatibility, using function attributes to optimize compilation when targeting newer iOS versions."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
   - Runtime
   - NSString
   - Categories
+  - Backward-Compatibility
+  - Foundation
 source: petersteinberger.com
 AIDescription: true
 ---

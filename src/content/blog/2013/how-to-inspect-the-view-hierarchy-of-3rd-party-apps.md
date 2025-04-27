@@ -3,11 +3,13 @@ title: "How To Inspect The View Hierarchy Of Third-Party Apps"
 pubDate: 2013-12-27T18:42:00.000Z
 description: "Unlock the secrets of iOS app design by exploring the view hierarchies of third-party applications with this step-by-step guide. Using a jailbroken device, learn how to configure debugging tools, inject code at runtime, and analyze an app's internal structure. I walk through setting up the necessary environment, creating custom debugging scripts, and extracting valuable insights from apps like Facebook and Flipboard. This technique offers a powerful learning opportunity for iOS developers seeking to understand how complex interfaces are implemented."
 tags:
-  - iOS
-  - debugging
-  - jailbreak
+  - iOS-Development
+  - Debugging
+  - Jailbreak
   - UIKit
-  - reverse engineering
+  - Reverse-Engineering
+  - Reveal
+  - Tutorial
 source: petersteinberger.com
 AIDescription: true
 ---

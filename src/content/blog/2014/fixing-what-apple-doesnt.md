@@ -3,10 +3,13 @@ title: "Fixing What Apple Doesn't"
 pubDate: 2014-01-04T15:09:00.000Z
 description: "Follow along as I tackle an annoying UI glitch in iOS 7's printer controller where the label is offset and looks misaligned. Through runtime inspection with Reveal and class swizzling, I implement a quick fix for the UIPrinterSearchingView that centers the label properly. This practical example demonstrates how to patch Apple's oversights in UIKit while writing defensive code that won't break when Apple eventually fixes the issue."
 tags:
-  - iOS
+  - iOS-Development
   - UIKit
   - Runtime
-  - Swizzling
+  - Method-Swizzling
+  - iOS-7
+  - Bug-Fixes
+  - Reveal
 source: petersteinberger.com
 AIDescription: true
 ---

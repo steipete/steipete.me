@@ -1,18 +1,19 @@
 ---
 title: Supporting Both Tap and Long Press on a Button in SwiftUI
 pubDate: 2021-01-27T16:30:00.000Z
-description: 'My task today was quite simple: adding an optional long-press handler to a button in SwiftUI. A regular tap opens our website and a long press does… something else.'
+description: 'This article explores the challenges of implementing both tap and long-press functionality on a SwiftUI button. After testing several SwiftUI-native approaches that fail, particularly on Mac Catalyst, I demonstrate a robust solution using UIKit integration. The post walks through four different implementation attempts, explaining why each succeeds or fails, and culminates in a reusable LongPressButton component that works consistently across iOS, iPadOS, and Mac Catalyst. This practical guide highlights the current limitations of SwiftUI gestures and shows how to effectively bridge UIKit functionality when needed.'
 heroImage: /assets/img/2021/tap-longpress-button-swiftui/header.gif
 tags:
   - iOS
   - macOS
   - Swift
-  - Objective-C
-  - UIKit
   - SwiftUI
-  - Debugging
+  - UIKit
+  - Gestures
   - Catalyst
+  - Cross-Platform
 source: steipete.com
+AIDescription: true
 ---
 
 My task today was quite simple: adding an optional long-press handler to a button in SwiftUI. A regular tap opens our website and a long press does… something else. Not so difficult, right?
@@ -33,11 +34,11 @@ Button(action: {
 }
 ```
 
-While the above works to detect a long press, when adding a gesture to the image, the button no longer fires. Alright, not quite what we want. Let’s move the gesture out of the label and to the button.
+While the above works to detect a long press, when adding a gesture to the image, the button no longer fires. Alright, not quite what we want. Let's move the gesture out of the label and to the button.
 
 ## Moving Things Around Version
 
-Here’s my next attempt:
+Here's my next attempt:
 
 ```swift
 Button(action: {
@@ -51,7 +52,7 @@ Button(action: {
 }
 ```
 
-Great! Now the button tap works again — unfortunately the long-press gesture doesn’t work anymore. OK, let’s use `simultaneousGesture` to tell SwiftUI that we really care about both gestures.
+Great! Now the button tap works again — unfortunately the long-press gesture doesn't work anymore. OK, let's use `simultaneousGesture` to tell SwiftUI that we really care about both gestures.
 
 ## Getting Fancy with simultaneousGesture
 
@@ -70,7 +71,7 @@ Button(action: {
 Spacer()
 ```
 
-Great — that works. However, now we always trigger both the long press and the action, which isn’t quite what we want. We want either/or, so let’s try adding a second gesture instead.
+Great — that works. However, now we always trigger both the long press and the action, which isn't quite what we want. We want either/or, so let's try adding a second gesture instead.
 
 ## Two Gestures Are Better Than One
 
@@ -93,7 +94,7 @@ Button(action: {
 Spacer()
 ```
 
-It… works! It does exactly what we expect, and it’s nicely calling either tap or long press. Woohoo! So let’s do some QA and test everywhere. iOS 13: check. iOS 14: check. Let’s compile the Catalyst version to be sure. And: It does not work. Neither tap nor long tap. The button has no effect at all.
+It… works! It does exactly what we expect, and it's nicely calling either tap or long press. Woohoo! So let's do some QA and test everywhere. iOS 13: check. iOS 14: check. Let's compile the Catalyst version to be sure. And: It does not work. Neither tap nor long tap. The button has no effect at all.
 
 ## Catalyst… Always Catalyst!
 
@@ -125,7 +126,7 @@ If we can ignore the long press on Catalyst, then this combination works at leas
     }
 ```
 
-In our case, we really want the long press though, so what to do? I remembered a trick I used in my [Presenting Popovers from SwiftUI](https://pspdfkit.com/blog/2020/popovers-from-swiftui-uibarbutton/) article: We can use a `ZStack` and just use UIKit for what doesn’t work in SwiftUI.
+In our case, we really want the long press though, so what to do? I remembered a trick I used in my [Presenting Popovers from SwiftUI](https://pspdfkit.com/blog/2020/popovers-from-swiftui-uibarbutton/) article: We can use a `ZStack` and just use UIKit for what doesn't work in SwiftUI.
 
 ## The Nuclear Option
 
@@ -142,7 +143,7 @@ LongPressButton(action: {
 })
 ```
 
-Now, let’s talk about this `LongPressButton` subclass…
+Now, let's talk about this `LongPressButton` subclass…
 
 ```swift
 struct LongPressButton<Label>: View where Label: View {
@@ -260,14 +261,14 @@ struct LongPressButton<Label>: View where Label: View {
 
 ## Addendum: Why Use Button?
 
-Twitter folks have commented that this would all be much easier if I didn’t use `Button` but — like here — the `Image` struct directly. This indeed makes the SwiftUI tap gestures work much better, but it also misses out a few neat default features that Button has:
+Twitter folks have commented that this would all be much easier if I didn't use `Button` but — like here — the `Image` struct directly. This indeed makes the SwiftUI tap gestures work much better, but it also misses out a few neat default features that Button has:
 
 - Automatically highlighting on tap; then fading that out if the mouse goes too far away
 - Automatically tinting the image when the window is active and using gray when the window is inactive again (especially noticeable on Catalyst)
 - Automatically adding some click padding around the content
 
-I’ve tried various variations, but it seems `longPress` is buggy on Catalyst. If you don’t have to bother with Mac Catalyst, [try following sample code](https://gist.github.com/OskarGroth/d959d15ef96eff19ce433077237e37fb).
+I've tried various variations, but it seems `longPress` is buggy on Catalyst. If you don't have to bother with Mac Catalyst, [try following sample code](https://gist.github.com/OskarGroth/d959d15ef96eff19ce433077237e37fb).
 
 ## Conclusion
 
-So what’s really special about the secret long-press action? It does enable the Debug Mode of [PDF Viewer](https://pdfviewer.io), showing various settings that aren’t really useful for regular folks, but that help with QA testing. If you’re curious, download our app (it’s free), long press on our icon in the Settings footer, and see for yourself.
+So what's really special about the secret long-press action? It does enable the Debug Mode of [PDF Viewer](https://pdfviewer.io), showing various settings that aren't really useful for regular folks, but that help with QA testing. If you're curious, download our app (it's free), long press on our icon in the Settings footer, and see for yourself.

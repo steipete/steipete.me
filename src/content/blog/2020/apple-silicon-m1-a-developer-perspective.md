@@ -4,18 +4,18 @@ pubDate: 2020-11-28T13:00:00.000Z
 description: 'I put the new M1 MacBook Air through its paces as a serious development machine. From benchmarking Xcode build times to testing various developer tools, I explore how well Apple''s transition to custom silicon works for real-world development workflows. While most apps run brilliantly via Rosetta 2 and native performance is stunning, I uncover both surprising benefits and important limitations developers should understand before making the switch. This early assessment reveals why M1 Macs represent a fundamental shift in the developer experience.'
 heroImage: /assets/img/2020/m1/m1.jpg
 tags:
-  - iOS
-  - macOS
-  - Objective-C
-  - SwiftUI
-  - Debugging
+  - Apple-Silicon
+  - M1
   - Performance
+  - Development
   - Xcode
-  - AppKit
-  - Catalyst
-  - Apple Silicon
-  - Hacking
+  - Rosetta2
+  - macOS
+  - iOS
+  - Virtualization
+  - Testing
 source: steipete.com
+AIDescription: true
 ---
 
 The excitement around Apple's new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here's an early report after a week of testing.

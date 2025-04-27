@@ -3,8 +3,12 @@ title: "Moving On... Or How Waiting For A Visa Was The Best Thing That Ever Happ
 pubDate: 2012-04-06T16:00:00.000Z
 description: "After months of waiting for a US visa, I share my journey from freelance iOS developer to becoming a full-time indie again. I reflect on what I learned during my time in San Francisco's startup culture, why I'm returning to Austria, and how this unexpected delay led me to discover PSPDFKit - the product that would become my passion and livelihood. A personal story about finding clarity and purpose in professional life."
 tags:
-  - life
-  - personal
+  - Personal
+  - Life
+  - Entrepreneurship
+  - San-Francisco
+  - iOS-Development
+  - PSPDFKit
 source: petersteinberger.com
 AIDescription: true
 ---

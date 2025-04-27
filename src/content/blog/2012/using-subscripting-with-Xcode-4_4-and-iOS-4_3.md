@@ -3,10 +3,12 @@ title: "Using Subscripting With Xcode 4.4 And iOS 4.3+"
 pubDate: 2012-07-11T15:03:00.000Z
 description: "Get a head start on using Objective-C's modern subscripting syntax in your iOS apps before Apple officially introduces it. I share a clever header-only hack that lets you use the elegant array[index] and dictionary[key] notation with Xcode 4.4 while maintaining backward compatibility with iOS 4.3+. Discover how this temporary shim works behind the scenes with ARCLite, and why you can safely adopt this cleaner syntax in your codebase today."
 tags:
-  - iOS
+  - iOS-Development
   - Objective-C
   - Xcode
-  - syntax
+  - Syntax
+  - ARC
+  - Compatibility
 source: petersteinberger.com
 AIDescription: true
 ---
