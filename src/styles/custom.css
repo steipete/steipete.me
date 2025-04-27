@@ -209,14 +209,25 @@ main {
 @media (prefers-color-scheme: dark) {
   :root {
     --sidebar-bg: #212529;
-    --text-color: #e9ecef;
+    --text-color: #ffffff; /* Much brighter white text */
     --link-color: #6ea8fe;
     --hover-color: #9ec5fe;
     --light-gray: #ced4da;
   }
   
   body {
-    background-color: #343a40;
+    background-color: #1a1d20; /* Darker background for better contrast */
+  }
+  
+  /* Make headings pure white for maximum visibility */
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Make normal text bright as well */
+  p, li, span, div {
+    color: #f0f0f0 !important;
   }
 }
 
@@ -311,7 +322,7 @@ pre code {
 
 @media (prefers-color-scheme: dark) {
   pre {
-    background-color: #0d1117;
+    background-color: #0d1117 !important;
     border-color: rgba(255, 255, 255, 0.1);
   }
   
@@ -326,8 +337,78 @@ pre code {
     background-color: rgba(255, 255, 255, 0.05);
   }
 
-  /* Dark mode syntax highlighting */
-  /* These are actually styling Shiki's GitHub theme tokens */
+  /* Astro Shiki code blocks - Dark Mode Syntax Highlighting */
+  .astro-code.github-dark {
+    --shiki-dark-bg: #0d1117 !important;
+    background-color: #0d1117 !important;
+  }
+  
+  /* Make all text in code blocks more visible in dark mode */
+  .astro-code.github-dark code span {
+    color: #e1e4e8 !important; /* Base color for all text */
+  }
+  
+  /* Increase brightness of inline styles even further */
+  .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
+    color: #ffffff !important;
+  }
+  
+  /* Ensure text with inline styles is bright enough */
+  .astro-code.github-dark [style*="color:#24292E"] {
+    color: #ffffff !important;
+  }
+  
+  /* Comments */
+  .astro-code.github-dark [style*="--shiki-dark:#6A737D"] {
+    color: #bbc7d3 !important;
+  }
+  
+  /* Strings */
+  .astro-code.github-dark [style*="--shiki-dark:#9ECBFF"],
+  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+    color: #a5d6ff !important;
+  }
+  
+  /* Keywords */
+  .astro-code.github-dark [style*="--shiki-dark:#F97583"],
+  .astro-code.github-dark [style*="--shiki-dark:#FF7B72"] {
+    color: #ff7b82 !important;
+  }
+  
+  /* Functions */
+  .astro-code.github-dark [style*="--shiki-dark:#B392F0"],
+  .astro-code.github-dark [style*="--shiki-dark:#D2A8FF"] {
+    color: #d2a8ff !important;
+  }
+  
+  /* Numbers */
+  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"],
+  .astro-code.github-dark [style*="--shiki-dark:#56B6C2"] {
+    color: #f0883e !important;
+  }
+  
+  /* Operators */
+  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+    color: #79c0ff !important;
+  }
+  
+  /* Classes */
+  .astro-code.github-dark [style*="--shiki-dark:#FFAB70"],
+  .astro-code.github-dark [style*="--shiki-dark:#FFA657"] {
+    color: #ffa657 !important;
+  }
+  
+  /* Properties */
+  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+    color: #79c0ff !important;
+  }
+  
+  /* Variables */
+  .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
+    color: #ffd8b5 !important;
+  }
+
+  /* Support for Shiki's GitHub theme tokens (from main branch) */
   .shiki.dark span {
     color: #ffffff !important;
   }
