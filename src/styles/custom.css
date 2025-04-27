@@ -408,6 +408,57 @@ pre code {
     color: #ffd8b5 !important;
   }
 
+  /* Support for Shiki's GitHub theme tokens (from main branch) */
+  .shiki.dark span {
+    color: #ffffff !important;
+  }
+  
+  .shiki.dark .comment {
+    color: #bbc7d3 !important;
+  }
+  
+  .shiki.dark .string {
+    color: #a5d6ff !important;
+  }
+  
+  .shiki.dark .keyword,
+  .shiki.dark .constant {
+    color: #ff7b82 !important;
+  }
+  
+  .shiki.dark .function {
+    color: #d2a8ff !important;
+  }
+  
+  .shiki.dark .number {
+    color: #f0883e !important;
+  }
+  
+  .shiki.dark .operator {
+    color: #79c0ff !important;
+  }
+  
+  .shiki.dark .class {
+    color: #ffa657 !important;
+  }
+  
+  .shiki.dark .property {
+    color: #79c0ff !important;
+  }
+  
+  .shiki.dark .builtin {
+    color: #ffa198 !important;
+  }
+  
+  .shiki.dark .variable {
+    color: #ffd8b5 !important;
+  }
+  
+  /* Fallback for any other token types */
+  .shiki.dark span[style*="color"] {
+    color: #e6edf3 !important;
+  }
+
   /* Legacy token styling - keeping for compatibility */
   .token.comment,
   .token.prolog,
