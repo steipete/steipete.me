@@ -246,6 +246,7 @@ pre code {
   background-color: transparent;
   display: block;
   line-height: 1.5;
+  text-wrap: pretty;
 }
 
 /* Syntax highlighting */
@@ -316,6 +317,7 @@ pre code {
   
   pre code {
     color: #e9ecef;
+    text-wrap: pretty;
   }
   
   code {
