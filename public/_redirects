@@ -1,45 +1,30 @@
 # Redirects from old URL patterns to new structure
-# Generated on 2025-04-27T09:53:13.284Z
+# Generated on 2025-04-27T09:55:08.537Z
 
-# Generic patterns
+# Generic patterns - these work across all domains
 /:year/:month/:day/:slug  /blog/:slug  301
 /:slug                    /blog/:slug  301
-
-# Legacy domain redirects
-https://petersteinberger.com/*  https://steipete.com/:splat  301!
 
 # Specific post redirects
 /zld-a-faster-linker  /blog/zld-a-faster-linker  301
 /using-subscripting-with-Xcode-4_4-and-iOS-4_3  /blog/using-subscripting-with-Xcode-4_4-and-iOS-4_3  301
-https://petersteinberger.com/using-subscripting-with-Xcode-4_4-and-iOS-4_3  https://steipete.com/blog/using-subscripting-with-Xcode-4_4-and-iOS-4_3  301!
 /updating-a-hackintosh  /blog/updating-a-hackintosh  301
 /uitableviewcontroller-designated-initializer-woes  /blog/uitableviewcontroller-designated-initializer-woes  301
-https://petersteinberger.com/uitableviewcontroller-designated-initializer-woes  https://steipete.com/blog/uitableviewcontroller-designated-initializer-woes  301!
 /uikit-debug-mode  /blog/uikit-debug-mode  301
-https://petersteinberger.com/uikit-debug-mode  https://steipete.com/blog/uikit-debug-mode  301!
 /uiappearance-for-custom-views  /blog/uiappearance-for-custom-views  301
-https://petersteinberger.com/uiappearance-for-custom-views  https://steipete.com/blog/uiappearance-for-custom-views  301!
 /top-level-menu-visibility-in-swiftui  /blog/top-level-menu-visibility-in-swiftui  301
 /the-lg-ultrafine5k-kerneltask-and-me  /blog/the-lg-ultrafine5k-kerneltask-and-me  301
 /supporting-both-tap-and-longpress-on-button-in-swiftui  /blog/supporting-both-tap-and-longpress-on-button-in-swiftui  301
 /state-of-swiftui  /blog/state-of-swiftui  301
 /smart-proxy-delegation  /blog/smart-proxy-delegation  301
-https://petersteinberger.com/smart-proxy-delegation  https://steipete.com/blog/smart-proxy-delegation  301!
 /rotation-multiple-windows-bug  /blog/rotation-multiple-windows-bug  301
-https://petersteinberger.com/rotation-multiple-windows-bug  https://steipete.com/blog/rotation-multiple-windows-bug  301!
 /retrofitting-containsstring-on-ios-7  /blog/retrofitting-containsstring-on-ios-7  301
-https://petersteinberger.com/retrofitting-containsstring-on-ios-7  https://steipete.com/blog/retrofitting-containsstring-on-ios-7  301!
 /researching-researchkit  /blog/researching-researchkit  301
-https://petersteinberger.com/researching-researchkit  https://steipete.com/blog/researching-researchkit  301!
 /reboot  /blog/reboot  301
-https://petersteinberger.com/reboot  https://steipete.com/blog/reboot  301!
 /pimping-recursivedescription  /blog/pimping-recursivedescription  301
-https://petersteinberger.com/pimping-recursivedescription  https://steipete.com/blog/pimping-recursivedescription  301!
 /nsurlcache-uses-a-disk-cache-as-of-ios5  /blog/nsurlcache-uses-a-disk-cache-as-of-ios5  301
-https://petersteinberger.com/nsurlcache-uses-a-disk-cache-as-of-ios5  https://steipete.com/blog/nsurlcache-uses-a-disk-cache-as-of-ios5  301!
 /network-kernel-core-dump  /blog/network-kernel-core-dump  301
 /moving-on  /blog/moving-on  301
-https://petersteinberger.com/moving-on  https://steipete.com/blog/moving-on  301!
 /mac-catalyst-crash-hunt  /blog/mac-catalyst-crash-hunt  301
 /logging-in-swift  /blog/logging-in-swift  301
 /lets-try-this-again  /blog/lets-try-this-again  301
@@ -48,24 +33,16 @@ https://petersteinberger.com/moving-on  https://steipete.com/blog/moving-on  301
 /interposekit  /blog/interposekit  301
 /how-to-macos-core-dump  /blog/how-to-macos-core-dump  301
 /how-to-inspect-the-view-hierarchy-of-3rd-party-apps  /blog/how-to-inspect-the-view-hierarchy-of-3rd-party-apps  301
-https://petersteinberger.com/how-to-inspect-the-view-hierarchy-of-3rd-party-apps  https://steipete.com/blog/how-to-inspect-the-view-hierarchy-of-3rd-party-apps  301!
 /how-to-center-uiscrollview  /blog/how-to-center-uiscrollview  301
-https://petersteinberger.com/how-to-center-uiscrollview  https://steipete.com/blog/how-to-center-uiscrollview  301!
 /hacking-with-aspects  /blog/hacking-with-aspects  301
-https://petersteinberger.com/hacking-with-aspects  https://steipete.com/blog/hacking-with-aspects  301!
 /hacking-block-support-into-uimenuitem  /blog/hacking-block-support-into-uimenuitem  301
-https://petersteinberger.com/hacking-block-support-into-uimenuitem  https://steipete.com/blog/hacking-block-support-into-uimenuitem  301!
 /growing-your-twitter-followers  /blog/growing-your-twitter-followers  301
 /forbidden-controls-in-catalyst-mac-idiom  /blog/forbidden-controls-in-catalyst-mac-idiom  301
 /fixing-what-apple-doesnt  /blog/fixing-what-apple-doesnt  301
-https://petersteinberger.com/fixing-what-apple-doesnt  https://steipete.com/blog/fixing-what-apple-doesnt  301!
 /fixing-uitextview-on-ios-7  /blog/fixing-uitextview-on-ios-7  301
-https://petersteinberger.com/fixing-uitextview-on-ios-7  https://steipete.com/blog/fixing-uitextview-on-ios-7  301!
 /fixing-uisearchdisplaycontroller-on-ios-7  /blog/fixing-uisearchdisplaycontroller-on-ios-7  301
-https://petersteinberger.com/fixing-uisearchdisplaycontroller-on-ios-7  https://steipete.com/blog/fixing-uisearchdisplaycontroller-on-ios-7  301!
 /fixing-keyboardshortcut-in-swiftui  /blog/fixing-keyboardshortcut-in-swiftui  301
 /dont-call-willchangevalueforkey  /blog/dont-call-willchangevalueforkey  301
-https://petersteinberger.com/dont-call-willchangevalueforkey  https://steipete.com/blog/dont-call-willchangevalueforkey  301!
 /disabling-keyboard-avoidance-in-swiftui-uihostingcontroller  /blog/disabling-keyboard-avoidance-in-swiftui-uihostingcontroller  301
 /curating-your-twitter-timeline  /blog/curating-your-twitter-timeline  301
 /couldnt-irgen-expression  /blog/couldnt-irgen-expression  301
@@ -74,9 +51,7 @@ https://petersteinberger.com/dont-call-willchangevalueforkey  https://steipete.c
 /apple-silicon-mac-mini-for-ci  /blog/apple-silicon-mac-mini-for-ci  301
 /apple-silicon-m1-a-developer-perspective  /blog/apple-silicon-m1-a-developer-perspective  301
 /adding-keyboard-shortcuts-to-uialertview  /blog/adding-keyboard-shortcuts-to-uialertview  301
-https://petersteinberger.com/adding-keyboard-shortcuts-to-uialertview  https://steipete.com/blog/adding-keyboard-shortcuts-to-uialertview  301!
 /a-story-about-swizzling-the-right-way-and-touch-forwarding  /blog/a-story-about-swizzling-the-right-way-and-touch-forwarding  301
-https://petersteinberger.com/a-story-about-swizzling-the-right-way-and-touch-forwarding  https://steipete.com/blog/a-story-about-swizzling-the-right-way-and-touch-forwarding  301!
 /a-new-beginning  /blog/a-new-beginning  301
 /2021/04/09/top-level-menu-visibility-in-swiftui  /blog/2021-04-09-top-level-menu-visibility-in-swiftui  301
 /2021-04-09-top-level-menu-visibility-in-swiftui  /blog/2021-04-09-top-level-menu-visibility-in-swiftui  301

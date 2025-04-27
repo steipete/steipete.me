@@ -47,12 +47,9 @@ async function generateRedirects() {
   let redirectsContent = `# Redirects from old URL patterns to new structure
 # Generated on ${new Date().toISOString()}
 
-# Generic patterns
+# Generic patterns - these work across all domains
 /:year/:month/:day/:slug  /blog/:slug  301
 /:slug                    /blog/:slug  301
-
-# Legacy domain redirects
-https://petersteinberger.com/*  https://steipete.com/:splat  301!
 
 # Specific post redirects\n`;
 
@@ -80,10 +77,7 @@ https://petersteinberger.com/*  https://steipete.com/:splat  301!
     // Add redirect for plain slug
     redirectsContent += `/${actualSlug}  /blog/${actualSlug}  301\n`;
     
-    // Handle source website redirects if applicable
-    if (data.source === 'petersteinberger.com') {
-      redirectsContent += `https://petersteinberger.com/${actualSlug}  https://steipete.com/blog/${actualSlug}  301!\n`;
-    }
+    // Remove domain-specific redirects since those are handled elsewhere
   });
   
   // Write to the redirects file

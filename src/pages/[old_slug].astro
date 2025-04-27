@@ -23,9 +23,11 @@ const { newSlug } = Astro.props;
 // Perform redirect
 ---
 
-<meta http-equiv="refresh" content={`0;url=/blog/${newSlug}`} />
+<meta http-equiv="refresh" content={`0;url=${new URL(`/blog/${newSlug}`, Astro.url).pathname}`} />
 <script>
-  window.location.href = `/blog/${newSlug}`;
+  // Create a relative URL that works regardless of domain
+  const baseUrl = window.location.origin;
+  window.location.href = `${baseUrl}/blog/${newSlug}`;
 </script>
 
 <!-- Fallback content for browsers with JavaScript disabled -->
