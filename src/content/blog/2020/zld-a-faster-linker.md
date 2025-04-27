@@ -12,6 +12,8 @@ tags:
   - Monorepo
   - Mac-Catalyst
   - Developer-Tools
+  - Homebrew
+  - Build-Settings
 source: steipete.com
 AIDescription: true
 ---
