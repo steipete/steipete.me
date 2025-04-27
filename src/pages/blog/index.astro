@@ -19,30 +19,30 @@ const posts = allPosts.slice(0, postsPerPage);
 <BaseLayout title="Blog Posts">
 	<div class="blog-content">
 		<h1 class="page-title">Blog Posts</h1>
-		
+
 		<div id="post-list">
 			{posts.map((post) => (
 				<div class="post-preview">
 					<h2>
 						<a href={`/blog/${post.slug}/`}>{post.data.title}</a>
 					</h2>
-					
+
 					<div class="post-meta">
 						<i class="far fa-clock"></i>
 						<span class="post-date">
 							<FormattedDate date={post.data.pubDate} />
 						</span>
 					</div>
-					
+
 					<div class="post-content">
 						<p>{post.data.description}</p>
 					</div>
-					
+
 					<a href={`/blog/${post.slug}/`} class="read-more">Read more →</a>
 				</div>
 			))}
 		</div>
-		
+
 		{totalPages > 1 && (
 			<div class="pagination">
 				{currentPage > 1 && (
@@ -50,16 +50,16 @@ const posts = allPosts.slice(0, postsPerPage);
 						← Previous
 					</a>
 				)}
-				
+
 				{Array.from({ length: totalPages }).map((_, i) => (
-					<a 
+					<a
 						href={`/blog${i === 0 ? '' : '/' + (i + 1)}`}
 						class={currentPage === i + 1 ? 'active' : ''}
 					>
 						{i + 1}
 					</a>
 				))}
-				
+
 				{currentPage < totalPages && (
 					<a href={`/blog/${currentPage + 1}`}>
 						Next →
@@ -76,38 +76,38 @@ const posts = allPosts.slice(0, postsPerPage);
 		padding-bottom: 2rem;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	
+
 	.post-preview:last-child {
 		border-bottom: none;
 	}
-	
+
 	.post-preview h2 {
 		margin-bottom: 0.5rem;
 		font-size: 1.8rem;
 	}
-	
+
 	.post-meta {
 		color: #6c757d;
 		font-size: 0.9rem;
 		margin-bottom: 1rem;
 	}
-	
+
 	.post-content {
 		margin: 1rem 0;
 	}
-	
+
 	.read-more {
 		display: inline-block;
 		font-weight: 500;
 	}
-	
+
 	.pagination {
 		display: flex;
 		justify-content: center;
 		margin-top: 3rem;
 		gap: 0.5rem;
 	}
-	
+
 	.pagination a {
 		padding: 0.5rem 1rem;
 		border-radius: 4px;
@@ -115,12 +115,12 @@ const posts = allPosts.slice(0, postsPerPage);
 		color: #212529;
 		text-decoration: none;
 	}
-	
+
 	.pagination a.active {
 		background-color: var(--accent);
 		color: white;
 	}
-	
+
 	.pagination a:hover:not(.active) {
 		background-color: #e9ecef;
 	}

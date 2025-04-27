@@ -4,7 +4,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
   let posts = await getCollection('blog');
-  
+
   // Add filename as slug if it's not available
   posts = posts.map(post => {
     if (!post.slug) {
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     }
     return post;
   });
-  
+
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,

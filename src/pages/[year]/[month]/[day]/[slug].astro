@@ -3,19 +3,19 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  
+
   return posts.map(post => {
     // Extract date components from filename if it's in date format (YYYY-MM-DD-slug.md)
     const dateMatch = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md/);
-    
+
     if (dateMatch) {
-      const [_, year, month, day, slug] = dateMatch;
+      const [/* full match */, year, month, day, slug] = dateMatch;
       return {
         params: { year, month, day, slug },
         props: { post }
       };
     }
-    
+
     return null;
   }).filter(Boolean);
 }

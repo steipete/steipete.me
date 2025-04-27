@@ -21,7 +21,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			<main>
 				<article class="post">
 					<h1 class="post-title">{title}</h1>
-					
+
 					<div class="post-meta">
 						<span>
 							Posted on <FormattedDate date={pubDate} />
@@ -32,18 +32,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 							)}
 						</span>
 					</div>
-					
+
 					{heroImage && (
 						<div class="hero-image">
 							<img src={heroImage} alt="" />
 						</div>
 					)}
-					
+
 					<div class="post-content">
 						<slot />
 					</div>
 				</article>
-				
+
 				<Footer />
 			</main>
 		</div>
@@ -54,7 +54,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			sidebarToggle.classList.add('sidebar-toggle');
 			sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
 			document.body.appendChild(sidebarToggle);
-			
+
 			sidebarToggle.addEventListener('click', () => {
 				document.getElementById('sidebar').classList.toggle('show');
 			});

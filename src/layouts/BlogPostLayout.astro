@@ -7,7 +7,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   slug: string
 }
 
-const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 ---
 
 <Layout title={title} description={description}>

@@ -20,7 +20,7 @@ const { Content } = await render(post);
 <BaseLayout title={post.data.title} description={post.data.description}>
 	<article class="post">
 		<h1 class="post-title">{post.data.title}</h1>
-		
+
 		<div class="post-meta">
 			<span>
 				Posted on <FormattedDate date={post.data.pubDate} />
@@ -31,13 +31,13 @@ const { Content } = await render(post);
 				)}
 			</span>
 		</div>
-		
+
 		{post.data.heroImage && (
 			<div class="hero-image">
 				<img src={post.data.heroImage} alt="" />
 			</div>
 		)}
-		
+
 		<div class="post-content">
 			<Content />
 		</div>
@@ -48,24 +48,24 @@ const { Content } = await render(post);
 	.post-title {
 		margin-bottom: 0.5rem;
 	}
-	
+
 	.post-meta {
 		color: #6c757d;
 		font-size: 0.9rem;
 		margin-bottom: 2rem;
 	}
-	
+
 	.hero-image {
 		margin: 2rem 0;
 	}
-	
+
 	.hero-image img {
 		width: 100%;
 		height: auto;
 		border-radius: 8px;
 		box-shadow: var(--box-shadow);
 	}
-	
+
 	.post-content {
 		line-height: 1.8;
 	}

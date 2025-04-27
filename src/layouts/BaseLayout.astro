@@ -28,7 +28,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
       sidebarToggle.classList.add('sidebar-toggle');
       sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
       document.body.appendChild(sidebarToggle);
-      
+
       sidebarToggle.addEventListener('click', () => {
         document.getElementById('sidebar').classList.toggle('show');
       });
