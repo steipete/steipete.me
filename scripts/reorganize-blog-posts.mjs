@@ -103,8 +103,12 @@ const reorganizePosts = () => {
   
   console.log('\nMoving files...');
   changes.forEach(change => {
-    fs.renameSync(change.oldPath, change.newPath);
-    console.log(`- ${path.basename(change.oldPath)} → ${path.basename(change.newPath)}`);
+    try {
+      fs.renameSync(change.oldPath, change.newPath);
+      console.log(`- ${path.basename(change.oldPath)} → ${path.basename(change.newPath)}`);
+    } catch (error) {
+      console.error(`Error moving file ${path.basename(change.oldPath)}: ${error.message}`);
+    }
   });
   
   console.log('\nReorganization complete!');
