@@ -1,9 +1,17 @@
 ---
-layout: post
 title: "Retrofitting containsString: on iOS 7"
-date: 2014-07-17 23:40
-comments: true
-categories: 
+pubDate: 2014-07-17T23:40:00.000Z
+description: "Learn how to elegantly backport iOS 8's convenient NSString containsString: method to iOS 7 with minimal code and maximum compatibility. I present a clean implementation that uses the Objective-C runtime to conditionally add this method only on iOS 7 devices, ensuring it won't conflict with Apple's native implementation on newer systems. This technique demonstrates how to safely extend foundation classes with future APIs while maintaining forward compatibility, using function attributes to optimize compilation when targeting newer iOS versions."
+tags:
+  - iOS-Development
+  - Objective-C
+  - Runtime
+  - NSString
+  - Categories
+  - Backward-Compatibility
+  - Foundation
+source: petersteinberger.com
+AIDescription: true
 ---
 
 [Daniel Eggert](https://twitter.com/danielboedewadt) asked me on Twitter what's the best way to retrofit the new `containsString:` method on `NSString` for iOS 7. Apple quietly added this method to Foundation in iOS 8 - it's a small but great addition and reduces common code ala `[path rangeOfString:@"User"].location != NSNotFound` to the more convenient and readable `[path containsString:@"User"]`. 
