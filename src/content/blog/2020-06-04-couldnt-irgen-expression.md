@@ -1,9 +1,14 @@
 ---
-title: "How to Fix LLDB: Couldn't IRGen Expression"
-pubDate: 2020-06-04T15:00:00+02:00
-description: "A few weeks ago, we stated eceivig suppot tickets with epots that people ca’t use the lldb debugge aymoe afte itegatig [PSPDFKit](http://pspdfkit.com/)."
+title: 'How to Fix LLDB: Couldn''t IRGen Expression'
+pubDate: 2020-06-04T13:00:00.000Z
+description: >-
+  A few weeks ago, we stated eceivig suppot tickets with epots that people ca’t
+  use the lldb debugge aymoe afte itegatig [PSPDFKit](http://pspdfkit.com/).
 heroImage: /assets/img/2020/lldb-debugging/xcode-lldb.png
-tags: ["iOS","development"]
+tags:
+  - iOS
+  - development
+source: steipete.com
 ---
 
 <style type="text/css">

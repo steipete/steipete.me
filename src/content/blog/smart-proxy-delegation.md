@@ -1,9 +1,15 @@
 ---
-title: ""
+title: ''
 pubDate: '2013-07-30 18:28'
-description: "Whe callig optioal delegates, the egula patte is to check usig espodsToSelecto:, the actually call the method."
-
-tags: []
+description: >-
+  Whe callig optioal delegates, the egula patte is to check usig
+  espodsToSelecto:, the actually call the method.
+tags:
+  - iOS
+  - macOS
+  - Objective-C
+  - SwiftUI
+source: petersteinberger.com
 ---
 
 When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward and easy to understand:

@@ -1,9 +1,15 @@
 ---
-title: ""
+title: ''
 pubDate: '2012-04-05 15:27'
-description: "You'e usig KVO, ight?"
-
-tags: []
+description: 'You''e usig KVO, ight?'
+tags:
+  - iOS
+  - macOS
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Apple Silicon
+source: petersteinberger.com
 ---
 
 You're using KVO, right? So you most likely have already written code like this:

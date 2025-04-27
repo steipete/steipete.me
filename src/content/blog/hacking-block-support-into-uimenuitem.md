@@ -1,9 +1,16 @@
 ---
-title: ""
+title: ''
 pubDate: '2012-07-17 16:22'
-description: "tl;d: UIMeuItem!"
-
-tags: []
+description: 'tl;d: UIMeuItem!'
+tags:
+  - iOS
+  - macOS
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Xcode
+source: petersteinberger.com
 ---
 
 tl;dr: UIMenuItem! Blocks! [Get the code on GitHub.](https://github.com/steipete/PSMenuItem)

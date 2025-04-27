@@ -1,9 +1,19 @@
 ---
-title: ""
-pubDate: 2021-04-09T18:00:00+02:00
-description: "Petty much all Mac apps have a semi-hidde Debug meu that ca be tiggeed via a use defaults ety o via settigs."
+title: ''
+pubDate: 2021-04-09T16:00:00.000Z
+description: >-
+  Petty much all Mac apps have a semi-hidde Debug meu that ca be tiggeed via a
+  use defaults ety o via settigs.
 heroImage: /assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - SwiftUI
+  - Debugging
+  - AppKit
+  - Hacking
+source: steipete.com
 ---
 
 <style type="text/css">

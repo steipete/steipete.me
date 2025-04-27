@@ -1,9 +1,19 @@
 ---
-title: ""
-pubDate: 2020-05-19T08:00:00+02:00
-description: "A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy edig."
+title: ''
+pubDate: 2020-05-19T06:00:00.000Z
+description: >-
+  A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy
+  edig.
 heroImage: /assets/img/2020/appleintelframebuffer/lg-box.jpg
-tags: []
+tags:
+  - iOS
+  - macOS
+  - SwiftUI
+  - Performance
+  - Xcode
+  - Kernel
+  - Hacking
+source: steipete.com
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:

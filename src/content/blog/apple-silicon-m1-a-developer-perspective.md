@@ -1,9 +1,23 @@
 ---
-title: ""
-pubDate: 2020-11-28T15:00:00+02:00
-description: "The excitemet aoud Apple’s ew M1 chip is [eveywhee](https://www.sighkays.com/blog/apple-silico-m1-black-magic/)."
+title: 'Apple Silicon M1: A Developer''s Perspective'
+pubDate: 2020-11-28T13:00:00.000Z
+description: >-
+  The excitement around Apple’s new M1 chip is
+  [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/).
 heroImage: /assets/img/2020/m1/m1.jpg
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Objective-C
+  - SwiftUI
+  - Debugging
+  - Performance
+  - Xcode
+  - AppKit
+  - Catalyst
+  - Apple Silicon
+  - Hacking
+source: steipete.com
 ---
 
 The excitement around Apple’s new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here’s an early report after a week of testing.

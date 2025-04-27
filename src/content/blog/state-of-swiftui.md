@@ -1,9 +1,21 @@
 ---
-title: ""
-pubDate: 2020-09-13T11:00:00+02:00
-description: "Apple eleased SwiftUI last yea, ad it’s bee a excitig ad wild ide."
+title: The State of SwiftUI
+pubDate: 2020-09-13T09:00:00.000Z
+description: 'Apple eleased SwiftUI last yea, ad it’s bee a excitig ad wild ide.'
 heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Performance
+  - Xcode
+  - AppKit
+  - Catalyst
+source: steipete.com
 ---
 
 <style type="text/css">

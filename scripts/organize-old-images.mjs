@@ -1,55 +1,41 @@
 #!/usr/bin/env node
 
 /**
- * Script to organize old article images into year folders
- * This script moves images referenced by old articles into year-based folders
- * if they're not already organized that way.
+ * Script to organize old images into year-based folders
+ * This moves images referenced by old blog posts into year-based folders
+ * if they're not already organized that way
  */
 
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { fileURLToPath } from 'url';
+import { globSync } from 'glob';
 
 // Get current script directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Paths
+// Path to blog content directory and image directories
 const contentDir = path.join(__dirname, '../src/content/blog');
-const publicImagesDir = path.join(__dirname, '../public/images');
-const postsImageDir = path.join(publicImagesDir, 'posts');
-const assetsImgDir = path.join(__dirname, '../public/assets/img');
+const publicDir = path.join(__dirname, '../public');
+const oldImagesPath = path.join(publicDir, 'images/posts');
+const newImagesBasePath = path.join(publicDir, 'assets/img');
 
-// Create directories if they don't exist
-function ensureDirExists(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-    console.log(`Created directory: ${dirPath}`);
-  }
-}
-
-// Function to extract year from filename (assumes YYYY-MM-DD-title.md format)
+// Function to extract year from filename (e.g., "2020-12-25-my-post.md" → "2020")
 function extractYearFromFilename(filename) {
-  const match = filename.match(/^(\d{4})-\d{2}-\d{2}/);
-  if (match) {
-    return match[1];
-  }
-  return null;
+  const match = filename.match(/^(\d{4})-/);
+  return match ? match[1] : null;
 }
 
 // Function to extract year from frontmatter date
-function extractYearFromFrontmatter(data) {
-  if (data.pubDate) {
-    const match = data.pubDate.toString().match(/^(\d{4})/);
-    if (match) {
-      return match[1];
-    }
-  }
-  return null;
+function extractYearFromDate(date) {
+  if (!date) return null;
+  const dateObj = new Date(date);
+  return dateObj.getFullYear().toString();
 }
 
-// Function to process each blog post
+// Function to process a single post
 function processPost(filePath) {
   try {
     const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -59,104 +45,114 @@ function processPost(filePath) {
     const fileName = path.basename(filePath);
     let year = extractYearFromFilename(fileName);
     
-    if (!year) {
-      year = extractYearFromFrontmatter(data);
+    // If year not in filename, try to get from frontmatter
+    if (!year && data.pubDate) {
+      year = extractYearFromDate(data.pubDate);
     }
     
     if (!year) {
-      console.log(`Could not determine year for ${fileName}, skipping...`);
+      console.log(`Could not determine year for ${fileName}, skipping`);
       return;
     }
     
-    // Find all image references in the content
-    // Look for markdown image syntax ![alt](path) and HTML img tags
-    const markdownImageRegex = /!\[.*?\]\((.*?)\)/g;
-    const htmlImageRegex = /<img.*?src=["'](.*?)["']/g;
+    // Create year directory if it doesn't exist
+    const yearDir = path.join(newImagesBasePath, year);
+    if (!fs.existsSync(yearDir)) {
+      fs.mkdirSync(yearDir, { recursive: true });
+    }
     
+    // Look for image references in the content
+    const imgRegex = /!\[.*?\]\((\/images\/posts\/[^)]+)\)/g;
     let match;
-    const imagePaths = new Set();
+    let modified = false;
+    let newContent = content;
     
-    // Find markdown images
-    while ((match = markdownImageRegex.exec(content)) !== null) {
-      imagePaths.add(match[1]);
-    }
-    
-    // Find HTML images
-    while ((match = htmlImageRegex.exec(content)) !== null) {
-      imagePaths.add(match[1]);
-    }
-    
-    // Check if heroImage is set in frontmatter
-    if (data.heroImage) {
-      imagePaths.add(data.heroImage);
-    }
-    
-    console.log(`Found ${imagePaths.size} image references in ${fileName}`);
-    
-    // Process each image path
-    imagePaths.forEach(imagePath => {
-      // Skip external images and already organized images
-      if (imagePath.startsWith('http') || 
-          imagePath.includes('/assets/img/') || 
-          (imagePath.includes('/images/posts/') && imagePath.includes(`/${year}/`))) {
-        return;
-      }
+    while ((match = imgRegex.exec(content)) !== null) {
+      const imgPath = match[1];
+      const imgName = path.basename(imgPath);
+      const oldFullPath = path.join(publicDir, imgPath.substring(1));
+      const newRelativePath = `/assets/img/${year}/${imgName}`;
+      const newFullPath = path.join(publicDir, newRelativePath.substring(1));
       
-      // Normalize the path to get just the filename
-      const normalizedPath = imagePath.replace(/^\//, '');
-      let imageName = path.basename(normalizedPath);
-      
-      // Check in public/images/posts directory
-      const oldImagePath = path.join(postsImageDir, imageName);
-      if (fs.existsSync(oldImagePath)) {
-        // Create year directory under assets/img if needed
-        const yearDir = path.join(assetsImgDir, year);
-        ensureDirExists(yearDir);
-        
-        // Create directory for the post (using filename without date and extension)
-        const postName = fileName.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
-        const postDir = path.join(yearDir, postName);
-        ensureDirExists(postDir);
-        
-        // Create the new path for the image
-        const newImagePath = path.join(postDir, imageName);
-        
-        // Move the image if it doesn't already exist at the destination
-        if (!fs.existsSync(newImagePath)) {
-          fs.copyFileSync(oldImagePath, newImagePath);
-          console.log(`Moved image: ${oldImagePath} -> ${newImagePath}`);
-          
-          // Update the image reference in the content
-          const newRelativePath = `/assets/img/${year}/${postName}/${imageName}`;
-          const updatedContent = content.replace(
-            new RegExp(imagePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), 
-            newRelativePath
-          );
-          
-          // Update heroImage in frontmatter if needed
-          if (data.heroImage === imagePath) {
-            data.heroImage = newRelativePath;
+      // Check if the old image exists
+      if (fs.existsSync(oldFullPath)) {
+        // Only copy if the new file doesn't exist
+        if (!fs.existsSync(newFullPath)) {
+          // Create the directory structure if it doesn't exist
+          const newDir = path.dirname(newFullPath);
+          if (!fs.existsSync(newDir)) {
+            fs.mkdirSync(newDir, { recursive: true });
           }
           
-          // Write the updated content back to the file
-          fs.writeFileSync(filePath, matter.stringify(updatedContent, data));
-          console.log(`Updated image references in ${fileName}`);
+          // Copy the file to the new location
+          fs.copyFileSync(oldFullPath, newFullPath);
+          console.log(`Copied ${imgPath} to ${newRelativePath}`);
+        } else {
+          console.log(`Image already exists at ${newRelativePath}, skipping copy`);
         }
+        
+        // Update the image reference in the content
+        newContent = newContent.replace(imgPath, newRelativePath);
+        modified = true;
       } else {
-        console.log(`Image not found: ${oldImagePath} referenced in ${fileName}`);
+        console.log(`WARNING: Image not found: ${oldFullPath}`);
       }
-    });
+    }
+    
+    // Update heroImage in frontmatter if it points to the old location
+    if (data.heroImage && data.heroImage.startsWith('/images/posts/')) {
+      const imgName = path.basename(data.heroImage);
+      const oldFullPath = path.join(publicDir, data.heroImage.substring(1));
+      const newRelativePath = `/assets/img/${year}/${imgName}`;
+      const newFullPath = path.join(publicDir, newRelativePath.substring(1));
+      
+      if (fs.existsSync(oldFullPath)) {
+        // Only copy if the new file doesn't exist
+        if (!fs.existsSync(newFullPath)) {
+          // Create the directory structure if it doesn't exist
+          const newDir = path.dirname(newFullPath);
+          if (!fs.existsSync(newDir)) {
+            fs.mkdirSync(newDir, { recursive: true });
+          }
+          
+          // Copy the file to the new location
+          fs.copyFileSync(oldFullPath, newFullPath);
+          console.log(`Copied heroImage ${data.heroImage} to ${newRelativePath}`);
+        }
+        
+        // Update the heroImage in frontmatter
+        data.heroImage = newRelativePath;
+        modified = true;
+      } else {
+        console.log(`WARNING: HeroImage not found: ${oldFullPath}`);
+      }
+    }
+    
+    // Write the updated content and frontmatter back to the file
+    if (modified) {
+      const updatedContent = matter.stringify(newContent, data);
+      fs.writeFileSync(filePath, updatedContent);
+      console.log(`Updated image paths in ${fileName}`);
+    }
   } catch (error) {
-    console.error(`Error processing ${filePath}: ${error.message}`);
+    console.error(`Error processing ${filePath}:`, error);
   }
 }
 
-// Get all markdown files in the blog directory
-const files = fs.readdirSync(contentDir)
-  .filter(file => file.endsWith('.md') || file.endsWith('.mdx'))
-  .map(file => path.join(contentDir, file));
+// Check if the old images directory exists
+if (!fs.existsSync(oldImagesPath)) {
+  console.log(`Old images directory not found: ${oldImagesPath}`);
+  process.exit(1);
+}
 
-// Process each file
-console.log(`Found ${files.length} posts to process`);
-files.forEach(processPost);
-console.log('Done organizing images into year folders');
+// Ensure the new images base directory exists
+if (!fs.existsSync(newImagesBasePath)) {
+  fs.mkdirSync(newImagesBasePath, { recursive: true });
+}
+
+// Process all markdown files
+const markdownFiles = globSync(`${contentDir}/**/*.{md,mdx}`);
+console.log(`Found ${markdownFiles.length} markdown files to process`);
+
+markdownFiles.forEach(processPost);
+console.log('Done organizing images');

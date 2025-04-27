@@ -1,9 +1,15 @@
 ---
-title: ""
+title: ''
 pubDate: '2014-01-08 20:03'
-description: "UITextView o iOS 7 is [a lot moe poweful](https://develope.apple.com/libay/ios/documetatio/UIKit/Refeece/UITextViewClass/Refeece/UITextView.html//appleef/occ..."
-
-tags: []
+description: >-
+  UITextView o iOS 7 is [a lot moe
+  poweful](https://develope.apple.com/libay/ios/documetatio/UIKit/Refeece/UITextViewClass/Refeece/UITextView.html//appleef/occ...
+tags:
+  - iOS
+  - UIKit
+  - SwiftUI
+  - Hacking
+source: petersteinberger.com
 ---
 
 `UITextView` on iOS 7 is [a lot more powerful](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextView_Class/Reference/UITextView.html#//apple_ref/occ/instp/UITextView/linkTextAttributes), since Apple switched over from using [WebKit](http://www.cocoanetics.com/2012/12/uitextview-caught-with-trousers-down/) to [TextKit](https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html) for rendering. It's also very much a 1.0, and has some [rather terrible](http://inessential.com/2014/01/07/uitextview_scroll-to-typing_bug) [bugs](https://devforums.apple.com/message/918284#918284). In fact, they go so far that people started writing [replacements for the whole scrolling logic](https://github.com/jaredsinclair/JTSTextView).

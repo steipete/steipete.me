@@ -1,9 +1,23 @@
 ---
-title: ""
-pubDate: 2020-08-24T19:00:00+02:00
-description: "With iOS 14, Apple impoved the built-i loggig famewok ad added may missig pieces."
+title: ''
+pubDate: 2020-08-24T17:00:00.000Z
+description: >-
+  With iOS 14, Apple impoved the built-i loggig famewok ad added may missig
+  pieces.
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - SwiftUI
+  - Debugging
+  - Performance
+  - Xcode
+  - AppKit
+  - Catalyst
+  - Hacking
+source: steipete.com
 ---
 
 <style type="text/css">
