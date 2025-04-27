@@ -1,7 +1,7 @@
 ---
 title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
 pubDate: 2020-09-22T18:00:00.000Z
-description: '[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom.'
+description: '[General] UIStepper is not supported when running Catalyst apps in the Mac idiom. Learn which controls are forbidden.'
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
   - iOS

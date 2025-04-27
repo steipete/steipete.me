@@ -1,7 +1,7 @@
 ---
 title: Hacking with Aspects
 pubDate: '2014-05-06 00:45'
-description: Now Aspects is a geat ew tool i you toolkit.
+description: Now Aspects is a great new tool in your toolkit for aspect oriented programming in Objective-C.
 tags:
   - iOS
   - Objective-C

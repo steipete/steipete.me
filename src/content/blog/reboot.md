@@ -1,7 +1,7 @@
 ---
 title: Reboot
 pubDate: '2012-04-05 00:35'
-description: I've ebooted my blog.
+description: I've rebooted my blog. Adding random bits about iOS development and personal thoughts.
 tags:
   - iOS
 source: petersteinberger.com

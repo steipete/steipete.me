@@ -1,7 +1,7 @@
 ---
 title: Fixing What Apple Doesn't
 pubDate: '2014-01-04 15:09'
-description: It's oe of those days whee Apple's sloppiess o iOS 7 is divig me uts.
+description: It's one of those days where Apple's sloppiness on iOS 7 is driving me nuts. Here's how to fix UI issues Apple won't address.
 tags:
   - iOS
   - Objective-C
