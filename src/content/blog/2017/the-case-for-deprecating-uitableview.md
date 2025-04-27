@@ -1,7 +1,7 @@
 ---
 title: 'The Case for Deprecating UITableView'
 pubDate: 2017-01-19T12:10:00.000Z
-description: '`UITableView` is a cornerstone of classical iOS development and one of the oldest classes. It's used in pretty much all iOS apps and has been aroun...'
+description: 'UITableView is a cornerstone of classical iOS development and one of the oldest classes. It''s used in pretty much all iOS apps and has been around since iPhone OS 2.0.'
 tags:
   - iOS
   - Development
