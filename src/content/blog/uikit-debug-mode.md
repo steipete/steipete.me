@@ -1,7 +1,7 @@
 ---
 title: "UIKit Debug Mode"
 pubDate: "2015-01-09 15:05"
-description: "A while ago, I\'ve [stumbled on a string called UIPopoverControllerPaintsTargetRect](https://twitter.com/steipete/status/546976070512435200) in some..."
+description: "A while ago, I've [stumbled on a string called UIPopoverControllerPaintsTargetRect](https://twitter.com/steipete/status/546976070512435200) in some..."
 tags: []
 ---
 

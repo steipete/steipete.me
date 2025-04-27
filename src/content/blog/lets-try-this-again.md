@@ -1,5 +1,5 @@
 ---
-title: "Let\'s Try This Again"
+title: "Let's Try This Again"
 pubDate: "2020-05-14 19:03:35 +0200"
 tags: ["personal"]
 heroImage: "https://raw.githubusercontent.com/steipete/speaking/master/Pictures/baswiftable-1.jpg"

@@ -1,5 +1,5 @@
 ---
-title: "zld — A Faster Version of Apple\'s Linker"
+title: "zld — A Faster Version of Apple's Linker"
 pubDate: "2020-06-05 10:00:00 +0200"
 tags: ["iOS", "development"]
 heroImage: "/assets/img/2020/zld/benchmarks.png"

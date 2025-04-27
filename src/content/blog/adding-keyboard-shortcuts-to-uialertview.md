@@ -1,7 +1,7 @@
 ---
 title: "Adding Keyboard Shortcuts To UIAlertView"
 pubDate: "2013-03-06 22:38"
-description: "I\'m not even home from the more-than-excellent [NSConference](http://nsconference.com) in Leicester, but had to hack on something super awesome tha..."
+description: "I'm not even home from the more-than-excellent [NSConference](http://nsconference.com) in Leicester, but had to hack on something super awesome tha..."
 tags: []
 ---
 

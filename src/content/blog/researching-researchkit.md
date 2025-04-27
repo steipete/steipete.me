@@ -1,7 +1,7 @@
 ---
 title: "Researching ResearchKit"
 pubDate: "2015-04-14 21:46"
-description: "Apple\'s first [GitHub-released open source project](https://github.com/ResearchKit/ResearchKit/) is a big thing. There\'s much to learn here - I\'ve ..."
+description: "Apple's first [GitHub-released open source project](https://github.com/ResearchKit/ResearchKit/) is a big thing. There's much to learn here - I've ..."
 tags: []
 ---
 

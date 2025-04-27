@@ -1,7 +1,7 @@
 ---
-title: "Fixing What Apple Doesn\'t"
+title: "Fixing What Apple Doesn't"
 pubDate: "2014-01-04 15:09"
-description: "It\'s one of those days where Apple\'s sloppiness on iOS 7 is driving me nuts. Don\'t get me wrong; I have a lot of respect in pulling off something a..."
+description: "It's one of those days where Apple's sloppiness on iOS 7 is driving me nuts. Don't get me wrong; I have a lot of respect in pulling off something a..."
 tags: []
 ---
 

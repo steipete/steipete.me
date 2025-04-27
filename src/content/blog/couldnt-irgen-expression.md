@@ -1,11 +1,9 @@
 ---
-title: "How to Fix LLDB: Couldn\'t IRGen Expression"
+title: "How to Fix LLDB: Couldn't IRGen Expression"
 pubDate: "2020-06-04 15:00:00 +0200"
 tags: ["iOS", "development"]
 heroImage: "/assets/img/2020/lldb-debugging/xcode-lldb.png"
-description: "<style type="text/css">
-div.post-content > img:first-child { display:none; }
-</style>"
+description: "<style type=\"text/css\">\ndiv.post-content > img:first-child { display:none; }\n</style>"
 ---
 
 <style type="text/css">

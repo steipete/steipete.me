@@ -1,5 +1,5 @@
 ---
-title: "Disabling Keyboard Avoidance in SwiftUI\'s UIHostingController"
+title: "Disabling Keyboard Avoidance in SwiftUI's UIHostingController"
 pubDate: "2020-09-21 22:00:00 +0200"
 tags: ["iOS", "development"]
 heroImage: "/assets/img/2020/uihostingcontroller-keyboard/header.png"

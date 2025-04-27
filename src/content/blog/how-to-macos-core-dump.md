@@ -3,9 +3,7 @@ title: "How to macOS Core Dump"
 pubDate: "2020-05-21 10:30:00 +0200"
 tags: ["bugs", "development"]
 heroImage: "/assets/img/2020/appleintelframebuffer/feedback.png"
-description: "<style type="text/css">
-div.post-content > img:first-child { display:none; }
-</style>"
+description: "<style type=\"text/css\">\ndiv.post-content > img:first-child { display:none; }\n</style>"
 ---
 
 <style type="text/css">

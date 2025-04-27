@@ -1,7 +1,7 @@
 ---
 title: "Retrofitting containsString: on iOS 7"
 pubDate: "2014-07-17 23:40"
-description: "[Daniel Eggert](https://twitter.com/danielboedewadt) asked me on Twitter what\'s the best way to retrofit the new containsString: method on NSString..."
+description: "[Daniel Eggert](https://twitter.com/danielboedewadt) asked me on Twitter what's the best way to retrofit the new containsString: method on NSString..."
 tags: []
 ---
 

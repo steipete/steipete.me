@@ -1,7 +1,7 @@
 ---
 title: "Reboot"
 pubDate: "2012-04-05 00:35"
-description: "I\'ve rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that..."
+description: "I've rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that..."
 tags: []
 ---
 

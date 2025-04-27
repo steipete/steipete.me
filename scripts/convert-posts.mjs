@@ -44,15 +44,13 @@ async function convertFile(filePath) {
   
   // Helper function to clean and quote string values properly
   function cleanAndQuote(value) {
-    if (!value) return '';
+    if (!value) return '""';
     
     // Remove existing quotes first
     let cleaned = value.trim().replace(/^["']|["']$/g, '');
     
-    // Escape single quotes
-    cleaned = cleaned.replace(/'/g, "\\'");
-    
-    return `"${cleaned}"`;
+    // Convert the value to a JSON string to properly escape all special characters
+    return JSON.stringify(cleaned);
   }
   
   // Process each line in the frontmatter

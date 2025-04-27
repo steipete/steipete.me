@@ -1,5 +1,5 @@
 ---
-title: "A Story About Swizzling \"the Right Way™\" and Touch Forwarding"
+title: "A Story About Swizzling \\\"the Right Way™\\\" and Touch Forwarding"
 pubDate: "2014-07-04 12:17"
 description: "Some people think of me as the guy that does [crazy things to ObjC and swizzles everything](https://www.youtube.com/watch?v=psPNxC3G_hc). Not true...."
 tags: []
