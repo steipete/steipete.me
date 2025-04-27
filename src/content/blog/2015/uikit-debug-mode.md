@@ -19,7 +19,7 @@ A while ago, I've [stumbled on a string called `UIPopoverControllerPaintsTargetR
 
 I've used [Aspects](https://github.com/steipete/Aspects) to swizzle `NSUserDefaults` and enable this key when queried. This actually works, but only under iOS 7, since iOS 8 uses the newer `UIPopoverPresentationController` and that one doesn't fully support target rect drawing (or it's compiled out in our release version of UIKit.)
 
-{% img /images/posts/popover-rect-debug.png %}
+![UIKit Debug Mode showing purple overlay on the popover target rectangle](/assets/img/2015/uikit-debug-mode/popover-rect-debug.png)
 
 (Screenshot from [PSPDFKit - the Leading iOS PDF Framework](http://pspdfkit.com). Note the purple overlay on the bookmark icon.)
 
