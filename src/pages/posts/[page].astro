@@ -8,7 +8,7 @@ import { SITE } from '../../consts'
 export async function getStaticPaths() {
   // Get all blog posts
   let allPosts = await getCollection('blog')
-  
+
   // Add filename as slug if it's not available
   allPosts = allPosts.map(post => {
     if (!post.slug) {
@@ -19,24 +19,24 @@ export async function getStaticPaths() {
     }
     return post
   })
-  
+
   const sortedPosts = allPosts.sort(
     (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
   )
-  
+
   // Define pagination
   const postsPerPage = SITE.postsPerPage
   const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
-  
+
   // Generate pages 2, 3, 4, etc. (page 1 is handled by /posts/index.astro)
   return Array.from({ length: totalPages - 1 }).map((_, i) => {
     const pageNumber = i + 2 // Start from page 2
     const start = (pageNumber - 1) * postsPerPage
     const end = start + postsPerPage
-    
+
     return {
       params: { page: pageNumber.toString() },
-      props: { 
+      props: {
         posts: sortedPosts.slice(start, end),
         currentPage: pageNumber,
         totalPages
@@ -122,7 +122,7 @@ const { posts, currentPage, totalPages } = Astro.props
             </Link>
           </li>
         )}
-        
+
         {Array.from({ length: totalPages }).map((_, i) => (
           <li>
             <Link
@@ -139,7 +139,7 @@ const { posts, currentPage, totalPages } = Astro.props
             </Link>
           </li>
         ))}
-        
+
         {currentPage < totalPages && (
           <li>
             <Link

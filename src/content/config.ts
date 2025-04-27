@@ -18,17 +18,17 @@ const blog = defineCollection({
     if (!data.pubDate && data.date) {
       data.pubDate = data.date;
     }
-    
+
     // Add a default description if missing
     if (!data.description) {
       data.description = `${data.title}`;
     }
-    
+
     // Convert string tags to array
     if (typeof data.tags === 'string') {
       data.tags = [data.tags];
     }
-    
+
     return data;
   }),
 });

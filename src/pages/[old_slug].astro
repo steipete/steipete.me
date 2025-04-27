@@ -3,11 +3,11 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  
+
   return posts.map(post => {
     // Get the slug from the filename
     const slug = post.slug;
-    
+
     return {
       params: { old_slug: slug },
       props: { post }

@@ -19,7 +19,7 @@ import { SITE_TITLE } from '../consts';
         </div>
       </div>
     </div>
-    
+
     <ul class="nav flex-column">
       <li class="nav-item">
         <a href="/" class="nav-link">
@@ -41,7 +41,7 @@ import { SITE_TITLE } from '../consts';
       </li>
     </ul>
   </div>
-  
+
   <div class="sidebar-bottom">
     <div class="social-links">
       <a href="https://github.com/steipete" target="_blank">
@@ -68,7 +68,7 @@ import { SITE_TITLE } from '../consts';
   document.addEventListener('DOMContentLoaded', () => {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     navLinks.forEach(link => {
       const href = link.getAttribute('href');
       if (href === '/' && currentPath === '/') {

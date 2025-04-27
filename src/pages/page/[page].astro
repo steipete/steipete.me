@@ -13,7 +13,7 @@ export async function getStaticPaths({ paginate }) {
       return dateB - dateA;
     }
   );
-  
+
   return paginate(sortedPosts, { pageSize: 10 });
 }
 
@@ -24,7 +24,7 @@ const { data: posts, currentPage, lastPage } = page;
 <Layout title={`Page ${currentPage} | ${SITE.title}`} description={SITE.description}>
   <section class="py-8">
     <h1 class="text-4xl font-bold tracking-tight mb-10">Latest Posts</h1>
-    
+
     <div class="space-y-12">
       {posts.map((post) => (
         <article class="border-b border-border pb-8 last:border-0">
@@ -33,15 +33,15 @@ const { data: posts, currentPage, lastPage } = page;
               {post.data.title}
             </a>
           </h2>
-          
+
           <div class="flex items-center text-sm text-muted-foreground mb-4">
             <FormattedDate date={new Date(post.data.pubDate || post.data.date)} />
           </div>
-          
+
           {post.data.description && (
             <p class="text-foreground/80 mb-4">{post.data.description}</p>
           )}
-          
+
           <div>
             <a href={`/blog/${post.slug}/`} class="text-primary font-medium hover:underline">
               Read more →
@@ -50,30 +50,30 @@ const { data: posts, currentPage, lastPage } = page;
         </article>
       ))}
     </div>
-    
+
     <div class="flex justify-center mt-10 gap-2">
       {currentPage > 1 && (
-        <a 
+        <a
           href={currentPage - 1 === 1 ? '/' : `/page/${currentPage - 1}`}
           class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
         >
           ← Previous
         </a>
       )}
-      
+
       {Array.from({ length: lastPage }).map((_, i) => (
-        <a 
+        <a
           href={i === 0 ? '/' : `/page/${i + 1}`}
-          class={`px-4 py-2 rounded-md ${currentPage === i + 1 
-            ? 'bg-primary text-primary-foreground' 
+          class={`px-4 py-2 rounded-md ${currentPage === i + 1
+            ? 'bg-primary text-primary-foreground'
             : 'bg-secondary hover:bg-accent'}`}
         >
           {i + 1}
         </a>
       ))}
-      
+
       {currentPage < lastPage && (
-        <a 
+        <a
           href={`/page/${currentPage + 1}`}
           class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
         >
