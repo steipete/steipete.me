@@ -2,8 +2,7 @@
 title: Building with Swift Trunk Development Snapshots
 pubDate: 2020-06-12T15:00:00.000Z
 description: >-
-  I ecetly stated the advetue of buildig PSPDFKit with the [Swift tuk developmet
-  sapshot](https://swift.og/dowload/).
+  Dive into my adventure of building PSPDFKit with the Swift trunk development snapshot. I document the various compilation errors, linker issues, and debugging challenges I encountered, sharing solutions for each roadblock. Whether you're preparing for a new Xcode release or just curious about bleeding-edge Swift, this troubleshooting guide will help you navigate the sometimes bumpy road of working with Swift's development branch.
 heroImage: /assets/img/2020/swift-trunk/swift-trunk.png
 tags:
   - iOS

@@ -2,9 +2,7 @@
 title: Calling Super at Runtime in Swift
 pubDate: 2020-06-10T15:00:00.000Z
 description: >-
-  While wokig o [IteposeKit](https://iteposekit.com/), I had a athe specific
-  eed: Ceate a implemetatio that simply calls supe, but at utime istead of at
-  compil...
+  Join me on a deep dive into Swift's runtime as I tackle a seemingly simple problem: implementing a dynamic super call. I explore Swift's object model, discover obscure linker flags, and tinker with assembly language to solve this challenge. You'll learn how Swift methods are represented at runtime, why this problem is particularly tricky, and the surprising solution involving ARM64 registers and the Swift runtime's internals.
 heroImage: /assets/img/2020/calling-super/Xcode-debug.png
 tags:
   - highlights

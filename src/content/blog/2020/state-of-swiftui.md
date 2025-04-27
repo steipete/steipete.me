@@ -1,7 +1,7 @@
 ---
 title: 'The State of SwiftUI'
 pubDate: 2020-09-13T11:00:00.000+02:00
-description: "Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta sample app."
+description: "Is SwiftUI ready for production in iOS 14 and macOS Big Sur? I take Apple's Fruta sample app for a test drive to find out. Diving into performance bottlenecks, AttributeGraph crashes, and platform-specific issues, I provide a realistic assessment of SwiftUI's current state. While there are significant improvements since last year, some rough edges remain that developers should be aware of before going all-in on this promising technology."
 heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
 tags:
   - iOS
