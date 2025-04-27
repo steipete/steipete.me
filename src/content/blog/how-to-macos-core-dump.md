@@ -1,9 +1,13 @@
 ---
-title: ""
-pubDate: 2020-05-21T10:30:00+02:00
-description: "A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may commets wee left, i which I kept pigig Apple ad epotig o this issue, ad afte tyig a..."
+title: how-to-macos-core-dump
+pubDate: 2020-05-21T08:30:00.000Z
+description: >-
+  A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may
+  commets wee left, i which I kept pigig Apple ad epotig o this issue, ad afte
+  tyig a...
 heroImage: /assets/img/2020/appleintelframebuffer/feedback.png
 tags: []
+source: steipete.com
 ---
 
 <style type="text/css">

@@ -1,9 +1,10 @@
 ---
-title: ""
-pubDate: 2020-10-21T16:00:00+02:00
-description: "You timelie defies you Twitte expeiece."
+title: curating-your-twitter-timeline
+pubDate: 2020-10-21T14:00:00.000Z
+description: You timelie defies you Twitte expeiece.
 heroImage: /assets/img/2020/make-twitter-work/gardening-curating.jpg
 tags: []
+source: steipete.com
 ---
 
 Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter. 

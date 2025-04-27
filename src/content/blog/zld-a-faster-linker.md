@@ -1,9 +1,13 @@
 ---
-title: ""
-pubDate: 2020-06-05T10:00:00+02:00
-description: "zld is [a dop-i eplacemet of Apple’s like](https://github.com/michaeleisel/zld) that uses optimized data stuctues ad paallelizig to speed thigs up."
+title: zld-a-faster-linker
+pubDate: 2020-06-05T08:00:00.000Z
+description: >-
+  zld is [a dop-i eplacemet of Apple’s
+  like](https://github.com/michaeleisel/zld) that uses optimized data stuctues
+  ad paallelizig to speed thigs up.
 heroImage: /assets/img/2020/zld/benchmarks.png
 tags: []
+source: steipete.com
 ---
 
 zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  

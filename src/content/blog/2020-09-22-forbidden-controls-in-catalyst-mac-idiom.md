@@ -1,9 +1,15 @@
 ---
-title: "Forbidden Controls in Catalyst: Optimize Interface for Mac"
-pubDate: 2020-09-22T20:00:00+02:00
-description: "The new optimized for Mac idiom in Catalyst uses various AppKit controls under the hood to make apps look more at home on macOS. It also disallows various controls, resulting in exceptions at runtime."
+title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
+pubDate: 2020-09-22T18:00:00.000Z
+description: >-
+  The new optimized for Mac idiom in Catalyst uses various AppKit controls under
+  the hood to make apps look more at home on macOS. It also disallows various
+  controls, resulting in exceptions at runtime.
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
-tags: ["iOS","development"]
+tags:
+  - iOS
+  - development
+source: steipete.com
 ---
 
 <style type="text/css">
@@ -95,7 +101,7 @@ setMinimumTrackImage:forState: is not supported on PSPDFBrightnessSlider when ru
 
 This is problematic, as it’s yet another restriction that isn’t documented. A better choice would’ve been to keep the UIKit variant in case customization exceeds what AppKit can do. It’s a surprising late change, and folks working on Catalyst apps are frustrated:
 
-{% twitter https://twitter.com/_imaginethis/status/1308412481375801344?s=21 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/_imaginethis/status/1308412481375801344?s=21"></a></blockquote>
 
 ## Finding What’s Forbidden
 

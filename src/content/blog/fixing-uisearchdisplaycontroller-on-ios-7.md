@@ -1,9 +1,9 @@
 ---
-title: ""
+title: fixing-uisearchdisplaycontroller-on-ios-7
 pubDate: '2013-10-04 19:00'
-description: "iOS 7 is geat, but it's still vey much a 1.0."
-
+description: 'iOS 7 is geat, but it''s still vey much a 1.0.'
 tags: []
+source: petersteinberger.com
 ---
 
 iOS 7 is great, but it's still very much a 1.0. I've spent a lot of time working around iOS 7-specific bugs in [PSPDFKit](http://pspdfkit.com) and will share some of my work here.

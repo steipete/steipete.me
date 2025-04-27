@@ -1,9 +1,10 @@
 ---
-title: ""
-pubDate: 2020-10-21T15:00:00+02:00
-description: "I’ve bee usig Twitte fo almost 12 yeas ow."
+title: growing-your-twitter-followers
+pubDate: 2020-10-21T13:00:00.000Z
+description: I’ve bee usig Twitte fo almost 12 yeas ow.
 heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
 tags: []
+source: steipete.com
 ---
 
 I’ve been using Twitter for almost 12 years now. It can be challenging to navigate your timeline, so today I’m sharing some tips to keep it fun.
@@ -74,15 +75,15 @@ I do share a lot of news articles. I often just quote something interesting from
 
 The tweets that are the most engaging, however, usually are original content, particularly in context with your audience and topics of interest. Here are some of my top performing tweets from the last few months, with about 80K–450K impressions each. Sometimes it’s the [ridiculous tweets that explode](https://twitter.com/steipete/status/1310331623729229827), and sometimes you [don’t need words](https://twitter.com/steipete/status/1306884214252613632?s=20). It also can be news commentary if the comment [really nails it](https://twitter.com/steipete/status/1288151223028322304) or just [really fits](https://twitter.com/steipete/status/1281547449660825601).
 
-{% twitter https://twitter.com/steipete/status/1313864628967964672?s=21 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1313864628967964672?s=21"></a></blockquote>
 
-{% twitter https://twitter.com/steipete/status/1317061856901570560?s=20 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1317061856901570560?s=20"></a></blockquote>
 
 ### Using Threads
 
 Lately I’ve been using more and more threads to connect tweets over time — this has been proven to be really great, as it immediately gives people context, they can read more, and the official Twitter client also usually shows 2–3 tweets in a thread, giving you more “space” in the timeline. Here’s an example:
 
-{% twitter https://twitter.com/steipete/status/1277623561604214784 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1277623561604214784"></a></blockquote>
 
 ## Curating Your Timeline
 

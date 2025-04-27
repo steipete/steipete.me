@@ -1,9 +1,10 @@
 ---
-title: ""
-pubDate: 2020-09-22T20:00:00+02:00
-description: "[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom."
+title: forbidden-controls-in-catalyst-mac-idiom
+pubDate: 2020-09-22T18:00:00.000Z
+description: '[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom.'
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags: []
+source: steipete.com
 ---
 
 <style type="text/css">
@@ -95,7 +96,7 @@ setMinimumTrackImage:forState: is not supported on PSPDFBrightnessSlider when ru
 
 This is problematic, as it’s yet another restriction that isn’t documented. A better choice would’ve been to keep the UIKit variant in case customization exceeds what AppKit can do. It’s a surprising late change, and folks working on Catalyst apps are frustrated:
 
-{% twitter https://twitter.com/_imaginethis/status/1308412481375801344?s=21 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/_imaginethis/status/1308412481375801344?s=21"></a></blockquote>
 
 ## Finding What’s Forbidden
 

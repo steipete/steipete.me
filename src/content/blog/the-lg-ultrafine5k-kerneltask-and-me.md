@@ -1,14 +1,17 @@
 ---
-title: ""
-pubDate: 2020-05-19T08:00:00+02:00
-description: "A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy edig."
+title: the-lg-ultrafine5k-kerneltask-and-me
+pubDate: 2020-05-19T06:00:00.000Z
+description: >-
+  A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy
+  edig.
 heroImage: /assets/img/2020/appleintelframebuffer/lg-box.jpg
 tags: []
+source: steipete.com
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:
 
-{% twitter https://twitter.com/steipete/status/1253550223445708800 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1253550223445708800"></a></blockquote>
 
 ## Background
 
@@ -26,7 +29,7 @@ Since receiving these displays, we’ve had to return most of them to get fixes 
 
 With the 2017 MacBook Pro, I had an extraordinary amount of fun, since plugging in the LG was causing graphic issues on the MacBook display. I wrote radars, called Apple Support, and even took a cab to a repair center with the screen in tow in order to prove the hardware was broken. It’s difficult when neither the screen itself nor the MacBook have issues, but the combination of the two causes problems.
 
-{% twitter https://twitter.com/steipete/status/956863946404827136 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/956863946404827136"></a></blockquote>
 
 Nobody knew what was going on, and this all occurred before we had an Apple Store in Austria, so getting help there was out of the question. Apple eventually agreed to change my logic board for free, but only after countless hours of phone calls and emails and after this issue had been escalated multiple times. Mind you, this was all with active AppleCare and a machine that wasn’t even one year old. The replacement of my logic board took more than a week, and after it was returned, it had the exact same issue. I mostly gave up and just didn’t use my external screen. 
 
@@ -34,7 +37,7 @@ Nobody knew what was going on, and this all occurred before we had an Apple Stor
 
 The graphic issues disappeared with the 2018 MacBook Pro. However, the biggest issue was also the weirdest: Sometimes, after longer use, my MacBook Pro became unusably slow. Mere seconds after removing the external screen, kernel_task disappeared back into the CPU activity ground noise. Sometimes I had hours after disconnecting in which the MacBook worked, but other times this happened really fast. (I use [iStat Menus](https://bjango.com/mac/istatmenus/) here.) 
 
-{% twitter https://twitter.com/steipete/status/1128703168697839617 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1128703168697839617"></a></blockquote>
 
 I was never able to reliably reproduce this, nor could Apple Support help. They also claimed to not know anything about this issue. I again mostly gave up and didn’t use the external screen.
 
@@ -60,7 +63,7 @@ The bad news: The LG can provide 87 watts of power, but the notebook comes with 
 
 Though the above issue was solved, there is a new bug that started happening with the 16-inch MacBook Pro: Sometimes after wakeup, the gamma settings of the screen are way off (usually too bright, but it can also be [too dark](https://twitter.com/tkanzakic/status/1263345836538421248?s=21). This can be fixed via unplugging/replugging or via [toggling True Tone](https://twitter.com/nicholascooke/status/1263244851266510848?s=21). This bug is [independent](https://twitter.com/sdw/status/1263226044435140608?s=21) [of](https://twitter.com/alihilal94/status/1263227224217595904?s=21) [the](https://twitter.com/oleg_v_soloviev/status/1263314894918729735?s=21) [screen](https://twitter.com/nicholascooke/status/1263244851266510848?s=21) you use though. (Apple: FB7722012) Also, don’t confuse this bug with the [eye-burning brightness bug after reboot](https://macperformanceguide.com/blog/2020/20200107_1436-2019MacPro-LG5K-maximum-brightness-after-reboot.html) (I know it’s hard to keep up with all the different bugs these days). Luckily, Apple fixed the latter bug in Catalina 10.15.4.
 
-{% twitter https://twitter.com/steipete/status/1263225822485381120 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1263225822485381120"></a></blockquote>
 
 ## Conclusion
 

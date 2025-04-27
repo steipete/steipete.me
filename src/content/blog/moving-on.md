@@ -1,9 +1,11 @@
 ---
-title: ""
+title: moving-on
 pubDate: '2012-04-06 16:00'
-description: "A few days ago I booked my flight back to [Austia](https://p.twimg.com/Ak83Q74CEAApvc.jpg)."
-
+description: >-
+  A few days ago I booked my flight back to
+  [Austia](https://p.twimg.com/Ak83Q74CEAApvc.jpg).
 tags: []
+source: petersteinberger.com
 ---
 
 A few days ago I booked my flight back to [Austria](https://p.twimg.com/Ak83Q74CEAAprvc.jpg). Starting on April 13, I'm a <strong>full-time indie</strong> again.

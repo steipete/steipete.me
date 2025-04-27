@@ -1,9 +1,12 @@
 ---
-title: ""
-pubDate: 2020-09-21T22:00:00+02:00
-description: "While SwiftUI is still beig [cooked hot](/posts/state-of-swiftui/), it’s aleady eally useful ad ca eplace may pats of you app."
+title: disabling-keyboard-avoidance-in-swiftui-uihostingcontroller
+pubDate: 2020-09-21T20:00:00.000Z
+description: >-
+  While SwiftUI is still beig [cooked hot](/posts/state-of-swiftui/), it’s
+  aleady eally useful ad ca eplace may pats of you app.
 heroImage: /assets/img/2020/uihostingcontroller-keyboard/header.png
 tags: []
+source: steipete.com
 ---
 
 <style type="text/css">
@@ -16,7 +19,7 @@ While SwiftUI is still being [cooked hot](/posts/state-of-swiftui/), it’s alre
 
 When the keyboard is visible and `UIHostingController` doesn’t own the full screen, views try to move away from the keyboard. This has been [a frustrating bug for many](https://developer.apple.com/forums/thread/658432), and it’s especially bad if you [embed `UIHostingController` as table view cells](https://noahgilmore.com/blog/swiftui-self-sizing-cells/) or collection view cells.[^4]
 
-{% twitter https://twitter.com/thesamcoe/status/1306350596715282434?s=20 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/thesamcoe/status/1306350596715282434?s=20"></a></blockquote>
 
 While it seems that there are some [weird workarounds if you use iOS 14.2](https://twitter.com/zntfdr/status/1306913858263552001?s=21), this seems unreliable, and folks still need a solution for iOS 14.0.
 

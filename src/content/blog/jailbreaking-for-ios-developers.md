@@ -1,9 +1,12 @@
 ---
-title: ""
-pubDate: 2020-05-26T00:00:00+02:00
-description: "Jailbeakig is somethig that’s aely discussed i the iOS develope commuity — which is ufotuate, because it’s amazig."
+title: jailbreaking-for-ios-developers
+pubDate: 2020-05-25T22:00:00.000Z
+description: >-
+  Jailbeakig is somethig that’s aely discussed i the iOS develope commuity —
+  which is ufotuate, because it’s amazig.
 heroImage: /assets/img/2020/jailbreaking/header.jpg
 tags: []
+source: steipete.com
 ---
 
 <style type="text/css">
@@ -104,7 +107,7 @@ If you’re curious how this works on a technical level, here’s a [writeup for
 
 [FLEX](https://github.com/Flipboard/FLEX) is an open source in-app debugging and exploration tool for iOS by [@NSExceptional](https://twitter.com/NSExceptional). It’s amazing what you can do with it. Want the weather background as your homescreen background? No problem.
 
-{% twitter https://twitter.com/nsexceptional/status/1250353513923674114 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/nsexceptional/status/1250353513923674114"></a></blockquote>
 
 To install, download [FLEXing](http://cydia.saurik.com/package/com.pantsthief.flexing/), reboot your device, and then tap on the status bar to load FLEX. You can browse the classes and inspect the view hierarchy with a 3D debugger, similar to how you can with [Reveal](https://revealapp.com/). Here’s Spotify:
 

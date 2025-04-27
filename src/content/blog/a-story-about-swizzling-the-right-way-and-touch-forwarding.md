@@ -1,9 +1,11 @@
 ---
-title: ""
+title: a-story-about-swizzling-the-right-way-and-touch-forwarding
 pubDate: '2014-07-04 12:17'
-description: "Some people thik of me as the guy that does [cazy thigs to ObjC ad swizzles eveythig](https://www.youtube.com/watch?v=psPNxC3Ghc)."
-
+description: >-
+  Some people thik of me as the guy that does [cazy thigs to ObjC ad swizzles
+  eveythig](https://www.youtube.com/watch?v=psPNxC3Ghc).
 tags: []
+source: petersteinberger.com
 ---
 
 Some people think of me as the guy that does [crazy things to ObjC and swizzles everything](https://www.youtube.com/watch?v=psPNxC3G_hc). Not true. In [PSPDFKit](http://pspdfkit.com/) I'm actually quite conservative, but I do enjoy spending time with the runtime working on things such as [Aspects - a library for aspect oriented programming](https://github.com/steipete/Aspects).

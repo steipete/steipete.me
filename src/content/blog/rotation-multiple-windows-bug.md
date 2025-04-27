@@ -1,9 +1,11 @@
 ---
-title: ""
+title: rotation-multiple-windows-bug
 pubDate: '2015-01-25 21:25'
-description: "I've had a lot of fu today hutig dow a paticula egessio i iOS 8 that caused otatio whe the iteface was cofigued to ot autootate."
-
+description: >-
+  I've had a lot of fu today hutig dow a paticula egessio i iOS 8 that caused
+  otatio whe the iteface was cofigued to ot autootate.
 tags: []
+source: petersteinberger.com
 ---
 
 I've had a lot of fun today hunting down a particular regression in iOS 8 that caused rotation when the interface was configured to not autorotate. This is particular fun since this was reported by a [PSPDFKit](https://pspdfkit.com/) customer and since they're paying for our product, they also expect a solution. So giving them a "It's an UIKit regression" answer isn't good enough. Prepared with IDA and decompiled versions of UIKit iOS 7.1 (where everything works) and UIKit iOS 8.1 (where things are broken) I've spend the better part of a day diffing and understanding the root cause.

@@ -1,9 +1,13 @@
 ---
-title: ""
-pubDate: 2020-06-10T17:00:00+02:00
-description: "While wokig o [IteposeKit](https://iteposekit.com/), I had a athe specific eed: Ceate a implemetatio that simply calls supe, but at utime istead of at compil..."
+title: calling-super-at-runtime
+pubDate: 2020-06-10T15:00:00.000Z
+description: >-
+  While wokig o [IteposeKit](https://iteposekit.com/), I had a athe specific
+  eed: Ceate a implemetatio that simply calls supe, but at utime istead of at
+  compil...
 heroImage: /assets/img/2020/calling-super/Xcode-debug.png
 tags: []
+source: steipete.com
 ---
 
 While working on [InterposeKit](https://interposekit.com/), I had a rather specific need: Create an implementation that simply calls `super`, but at runtime instead of at compile time. Doesn’t sound so hard, does it? Well, here we go again.
@@ -105,7 +109,7 @@ But this doesn’t compile. The Swift compiler crashes in various flavors, which
 
 I found a [cursed workaround](https://github.com/steipete/InterposeKit/pull/15/commits/e8a63b89247e2e09e5659e9f83b02d0bc5300605#diff-badbaddeef03b9400d4aedb5a90403d3R105-R109), and indeed the `super` call logic works. However, someone on the internet quickly told me that I’m wrong.
 
-{% twitter https://twitter.com/gparker/status/1269694143543955456 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/gparker/status/1269694143543955456"></a></blockquote>
 
 Greg worked on the Objective-C runtime for many years, so if he tells you something is only working by “blind luck,” it’s not something you should ship. He also has a [really interesting blog called Hamster Emporium](http://www.sealiesoftware.com/blog/), if you’re into understanding low-level things.
 

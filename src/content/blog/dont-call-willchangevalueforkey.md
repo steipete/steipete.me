@@ -1,9 +1,9 @@
 ---
-title: ""
+title: dont-call-willchangevalueforkey
 pubDate: '2012-04-05 15:27'
-description: "You'e usig KVO, ight?"
-
+description: 'You''e usig KVO, ight?'
 tags: []
+source: petersteinberger.com
 ---
 
 You're using KVO, right? So you most likely have already written code like this:

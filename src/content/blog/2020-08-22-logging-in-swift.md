@@ -1,9 +1,14 @@
 ---
-title: "Logging in Swift"
-pubDate: 2020-08-24T19:00:00+02:00
-description: "Exploring the new Swift Logger struct, OSLogStore, and streaming access to OSLog."
+title: Logging in Swift
+pubDate: 2020-08-24T17:00:00.000Z
+description: >-
+  Exploring the new Swift Logger struct, OSLogStore, and streaming access to
+  OSLog.
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
-tags: ["[\"iOS\",","\"development\"]"]
+tags:
+  - '["iOS",'
+  - '"development"]'
+source: steipete.com
 ---
 
 <style type="text/css">
@@ -176,7 +181,7 @@ If we keep digging and also take a look at `logd`, we find references to various
 
 The admin one is required for accessing the log store. If we attach to both our app and logd, we can modify the flow at runtime to trick it into believing the entitlement is there, and voila, logging works on iOS!
 
-{% twitter https://twitter.com/khaost/status/1297647313804857345 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/khaost/status/1297647313804857345"></a></blockquote>
 
 Full credit goes to [Khaos Tian](https://twitter.com/khaost), who took the time to figure out the details. Attaching LLDB to logd requires [SIP to be disabled](https://www.imore.com/how-turn-system-integrity-protection-macos), since logd is hardened and doesn’t include the `get-task-allow` debug entitlement.
 
@@ -295,7 +300,7 @@ If you think this API is important, and that the absence of it results in things
 
 Even worse: **Apple forgot a definition in the late-removal, so importing OSLog now fails completely** and just produces an error "'OSLogEnumeratorOptions' is unavailable: not available on iOS" with Xcode 12 GM. This has been fixed in Xcode 12.2b1.
 
-{% twitter https://twitter.com/steipete/status/1310285038349684738?s=21 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1310285038349684738?s=21"></a></blockquote>
 
 Update thanks to [Kay Butter](https://twitter.com/kaybutter/status/1310310136473419777?s=21): This can be fixed via importing `os.log` instead of `OSLog`.
 

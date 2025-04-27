@@ -1,9 +1,12 @@
 ---
-title: ""
-pubDate: 2021-04-09T18:00:00+02:00
-description: "Petty much all Mac apps have a semi-hidde Debug meu that ca be tiggeed via a use defaults ety o via settigs."
+title: top-level-menu-visibility-in-swiftui
+pubDate: 2021-04-09T16:00:00.000Z
+description: >-
+  Petty much all Mac apps have a semi-hidde Debug meu that ca be tiggeed via a
+  use defaults ety o via settigs.
 heroImage: /assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png
 tags: []
+source: steipete.com
 ---
 
 <style type="text/css">

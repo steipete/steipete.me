@@ -1,16 +1,17 @@
 ---
-title: ""
-pubDate: 2020-05-20T10:00:00+02:00
-description: "O Mach 24, 2020, my 16-ich MacBook Po geeted me with a keel paic."
+title: kernel-panic-surprise-boot-args
+pubDate: 2020-05-20T08:00:00.000Z
+description: 'O Mach 24, 2020, my 16-ich MacBook Po geeted me with a keel paic.'
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
 tags: []
+source: steipete.com
 ---
 
 On March 24, 2020, my 16-inch MacBook Pro greeted me with a kernel panic. I ignored it the first time, but it started to become an everyday thing. There I was, having enjoyed a short moment of a bug-free setup, and it was interrupted yet again.
 
 If you just came here, read the backstory: [The LG UltraFine 5K, kernel_task, and Me](/posts/the-lgultrafine5k-kerneltask-and-me/).
 
-{% twitter https://twitter.com/steipete/status/1243854244115091456 %}
+<blockquote class="twitter-tweet"><a href="https://twitter.com/steipete/status/1243854244115091456"></a></blockquote>
 
 Was it just me? [No](https://twitter.com/jernejv/status/1243854771905273857?s=20), [it](https://twitter.com/SergejBerisaj/status/1243857963724558337?s=20) [seems](https://twitter.com/AlexManzer/status/1244606008955146240?s=20) [this](https://twitter.com/lostincode/status/1243900563902717953?s=20) [issue](https://twitter.com/collinluke/status/1251668176296910849?s=20) [is](https://twitter.com/pagetable/status/1244599318151155712?s=20) [fairly](https://twitter.com/BarrosMyles/status/1244021525562474497?s=20) [widespread](https://twitter.com/slaven/status/1244532699139731456?s=20). ([Even on the MacBook Air 2018](https://twitter.com/AVMatiushkin/status/1249671960713482240?s=20).) Great. (Honestly, just [search for AppleIntelFramebuffer on Twitter](https://twitter.com/search?q=AppleIntelFramebuffer&src=typed_query); this crash is everywhere!) Forced reboots are annoying, and I wanted to help, so I wrote a r̶a̶d̶a̶r̶ Feedback Assistant entry: FB7642937.
 
