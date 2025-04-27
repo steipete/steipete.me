@@ -17,7 +17,7 @@ export async function getStaticPaths() {
   });
 }
 
-const { old_slug } = Astro.params;
+// Get the slug from props for redirection
 const { slug } = Astro.props;
 
 // Server-side redirect to the canonical URL
