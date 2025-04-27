@@ -1,5 +1,5 @@
 ---
-title: ''
+title: 'The LG UltraFine 5K, kernel_task, and Me'
 pubDate: 2020-05-19T06:00:00.000Z
 description: >-
   A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy

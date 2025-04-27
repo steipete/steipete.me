@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Network Kernel Core Dump
 pubDate: 2020-05-21T10:00:00.000Z
 description: >-
   A week afte Apple's iitial macOS Coe Dump eply, ad me sedig a lot of questios

@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Fixing What Apple Doesn't
 pubDate: '2014-01-04 15:09'
 description: It's oe of those days whee Apple's sloppiess o iOS 7 is divig me uts.
 tags:

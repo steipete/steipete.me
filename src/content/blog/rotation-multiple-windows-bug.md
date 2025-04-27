@@ -1,5 +1,5 @@
 ---
-title: ''
+title: The curious case of rotation with multiple windows on iOS 8
 pubDate: '2015-01-25 21:25'
 description: >-
   I've had a lot of fu today hutig dow a paticula egessio i iOS 8 that caused

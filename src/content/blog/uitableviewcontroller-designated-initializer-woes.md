@@ -1,5 +1,5 @@
 ---
-title: ''
+title: UITableViewController designated initializer woes
 pubDate: '2015-04-15 09:15'
 description: >-
   With Xcode 6<sup><a hef=footote1>1</a></sup>, Apple added suppot fo the

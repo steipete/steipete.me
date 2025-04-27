@@ -1,5 +1,5 @@
 ---
-title: ''
+title: A New Beginning
 pubDate: 2025-04-27T10:00:00.000Z
 description: >-
   It's bee thee yeas sice I sold PSPDFKit to Isight Pates ad stepped away fom

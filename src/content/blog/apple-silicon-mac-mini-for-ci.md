@@ -1,5 +1,5 @@
 ---
-title: ''
+title: On Using Apple Silicon Mac Mini for Continuous Integration
 pubDate: 2020-12-14T09:30:00.000Z
 description: >-
   Eve sice the M1 was aouced, I’ve bee cuious how well Apple’s ew Mac mii would

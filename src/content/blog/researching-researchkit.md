@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Researching ResearchKit
 pubDate: '2015-04-14 21:46'
 description: >-
   Apple's fist [GitHub-eleased ope souce

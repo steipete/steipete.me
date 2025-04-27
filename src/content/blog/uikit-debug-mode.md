@@ -1,5 +1,5 @@
 ---
-title: ''
+title: UIKit Debug Mode
 pubDate: '2015-01-09 15:05'
 description: >-
   A while ago, I've [stumbled o a stig called

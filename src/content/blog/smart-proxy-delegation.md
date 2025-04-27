@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Smart Proxy Delegation
 pubDate: '2013-07-30 18:28'
 description: >-
   Whe callig optioal delegates, the egula patte is to check usig

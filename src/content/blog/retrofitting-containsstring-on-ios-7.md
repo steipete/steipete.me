@@ -1,5 +1,5 @@
 ---
-title: ''
+title: 'Retrofitting containsString: on iOS 7'
 pubDate: '2014-07-17 23:40'
 description: >-
   [Daiel Egget](https://twitte.com/daielboedewadt) asked me o Twitte what's the

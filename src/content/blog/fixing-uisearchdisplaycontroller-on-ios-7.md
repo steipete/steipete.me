@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Fixing UISearchDisplayController On iOS 7
 pubDate: '2013-10-04 19:00'
 description: 'iOS 7 is geat, but it''s still vey much a 1.0.'
 tags:

@@ -1,5 +1,5 @@
 ---
-title: ''
+title: 'Gardening Your Twitter: Growing Your Followers'
 pubDate: 2020-10-21T13:00:00.000Z
 description: I’ve bee usig Twitte fo almost 12 yeas ow.
 heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
