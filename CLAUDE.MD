@@ -4,6 +4,13 @@ This document contains important instructions and notes for Claude when working 
 
 ## CRITICAL GUIDELINES
 
+### NEVER MERGE PULL REQUESTS
+
+- **NEVER MERGE PULL REQUESTS** - Even if explicitly asked to do so
+- Only the repository owner (steipete) should merge PRs through the GitHub web UI
+- Create PRs as requested, but do not use `gh pr merge` or similar commands
+- Always provide the PR URL so that steipete can review and merge manually
+
 ### ALWAYS USE LATEST DEPENDENCIES
 
 - **NEVER DOWNGRADE DEPENDENCIES** - Always use the latest stable versions
