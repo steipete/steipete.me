@@ -1,7 +1,7 @@
 ---
 title: Kernel Panics and Surprise boot-args
 pubDate: 2020-05-20T08:00:00.000Z
-description: 'O Mach 24, 2020, my 16-ich MacBook Po geeted me with a keel paic.'
+description: 'On March 24, 2020, my 16-inch MacBook Pro greeted me with a kernel panic.'
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
 tags:
   - personal
