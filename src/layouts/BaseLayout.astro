@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { Analytics } from '@vercel/analytics/astro';
 
 const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 ---
@@ -19,6 +20,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
         <Footer />
       </main>
     </div>
+    <Analytics />
 
     <script>
       // Mobile sidebar toggle
