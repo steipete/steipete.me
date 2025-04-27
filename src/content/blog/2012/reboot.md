@@ -1,11 +1,13 @@
 ---
-layout: post
 title: "Reboot"
-date: 2012-04-05 00:35
-comments: true
-categories: 
+pubDate: 2012-04-05T00:35:00.000Z
 description: "This post marks the reboot of my blog where I plan to share iOS development insights and personal thoughts. After feedback about my frequent tweeting, I'm creating a space for longer-form content beyond Twitter's character limits. The previous blog content has been archived as it would have required significant updates."
-tags: ["Blog", "Personal", "Twitter", "iOS-Development"]
+tags:
+  - Blog
+  - Personal
+  - Twitter
+  - iOS-Development
+source: petersteinberger.com
 AIDescription: true
 ---
 
