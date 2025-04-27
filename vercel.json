@@ -12,13 +12,25 @@
     { "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug", "permanent": true },
     { "source": "/blog/:slug", "destination": "/blog/:slug/", "permanent": true },
     { "source": "/categories/:category(.*)", "destination": "/tags/:category", "permanent": true },
-    { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true }
+    { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "(?!steipete\\.me).*" }],
+      "destination": "https://steipete.me/:path*",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/:path+", "has": [{ "type": "host", "value": "petersteinberger.com" }], "destination": "https://steipete.me/:path*" },
-    { "source": "/:path+", "has": [{ "type": "host", "value": "steipete.com" }], "destination": "https://steipete.me/:path*" },
-    { "source": "/:path+", "has": [{ "type": "host", "value": "www.petersteinberger.com" }], "destination": "https://steipete.me/:path*" },
-    { "source": "/:path+", "has": [{ "type": "host", "value": "www.steipete.com" }], "destination": "https://steipete.me/:path*" }
+    { 
+      "source": "/:path*", 
+      "has": [
+        { 
+          "type": "host", 
+          "value": "(?!steipete\\.me).*" 
+        }
+      ], 
+      "destination": "https://steipete.me/:path*" 
+    }
   ],
   "headers": [
     {
