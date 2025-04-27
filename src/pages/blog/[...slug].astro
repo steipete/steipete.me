@@ -6,7 +6,18 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map(post => {
-    // Extract the year from the post
+    // Check if post is already in a year directory (e.g., 2020/apple-silicon-m1...)
+    const yearDirMatch = post.slug.match(/^(\d{4})\/(.*)/);
+    if (yearDirMatch) {
+      const year = yearDirMatch[1];
+      const slug = yearDirMatch[2];
+      return {
+        params: { slug: `${year}/${slug}` },
+        props: { post, yearSlug: `${year}/${slug}` }
+      };
+    }
+
+    // For posts not in year directories, extract year from metadata or slug
     const pubDate = post.data.pubDate || post.data.date;
     const year = pubDate ? pubDate.getFullYear().toString() :
       // Fallback: Try to extract year from slug if it starts with a date pattern
