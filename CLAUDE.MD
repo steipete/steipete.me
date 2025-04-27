@@ -7,8 +7,10 @@ This document contains important instructions and notes for Claude when working 
 ### ALWAYS USE LATEST DEPENDENCIES
 
 - **NEVER DOWNGRADE DEPENDENCIES** - Always use the latest stable versions
+- **ALWAYS USE TOOLING TO CHECK VERSIONS** - Never guess or assume versions
+- Run `npm outdated` to see what packages need updating
+- Run `npm view [package] version` to check the latest published version
 - When fixing dependency issues, always upgrade to the latest compatible versions
-- Check npmjs.com for the most recent versions before updating package.json
 - Prioritize staying current with the ecosystem, even if it requires more work to adapt
 
 ### IMPORTANT: Development Server Limitation
@@ -57,9 +59,21 @@ npm run preview
    - Modify the appropriate layout files in `/src/layouts/`
 
 5. **Dependency Updates**:
-   - Use `npm outdated` to check for outdated packages
-   - Update dependencies to their latest versions
+   - Always use proper tooling to check for latest versions:
+     ```bash
+     # Check all outdated dependencies
+     npm outdated
+     
+     # Check latest version of a specific package
+     npm view astro version
+     npm view react version
+     
+     # Update all dependencies to latest
+     npm update --latest
+     ```
    - Test thoroughly after updating dependencies
+   - If a build fails after updates, diagnose the specific issue and FIX it properly
+   - NEVER resort to downgrading as a solution
 
 ## Tech Stack
 
