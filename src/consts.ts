@@ -31,8 +31,8 @@ export const SITE_DESCRIPTION = SITE.description;
 // Navigation links
 export const NAV_LINKS: SocialLink[] = [
   {
-    href: '/posts',
-    label: 'Posts',
+    href: '/',
+    label: 'Blog',
   },
   {
     href: '/about',
