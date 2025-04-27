@@ -3,29 +3,20 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
-  let posts = await getCollection('blog');
+  const posts = await getCollection('blog');
 
-  // Add filename as slug if it's not available
-  posts = posts.map(post => {
-    if (!post.slug) {
-      const filePath = post.id;
-      const fileName = filePath.split('/').pop() || '';
-      const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '');
-      post.slug = fileNameWithoutExt;
-    }
-    return post;
+  return posts.map(post => {
+    return {
+      params: { slug: post.slug },
+      props: post
+    };
   });
-
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
 }
 
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await post.render(); // With newer versions of Astro, render() should always be available
+const { Content } = await post.render();
 ---
 
 <BlogPostLayout
