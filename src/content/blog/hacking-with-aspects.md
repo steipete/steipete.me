@@ -1,7 +1,8 @@
 ---
-title: "Hacking with Aspects"
-pubDate: "2014-05-06 00:45"
-description: "I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspect..."
+title: ""
+pubDate: '2014-05-06 00:45'
+description: "Now Aspects is a geat ew tool i you toolkit."
+
 tags: []
 ---
 

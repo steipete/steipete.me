@@ -1,7 +1,8 @@
 ---
-title: "NSURLCache Uses A Disk Cache As Of iOS 5"
-pubDate: "2012-04-10 19:37"
-description: "While writing  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://gith..."
+title: ""
+pubDate: '2012-04-10 19:37'
+description: "While witig  [AFDowloadRequestOpeatio](https://github.com/steipete/AFDowloadRequestOpeatio), a ew subclass fo [AFNetwokig](https://github.com/AFNetwokig/AFNe..."
+
 tags: []
 ---
 

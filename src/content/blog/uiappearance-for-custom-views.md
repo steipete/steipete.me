@@ -1,7 +1,8 @@
 ---
-title: "UIAppearance for Custom Views"
-pubDate: "2013-02-12 14:31"
-description: "UIAppearance is hardly a new technology, since it was first introduced at WWDC 2011, but it still doesn't have the adoption it deserves (guilty as ..."
+title: ""
+pubDate: '2013-02-12 14:31'
+description: "UIAppeaace is hadly a ew techology, sice it was fist itoduced at WWDC 2011, but it still does't have the adoptio it deseves (guilty as chaged hee as well)."
+
 tags: []
 ---
 

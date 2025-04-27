@@ -1,9 +1,9 @@
 ---
-title: "On Using Apple Silicon Mac Mini for Continuous Integration"
-pubDate: "2020-12-14 11:30:00 +0200"
-tags: ["iOS", "development"]
-heroImage: "/assets/img/2020/apple-silicon-ci/trippin.png"
-description: "Ever since the M1 was announced, I’ve been curious how well Apple's new Mac mini would perform for our CI system. Does it work? Is it worth it? Read and find out!"
+title: ""
+pubDate: 2020-12-14T11:30:00+02:00
+description: "Eve sice the M1 was aouced, I’ve bee cuious how well Apple’s ew Mac mii would pefom fo ou CI system."
+heroImage: /assets/img/2020/apple-silicon-ci/trippin.png
+tags: []
 ---
 
 Ever since the M1 was announced, I’ve been curious how well Apple’s new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbsp;TB SSD, 1&nbsp;GbE).

@@ -1,83 +1,40 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { render } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
-	let posts = await getCollection('blog');
-	// Add filename as slug if it's not available
-	posts = posts.map(post => {
-		if (!post.slug) {
-			const filePath = post.id;
-			const fileName = filePath.split('/').pop() || '';
-			const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '');
-			post.slug = fileNameWithoutExt;
-		}
-		return post;
-	});
-	console.log("Posts for slug generation:", posts.map(p => p.slug));
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+  let posts = await getCollection('blog');
+  
+  // Add filename as slug if it's not available
+  posts = posts.map(post => {
+    if (!post.slug) {
+      const filePath = post.id;
+      const fileName = filePath.split('/').pop() || '';
+      const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '');
+      post.slug = fileNameWithoutExt;
+    }
+    return post;
+  });
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
 }
+
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content } = await post.render(); // With newer versions of Astro, render() should always be available
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
-	<article class="post">
-		<h1 class="post-title">{post.data.title}</h1>
-		
-		<div class="post-meta">
-			<span>
-				Posted on <FormattedDate date={post.data.pubDate} />
-				{post.data.updatedDate && (
-					<span class="last-updated-on">
-						· Updated on <FormattedDate date={post.data.updatedDate} />
-					</span>
-				)}
-			</span>
-		</div>
-		
-		{post.data.heroImage && (
-			<div class="hero-image">
-				<img src={post.data.heroImage} alt="" />
-			</div>
-		)}
-		
-		<div class="post-content">
-			<Content />
-		</div>
-	</article>
-</BaseLayout>
-
-<style>
-	.post-title {
-		margin-bottom: 0.5rem;
-	}
-	
-	.post-meta {
-		color: #6c757d;
-		font-size: 0.9rem;
-		margin-bottom: 2rem;
-	}
-	
-	.hero-image {
-		margin: 2rem 0;
-	}
-	
-	.hero-image img {
-		width: 100%;
-		height: auto;
-		border-radius: 8px;
-		box-shadow: var(--box-shadow);
-	}
-	
-	.post-content {
-		line-height: 1.8;
-	}
-</style>
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  heroImage={post.data.heroImage}
+  slug={post.slug}
+>
+  <Content />
+</BlogPostLayout>

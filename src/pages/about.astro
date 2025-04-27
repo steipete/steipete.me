@@ -1,49 +1,66 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Layout from '../layouts/Layout.astro'
+import Link from '../components/Link.astro'
+import { SOCIAL_LINKS } from '../consts'
 ---
 
-<BaseLayout title="About Me" description="iOS Developer, Entrepreneur, and Open Source Contributor">
-	<div class="about-content">
-		<h1 class="page-title">About Me</h1>
-		
-		<div class="about-image">
-			<img src="/blog-placeholder-about.jpg" alt="Peter Steinberger" />
-		</div>
-		
-		<p>
-			Hi! I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor based in Vienna, Austria.
-		</p>
+<Layout title="About Me" description="iOS Developer, Entrepreneur, and Open Source Contributor">
+  <section class="py-8">
+    <div class="prose max-w-none">
+      <h1 class="text-4xl font-bold tracking-tight mb-8">👋 Hello, I'm Peter Steinberger</h1>
 
-		<p>
-			I'm the founder and CEO of <a href="https://pspdfkit.com" target="_blank">PSPDFKit GmbH</a>, a company that provides PDF solutions for web, mobile, and desktop applications. PSPDFKit is used by thousands of companies worldwide, including Dropbox, Box, and IBM.
-		</p>
+      <div class="flex flex-col md:flex-row gap-8 mb-8">
+        <div class="flex-shrink-0">
+          <img 
+            src="/images/peter-profile.jpg" 
+            alt="Peter Steinberger" 
+            class="rounded-md max-w-[300px] h-auto"
+          />
+        </div>
+        
+        <div>
+          <p class="text-lg">
+            I'm an iOS developer, entrepreneur, and open source contributor based in Vienna, Austria.
+          </p>
+          
+          <p>
+            I'm the founder of <Link href="https://pspdfkit.com" external underline>PSPDFKit</Link>, a company that provides PDF solutions for web, mobile, and desktop applications. After growing the company to serve thousands of customers worldwide, including Dropbox, Box, and IBM, we successfully sold to Insight Partners three years ago.
+          </p>
+          
+          <p>
+            Currently, I'm vibe coding my next project, exploring new technologies and opportunities in the web development ecosystem. After years in the native iOS space, I'm excited to be learning and building with modern web technologies.
+          </p>
+        </div>
+      </div>
 
-		<p>
-			I'm also an active open source contributor and have created or contributed to various iOS projects over the years. I'm a regular speaker at iOS and mobile development conferences around the world.
-		</p>
+      <div class="space-y-6">
+        <h2 class="text-2xl font-semibold">What I'm Passionate About</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Building high-quality software with great user experiences</li>
+          <li>Learning new technologies and frameworks</li>
+          <li>Open source contributions and community building</li>
+          <li>Sharing knowledge through writing and speaking</li>
+          <li>Creating developer tools that improve workflows</li>
+        </ul>
+        
+        <p>
+          I've been an active open source contributor and have created or contributed to various iOS projects over the years. I'm a regular speaker at developer conferences around the world, sharing insights on software development, entrepreneurship, and technology.
+        </p>
+        
+        <p>
+          I'm passionate about building high-quality software, creating great user experiences, and sharing knowledge with the developer community through writing and speaking.
+        </p>
 
-		<p>
-			I'm passionate about building high-quality software, creating great user experiences, and sharing knowledge with the developer community through writing and speaking.
-		</p>
-
-		<h2>Connect With Me</h2>
-		
-		<p>
-			You can find me on <a href="https://twitter.com/steipete" target="_blank">Twitter</a>, <a href="https://github.com/steipete" target="_blank">GitHub</a>, and <a href="https://www.linkedin.com/in/steipete/" target="_blank">LinkedIn</a>.
-		</p>
-	</div>
-</BaseLayout>
-
-<style>
-	.about-image {
-		max-width: 300px;
-		border-radius: 8px;
-		overflow: hidden;
-		margin: 1rem 0 2rem;
-	}
-	
-	.about-image img {
-		width: 100%;
-		height: auto;
-	}
-</style>
+        <h2 class="text-2xl font-semibold">Connect With Me</h2>
+        
+        <div class="flex flex-wrap gap-4">
+          {SOCIAL_LINKS.map((link) => (
+            <Link href={link.href} external={!link.href.startsWith('/')} class="px-4 py-2 bg-secondary rounded-md hover:bg-accent">
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

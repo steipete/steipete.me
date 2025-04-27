@@ -1,7 +1,8 @@
 ---
-title: "The curious case of rotation with multiple windows on iOS 8"
-pubDate: "2015-01-25 21:25"
-description: "I've had a lot of fun today hunting down a particular regression in iOS 8 that caused rotation when the interface was configured to not autorotate...."
+title: ""
+pubDate: '2015-01-25 21:25'
+description: "I've had a lot of fu today hutig dow a paticula egessio i iOS 8 that caused otatio whe the iteface was cofigued to ot autootate."
+
 tags: []
 ---
 

@@ -1,0 +1,106 @@
+@tailwind components;
+
+@layer components {
+  .prose {
+    @apply text-base leading-7;
+
+    p {
+      @apply text-gray-700 dark:text-gray-300 my-5;
+    }
+
+    h1 {
+      @apply mt-0 mb-6 scroll-m-20 text-4xl leading-tight font-medium;
+    }
+
+    h2 {
+      @apply mt-8 mb-4 scroll-m-20 text-2xl leading-tight font-medium;
+    }
+
+    h3 {
+      @apply mt-6 mb-4 scroll-m-20 text-xl leading-tight font-medium;
+    }
+
+    h4 {
+      @apply mt-6 mb-3 scroll-m-20 text-lg leading-tight font-medium;
+    }
+
+    h5 {
+      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium;
+    }
+
+    h6 {
+      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium;
+    }
+
+    a {
+      @apply font-medium break-words underline underline-offset-4 transition-colors;
+    }
+
+    strong {
+      @apply font-medium;
+    }
+
+    ul {
+      @apply my-5 ml-6 list-disc [&>li]:mt-2;
+    }
+
+    ol {
+      @apply my-5 ml-6 list-decimal [&>li]:mt-2;
+    }
+
+    li {
+      @apply pl-2 [&>p]:my-0;
+    }
+
+    ul ul,
+    ol ol,
+    ul ol,
+    ol ul {
+      @apply my-2 ml-6;
+    }
+
+    code {
+      @apply bg-gray-100 dark:bg-gray-800 relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words;
+    }
+
+    blockquote {
+      @apply text-gray-500 dark:text-gray-400 my-6 border-l-2 pl-6;
+    }
+
+    hr {
+      @apply border-gray-200 dark:border-gray-700 my-8 border-t;
+    }
+
+    table {
+      @apply my-6 block w-full overflow-x-auto text-sm;
+    }
+
+    thead {
+      @apply border-gray-300 dark:border-gray-700 border-b;
+    }
+
+    th {
+      @apply px-4 py-2 font-medium;
+      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+    }
+
+    tr {
+      @apply border-gray-200 dark:border-gray-800 border-y first:border-t-0 last:border-b-0;
+    }
+
+    td {
+      @apply text-gray-700 dark:text-gray-300 px-4 py-2 align-top break-words;
+      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+    }
+
+    img,
+    video,
+    figure {
+      @apply my-6;
+    }
+
+    kbd {
+      @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-md border px-2 py-1 text-xs font-medium;
+    }
+  }
+}

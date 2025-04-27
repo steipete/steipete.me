@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import FormattedDate from '../components/FormattedDate.astro'
+import Layout from './Layout.astro'
+
+type Props = CollectionEntry<'blog'>['data'] & {
+  slug: string
+}
+
+const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props
+---
+
+<Layout title={title} description={description}>
+  <article class="prose max-w-none">
+    <div class="not-prose mb-8">
+      <h1 class="text-4xl font-bold tracking-tight mb-2">
+        {title}
+      </h1>
+
+      <div class="flex items-center gap-x-2 text-sm text-gray-500 dark:text-gray-400">
+        <FormattedDate date={pubDate} />
+        {
+          updatedDate && (
+            <>
+              <span>•</span>
+              <span>
+                Updated on <FormattedDate date={updatedDate} />
+              </span>
+            </>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      heroImage && (
+        <img
+          src={heroImage}
+          alt=""
+          class="mb-8 aspect-video w-full rounded-md object-cover"
+        />
+      )
+    }
+
+    <slot />
+  </article>
+</Layout>

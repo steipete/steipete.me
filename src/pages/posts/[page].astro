@@ -1,34 +1,38 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import Layout from '../../layouts/Layout.astro'
+import Link from '../../components/Link.astro'
+import FormattedDate from '../../components/FormattedDate.astro'
+import { getCollection } from 'astro:content'
+import { SITE } from '../../consts'
 
 export async function getStaticPaths() {
   // Get all blog posts
-  let allPosts = await getCollection('blog');
+  let allPosts = await getCollection('blog')
+  
   // Add filename as slug if it's not available
   allPosts = allPosts.map(post => {
     if (!post.slug) {
-        const filePath = post.id;
-        const fileName = filePath.split('/').pop() || '';
-        const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '');
-        post.slug = fileNameWithoutExt;
+      const filePath = post.id
+      const fileName = filePath.split('/').pop() || ''
+      const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '')
+      post.slug = fileNameWithoutExt
     }
-    return post;
-  });
+    return post
+  })
+  
   const sortedPosts = allPosts.sort(
     (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
-  );
+  )
   
   // Define pagination
-  const postsPerPage = 10;
-  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+  const postsPerPage = SITE.postsPerPage
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
   
   // Generate pages 2, 3, 4, etc. (page 1 is handled by /posts/index.astro)
   return Array.from({ length: totalPages - 1 }).map((_, i) => {
-    const pageNumber = i + 2; // Start from page 2
-    const start = (pageNumber - 1) * postsPerPage;
-    const end = start + postsPerPage;
+    const pageNumber = i + 2 // Start from page 2
+    const start = (pageNumber - 1) * postsPerPage
+    const end = start + postsPerPage
     
     return {
       params: { page: pageNumber.toString() },
@@ -37,117 +41,128 @@ export async function getStaticPaths() {
         currentPage: pageNumber,
         totalPages
       }
-    };
-  });
+    }
+  })
 }
 
-const { posts, currentPage, totalPages } = Astro.props;
+const { posts, currentPage, totalPages } = Astro.props
 ---
 
-<BaseLayout title={`Blog Posts - Page ${currentPage}`}>
-  <div class="blog-content">
-    <h1 class="page-title">Blog Posts</h1>
-    
-    <div id="post-list">
-      {posts.map((post) => (
-        <div class="post-preview">
-          <h2>
-            <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
-          </h2>
-          
-          <div class="post-meta">
-            <i class="far fa-clock"></i>
-            <span class="post-date">
-              <FormattedDate date={post.data.pubDate} />
-            </span>
-          </div>
-          
-          <div class="post-content">
-            <p>{post.data.description}</p>
-          </div>
-          
-          <a href={`/posts/${post.slug}/`} class="read-more">Read more →</a>
-        </div>
-      ))}
+<Layout title={`Blog Posts - Page ${currentPage}`} description={`Page ${currentPage} of blog posts on iOS development, tech, and entrepreneurship`}>
+  <section class="py-8">
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold tracking-tight mb-4">Blog Posts</h1>
+      <p class="text-foreground/80">
+        A collection of my thoughts on iOS development, tech, and entrepreneurship.
+      </p>
     </div>
-    
-    <div class="pagination">
-      {currentPage > 1 && (
-        <a href={`/posts${currentPage - 1 === 1 ? '' : '/' + (currentPage - 1)}`}>
-          ← Previous
-        </a>
-      )}
-      
-      {Array.from({ length: totalPages }).map((_, i) => (
-        <a 
-          href={`/posts${i === 0 ? '' : '/' + (i + 1)}`}
-          class={currentPage === i + 1 ? 'active' : ''}
-        >
-          {i + 1}
-        </a>
-      ))}
-      
-      {currentPage < totalPages && (
-        <a href={`/posts/${currentPage + 1}`}>
-          Next →
-        </a>
-      )}
-    </div>
-  </div>
-</BaseLayout>
 
-<style>
-  .post-preview {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .post-preview:last-child {
-    border-bottom: none;
-  }
-  
-  .post-preview h2 {
-    margin-bottom: 0.5rem;
-    font-size: 1.8rem;
-  }
-  
-  .post-meta {
-    color: #6c757d;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-  
-  .post-content {
-    margin: 1rem 0;
-  }
-  
-  .read-more {
-    display: inline-block;
-    font-weight: 500;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
-    gap: 0.5rem;
-  }
-  
-  .pagination a {
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    color: #212529;
-    text-decoration: none;
-  }
-  
-  .pagination a.active {
-    background-color: var(--accent);
-    color: white;
-  }
-  
-  .pagination a:hover:not(.active) {
-    background-color: #e9ecef;
-  }
-</style>
+    <div class="flex flex-col gap-10">
+      {
+        posts.map((post) => (
+          <article class="flex flex-col space-y-4">
+            <div class="space-y-2">
+              <div class="text-muted-foreground text-sm">
+                <FormattedDate date={post.data.pubDate} />
+              </div>
+              <h2 class="text-2xl font-bold leading-tight">
+                <Link href={`/posts/${post.slug}/`} class="text-foreground">
+                  {post.data.title}
+                </Link>
+              </h2>
+            </div>
+            <p class="text-foreground/80">{post.data.description}</p>
+            <div>
+              <Link
+                href={`/posts/${post.slug}/`}
+                class="text-foreground inline-flex items-center gap-1 font-medium"
+              >
+                Read more
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="size-4"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <nav aria-label="Pagination" class="mt-12 flex justify-center">
+      <ul class="flex items-center gap-1">
+        {currentPage > 1 && (
+          <li>
+            <Link
+              href={`/posts${currentPage - 1 === 1 ? '' : '/' + (currentPage - 1)}`}
+              class="bg-secondary flex h-9 w-9 items-center justify-center rounded-md text-sm"
+              aria-label="Go to previous page"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-4"
+              >
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </Link>
+          </li>
+        )}
+        
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <li>
+            <Link
+              href={`/posts${i === 0 ? '' : '/' + (i + 1)}`}
+              class={`flex h-9 w-9 items-center justify-center rounded-md text-sm ${
+                currentPage === i + 1
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary'
+              }`}
+              aria-label={`Go to page ${i + 1}`}
+              aria-current={currentPage === i + 1 ? 'page' : undefined}
+            >
+              {i + 1}
+            </Link>
+          </li>
+        ))}
+        
+        {currentPage < totalPages && (
+          <li>
+            <Link
+              href={`/posts/${currentPage + 1}`}
+              class="bg-secondary flex h-9 w-9 items-center justify-center rounded-md text-sm"
+              aria-label="Go to next page"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-4"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </Link>
+          </li>
+        )}
+      </ul>
+    </nav>
+  </section>
+</Layout>
