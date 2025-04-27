@@ -1,5 +1,5 @@
 ---
-title: Disabling Keyboard Avoidance in SwiftUI UIHostingController
+title: Disabling Keyboard Avoidance in SwiftUI's UIHostingController
 pubDate: 2020-09-21T20:00:00.000Z
 description: >-
   While SwiftUI is still beig [cooked hot](/posts/state-of-swiftui/), it’s

@@ -1,5 +1,5 @@
 ---
-title: InterposeKit
+title: InterposeKit — Elegant Swizzling in Swift
 pubDate: 2020-05-31T10:00:00.000Z
 description: I built a thig!
 heroImage: /assets/img/2020/interposekit/logo.png

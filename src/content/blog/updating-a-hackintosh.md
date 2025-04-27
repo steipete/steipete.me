@@ -1,5 +1,5 @@
 ---
-title: Updating a Hackintosh
+title: Updating macOS on a Hackintosh
 pubDate: 2020-06-01T08:00:00.000Z
 description: 'With macOS 10.15.5 out, it was time to update my Hackitosh agai.'
 heroImage: /assets/img/2020/hackintosh/opencore-config.png

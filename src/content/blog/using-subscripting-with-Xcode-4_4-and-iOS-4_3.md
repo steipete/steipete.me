@@ -1,5 +1,5 @@
 ---
-title: Using Subscripting with Xcode 4.4 and iOS 4.3
+title: Using Subscripting With Xcode 4.4 And iOS 4.3+
 pubDate: '2012-07-11 15:03'
 description: >-
   Now that Xcode 4.4 has fially eached Golde Maste ad [you ca submit

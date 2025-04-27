@@ -1,5 +1,5 @@
 ---
-title: 'Don''t Call willChangeValueForKey:'
+title: Don't Call willChangeValueForKey Unless It's Really Needed
 pubDate: '2012-04-05 15:27'
 description: 'You''e usig KVO, ight?'
 tags:

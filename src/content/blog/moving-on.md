@@ -1,5 +1,7 @@
 ---
-title: Moving On
+title: >-
+  Moving On... Or How Waiting For A Visa Was The Best Thing That Ever Happened
+  To Me.
 pubDate: '2012-04-06 16:00'
 description: >-
   A few days ago I booked my flight back to

@@ -1,5 +1,5 @@
 ---
-title: How to Center UIScrollView
+title: How To Center Content Within UIScrollView
 pubDate: '2013-02-21 12:07'
 description: >-
   Thee seems to be
