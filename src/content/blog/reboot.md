@@ -1,7 +1,8 @@
 ---
-title: 'Reboot'
-pubDate: 2012-04-05 00:35
-description: 'I\'ve rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that...'
+title: "Reboot"
+pubDate: "2012-04-05 00:35"
+description: "I\'ve rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that..."
+tags: []
 ---
 
 I've rebooted my blog. I will add random bits about iOS development and some personal thoughts, especially since some of my friends complained that apparently [I tweet too much](http://twitter.com/amyhoy/status/185733715874422784) (*cough* Amy *cough*)

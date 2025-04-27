@@ -1,9 +1,9 @@
 ---
-title: 'zld — A Faster Version of Apple's Linker'
-pubDate: 2020-06-05 10:00:00 +0200
-tags: iOS development
-heroImage: '/assets/img/2020/zld/benchmarks.png'
-description: 'zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to spee...'
+title: "zld — A Faster Version of Apple\'s Linker"
+pubDate: "2020-06-05 10:00:00 +0200"
+tags: ["iOS", "development"]
+heroImage: "/assets/img/2020/zld/benchmarks.png"
+description: "zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to spee..."
 ---
 
 zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  

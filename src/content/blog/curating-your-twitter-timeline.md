@@ -1,9 +1,9 @@
 ---
-title: 'Gardening Your Twitter: Curating Your Timeline'
-pubDate: 2020-10-21 16:00:00 +0200
-tags: social
-heroImage: '/assets/img/2020/make-twitter-work/gardening-curating.jpg'
-description: 'Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you.'
+title: "Gardening Your Twitter: Curating Your Timeline"
+pubDate: "2020-10-21 16:00:00 +0200"
+tags: ["social"]
+heroImage: "/assets/img/2020/make-twitter-work/gardening-curating.jpg"
+description: "Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what\'s not interesting and how to mute negative people and keep Twitter fun for you."
 ---
 
 Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter. 

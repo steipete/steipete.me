@@ -1,7 +1,8 @@
 ---
-title: 'Smart Proxy Delegation'
-pubDate: 2013-07-30 18:28
-description: 'When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward ...'
+title: "Smart Proxy Delegation"
+pubDate: "2013-07-30 18:28"
+description: "When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward ..."
+tags: []
 ---
 
 When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward and easy to understand:

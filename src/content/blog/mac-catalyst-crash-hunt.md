@@ -1,11 +1,11 @@
 ---
-title: 'The Great Mac Catalyst Text Input Crash Hunt'
-pubDate: 2020-05-30 00:00:00 +0200
-tags: iOS development hacks
-heroImage: '/assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png'
-description: '<style type="text/css">
+title: "The Great Mac Catalyst Text Input Crash Hunt"
+pubDate: "2020-05-30 00:00:00 +0200"
+tags: ["iOS", "development", "hacks"]
+heroImage: "/assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png"
+description: "<style type="text/css">
 div.post-content > img:first-child { display:none; }
-</style>'
+</style>"
 ---
 
 <style type="text/css">

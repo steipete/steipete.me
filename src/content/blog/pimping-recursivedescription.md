@@ -1,7 +1,8 @@
 ---
-title: 'Pimping recursiveDescription'
-pubDate: 2012-07-01 15:49
-description: 'While working on [PSPDFKit](http://pspdfkit.com), more and more I embrace viewController containment to better distribute responsibilities between ...'
+title: "Pimping recursiveDescription"
+pubDate: "2012-07-01 15:49"
+description: "While working on [PSPDFKit](http://pspdfkit.com), more and more I embrace viewController containment to better distribute responsibilities between ..."
+tags: []
 ---
 
 While working on [PSPDFKit](http://pspdfkit.com), more and more I embrace viewController containment to better distribute responsibilities between different view controllers.

@@ -42,6 +42,19 @@ async function convertFile(filePath) {
   let description = '';
   let heroImage = '';
   
+  // Helper function to clean and quote string values properly
+  function cleanAndQuote(value) {
+    if (!value) return '';
+    
+    // Remove existing quotes first
+    let cleaned = value.trim().replace(/^["']|["']$/g, '');
+    
+    // Escape single quotes
+    cleaned = cleaned.replace(/'/g, "\\'");
+    
+    return `"${cleaned}"`;
+  }
+  
   // Process each line in the frontmatter
   frontmatterLines.forEach(line => {
     // Extract title
@@ -49,7 +62,7 @@ async function convertFile(filePath) {
       const titleMatch = line.match(/title:\s*(.+)$/);
       if (titleMatch && titleMatch[1]) {
         title = titleMatch[1].trim().replace(/^["']|["']$/g, '');
-        processedFrontmatter.push(`title: '${title}'`);
+        processedFrontmatter.push(`title: ${cleanAndQuote(title)}`);
       }
     } 
     // Extract date and convert to pubDate
@@ -57,7 +70,7 @@ async function convertFile(filePath) {
       const dateMatch = line.match(/date:\s*(.+)$/);
       if (dateMatch && dateMatch[1]) {
         pubDate = dateMatch[1].trim();
-        processedFrontmatter.push(`pubDate: ${pubDate}`);
+        processedFrontmatter.push(`pubDate: "${pubDate}"`);
       }
     }
     // Extract existing pubDate if available
@@ -65,7 +78,7 @@ async function convertFile(filePath) {
       const dateMatch = line.match(/pubDate:\s*(.+)$/);
       if (dateMatch && dateMatch[1]) {
         pubDate = dateMatch[1].trim();
-        processedFrontmatter.push(`pubDate: ${pubDate}`);
+        processedFrontmatter.push(`pubDate: "${pubDate}"`);
       }
     }
     // Extract description or summary
@@ -73,7 +86,7 @@ async function convertFile(filePath) {
       const descMatch = line.match(/(?:description|summary):\s*(.+)$/);
       if (descMatch && descMatch[1]) {
         description = descMatch[1].trim().replace(/^["']|["']$/g, '');
-        processedFrontmatter.push(`description: '${description}'`);
+        processedFrontmatter.push(`description: ${cleanAndQuote(description)}`);
       }
     }
     // Extract hero image if available
@@ -81,7 +94,24 @@ async function convertFile(filePath) {
       const imgMatch = line.match(/(?:image|header-img|hero):\s*(.+)$/);
       if (imgMatch && imgMatch[1]) {
         heroImage = imgMatch[1].trim().replace(/^["']|["']$/g, '');
-        processedFrontmatter.push(`heroImage: '${heroImage}'`);
+        processedFrontmatter.push(`heroImage: ${cleanAndQuote(heroImage)}`);
+      }
+    }
+    // Handle tags
+    else if (line.startsWith('tags:')) {
+      // Convert tags list to array format
+      const tagsMatch = line.match(/tags:\s*(.+)$/);
+      if (tagsMatch && tagsMatch[1]) {
+        const tagList = tagsMatch[1].trim()
+          .split(/\s+/)
+          .map(tag => tag.replace(/[,]/g, '').trim())
+          .filter(tag => tag.length > 0);
+        
+        if (tagList.length > 0) {
+          processedFrontmatter.push(`tags: [${tagList.map(t => `"${t}"`).join(', ')}]`);
+        }
+      } else {
+        processedFrontmatter.push('tags: []');
       }
     }
     // Skip layout, comments, categories
@@ -98,7 +128,12 @@ async function convertFile(filePath) {
       ? firstParagraph.substring(0, 147) + '...' 
       : firstParagraph;
     
-    processedFrontmatter.push(`description: '${truncatedDesc.replace(/'/g, "\\'")}'`);
+    processedFrontmatter.push(`description: ${cleanAndQuote(truncatedDesc)}`);
+  }
+  
+  // Add tags if missing
+  if (!frontmatter.includes('tags:')) {
+    processedFrontmatter.push('tags: []');
   }
   
   // Generate new frontmatter

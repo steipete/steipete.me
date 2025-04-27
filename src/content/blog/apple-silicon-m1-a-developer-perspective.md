@@ -1,9 +1,9 @@
 ---
-title: 'Apple Silicon M1: A Developer's Perspective'
-pubDate: 2020-11-28 15:00:00 +0200
-tags: iOS development
-heroImage: '/assets/img/2020/m1/m1.jpg'
-description: 'The excitement around Apple's new M1 chip is everywhere. I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine.'
+title: "Apple Silicon M1: A Developer\'s Perspective"
+pubDate: "2020-11-28 15:00:00 +0200"
+tags: ["iOS", "development"]
+heroImage: "/assets/img/2020/m1/m1.jpg"
+description: "The excitement around Apple\'s new M1 chip is everywhere. I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine."
 ---
 
 The excitement around Apple’s new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here’s an early report after a week of testing.

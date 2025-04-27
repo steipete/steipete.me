@@ -1,9 +1,9 @@
 ---
-title: 'The LG UltraFine 5K, kernel_task, and Me'
-pubDate: 2020-05-19 08:00:00 +0200
-tags: hardware
-heroImage: '/assets/img/2020/appleintelframebuffer/lg-box.jpg'
-description: 'A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. ...'
+title: "The LG UltraFine 5K, kernel_task, and Me"
+pubDate: "2020-05-19 08:00:00 +0200"
+tags: ["hardware"]
+heroImage: "/assets/img/2020/appleintelframebuffer/lg-box.jpg"
+description: "A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. ..."
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:

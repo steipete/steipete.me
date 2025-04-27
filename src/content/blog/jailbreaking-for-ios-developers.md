@@ -1,11 +1,11 @@
 ---
-title: 'Jailbreaking for iOS Developers'
-pubDate: 2020-05-26 00:00:00 +0200
-tags: iOS hacks
-heroImage: '/assets/img/2020/jailbreaking/header.jpg'
-description: '<style type="text/css">
+title: "Jailbreaking for iOS Developers"
+pubDate: "2020-05-26 00:00:00 +0200"
+tags: ["iOS", "hacks"]
+heroImage: "/assets/img/2020/jailbreaking/header.jpg"
+description: "<style type="text/css">
 div.post-content > img:first-child { width:50% !important; }
-</style>'
+</style>"
 ---
 
 <style type="text/css">

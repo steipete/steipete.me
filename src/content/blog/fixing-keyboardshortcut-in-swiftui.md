@@ -1,9 +1,9 @@
 ---
-title: 'Fixing keyboardShortcut in SwiftUI'
-pubDate: 2021-01-31 13:30:00 +0200
-tags: iOS SwiftUI development
-heroImage: '/assets/img/2021/fixing-keyboardshortcut-in-swiftui/header.png'
-description: '`keyboardShortcut` is a convenient way to add shortcuts in SwiftUI. However, it likely won’t work. I was curious why that is, so follow along with me for a round of SwiftUI debugging! Spoiler: The workaround is at the end of this article.'
+title: "Fixing keyboardShortcut in SwiftUI"
+pubDate: "2021-01-31 13:30:00 +0200"
+tags: ["iOS", "SwiftUI", "development"]
+heroImage: "/assets/img/2021/fixing-keyboardshortcut-in-swiftui/header.png"
+description: "`keyboardShortcut` is a convenient way to add shortcuts in SwiftUI. However, it likely won’t work. I was curious why that is, so follow along with me for a round of SwiftUI debugging! Spoiler: The workaround is at the end of this article."
 ---
 
 iOS 14 introduced `keyboardShortcut`, a convenient native way to add keyboard shortcuts to SwiftUI. However, if you end up using it, it likely won’t work. I was curious why that is, so follow along with me for a round of SwiftUI debugging! Spoiler: The workaround is at the end of this article.

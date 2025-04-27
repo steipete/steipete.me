@@ -1,9 +1,9 @@
 ---
-title: 'Disabling Keyboard Avoidance in SwiftUI's UIHostingController'
-pubDate: 2020-09-21 22:00:00 +0200
-tags: iOS development
-heroImage: '/assets/img/2020/uihostingcontroller-keyboard/header.png'
-description: 'UIHostingController has logic to avoid the keyboard, which is often unwanted. We explore a hack to disable this feature.'
+title: "Disabling Keyboard Avoidance in SwiftUI\'s UIHostingController"
+pubDate: "2020-09-21 22:00:00 +0200"
+tags: ["iOS", "development"]
+heroImage: "/assets/img/2020/uihostingcontroller-keyboard/header.png"
+description: "UIHostingController has logic to avoid the keyboard, which is often unwanted. We explore a hack to disable this feature."
 ---
 
 <style type="text/css">
