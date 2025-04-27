@@ -1,7 +1,8 @@
 ---
-title: "Adding Keyboard Shortcuts To UIAlertView"
-pubDate: "2013-03-06 22:38"
-description: "I'm not even home from the more-than-excellent [NSConference](http://nsconference.com) in Leicester, but had to hack on something super awesome tha..."
+title: ""
+pubDate: '2013-03-06 22:38'
+description: "I'm ot eve home fom the moe-tha-excellet [NSCofeece](http://scofeece.com) i Leiceste, but had to hack o somethig supe awesome that [Eva Doll of Flipboad](htt..."
+
 tags: []
 ---
 

@@ -1,35 +1,88 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Link from '../components/Link.astro';
+import { SITE } from '../consts';
+
+// Get all blog posts and sort by date
+let allPosts = await getCollection('blog');
+allPosts = allPosts.sort(
+	(a, b) => {
+		const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
+		const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
+		return dateB - dateA;
+	},
+);
+
+// Pagination settings
+const postsPerPage = 10;
+const totalPages = Math.ceil(allPosts.length / postsPerPage);
+const currentPage = 1;
+const posts = allPosts.slice(0, postsPerPage);
 ---
 
-<BaseLayout>
-	<div class="home-content">
-		<h1 class="page-title">👋 Hello, I'm Peter Steinberger</h1>
-		<p>
-			Welcome to my personal website. I'm an iOS developer, entrepreneur, and open source contributor.
-		</p>
-		<p>
-			I'm the founder and CEO of <a href="https://pspdfkit.com" target="_blank">PSPDFKit</a>, a company that provides PDF solutions for web, mobile, and desktop applications. 
-			Our technology is used by thousands of companies worldwide to power their document workflows.
-		</p>
-		<p>
-			I'm passionate about:
-		</p>
-		<ul>
-			<li>iOS and macOS development</li>
-			<li>Building high-quality software</li>
-			<li>Open source contributions</li>
-			<li>Sharing knowledge through blogging and speaking</li>
-			<li>Creating developer tools that improve workflows</li>
-		</ul>
-		<p>
-			Check out my <a href="/blog">blog</a> where I write about iOS development, entrepreneurship, and technology.
-			You can also learn more <a href="/about">about me</a> and my work.
-		</p>
-		<p>
-			Feel free to connect with me on <a href="https://twitter.com/steipete" target="_blank">Twitter</a>, 
-			<a href="https://github.com/steipete" target="_blank">GitHub</a>, or 
-			<a href="https://www.linkedin.com/in/steipete/" target="_blank">LinkedIn</a>.
-		</p>
-	</div>
-</BaseLayout>
+<Layout title={SITE.title} description={SITE.description}>
+  <section class="py-8">
+    <h1 class="text-4xl font-bold tracking-tight mb-10">Latest Posts</h1>
+    
+    <div class="space-y-12">
+      {posts.map((post) => (
+        <article class="border-b border-border pb-8 last:border-0">
+          <h2 class="text-2xl font-semibold leading-tight mb-2">
+            <a href={`/blog/${post.slug}/`} class="hover:text-primary">
+              {post.data.title}
+            </a>
+          </h2>
+          
+          <div class="flex items-center text-sm text-muted-foreground mb-4">
+            <FormattedDate date={new Date(post.data.pubDate || post.data.date)} />
+          </div>
+          
+          {post.data.description && (
+            <p class="text-foreground/80 mb-4">{post.data.description}</p>
+          )}
+          
+          <div>
+            <a href={`/blog/${post.slug}/`} class="text-primary font-medium hover:underline">
+              Read more →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+    
+    {totalPages > 1 && (
+      <div class="flex justify-center mt-10 gap-2">
+        {currentPage > 1 && (
+          <a 
+            href={currentPage - 1 === 1 ? '/' : `/page/${currentPage - 1}`}
+            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
+          >
+            ← Previous
+          </a>
+        )}
+        
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <a 
+            href={i === 0 ? '/' : `/page/${i + 1}`}
+            class={`px-4 py-2 rounded-md ${currentPage === i + 1 
+              ? 'bg-primary text-primary-foreground' 
+              : 'bg-secondary hover:bg-accent'}`}
+          >
+            {i + 1}
+          </a>
+        ))}
+        
+        {currentPage < totalPages && (
+          <a 
+            href={`/page/${currentPage + 1}`}
+            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
+          >
+            Next →
+          </a>
+        )}
+      </div>
+    )}
+  </section>
+</Layout>

@@ -1,7 +1,8 @@
 ---
-title: "Fixing UITextView On iOS 7"
-pubDate: "2014-01-08 20:03"
-description: "UITextView on iOS 7 is [a lot more powerful](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITextView_Class/Reference/UITex..."
+title: ""
+pubDate: '2014-01-08 20:03'
+description: "UITextView o iOS 7 is [a lot moe poweful](https://develope.apple.com/libay/ios/documetatio/UIKit/Refeece/UITextViewClass/Refeece/UITextView.html//appleef/occ..."
+
 tags: []
 ---
 

@@ -1,7 +1,8 @@
 ---
-title: "Hacking Block Support Into UIMenuItem"
-pubDate: "2012-07-17 16:22"
-description: "tl;dr: UIMenuItem! Blocks! [Get the code on GitHub.](https://github.com/steipete/PSMenuItem)"
+title: ""
+pubDate: '2012-07-17 16:22'
+description: "tl;d: UIMeuItem!"
+
 tags: []
 ---
 

@@ -1,7 +1,8 @@
 ---
-title: "UITableViewController designated initializer woes"
-pubDate: "2015-04-15 09:15"
-description: "With Xcode 6<sup><a href=\"footnote1\">1</a></sup>, Apple added support for the NS_DESIGNATED_INITIALIZER flag, and also added this to various framew..."
+title: ""
+pubDate: '2015-04-15 09:15'
+description: "With Xcode 6<sup><a hef=footote1>1</a></sup>, Apple added suppot fo the NSDESIGNATEDINITIALIZER flag, ad also added this to vaious famewok classes."
+
 tags: []
 ---
 

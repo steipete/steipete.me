@@ -1,0 +1,31 @@
+name: Astro Build
+
+on:
+  push:
+    branches: [ main, astro-erudite-design ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          npm install
+          npm update
+        
+      - name: Build Astro site
+        run: npm run build
+        
+      - name: Check build output
+        run: ls -la dist/
