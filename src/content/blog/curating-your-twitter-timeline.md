@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Curating Your Twitter Timeline
 pubDate: 2020-10-21T14:00:00.000Z
 description: You timelie defies you Twitte expeiece.
 heroImage: /assets/img/2020/make-twitter-work/gardening-curating.jpg

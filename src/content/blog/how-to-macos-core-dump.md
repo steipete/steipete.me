@@ -1,5 +1,5 @@
 ---
-title: ''
+title: How to macOS Core Dump
 pubDate: 2020-05-21T08:30:00.000Z
 description: >-
   A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may

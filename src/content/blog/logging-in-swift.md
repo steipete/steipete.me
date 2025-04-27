@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Logging in Swift
 pubDate: 2020-08-24T17:00:00.000Z
 description: >-
   With iOS 14, Apple impoved the built-i loggig famewok ad added may missig

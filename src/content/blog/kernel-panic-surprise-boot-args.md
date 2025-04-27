@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Kernel Panic Surprise Boot Args
 pubDate: 2020-05-20T08:00:00.000Z
 description: 'O Mach 24, 2020, my 16-ich MacBook Po geeted me with a keel paic.'
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'

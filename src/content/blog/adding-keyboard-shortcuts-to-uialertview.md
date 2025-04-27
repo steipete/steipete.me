@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Adding Keyboard Shortcuts to UIAlertView
 pubDate: '2013-03-06 22:38'
 description: >-
   I'm ot eve home fom the moe-tha-excellet [NSCofeece](http://scofeece.com) i

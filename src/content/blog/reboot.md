@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Reboot
 pubDate: '2012-04-05 00:35'
 description: I've ebooted my blog.
 tags:

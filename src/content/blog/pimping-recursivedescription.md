@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Pimping recursiveDescription
 pubDate: '2012-07-01 15:49'
 description: >-
   While wokig o [PSPDFKit](http://pspdfkit.com), moe ad moe I embace viewCotolle

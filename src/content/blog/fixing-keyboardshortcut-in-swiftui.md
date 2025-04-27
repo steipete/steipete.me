@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Fixing KeyboardShortcut in SwiftUI
 pubDate: 2021-01-31T11:30:00.000Z
 description: >-
   iOS 14 itoduced keyboadShotcut, a coveiet ative way to add keyboad shotcuts to

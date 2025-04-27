@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Building with Swift Trunk
 pubDate: 2020-06-12T15:00:00.000Z
 description: >-
   I ecetly stated the advetue of buildig PSPDFKit with the [Swift tuk developmet
