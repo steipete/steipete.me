@@ -5,10 +5,16 @@ description: "Discover the undocumented limitations in macOS Big Sur's new 'Opti
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
   - macOS
-  - Catalyst
+  - Mac-Catalyst
   - UIKit
   - SwiftUI
-  - Big Sur
+  - Big-Sur
+  - AppKit
+  - UI-Controls
+  - Debugging
+  - Runtime
+  - Reverse-Engineering
+  - UIStepper
 source: steipete.com
 AIDescription: true
 ---

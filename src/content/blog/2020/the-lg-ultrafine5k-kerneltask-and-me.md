@@ -8,7 +8,12 @@ tags:
   - Hardware
   - macOS
   - Troubleshooting
-  - LG UltraFine
+  - LG-UltraFine
+  - MacBook-Pro
+  - Thunderbolt
+  - Display
+  - Thermal-Management
+  - kernel_task
 source: steipete.com
 AIDescription: true
 ---

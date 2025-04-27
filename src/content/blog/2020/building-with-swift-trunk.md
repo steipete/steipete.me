@@ -12,9 +12,12 @@ tags:
   - Xcode
   - Compilation
   - iOS
-  - Catalyst
+  - Mac-Catalyst
   - Linker
   - Troubleshooting
+  - Swift-Trunk
+  - Build-Errors
+  - APINotes
 source: steipete.com
 AIDescription: true
 ---
