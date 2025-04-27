@@ -7,8 +7,6 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/posts", "destination": "/", "permanent": true },
-    { "source": "/posts/(.*)/", "destination": "/blog/$1/", "permanent": true },
-    { "source": "/posts/(.*)$", "destination": "/blog/$1/", "permanent": true },
     { "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug/", "permanent": true },
     { "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug/", "permanent": true },
     { "source": "/blog/:slug([^\\/]+)$", "destination": "/blog/:slug/", "permanent": true },
