@@ -6,16 +6,31 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map(post => {
+    // Extract the year from the post
+    const pubDate = post.data.pubDate || post.data.date;
+    const year = pubDate ? pubDate.getFullYear().toString() : 
+      // Fallback: Try to extract year from slug if it starts with a date pattern
+      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ? 
+        post.slug.substring(0, 4) : 
+        // If no year can be found, use the current year as fallback
+        new Date().getFullYear().toString();
+    
+    // Create a slug with the year prefix
+    const yearSlug = `${year}/${post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '')}`;
+    
     return {
-      params: { slug: post.slug },
-      props: post
+      params: { slug: yearSlug },
+      props: { post, yearSlug }
     };
   });
 }
 
-type Props = CollectionEntry<'blog'>;
+type Props = {
+  post: CollectionEntry<'blog'>;
+  yearSlug: string;
+};
 
-const post = Astro.props;
+const { post, yearSlug } = Astro.props;
 const { Content } = await post.render();
 ---
 
@@ -25,7 +40,7 @@ const { Content } = await post.render();
   pubDate={post.data.pubDate}
   updatedDate={post.data.updatedDate}
   heroImage={post.data.heroImage}
-  slug={post.slug}
+  slug={yearSlug}
 >
   <Content />
 </BlogPostLayout>

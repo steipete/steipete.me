@@ -6,17 +6,26 @@ export async function getStaticPaths() {
 
   return posts.map(post => {
     // Get the slug from the filename
-    const slug = post.slug;
+    const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+    
+    // Extract the year from the post
+    const pubDate = post.data.pubDate || post.data.date;
+    const year = pubDate ? pubDate.getFullYear().toString() : 
+      // Fallback: Try to extract year from slug if it starts with a date pattern
+      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ? 
+        post.slug.substring(0, 4) : 
+        // If no year can be found, use the current year as fallback
+        new Date().getFullYear().toString();
 
     return {
       params: { old_slug: slug },
-      props: { post }
+      props: { post, year, slug }
     };
   });
 }
 
-const { old_slug } = Astro.params;
+const { year, slug } = Astro.props;
 
-// Server-side redirect to the canonical URL
-return Astro.redirect(`/blog/${old_slug}/`, 301);
+// Server-side redirect to the canonical URL with year
+return Astro.redirect(`/posts/${year}/${slug}/`, 301);
 ---
