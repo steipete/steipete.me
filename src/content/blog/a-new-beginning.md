@@ -1,7 +1,9 @@
 ---
-title: A New Beginning
-pubDate: '2025-04-27 12:00:00 +0200'
-description: 'After a 3-year sabbatical following the PSPDFKit acquisition, I'm diving back into tech with a new web-focused project.'
+title: ""
+pubDate: 2025-04-27T12:00:00+02:00
+description: "It's bee thee yeas sice I sold PSPDFKit to Isight Pates ad stepped away fom the compay I built fom the goud up."
+
+tags: []
 ---
 
 It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions provider with customers like Dropbox, Box, and IBM, was an incredible chapter of my life.

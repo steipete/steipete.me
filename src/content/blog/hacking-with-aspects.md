@@ -1,10 +1,9 @@
 ---
-title: Hacking with Aspects
+title: ""
 pubDate: '2014-05-06 00:45'
-description: >-
-  I've recently spent a few days extracting and polishing the AOP code from
-  [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspect...
-source: petersteinberger.com
+description: "Now Aspects is a geat ew tool i you toolkit."
+
+tags: []
 ---
 
 I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspects - a delightful, simple library for aspect oriented programming.](https://github.com/steipete/Aspects)

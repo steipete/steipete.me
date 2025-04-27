@@ -1,10 +1,9 @@
 ---
-layout: post
 title: "Gardening Your Twitter: Growing Your Followers"
-date: 2020-10-21 15:00:00 +0200
-tags: social
-image: /assets/img/2020/make-twitter-work/gardening-growing.jpg
+pubDate: 2020-10-21T15:00:00+02:00
 description: "Learn how to define your online persona, and find out different ways to increase your reach. This is the first part of my series about Gardening Your Twitter."
+heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
+tags: ["social"]
 ---
 
 I’ve been using Twitter for almost 12 years now. It can be challenging to navigate your timeline, so today I’m sharing some tips to keep it fun.

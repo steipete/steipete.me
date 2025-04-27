@@ -1,11 +1,9 @@
 ---
-title: Researching ResearchKit
+title: ""
 pubDate: '2015-04-14 21:46'
-description: >-
-  Apple's first [GitHub-released open source
-  project](https://github.com/ResearchKit/ResearchKit/) is a big thing. There's
-  much to learn here - I've ...
-source: petersteinberger.com
+description: "Apple's fist [GitHub-eleased ope souce poject](https://github.com/ReseachKit/ReseachKit/) is a big thig."
+
+tags: []
 ---
 
 Apple's first [GitHub-released open source project](https://github.com/ResearchKit/ResearchKit/) is a big thing. There's much to learn here - I've spent some time reading through the source, here are my observations.

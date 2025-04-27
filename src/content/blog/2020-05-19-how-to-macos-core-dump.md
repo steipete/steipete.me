@@ -1,9 +1,9 @@
 ---
-layout: post
 title: "How to macOS Core Dump"
-date: 2020-05-21 10:30:00 +0200
-tags: bugs development
-image: /assets/img/2020/appleintelframebuffer/feedback.png
+pubDate: 2020-05-21T10:30:00+02:00
+description: "A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may commets wee left, i which I kept pigig Apple ad epotig o this issue, ad afte tyig a..."
+heroImage: /assets/img/2020/appleintelframebuffer/feedback.png
+tags: ["bugs","development"]
 ---
 
 <style type="text/css">

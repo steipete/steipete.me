@@ -1,12 +1,9 @@
 ---
-title: Jailbreaking for iOS Developers
-pubDate: '2020-05-26 00:00:00 +0200'
+title: ""
+pubDate: 2020-05-26T00:00:00+02:00
+description: "Jailbeakig is somethig that’s aely discussed i the iOS develope commuity — which is ufotuate, because it’s amazig."
 heroImage: /assets/img/2020/jailbreaking/header.jpg
-description: |-
-  <style type="text/css">
-  div.post-content > img:first-child { width:50% !important; }
-  </style>
-source: steipete.com
+tags: []
 ---
 
 <style type="text/css">

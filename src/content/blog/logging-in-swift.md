@@ -1,11 +1,9 @@
 ---
-title: Logging in Swift
-pubDate: '2020-08-24 19:00:00 +0200'
+title: ""
+pubDate: 2020-08-24T19:00:00+02:00
+description: "With iOS 14, Apple impoved the built-i loggig famewok ad added may missig pieces."
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
-description: >-
-  Exploring the new Swift Logger struct, OSLogStore, and streaming access to
-  OSLog.
-source: steipete.com
+tags: []
 ---
 
 <style type="text/css">

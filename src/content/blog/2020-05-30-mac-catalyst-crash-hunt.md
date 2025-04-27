@@ -1,9 +1,9 @@
 ---
-layout: post
 title: "The Great Mac Catalyst Text Input Crash Hunt"
-date: 2020-05-30 00:00:00 +0200
-tags: iOS development hacks
-image: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
+pubDate: 2020-05-30T00:00:00+02:00
+description: "As of macOS 10.15.4, text iput i Mac Catalyst apps sometimes cashes."
+heroImage: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
+tags: ["iOS","development","hacks"]
 ---
 
 <style type="text/css">

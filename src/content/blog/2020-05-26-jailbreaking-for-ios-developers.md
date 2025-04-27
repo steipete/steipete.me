@@ -1,9 +1,9 @@
 ---
-layout: post
 title: "Jailbreaking for iOS Developers"
-date: 2020-05-26 00:00:00 +0200
-tags: iOS hacks
-image: /assets/img/2020/jailbreaking/header.jpg
+pubDate: 2020-05-26T00:00:00+02:00
+description: "Jailbeakig is somethig that’s aely discussed i the iOS develope commuity — which is ufotuate, because it’s amazig."
+heroImage: /assets/img/2020/jailbreaking/header.jpg
+tags: ["iOS","hacks"]
 ---
 
 <style type="text/css">

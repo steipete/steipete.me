@@ -1,11 +1,9 @@
 ---
-title: 'The LG UltraFine 5K, kernel_task, and Me'
-pubDate: '2020-05-19 08:00:00 +0200'
+title: ""
+pubDate: 2020-05-19T08:00:00+02:00
+description: "A good stoy is uaced ad complicated, ad it cotais supise twists ad a happy edig."
 heroImage: /assets/img/2020/appleintelframebuffer/lg-box.jpg
-description: >-
-  A good story is nuanced and complicated, and it contains surprise twists and a
-  happy ending. Me owning an LG UltraFine 5K delivers on all of that. ...
-source: steipete.com
+tags: []
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:

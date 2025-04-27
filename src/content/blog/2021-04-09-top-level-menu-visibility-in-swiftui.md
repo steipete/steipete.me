@@ -3,7 +3,7 @@ title: "Top-Level Menu Visibility in SwiftUI for macOS"
 pubDate: 2021-04-09T18:00:00+02:00
 description: "SwiftUI's new app lifecycles makes it extremely simple to create menus on-demand. Modifying a top-level menu however is surprisingly hard."
 heroImage: /assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png
-tags: ["iOS", "SwiftUI", "development"]
+tags: ["[\"iOS\",","\"SwiftUI\",","\"development\"]"]
 ---
 
 <style type="text/css">
