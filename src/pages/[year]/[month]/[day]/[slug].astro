@@ -3,21 +3,36 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
+  const routes = [];
 
-  return posts.map(post => {
+  for (const post of posts) {
     // Extract date components from filename if it's in date format (YYYY-MM-DD-slug.md)
-    const dateMatch = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md/);
-
-    if (dateMatch) {
-      const [/* full match */, year, month, day, slug] = dateMatch;
-      return {
+    const oldDateMatch = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md/);
+    
+    if (oldDateMatch) {
+      const [/* full match */, year, month, day, slug] = oldDateMatch;
+      routes.push({
         params: { year, month, day, slug },
-        props: { post }
-      };
+        props: { slug }
+      });
+    } 
+    
+    // For new year-folder format, extract the slug from the path
+    const slugParts = post.slug.split('/');
+    if (slugParts.length > 1 && /^\d{4}$/.test(slugParts[0])) {
+      const year = slugParts[0];
+      // Use month/day as placeholders since we don't use them
+      const month = "01";
+      const day = "01";
+      const slug = slugParts[1];
+      routes.push({
+        params: { year, month, day, slug },
+        props: { slug }
+      });
     }
+  }
 
-    return null;
-  }).filter(Boolean);
+  return routes;
 }
 
 const { slug } = Astro.params;

@@ -12,13 +12,14 @@ export async function getStaticPaths() {
 
     return {
       params: { old_slug: oldSlug },
-      props: { post }
+      props: { slug: post.slug }
     };
   });
 }
 
 const { old_slug } = Astro.params;
+const { slug } = Astro.props;
 
 // Server-side redirect to the canonical URL
-return Astro.redirect(`/blog/${old_slug}/`, 301);
+return Astro.redirect(`/blog/${slug}/`, 301);
 ---

@@ -96,6 +96,48 @@ npm run preview
    - If a build fails after updates, diagnose the specific issue and FIX it properly
    - NEVER resort to downgrading as a solution
 
+## Git Hooks and Linting
+
+### Husky Setup
+
+The project uses Husky for Git hooks to enforce code quality:
+
+- Husky v9+ is used for managing Git hooks
+- The `prepare` script in package.json automatically installs Husky hooks
+- To manually initialize or update Husky:
+  ```bash
+  # Install latest version
+  npm install husky@latest --save-dev
+  
+  # Initialize Husky (v9+ syntax)
+  npx husky init
+  
+  # Add hooks (e.g. pre-commit for lint-staged)
+  npx husky add .husky/pre-commit "npx lint-staged"
+  ```
+
+- If you see Husky warnings about deprecated versions, follow these steps:
+  ```bash
+  # Check current Husky version
+  npm list husky
+  
+  # Update to latest version
+  npm install husky@latest --save-dev
+  
+  # Update prepare script in package.json to use modern syntax:
+  # "prepare": "husky"
+  
+  # Enable Git hooks
+  npx husky
+  ```
+
+### Lint-Staged Configuration
+
+- Runs ESLint on staged files before commit
+- Configuration is in package.json under the "lint-staged" key
+- Automatically fixes issues when possible
+- Prevents committing code with linting errors
+
 ## Tech Stack
 
 - **Astro** (latest version) - Main framework
