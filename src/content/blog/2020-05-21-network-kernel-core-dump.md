@@ -1,10 +1,7 @@
 ---
-title: Network Kernel Core Dump
+title: "Network Kernel Core Dump"
 pubDate: 2020-05-21T10:00:00.000Z
-description: >-
-  A week afte Apple's iitial macOS Coe Dump eply, ad me sedig a lot of questios
-  thei way, I got a eally ice, huma eply that explais the pocess via etwokig ad
-  a...
+description: "A week after Apple's initial macOS Core Dump reply, I received a detailed explanation about the process of capturing kernel dumps via networking and a second Mac."
 heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
 tags:
   - development
@@ -31,9 +28,9 @@ This should return: `- 0 com.apple.kdumpd`
 
 On the client (panicking) machine run the following commands
 Locate the IP address of the core dump server.  
-`sudo nvram boot-args="debug=0xd44 _panicd_ip=10.0.40.2 kdp_match_name=en7”`
+`sudo nvram boot-args="debug=0xd44 _panicd_ip=10.0.40.2 kdp_match_name=en7"`
 
-Where `10.0.40.2` is replaced by the IP address of the server and en7 is replaced by the name of the client’s Ethernet interface. You can use this command to show all of the network interfaces on the system: `ifconfig -a`
+Where `10.0.40.2` is replaced by the IP address of the server and en7 is replaced by the name of the client's Ethernet interface. You can use this command to show all of the network interfaces on the system: `ifconfig -a`
 
 Then reboot: `sudo reboot`
 

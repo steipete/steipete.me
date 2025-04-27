@@ -1,10 +1,7 @@
 ---
 title: How To Center Content Within UIScrollView
 pubDate: '2013-02-21 12:07'
-description: >-
-  Thee seems to be
-  [some](http://stackoveflow.com/questios/1496015/is-it-possible-to-cete-cotet-i-a-uiscollview-like-apples-photos-app/3479059)
-  [cofusio](http:...
+description: 'There seems to be some [confusion](http://stackoverflow.com/questions/1316451/center-content-of-uiscrollview-...'
 tags:
   - iOS
   - Objective-C

@@ -1,9 +1,7 @@
 ---
 title: A New Beginning
 pubDate: 2025-04-27T10:00:00.000Z
-description: >-
-  It's been three years since I sold PSPDFKit to Insight Partners and stepped away from
-  the company I built from the ground up.
+description: "It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions pro..."
 tags:
   - iOS
   - Swift

@@ -1,14 +1,12 @@
 ---
-title: Don't Call willChangeValueForKey Unless It's Really Needed
-pubDate: '2012-04-05 15:27'
-description: 'You''e usig KVO, ight?'
+title: "Don't Call willChangeValueForKey Unless It's Really Needed"
+pubDate: '2012-04-05T15:27:00+00:00'
+description: "You're using KVO, right? Learn why you don't need to manually call willChangeValueForKey in most cases."
 tags:
   - iOS
   - macOS
   - Objective-C
   - UIKit
-  - SwiftUI
-  - Apple Silicon
 source: petersteinberger.com
 ---
 
