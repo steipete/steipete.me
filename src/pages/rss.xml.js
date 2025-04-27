@@ -14,13 +14,16 @@ export async function GET(context) {
 		}
 		return post;
 	});
+	
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
 		items: posts.map((post) => ({
-			...post.data,
-			link: `/posts/${post.slug}/`,
+			title: post.data.title || post.slug,
+			description: post.data.description || '',
+			pubDate: post.data.pubDate || new Date(),
+			link: `/blog/${post.slug}/`,
 		})),
 	});
 }

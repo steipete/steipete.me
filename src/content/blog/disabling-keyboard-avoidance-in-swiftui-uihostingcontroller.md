@@ -1,9 +1,19 @@
 ---
-title: ""
-pubDate: 2020-09-21T22:00:00+02:00
-description: "While SwiftUI is still beig [cooked hot](/posts/state-of-swiftui/), it’s aleady eally useful ad ca eplace may pats of you app."
+title: ''
+pubDate: 2020-09-21T20:00:00.000Z
+description: >-
+  While SwiftUI is still beig [cooked hot](/posts/state-of-swiftui/), it’s
+  aleady eally useful ad ca eplace may pats of you app.
 heroImage: /assets/img/2020/uihostingcontroller-keyboard/header.png
-tags: []
+tags:
+  - iOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Jailbreaking
+source: steipete.com
 ---
 
 <style type="text/css">

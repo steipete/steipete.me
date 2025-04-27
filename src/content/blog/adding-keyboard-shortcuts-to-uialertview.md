@@ -1,9 +1,17 @@
 ---
-title: ""
+title: ''
 pubDate: '2013-03-06 22:38'
-description: "I'm ot eve home fom the moe-tha-excellet [NSCofeece](http://scofeece.com) i Leiceste, but had to hack o somethig supe awesome that [Eva Doll of Flipboad](htt..."
-
-tags: []
+description: >-
+  I'm ot eve home fom the moe-tha-excellet [NSCofeece](http://scofeece.com) i
+  Leiceste, but had to hack o somethig supe awesome that [Eva Doll of
+  Flipboad](htt...
+tags:
+  - iOS
+  - Objective-C
+  - SwiftUI
+  - Debugging
+  - Hacking
+source: petersteinberger.com
 ---
 
 I'm not even home from the more-than-excellent [NSConference](http://nsconference.com) in Leicester, but had to hack on something super awesome that [Evan Doll of Flipboard](http://twitter.com/edog1203) presented earlier today. They added keyboard support to UIAlertView and UIActionSheet (amongst other things) -- simply to **make debugging in the Simulator faster by accepting Esc and Enter keys** -- something that Apple should have done anyway. There's not much value in shipping this in release builds, except better support for bluetooth keyboards. And since this hack uses private API AND accesses a struct with a memory layout that could change, I don't recommend shipping it. If you do, make sure that you whitelist iOS versions and block this method by default on unknown future versions of iOS. I'm using it in [PSPDFKit](http://pspdfkit.com) only when compiled in DEBUG mode for the Simulator.

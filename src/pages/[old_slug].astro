@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  
+  return posts.map(post => {
+    // Get the slug from the filename
+    const slug = post.slug;
+    
+    return {
+      params: { old_slug: slug },
+      props: { post }
+    };
+  });
+}
+
+const { old_slug } = Astro.params;
+
+// Server-side redirect to the canonical URL
+return Astro.redirect(`/blog/${old_slug}/`, 301);
+---

@@ -1,9 +1,14 @@
 ---
-title: "Calling Super at Runtime in Swift"
-pubDate: 2020-06-10T17:00:00+02:00
-description: "While wokig o [IteposeKit](https://iteposekit.com/), I had a athe specific eed: Ceate a implemetatio that simply calls supe, but at utime istead of at compil..."
+title: Calling Super at Runtime in Swift
+pubDate: 2020-06-10T15:00:00.000Z
+description: >-
+  While wokig o [IteposeKit](https://iteposekit.com/), I had a athe specific
+  eed: Ceate a implemetatio that simply calls supe, but at utime istead of at
+  compil...
 heroImage: /assets/img/2020/calling-super/Xcode-debug.png
-tags: ["highlights"]
+tags:
+  - highlights
+source: steipete.com
 ---
 
 While working on [InterposeKit](https://interposekit.com/), I had a rather specific need: Create an implementation that simply calls `super`, but at runtime instead of at compile time. Doesn’t sound so hard, does it? Well, here we go again.

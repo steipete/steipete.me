@@ -1,0 +1,18 @@
+# Redirect domain aliases to primary domain
+https://petersteinberger.com/* https://steipete.me/:splat 301!
+https://www.petersteinberger.com/* https://steipete.me/:splat 301!
+https://steipete.com/* https://steipete.me/:splat 301!
+https://www.steipete.com/* https://steipete.me/:splat 301!
+
+# Redirect old date-based URLs
+/20:year/:month/:day/:slug/* /blog/:slug/ 301!
+
+# Redirect old blog URL pattern
+/blog/:year/:month/:day/:slug/ /blog/:slug/ 301!
+
+# Handle missing trailing slashes
+/blog/:slug /blog/:slug/ 301!
+
+# Optional: Handle old categories or tags if needed
+/categories/:category/* /tags/:category/ 301!
+/tag/:tag/ /tags/:tag/ 301!

@@ -7,7 +7,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://steipete.com',
+	site: 'https://steipete.me',
 	markdown: {
 		shikiConfig: {
 			theme: 'github-dark',
