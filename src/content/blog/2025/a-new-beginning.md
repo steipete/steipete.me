@@ -1,7 +1,7 @@
 ---
 title: A New Beginning
 pubDate: 2025-04-27T10:00:00.000Z
-description: 'After three years since selling PSPDFKit to Insight Partners, I'm embarking on a new chapter in my career. This post reflects on my decade-long journey building a global document solutions company from the ground up, and announces my transition from iOS and native development to web technologies. I share my motivations for this significant career shift—seeking growth through new challenges, embracing the maturity of modern web platforms, and rediscovering the joy of building from scratch. While not yet revealing specifics about my new venture, I explain how I'm approaching this transition with the same principles that guided my previous work: meticulous attention to detail, user-centered design, and creating software that's both powerful and delightful to use.'
+description: "After three years since selling PSPDFKit to Insight Partners, I'm embarking on a new chapter in my career. This post reflects on my decade-long journey building a global document solutions company from the ground up, and announces my transition from iOS and native development to web technologies. I share my motivations for this significant career shift—seeking growth through new challenges, embracing the maturity of modern web platforms, and rediscovering the joy of building from scratch. While not yet revealing specifics about my new venture, I explain how I'm approaching this transition with the same principles that guided my previous work: meticulous attention to detail, user-centered design, and creating software that's both powerful and delightful to use."
 tags:
   - Career
   - Web-Development
