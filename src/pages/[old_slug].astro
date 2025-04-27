@@ -5,6 +5,17 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map(post => {
+    // Check if post is already in a year directory (e.g., 2020/apple-silicon-m1...)
+    const yearDirMatch = post.slug.match(/^(\d{4})\/(.*)/);
+    if (yearDirMatch) {
+      const year = yearDirMatch[1];
+      const slug = yearDirMatch[2];
+      return {
+        params: { old_slug: slug },
+        props: { post, year, slug }
+      };
+    }
+
     // Get the slug from the filename
     const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
 
