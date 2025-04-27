@@ -5,7 +5,7 @@
     @apply text-base leading-7;
 
     p {
-      @apply text-gray-700 dark:text-gray-300 my-5;
+      @apply text-gray-700 dark:text-gray-200 my-5;
     }
 
     h1 {
@@ -41,15 +41,15 @@
     }
 
     ul {
-      @apply my-5 ml-6 list-disc [&>li]:mt-2;
+      @apply my-5 ml-6 list-disc [&>li]:mt-2 dark:text-gray-50;
     }
 
     ol {
-      @apply my-5 ml-6 list-decimal [&>li]:mt-2;
+      @apply my-5 ml-6 list-decimal [&>li]:mt-2 dark:text-gray-50;
     }
 
     li {
-      @apply pl-2 [&>p]:my-0;
+      @apply pl-2 [&>p]:my-0 dark:text-gray-50;
     }
 
     ul ul,
