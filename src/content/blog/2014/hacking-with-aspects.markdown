@@ -1,9 +1,15 @@
 ---
-layout: post
 title: "Hacking with Aspects"
-date: 2014-05-06 00:45
-comments: true
-categories: 
+pubDate: 2014-05-06T00:45:00.000Z
+description: "Join me as I explore practical uses for Aspects, my open-source library for aspect-oriented programming in Objective-C. In this article, I investigate how Apple implements the iOS 6 iPad restriction that forces UIImagePickerController to be presented via a popover. Through runtime analysis with Hopper, I uncover Apple's view hierarchy traversal technique for popover detection and demonstrate how to use Aspects to bypass this restriction safely. This behind-the-scenes look reveals how UIKit works internally and showcases the power of runtime inspection for debugging and hacking."
+tags:
+  - iOS
+  - Aspects
+  - AOP
+  - Runtime
+  - Reverse Engineering
+source: petersteinberger.com
+AIDescription: true
 ---
 
 I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspects - a delightful, simple library for aspect oriented programming.](https://github.com/steipete/Aspects)

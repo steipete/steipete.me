@@ -1,9 +1,15 @@
 ---
-layout: post
 title: "UIKit Debug Mode"
-date: 2015-01-09 15:05
-comments: true
-categories: 
+pubDate: 2015-01-09T15:05:00.000Z
+description: "Discover hidden debugging features in UIKit that Apple engineers use internally to troubleshoot UI issues. I explain how to enable the secret UIPopoverControllerPaintsTargetRect setting and bypass Apple's InternalBuild checks using runtime tricks with Aspects and Facebook's fishhook. Learn how to access a wealth of internal debug flags that provide detailed logging for touches, gestures, animations, and more. This post includes practical code examples and implementation details for accessing these powerful hidden tools."
+tags:
+  - iOS
+  - UIKit
+  - Debugging
+  - Runtime
+  - Reverse Engineering
+source: petersteinberger.com
+AIDescription: true
 ---
 
 A while ago, I've [stumbled on a string called `UIPopoverControllerPaintsTargetRect`](https://twitter.com/steipete/status/546976070512435200) in some UIKit disassembly - definitely worth investigating! Now that I finally own [IDA](https://www.hex-rays.com/products/ida/), I did some research. Turns out there's a hidden preferences file under `/Library/Preferences/com.apple.UIKit` that UIKit queries for these settings.

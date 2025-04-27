@@ -1,9 +1,15 @@
 ---
-layout: post
 title: "The curious case of rotation with multiple windows on iOS 8"
-date: 2015-01-25 21:25
-comments: true
-categories: 
+pubDate: 2015-01-25T21:25:00.000Z
+description: "Journey with me as I diagnose and solve a perplexing iOS 8 regression where rotation occurs despite interface configurations explicitly prohibiting it. Through careful analysis of UIKit's decompiled code across iOS 7.1 and 8.1, I uncover how Apple's changes to UIWindow rotation handling break apps using multiple windows. This technical deep-dive reveals the core problem and presents a practical workaround that hides the rootViewController during window transitions to bypass the rotation issue without affecting iOS 7 compatibility."
+tags:
+  - iOS
+  - UIKit
+  - Rotation
+  - Bug Fix
+  - Reverse Engineering
+source: petersteinberger.com
+AIDescription: true
 ---
 
 I've had a lot of fun today hunting down a particular regression in iOS 8 that caused rotation when the interface was configured to not autorotate. This is particular fun since this was reported by a [PSPDFKit](https://pspdfkit.com/) customer and since they're paying for our product, they also expect a solution. So giving them a "It's an UIKit regression" answer isn't good enough. Prepared with IDA and decompiled versions of UIKit iOS 7.1 (where everything works) and UIKit iOS 8.1 (where things are broken) I've spend the better part of a day diffing and understanding the root cause.
