@@ -3,14 +3,24 @@ import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	let posts = await getCollection('blog');
+	// Add filename as slug if it's not available
+	posts = posts.map(post => {
+		if (!post.slug) {
+			const filePath = post.id;
+			const fileName = filePath.split('/').pop() || '';
+			const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '');
+			post.slug = fileNameWithoutExt;
+		}
+		return post;
+	});
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
 		items: posts.map((post) => ({
 			...post.data,
-			link: `/blog/${post.id}/`,
+			link: `/posts/${post.slug}/`,
 		})),
 	});
 }

@@ -5,6 +5,10 @@
   "installCommand": "npm install",
   "framework": "astro",
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/blog", "destination": "/posts", "permanent": true },
+    { "source": "/blog/(.*)", "destination": "/posts/$1", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
