@@ -332,13 +332,18 @@ pre code {
     background-color: #0d1117 !important;
   }
   
-  /* Force all code text to be white/visible */
+  /* Make all text in code blocks more visible in dark mode */
   .astro-code.github-dark code span {
+    color: #e1e4e8 !important; /* Base color for all text */
+  }
+  
+  /* Increase brightness of inline styles even further */
+  .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
     color: #ffffff !important;
   }
   
-  /* Override Shiki's inline styles with !important */
-  .astro-code.github-dark [style*="color"] {
+  /* Ensure text with inline styles is bright enough */
+  .astro-code.github-dark [style*="color:#24292E"] {
     color: #ffffff !important;
   }
   
