@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-PSPDFKIT_ENV=test NO_CONTRACTS=true LICENSE_API_URL=http://localhost:3000/api/ bundle exec rake
-NO_CONTRACTS=true bundle exec middleman build
-bundle exec danger

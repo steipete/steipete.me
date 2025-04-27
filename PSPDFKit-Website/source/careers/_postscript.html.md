@@ -1,3 +1,0 @@
-PSPDFKit is an equal opportunity employer with people from many different cultures and countries. We celebrate diversity and are committed to building a team that represents a variety of backgrounds, skillsets, and perspectives, and to providing our employees with a work environment free of harassment.
-
-We do not discriminate on the basis of race, color, religion, age, marital status, national origin, ancestry, physical or mental disability, medical​​​ condition, sexual orientation, gender identity or ​expression, or any other non-merit factor. We’d especially love to receive applications from individuals who are underrepresented in the tech industry.

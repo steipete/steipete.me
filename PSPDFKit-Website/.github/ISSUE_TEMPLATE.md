@@ -1,6 +1,0 @@
-
-
-## Details
-
-
-## Acceptance Criteria
