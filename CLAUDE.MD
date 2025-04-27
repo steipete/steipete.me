@@ -11,6 +11,12 @@ This document contains important instructions and notes for Claude when working 
 - Create PRs as requested, but do not use `gh pr merge` or similar commands
 - Always provide the PR URL so that steipete can review and merge manually
 
+### USE GSED INSTEAD OF SED
+
+- **ALWAYS USE `gsed` INSTEAD OF `sed`** - For better compatibility across platforms
+- `gsed` provides GNU sed features that are more consistent across Linux and macOS
+- If editing files with sed-like operations, use `gsed` to ensure reliable results
+
 ### ALWAYS USE LATEST DEPENDENCIES
 
 - **NEVER DOWNGRADE DEPENDENCIES** - Always use the latest stable versions
