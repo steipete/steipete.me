@@ -34,6 +34,6 @@ I'm not quite ready to reveal exactly what I'm building yet. It's still taking s
 
 What I can say is that I'm approaching this new venture with the same principles that guided my previous work: attention to detail, focus on user experience, and a belief that software should be both powerful and a joy to use.
 
-Stay tuned for more updates as this new journey unfolds. The best way to follow along is right here on this blog, or connect with me on [Twitter](https://twitter.com/steipete) or [BlueSky](https://bsky.app/profile/steipete.com).
+Stay tuned for more updates as this new journey unfolds. The best way to follow along is right here on this blog, or connect with me on [Twitter](https://twitter.com/steipete) or [BlueSky](https://bsky.app/profile/steipete.me).
 
 It's good to be back! ✋
