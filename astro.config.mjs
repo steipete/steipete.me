@@ -10,7 +10,12 @@ export default defineConfig({
 	site: 'https://steipete.me',
 	markdown: {
 		shikiConfig: {
-			theme: 'github-dark',
+			theme: 'github-light',
+			// Add support for both light and dark modes
+			themes: {
+				light: 'github-light',
+				dark: 'github-dark'
+			},
 		},
 	},
 	integrations: [
