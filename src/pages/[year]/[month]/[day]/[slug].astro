@@ -3,23 +3,25 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  
+
   return posts.flatMap(post => {
     // Try to extract date components from slug if it follows the pattern YYYY-MM-DD-slug
     const slugMatch = post.slug.match(/^(\d{4})-(\d{2})-(\d{2})-(.*)/);
-    
+
     if (slugMatch) {
-      const [_, year, month, day, slug] = slugMatch;
-      
+      const year = slugMatch[1];
+      const month = slugMatch[2];
+      const day = slugMatch[3];
+      const slug = slugMatch[4];
       // Return a path for the old WordPress-style URL
       return {
-        params: { 
-          year, 
-          month, 
-          day, 
-          slug 
+        params: {
+          year,
+          month,
+          day,
+          slug
         },
-        props: { 
+        props: {
           post,
           targetYear: year,
           targetSlug: slug
@@ -36,13 +38,13 @@ export async function getStaticPaths() {
       const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
       
       return {
-        params: { 
-          year, 
-          month, 
-          day, 
-          slug 
+        params: {
+          year,
+          month,
+          day,
+          slug
         },
-        props: { 
+        props: {
           post,
           targetYear: year,
           targetSlug: slug

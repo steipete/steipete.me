@@ -7,13 +7,13 @@ export async function getStaticPaths() {
   return posts.map(post => {
     // Get the slug from the filename
     const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-    
+
     // Extract the year from the post
     const pubDate = post.data.pubDate || post.data.date;
-    const year = pubDate ? pubDate.getFullYear().toString() : 
+    const year = pubDate ? pubDate.getFullYear().toString() :
       // Fallback: Try to extract year from slug if it starts with a date pattern
-      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ? 
-        post.slug.substring(0, 4) : 
+      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ?
+        post.slug.substring(0, 4) :
         // If no year can be found, use the current year as fallback
         new Date().getFullYear().toString();
 
