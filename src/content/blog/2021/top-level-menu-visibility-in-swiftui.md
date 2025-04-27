@@ -1,7 +1,7 @@
 ---
 title: Top-Level Menu Visibility in SwiftUI for macOS
 pubDate: 2021-04-09T16:00:00.000Z
-description: 'This article tackles a specific limitation in SwiftUI's menu system on macOS—conditionally showing top-level menus like a Debug menu. While SwiftUI elegantly handles conditional menu items within a CommandMenu, it doesn't provide a native way to show or hide entire top-level menus. I explore the problem, demonstrate why standard SwiftUI approaches fail due to CommandsBuilder limitations, and provide a practical workaround using AppKit integration. The solution leverages NSApp.mainMenu directly, showing how to bridge SwiftUI's declarative paradigm with imperative AppKit code when needed.'
+description: "This article tackles a specific limitation in SwiftUI's menu system on macOS—conditionally showing top-level menus like a Debug menu. While SwiftUI elegantly handles conditional menu items within a CommandMenu, it doesn't provide a native way to show or hide entire top-level menus. I explore the problem, demonstrate why standard SwiftUI approaches fail due to CommandsBuilder limitations, and provide a practical workaround using AppKit integration. The solution leverages NSApp.mainMenu directly, showing how to bridge SwiftUI's declarative paradigm with imperative AppKit code when needed."
 heroImage: /assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png
 tags:
   - macOS
