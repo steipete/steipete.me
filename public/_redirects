@@ -1,9 +1,3 @@
-# Redirect domain aliases to primary domain
-https://petersteinberger.com/* https://steipete.me/:splat 301!
-https://www.petersteinberger.com/* https://steipete.me/:splat 301!
-https://steipete.com/* https://steipete.me/:splat 301!
-https://www.steipete.com/* https://steipete.me/:splat 301!
-
 # Catch-all for ANY domain that isn't steipete.me
 /* https://steipete.me/:splat 301!
 
