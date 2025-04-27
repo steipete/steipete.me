@@ -1,6 +1,9 @@
 # Catch-all for ANY domain that isn't steipete.me
 /* https://steipete.me/:splat 301!
 
+# Catch-all for ANY domain that isn't steipete.me
+/* https://steipete.me/:splat 301!
+
 # Redirect old date-based URLs
 /20:year/:month/:day/:slug/* /blog/:slug/ 301!
 
