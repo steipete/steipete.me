@@ -1,5 +1,5 @@
 ---
-title: ''
+title: A Story About Swizzling "the Right Way™" and Touch Forwarding
 pubDate: '2014-07-04 12:17'
 description: >-
   Some people thik of me as the guy that does [cazy thigs to ObjC ad swizzles

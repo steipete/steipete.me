@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Hacking with Aspects
 pubDate: '2014-05-06 00:45'
 description: Now Aspects is a geat ew tool i you toolkit.
 tags:

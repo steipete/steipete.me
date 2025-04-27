@@ -1,5 +1,5 @@
 ---
-title: ''
+title: Jailbreaking for iOS Developers
 pubDate: 2020-05-25T22:00:00.000Z
 description: >-
   Jailbeakig is somethig that’s aely discussed i the iOS develope commuity —

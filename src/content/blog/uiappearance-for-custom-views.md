@@ -1,5 +1,5 @@
 ---
-title: ''
+title: UIAppearance for Custom Views
 pubDate: '2013-02-12 14:31'
 description: >-
   UIAppeaace is hadly a ew techology, sice it was fist itoduced at WWDC 2011,

@@ -1,5 +1,5 @@
 ---
-title: ''
+title: How To Inspect The View Hierarchy Of Third-Party Apps
 pubDate: '2013-12-27 18:42'
 description: I'm geeally ot a big fa of jailbeaks.
 tags:
