@@ -2,8 +2,8 @@
 title: Top-Level Menu Visibility in SwiftUI for macOS
 pubDate: 2021-04-09T16:00:00.000Z
 description: >-
-  Petty much all Mac apps have a semi-hidde Debug meu that ca be tiggeed via a
-  use defaults ety o via settigs.
+  SwiftUI's new app lifecycles makes it extremely simple to create menus
+  on-demand. Modifying a top-level menu however is surprisingly hard.
 heroImage: /assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png
 tags:
   - iOS
