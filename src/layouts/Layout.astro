@@ -1,0 +1,35 @@
+---
+import { SITE } from '../consts'
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
+import BaseHead from '../components/BaseHead.astro'
+import '../styles/tailwind.css'
+import '../styles/typography.css'
+
+const { isWide = false, title, description } = Astro.props
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <BaseHead title={title} description={description}>
+      <slot name="head" />
+    </BaseHead>
+  </head>
+  <body class="min-h-screen bg-background text-foreground">
+    <div class="flex h-fit min-h-screen flex-col gap-y-6 font-sans">
+      <Header />
+      <main class="grow">
+        <div
+          class:list={[
+            'mx-auto flex grow flex-col gap-y-6 px-4',
+            !isWide && 'max-w-3xl',
+          ]}
+        >
+          <slot />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

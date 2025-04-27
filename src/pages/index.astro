@@ -1,35 +1,39 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Layout from '../layouts/Layout.astro'
+import Link from '../components/Link.astro'
+import { SITE } from '../consts'
 ---
 
-<BaseLayout>
-	<div class="home-content">
-		<h1 class="page-title">👋 Hello, I'm Peter Steinberger</h1>
-		<p>
-			Welcome to my personal website. I'm an iOS developer, entrepreneur, and open source contributor.
-		</p>
-		<p>
-			I'm the founder and CEO of <a href="https://pspdfkit.com" target="_blank">PSPDFKit</a>, a company that provides PDF solutions for web, mobile, and desktop applications. 
-			Our technology is used by thousands of companies worldwide to power their document workflows.
-		</p>
-		<p>
-			I'm passionate about:
-		</p>
-		<ul>
-			<li>iOS and macOS development</li>
-			<li>Building high-quality software</li>
-			<li>Open source contributions</li>
-			<li>Sharing knowledge through blogging and speaking</li>
-			<li>Creating developer tools that improve workflows</li>
-		</ul>
-		<p>
-			Check out my <a href="/blog">blog</a> where I write about iOS development, entrepreneurship, and technology.
-			You can also learn more <a href="/about">about me</a> and my work.
-		</p>
-		<p>
-			Feel free to connect with me on <a href="https://twitter.com/steipete" target="_blank">Twitter</a>, 
-			<a href="https://github.com/steipete" target="_blank">GitHub</a>, or 
-			<a href="https://www.linkedin.com/in/steipete/" target="_blank">LinkedIn</a>.
-		</p>
-	</div>
-</BaseLayout>
+<Layout title={SITE.title} description={SITE.description}>
+  <section class="py-8">
+    <div class="flex flex-col items-start gap-4">
+      <h1 class="text-4xl font-bold tracking-tight">👋 Hello, I'm Peter Steinberger</h1>
+      <p class="text-foreground/80 text-lg">
+        Welcome to my personal website. I'm an iOS developer, entrepreneur, and open source contributor.
+      </p>
+      <p class="text-foreground/80">
+        I'm the founder and CEO of <Link href="https://pspdfkit.com" external underline>PSPDFKit</Link>, a company that provides PDF solutions for web, mobile, and desktop applications. 
+        Our technology is used by thousands of companies worldwide to power their document workflows.
+      </p>
+      <div class="space-y-2">
+        <p class="text-foreground/80">I'm passionate about:</p>
+        <ul class="list-disc pl-6 space-y-1 text-foreground/80">
+          <li>iOS and macOS development</li>
+          <li>Building high-quality software</li>
+          <li>Open source contributions</li>
+          <li>Sharing knowledge through blogging and speaking</li>
+          <li>Creating developer tools that improve workflows</li>
+        </ul>
+      </div>
+      <p class="text-foreground/80">
+        Check out my <Link href="/posts" underline>blog</Link> where I write about iOS development, entrepreneurship, and technology.
+        You can also learn more <Link href="/about" underline>about me</Link> and my work.
+      </p>
+      <p class="text-foreground/80">
+        Feel free to connect with me on <Link href="https://twitter.com/steipete" external underline>Twitter</Link>, 
+        <Link href="https://github.com/steipete" external underline>GitHub</Link>, or 
+        <Link href="https://www.linkedin.com/in/steipete/" external underline>LinkedIn</Link>.
+      </p>
+    </div>
+  </section>
+</Layout>

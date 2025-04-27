@@ -1,9 +1,11 @@
 ---
-title: "Building with Swift Trunk Development Snapshots"
-pubDate: "2020-06-12 17:00:00 +0200"
-tags: ["iOS", "development"]
-heroImage: "/assets/img/2020/swift-trunk/swift-trunk.png"
-description: "I recently started the adventure of building PSPDFKit with the [Swift trunk development snapshot](https://swift.org/download/). I did this both in ..."
+title: Building with Swift Trunk Development Snapshots
+pubDate: '2020-06-12 17:00:00 +0200'
+heroImage: /assets/img/2020/swift-trunk/swift-trunk.png
+description: >-
+  I recently started the adventure of building PSPDFKit with the [Swift trunk
+  development snapshot](https://swift.org/download/). I did this both in ...
+source: steipete.com
 ---
 
 I recently started the adventure of building PSPDFKit with the [Swift trunk development snapshot](https://swift.org/download/). I did this both in order to verify a fix for the [SR-12933 LLDB debugging issue](https://steipete.com/posts/couldnt-irgen-expression/) and to be better prepared for the Xcode 12 release at WWDC.

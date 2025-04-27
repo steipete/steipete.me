@@ -1,9 +1,11 @@
 ---
-title: "The State of SwiftUI"
-pubDate: "2020-09-13 11:00:00 +0200"
-tags: ["iOS", "development", "SwiftUI"]
-heroImage: "/assets/img/2020/fruta-swiftui/fruta-crash.png"
-description: "Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta sample app."
+title: The State of SwiftUI
+pubDate: '2020-09-13 11:00:00 +0200'
+heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
+description: >-
+  Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta
+  sample app.
+source: steipete.com
 ---
 
 <style type="text/css">

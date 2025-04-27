@@ -1,9 +1,11 @@
 ---
-title: "Network Kernel Core Dump"
-pubDate: "2020-05-21 12:00:00 +0200"
-tags: ["development"]
-heroImage: "https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096"
-description: "A week after Apple's initial \"macOS Core Dump\" reply, and me sending a lot of questions their way, I got a really nice, human reply that explains t..."
+title: Network Kernel Core Dump
+pubDate: '2020-05-21 12:00:00 +0200'
+heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
+description: >-
+  A week after Apple's initial "macOS Core Dump" reply, and me sending a lot of
+  questions their way, I got a really nice, human reply that explains t...
+source: steipete.com
 ---
 
 A week after Apple's initial "macOS Core Dump" reply, and me sending a lot of questions their way, I got a really nice, human reply that explains the process via networking and a second Mac.

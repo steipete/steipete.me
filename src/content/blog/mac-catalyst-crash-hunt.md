@@ -1,9 +1,12 @@
 ---
-title: "The Great Mac Catalyst Text Input Crash Hunt"
-pubDate: "2020-05-30 00:00:00 +0200"
-tags: ["iOS", "development", "hacks"]
-heroImage: "/assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png"
-description: "<style type=\"text/css\">\ndiv.post-content > img:first-child { display:none; }\n</style>"
+title: The Great Mac Catalyst Text Input Crash Hunt
+pubDate: '2020-05-30 00:00:00 +0200'
+heroImage: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
+description: |-
+  <style type="text/css">
+  div.post-content > img:first-child { display:none; }
+  </style>
+source: steipete.com
 ---
 
 <style type="text/css">

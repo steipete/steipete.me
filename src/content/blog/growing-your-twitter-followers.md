@@ -1,9 +1,12 @@
 ---
-title: "Gardening Your Twitter: Growing Your Followers"
-pubDate: "2020-10-21 15:00:00 +0200"
-tags: ["social"]
-heroImage: "/assets/img/2020/make-twitter-work/gardening-growing.jpg"
-description: "Learn how to define your online persona, and find out different ways to increase your reach. This is the first part of my series about Gardening Your Twitter."
+title: 'Gardening Your Twitter: Growing Your Followers'
+pubDate: '2020-10-21 15:00:00 +0200'
+heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
+description: >-
+  Learn how to define your online persona, and find out different ways to
+  increase your reach. This is the first part of my series about Gardening Your
+  Twitter.
+source: steipete.com
 ---
 
 I’ve been using Twitter for almost 12 years now. It can be challenging to navigate your timeline, so today I’m sharing some tips to keep it fun.

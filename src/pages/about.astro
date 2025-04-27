@@ -1,49 +1,57 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Layout from '../layouts/Layout.astro'
+import Link from '../components/Link.astro'
+import { SOCIAL_LINKS } from '../consts'
 ---
 
-<BaseLayout title="About Me" description="iOS Developer, Entrepreneur, and Open Source Contributor">
-	<div class="about-content">
-		<h1 class="page-title">About Me</h1>
-		
-		<div class="about-image">
-			<img src="/blog-placeholder-about.jpg" alt="Peter Steinberger" />
-		</div>
-		
-		<p>
-			Hi! I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor based in Vienna, Austria.
-		</p>
+<Layout title="About Me" description="iOS Developer, Entrepreneur, and Open Source Contributor">
+  <section class="py-8">
+    <div class="prose">
+      <h1>About Me</h1>
 
-		<p>
-			I'm the founder and CEO of <a href="https://pspdfkit.com" target="_blank">PSPDFKit GmbH</a>, a company that provides PDF solutions for web, mobile, and desktop applications. PSPDFKit is used by thousands of companies worldwide, including Dropbox, Box, and IBM.
-		</p>
+      <div class="not-prose mb-8">
+        <img 
+          src="/blog-placeholder-about.jpg" 
+          alt="Peter Steinberger" 
+          class="rounded-md max-w-[300px] h-auto"
+        />
+      </div>
 
-		<p>
-			I'm also an active open source contributor and have created or contributed to various iOS projects over the years. I'm a regular speaker at iOS and mobile development conferences around the world.
-		</p>
+      <p>
+        Hi! I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor based in Vienna, Austria.
+      </p>
 
-		<p>
-			I'm passionate about building high-quality software, creating great user experiences, and sharing knowledge with the developer community through writing and speaking.
-		</p>
+      <p>
+        I'm the founder of <Link href="https://pspdfkit.com" external underline>PSPDFKit</Link>, a company that provides PDF solutions for web, mobile, and desktop applications. After growing the company to serve thousands of customers worldwide, including Dropbox, Box, and IBM, we successfully sold to Insight Partners three years ago.
+      </p>
 
-		<h2>Connect With Me</h2>
-		
-		<p>
-			You can find me on <a href="https://twitter.com/steipete" target="_blank">Twitter</a>, <a href="https://github.com/steipete" target="_blank">GitHub</a>, and <a href="https://www.linkedin.com/in/steipete/" target="_blank">LinkedIn</a>.
-		</p>
-	</div>
-</BaseLayout>
+      <p>
+        Currently, I'm vibe coding my next project, exploring new technologies and opportunities in the iOS and macOS ecosystem.
+      </p>
 
-<style>
-	.about-image {
-		max-width: 300px;
-		border-radius: 8px;
-		overflow: hidden;
-		margin: 1rem 0 2rem;
-	}
-	
-	.about-image img {
-		width: 100%;
-		height: auto;
-	}
-</style>
+      <p>
+        I'm also an active open source contributor and have created or contributed to various iOS projects over the years. I'm a regular speaker at iOS and mobile development conferences around the world.
+      </p>
+
+      <p>
+        I'm passionate about building high-quality software, creating great user experiences, and sharing knowledge with the developer community through writing and speaking.
+      </p>
+
+      <h2>Connect With Me</h2>
+      
+      <p>
+        You can find me on:
+      </p>
+      
+      <ul>
+        {SOCIAL_LINKS.map((link) => (
+          <li>
+            <Link href={link.href} external={!link.href.startsWith('/')} underline>
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

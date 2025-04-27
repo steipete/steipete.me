@@ -1,8 +1,11 @@
 ---
-title: "NSURLCache Uses A Disk Cache As Of iOS 5"
-pubDate: "2012-04-10 19:37"
-description: "While writing  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://gith..."
-tags: []
+title: NSURLCache Uses A Disk Cache As Of iOS 5
+pubDate: '2012-04-10 19:37'
+description: >-
+  While writing 
+  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation),
+  a new subclass for [AFNetworking](https://gith...
+source: petersteinberger.com
 ---
 
 While writing  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://github.com/AFNetworking/AFNetworking), I discovered that the behavior of NSURLCache changed between iOS 4.x and iOS 5.x.

@@ -1,9 +1,11 @@
 ---
-title: "Calling Super at Runtime in Swift"
-pubDate: "2020-06-10 17:00:00 +0200"
-tags: ["highlights"]
-heroImage: "/assets/img/2020/calling-super/Xcode-debug.png"
-description: "While working on [InterposeKit](https://interposekit.com/), I had a rather specific need: Create an implementation that simply calls super, but at ..."
+title: Calling Super at Runtime in Swift
+pubDate: '2020-06-10 17:00:00 +0200'
+heroImage: /assets/img/2020/calling-super/Xcode-debug.png
+description: >-
+  While working on [InterposeKit](https://interposekit.com/), I had a rather
+  specific need: Create an implementation that simply calls super, but at ...
+source: steipete.com
 ---
 
 While working on [InterposeKit](https://interposekit.com/), I had a rather specific need: Create an implementation that simply calls `super`, but at runtime instead of at compile time. Doesn’t sound so hard, does it? Well, here we go again.

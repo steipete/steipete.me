@@ -1,8 +1,10 @@
 ---
-title: "UIAppearance for Custom Views"
-pubDate: "2013-02-12 14:31"
-description: "UIAppearance is hardly a new technology, since it was first introduced at WWDC 2011, but it still doesn't have the adoption it deserves (guilty as ..."
-tags: []
+title: UIAppearance for Custom Views
+pubDate: '2013-02-12 14:31'
+description: >-
+  UIAppearance is hardly a new technology, since it was first introduced at WWDC
+  2011, but it still doesn't have the adoption it deserves (guilty as ...
+source: petersteinberger.com
 ---
 
 UIAppearance is hardly a new technology, since it was first introduced at WWDC 2011, but it still doesn't have the adoption it deserves (guilty as charged here as well). Since most apps are IOS 5 only now, there's no excuse anymore to not adopt it. Also, chances are quite high that at least some properties of your classes already support UIAppearance implicitly, since the preprocessor macro to 'enable' UIAppearance is actually defined to be empty:

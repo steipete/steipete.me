@@ -1,8 +1,10 @@
 ---
-title: "Don't Call willChangeValueForKey Unless It's Really Needed"
-pubDate: "2012-04-05 15:27"
-description: "You're using KVO, right? So you most likely have already written code like this:"
-tags: []
+title: Don't Call willChangeValueForKey Unless It's Really Needed
+pubDate: '2012-04-05 15:27'
+description: >-
+  You're using KVO, right? So you most likely have already written code like
+  this:
+source: petersteinberger.com
 ---
 
 You're using KVO, right? So you most likely have already written code like this:

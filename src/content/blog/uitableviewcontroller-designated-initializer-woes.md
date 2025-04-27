@@ -1,8 +1,10 @@
 ---
-title: "UITableViewController designated initializer woes"
-pubDate: "2015-04-15 09:15"
-description: "With Xcode 6<sup><a href=\"footnote1\">1</a></sup>, Apple added support for the NS_DESIGNATED_INITIALIZER flag, and also added this to various framew..."
-tags: []
+title: UITableViewController designated initializer woes
+pubDate: '2015-04-15 09:15'
+description: >-
+  With Xcode 6<sup><a href="footnote1">1</a></sup>, Apple added support for the
+  NS_DESIGNATED_INITIALIZER flag, and also added this to various framew...
+source: petersteinberger.com
 ---
 
 With Xcode 6<sup><a href="#footnote1">1</a></sup>, Apple added support for the `NS_DESIGNATED_INITIALIZER` flag, and also added this to various framework classes. This is likely a byproduct of Swift, where the initializer call order is [much more strongly enforced](http://www.codingexplorer.com/designated-initializers-convenience-initializers-swift/). This goes as far as there's a new `convenience` keyword to mark the separation of convenience vs designated initializers.

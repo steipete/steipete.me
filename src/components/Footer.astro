@@ -1,57 +1,30 @@
 ---
+import { Separator } from './ui/separator'
+import { SOCIAL_LINKS } from '../consts'
+import Link from './Link.astro'
+import SocialIcons from './SocialIcons.astro'
+
 const today = new Date();
 ---
 
-<footer>
-	<div class="footer-content">
-		<div class="footer-left">
-			<p class="mb-0">
-				© {today.getFullYear()} <a href="https://twitter.com/steipete">Peter Steinberger</a>.
-				<span title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">
-					Some rights reserved.
-				</span>
-			</p>
-		</div>
-		
-		<div class="footer-right">
-			<p>Built with <a href="https://astro.build" target="_blank">Astro</a></p>
-		</div>
-	</div>
+<footer class="py-4">
+  <div
+    class="mx-auto flex max-w-3xl flex-col items-center justify-center gap-y-2 px-4 sm:flex-row sm:justify-between"
+  >
+    <div class="flex flex-wrap items-center justify-center gap-x-2 text-center">
+      <span class="text-muted-foreground text-sm">
+        &copy; {today.getFullYear()} Peter Steinberger. Some rights reserved.
+      </span>
+      <Separator orientation="vertical" className="hidden h-4! sm:block" />
+      <p class="text-muted-foreground text-sm">
+        Built with <Link
+          href="https://astro.build"
+          class="text-foreground"
+          external
+          underline>Astro</Link
+        >
+      </p>
+    </div>
+    <SocialIcons links={SOCIAL_LINKS} />
+  </div>
 </footer>
-
-<style>
-	footer {
-		margin-top: 3rem;
-		padding: 2rem 1rem;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		color: #6c757d;
-		font-size: 0.9rem;
-	}
-	
-	.footer-content {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-	}
-	
-	.footer-left, .footer-right {
-		margin-bottom: 1rem;
-	}
-	
-	@media (max-width: 768px) {
-		.footer-content {
-			flex-direction: column;
-			text-align: center;
-		}
-	}
-	
-	a {
-		color: #6c757d;
-		text-decoration: underline;
-	}
-	
-	a:hover {
-		color: var(--accent);
-	}
-</style>

@@ -1,8 +1,10 @@
 ---
-title: "How To Inspect The View Hierarchy Of Third-Party Apps"
-pubDate: "2013-12-27 18:42"
-description: "I'm generally not a big fan of jailbreaks. Mostly this is because they're used for piracy and all the hacks result in weird crashes that generally ..."
-tags: []
+title: How To Inspect The View Hierarchy Of Third-Party Apps
+pubDate: '2013-12-27 18:42'
+description: >-
+  I'm generally not a big fan of jailbreaks. Mostly this is because they're used
+  for piracy and all the hacks result in weird crashes that generally ...
+source: petersteinberger.com
 ---
 
 I'm generally not a big fan of jailbreaks. Mostly this is because they're used for piracy and all the hacks result in weird crashes that generally are impossible to reproduce. Still, [I was quite excited about the recent iOS 7 jailbreak](https://twitter.com/steipete/status/414759423102689281), since it enables us to attach the debugger to third-party apps and do a little bit of runtime analysis.
