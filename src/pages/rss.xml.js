@@ -14,7 +14,7 @@ export async function GET(context) {
 		}
 		return post;
 	});
-	
+
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
