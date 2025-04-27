@@ -41,7 +41,7 @@ const posts = allPosts.slice(0, postsPerPage);
       {posts.map((post) => (
         <article class="border-b border-border pb-8 last:border-0">
           <h2 class="text-2xl font-semibold leading-tight mb-2">
-            <a href={`/blog/${post.slug}/`} class="hover:text-primary">
+            <a href={`/posts/${post.slug}/`} class="hover:text-primary">
               {post.data.title}
             </a>
           </h2>
@@ -55,7 +55,7 @@ const posts = allPosts.slice(0, postsPerPage);
           )}
 
           <div>
-            <a href={`/blog/${post.slug}/`} class="text-primary font-medium hover:underline">
+            <a href={`/posts/${post.slug}/`} class="text-primary font-medium hover:underline">
               Read more →
             </a>
           </div>
