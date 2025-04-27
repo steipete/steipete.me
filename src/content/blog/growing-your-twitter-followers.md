@@ -1,9 +1,14 @@
 ---
-title: ""
-pubDate: 2020-10-21T15:00:00+02:00
-description: "I’ve bee usig Twitte fo almost 12 yeas ow."
+title: ''
+pubDate: 2020-10-21T13:00:00.000Z
+description: I’ve bee usig Twitte fo almost 12 yeas ow.
 heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
-tags: []
+tags:
+  - iOS
+  - Swift
+  - Performance
+  - Hacking
+source: steipete.com
 ---
 
 I’ve been using Twitter for almost 12 years now. It can be challenging to navigate your timeline, so today I’m sharing some tips to keep it fun.

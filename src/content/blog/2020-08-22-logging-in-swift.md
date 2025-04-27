@@ -1,9 +1,14 @@
 ---
-title: "Logging in Swift"
-pubDate: 2020-08-24T19:00:00+02:00
-description: "Exploring the new Swift Logger struct, OSLogStore, and streaming access to OSLog."
+title: Logging in Swift
+pubDate: 2020-08-24T17:00:00.000Z
+description: >-
+  Exploring the new Swift Logger struct, OSLogStore, and streaming access to
+  OSLog.
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
-tags: ["[\"iOS\",","\"development\"]"]
+tags:
+  - '["iOS",'
+  - '"development"]'
+source: steipete.com
 ---
 
 <style type="text/css">

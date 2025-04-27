@@ -1,9 +1,20 @@
 ---
-title: ""
-pubDate: 2021-01-27T18:30:00+02:00
-description: "My task today was quite simple: addig a optioal log-pess hadle to a butto i SwiftUI."
+title: ''
+pubDate: 2021-01-27T16:30:00.000Z
+description: >-
+  My task today was quite simple: addig a optioal log-pess hadle to a butto i
+  SwiftUI.
 heroImage: /assets/img/2021/tap-longpress-button-swiftui/header.gif
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Catalyst
+source: steipete.com
 ---
 
 My task today was quite simple: adding an optional long-press handler to a button in SwiftUI. A regular tap opens our website and a long press does… something else. Not so difficult, right?

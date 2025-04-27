@@ -5,7 +5,16 @@ description: >-
   zld is a drop-in replacement of Apple's linker that uses optimized data
   structures and parallelizing to speed things up.
 heroImage: /assets/img/2020/zld/benchmarks.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - Debugging
+  - Performance
+  - Xcode
+  - Catalyst
+source: steipete.com
 ---
 
 zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  

@@ -1,9 +1,23 @@
 ---
-title: ""
-pubDate: 2021-01-31T13:30:00+02:00
-description: "iOS 14 itoduced keyboadShotcut, a coveiet ative way to add keyboad shotcuts to SwiftUI."
+title: ''
+pubDate: 2021-01-31T11:30:00.000Z
+description: >-
+  iOS 14 itoduced keyboadShotcut, a coveiet ative way to add keyboad shotcuts to
+  SwiftUI.
 heroImage: /assets/img/2021/fixing-keyboardshortcut-in-swiftui/header.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Xcode
+  - Catalyst
+  - Jailbreaking
+  - Apple Silicon
+source: steipete.com
 ---
 
 iOS 14 introduced `keyboardShortcut`, a convenient native way to add keyboard shortcuts to SwiftUI. However, if you end up using it, it likely won’t work. I was curious why that is, so follow along with me for a round of SwiftUI debugging! Spoiler: The workaround is at the end of this article.
