@@ -1,8 +1,6 @@
-# Redirect domain aliases to primary domain - these need to be specific
-https://petersteinberger.com/* https://steipete.me/:splat 301!
-https://www.petersteinberger.com/* https://steipete.me/:splat 301!
-https://steipete.com/* https://steipete.me/:splat 301!
-https://www.steipete.com/* https://steipete.me/:splat 301!
+# Dynamic domain redirect - ensure any domain that isn't steipete.me gets redirected
+# This rule is triggered when the host does not match steipete.me
+:scheme://:domain/:path* https://steipete.me/:path* 301!  Host=!steipete.me
 
 # Redirect old date-based URLs
 /20:year/:month/:day/:slug/* /blog/:slug/ 301!
