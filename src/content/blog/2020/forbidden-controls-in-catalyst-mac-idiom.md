@@ -1,12 +1,22 @@
 ---
 title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
 pubDate: 2020-09-22T18:00:00.000Z
-description: 'div.post-content > img:first-child { display:none; } While working on our PDF Viewer update for Big Sur and switching to the new Catalyst Mac Interface Idiom, I was greeted with a new exception coming directly fro...'
+description: "Discover the undocumented limitations in macOS Big Sur's new 'Optimize Interface for Mac' mode for Catalyst apps. I investigate why certain UIKit controls like UIStepper and UISlider throw runtime exceptions when used with the Mac idiom, and explore what happens behind the scenes as UIKit maps these controls to AppKit equivalents. Through runtime inspection and disassembly, I identify which controls are forbidden, how customization attempts are blocked, and provide workarounds for detecting the Mac idiom in your code. This technical deep-dive includes findings from examining the shared dyld cache and reveals how Apple bridges UIKit and AppKit in the new unscaled Catalyst mode."
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
-  - iOS
-  - development
+  - macOS
+  - Mac-Catalyst
+  - UIKit
+  - SwiftUI
+  - Big-Sur
+  - AppKit
+  - UI-Controls
+  - Debugging
+  - Runtime
+  - Reverse-Engineering
+  - UIStepper
 source: steipete.com
+AIDescription: true
 ---
 
 <style type="text/css">

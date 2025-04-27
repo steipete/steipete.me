@@ -1,9 +1,17 @@
 ---
-layout: post
 title: "How To Inspect The View Hierarchy Of Third-Party Apps"
-date: 2013-12-27 18:42
-comments: true
-categories: 
+pubDate: 2013-12-27T18:42:00.000Z
+description: "Unlock the secrets of iOS app design by exploring the view hierarchies of third-party applications with this step-by-step guide. Using a jailbroken device, learn how to configure debugging tools, inject code at runtime, and analyze an app's internal structure. I walk through setting up the necessary environment, creating custom debugging scripts, and extracting valuable insights from apps like Facebook and Flipboard. This technique offers a powerful learning opportunity for iOS developers seeking to understand how complex interfaces are implemented."
+tags:
+  - iOS-Development
+  - Debugging
+  - Jailbreak
+  - UIKit
+  - Reverse-Engineering
+  - Reveal
+  - Tutorial
+source: petersteinberger.com
+AIDescription: true
 ---
 
 I'm generally not a big fan of jailbreaks. Mostly this is because they're used for piracy and all the hacks result in weird crashes that generally are impossible to reproduce. Still, [I was quite excited about the recent iOS 7 jailbreak](https://twitter.com/steipete/status/414759423102689281), since it enables us to attach the debugger to third-party apps and do a little bit of runtime analysis.
@@ -32,7 +40,7 @@ Previously, this worked with wildcard IDs, but this approach has problems with t
 
 Done! Start your app of choice and select it in Reveal. (This should also work similary for [SparkInspector](http://sparkinspector.com/).) Attaching via LLDB is a bit harder and I won't go into details here since this could also be used to pirate apps. Google for 'task_for_pid-allow,' 'debugserver,' and 'ldid' if you want to try this.
 
-<blockquote class="twitter-tweet" lang="en"><p>Tweetbot. The action bar is simply part of the cell. And the “No Tweets Found” view is always below the UITableView. <a href="http://t.co/Xp6OKlvaJh">pic.twitter.com/Xp6OKlvaJh</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416573601937375233">December 27, 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="en"><p>Tweetbot. The action bar is simply part of the cell. And the "No Tweets Found" view is always below the UITableView. <a href="http://t.co/Xp6OKlvaJh">pic.twitter.com/Xp6OKlvaJh</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416573601937375233">December 27, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <blockquote class="twitter-tweet" lang="en"><p>AppStore.app is super complex. SKUISoftwareSwooshCollectionViewCell. No wonder it took so long to become native. <a href="http://t.co/hjFdImyqSP">pic.twitter.com/hjFdImyqSP</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416579994027298816">December 27, 2013</a></blockquote>
@@ -41,8 +49,8 @@ Done! Start your app of choice and select it in Reveal. (This should also work s
 <blockquote class="twitter-tweet" lang="en"><p>Chrome is basically a full-screen UIWebView with some controls on top. <a href="http://t.co/CFfEM7j6vT">pic.twitter.com/CFfEM7j6vT</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416584566024208384">December 27, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet" lang="en"><p>Surprise. PS Express is all native, even the classes are well structured. “AdobeCleanBoldFontButton”. <a href="http://t.co/YW1xMNPSP2">pic.twitter.com/YW1xMNPSP2</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416579309412036608">December 27, 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="en"><p>Surprise. PS Express is all native, even the classes are well structured. "AdobeCleanBoldFontButton". <a href="http://t.co/YW1xMNPSP2">pic.twitter.com/YW1xMNPSP2</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416579309412036608">December 27, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet" lang="en"><p>Twitter. There’s still a small part of <a href="https://twitter.com/lorenb">@lorenb</a> in there. (ABCustomHitTestView, ABSubTabBar) (Also: T1 as namespace?) <a href="http://t.co/R62JAY4DDQ">pic.twitter.com/R62JAY4DDQ</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416574990440738816">December 27, 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="en"><p>Twitter. There's still a small part of <a href="https://twitter.com/lorenb">@lorenb</a> in there. (ABCustomHitTestView, ABSubTabBar) (Also: T1 as namespace?) <a href="http://t.co/R62JAY4DDQ">pic.twitter.com/R62JAY4DDQ</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/statuses/416574990440738816">December 27, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>

@@ -1,9 +1,16 @@
 ---
-layout: post
 title: "Using Subscripting With Xcode 4.4 And iOS 4.3+"
-date: 2012-07-11 15:03
-comments: true
-categories:
+pubDate: 2012-07-11T15:03:00.000Z
+description: "Get a head start on using Objective-C's modern subscripting syntax in your iOS apps before Apple officially introduces it. I share a clever header-only hack that lets you use the elegant array[index] and dictionary[key] notation with Xcode 4.4 while maintaining backward compatibility with iOS 4.3+. Discover how this temporary shim works behind the scenes with ARCLite, and why you can safely adopt this cleaner syntax in your codebase today."
+tags:
+  - iOS-Development
+  - Objective-C
+  - Xcode
+  - Syntax
+  - ARC
+  - Compatibility
+source: petersteinberger.com
+AIDescription: true
 ---
 
 Now that Xcode 4.4 has finally reached Golden Master and [you can submit apps](https://devforums.apple.com/message/694250#694250), here's a trick to use [subscripting](http://clang.llvm.org/docs/ObjectiveCLiterals.html) *right now*. Yes, Apple will introduce this feature in a future version of OS X and iOS, but why wait? Here's the snippet from [PSPDFKit, my iOS PDF framework](http://pspdfkit.com), to make it work:

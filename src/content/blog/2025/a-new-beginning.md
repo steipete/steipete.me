@@ -1,13 +1,17 @@
 ---
 title: A New Beginning
 pubDate: 2025-04-27T10:00:00.000Z
-description: "It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions pro..."
+description: 'After three years since selling PSPDFKit to Insight Partners, I'm embarking on a new chapter in my career. This post reflects on my decade-long journey building a global document solutions company from the ground up, and announces my transition from iOS and native development to web technologies. I share my motivations for this significant career shift—seeking growth through new challenges, embracing the maturity of modern web platforms, and rediscovering the joy of building from scratch. While not yet revealing specifics about my new venture, I explain how I'm approaching this transition with the same principles that guided my previous work: meticulous attention to detail, user-centered design, and creating software that's both powerful and delightful to use.'
 tags:
-  - iOS
-  - Swift
-  - Objective-C
-  - Xcode
+  - Career
+  - Web-Development
+  - Entrepreneurship
+  - React
+  - TypeScript
+  - Personal-Growth
+  - New-Ventures
 source: steipete.com
+AIDescription: true
 ---
 
 It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions provider with customers like Dropbox, Box, and IBM, was an incredible chapter of my life.

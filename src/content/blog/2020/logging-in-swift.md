@@ -1,14 +1,22 @@
 ---
 title: Logging in Swift
 pubDate: 2020-08-24T17:00:00.000Z
-description: >-
-  Exploring the new Swift Logger struct, OSLogStore, and streaming access to
-  OSLog.
+description: "Dive deep into Apple's unified logging system with the new Swift Logger API introduced in iOS 14. I explore the benefits of OSLog's categorization, privacy features, and performance advantages while examining why most developers don't use it: the inability to access logs programmatically. Learn about the promising new OSLogStore API that Apple initially included but then removed from iOS 14 at the last minute, my investigation into private APIs for log streaming, and techniques for enabling debug mode. This comprehensive guide tracks the evolution of Apple's logging system and provides practical code examples for implementing effective logging in your Swift applications."
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
 tags:
-  - '["iOS",'
-  - '"development"]'
+  - iOS
+  - Swift
+  - Logging
+  - Privacy
+  - Debugging
+  - OSLog
+  - iOS-14
+  - iOS-15
+  - macOS
+  - Console
+  - System-APIs
 source: steipete.com
+AIDescription: true
 ---
 
 <style type="text/css">

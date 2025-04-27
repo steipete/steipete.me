@@ -1,19 +1,29 @@
 ---
 title: Jailbreaking for iOS Developers
 pubDate: 2020-05-25T22:00:00.000Z
-description: 'div.post-content > img:first-child { width:50% !important; } Jailbreaking is something that’s rarely discussed in the iOS developer community — which is unfortunate, because it’s amazing.'
+description: "Discover the valuable world of iOS jailbreaking from a developer's perspective. I explore the wide range of capabilities unlocked by jailbreaking, from security research and debugging tools like FLEX to enhancing accessibility and examining how apps work internally. This guide covers the legality of jailbreaking, current jailbreak options like checkra1n and unc0ver, and practical applications beyond just pirating apps. Learn how to use tools like SSL Kill Switch to inspect network traffic, examine view hierarchies of third-party apps, and access powerful development capabilities that make jailbreaking a uniquely valuable tool for iOS developers."
 heroImage: /assets/img/2020/jailbreaking/header.jpg
 tags:
-  - iOS
-  - hacks
+  - iOS-Development
+  - Jailbreaking
+  - Debugging
+  - Security
+  - Reverse-Engineering
+  - FLEX
+  - Tweaks
+  - SSL-Kill-Switch
+  - Cydia
+  - iOS-Customization
+  - Developer-Tools
 source: steipete.com
+AIDescription: true
 ---
 
 <style type="text/css">
 div.post-content > img:first-child { width:50% !important; }
 </style>
 
-Jailbreaking is something that’s rarely discussed in the iOS developer community — which is unfortunate, because it’s amazing. Let’s walk through a few useful things you can do with it. (Picture by [@mnzthegreat](https://twitter.com/mnzthegreat/status/1264848209735585792).)
+Jailbreaking is something that's rarely discussed in the iOS developer community — which is unfortunate, because it's amazing. Let's walk through a few useful things you can do with it. (Picture by [@mnzthegreat](https://twitter.com/mnzthegreat/status/1264848209735585792).)
 
 Update May 30: [The details of the 13.5 unc0ver exploit are now online](https://twitter.com/steipete/status/1266378266497044485?s=21). Expect Apple to patch this quickly.
 
@@ -23,11 +33,11 @@ Update May 30: [The details of the 13.5 unc0ver exploit are now online](https://
 
 You might be wondering: [Is this legal](https://en.wikipedia.org/wiki/IOS_jailbreaking#Legality)? This depends on your country, but jailbreaking is legal in Austria, Germany, Canada, India, New Zealand, the United Kingdom, and the United States. With the exception of the latest iOS 13.5 jailbreak, all major jailbreaks since 10 have been based on publicly available exploits, which were [reported to Apple before](https://twitter.com/helthydriver/status/1265030817618767875?s=21).
 
-If you don’t want to risk jailbreaking, you can still install some apps with [AltStore](https://altstore.io/), which signs apps on your Mac.
+If you don't want to risk jailbreaking, you can still install some apps with [AltStore](https://altstore.io/), which signs apps on your Mac.
 
 ## Motivation
 
-Jailbreaking is looked down on by some because it can be used to pirate apps. But there are many other much more noble or interesting reasons as to why it’s worth exploring — like enhancing accessibility:
+Jailbreaking is looked down on by some because it can be used to pirate apps. But there are many other much more noble or interesting reasons as to why it's worth exploring — like enhancing accessibility:
 
 <blockquote class="twitter-tweet" data-conversation="none"><p lang="en" dir="ltr">I have a special needs son for whom I jailbreak iDevices to support his disability. It is life changing for us.</p>&mdash; GadgetGal (@GadgetGal_) <a href="https://twitter.com/GadgetGal_/status/1264952195402723328?ref_src=twsrc%5Etfw">May 25, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
@@ -49,11 +59,11 @@ Many tweaks either modify apps themselves or integrate into Settings:
 
 <img src="/assets/img/2020/jailbreaking/settings.jpg" width="80%">
 
-Beware: Some apps (like banking apps) might include a jailbreak detection and won’t work if they detect Cydia. However, this also can be circumvented with the right tweak.
+Beware: Some apps (like banking apps) might include a jailbreak detection and won't work if they detect Cydia. However, this also can be circumvented with the right tweak.
 
 ## State of Jailbreaking
 
-There has [never been a better time](https://www.wired.com/story/apple-ios-unc0ver-jailbreak/) for jailbreaking. From iOS 10–13, including the just-released iOS 13.5, almost every version can be hacked. This is also somewhat worrying, as exploits require security flaws, and we’re now at a stage where exploit platforms [aren’t paying for any additional exploits](https://9to5mac.com/2020/05/14/zerodium-has-too-many-ios-exploits/) because they already have [too many](https://twitter.com/cBekrar/status/1260543284008456192).
+There has [never been a better time](https://www.wired.com/story/apple-ios-unc0ver-jailbreak/) for jailbreaking. From iOS 10–13, including the just-released iOS 13.5, almost every version can be hacked. This is also somewhat worrying, as exploits require security flaws, and we're now at a stage where exploit platforms [aren't paying for any additional exploits](https://9to5mac.com/2020/05/14/zerodium-has-too-many-ios-exploits/) because they already have [too many](https://twitter.com/cBekrar/status/1260543284008456192).
 
 Reddit maintains [a great overview](https://www.reddit.com/r/jailbreak/wiki/escapeplan/guides/jailbreakcharts#wiki_ios13.x) of the current jailbreak availability situation ([this GSheet is even more detailed](https://docs.google.com/spreadsheets/u/2/d/11DABHIIqwYQKj1L83AK9ywk_hYMjEkcaxpIg6phbTf0/htmlview#gid=1014970938)). The two most interesting ones (as of May 2020) are:
 
@@ -63,24 +73,24 @@ Reddit maintains [a great overview](https://www.reddit.com/r/jailbreak/wiki/esca
 
 checkra1n is semi-tethered, while unc0ver is semi-untethered (see [types of jailbreaks](https://www.idownloadblog.com/2019/11/21/types-of-jailbreaks/)). You need to retrigger the jailbreak after a reboot to patch the kernel so that it can run unsigned code. I recommend using [AltStore](https://altstore.io/) to install the Jailbreak (see this [guide](https://www.idownloadblog.com/2020/02/16/how-to-unc0ver-altstore/)).
 
-Both variants are stable and [don’t drain battery life](https://www.wired.com/story/apple-ios-unc0ver-jailbreak/) or prevent use of Apple services like iCloud, Apple Pay, or iMessage, as was the case with some earlier variants. Apple’s user data protections and sandbox security is preserved.
+Both variants are stable and [don't drain battery life](https://www.wired.com/story/apple-ios-unc0ver-jailbreak/) or prevent use of Apple services like iCloud, Apple Pay, or iMessage, as was the case with some earlier variants. Apple's user data protections and sandbox security is preserved.
 
 ## Adding Repositories to Cydia
 
-[Cydia](https://cydia-app.com/) is the oldest and most common alternative App Store for iOS. It’s automatically installed for most jailbreaks, and it has a convenient UI for the apt-get packager it comes with. In the past, you could also buy apps through Cydia, but nowadays, most apps are sold via third-party repositories. These offer free and paid apps (via PayPal or credit card) and can be easily added to Cydia. Below I’ve listed the ones I’d recommend:
+[Cydia](https://cydia-app.com/) is the oldest and most common alternative App Store for iOS. It's automatically installed for most jailbreaks, and it has a convenient UI for the apt-get packager it comes with. In the past, you could also buy apps through Cydia, but nowadays, most apps are sold via third-party repositories. These offer free and paid apps (via PayPal or credit card) and can be easily added to Cydia. Below I've listed the ones I'd recommend:
 
 - [Packix](https://repo.packix.com/)
 - [Dynastic Repo](https://repo.dynastic.co/)
 - [Twickd](https://repo.twickd.com/)
 - [NSCake](http://nscake.github.io) (for FLEX)
 
-Heads up: Cydia hosts many tweaks that are outdated and will not work on iOS 13. It’s best to check [/r/jailbreak](https://www.reddit.com/r/jailbreak/) or [iDownloadBlog](https://www.idownloadblog.com/tag/jailbreak/) to find tweaks that work.
+Heads up: Cydia hosts many tweaks that are outdated and will not work on iOS 13. It's best to check [/r/jailbreak](https://www.reddit.com/r/jailbreak/) or [iDownloadBlog](https://www.idownloadblog.com/tag/jailbreak/) to find tweaks that work.
 
-If you’re looking for a modern replacement for Cydia, there are quite a few alternative package managers out there. I really liked [Zebra](https://getzbra.com/), and it’s also [open source](https://getzbra.com/).
+If you're looking for a modern replacement for Cydia, there are quite a few alternative package managers out there. I really liked [Zebra](https://getzbra.com/), and it's also [open source](https://getzbra.com/).
 
 ## Preserve SHSH2 Blobs
 
-A [SHSH blob](https://en.wikipedia.org/wiki/SHSH_blob) is a small piece of data that is part of Apple’s digital signature protocol for iOS restores and updates.
+A [SHSH blob](https://en.wikipedia.org/wiki/SHSH_blob) is a small piece of data that is part of Apple's digital signature protocol for iOS restores and updates.
 
 As of the time of writing this post, Apple signs iOS 13.4.1 and iOS 13.5, and you can expect 13.4.1 will be removed in a few days. With saving this blob, you can downgrade at any time without being dependent on Apple. 
 
@@ -88,7 +98,7 @@ As of the time of writing this post, Apple signs iOS 13.4.1 and iOS 13.5, and yo
 
 There are many ways to save these. I recommend [blobsaver](https://github.com/airsquared/blobsaver/releases), as it saves the blobs on disk instead of relying on cloud services. Tools like [futurerestore](https://github.com/tihmstar/futurerestore) can then be used to downgrade ([read more here](https://cellularnews.com/mobile-operating-systems/how-to-downgrade-ios-using-shsh2-blobs/)). Store them; you never know when they might come in handy.
 
-With that out of the way, let’s explore all we can do with our new superpowers!
+With that out of the way, let's explore all we can do with our new superpowers!
 
 ## SSL Kill Switch
 
@@ -101,19 +111,19 @@ With that out of the way, let’s explore all we can do with our new superpowers
 - Respring (Restart SpringBoard).
 - Find SSL Kill Switch 2 in iOS Settings.
 
-If you’re curious how this works on a technical level, here’s a [writeup for iOS 12](https://nabla-c0d3.github.io/blog/2019/05/18/ssl-kill-switch-for-ios12/). You can also just explore the [source on GitHub](https://github.com/nabla-c0d3/ssl-kill-switch2).
+If you're curious how this works on a technical level, here's a [writeup for iOS 12](https://nabla-c0d3.github.io/blog/2019/05/18/ssl-kill-switch-for-ios12/). You can also just explore the [source on GitHub](https://github.com/nabla-c0d3/ssl-kill-switch2).
 
 # FLEX In-App Debugging
 
-[FLEX](https://github.com/Flipboard/FLEX) is an open source in-app debugging and exploration tool for iOS by [@NSExceptional](https://twitter.com/NSExceptional). It’s amazing what you can do with it. Want the weather background as your homescreen background? No problem.
+[FLEX](https://github.com/Flipboard/FLEX) is an open source in-app debugging and exploration tool for iOS by [@NSExceptional](https://twitter.com/NSExceptional). It's amazing what you can do with it. Want the weather background as your homescreen background? No problem.
 
 {% twitter https://twitter.com/nsexceptional/status/1250353513923674114 %}
 
-To install, download [FLEXing](http://cydia.saurik.com/package/com.pantsthief.flexing/), reboot your device, and then tap on the status bar to load FLEX. You can browse the classes and inspect the view hierarchy with a 3D debugger, similar to how you can with [Reveal](https://revealapp.com/). Here’s Spotify:
+To install, download [FLEXing](http://cydia.saurik.com/package/com.pantsthief.flexing/), reboot your device, and then tap on the status bar to load FLEX. You can browse the classes and inspect the view hierarchy with a 3D debugger, similar to how you can with [Reveal](https://revealapp.com/). Here's Spotify:
 
 <img src="/assets/img/2020/jailbreaking/hierarchy-spotify.png" width="80%">
 
-Of course, you can also [inspect apps written in SwiftUI](/assets/img/2020/jailbreaking/hierarchy-achelper.png), like the popular [ACHNBrowserUI](https://github.com/Dimillian/ACHNBrowserUI). Back in 2013, [I used Reveal for inspecting the view hierarchy of apps](http://petersteinberger.com/blog/2013/how-to-inspect-the-view-hierarchy-of-3rd-party-apps/), but it’s way more fun to play around on device.
+Of course, you can also [inspect apps written in SwiftUI](/assets/img/2020/jailbreaking/hierarchy-achelper.png), like the popular [ACHNBrowserUI](https://github.com/Dimillian/ACHNBrowserUI). Back in 2013, [I used Reveal for inspecting the view hierarchy of apps](http://petersteinberger.com/blog/2013/how-to-inspect-the-view-hierarchy-of-3rd-party-apps/), but it's way more fun to play around on device.
 
 ## More Useful Cydia Apps & Tweaks
 
@@ -130,7 +140,7 @@ Of course, you can also [inspect apps written in SwiftUI](/assets/img/2020/jailb
 - [FiveIconDock13](https://www.reddit.com/r/jailbreak/comments/e3d3pc/release_fiveicondock13_five_icons_on_your_dock/) — self explanatory
 - [Springtomize 5](https://repo.packix.com/package/com.springtomize.st5/) — tweak the homescreen
 - [TweakRestrictor](https://store.geometricsoftware.se/packages/se.geometric.tweakrestrictor) — disable tweaks for some apps, so as to not get banned (e.g. Snapchat)
-- [Barmoji](https://github.com/CPDigitalDarkroom/Barmoji) and [DockX](https://kubadownload.com/news/dockx-tweak/) — add quick actions below the keyboard
+- [Barmoji](https://github.com/CPDigitalDarkRoom/Barmoji) and [DockX](https://kubadownload.com/news/dockx-tweak/) — add quick actions below the keyboard
 - [Evil Scheme](https://repo.dynastic.co/package/evilscheme?refsrc=dynl) — change your default web browser, maps navigator, package manager, and more!
 
 Many tweaks are also open source, which is a great opportunity to learn. Check out [FLEX](https://github.com/Flipboard/FLEX), [Sleeper](https://github.com/joshuaseltzer/Sleeper) (tweaks the stock iOS alarms app), [Open Source Tweaks](https://github.com/LacertosusRepo/Open-Source-Tweaks), or the collection at [iPhoneDevWiki](http://iphonedevwiki.net/index.php/Open_Source_Projects).

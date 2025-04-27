@@ -1,9 +1,17 @@
 ---
-layout: post
 title: "Smart Proxy Delegation"
-date: 2013-07-30 18:28
-comments: true
-categories: 
+pubDate: 2013-07-30T18:28:00.000Z
+description: "Streamline your delegate pattern implementation in Objective-C with a clever proxy approach that eliminates repetitive boilerplate code. I present a complete solution that handles method forwarding, respects the respondsToSelector check, properly manages weak references to avoid retain cycles, and even supports block-based callbacks. This technique significantly reduces code verbosity while maintaining safety and readability, making delegate calls as simple as a direct message send."
+tags:
+  - iOS-Development
+  - Objective-C
+  - Design-Patterns
+  - Delegates
+  - NSProxy
+  - Message-Forwarding
+  - PSPDFKit
+source: petersteinberger.com
+AIDescription: true
 ---
 
 When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward and easy to understand:
@@ -115,3 +123,4 @@ We have to to go down to NSInvocation, which is a bit slower, but again, you won
 [All code (including test cases) is on GitHub.](https://github.com/steipete/PSTDelegateProxy)
 
 I've already implemented this almost everywhere in my [iOS PDF Framework](http://pspdfkit.com) and was able to delete *a lot* of boilerplate code. I'm [@steipete](http://twitter.com/steipete) on Twitter. Looking forward to your feedback.
+

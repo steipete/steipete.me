@@ -2,18 +2,29 @@
 title: Building with Swift Trunk Development Snapshots
 pubDate: 2020-06-12T15:00:00.000Z
 description: >-
-  I ecetly stated the advetue of buildig PSPDFKit with the [Swift tuk developmet
-  sapshot](https://swift.og/dowload/).
+  Dive into my adventure of building PSPDFKit with the Swift trunk development snapshot. I document the various compilation errors, linker issues, and debugging challenges I encountered, sharing solutions for each roadblock. Whether you're preparing for a new Xcode release or just curious about bleeding-edge Swift, this troubleshooting guide will help you navigate the sometimes bumpy road of working with Swift's development branch.
 heroImage: /assets/img/2020/swift-trunk/swift-trunk.png
 tags:
+  - Swift
+  - Toolchains
+  - Development
+  - Debugging
+  - Xcode
+  - Compilation
   - iOS
-  - development
+  - Mac-Catalyst
+  - Linker
+  - Troubleshooting
+  - Swift-Trunk
+  - Build-Errors
+  - APINotes
 source: steipete.com
+AIDescription: true
 ---
 
 I recently started the adventure of building PSPDFKit with the [Swift trunk development snapshot](https://swift.org/download/). I did this both in order to verify a fix for the [SR-12933 LLDB debugging issue](https://steipete.com/posts/couldnt-irgen-expression/) and to be better prepared for the Xcode 12 release at WWDC.
 
-I’m documenting my adventure with the June 10 Swift trunk toolchain — may it help Google warriors, as some of the errors didn’t yield any useful results. Let’s skip the download-install-select-in-Xcode part and go straight to the issues.
+I'm documenting my adventure with the June 10 Swift trunk toolchain — may it help Google warriors, as some of the errors didn't yield any useful results. Let's skip the download-install-select-in-Xcode part and go straight to the issues.
 
 ## libclang_rt.profile_iossim.a Not Found
 
@@ -47,7 +58,7 @@ BB Warning: Exact exception propagation is requested by application but the link
 libc++abi.dylib: terminating with uncaught exception of type tbb::captured_exception: Unidentified exception
 ```
 
-This turned out to be [zld](/posts/zld-a-faster-linker/) — removing the `xcconfig` setting solved this. This will be fixed eventually, as Apple’s ld is open source and zld is just a faster fork. I [documented this in the Swift Forum](https://forums.swift.org/t/swift-toolchain-fails-to-compile-with-tbb-unidentified-exception/37434) for others to find.
+This turned out to be [zld](/posts/zld-a-faster-linker/) — removing the `xcconfig` setting solved this. This will be fixed eventually, as Apple's ld is open source and zld is just a faster fork. I [documented this in the Swift Forum](https://forums.swift.org/t/swift-toolchain-fails-to-compile-with-tbb-unidentified-exception/37434) for others to find.
 
 ## Archive Member with Length Is Not Mach-O or LLVM Bitcode
 
@@ -55,11 +66,11 @@ This one took me a while! We are using different configurations in PSPDFKit, so 
 
 ![](/assets/img/2020/swift-trunk/not-macho.png)
 
-This seems to be a bug; there’s no reason this should fail, as it’s perfectly OK to compile different objects with different optimizer settings. Changing this to be the same settings everywhere did work around the issue.
+This seems to be a bug; there's no reason this should fail, as it's perfectly OK to compile different objects with different optimizer settings. Changing this to be the same settings everywhere did work around the issue.
 
 ## Missing APINotes
 
-Apple uses [API notes](https://pspdfkit.com/blog/2018/first-class-swift-api-for-objective-c-frameworks/) to make the mapping from Objective-C to Swift easier. They are currently to a degree tightly coupled with Clang itself, and as the [`UIPointerInteraction`](https://pspdfkit.com/blog/2020/supporting-pointer-interactions/) API is very new, these notes haven’t been upstreamed yet — so we get a different, non-optimized API in Swift when compiling with trunk.
+Apple uses [API notes](https://pspdfkit.com/blog/2018/first-class-swift-api-for-objective-c-frameworks/) to make the mapping from Objective-C to Swift easier. They are currently to a degree tightly coupled with Clang itself, and as the [`UIPointerInteraction`](https://pspdfkit.com/blog/2020/supporting-pointer-interactions/) API is very new, these notes haven't been upstreamed yet — so we get a different, non-optimized API in Swift when compiling with trunk.
 
 ![](/assets/img/2020/swift-trunk/gesture.png)
 
@@ -69,7 +80,7 @@ To conditionally disable Swift code, I used an `#ifdef` and set the following in
 OTHER_SWIFT_FLAGS = -D SWIFT_TRUNK_TOOLCHAIN_WORKAROUND
 ```
 
-This still disables the code and isn’t a real fix, but I assume Apple will eventually update trunk to include these API notes.
+This still disables the code and isn't a real fix, but I assume Apple will eventually update trunk to include these API notes.
 
 ## libLTO.dylib Could Not Be Loaded
 
@@ -81,11 +92,11 @@ LLVM_LTO = NO
 
 ## Xcode and Xcode Build System Crash
 
-To be honest, I’m just adding this for the sake of completeness. This happens at random times and isn’t really related to Swift trunk. A restart fixes it.
+To be honest, I'm just adding this for the sake of completeness. This happens at random times and isn't really related to Swift trunk. A restart fixes it.
 
 ![](/assets/img/2020/swift-trunk/xcodecrash.png)
 
-Build system crashes are especially fun because Xcode doesn’t crash, but you still have to quit and restart it manually. One could make the argument that it would be more convenient if Xcode would simply crash as well.
+Build system crashes are especially fun because Xcode doesn't crash, but you still have to quit and restart it manually. One could make the argument that it would be more convenient if Xcode would simply crash as well.
 
 ![](/assets/img/2020/swift-trunk/buildsystem.png)
 
@@ -99,7 +110,7 @@ Turns out this is already known and happens any time you run this compiler with 
 
 ## Catalyst Warning
 
-We expose some internal Swift classes to Objective-C that are only available in newer versions of the OS. Pointer library methods have been added to Catalyst, and we declare this availability for both iOS and Catalyst, but the trunk version doesn’t know about the `maccatalyst` platform.
+We expose some internal Swift classes to Objective-C that are only available in newer versions of the OS. Pointer library methods have been added to Catalyst, and we declare this availability for both iOS and Catalyst, but the trunk version doesn't know about the `maccatalyst` platform.
 
 ![](/assets/img/2020/swift-trunk/catalyst-objc.png)
 
@@ -107,4 +118,4 @@ The only way to get rid of this error seems to be to remove the define, but sinc
 
 ## Conclusion
 
-Using the [Swift trunk toolchain](https://swift.org/download/) is a rocky road, and I can only recommend this if you feel adventurous or really want to help Apple verify a bug fix. However, I appreciate that Apple provides prebuilt packages, and I’m sure the issues above will be ironed out eventually.
+Using the [Swift trunk toolchain](https://swift.org/download/) is a rocky road, and I can only recommend this if you feel adventurous or really want to help Apple verify a bug fix. However, I appreciate that Apple provides prebuilt packages, and I'm sure the issues above will be ironed out eventually.

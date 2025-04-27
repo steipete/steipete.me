@@ -1,9 +1,17 @@
 ---
-layout: post
 title: "Fixing What Apple Doesn't"
-date: 2014-01-04 15:09
-comments: true
-categories: 
+pubDate: 2014-01-04T15:09:00.000Z
+description: "Follow along as I tackle an annoying UI glitch in iOS 7's printer controller where the label is offset and looks misaligned. Through runtime inspection with Reveal and class swizzling, I implement a quick fix for the UIPrinterSearchingView that centers the label properly. This practical example demonstrates how to patch Apple's oversights in UIKit while writing defensive code that won't break when Apple eventually fixes the issue."
+tags:
+  - iOS-Development
+  - UIKit
+  - Runtime
+  - Method-Swizzling
+  - iOS-7
+  - Bug-Fixes
+  - Reveal
+source: petersteinberger.com
+AIDescription: true
 ---
 
 It's one of those days where Apple's sloppiness on iOS 7 is driving me nuts. Don't get me wrong; I have a lot of respect in pulling off something as big as iOS 7 in such a short amount of time. It's just that I see what's coming in iOS 7.1 and so many annoyances of iOS 7 still aren't fixed.
