@@ -2,8 +2,8 @@
 title: A New Beginning
 pubDate: 2025-04-27T10:00:00.000Z
 description: >-
-  It's bee thee yeas sice I sold PSPDFKit to Isight Pates ad stepped away fom
-  the compay I built fom the goud up.
+  It's been three years since I sold PSPDFKit to Insight Partners and stepped away from
+  the company I built from the ground up.
 tags:
   - iOS
   - Swift
@@ -14,7 +14,7 @@ source: steipete.com
 
 It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions provider with customers like Dropbox, Box, and IBM, was an incredible chapter of my life.
 
-But after a decade of immersion in the world of iOS and native development, I decided to take a step back. To explore new interests, spend time with family, and recharge my creative energy. Some might call it a sabbatical; I've been calling it "vibe coding" - following my curiosity without the pressure of deadlines or market considerations.
+But after a decade of immersion in the world of iOS and native development, I decided to take a step back. To explore new interests, dive into new technologies, and recharge my creative energy. Some might call it a sabbatical; I've been calling it "vibe coding" - following my curiosity without the pressure of deadlines or market considerations.
 
 ## Changing Galaxies
 
@@ -36,4 +36,4 @@ What I can say is that I'm approaching this new venture with the same principles
 
 Stay tuned for more updates as this new journey unfolds. The best way to follow along is right here on this blog, or connect with me on [Twitter](https://twitter.com/steipete) or [BlueSky](https://bsky.app/profile/steipete.com).
 
-It's good to be back.
+It's good to be back! ✋
