@@ -1,7 +1,7 @@
 ---
 title: 'Converting Xcode Test Runs to JUnit, the Fast Way'
 pubDate: 2016-08-11T10:00:00.000Z
-description: 'Testing is very important at PSPDFKit. We're building an SDK. When you give your API to other developers, there are many more things that can go wr...'
+description: 'Testing is very important at PSPDFKit. We are building an SDK. When you give your API to other developers, there are many more things that can go wrong.'
 tags:
   - iOS
   - Development
