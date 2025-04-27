@@ -1,9 +1,13 @@
 ---
-layout: post
 title: "NSURLCache Uses A Disk Cache As Of iOS 5"
-date: 2012-04-10 19:37
-comments: true
-categories:
+pubDate: 2012-04-10T19:37:00.000Z
+description: "Discover a significant, undocumented change in iOS 5: NSURLCache now properly implements disk caching, eliminating the need for custom solutions. I explore how iOS automatically saves web responses to a SQLite database based on Cache-Control headers, examine the cache database structure, and discuss proper configuration for performance optimization. This technical finding has important implications for developers working with network requests who previously relied on third-party caching implementations."
+tags:
+  - iOS
+  - networking
+  - performance
+source: petersteinberger.com
+AIDescription: true
 ---
 
 While writing  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://github.com/AFNetworking/AFNetworking), I discovered that the behavior of NSURLCache changed between iOS 4.x and iOS 5.x.

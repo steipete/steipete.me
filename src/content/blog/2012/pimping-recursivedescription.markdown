@@ -1,9 +1,13 @@
 ---
-layout: post
 title: "Pimping recursiveDescription"
-date: 2012-07-01 15:49
-comments: true
-categories: 
+pubDate: 2012-07-01T15:49:00.000Z
+description: "Enhance your iOS debugging toolkit with an improved recursiveDescription for UIViewController hierarchies. Learn how to augment the standard UIView debug output to clearly show view controller containment relationships, making it easier to spot issues in complex UI hierarchies. My simple but powerful implementation adds visual indicators for parent-child relationships and highlights common sizing bugs, solving a pain point I discussed with Apple engineers at WWDC."
+tags:
+  - iOS
+  - debugging
+  - UIKit
+source: petersteinberger.com
+AIDescription: true
 ---
 
 While working on [PSPDFKit](http://pspdfkit.com), more and more I embrace viewController containment to better distribute responsibilities between different view controllers.

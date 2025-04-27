@@ -1,9 +1,12 @@
 ---
-layout: post
 title: "Moving On... Or How Waiting For A Visa Was The Best Thing That Ever Happened To Me."
-date: 2012-04-06 16:00
-comments: true
-categories: life
+pubDate: 2012-04-06T16:00:00.000Z
+description: "After months of waiting for a US visa, I share my journey from freelance iOS developer to becoming a full-time indie again. I reflect on what I learned during my time in San Francisco's startup culture, why I'm returning to Austria, and how this unexpected delay led me to discover PSPDFKit - the product that would become my passion and livelihood. A personal story about finding clarity and purpose in professional life."
+tags:
+  - life
+  - personal
+source: petersteinberger.com
+AIDescription: true
 ---
 
 A few days ago I booked my flight back to [Austria](https://p.twimg.com/Ak83Q74CEAAprvc.jpg). Starting on April 13, I'm a <strong>full-time indie</strong> again.
