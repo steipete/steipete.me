@@ -311,7 +311,7 @@ pre code {
 
 @media (prefers-color-scheme: dark) {
   pre {
-    background-color: #2d3338;
+    background-color: #1a1e21;
     border-color: rgba(255, 255, 255, 0.1);
   }
   
