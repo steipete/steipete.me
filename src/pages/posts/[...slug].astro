@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await post.render ? post.render() : { Content: () => {} };
+const { Content } = await post.render(); // With newer versions of Astro, render() should always be available
 ---
 
 <BlogPostLayout
