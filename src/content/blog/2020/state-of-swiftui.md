@@ -1,21 +1,12 @@
 ---
-title: The State of SwiftUI
-pubDate: 2020-09-13T09:00:00.000Z
-description: 'div.post-content > img:first-child { display:none; } Apple released SwiftUI last year, and it’s been an exciting and wild ride.'
+title: 'The State of SwiftUI'
+pubDate: 2020-09-13T11:00:00.000+02:00
+description: "Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta sample app."
 heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
 tags:
   - iOS
-  - macOS
-  - Swift
-  - Objective-C
-  - UIKit
+  - development
   - SwiftUI
-  - Debugging
-  - Performance
-  - Xcode
-  - AppKit
-  - Catalyst
-source: steipete.com
 ---
 
 <style type="text/css">
@@ -30,7 +21,7 @@ Let’s look at [Apple’s Fruta example](https://developer.apple.com/documentat
 
 I took a look when Big Sur beta 1 came out, and it was pretty unpolished:
 
-{% twitter https://twitter.com/steipete/status/1277623561604214784?s=21 %}
+<TwitterEmbed id="1277623561604214784" />
 
 Since then, there have been many betas, and we’re nearing the end of the cycle, with the GM expected in October. So it’s time to look at Fruta again. And indeed, the SwiftUI team did a great job fixing the various issues: The toolbar is pretty reliable, the sidebar no longer jumps out, multiple windows works... however, [views are still sometimes misaligned](https://twitter.com/steipete/status/1305054121523916806?s=21), and it’s still fairly easy to make it crash on both [macOS (FB8682269)](https://twitter.com/steipete/status/1305051342596177921?s=21) and [iOS 14b8 (FB8682290)](https://twitter.com/steipete/status/1305052083989684224?s=21).
 
@@ -50,7 +41,7 @@ SwiftUI uses many components from AppKit and UIKit, which is a much better strat
 
 Example: Removing a favorited item while it’s selected crashes in the AppKit binding that syncs the SwiftUI state with `NSTableView` (FB8684522). 
 
-<blockquote class="twitter-tweet" data-conversation="none" data-dnt="true"><p lang="en" dir="ltr">Removing a favorite crashes the app immediately. <a href="https://t.co/i5wiMJr4XX">pic.twitter.com/i5wiMJr4XX</a></p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/status/1305075451711369216?ref_src=twsrc%5Etfw">September 13, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<TwitterEmbed id="1305075451711369216" />
 
 ```
 2020-09-13 10:31:25.483965+0200 Fruta[79371:2051792] [General] Row 0 out of row range [0--1] for rowViewAtRow:createIfNeeded:
@@ -99,7 +90,7 @@ The good news is there seem to be a lot of potential future optimizations possib
 
 This isn’t unique to Fruta. I’ve been taking a look at [@Dimillian’s](https://twitter.com/Dimillian) RedditOS app, which is built with SwiftUI on macOS. He [stopped development](https://twitter.com/Dimillian/status/1301802048824979456) because it’s so slow that it’s not shippable. I did some debugging with an earlier version of Big Sur where the app still somewhat worked:
 
-{% twitter https://twitter.com/steipete/status/1282655123244752897?s=20 %}
+<TwitterEmbed id="1282655123244752897" />
 
 The general pattern here points to AppKit: The interaction between SwiftUI views and AppKit views [seems to](https://twitter.com/fcbunn/status/1259078251340800000) be [poor](https://twitter.com/stuartcarnie/status/1301895206875181056). It’s important to understand that SwiftUI itself is fast — for many use cases it’s even faster than using `CALayer`, [as 
 @cocoawithlove proved](https://twitter.com/cocoawithlove/status/1143859576661393408) — and the UIKit port is by far faster and better than the AppKit port.
@@ -116,7 +107,7 @@ Apple seems to have fixed an issue and [specifically mentioned the Fruta Sample 
 
 Apple got back to me, explaining that I should test this again:
 
-{% twitter https://twitter.com/steipete/status/1320375101771206662?s=21 %}
+<TwitterEmbed id="1320375101771206662" />
 
 They indeed fixed the easy-to-trigger bug (good job!) and [it took me a minute to get it to crash again](https://twitter.com/steipete/status/1320375853243617280?s=21). To be fair, this is a different issue and seems related to Apple Pay. I also found [another Attributed Graph crash](https://twitter.com/steipete/status/1320379341507842048?s=21).
 
