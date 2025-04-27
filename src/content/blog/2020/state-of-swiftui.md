@@ -1,21 +1,10 @@
 ---
-title: The State of SwiftUI
-pubDate: 2020-09-13T09:00:00.000Z
-description: 'div.post-content > img:first-child { display:none; } Apple released SwiftUI last year, and it’s been an exciting and wild ride.'
-heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
-tags:
-  - iOS
-  - macOS
-  - Swift
-  - Objective-C
-  - UIKit
-  - SwiftUI
-  - Debugging
-  - Performance
-  - Xcode
-  - AppKit
-  - Catalyst
-source: steipete.com
+layout: post
+title: "The State of SwiftUI"
+date: 2020-09-13 11:00:00 +0200
+tags: iOS development SwiftUI
+image: /assets/img/2020/fruta-swiftui/fruta-crash.png
+description: "Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta sample app."
 ---
 
 <style type="text/css">
