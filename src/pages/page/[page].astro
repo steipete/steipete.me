@@ -6,7 +6,18 @@ import { SITE } from '../../consts';
 
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection('blog');
-  const sortedPosts = allPosts.sort(
+
+  // Deduplicate posts by slug if there are any duplicates
+  const slugMap = new Map();
+  allPosts.forEach(post => {
+    // If we already have a post with this slug, only keep the newer one
+    if (!slugMap.has(post.slug) || new Date(post.data.pubDate) > new Date(slugMap.get(post.slug).data.pubDate)) {
+      slugMap.set(post.slug, post);
+    }
+  });
+
+  // Convert back to array and sort
+  const sortedPosts = Array.from(slugMap.values()).sort(
     (a, b) => {
       const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
       const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
