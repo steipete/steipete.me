@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[At PSPDFKit, we've been using [KIF ("Keep It Functional")](https://github.com/kif-framework/KIF) since 2014 to test UI components. [We wrote about ...]
+
+
 At PSPDFKit, we've been using [KIF ("Keep It Functional")](https://github.com/kif-framework/KIF) since 2014 to test UI components. [We wrote about our process in April 2016](/blog/2016/running-ui-tests-with-ludicrous-speed/), and it's time to revisit. KIF is a good and proven solution. It mostly synthesizes `UITouch` objects or related events and the app processes it just as if the user would tap. KIF is compiled into your app and can run in tandem with other XCTests. You can mix `XCTAssert*` calls and UI instructions.
 
 ## KIF

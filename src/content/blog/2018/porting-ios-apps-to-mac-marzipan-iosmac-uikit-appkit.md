@@ -9,6 +9,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet s...]
+
+
 With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet something that’s officially supported for third-party developers, let’s explore what to expect in 2019 and how to try it out today.
 
 This article is based on a talk (below) I presented at try! Swift New York called “Hacking Marzipan.” You can find [the slides on SpeakerDeck][].  

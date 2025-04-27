@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/s...]
+
+
 Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/swift/blog/?id=34) language that pushes safe programming patterns and adds modern features to make programming easier, more flexible, and more fun.
 
 This article explores what ABI means and how it can be important for third-party frameworks. It was written in February 2018. Since Swift moves so fast, some details might no longer be accurate.

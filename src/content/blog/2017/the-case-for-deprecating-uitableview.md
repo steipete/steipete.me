@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[`UITableView` is a cornerstone of classical iOS development and one of the oldest classes. It's used in pretty much all iOS apps and has been aroun...]
+
+
 `UITableView` is a cornerstone of classical iOS development and one of the oldest classes. It's used in pretty much all iOS apps and has been around since iPhone OS 2.0. So why would we propose deprecating one of the most used classes?
 
 Simple: `UICollectionView`. Added in [iOS 6 (2012)](https://en.wikipedia.org/wiki/IOS_6), it's almost a perfect superset of `UITableView`, yet it can do so much more.

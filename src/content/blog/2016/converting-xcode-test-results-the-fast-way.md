@@ -9,6 +9,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Testing is very important at PSPDFKit. We're building an SDK. When you give your API to other developers, there are many more things that can go wr...]
+
+
 Testing is very important at PSPDFKit. We're building an SDK. When you give your API to other developers, there are many more things that can go wrong. For a long time, we've been using either a combination of xcodebuild with [xcpretty](https://github.com/supermarin/xcpretty) or [Facebook's xctool](https://github.com/facebook/xctool). No tool is perfect though. [xctool](https://github.com/facebook/xctool) is an alternative to xcodebuild but uses much of it under the hood and often breaks when Xcode is updated. At some point Facebook deprecated it, and currently it doesn't work with Xcode 8 anymore. [xcpretty](https://github.com/supermarin/xcpretty) is really good. It parses the very verbose output of xcodebuild and prints it into something sane that a human can read. A big shout-out to [Marin Usalj](https://twitter.com/_supermarin), who maintains the project.
 
 There are a few inherent problems with parsing an undocumented log output with regular expressions. Things might get lost if no regex matches, or [parsing becomes extremely slow](https://github.com/supermarin/xcpretty/issues/155) if you log too much. All of this, and much more, has happened to us. It is not really xcpretty's fault — it tries hard. It's more an inherent problem and changing output between Xcode versions doesn't help either. (Oh, you think xcodebuild can't be any more verbose? [Did you know about the undocumented log level 5?](https://twitter.com/SmileyKeith/status/759679956876132352) Have fun!)

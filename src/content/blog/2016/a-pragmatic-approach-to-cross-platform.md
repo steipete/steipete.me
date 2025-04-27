@@ -7,6 +7,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the ...]
+
+
 At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the codebase. This wasn’t always the case. Here’s what we learned over the last few years.
 ## Humble Beginning
 

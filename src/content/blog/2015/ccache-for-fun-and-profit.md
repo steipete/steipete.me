@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specif...]
+
+
 At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with [PSPDFKit 5 for iOS](/blog/2015/pspdfkit-ios-5-0/): the addition of a complete PDF renderer slowed down compile times a lot.
 Our Android SDK had the same problem, and I learned about the ccache project a few months ago when our Android lead introduced it into our stack to fight the ever longer compile times of our C++ NDK code.
 

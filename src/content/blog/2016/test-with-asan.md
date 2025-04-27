@@ -9,6 +9,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race condit...]
+
+
 Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race conditions. These tools are [extremely powerful](https://research.google.com/pubs/archive/35604.pdf) and mature and exist in various forms since 2010. These tools are so incredibly useful that we collected our experiences using them, [between iOS, Android and our C++ core](/blog/2016/a-pragmatic-approach-to-cross-platform/), to help you through some gotchas.
 ## Address Sanitizer on iOS & macOS
 

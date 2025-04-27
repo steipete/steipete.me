@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person t...]
+
+
 Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person to one with more than 40 people requires change, and even more so when expanding from just iOS to Android, Web, Windows, and macOS.
 
 That said, our biggest concerns have always been maintainability and long-term code evolution. PSPDFKit crossed the 1 million lines of code boundary long ago, and there are still quite a few features in the PDF spec that we want to support. At this size, and with millions of people constantly using our products, we cannot do a “grand rewrite” every few years. That said, some code we ship was written in 2009, and it still works just as well today.

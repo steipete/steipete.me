@@ -7,6 +7,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7 and Apple Watch Series 2, Apple announced somet...]
+
+
 Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web.
 
 So far there’s no beta available, but Apple demonstrated how it’d work by editing a set of Keynote slides on stage. Users will be able to add text, images, and animations to their documents in real time on all platforms that Apple supports.

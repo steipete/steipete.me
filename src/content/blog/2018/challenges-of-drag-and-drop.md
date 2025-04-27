@@ -9,6 +9,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] ...]
+
+
 Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] to support [drag and drop][] for iPads on iOS 11 and above.
 
 Although we’ve written [about drag and drop][] before, this time I want to focus a little bit on it within the context of editing PDF files: what worked and didn’t work for us, the challenges we faced, and what we’d like for the drag-and-drop API to support in the future.

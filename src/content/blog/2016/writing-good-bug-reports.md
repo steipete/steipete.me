@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[At PSPDFKit, we provide an SDK to [display and annotate PDFs](/blog/2016/pspdfkit-ios-6-0/), for other people to integrate into their apps. There i...]
+
+
 At PSPDFKit, we provide an SDK to [display and annotate PDFs](/blog/2016/pspdfkit-ios-6-0/), for other people to integrate into their apps. There is a large set of API and therefore many things can go wrong. As you can imagine, things are quite busy on support as I work every day with developers reading through their bug reports. At the same time, we also forward many bugs to the engineers at Apple, as they ship even larger frameworks with even more API (e.g. UIKit), because all software has bugs.
 
 Over the years, this dual role has given me quite a perspective on what makes a good bug report. While this post is Apple-centric, many details can be applied to _any_ sort of bug reporting.

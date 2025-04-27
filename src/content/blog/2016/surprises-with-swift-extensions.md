@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use `@objc(prefix_name)` to keep the name pretty in Swift and exp...]
+
+
 tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use `@objc(prefix_name)` to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime.
 PSPDFKit is a commerical framework that allows you to embed a PDF viewer/editor into your app. Today, we received a report for a very weird crash with a stack trace that contained only UIKit symbols, but was clearly triggered by a specific action in PSPDFKit (Toggling the note annotation view controller quickly).
 

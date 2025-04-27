@@ -8,6 +8,9 @@ tags:
 source: pspdfkit.com
 ---
 
+::ai[Few apps have the luxury to support only the most recent version of iOS. It's often necessary to set a lower [deployment target](/guides/ios/curren...]
+
+
 Few apps have the luxury to support only the most recent version of iOS. It's often necessary to set a lower [deployment target](/guides/ios/current/announcements/version-support/) and branch in code based on specific versions of iOS. There are various ways to accomplish this and even Apple's message is a bit conflicted. I recently saw [this tweet](https://twitter.com/stevemoseley/status/748953473069092864) where someone basically warns to **not** do this:
 
 ```objc
