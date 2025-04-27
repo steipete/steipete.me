@@ -1,10 +1,9 @@
 ---
-layout: post
 title: "Logging in Swift"
-date: 2020-08-24 19:00:00 +0200
-tags: iOS development
-image: /assets/img/2020/swift-logging/logd.jpeg
+pubDate: 2020-08-24T19:00:00+02:00
 description: "Exploring the new Swift Logger struct, OSLogStore, and streaming access to OSLog."
+heroImage: /assets/img/2020/swift-logging/logd.jpeg
+tags: ["iOS", "development"]
 ---
 
 <style type="text/css">
