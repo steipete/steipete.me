@@ -1,7 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Link from '../components/Link.astro'
-import { SOCIAL_LINKS } from '../consts'
+import { SOCIAL_LINKS, SITE } from '../consts'
+import { createHash } from 'crypto'
+
+// Generate Gravatar URL
+function getGravatarUrl(email: string, size: number = 300): string {
+  const hash = createHash('md5').update(email.toLowerCase().trim()).digest('hex')
+  return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=mp`
+}
+
+const gravatarUrl = getGravatarUrl('steipete@gmail.com', 300)
 ---
 
 <Layout title="About Me" description="iOS Developer, Entrepreneur, and Open Source Contributor">
@@ -12,7 +21,7 @@ import { SOCIAL_LINKS } from '../consts'
       <div class="flex flex-col md:flex-row gap-8 mb-8">
         <div class="flex-shrink-0">
           <img 
-            src="/images/peter-profile.jpg" 
+            src={gravatarUrl} 
             alt="Peter Steinberger" 
             class="rounded-md max-w-[300px] h-auto"
           />
