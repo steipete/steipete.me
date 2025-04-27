@@ -5,7 +5,19 @@ description: >-
   Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta
   sample app.
 heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Performance
+  - Xcode
+  - AppKit
+  - Catalyst
+source: steipete.com
 ---
 
 <style type="text/css">

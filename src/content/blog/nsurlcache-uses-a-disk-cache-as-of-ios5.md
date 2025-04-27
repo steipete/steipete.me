@@ -1,9 +1,16 @@
 ---
-title: ""
+title: ''
 pubDate: '2012-04-10 19:37'
-description: "While witig  [AFDowloadRequestOpeatio](https://github.com/steipete/AFDowloadRequestOpeatio), a ew subclass fo [AFNetwokig](https://github.com/AFNetwokig/AFNe..."
-
-tags: []
+description: >-
+  While witig 
+  [AFDowloadRequestOpeatio](https://github.com/steipete/AFDowloadRequestOpeatio),
+  a ew subclass fo [AFNetwokig](https://github.com/AFNetwokig/AFNe...
+tags:
+  - iOS
+  - macOS
+  - SwiftUI
+  - Debugging
+source: petersteinberger.com
 ---
 
 While writing  [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://github.com/AFNetworking/AFNetworking), I discovered that the behavior of NSURLCache changed between iOS 4.x and iOS 5.x.

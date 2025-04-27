@@ -1,9 +1,14 @@
 ---
-title: "Jailbreaking for iOS Developers"
-pubDate: 2020-05-26T00:00:00+02:00
-description: "Jailbeakig is somethig that’s aely discussed i the iOS develope commuity — which is ufotuate, because it’s amazig."
+title: Jailbreaking for iOS Developers
+pubDate: 2020-05-25T22:00:00.000Z
+description: >-
+  Jailbeakig is somethig that’s aely discussed i the iOS develope commuity —
+  which is ufotuate, because it’s amazig.
 heroImage: /assets/img/2020/jailbreaking/header.jpg
-tags: ["iOS","hacks"]
+tags:
+  - iOS
+  - hacks
+source: steipete.com
 ---
 
 <style type="text/css">

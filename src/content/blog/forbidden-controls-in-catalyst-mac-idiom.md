@@ -1,9 +1,21 @@
 ---
-title: ""
-pubDate: 2020-09-22T20:00:00+02:00
-description: "[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom."
+title: ''
+pubDate: 2020-09-22T18:00:00.000Z
+description: '[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom.'
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
-tags: []
+tags:
+  - iOS
+  - macOS
+  - Swift
+  - Objective-C
+  - UIKit
+  - SwiftUI
+  - Debugging
+  - Xcode
+  - AppKit
+  - Catalyst
+  - Hacking
+source: steipete.com
 ---
 
 <style type="text/css">

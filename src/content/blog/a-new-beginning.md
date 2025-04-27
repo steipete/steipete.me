@@ -1,9 +1,15 @@
 ---
-title: ""
-pubDate: 2025-04-27T12:00:00+02:00
-description: "It's bee thee yeas sice I sold PSPDFKit to Isight Pates ad stepped away fom the compay I built fom the goud up."
-
-tags: []
+title: ''
+pubDate: 2025-04-27T10:00:00.000Z
+description: >-
+  It's bee thee yeas sice I sold PSPDFKit to Isight Pates ad stepped away fom
+  the compay I built fom the goud up.
+tags:
+  - iOS
+  - Swift
+  - Objective-C
+  - Xcode
+source: steipete.com
 ---
 
 It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions provider with customers like Dropbox, Box, and IBM, was an incredible chapter of my life.

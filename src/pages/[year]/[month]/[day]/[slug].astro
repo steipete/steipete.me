@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  
+  return posts.map(post => {
+    // Extract date components from filename if it's in date format (YYYY-MM-DD-slug.md)
+    const dateMatch = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md/);
+    
+    if (dateMatch) {
+      const [_, year, month, day, slug] = dateMatch;
+      return {
+        params: { year, month, day, slug },
+        props: { post }
+      };
+    }
+    
+    return null;
+  }).filter(Boolean);
+}
+
+const { slug } = Astro.params;
+
+// Server-side redirect to the canonical URL
+return Astro.redirect(`/blog/${slug}/`, 301);
+---
