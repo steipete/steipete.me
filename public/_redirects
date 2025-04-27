@@ -1,7 +1,22 @@
 # Redirects from old URL patterns to new structure
 # Generated on 2025-04-27T09:55:08.537Z
 
-# Generic patterns - these work across all domains
+# Domain canonicalization - force all domains to steipete.me
+# Note: This should be implemented in Netlify/Vercel settings as well for best SEO
+http://steipete.com/*        https://steipete.me/:splat      301!
+http://www.steipete.com/*    https://steipete.me/:splat      301!
+https://steipete.com/*       https://steipete.me/:splat      301!
+https://www.steipete.com/*   https://steipete.me/:splat      301!
+http://steipete.wtf/*        https://steipete.me/:splat      301!
+http://www.steipete.wtf/*    https://steipete.me/:splat      301!
+https://steipete.wtf/*       https://steipete.me/:splat      301!
+https://www.steipete.wtf/*   https://steipete.me/:splat      301!
+http://petersteinberger.com/*      https://steipete.me/:splat      301!
+http://www.petersteinberger.com/*  https://steipete.me/:splat      301!
+https://petersteinberger.com/*     https://steipete.me/:splat      301!
+https://www.petersteinberger.com/* https://steipete.me/:splat      301!
+
+# Generic patterns - these work on steipete.me (now canonical)
 /:year/:month/:day/:slug  /blog/:slug  301
 /:slug                    /blog/:slug  301
 
