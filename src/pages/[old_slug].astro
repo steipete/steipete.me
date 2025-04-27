@@ -5,11 +5,13 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map(post => {
-    // Get the slug from the filename
-    const slug = post.slug;
+    // For files in year folders like 2020/file.md, the slug part after the year is what we want
+    // For other files like a-new-beginning.md, use the full slug
+    const slugParts = post.slug.split('/');
+    const oldSlug = slugParts.length > 1 ? slugParts[1] : post.slug;
 
     return {
-      params: { old_slug: slug },
+      params: { old_slug: oldSlug },
       props: { post }
     };
   });

@@ -6,6 +6,10 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map(post => {
+    // Extract slug from the collection ID
+    // For files in year folders like 2020/file.md, this will be "2020/file"
+    // For other files like a-new-beginning.md, this will be "a-new-beginning"
+
     return {
       params: { slug: post.slug },
       props: post
