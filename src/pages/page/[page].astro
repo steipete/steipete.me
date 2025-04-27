@@ -7,7 +7,11 @@ import { SITE } from '../../consts';
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection('blog');
   const sortedPosts = allPosts.sort(
-    (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+    (a, b) => {
+      const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
+      const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
+      return dateB - dateA;
+    }
   );
   
   return paginate(sortedPosts, { pageSize: 10 });
@@ -31,7 +35,7 @@ const { data: posts, currentPage, lastPage } = page;
           </h2>
           
           <div class="flex items-center text-sm text-muted-foreground mb-4">
-            <FormattedDate date={new Date(post.data.pubDate)} />
+            <FormattedDate date={new Date(post.data.pubDate || post.data.date)} />
           </div>
           
           {post.data.description && (
