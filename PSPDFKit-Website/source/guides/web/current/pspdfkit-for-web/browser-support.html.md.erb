@@ -1,0 +1,59 @@
+---
+title: Browser Support
+section: developers
+---
+
+PSPDFKit for Web (both the server-backed and standalone deployment options \*) supports all commonly used browsers in their latest versions.
+
+## Desktop
+
+- Google Chrome
+- Mozilla Firefox
+- Apple Safari
+- Microsoft Edge
+- [Microsoft Internet Explorer 11][]
+
+\* Standalone deployment renders PDF documents in the client browser, so rendering performance will depend on the host machine.
+
+### Long-Term Support
+
+The only browser vendor currently supporting an LTS (Long Term Service) / ESR (Extended Support Release) version is Mozilla Firefox. See [Firefox Extended Support Release][] for details.
+
+We support versions 52, 60, and 68 (current) of Firefox ESR.
+
+Google offers [Chrome Browser for enterprise][] to help with managing browser deployment and updates.
+
+All browsers without a long-term service release require regular updates to new versions to fix security vulnerabilities.
+
+Note that some LTS versions of Windows 10 [ship without Microsoft Edge][]. We still support Microsoft Internet Explorer 11 for such systems, along with older Windows variants.
+
+## Mobile
+
+- Chrome on Android
+- Safari on iOS
+
+As all of these browsers auto update, we test with the latest stable release. PSPDFKit for Web generally still works, even if you’re a few versions behind, as we are careful in adopting the latest web features for essential functionality and use polyfills for missing functionality.
+
+## Polyfills
+
+PSPDFKit for Web includes the following [polyfills][] to enable next-generation features on our target platforms:
+
+- A [custom regenerator runtime][]
+- [core-js][]’ polyfills
+- [Fetch][], which provides the polyfillable parts of the [WHATWG fetch spec][]
+
+## WebAssembly
+
+The standalone version of PSPDFKit for Web uses WebAssembly to render documents. Please see our [Real-World WebAssembly Benchmark][] to test the performance of your browser and OS, or learn more in the [Performance][] guide.
+
+[microsoft internet explorer 11]: ../../customizing-the-interface/ie11/
+[firefox extended support release]: https://www.mozilla.org/en-US/firefox/organizations/
+[chrome browser for enterprise]: https://enterprise.google.com/chrome/chrome-browser/
+[ship without microsoft edge]: https://www.zdnet.com/article/some-windows-10-enterprise-users-wont-get-microsofts-edge-browser/
+[polyfills]: https://en.wikipedia.org/wiki/Polyfill
+[custom regenerator runtime]: https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
+[core-js]: https://github.com/zloirock/core-js
+[fetch]: https://github.com/github/fetch
+[whatwg fetch spec]: https://fetch.spec.whatwg.org/
+[real-world webassembly benchmark]: https://pspdfkit.com/blog/2018/a-real-world-webassembly-benchmark/
+[performance]: ../../standalone/performance/

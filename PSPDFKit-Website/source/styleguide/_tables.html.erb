@@ -1,0 +1,66 @@
+<div class="container" id="tables">
+  <h2 class="mb-5">Tables</h2>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Comparison</label>
+    </div>
+    <div class="col-9">
+      <table class="table table-responsive">
+        <colgroup>
+          <col />
+          <col span="2" class="table-col-focus" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Server</th>
+            <th>Standalone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "In luctus eget tellus quis facilisis.",
+            "Cras sit amet porttitor neque. Phasellus blandit convallis mi vitae bibendum.",
+            "Etiam volutpat id arcu quis rutrum",
+            "Sed eleifend libero id gravida iaculis.",
+            "Duis vitae fermentum nulla. Suspendisse potenti."
+          ].each do |r| %>
+            <tr>
+              <th scope="row"><%= r %></th>
+              <td><i class="fa fa-lg fa-check text-success"></i></td>
+              <td><i class="fa fa-lg fa-times text-silent"></i></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Default</label>
+    </div>
+    <div class="col-9">
+      <table class="table">
+        <thead class="thead-default">
+          <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (1..10).each do |r| %>
+            <tr>
+              <th scope="row"><%= r %></th>
+              <td><%= lorem.first_name %></td>
+              <td><%= lorem.last_name %></td>
+              <td><%= lorem.email %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+---
+title: PSPDFKit.bundle Issues
+section: developers
+---
+
+PSPDFKit needs various resources — such as images, character maps, bundles, and localization files — to work. For example, if your setup is unusual (e.g. using the Appcelerator Titanium plugin), you need to manually drag `PSPDFKit.bundle` into your application. It should be in your application bundle, but valid locations are also `Library` and `Documents`.
+
+PSPDFKit will display both log warnings and, if a debugger is attached, an alert if there is an issue with the resource bundle.
+
+<img src="/images/guides/ios/configuration-issues/pspdfkitbundle-issues/bundle-issues.png">
+
+The bundle is also internally versioned to make sure you don’t use an old bundle with a new version. In a case where you do, you might see a variation of the error asking you to update the bundle.

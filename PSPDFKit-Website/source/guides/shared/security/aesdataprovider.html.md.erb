@@ -1,0 +1,154 @@
+---
+title: AES Data Provider
+section: developers
+---
+
+<% if android? %>
+The `AesDataProvider` we ship with our Catalog example app allows you to efficiently read and write encrypted PDF documents in your app. The data format expected by the data provider is structured like this:
+
+```
+Byte:     | 0-15 |     16 - n    |
+Contents: |  IV  | Encrypted PDF |
+```
+
+In the above table, the first 16 bytes contain the Initialization Vector (IV), while the AES256-CTR encrypted PDF starts at byte offset 16.
+
+<% end %>
+<% if ios? %>
+The [`PSPDFAESCryptoDataProvider`][] allows a transparent decryption of AES256 encrypted files using the [RNCryptor file format][]. The data format expected by the data provider is structured like this:
+
+```
+Byte:     |    0    |    1    |      2-9       |  10-17   | 18-33 | <-      ...     -> | n-32 - n |
+Contents: | version | options | encryptionSalt | HMACSalt |  IV   |    Encrypted PDF   |   HMAC   |
+```
+
+<% end %>
+
+## How to Encrypt Files
+
+<% if android? %>
+Using `openssl`, you can easily encrypt PDF files so that they can be used by the `AesDataProvider`.
+
+1. You need a key to encrypt your files with. We’ll use the following values.
+
+- Hex: `110425c3748d6c1c1bc644a2d63c3089be01e17a9eb0254366ff4b7edb261355`
+- Base64: `EQQlw3SNbBwbxkSi1jwwib4B4XqesCVDZv9LftsmE1U=`
+
+2. For every file you encrypt, you need to choose a new IV. This is used to make sure that encrypting the same file with the same key multiple times doesn’t result in the same encrypted file. We’ll use the following.
+
+- Hex: `97dad56befad54731ea696d2fd39a6d3`
+- Base64: `l9rVa++tVHMeppbS/Tmm0w==`
+
+3. Start by writing the IV to your output file:
+
+- `openssl enc -base64 -d <<< l9rVa++tVHMeppbS/Tmm0w== >> encrypted.pdf`
+
+4. Then append the encrypted document to your output file:
+
+- `openssl enc -aes-256-ctr -iv 97DAD56BEFAD54731EA696D2FD39A6D3 -K 110425c3748d6c1c1bc644a2d63c3089be01e17a9eb0254366ff4b7edb261355 -in source.pdf >> encrypted.pdf`
+  <% end %>
+  <% if ios? %>
+  When downloading the PSPDFKit for iOS SDK, we include a tool called AESCryptor, which lets you encrypt and decrypt files with ease. It’s located in the downloaded `.dmg` in Extras > AESCryptor > AESCryptor.app.
+
+1. Open the AESCryptor application and select the file you want to encrypt under Input. A Finder window will open and allow you to select your desired document.
+2. Now you need a password and salt to safely encrypt your file. We’ll use the following values provided in `PSCAESCryptoDataProviderExample.swift`.
+
+- Password: `afghadöghdgdhfgöhapvuenröaoeruhföaeiruaerub`
+- Salt: `ducrXn9WaRdpaBfMjDTJVjUf3FApA6gtim0e61LeSGWV9sTxB0r26mPs59Lbcexn`
+
+3. Now simply click on Encrypt to complete the encryption process.
+
+Here’s how it should appear in the end:
+
+<img src="/images/guides/shared/security/aesdataprovider/aescryptor.png">
+<% end %>
+
+## How to Decrypt Files
+
+<% if android? %>
+You can decrypt your PDF in PSPDFKit with the `AesDataProvider` using the Base64 key you used to encrypt it:
+
+[==
+
+```java
+private static final String ecnryptedPDF = "/sdcard/encrypted.pdf";
+
+// This is the 256-bit AES encryption key stored encoded as Base64. In production apps, this should be secured!
+private static final String base64Key = "EQQlw3SNbBwbxkSi1jwwib4B4XqesCVDZv9LftsmE1U=";
+
+AesDataProvider provider = new AesDataProvider(ecnryptedPDF, base64Key);
+```
+
+```kotlin
+const val ecnryptedPDF = "/sdcard/encrypted.pdf"
+
+// This is the 256-bit AES encryption key stored encoded as Base64. In production apps, this should be secured!
+const val base64Key = "EQQlw3SNbBwbxkSi1jwwib4B4XqesCVDZv9LftsmE1U="
+
+val provider = AesDataProvider("/sdcard/encrypted.pdf", "EQQlw3SNbBwbxkSi1jwwib4B4XqesCVDZv9LftsmE1U=")
+```
+
+==]
+
+For more information about this process, please take a look at `AesEncryptedFileExample.java` in our [Catalog example app][].
+<% end %>
+<% if ios? %>
+To programmatically decrypt your encrypted PDF files using PSPDFKit, you need to use the [`PSPDFAESCryptoDataProvider`][] with the password and salt you used to encrypt the PDF:
+
+[==
+
+```swift
+// Location of your encrypted PDF.
+let encryptedPDF = ...
+
+// Note: For shipping apps, you need to protect this string better, making it harder for hackers to simply disassemble and receive the key from the binary. Or, you can add an internet service that fetches the key from an SSL API. But then there's still the slight risk of memory dumping with an attached GDB. Or screenshots. Security is never 100 percent perfect, but using AES makes it more difficult to get the PDF. You can even combine AES and a PDF password.
+let passphrase = "afghadöghdgdhfgöhapvuenröaoeruhföaeiruaerub"
+let salt = "ducrXn9WaRdpaBfMjDTJVjUf3FApA6gtim0e61LeSGWV9sTxB0r26mPs59Lbcexn"
+
+// PSPDFKit doesn't want to keep the passphrase in memory any longer than it has to. This is the reason we use a passphrase provider.
+// For optimal results, always fetch the passphrase/password from secure storage (like the keychain) and never keep it in memory.
+let passphraseProvider = { passphrase }
+
+guard let cryptoWrapper = PSPDFAESCryptoDataProvider(url: encryptedPDF, passphraseProvider: passphraseProvider, salt: salt, rounds: PSPDFDefaultPBKDFNumberOfRounds) else {
+    return PSPDFViewController(document: nil)
+}
+
+// Create a document.
+let document = PDFDocument(dataProviders: [cryptoWrapper])
+document.uid = encryptedPDF.lastPathComponent // Manually set a UID for encrypted documents.
+```
+
+```objc
+// Location of your encrypted PDF.
+NSURL *const encryptedPDF = ...
+
+// Note: For shipping apps, you need to protect this string better, making it harder for hackers to simply disassemble and receive the key from the binary. Or, you can add an internet service that fetches the key from an SSL API. But then there's still the slight risk of memory dumping with an attached GDB. Or screenshots. Security is never 100 percent perfect, but using AES makes it more difficult to get the PDF. You can even combine AES and a PDF password.
+NSString *const passphrase = @"afghadöghdgdhfgöhapvuenröaoeruhföaeiruaerub";
+NSString *const salt = @"ducrXn9WaRdpaBfMjDTJVjUf3FApA6gtim0e61LeSGWV9sTxB0r26mPs59Lbcexn";
+
+// PSPDFKit doesn't want to keep the passphrase/password in memory any longer than it has to. This is the reason we use a passphrase provider.
+// For optimal results, always fetch the passphrase from secure storage (like the keychain) and never keep it in memory.
+NSString * (^const passphraseProvider)(void) = ^() {
+    return passphrase;
+};
+
+PSPDFAESCryptoDataProvider *cryptoWrapper = [[PSPDFAESCryptoDataProvider alloc] initWithURL:encryptedPDF passphraseProvider:passphraseProvider salt:salt rounds:PSPDFDefaultPBKDFNumberOfRounds];
+
+// Create a document.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithDataProviders:@[cryptoWrapper]];
+document.UID = encryptedPDF.lastPathComponent; // Manually set a UID for encrypted documents.
+```
+
+==]
+
+For more information about this process, please take a look at `AESCryptoDataProviderExample.swift` in our [Catalog example][].
+<% end %>
+
+<% if android? %>
+[catalog example app]: https://pspdfkit.com/guides/android/current/getting-started/example-projects/#catalog-app
+<% end %>
+<% if ios? %>
+[`Pspdfaescryptodataprovider`]: https://pspdfkit.com/api/ios/Encryption.html#/c:objc(cs)PSPDFAESCryptoDataProvider
+[rncryptor file format]: https://github.com/RNCryptor/RNCryptor-Spec/blob/master/RNCryptor-Spec-v3.md
+[catalog example]: https://pspdfkit.com/guides/ios/current/getting-started/example-projects/#pspdfcatalog
+<% end %>

@@ -1,0 +1,32 @@
+<!-- Sub Nav -->
+<div class="nav-sub">
+  <div class="container">
+    <div class="mr-auto d-none d-lg-block">
+      <nav class="nav-breadcrumb breadcrumb">
+        <a href="/developers/" class="breadcrumb-item breadcrumb-item-brand">
+          Developers
+        </a>
+        <a href="/guides/<%= current_platform %>/" class="breadcrumb-item breadcrumb-item-brand">
+          Guides
+        </a>
+        <a href="/guides/<%= current_platform %>/" class="breadcrumb-item breadcrumb-item-brand">
+          <%= product_name(current_platform) %>
+        </a>
+      </nav>
+    </div>
+    <div class="ml-lg-auto d-flex">
+      <ul class="nav flex-nowrap align-items-center">
+        <% PLATFORMS.each do |p| %>
+          <li class="nav-item">
+            <a href="/guides/<%= p %>/current/"
+               class="nav-link nav-link-brand <%= 'active' if current_platform == p %>"
+               data-guide-platform="<%= p %>">
+              <i class="fa fa-lg fa-<%= p %> text-<%= p %>"></i>
+              <%= product_short_name(p) %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

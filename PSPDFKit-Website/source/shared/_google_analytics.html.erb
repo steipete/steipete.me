@@ -1,0 +1,53 @@
+<!-- Util to check for team cookie presence -->
+<script>
+  function hasPSPDFKitTeamCookie() {
+    var name = 'pspdfkit_team'
+    var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return v ? true : false;
+  }
+  window.trackAnalytics = !hasPSPDFKitTeamCookie()
+</script>
+
+<!-- Google Analytics Global Site Tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GOOGLE_ANALYTICS_PROPERTY_ID %>"></script>
+<script>
+  if (window.trackAnalytics) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '<%= GOOGLE_ANALYTICS_PROPERTY_ID %>', {
+      'anonymize_ip': true,
+      'optimize_id': 'GTM-WXPGPW9',
+      <% if current_article && current_article.tags.present? %>
+      'dimension1': '<%= current_article.tags.join(', ') %>'
+      <% end %>
+    });
+
+    gtag('config', 'AW-997021714');
+  }
+</script>
+
+<!-- Google Ads offline conversion tracking (Google Click ID / gclid) -->
+<script>
+  function setCookie(name, value, days){
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      var expires = "; expires=" + date.toGMTString();
+      document.cookie = name + "=" + value + expires + ";path=/";
+  }
+  function getParam(p){
+      var match = RegExp('[?&]' + p + '=([^&]*)').exec(window.location.search);
+      return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+  }
+  var gclid = getParam('gclid');
+  if(gclid){
+      var gclsrc = getParam('gclsrc');
+      if(!gclsrc || gclsrc.indexOf('aw') !== -1){
+  	    setCookie('gclid', gclid, 90);
+  	}
+  }
+</script>
+
+<!-- Google reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=<%= GOOGLE_RECAPTCHA_SITE_KEY %>" async defer></script>

@@ -1,0 +1,96 @@
+---
+title: Document Features
+section: developers
+
+---
+
+PSPDFKit 7.4 for iOS introduced a new document features system. Its goals are to allow you to check if certain features are available, to get notified of changes, and to easily customize the availability of features yourself.
+
+## Checking Features
+
+[`PSPDFDocumentFeatures`][] is the class you can access to check if a certain feature is currently available. [`PSPDFDocumentFeatures`][] is owned by `PSPDFDocument` and represents the availability of the document owning it. You can access the features through the [`features` property of `PSPDFDocument`][PSPDFDocument features]. The available features are declared in [`PSPDFDocumentFeaturesSource`][], a protocol containing a method for every feature defined in PSPDFKit. While the methods in this protocol are optional, [`PSPDFDocumentFeatures`][] guarantees to implement all of them so you can safely access them without checking their availability first.
+
+## Observing Features
+
+When building UI or other components that rely on the state of a feature, it is helpful to be notified when the state of a document changes. For example, a document can be unmodifiable while it is still being loaded, but later on it may allow modifications. When these state changes happen, [`PSPDFDocumentFeatures`][] notifies its observers.
+
+Registering an observer is easy. Once registered, you get back an observer token, which you can then use to either make the observer bound to the lifetime of another object (i.e. let the observer automatically remove itself when the other object is deallocated) or explicitly unregister the observer:
+
+[==
+
+```swift
+let observer = document.features.addObserver(forFeature: #selector(getter: PSPDFDocumentFeaturesSource.canEditBookmarks)) { [weak self] (value) in
+    // update UI
+}
+
+// make the observer unregister automatically as soon as self is deallocated
+observer.bind(toObjectLifetime: self)
+```
+```objc
+id<PSPDFDocumentFeaturesObserver> observer = [document.features addObserverForFeature:PSPDFDocumentFeatureMake(canEditBookmarks) updateHandler:^(BOOL value) {
+    // update UI
+}];
+
+// make the observer unregister automatically as soon as self is deallocated
+[observer bindToObjectLifetime:self];
+```
+
+==]
+
+If you instead want to explicitly unregister the observer, you should hold on to the observer and call [`removeObserver:`][PSPDFDocumentFeatures removeObserver] on the document features instance you used to register the observer.
+
+Make certain not to create any retain cycles if you remove your observer, whether automatically or manually, during deallocation of objects that are referenced in the update block.
+
+## Customizing Features
+
+The features system also allows you to customize the availability of certain features. This is done by implementing your own [`PSPDFDocumentFeaturesSource`][]. To customize features, simply make a class conform to [`PSPDFDocumentFeaturesSource`][]. There is no need to implement all methods; you should only implement the ones you want to customize.
+
+Note that the different sources (our internal ones and your custom ones) will all be evaluated, and the result will be combined through a logical AND, meaning you can only disable features that would otherwise be enabled. You cannot enable features that are disabled by other sources, because a disabled feature is usually the result of either a system limitation such as printing not being available on the current device, or the document that should store changes not being in a writable location. As soon as one source marks a feature as unavailable, the feature will not be available and its UI elements will be disabled by PSPDFKit.
+
+After implementing your custom source, you need to add it to each document features instance. Note that each instance can only be in one source; you cannot reuse your source instances in multiple documents:
+
+[==
+
+```swift
+let source = MySource()
+document.features.add([source])
+```
+```objc
+id<PSPDFDocumentFeaturesSource> source = [MySource new];
+[document.features addSources:@[source]];
+```
+
+==]
+
+[`PSPDFDocumentFeatures`][] will cache the result of the sources. Therefore, it is important that you notify it about changes in your source. For this purpose, [`PSPDFDocumentFeaturesSource`][] has one required property: the back reference to the features object it is attached to. You can use this to call [`updateFeatures`][PSPDFDocumentFeatures updateFeatures] on it. This will let the document features object know to check its sources again and report any changes to registered observers. One way to do this is to call [`updateFeatures`][PSPDFDocumentFeatures updateFeatures] whenever the setter of one of your properties is changed. Of course, this depends on how your source behaves internally:
+
+[==
+
+```swift
+var canEditBookmarks: Bool {
+    didSet {
+        features?.update()
+    }
+}
+```
+```objc
+- (void)setCanEditBookmarks:(BOOL)canEditBookmarks {
+	_canEditBookmarks = canEditBookmarks;
+	[self.features updateFeatures];
+}
+```
+
+==]
+
+See `DisableBookmarkEditingExample.swift` in PSPDFCatalog for more details.
+
+## Future Support
+
+Currently, [`PSPDFDocumentFeatures`][] only supports a few features, as this is a newly introduced API. We will continue adding features to this API in the future, and new features being added to PSPDFKit will be enabled and disabled through this API. We believe this is a great way for you to easily customize the experience your users will have when using PSPDFKit.
+
+[`PSPDFDocumentFeatures`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentFeatures.html
+[`PSPDFDocumentFeaturesSource`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentFeaturesSource.html
+
+[PSPDFDocument features]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)features
+[PSPDFDocumentFeatures removeObserver]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocumentFeatures(im)removeObserver:
+[PSPDFDocumentFeatures updateFeatures]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocumentFeatures(im)updateFeatures

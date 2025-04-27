@@ -1,0 +1,43 @@
+---
+title: 2018.2 Migration Guide
+section: developers
+
+order: 503
+---
+
+[PSPDFKit Server 2018.2][] adds support for prerendering and caching documents and introduces an API endpoint to fetch highlighted text within a page.
+
+### Notable Changes
+
+- The [`DELETE api/documents/:document_id`][] endpoint now also deletes the PDF file and the attachments from the asset storage when they are not needed by other documents. Because older versions of PSPDFKit Server did not delete the files from the asset storage, we added a new API endpoint, `POST api/cleanup`, which you can call to clean up all the unused PDFs and attachments:
+
+  **Request**
+
+  ```curl
+  $ curl http://localhost:5000/api/cleanup \
+    -X POST \
+    -H "Authorization: Token token=<secret token>" \
+  ```
+
+  **Response**
+
+  ```
+  HTTP/1.1 200 OK
+  content-length: 2
+  cache-control: max-age=0, private, must-revalidate
+
+  OK
+  ```
+
+- PSPDFKit Server will now ignore invalid annotations on PDF exports instead of throwing an error, and it will log information about the invalid annotation. You can set the `IGNORE_INVALID_ANNOTATIONS` environment variable to `false` to prevent it from ignoring invalid annotations.
+
+### Migrate PSPDFKit for Web
+
+For more information, please take a look at the [PSPDFKit for Web 2018.2 Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit server 2018.2]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-2/
+[`delete api/documents/:document_id`]: ../../api/documents/#deleting-a-document
+[pspdfkit for web 2018.2 migration guide]: https://pspdfkit.com/guides/web/current/migration-guides/2018-2-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/server/#2018.2

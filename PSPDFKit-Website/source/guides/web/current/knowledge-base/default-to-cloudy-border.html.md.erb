@@ -1,0 +1,51 @@
+---
+title: How to default to using a Cloudy Border
+section: knowledge-base
+---
+
+## Question: How can I configure my rectangles and ellipses to default to a cloudy border?
+
+## Answer:
+
+You can set the corresponding annotation preset to have a `cloudyBorderIntensity` value greater than `0`.
+
+Generally, there's no applicable value range for a cloudy border intensity (no upper limit) as it would vary with the stroke width and the size of the annotation.
+
+Depending on your use case, it may be enough to stick to a presumably safe value between `0` and `5` for example or even safer between `0` and `3`. For reference the default value used in the annotation toolbar is `2`.
+
+You could set it in the annotation presets like this, for example:
+
+```js
+const annotationPresets = PSPDFKit.defaultAnnotationPresets;
+annotationPresets.rectangle = {
+  ...annotationPresets.rectangle,
+  cloudyBorderIntensity: 4
+};
+return PSPDFKit.load({ ...defaultConfiguration, annotationPresets }).then(
+  instance => {
+    console.log("PSPDFKit for Web successfully loaded!!", instance);
+
+    return instance;
+  }
+);
+```
+
+## Question 2:
+
+Is it mandatory to update the inset rectangle as you show them? For example, if you want to do is preselect the cloudy border when a user selects the rectangle tool - the programmatic equivalent of the user picking the cloudy border option from the dropdown after selecting the rectangle tool. Is there a way to do just that?
+
+## Answer:
+
+Yes! Then you just need to use the default cloudy border intensity for the UI, which is `2`, and the rest of the code gets much simpler:
+
+```js
+const annotationPresets = PSPDFKit.defaultAnnotationPresets;
+annotationPresets.rectangle = {
+  cloudyBorderIntensity: 2
+};
+PSPDFKit.load({ ...defaultConfiguration, annotationPresets }).then(
+  instance => instance
+);
+```
+
+And please don't hesitate to reach out to support if you have any other questions.

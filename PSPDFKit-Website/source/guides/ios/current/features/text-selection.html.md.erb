@@ -1,0 +1,23 @@
+---
+title: Text Selection
+section: developers
+
+---
+
+Text selection is controlled via the [`PSPDFTextSelectionView`][] which is part of every [`PSPDFPageView`][] via the [`selectionView`][] property.
+
+The [`PSPDFViewControllerDelegate`][] has delegates that both allow to selectively block text selection [`shouldSelectText:withGlyphs:atRect:onPageView:`][] and to be notified whenever a text has been selected [`didSelectText:withGlyphs:atRect:onPageView:`][]
+
+Text selection can also be disabled via the [`textSelectionEnabled`][] switch in the configuration object.
+
+Text can be programmatically selected via setting [`selectedGlyphs`][] or [`selectedImage`][] for image selection. Nil out these properties to clear any current selection.
+
+[`PSPDFTextSelectionView`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSelectionView.html
+[`PSPDFPageView`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageView.html
+[`selectionView`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageView.html#/c:objc(cs)PSPDFPageView(py)selectionView
+[`PSPDFViewControllerDelegate`]: https://pspdfkit.com/api/Protocols/PSPDFViewControllerDelegate.html
+[`shouldSelectText:withGlyphs:atRect:onPageView:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldSelectText:withGlyphs:atRect:onPageView:
+[`didSelectText:withGlyphs:atRect:onPageView:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:didSelectText:withGlyphs:atRect:onPageView:
+[`textSelectionEnabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)textSelectionEnabled
+[`selectedGlyphs`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSelectionView.html#/c:objc(cs)PSPDFTextSelectionView(py)selectedGlyphs
+[`selectedImage`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSelectionView.html#/c:objc(cs)PSPDFTextSelectionView(py)selectedImage

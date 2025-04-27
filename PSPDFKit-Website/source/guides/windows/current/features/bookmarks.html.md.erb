@@ -1,0 +1,57 @@
+---
+title: Bookmarks
+section: developers
+---
+
+When you want to remember a certain page in your document, the easiest way to do this is to add a bookmark.
+
+The current list of bookmarks can be retrieved with [`GetBookmarksAsync`][getbookmarksasync]:
+
+```csharp
+var bookmarks = await pdfView.Document.GetBookmarksAsync();
+```
+
+You can create a bookmark with a name and an [`Action`][actions] and add it to a page like this:
+
+```csharp
+var createdBookmark = await pdfView.Document.CreateBookmarkAsync(new Bookmark("Page 3", new GoTo(2)));
+```
+
+In the above code, you created a bookmark with the name Page 3, which will be displayed in the bookmarks sidebar, and a [`GoTo`][goto] action so that the currently displayed page is changed to the provided page index when the bookmark is clicked on.
+
+The returned `Bookmark` object has a property `Id` which is used to identify the bookmark when updating or removing it. For example, using the returned bookmark above, you can update it like this:
+
+```csharp
+createdBookmark.Name = "Page 2";
+createdBookmark.Action = new GoTo(1);
+await pdfView.Document.UpdateBookmarkAsync(createdBookmark);
+```
+
+Or you can remove it like this:
+
+```csharp
+await pdfView.Document.DeleteBookmarkAsync(createdBookmark.Id);
+```
+
+You can also create a bookmark from [Instant JSON][instant json]:
+
+```js
+{
+  "id": "this is ignored",
+  "name": "My bookmark",
+  "action": {
+    "type": "goTo",
+    "pageIndex": 2
+  }
+}
+```
+
+```csharp
+var bookmarkJson = LoadJsonObjectAsync("bookmark.json");
+var createdBookmark = await pdfView.Document.CreateBookmarkAsync(Bookmark.FromJson(bookmarkJson));
+```
+
+[actions]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Actions.html
+[goto]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Actions.GoTo.html
+[getbookmarksasync]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_CreateBookmarkAsync_PSPDFKit_Pdf_Bookmark_
+[instant json]: /guides/windows/current/importing-exporting/instant-json/

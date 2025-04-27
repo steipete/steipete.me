@@ -1,0 +1,28 @@
+---
+title: Highlight custom search results
+section: knowledge-base
+---
+
+## Q: How can I implement custom search and then highlight the results programmatically?
+
+A: This can be achieved by implementing the following functionalities:
+
+- search the whole PDF or a range of pages using the [`instance.search`](https://pspdfkit.com/api/web/PSPDFKit.Instance.html#search) API.
+- Create highlight annotations on all the search results using [`instance.createAnnotation`](https://pspdfkit.com/api/web/PSPDFKit.Instance.html#createAnnotation).
+
+The code for this will look like:
+
+```js
+const results = await instance.search("hello");
+
+results.forEach(result => {
+  const annotation = new PSPDFKit.Annotations.HighlightAnnotation({
+    pageIndex: result.pageIndex,
+    rects: result.rectsOnPage,
+    boundingBox: PSPDFKit.Geometry.Rect.union(result.rectsOnPage)
+  });
+  instance.createAnnotation(annotation);
+});
+```
+
+This has been tested with PSPDFKit for Web 2019.5.3

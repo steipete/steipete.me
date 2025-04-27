@@ -1,0 +1,53 @@
+---
+title: How Can I Block Annotation Editing and Deletion, While Still Allowing for Annotation Manipulation?
+section: knowledge-base
+---
+
+The simplest way to achieve what you want is to return an empty array from the [`-pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forAnnotations:inRect:onPageView:` method from `PSPDFViewControllerDelegate`][]:
+
+[==
+```swift
+func pdfViewController(_ pdfController: PSPDFViewController, shouldShow menuItems: [PSPDFMenuItem], atSuggestedTargetRect rect: CGRect, for annotations: [PSPDFAnnotation]?, in annotationRect: CGRect, on pageView: PSPDFPageView) -> [PSPDFMenuItem] {
+  return []
+}
+```
+
+```objc
+- (NSArray<PSPDFMenuItem *> *)pdfViewController:(PSPDFViewController *)pdfController shouldShowMenuItems:(NSArray<PSPDFMenuItem *> *)menuItems atSuggestedTargetRect:(CGRect)rect forAnnotations:(NSArray<PSPDFAnnotation *> *)annotations inRect:(CGRect)annotationRect onPageView:(PSPDFPageView *)pageView {
+  // Return an empty array to avoid showing annotation editing controls.
+  return @[];
+}
+```
+==]
+
+This will prevent the annotation menus to be displayed when an annotation is selected by the user. 
+
+The next step is to prevent the selected annotations from being resized. This can be achieved by [overriding][] [`PSPDFResizableView`][] and always returning a false value from the `-allowResizing` property getter.
+
+[==
+```swift
+class NonResizableView: PSPDFResizableView {
+  override var allowResizing: Bool {
+    get { return false }
+	set {}
+  }
+}
+```
+
+```objc
+@interface NonResizableView : PSPDFResizableView
+@end
+
+@implementation NonResizableView
+
+- (BOOL)allowResizing {
+	return NO;
+}
+
+@end
+```
+==]
+
+[`-pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forAnnotations:inRect:onPageView:` method from `PSPDFViewControllerDelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forAnnotations:inRect:onPageView:
+[overriding]: https://pspdfkit.com/guides/ios/current/getting-started/overriding-classes/
+[`PSPDFResizableView`]: https://pspdfkit.com/api/ios/Classes/PSPDFResizableView.html

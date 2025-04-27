@@ -1,0 +1,30 @@
+---
+title: Coordinate Space Conversions
+section: developers
+
+alternate_platform_links:
+  server: "pspdfkit-server/coordinate-spaces"
+  ios: "faq/coordinate-spaces"
+  android: "faq/coordinate-spaces"
+---
+
+By specification, PDF documents have their own coordinate space, which is different from the coordinate space used by PSPDFKit Server. While annotations stored in PSPDFKit Server have their origin in the top-left corner, with y coordinates increasing in a _downward_ direction, the y coordinates in PDF documents increase _upward_, starting in the bottom-left corner.
+
+![PDF page coordinates](/images/guides/shared/faq/document-coordinate-space.gif)
+
+### Obtaining Page Dimensions
+
+The [`getPageInfoForIndex()` endpoint][getpageinfoforindex] can be used to fetch the dimensions of a page. Note that some PDF files can also have rotation set on pages. You can get this value by checking the rotation property of a page. This can be a value between 0 and 270 in 90-degree increments.
+
+### How to Convert between Raster Image Pixels and Points
+
+The concept of resolution does not apply to PDF documents unless they have been converted into raster images, i.e. images whose dimensions are expressed in pixels. The default unit PSPDFKit returns for page sizes is the point, which is easily converted into inches by taking into account the fact that 1 inch is equal to 72 points. Inch separation results from dividing the size in points of a particular page by 72. Resolution, expressed in DPI (dots per inch), is thus the result of dividing the page size in points by the inch separation. To summarize, these are the relations you have to consider when you need to convert between points/inches and pixels in PDF:
+
+1 inch = 72 points<br>
+Inch separation = points / 72<br>
+DPI (resolution) = pixels / inch separation
+
+Note that, since PDF 1.6, the relationship between inches and points may be specified as greater than 1⁄72 by means of the `UserUnit` entry of the page dictionary. See table 30 in page 79 of the [PDF 1.7 specification][] for more information.
+
+[getpageinfoforindex]: /api/web/PSPDFKit.Instance.html#pageInfoForIndex
+[pdf 1.7 specification]: http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf

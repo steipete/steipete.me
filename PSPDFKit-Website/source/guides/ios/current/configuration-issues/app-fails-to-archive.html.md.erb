@@ -1,0 +1,55 @@
+---
+title: Troubleshooting Application Archival
+section: developers
+---
+
+There’s a chance that at some point, the application in which you’ve included PSPDFKit will compile, link, and even run on your test devices just fine, but the archival process will fail.
+
+In this guide, you’ll find some tips on how to troubleshoot your setup when this happens.
+
+## Architecture Mismatch
+
+You might see a log message that reads something along the lines of this:
+
+```
+d: warning: ignoring file /Users/user/Library/Developer/Xcode/DerivedData/MyApp-cjhcbfefthwffufzfdqiczjihgnb/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/BuildProductsPath/Release-iphoneos/PSPDFKitUI.framework/PSPDFKitUI, building for iOS-armv7 but attempting to link with file built for iOS-arm64
+ld: warning: ignoring file /Users/user/Library/Developer/Xcode/DerivedData/MyApp-cjhcbfefthwffufzfdqiczjihgnb/Build/Intermediates.noindex/ArchiveIntermediates/MyApp/BuildProductsPath/Release-iphoneos/PSPDFKit.framework/PSPDFKit, building for iOS-armv7 but attempting to link with file built for iOS-arm64
+Undefined symbols for architecture armv7:
+"_OBJC_CLASS_$_PSPDFConfiguration", referenced from:
+objc-class-ref in PSPDFKitViewController.o
+"_OBJC_CLASS_$_PSPDFViewController", referenced from:
+objc-class-ref in PSPDFKitViewController.o
+"_OBJC_CLASS_$_PSPDFDataContainerProvider", referenced from:
+objc-class-ref in PSPDFKitViewController.o
+"_OBJC_CLASS_$_PSPDFDocument", referenced from:
+objc-class-ref in PSPDFKitViewController.o
+"_OBJC_CLASS_$_PSPDFKitGlobal", referenced from:
+objc-class-ref in IOSMobileReaderAppDelegate.o
+ld: symbol(s) not found for architecture armv7
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+In such a case, it means that the version of PSPDFKit you’re linking against is too new for your application’s deployment target. iOS 11 dropped the `armv7` architecture, and PSPDFKit 8.2.3 for iOS was the last version to support 32-bit architectures (armv7, i386). You can find out more on this topic in our [Version Support][] guide.
+
+To solve this issue, please adjust your application’s deployment target to a version of iOS that’s supported by the version of PSPDFKit you intend to use.
+
+## Stripping Failures
+
+You might also see the `strip` command fail with logs such as this:
+
+```
+strip /Users/username/git/MyApp/MyApp/Libs/PSPDFKit/PSPDFKitUI-dSYMs/PSPDFKitUI.framework.ios-x86_64-simulator.dSYM/Contents/Resources/DWARF/PSPDFKitUI: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip exited with 1
+```
+
+This most likely means that there are some extraneous files in your project that shouldn’t be there. One common reason for this is that the PSPDFKit dSYM files are actually included in the project, rather than just being referenced by the run script mentioned in our [Integrating PSPDFKit Manually][] guide.
+
+Please audit your project to make sure it doesn’t contain any extraneous files, and then try again.
+
+## Application Missing from Xcode Organizer
+
+If your application archives successfully but is missing from the Xcode Organizer, it is probable that you have conflicting run scripts. This could be a common scenario if you’re perhaps trying out different PDF SDKs in the same project.
+
+If you’re trying out PSPDFKit in your project at the same time as you’re trying other SDKs, please be sure to remove the other SDKs before archiving your PSPDFKit project.
+
+[version support]: ../../announcements/version-support/
+[integrating pspdfkit manually]: ../../getting-started/integrating-pspdfkit/#integrating-the-xcframework

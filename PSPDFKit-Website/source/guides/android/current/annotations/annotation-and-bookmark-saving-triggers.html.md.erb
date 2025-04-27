@@ -1,0 +1,86 @@
+---
+title: Annotation- and Bookmark-Saving Triggers
+section: developers
+---
+
+PSPDFKit will save “dirty” (changed/created/deleted) annotations when their fragment lifecycle `onStop()` method is called. In practice, this means that saving will be performed when:
+
+- The application goes into the background.
+- A configuration change occurs (for example, change of device orientation, change of locale, added keyboard).
+- The application is fully covered by another `Activity`.
+
+Each time, [`onDocumentSaved()`][] is called on [`DocumentListener`][].
+
+## Manual Saving
+
+Saving can always be triggered by calling [`saveIfModifiedAsync()`][] from the main thread:
+
+[==
+
+```kotlin
+/** Manually saving inside the activity. **/
+fun saveDocument() {
+    // Won't save if the document inside `PdfFragment` is `null`.
+    val document : PdfDocument = pdfFragment.document ?: return
+
+    document.saveIfModifiedAsync()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(object : DisposableSingleObserver<Boolean>() {
+            override fun onError(e : Throwable) {
+                /** Saving has failed. The exception holds additional failure details. **/
+                Toast.makeText(context, "Failed to save the document!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSuccess(saved : Boolean) {
+                if (saved) {
+                    /** Changes were saved successfully! **/
+                    Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                } else {
+                    /** There was nothing to save. **/
+                    Toast.makeText(context, "There were no changes in the file.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+}
+```
+
+```java
+/** Manually saving inside the activity. **/
+PdfDocument document = getPdfFragment().getDocument();
+if (document == null) {
+    // No document loaded.
+    return;
+}
+document.saveIfModifiedAsync()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new DisposableSingleObserver<Boolean>() {
+             @Override
+             public void onError(Throwable e) {
+                 /** Saving has failed. The exception holds additional failure details. **/
+                Toast.makeText(context, "Failed to save the document!", Toast.LENGTH_SHORT).show();
+             }
+
+             @Override
+             public void onSuccess(Boolean saved) {
+                 if (saved) {
+                     /** Changes were saved successfully! **/
+                     Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                 } else {
+                    /** There was nothing to save. **/
+                     Toast.makeText(context, "There were no changes in the file.", Toast.LENGTH_SHORT).show();
+                 }
+             }
+        });
+```
+
+==]
+
+Save calls on [`PdfDocument`][] are synchronized and can be called from the main or background threads. Remember that `save()` and `saveIfModified()` calls run on the current thread and should never be called from the main thread. Use `saveAsync()` or `saveIfModifiedAsync()` instead.
+
+To disable automatic saving of a document by PSPDFKit, set [`autosaveEnabled(false)`][] when building [`PdfConfiguration`][] or [`PdfActivityConfiguration`][].
+
+[`documentlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html
+[`ondocumentsaved()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSaved(com.pspdfkit.document.PdfDocument)
+[`saveifmodifiedasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#saveIfModifiedAsync()
+[`autosaveenabled(false)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#autosaveEnabled(boolean)
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#autosaveEnabled(boolean)

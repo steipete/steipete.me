@@ -1,0 +1,33 @@
+---
+title: Inconsistent Labels
+section: developers
+---
+
+The PDF spec supports a feature called [page labels][]. This feature allows you to customize the page label displayed, which might be different than the logical (one-based) page label. PSPDFKit will properly parse this additional information and display the custom page label next to the logical page label, if found.
+
+Custom page labels can be roman letters, strings, or simply numbers with a different offset. Sometimes the initial pages start with roman letters, and the page numbers then start later to match the page numbering in the document.
+
+<img src="/images/guides/shared/rendering-issues/inconsistent-different-labels-than-expected/page-labels.png" alt="Page Labels">
+
+This perfectly matches Adobe Acrobat’s behavior.
+
+<img src="/images/guides/shared/rendering-issues/inconsistent-different-labels-than-expected/acrobat.png" alt="Acrobat">
+
+<% if ios? %>
+You can disable this feature by setting [`pageLabelsEnabled`][] to `NO`.
+
+You can also access these custom page labels via [pageLabelForPage:substituteWithPlainLabel:][].
+<% end %>
+
+<% if android? %>
+You can disable this feature by calling [`hidePageLabels()`][] on your [`PdfActivityConfiguration`][].
+
+You can also access these custom labels via [`PdfDocument#getPageLabel`][].
+<% end %>
+
+[page labels]: http://www.w3.org/TR/WCAG20-TECHS/PDF17
+[`pagelabelsenabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)pageLabelsEnabled
+[pagelabelforpage:substitutewithplainlabel:]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)pageLabelForPage:substituteWithPlainLabel:
+[`hidepagelabels()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#hidePageLabels()
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[`pdfdocument#getpagelabel`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPageLabel(int,%20boolean)

@@ -1,0 +1,35 @@
+---
+title: Load a minimal PDF stub from a string
+section: knowledge-base
+---
+
+## Q: How can I load a minimal PDF stub from a string?
+
+A: You can use the basic set of information needed by PSPDFKit for Web to render a document. Some of the examples from [this StackOverflow thread] do indeed work. Here's one of them, converted to an array buffer passed in [`PSPDFKit.Configuration#pdf`] that can be consumed and rendered by our API:
+
+```es
+const PDFstub = `%PDF-1.0
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 750 1000]>>endobj
+xref
+0 4
+0000000000 65535 f
+0000000010 00000 n
+0000000053 00000 n
+0000000102 00000 n
+trailer<</Size 4/Root 1 0 R>>
+startxref
+149
+%EOF`;
+// TextEncoder() needs to be polyfilled in IE11, see
+// https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder
+const uint8array = new TextEncoder().encode(PDFstub);
+PSPDFKit.load({
+  ...defaultConfiguration,
+  pdf: uint8array.buffer
+});
+```
+
+This has been tested with PSPDFKit for Web 2019.4.1
+
+[this stackoverflow thread]: https://stackoverflow.com/questions/17279712
+[`pspdfkit.configuration#pdf`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#pdf

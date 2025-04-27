@@ -1,0 +1,69 @@
+---
+title: Document Editing UI
+section: developers
+---
+
+The Document Editor is a PSPDFKit for Web component that enables a whole host of document editing features. This includes new page creation, page duplication, copying and pasting, reordering, rotation, deletion, and the creation of new documents from a subset of selected pages.
+
+This guide describes the built-in document editing user interface. If you would prefer to learn more about the document editing APIs, please check out the [Document Editor guide][].
+
+> **ℹ️ Note:** The Document Editor UI is only available if document editing is enabled in your license.
+
+## Entering Document Editing Mode
+
+To enter document editing mode, you need to press the Document Editor toolbar button, which is placed on the main toolbar.
+
+The image below shows the button used to switch to document editing mode.
+
+<img src="/images/guides/web/features/document-editor-ui/document-editor-button.png" alt="The document editor button from the main toolbar">
+
+## User Interface
+
+The Document Editor user interface is comprised of two main elements: the Document Editor **toolbar**, which is by default positioned on the very top; and the **document view**, which shows thumbnails of all the pages in a document.
+
+<img src="/images/guides/web/features/document-editor-ui/document-editor-ui.png" alt="" aria-hidden="true">
+
+### Toolbar
+
+The Document Editor toolbar holds a set of buttons that can be used to perform document editing actions. Some of the buttons are context sensitive and are enabled only on demand, based on factors such as the selection state in the document view. See [Actions](#actions) for a detailed description of all the actions you can perform with these buttons.
+
+<img src="/images/guides/web/features/document-editor-ui/document-editor-ui-toolbar.png" alt="" aria-hidden="true">
+
+### Document View
+
+The document view is a vertically scrollable grid that represents all the pages in an edited document. Pages can be selected or deselected by single-pressing a page’s thumbnail. It is possible to select more than one page at the same time. You can identify selected pages by paying attention to the thumbnail outline.
+
+<img src="/images/guides/web/features/document-editor-ui/document-editor-ui-view.png" alt="" aria-hidden="true">
+
+### Actions
+
+There are many actions you can perform using the Document Editor toolbar. The toolbar icons will appear horizontally stacked next to their label, unless there’s not enough space for all of them, in which case some of them may be grouped in a dropdown menu at the end of the toolbar, like shown below.
+
+<img src="/images/guides/web/features/document-editor-ui/menu.png" alt="Menu" aria-hidden="true" />
+
+The following table lists all toolbar buttons.
+
+| Icon                                                                                                                                                                    | Name         | Description                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------------------------------------------------------------- |
+| <img src="/images/guides/web/features/document-editor-ui/icons/add.svg" alt="Add" width="24" style="display: inline; margin: 0" aria-hidden="true" />                   | Add          | Adds a new page at the beginning of the document or after the selected page.      |
+| <img src="/images/guides/web/features/document-editor-ui/icons/remove.svg" alt="Remove" width="24" style="display: inline; margin: 0" aria-hidden="true" />             | Remove       | Removes the currently selected pages from the document.                           |
+| <img src="/images/guides/web/features/document-editor-ui/icons/duplicate.svg" alt="Duplicate" width="24" style="display: inline; margin: 0" aria-hidden="true" />       | Duplicate    | Creates copies of currently selected pages.                                       |
+| <img src="/images/guides/web/features/document-editor-ui/icons/rotate-left.svg" alt="Rotate left" width="24" style="display: inline; margin: 0" aria-hidden="true" />   | Rotate left  | Rotates the selected page 90 degrees counter-clockwise.                           |
+| <img src="/images/guides/web/features/document-editor-ui/icons/rotate-right.svg" alt="Rotate right" width="24" style="display: inline; margin: 0" aria-hidden="true" /> | Rotate right | Rotates the selected page 90 degrees clockwise.                                   |
+| <img src="/images/guides/web/features/document-editor-ui/icons/move-left.svg" alt="Move left" width="24" style="display: inline; margin: 0" aria-hidden="true" />       | Move left    | Moves the selected page before the previous page.                                 |
+| <img src="/images/guides/web/features/document-editor-ui/icons/move-right.svg" alt="Move right" width="24" style="display: inline; margin: 0" aria-hidden="true" />     | Move right   | Moves the selected page after the next page.                                      |
+| <img src="/images/guides/web/features/document-editor-ui/icons/merge.svg" alt="Merge" width="24" style="display: inline; margin: 0" />                                  | Merge        | Shows the open file dialog and merges the selected document into the current one. |
+| <img src="/images/guides/web/features/document-editor-ui/icons/undo.svg" alt="Undo" width="24" style="display: inline; margin: 0" aria-hidden="true" />                 | Undo         | Undoes the last document editing action.                                          |
+| <img src="/images/guides/web/features/document-editor-ui/icons/redo.svg" alt="Redo" width="24" style="display: inline; margin: 0" aria-hidden="true" />                 | Redo         | Redoes the last undone document editing action.                                   |
+| <img src="/images/guides/web/features/document-editor-ui/icons/select-all.svg" alt="Select all" width="24" style="display: inline; margin: 0" aria-hidden="true" />     | Select all   | Selects all pages.                                                                |
+| <img src="/images/guides/web/features/document-editor-ui/icons/select-none.svg" alt="Select none" width="24" style="display: inline; margin: 0" aria-hidden="true" />   | Select none  | Deselects all pages.                                                              |
+
+In the lower side of the Document Editor UI, there are three more buttons available.
+
+| Name    | Description                                                                                                                        |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Cancel  | Exits the Document Editor UI without applying any operation to the current document.                                               |
+| Save    | Applies the modifications to the current document.                                                                                 |
+| Save as | Shows a save file dialog to export the current document with the modifications applied but without modifying the current document. |
+
+[document editor guide]: ../../features/document-editor

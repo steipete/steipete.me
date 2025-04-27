@@ -1,0 +1,93 @@
+<style>
+  #redaction {
+    padding-top: 60px;
+    height: 2300px;
+    margin-bottom: -910px;
+    overflow: hidden;
+    position: relative;
+  }
+  #redaction::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background-image: linear-gradient(-150deg, #d3dcff 0%, #e0d2fd 60%, #f9fbfe 60% 100%);
+  }
+  #redaction-illustration {
+    flex-shrink: 0;
+    margin-top: -420px;
+    margin-left: -930px;
+  }
+  #redaction-bullets {
+    margin-top: -810px;
+  }
+  @media (min-width: 768px) {
+    #redaction {
+      height: 2050px;
+    }
+    #redaction-illustration {
+      margin-top: -770px;
+      margin-left: -500px;
+    }
+  }
+  @media (min-width: 992px) {
+    #redaction {
+      height: 2500px;
+      margin-bottom: -1460px;
+    }
+    #redaction::after {
+      top: -650px;
+    }
+    #redaction-illustration {
+      margin-top: -830px;
+      margin-left: -280px;
+    }
+  }
+</style>
+<section id="redaction">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7 col-lg-5">
+        <h2 class="h6 text-alt mt-0 mb-2">
+          Redaction
+        </h2>
+        <h3 class="h2 text-alt-dark mt-0 mb-4">
+          Permanently Remove Sensitive, Confidential, or Privileged Information from PDFs
+        </h3>
+        <p class="text-alt-dark mb-0">
+          Search for personally identifiable information and redact it automatically or stage it for redaction at a later point. You can use out-of-the-box presets or create custom search patterns using regular expressions. Frequently used in e-discovery, e-disclosure, legal, financial, healthcare, and government applications.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/images/pdf-library/redaction.png" id="redaction-illustration" width="1724" height="1890">
+    </div>
+    <div class="row" id="redaction-bullets">
+      <div class="col-md-5 col-lg-4 ml-auto">
+        <ul class="list-unstyled text-alt-dark">
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-remove.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Secure and irrecoverable removal of PDF text and images
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-compliance.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Ensure compliance with GDPR, HIPAA, and other privacy laws
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-fast.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Rapidly process redactions across large batches of PDFs
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

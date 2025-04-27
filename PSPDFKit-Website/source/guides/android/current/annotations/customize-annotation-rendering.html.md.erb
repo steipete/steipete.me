@@ -1,0 +1,96 @@
+---
+title: Customize Annotation Rendering
+section: developers
+---
+
+There are various ways to customize how an annotation is shown and rendered on a page.
+
+## Note Hints
+
+<video src="/images/blog/2018/pspdfkit-android-4-3/note-hints.mp4" width="100%" playsinline="" loop="" muted="" data-controller="video" data-video-autoplay="true" data-video="2"></video>
+
+A small note icon indicator is displayed next to the actual annotation when it has text attached to it. It can be attached to the annotation either by programmatically setting it via [`setContents()`][`annotation#setcontents()`] on the annotation, or by adding it in the UI via the Note action in the editing menu.
+
+### Disabling Note Hinting
+
+[`PdfActivity`][] enables note hinting by default. You can disable it by using [`configuration.setAnnotationNoteHintingEnabled(false)`][`pdfactivityconfiguration.builder#setannotationnotehintingenabled()`] when configuring your activity, like so:
+
+[==
+
+```kotlin
+// Disable note hinting.
+val config = PdfActivityConfiguration.Builder(context)
+    .setAnnotationNoteHintingEnabled(false)
+    .build()
+
+PdfActivity.showDocument(context, documentUri, config)
+```
+
+```java
+// Disable note hinting.
+final PdfActivityConfiguration config =
+    new PdfActivityConfiguration.Builder(context)
+        .setAnnotationNoteHintingEnabled(false)
+        .build();
+
+PdfActivity.showDocument(context, documentUri, config);
+```
+
+==]
+
+### Adding Note Hints to Your PdfFragment
+
+[`PdfFragment`][] won’t perform note hinting on its own, but it can use [`AnnotationNoteHinter`][] to show the note icons. [`AnnotationNoteHinter`][] is a drawable provider and can be added to your fragment using [`fragment.addDrawableProvider(noteHinter)`][`pdffragment#adddrawableprovider()`], like so:
+
+[==
+
+```kotlin
+val noteHinter = AnnotationNoteHinter(context)
+fragment.addDrawableProvider(noteHinter)
+```
+
+```java
+final AnnotationNoteHinter noteHinter = new AnnotationNoteHinter(context);
+fragment.addDrawableProvider(noteHinter);
+```
+
+==]
+
+**💡 Tip:** To learn how to implement a custom annotation note hinter, have a look at the `CustomAnnotationNoteHinterProviderExample` in the Catalog app.
+
+#### Theming the AnnotationNoteHinter
+
+The appearance of the `AnnotationNoteHinter` can be adjusted by providing a custom theme for it. The following attributes can be modified for `pspdf__AnnotationNoteHinter`:
+
+| Attribute                                | Description                                                                       |
+| ---------------------------------------- | --------------------------------------------------------------------------------- |
+| `pspdf__useNoteHinterIntrinsicSize`      | Whether to use the intrinsic size of the icon or the size specified in the theme. |
+| `pspdf__noteHinterWidth`                 | The width of the note icon.                                                       |
+| `pspdf__noteHinterHeight`                | The height of the note icon.                                                      |
+| `pspdf__noteHinterTextMarkupLeftPadding` | Padding to apply for note icons on text markup annotations.                       |
+| `pspdf__noteHinterColor`                 | The color of the note icon.                                                       |
+| `pspdf__noteHinterAlpha`                 | The alpha value of the note icon.                                                 |
+| `pspdf__noteHinterIcon`                  | The icon that is used to indicate the annotation has a note.                      |
+
+An example would look like this:
+
+```
+<style name="PSPDFCatalog.Theme.Dark" parent="PSPDFKit.Theme.Dark">
+    ...
+    <item name="pspdf__annotationNoteHinterStyle">@style/PSPDFCatalog.Theme.Dark.AnnotationNoteHinterStyle</item>
+</style>
+
+...
+
+<style name="PSPDFCatalog.AnnotationNoteHinter.Dark" parent="PSPDFKit.AnnotationNoteHinter">
+    <item name="pspdf__noteHinterColor">@color/pspdf__color_gray</item>
+    <item name="pspdf__useNoteHinterIntrinsicSize">false</item>
+    <item name="pspdf__noteHinterWidth">24dp</item>
+    <item name="pspdf__noteHinterHeight">24dp</item>
+    <item name="pspdf__noteHinterTextMarkupLeftPadding">8dp</item>
+    <item name="pspdf__noteHinterAlpha">255</item>
+    <item name="pspdf__noteHinterIcon">@drawable/pspdf__ic_caret</item>
+</style>
+```
+
+[`pdfactivityconfiguration.builder#setannotationnotehintingenabled()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#setAnnotationNoteHintingEnabled(boolean)

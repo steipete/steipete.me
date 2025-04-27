@@ -1,0 +1,252 @@
+---
+title: Using an Activity
+section: developers
+---
+
+[`PdfActivity`][] is the most straightforward way of displaying a PDF document with all PSPDFKit features. [`PdfActivity`][] extends Android’s `AppCompatActivity` and delivers the current Android and Material Design experience.
+
+## PdfActivity Features
+
+The activity hosts a [`PdfFragment`][] for document viewing and editing. It also contains several configurable views:
+
+- Inline search or modular search views ([`PdfSearchViewInline`][] or [`PdfSearchViewModular`][], respectively).
+- A thumbnail grid with page numbers and labels ([`PdfThumbnailGrid`][]). This view also integrates the [Document Editor][].
+- A thumbnail bar, allowing quick document scrolling ([`PdfThumbnailBar`][]).
+- A document outline list and a list of annotations (both encapsulated inside [`PdfOutlineView`][]).
+
+This guide gives a short introduction on how to get started with [`PdfActivity`][].
+
+## Setting Up the Manifest
+
+Before you can launch [`PdfActivity`][], you need to add it to your `AndroidManifest.xml`:
+
+```AndroidManifest.xml
+<application
+    android:largeHeap="true">
+
+    <activity
+        android:name="com.pspdfkit.ui.PdfActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:windowSoftInputMode="adjustNothing" />
+
+</application>
+```
+
+> **⚠️ Warning:** Do not add `android:configChanges` to the `PdfActivity` entry, as it is not needed by PSPDFKit and may lead to undesired behavior of the document viewer.
+
+Make sure you define the `android:largeHeap="true"` property on your `<application>` tag inside the manifest file. Rendering PDF files can be memory intensive, and this property will ensure your app has enough heap memory allocated in order to avoid hitting an `OutOfMemoryError`.
+
+### Activity Theme
+
+Since [`PdfActivity`][] extends [`AppCompatActivity`][], you need to define a `Theme.AppCompat`-based theme via the `android:theme` attribute. You can either use a standard theme (e.g. `Theme.AppCompat.Light.NoActionBar`) or use any custom theme your app provides. Check out our [Appearance Styling][] guide for more information on creating custom themes.
+
+[`PdfActivity`][] uses a custom toolbar system based on the app-compact [`Toolbar`][] widget. Because of this, the used theme has to disable the default action bar. Either use any `Theme.AppCompat.*.NoActionBar` as a parent theme, or disable the action bar manually by adding the following styles to your custom theme:
+
+```styles.xml
+<resources>
+    <style name="MyCustomTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        ...
+    </style>
+</resources>
+```
+
+## Launching the Activity
+
+Once you have added [`PdfActivity`][] to your `AndroidManifest.xml`, you can start it by using its static helper methods for simple cases or, better yet, by building an `Intent` using [`PdfActivityIntentBuilder`][]. You can open documents from a wide range of sources, including the local file system, your app’s assets, content providers, and any other custom data source you define.
+
+### Configuring the Activity
+
+When launching [`PdfActivity`][], you need to provide an instance of [`PdfActivityConfiguration`][]. This configuration object allows you to configure the appearance and features of the activity. To create the configuration, use `PdfActivityConfiguration.Builder`:
+
+[==
+
+```kotlin
+// This will create the default configuration, or you can use a different builder
+// method for configuring the activity.
+val config = PdfActivityConfiguration.Builder(context).build()
+```
+
+```java
+// This will create the default configuration, or you can use a different builder
+// method for configuring the activity.
+final PdfActivityConfiguration config =
+    new PdfActivityConfiguration.Builder(context)
+        .build();
+```
+
+==]
+
+The above example creates the default activity configuration, but you can use any other configuration as well. The full list of available configuration options can be found in our API reference for [`PdfActivityConfiguration.Builder`][].
+
+### Launching from a URI Using the Static Methods
+
+Using a [`Uri`][], you can open documents from the local device file system, your app’s assets, or a document content provider (using Android’s [Storage Access Framework][]). Use the [`PdfActivity.showDocument()`][] call as a convenience for simple use cases:
+
+[==
+
+```kotlin
+val assetFile = Uri.parse("file:///android_asset/getting-started-guide.pdf")
+PdfActivity.showDocument(context, assetFile, null, config)
+
+val localDocument = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "document.pdf"))
+PdfActivity.showDocument(context, localDocument, null, config)
+
+val contentProviderFile = Uri.parse("content://com.myapp.documents/repair-manuals/12345")
+PdfActivity.showDocument(context, contentProviderFile, null, config)
+```
+
+```java
+final Uri assetFile = Uri.parse("file:///android_asset/getting-started-guide.pdf");
+PdfActivity.showDocument(context, assetFile, null, config);
+
+final Uri localDocument = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "document.pdf"));
+PdfActivity.showDocument(context, localDocument, null, config);
+
+final Uri contentProviderFile = Uri.parse("content://com.myapp.documents/repair-manuals/12345");
+PdfActivity.showDocument(context, contentProviderFile, null, config);
+```
+
+==]
+
+> **ℹ️ Note:** Access to files on the external storage requires the [`READ_EXTERNAL_STORAGE`][] permission (and the [`WRITE_EXTERNAL_STORAGE`][] permission if you want to write changes back to a PDF). Starting with Android 6.0 (API level 23), your app also needs to [acquire the permissions at runtime][] before accessing any file on the external storage.
+
+### Launching from a URI or Data Providers Using the Intent Builder
+
+[`PdfActivityIntentBuilder`][] provides full control over the document opening process. It allows you to control the source of the document (or multiple sources for joined documents), document passwords, content signatures, and custom activity for displaying the document.
+
+#### URI
+
+[==
+
+```kotlin
+val assetFile = Uri.parse("file:///android_asset/getting-started-guide.pdf")
+val intent = PdfActivityIntentBuilder.fromUri(context, assetFile).build()
+context.startActivity(intent)
+```
+
+```java
+final Uri assetFile = Uri.parse("file:///android_asset/getting-started-guide.pdf");
+final Intent intent = PdfActivityIntentBuilder.fromUri(context, assetFile).build();
+context.startActivity(intent);
+```
+
+==]
+
+#### Data Providers
+
+Using a [`DataProvider`][], you can load documents from any non-standard document source — you can even define your own data provider. The full list of available data providers can be found in our [Data Providers][] guide:
+
+[==
+
+```kotlin
+// Same as using the `file:///android_asset/` Uri prefix in the example above.
+val provider = AssetDataProvider("getting-started-guide.pdf")
+val intent = PdfActivityIntentBuilder.fromDataProvider(context, provider).build()
+context.startActivity(intent)
+```
+
+```java
+// Same as using the `file:///android_asset/` Uri prefix in the example above.
+final AssetDataProvider provider = new AssetDataProvider("getting-started-guide.pdf");
+final Intent intent = PdfActivityIntentBuilder.fromDataProvider(context, provider).build();
+context.startActivity(intent);
+```
+
+==]
+
+### Compound Documents
+
+You can also open multiple documents at once, creating a single “compound document.” Simply pass a list of document [`Uri`][] instances or a list of data providers to [`PdfActivityIntentBuilder`][]:
+
+[==
+
+```kotlin
+val intent = PdfActivityIntentBuilder.fromUri(context, uri1, uri2, uri3).build()
+context.startActivity(intent)
+```
+
+```java
+final Intent intent = PdfActivityIntentBuilder.fromUri(context, uri1, uri2, uri3).build();
+context.startActivity(intent);
+```
+
+==]
+
+Compound documents are also the basis for merging two documents back into one using the [document processing API][].
+
+### More Options
+
+[`PdfActivityIntentBuilder`][] provides more options than already stated, for example:
+
+[==
+
+```kotlin
+// Build the launching intent providing all required parameters.
+val intent = PdfActivityIntentBuilder.fromUri(context, documentUri)
+    .configuration(config)
+    .activity(CustomActionsActivity.class)
+    .passwords("some_password")
+    .contentSignatures("some_doc_signature")
+    .build()
+
+// As with every other Android intent, you can add `Intent` extras.
+intent.putExtra("username", "John Doe")
+intent.putExtra("age", 36)
+
+// You can modify the intent flags as well if you need to.
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+// Finally, launch the activity.
+context.startActivity(intent)
+```
+
+```java
+// Build the launching intent providing all required parameters.
+final Intent intent = PdfActivityIntentBuilder.fromUri(context, documentUri)
+    .configuration(config)
+    .activity(CustomActionsActivity.class)
+    .passwords("some_password")
+    .contentSignatures("some_doc_signature")
+    .build();
+
+// As with every other Android intent, you can add `Intent` extras.
+intent.putExtra("username", "John Doe");
+intent.putExtra("age", 36);
+
+// You can modify the intent flags as well if you need to.
+intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+// Finally, launch the activity.
+context.startActivity(intent);
+```
+
+==]
+
+> **💡 Tip:** You can also use [`PdfActivityIntentBuilder`][] for creating intents that can be used to launch an activity for results, or as a pending intent (e.g. for notifications).
+
+[`pdfactivityintentbuilder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html
+[`intent`]: https://developer.android.com/reference/android/content/Intent.html
+[`uri`]: http://developer.android.com/reference/android/net/Uri.html
+[`appcompatactivity`]: http://developer.android.com/reference/android/support/v7/app/AppCompatActivity.html
+[`dataprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/DataProvider.html
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.html
+[`pdfactivity.showdocument()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#showDocument(android.content.Context,%20android.net.Uri,%20com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`read_external_storage`]: https://developer.android.com/reference/android/Manifest.permission.html#READ_EXTERNAL_STORAGE
+[`write_external_storage`]: https://developer.android.com/reference/android/Manifest.permission.html#WRITE_EXTERNAL_STORAGE
+[acquire the permissions at runtime]: https://developer.android.com/training/permissions/requesting.html
+[`documentsharingprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/DocumentSharingProvider.html
+[`pdfsearchviewinline`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/PdfSearchViewInline.html
+[`pdfsearchviewmodular`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/PdfSearchViewModular.html
+[`pdfthumbnailgrid`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html
+[`pdfthumbnailbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailBar.html
+[`pdfoutlineview`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfOutlineView.html
+[`toolbar`]: https://developer.android.com/reference/android/support/v7/widget/Toolbar.html
+[document editor]: ../../features/document-editor
+[appearance styling]: ../../customizing-the-interface/appearance-styling/
+[`pdfactivityconfiguration.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[storage access framework]: https://developer.android.com/guide/topics/providers/document-provider.html
+[data providers]: ../../features/data-providers
+[document processing api]: ../../features/document-processing

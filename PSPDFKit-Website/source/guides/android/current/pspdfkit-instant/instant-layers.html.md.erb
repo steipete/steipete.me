@@ -1,0 +1,17 @@
+---
+title: Instant Layers
+section: developers
+---
+
+![](/images/guides/shared/pspdfkit-instant/instant-layers.png)
+
+Instant layers is a concept that was introduced in [PSPDFKit 4.6 for Android][]. Layers allow you to manage multiple versions of document annotations while storing only a single PDF file per document on your server.
+
+When uploading a document to the Instant server, the content of the document (that is, all annotations) is extracted into an immutable base layer. On the server, it is possible to create copies of that base layer and store them separately for each client that wants to perform changes on the original document. The creation of additional layers is performed automatically each time a client first applies changes to the loaded document.
+
+> **ℹ️ Note:** Each client receives its own layer, which is specified using its name inside the JSON Web Token (JWT) that the server issues to the client during authentication.
+
+For more information about layers, take a look at our [Instant Layers Server guide][].
+
+[pspdfkit 4.6 for android]: https://pspdfkit.com/blog/2018/pspdfkit-android-4-6/
+[instant layers server guide]: /guides/server/current/api/instant-layers/

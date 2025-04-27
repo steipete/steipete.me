@@ -1,0 +1,372 @@
+.code-block-group {
+  .code-block {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
+
+.code-block {
+  margin-bottom: 2rem;
+  position: relative;
+
+  pre {
+    font-size: ($font-size-base * 0.85);
+    margin-bottom: 0;
+  }
+
+  .tab-pane & {
+    .code-scroller {
+      background: $white;
+    }
+
+    .code-tabs .nav-item > .nav-link.active {
+      background: $white;
+    }
+  }
+}
+
+.tab-pane {
+  .code-block-group {
+    margin-top: -35px;
+
+    .code-block {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .code-block {
+    margin-top: -35px;
+    margin-bottom: 0;
+  }
+}
+
+.code-tabs {
+  border-bottom: 1px solid $gray-100;
+  border-radius: $border-radius;
+  padding-right: ($card-padding-lg / 2);
+
+  > .code-tabs {
+    padding-right: 0;
+  }
+
+  .nav-item {
+    margin-left: 1rem;
+    margin-bottom: 0;
+  }
+
+  .nav-item > .nav-link {
+    border: 0;
+    border-bottom: 1px solid $white;
+    margin-bottom: -1px;
+    background: rgba($neutral-darker, 0.3);
+    color: rgba($body-color, 0.5);
+    min-width: 90px;
+    text-align: center;
+    transition: all 0.3s;
+
+    &:empty {
+      display: none;
+    }
+
+    &:hover {
+      background: rgba($neutral-darker, 0.6);
+    }
+
+    &.active {
+      background: $white;
+      box-shadow: 0 -1px 2px rgba($shadow, 0.1);
+    }
+  }
+}
+
+.code-scroller {
+  overflow-x: auto;
+  background: $white;
+  border-radius: $border-radius;
+  @include sh-1;
+}
+
+.code-table {
+  width: 100%;
+  margin-bottom: 0 !important;
+
+  &.inactive {
+    display: none;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    @include media-breakpoint-up(md) {
+      white-space: pre;
+      word-break: normal;
+    }
+  }
+}
+
+.code-gutter,
+.code-content {
+  padding: 10px;
+}
+
+.code-gutter {
+  background: $gray-100;
+  text-align: right;
+  width: 10px;
+  display: none;
+
+  @include media-breakpoint-up(md) {
+    display: table-cell;
+  }
+
+  pre {
+    color: rgba($text-muted, 0.2);
+  }
+}
+
+.code-meta {
+  padding: 10px 8px;
+  color: $gray-500;
+  font-size: 13px;
+}
+
+.code-btn-copy {
+  text-transform: none !important;
+  position: absolute;
+  bottom: 7px;
+  right: 7px;
+  font-family: $font-family-sans-serif !important;
+  border: 0;
+  background: $gray-100;
+  border: 1px solid $gray-300;
+  color: $gray-500;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0;
+
+  .code-block:hover & {
+    opacity: 1;
+  }
+}
+
+.pre-wrap {
+  white-space: pre-line;
+}
+
+// Github Syntax Theme
+
+.code-content > pre {
+  .cm {
+    color: #999988;
+    font-style: italic;
+  }
+  .cp {
+    color: #999999;
+    font-weight: bold;
+  }
+  .c1 {
+    color: #999988;
+    font-style: italic;
+  }
+  .cs {
+    color: #999999;
+    font-weight: bold;
+    font-style: italic;
+  }
+  .c,
+  .cd {
+    color: #999988;
+    font-style: italic;
+  }
+  .err {
+    color: #a61717;
+    background-color: #e3d2d2;
+  }
+  .gd {
+    color: #000000;
+    background-color: #ffdddd;
+  }
+  .ge {
+    color: #000000;
+    font-style: italic;
+  }
+  .gr {
+    color: #aa0000;
+  }
+  .gh {
+    color: #999999;
+  }
+  .gi {
+    color: #000000;
+    background-color: #ddffdd;
+  }
+  .go {
+    color: #888888;
+  }
+  .gp {
+    color: #555555;
+  }
+  .gs {
+    font-weight: bold;
+  }
+  .gu {
+    color: #aaaaaa;
+  }
+  .gt {
+    color: #aa0000;
+  }
+  .kc {
+    color: #000000;
+    font-weight: bold;
+  }
+  .kd {
+    color: #000000;
+    font-weight: bold;
+  }
+  .kn {
+    color: #000000;
+    font-weight: bold;
+  }
+  .kp {
+    color: #000000;
+    font-weight: bold;
+  }
+  .kr {
+    color: #000000;
+    font-weight: bold;
+  }
+  .kt {
+    color: #445588;
+    font-weight: bold;
+  }
+  .k,
+  .kv {
+    color: #000000;
+    font-weight: bold;
+  }
+  .mf {
+    color: #009999;
+  }
+  .mh {
+    color: #009999;
+  }
+  .il {
+    color: #009999;
+  }
+  .mi {
+    color: #009999;
+  }
+  .mo {
+    color: #009999;
+  }
+  .m,
+  .mb,
+  .mx {
+    color: #009999;
+  }
+  .sb {
+    color: #d14;
+  }
+  .sc {
+    color: #d14;
+  }
+  .sd {
+    color: #d14;
+  }
+  .s2 {
+    color: #d14;
+  }
+  .se {
+    color: #d14;
+  }
+  .sh {
+    color: #d14;
+  }
+  .si {
+    color: #d14;
+  }
+  .sx {
+    color: #d14;
+  }
+  .sr {
+    color: #009926;
+  }
+  .s1 {
+    color: #d14;
+  }
+  .ss {
+    color: #990073;
+  }
+  .s {
+    color: #d14;
+  }
+  .na {
+    color: #008080;
+  }
+  .bp {
+    color: #999999;
+  }
+  .nb {
+    color: #0086b3;
+  }
+  .nc {
+    color: #445588;
+    font-weight: bold;
+  }
+  .no {
+    color: #008080;
+  }
+  .nd {
+    color: #3c5d5d;
+    font-weight: bold;
+  }
+  .ni {
+    color: #800080;
+  }
+  .ne {
+    color: #990000;
+    font-weight: bold;
+  }
+  .nf {
+    color: #990000;
+    font-weight: bold;
+  }
+  .nl {
+    color: #990000;
+    font-weight: bold;
+  }
+  .nn {
+    color: #555555;
+  }
+  .nt {
+    color: #000080;
+  }
+  .vc {
+    color: #008080;
+  }
+  .vg {
+    color: #008080;
+  }
+  .vi {
+    color: #008080;
+  }
+  .nv {
+    color: #008080;
+  }
+  .ow {
+    color: #000000;
+    font-weight: bold;
+  }
+  .o {
+    color: #000000;
+    font-weight: bold;
+  }
+  .w {
+    color: #bbbbbb;
+  }
+}

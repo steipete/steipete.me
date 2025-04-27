@@ -1,0 +1,28 @@
+---
+title: Saving Triggers for Annotations and Bookmarks
+section: developers
+---
+
+PSPDFKit will save “dirty” (changed/created/deleted) annotations on several occasions.
+
+- When the `viewController` is popped (in `viewWillDisappear:`, unless PSPDFKit is presenting a controller on top of `viewController`).
+- When the document on the [`PSPDFViewController`][] is changed.
+- When [`saveAfterToolbarHiding`][] of the [`PSPDFAnnotationToolbar`][] is enabled.
+- When the app is moved into the background (`UIApplicationDidEnterBackgroundNotification`, `UIApplicationWillTerminateNotification`).
+- When `UIActivityViewController` asks for a document data/URL to share.
+- When a document will be digitally signed.
+
+Each time the document is saved, the [`-pdfDocumentDidSave:`][] delegate method on [`PSPDFDocumentDelegate`][] is called. If there were no new changes to save, the delegate won’t be called.
+
+Saving can also be controlled on a per-document level by setting [`annotationSaveMode`][].
+
+## Manual Saving
+
+Saving can always be triggered from the main thread by calling [`saveWithOptions:error:`][] on the document.
+
+[`saveaftertoolbarhiding`]: /api/ios/Classes/PSPDFAnnotationToolbar.html#/c:objc(cs)PSPDFAnnotationToolbar(py)saveAfterToolbarHiding
+[`pspdfannotationtoolbar`]: /api/ios/Classes/PSPDFAnnotationToolbar.html
+[`pspdfdocumentdelegate`]: /api/ios/Protocols/PSPDFDocumentDelegate.html
+[`-pdfdocumentdidsave:`]: /api/ios/Protocols/PSPDFDocumentDelegate.html#/c:objc(pl)PSPDFDocumentDelegate(im)pdfDocumentDidSave:
+[`annotationsavemode`]: /api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)annotationSaveMode
+[`savewithoptions:error:`]: /api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)saveWithOptions:error:

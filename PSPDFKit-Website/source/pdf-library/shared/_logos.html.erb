@@ -1,0 +1,21 @@
+<section class="mb-5">
+  <div class="container text-center">
+    <h2 class="h6 text-alt mt-0 mb-2">Trusted By</h2>
+    <div class="logo-grid">
+      <ul>
+        <% %w(PlanGrid DocuSign Lufthansa Mercedes-Benz Siemens).each do |c| %>
+          <li class="svg-alt-dark">
+            <%= partial "/images/logos/#{c.parameterize}.svg" %>
+          </li>
+        <% end %>
+      </ul>
+      <ul>
+        <% %w(Disney Dropbox IBM SAP United-Airlines).each do |c| %>
+          <li class="svg-alt-dark">
+            <%= partial "/images/logos/#{c.parameterize}.svg" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</section>

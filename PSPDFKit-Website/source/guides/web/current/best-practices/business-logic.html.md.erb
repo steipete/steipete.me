@@ -1,0 +1,84 @@
+---
+title: Business Logic in PDFs
+section: developers
+
+---
+
+Sometimes it’s useful to extend your PDFs with some interaction and functionality. Even though PDFs are quite limited in this regard, PSPDFKit enables you to extend your PDFs with your own JavaScript code.
+
+Typically, when you customize PDFs dynamically, it involves adding annotations. This allows you to enrich your PDFs with text, images, shapes, [and more][introduction to annotations].
+
+## State in Annotations
+
+It’s also possible to store custom data in a PDF’s annotations. This lets you initialize your application with the annotation’s data when the PDF is loaded, modify the data while people interact with your PDF, and persist the modified data on the server.
+
+Let’s say you want your annotations to not appear immediately when a PDF is loaded, but rather each one should show up after a certain amount of time. You could set this delay as custom data on each of your annotations and hide it initially:
+
+```es
+const delayedAnnotation = annotation
+  .set("customData", {
+    appearAfter: Math.random() * 5000
+  })
+  .set("opacity", 0);
+
+instance.updateAnnotation(delayedAnnotation);
+```
+
+At some point in time, when you decide to reveal your annotations, you can read the custom data again:
+
+```es
+const annotations = await instance.getAnnotations(0);
+
+annotations.forEach(annotation => {
+  const customData = annotation.get("customData");
+
+  if (!customData || !customData.appearAfter) {
+    return;
+  }
+
+  setTimeout(() => {
+    const visibleAnnotation = annotation.set("opacity", 1);
+    instance.updateAnnotation(visibleAnnotation);
+  }, customData.appearAfter);
+});
+```
+
+Here, each annotation appears with the delay that was specified in `customData.appearAfter`.
+
+What you decide to pass to `customData` is completely up to you; just make sure the value is JSON-serializable, as the data will be serialized when it gets persisted. In particular, be aware that a `Date` will get converted to a `String` and will stay a `String` when the data is loaded again.
+
+# Annotations for Different Users
+
+A more commonplace example might be that you only want to show certain annotations to certain users. You could achieve this by specifying the user roles in the annotation’s custom data:
+
+```es
+const delayedAnnotation = annotation
+  .set("customData", {
+    forUserRoles: ["manager", "editor"]
+  })
+  .set("opacity", 0);
+
+instance.updateAnnotation(delayedAnnotation);
+```
+
+When you display your annotations, you can filter them by your user’s role:
+
+```es
+const annotations = await instance.getAnnotations(0);
+
+annotations.forEach(annotation => {
+  const customData = annotation.get("customData");
+
+  if (!customData || !customData.forUserRoles) {
+    return;
+  }
+
+  if (customData.forUserRoles.includes(currentUser.role)) {
+    instance.updateAnnotation(annotation.set("opacity", 1));
+  }
+});
+```
+
+Now an annotation will only be displayed when its `forUserRoles` array contains the role of the `currentUser`.
+
+[introduction to annotations]: /guides/web/current/annotations/introduction-to-annotations/

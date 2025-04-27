@@ -1,0 +1,81 @@
+---
+title: Changelog
+priority: 0.75
+section: developers
+---
+
+<% @title_suffix = product_name(platform) %>
+<% @description = "#{product_name(platform)} Releases (Latest: #{product_version(platform)})" %>
+
+<%= partial 'developers/nav_sub' %>
+
+<section class="section pt-0">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col-12 text-center">
+        <header>
+          <h1>Changelog</h1>
+          <ul class="nav nav-pills justify-content-center small">
+            <li class="nav-item">
+              <a href="/changelog/ios/" class="nav-link nav-link-brand <%= 'active' if platform == 'ios' %>">
+                iOS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/android/" class="nav-link nav-link-brand <%= 'active' if platform == 'android' %>">
+                Android
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/web/" class="nav-link nav-link-brand <%= 'active' if platform == 'web' %>">
+                Web
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/windows/" class="nav-link nav-link-brand <%= 'active' if platform == 'windows' %>">
+                Windows
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/macos/" class="nav-link nav-link-brand <%= 'active' if platform == 'macos' %>">
+                macOS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/server/" class="nav-link nav-link-brand <%= 'active' if platform == 'server' %>">
+                Server
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/dotnet/" class="nav-link nav-link-brand <%= 'active' if platform == 'dotnet' %>">
+                .NET
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/changelog/java/" class="nav-link nav-link-brand <%= 'active' if platform == 'java' %>">
+                Java
+              </a>
+            </li>
+          </ul>
+        </header>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card">
+          <div class="card-body">
+            <p>
+              Follow us on <a href="https://twitter.com/PSPDFKit" class="link-brand">Twitter</a> for updates. Our <a href="/blog" class="link-brand">blog</a> highlights the best new features and changes.
+            </p>
+            <%= partial "changelog_#{platform}_raw.changelog" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

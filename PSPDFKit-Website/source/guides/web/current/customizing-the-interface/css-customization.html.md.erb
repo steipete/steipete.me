@@ -1,0 +1,77 @@
+---
+title: CSS Customization
+section: developers
+
+---
+
+PSPDFKit for Web allows you to customize every aspect of the viewer. This includes a number of supported public CSS classes that you can use to apply custom styling to. The up-to-date list of customizable elements can be found in the CSS section of our [API documentation][api].
+
+CSS classes not documented here are subject to change and therefore should not be relied upon. If you want to customize viewport-related properties (e.g. viewport padding or page spacing), please refer to the [JavaScript API][api].
+
+Since PSPDFKit for Web runs in an isolated container, you cannot overwrite the CSS rules from within your current stylesheets. In order to customize the CSS, you need to prepare separate files. You must configure them in PSPDFKit for Web by specifying them in [`Configuration#styleSheets`][].
+
+The network request for the files will be triggered by your origin. This also means that cookies you set will be transmitted (the request will not be sent from or to the origin of PSPDFKit Server).
+
+## How to Customize the Appearance of PSPDFKit for Web with CSS
+
+Let’s say you want to change the background color of the toolbar. If you look through our [API documentation][api], you will find a section dedicated to all toolbar-related styling. You can use your mouse to move over the elements you want to style. For example, if you move over the toolbar, you can see the associated CSS class [`.PSPDFKit-Toolbar`][].
+
+1.  With that information in mind, we can create a new stylesheet that overwrites the properties. For this example, we only want to change the background color as an illustration. The CSS for this is straightforward:
+
+    ```css
+    /* my-pspdfkit.css */
+    .PSPDFKit-Toolbar {
+      background-color: #f00;
+    }
+    ```
+
+2.  The next step is to host this CSS file parallel to your existing CSS. Most web frameworks with a `public/` directory that you can use to upload this file and make it accessible from the web.
+
+    For this example, we’re hosting a site, `https://example.com`, and will upload the stylesheet to
+    `https://example.com/my-pspdfkit.css`.
+
+3.  The last step is to configure PSPDFKit for Web to load the newly created stylesheet. We can do this with the [`Configuration`][] interface that we pass to the [`load()`][] method:
+
+    [==
+
+    ```es
+    PSPDFKit.load({
+      // ...
+      styleSheets: ["https://example.com/my-pspdfkit.css"]
+    })
+      .then(instance => {
+        console.info("PSPDFKit loaded", instance);
+      })
+      .catch(error => {
+        console.error(error.message);
+      });
+    ```
+
+    ```js
+    PSPDFKit.load({
+      // ...
+      styleSheets: ["https://example.com/my-pspdfkit.css"]
+    })
+      .then(function(instance) {
+        console.info("PSPDFKit loaded", instance);
+      })
+      .catch(function(error) {
+        console.error(error.message);
+      });
+    ```
+
+    ==]
+
+    This will inject the stylesheet into PSPDFKit for Web and apply the styling accordingly.
+
+    <img
+      class="shadow"
+      alt="Toolbar with configured background color"
+      src="/images/guides/web/customizing-the-interface/css-customization/customized-toolbar.png"
+      width="795">
+
+[api]: https://pspdfkit.com/api/web
+[`configuration`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html
+[`configuration#stylesheets`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#styleSheets
+[`load()`]: https://pspdfkit.com/api/web/PSPDFKit.html#.load
+[`.pspdfkit-toolbar`]: https://pspdfkit.com/api/web/css-Toolbar.html

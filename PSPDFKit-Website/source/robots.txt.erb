@@ -1,0 +1,17 @@
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: *
+Disallow: /member
+Disallow: /sales/thanks
+Disallow: /try/thanks
+Disallow: /try/confirmation
+<%-
+# Prevent indexing versioned guides to avoid duplicate content issues.
+# Only the 'current' version (e.g. pspdfkit.com/guides/ios/current/) is indexed.
+%>
+<% VERSIONS.each do |platform, versions| %>
+<% versions.each do |version| %>
+Disallow: /guides/<%= platform %>/<%= version %>
+<% end %>
+<% end %>

@@ -1,0 +1,55 @@
+---
+title: Render Images
+section: developers
+
+order: 2
+---
+
+### Render a Cover Image of a Document into an `<img>` Tag
+
+```
+GET /documents/:document_id/cover
+```
+
+Rendering a cover image of a document into an `<img>` tag requires the query parameter `jwt`, which must encode the `document_id`.
+
+It also requires either `width` or `height` (but not both) to be included in the query parameters; each has to have a value in the interval `(0; 10000]`. The other dimension will be calculated based on the aspect ratio of the document.
+
+The request can optionally include the `page_index` query parameter to specify which page should be rendered. If the `page_index` parameter does not exist, it defaults to `0`, meaning the first page will be rendered. The `page_index` parameter has to be an integer between `0` and `page_count - 1`.
+
+If the request includes the `Accept: image/webp` header, a cover image in the WebP format will be returned; otherwise it will be a PNG. When you use the `<img>` method described below, the browser will automatically include the appropriate `Accept` header if it supports [WebP images][].
+
+This endpoint can be used to provide thumbnail images for your document list. You can use it in a regular `<img>` tag. The following example will load the cover of a document with the ID `abc` and a width of `400px`. We set the width of the `<img>` tag to `200px` so that the image will be sharp on high-DPI screens.
+
+In case this endpoint is called on a password-protected PDF, you can either add the `password` claim to the JSON Web Token (JWT) or include the `password` query parameter. If no password is present or an incorrect password is supplied, a placeholder lock image is returned with `content-type` set to `image/svg+xml`. You can use the `disable_fallback_image` query parameter:
+
+```html
+<img
+  src="https://example.com/documents/abc/cover?width=400&jwt=<jwt>"
+  width="200"
+/>
+
+<img
+  src="https://example.com/documents/abc/cover?width=400&page_index=1&jwt=<jwt>"
+  width="200"
+/>
+
+<img
+  src="https://example.com/documents/abc/cover?width=400&page_index=1&jwt=<jwt>"
+  width="200"
+/>
+
+<img
+  src="https://example.com/documents/abc/cover?width=400&page_index=1&jwt=<jwt>&password=<password>"
+  width="200"
+/>
+
+<img
+  src="https://example.com/documents/abc/cover?width=400&page_index=1&jwt=<jwt>&disable_fallback_image=true"
+  width="200"
+/>
+```
+
+[backend api]: ../../server-api/overview/
+[pspdfkit guide authentication]: ../../server-backed/client-authentication/
+[webp images]: https://developers.google.com/speed/webp/

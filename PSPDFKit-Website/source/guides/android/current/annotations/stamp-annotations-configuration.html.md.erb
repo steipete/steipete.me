@@ -1,0 +1,250 @@
+---
+title: Stamp Annotations Configuration
+section: developers
+---
+
+To change the default set of stamp annotations available for your application, you’ll have to override [`getStampsForPicker()`][] in the [`StampAnnotationDefaultsProvider`][] class:
+
+[==
+
+```kotlin
+// Defaults can be configured for each annotation type through `PdfFragment`.
+pdfFragment.setAnnotationDefaultsProvider(AnnotationType.STAMP, object : StampAnnotationDefaultsProvider(this) {
+    override fun getStampsForPicker(): List<StampPickerItem> {
+        // Here you can specify which stamps will be available in the stamp picker.
+        val stamps = ArrayList<StampPickerItem>()
+
+        stamps.add(StampPickerItem.fromSubject(context, "Great!").build())
+        stamps.add(StampPickerItem.fromSubject(context, "Stamp").build())
+        stamps.add(StampPickerItem.fromSubject(context, "Like").build())
+        return stamps
+    }
+})
+```
+
+```java
+// Defaults can be configured for each annotation type through `PdfFragment`.
+getPdfFragment().setAnnotationDefaultsProvider(AnnotationType.STAMP, new StampAnnotationDefaultsProvider(this) {
+    @NonNull @Override public List<StampPickerItem> getStampsForPicker() {
+        // Here you can specify which stamps will be available in the stamp picker.
+        final List<StampPickerItem> stamps = new ArrayList<>();
+
+        stamps.add(StampPickerItem.fromSubject(context, "Great!").build());
+        stamps.add(StampPickerItem.fromSubject(context, "Stamp").build());
+        stamps.add(StampPickerItem.fromSubject(context, "Like").build());
+
+        return stamps;
+    }
+});
+```
+
+==]
+
+> **💡 Tip:** Call `super.getStampsForPicker()` to retrieve the default set already bundled in the library.
+
+![Stamp picker dialog with a custom set of default stamps][stamp image]
+
+## Default Stamp Annotations
+
+PSPDFKit comes with some out-of-the-box stamp annotations available in the stamp picker dialog:
+
+[==
+
+```kotlin
+val items = mutableListOf<StampPickerItem>()
+
+// Standard stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.APPROVED).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.NOT_APPROVED).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.DRAFT).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FINAL).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.COMPLETED).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.CONFIDENTIAL).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FOR_PUBLIC_RELEASE).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.NOT_FOR_PUBLIC_RELEASE).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FOR_COMMENT).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.VOID).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.PRELIMINARY_RESULTS).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.INFORMATION_ONLY).build())
+
+// Tick and cross stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.ACCEPTED).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REJECTED).build())
+
+// Signature stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.INITIAL_HERE).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.SIGN_HERE).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.WITNESS).build())
+
+// Custom stamp.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.CUSTOM).build())
+
+// Revised/rejected stamps with localized datetime subtext.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REVISED).withDateTimeSubtext(true, true).build())
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REJECTED).withDateTimeSubtext(true, true).build())
+```
+
+```java
+final List<StampPickerItem> items = new ArrayList<>();
+
+// Standard stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.APPROVED).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.NOT_APPROVED).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.DRAFT).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FINAL).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.COMPLETED).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.CONFIDENTIAL).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FOR_PUBLIC_RELEASE).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.NOT_FOR_PUBLIC_RELEASE).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.FOR_COMMENT).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.VOID).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.PRELIMINARY_RESULTS).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.INFORMATION_ONLY).build());
+
+// Tick and cross stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.ACCEPTED).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REJECTED).build());
+
+// Signature stamps.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.INITIAL_HERE).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.SIGN_HERE).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.WITNESS).build());
+
+// Custom stamp.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.CUSTOM).build());
+
+// Revised/rejected stamps with localized datetime subtext.
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REVISED).withDateTimeSubtext(true, true).build());
+items.add(StampPickerItem.fromPredefinedType(context, PredefinedStampType.REJECTED).withDateTimeSubtext(true, true).build());
+```
+
+==]
+
+> **ℹ️ Note:** When a user picks the [`PredefinedStampType.CUSTOM`][] stamp, PSPDFKit will show a stamp creation dialog that can be used to create custom stamps with user-definable text and colors, and (if desired) the current date.
+
+<figure>
+  <video src="/images/guides/android/annotations/custom-stamp-annotation.mp4" class="no-mejs" width="65%" autoplay playsinline loop muted></video>
+</figure>
+
+## Image Stamp Annotations
+
+PSPDFKit supports stamp annotations generated from a bitmap image. These image stamp annotations cannot have a localized subject, subtext, or text color. Use [`StampPickerItem#fromBitmap(android.graphics.Bitmap)`][] to create a builder for bitmap stamp annotations:
+
+[==
+
+```kotlin
+val items = ArrayList<StampPickerItem>()
+...
+try {
+    val bitmap = BitmapFactory.decodeStream(getAssets().open("inline-media/images/exampleimage.jpg"))
+    items.add(StampPickerItem.fromBitmap(bitmap)
+                // Specifying only a single size dimension will produce bitmap stamps preserving the original aspect ratio.
+                .withSize(StampAnnotationDefaultsProvider.DEFAULT_STAMP_ANNOTATION_PDF_WIDTH)
+                .build())
+} catch (e: IOException) {
+    e.printStackTrace()
+}
+```
+
+```java
+final List<StampPickerItem> items = new ArrayList<>();
+...
+try {
+    final Bitmap bitmap = BitmapFactory.decodeStream(getAssets().open("inline-media/images/exampleimage.jpg"));
+    items.add(StampPickerItem.fromBitmap(bitmap)
+                // Specifying only a single size dimension will produce bitmap stamps preserving the original aspect ratio.
+                .withSize(StampAnnotationDefaultsProvider.DEFAULT_STAMP_ANNOTATION_PDF_WIDTH)
+                .build());
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+==]
+
+> **ℹ️ Note:** Stamp images are encoded to the JPEG format, which does not allow transparency.
+
+## Vector Stamp Annotations
+
+PSPDFKit allows you to override the appearance stream of any annotation. This is especially useful for stamp annotations. Unlike bitmap stamp annotations, stamp annotations with custom appearance streams allow transparency and high-resolution zooming.
+
+Here’s how to define a stamp picker item with a custom appearance stream generator set:
+
+[==
+
+```kotlin
+val items = ArrayList<StampPickerItem>()
+...
+// Create the appearance stream generator with a PDF containing a vector logo.
+val appearanceStreamGenerator = AssetAppearanceStreamGenerator("PSPDFKit Logo.pdf")
+
+// Create the picker item with a custom subject and custom appearance stream generator set.
+items.add(StampPickerItem.fromSubject(context, "Custom subject")
+    .withSize(StampAnnotationDefaultsProvider.DEFAULT_STAMP_ANNOTATION_PDF_WIDTH)
+    .withAppearanceStreamGenerator(appearanceStreamGenerator)
+    .build())
+```
+
+```java
+final List<StampPickerItem> items = new ArrayList<>();
+...
+// Create the appearance stream generator with a PDF containing a vector logo.
+AssetAppearanceStreamGenerator appearanceStreamGenerator = new AssetAppearanceStreamGenerator("PSPDFKit Logo.pdf");
+
+// Create the picker item with a custom subject and custom appearance stream generator set.
+items.add(StampPickerItem.fromSubject(context, "Custom subject")
+    .withSize(StampAnnotationDefaultsProvider.DEFAULT_STAMP_ANNOTATION_PDF_WIDTH)
+    .withAppearanceStreamGenerator(appearanceStreamGenerator)
+    .build());
+```
+
+==]
+
+Appearance streams of created stamps will be saved into the document when saving. However, they will need to be regenerated whenever stamp annotations are modified after the document is reloaded. For this case, we register a global appearance stream generator on a document. This will generate custom appearance streams for stamp annotations based on their subjects:
+
+[==
+
+```kotlin
+override fun onDocumentLoaded(document: PdfDocument) {
+    super.onDocumentLoaded(document)
+
+    // Register the custom stamp appearance stream generator as a global appearance stream generator.
+    val customStampAppearanceStreamGenerator = CustomStampAppearanceStreamGenerator()
+    document.annotationProvider.addAppearanceStreamGenerator(customStampAppearanceStreamGenerator)
+
+    // Create the appearance stream generator with a PDF containing a vector logo.
+    val appearanceStreamGenerator = AssetAppearanceStreamGenerator("PSPDFKit Logo.pdf")
+
+    // Register the created appearance stream generator for the custom subject.
+    customStampAppearanceStreamGenerator.addAppearanceStreamGenerator("Custom subject", appearanceStreamGenerator)
+}
+```
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    super.onDocumentLoaded(document);
+
+    // Register the custom stamp appearance stream generator as a global appearance stream generator.
+    CustomStampAppearanceStreamGenerator customStampAppearanceStreamGenerator = new CustomStampAppearanceStreamGenerator();
+    document.getAnnotationProvider().addAppearanceStreamGenerator(customStampAppearanceStreamGenerator);
+
+    // Create the appearance stream generator with a PDF containing a vector logo.
+    AssetAppearanceStreamGenerator appearanceStreamGenerator = new AssetAppearanceStreamGenerator("PSPDFKit Logo.pdf");
+
+    // Register the created appearance stream generator for the custom subject.
+    customStampAppearanceStreamGenerator.addAppearanceStreamGenerator("Custom subject", appearanceStreamGenerator);
+}
+```
+
+==]
+
+For a comprehensive example, take a look at the `CustomStampAnnotationsExample` inside the Catalog app, which shows how to create a different set of default stamp annotations.
+
+[`getstampsforpicker()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/defaults/StampAnnotationDefaultsProvider.html#getStampsForPicker()
+[`stampannotationdefaultsprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/defaults/StampAnnotationDefaultsProvider.html
+[`predefinedstamptype.custom`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/stamps/PredefinedStampType.html#CUSTOM
+[`stampannotationdefaultsprovider#createbuiltincustomstamp(android.graphics.bitmap, float)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/defaults/StampAnnotationDefaultsProvider.html#createBuiltInCustomStamp(android.graphics.Bitmap,%20float)
+[`stampannotationdefaultsprovider#createbuiltincustomstamp(android.graphics.bitmap, float, float)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/defaults/StampAnnotationDefaultsProvider.html#createBuiltInCustomStamp(android.graphics.Bitmap,%20float,%20float)
+[stamp image]: /images/guides/android/annotations/stamp-picker-dialog.png
+[`stamppickeritem#frombitmap(android.graphics.bitmap)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/stamps/StampPickerItem.html#fromBitmap(android.graphics.Bitmap)

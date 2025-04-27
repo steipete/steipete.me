@@ -1,0 +1,193 @@
+---
+title: Live Demo
+title_suffix: PSPDFKit Instant
+description: Add a Touch of Magic to Your App
+theme: instant
+header: false
+---
+
+<!-- Header -->
+<header class="header">
+  <!-- Desktop -->
+  <nav class="nav-bar nav-bar-desktop">
+    <a class="nav-brand" href="/instant/">
+      <img src="/images/shared/placeholder.gif" data-src="/images/shared/pspdfkit.png" alt="PSPDFKit" width="50" height="50" class="lazyload" loading="lazy">
+    </a>
+    <div class="nav-block">
+      <span class="nav-text">
+        <strong class="mr-1">PSPDFKit Instant</strong>
+        <span class="text-brand">Live Demo</span>
+      </span>
+    </div>
+    <ul class="nav-block nav-block-last">
+      <li class="nav-item">
+        <a class="nav-link nav-btn" href="/instant/">
+          Close Demo
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- Mobile -->
+  <nav class="nav-bar nav-bar-mobile">
+    <a class="nav-brand" href="/instant/">
+      <img src="/images/shared/placeholder.gif" data-src="/images/shared/pspdfkit.png" alt="PSPDFKit" width="40" class="lazyload" loading="lazy">
+    </a>
+  </nav>
+</header>
+
+<!-- Desktop -->
+<div class="d-none d-md-block">
+
+  <!-- Instructions -->
+  <div class="section mb-0 pb-0">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between pr-5 pr-xl-0">
+        <p class="mb-0 mr-3">
+          The document here syncs annotations across all connected devices.<br class="d-none d-xl-block" />
+          Connect to it from your native iOS and Android apps or open additional tabs.
+        </p>
+        <div class="d-flex flex-column flex-lg-row">
+          <a href="#" class="btn btn-outline-brand mr-3 mb-3 mb-lg-0" data-toggle="popover"
+             data-placement="top" data-target="#ios-instructions">
+            <i class="fa fa-ios mr-1"></i>
+            Instant on iOS
+          </a>
+          <a href="#" class="btn btn-outline-brand" data-toggle="popover"
+             data-placement="top" data-target="#android-instructions">
+            <i class="fa fa-android mr-1"></i>
+            Instant on Android
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popover Content -->
+  <% %w(ios android).each do |p| %>
+    <div id="<%= p %>-instructions" class="hidden">
+      <ol class="list-unstyled">
+        <li>
+          <div class="media">
+            <div class="d-flex mr-4">
+              <span class="badge badge-secondary badge-circle">1</span>
+            </div>
+            <div class="media-body">
+              <h5>
+                Get PDF Viewer <small class="badge badge-pill badge-secondary ml-1">FREE</small>
+              </h5>
+              <a href="https://pdfviewer.io/store-<%= p %>" class="d-block mt-3">
+                <% if p == 'ios' %>
+                  <img src="/images/shared/app-store.svg" alt="Download on the App Store" width="150" class="lazyload" loading="lazy">
+                <% else %>
+                  <img src="/images/shared/google-play.svg" alt="Get it on Google Play" width="150" class="lazyload" loading="lazy">
+                <% end %>
+              </a>
+            </div>
+          </div>
+          <hr class="my-4" />
+        </li>
+        <li>
+          <div class="media">
+            <div class="d-flex mr-4">
+              <span class="badge badge-secondary badge-circle">2</span>
+            </div>
+            <div class="media-body">
+              <h5>Set Up</h5>
+                <span>
+                  Go to <strong>Settings</strong> and then tap <strong>Try Instant</strong>
+                </span>
+            </div>
+          </div>
+          <hr class="my-4" />
+        </li>
+        <li>
+          <div class="media">
+            <div class="d-flex mr-4">
+              <span class="badge badge-secondary badge-circle">3</span>
+            </div>
+            <div class="media-body">
+              <h5>Connect</h5>
+              <p class="mb-0">
+                Scan this QR:
+              </p>
+              <div style="position: relative; width: 210px; height: 210px;">
+                <div data-pspdfkit-web-qr></div>
+                <%= image_tag "instant/qr-logo.svg", style: "position: absolute; left: calc(50% - 25px); top: calc(50% - 25px);", width: 50 %>
+              </div>
+              <% if p == 'ios' %>
+                <p class="mb-2">Or enter this URL:</p>
+                <input data-pspdfkit-web-url type="text" class="form-control form-control-sm" readonly value="https://pspdfkit.com/" />
+              <% end %>
+            </div>
+          </div>
+        </li>
+       </ol>
+    </div>
+  <% end %>
+
+  <!-- Demo -->
+  <section class="section mb-0 pb-0">
+    <div class="row justify-content-center" data-demo="pspdfkit-instant">
+      <div class="col-sm-6 pl-5" style="max-width: 800px;">
+        <% partial 'shared/device_browser' do %>
+          <div data-pspdfkit-web-container data-api-url="https://web-examples.pspdfkit.com/api/instant-landing-page" style="width: 100%; height: 500px;"></div>
+        <% end %>
+      </div>
+      <div class="col-sm-6 pr-5" style="max-width: 800px;">
+        <% partial 'shared/device_browser' do %>
+          <div data-pspdfkit-web-container data-api-url="https://web-examples.pspdfkit.com/api/instant-landing-page" style="width: 100%; height: 500px;"></div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Mobile -->
+<div class="d-block d-md-none">
+  <div class="container">
+    <h2>PSPDFKit Instant</h2>
+    <hr>
+    <p>
+      <a href="#" data-pspdfkit-web-link class="btn btn-brand" target="_blank">
+        View Demo in Browser
+      </a>
+    </p>
+    <p class="medium">
+      or experience in the PDF Viewer apps:
+    </p>
+    <hr>
+    <h5>
+      <span class="badge badge-secondary badge-circle mr-1">1</span>
+      Get PDF Viewer
+    </h5>
+    <p>
+      <a href="https://pdfviewer.io/store-ios">
+        <img src="/images/shared/placeholder.gif" data-src="/images/shared/app-store.svg" alt="Download on the App Store" width="150" class="my-2 mr-2 lazyload" loading="lazy">
+      </a>
+      <a href="https://pdfviewer.io/store-android" class="my-2">
+        <img src="/images/shared/placeholder.gif" data-src="/images/shared/google-play.svg" alt="Get it on Google Play" width="150" class="my-2 lazyload" loading="lazy">
+      </a>
+    </p>
+    <hr>
+    <h5>
+      <span class="badge badge-secondary badge-circle mr-1">2</span>
+      Set Up
+    </h5>
+    <p class="medium">
+      Go to <strong>Settings</strong> and then tap <strong>Try Instant</strong>
+    </p>
+    <hr>
+    <h5>
+      <span class="badge badge-secondary badge-circle mr-1">3</span>
+      Connect
+    </h5>
+    <p class="medium">
+      Scan this QR:
+    </p>
+    <div style="position: relative; width: 210px; height: 210px;">
+      <div data-pspdfkit-web-qr></div>
+      <%= image_tag "instant/qr-logo.svg", style: "position: absolute; left: calc(50% - 25px); top: calc(50% - 25px);", width: 50 %>
+    </div>
+  </div>
+</div>

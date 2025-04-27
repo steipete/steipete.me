@@ -1,0 +1,421 @@
+---
+title: Document Sharing
+section: developers
+
+---
+
+PSPDFKit has the ability to share documents with other applications and services installed on a device, and it offers a set of APIs to customize the options that are available for the user when doing so.
+
+You can share any document by tapping the Share button in the navigation bar and choosing what format you’d like to share the document in (where applicable), the page range you’d like to share, and how you’d like to manage the annotations in the document (if any). Once these are specified, you can tap on the Share button at the bottom of the screen.
+
+<img src="/images/guides/ios/miscellaneous/document-sharing/default-options.png" width=60%>
+
+## Sharing Destinations
+
+PSPDFKit 8 for iOS introduces the concept of sharing destinations to use with the revamped [`PSPDFDocumentSharingViewController`][]. You can set up sharing destinations — like Mail, Messages, or similar — that define where a document will be sent after the user presses the Share button in the UI.
+
+There are six destinations built into PSPDFKit that you can use out of the box:
+
+| Destination                                                                                                   | Behavior                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [`PSPDFDocument`<wbr>`SharingDestinationActivity`][`pspdfdocumentsharingdestinationactivity`]                 | Shares to a standard `UIActivity`<wbr>`ViewController` instance. This is the default destination.                                         |
+| [`PSPDFDocumentSharingDestinationExport`][`pspdfdocumentsharingdestinationexport`]                            | Shares to `UIDocumentPickerViewController`.                                                                                               |
+| [`PSPDFDocument`<wbr>`SharingDestinationMessage`][`pspdfdocumentsharingdestinationmessage`]                   | Shares to `Messages.app` with the resulting files as attachments. Requires the ability to send attachments.                               |
+| [`PSPDFDocument`<wbr>`SharingDestinationEmail`][`pspdfdocumentsharingdestinationemail`]                       | Shares to `Mail.app` with the resulting files as attachments. Requires `Mail.app` to be installed and configured correctly on the device. |
+| [`PSPDFDocument`<wbr>`SharingDestinationOtherApplication`][`pspdfdocumentsharingdestinationotherapplication`] | Shares to a standard `UIDocument`<wbr>`InteractionController`.                                                                            |
+| [`PSPDFDocument`<wbr>`SharingDestinationPrint`][`pspdfdocumentsharingdestinationprint`]                       | Starts a printing operation via `UIPrint`<wbr>`InteractionController`.                                                                    |
+
+To choose a destination to share to, create a [`PSPDFDocumentSharingConfiguration`][] instance and set the [`destination`][] property on its builder to your preferred destination. Then set that configuration on your [`PSPDFDocumentSharingViewController`][]’s [`sharingConfigurations`][] property.
+
+Note that a single sharing view controller instance can hold multiple destinations at the same time, and the destinations that are available will be displayed in a segmented control on the top of the view controller:
+
+[==
+
+```swift
+let configurations = [
+    PSPDFDocumentSharingConfiguration.defaultConfiguration(forDestination: .activity),
+    PSPDFDocumentSharingConfiguration.defaultConfiguration(forDestination: .print)
+]
+
+let sharingController = PSPDFDocumentSharingViewController(documents: [document])
+sharingController.sharingConfigurations = configurations
+```
+
+```objc
+NSArray<PSPDFDocumentSharingConfiguration *> *configurations = @[
+    [PSPDFDocumentSharingConfiguration defaultConfigurationForDestination:PSPDFDocumentSharingDestinationActivity],
+    [PSPDFDocumentSharingConfiguration defaultConfigurationForDestination:PSPDFDocumentSharingDestinationPrint]
+];
+
+PSPDFDocumentSharingViewController *sharingController = [[PSPDFDocumentSharingViewController alloc] initWithDocuments:@[document]];
+sharingController.sharingConfigurations = configurations;
+```
+
+==]
+
+<img src="/images/guides/ios/miscellaneous/document-sharing/multiple.png" width=60%>
+
+Only one configuration per destination is allowed.
+
+## Sharing Configurations
+
+A sharing configuration (see [`PSPDFDocumentSharingConfiguration`’s API documentation][`pspdfdocumentsharingconfiguration`]) object defines the set of options that are available for sharing documents. These include file formats, page selection abilities, annotation processing preferences, the target destination, and more:
+
+[==
+
+```swift
+let customConfiguration = PSPDFDocumentSharingConfiguration {
+    $0.destination = .export
+	$0.fileFormatOptions = [.PDF]
+	$0.annotationOptions.remove(.embed)
+}
+
+sharingController.sharingConfigurations = [customConfiguration]
+```
+
+```objc
+PSPDFDocumentSharingConfiguration *customConfiguration = [PSPDFDocumentSharingConfiguration configurationWithBuilder:^(PSPDFDocumentSharingConfigurationBuilder *builder) {
+	builder.destination = PSPDFDocumentSharingDestinationExport;
+	builder.fileFormatOptions = PSPDFDocumentSharingFileFormatOptionPDF;
+	builder.annotationOptions &= ~PSPDFDocumentSharingAnnotationOptionEmbed;
+}];
+
+sharingController.sharingConfigurations = @[customConfiguration];
+```
+
+==]
+
+The example above defines a configuration object that will allow a user to export the documents in PDF format. The fact that the Embed annotation option is being removed from the [`annotationOptions`][] property means the user won’t be able share a PDF with editable annotations, and the UI will only present the remaining annotation options (Flatten, Remove, Summary).
+
+<img src="/images/guides/ios/miscellaneous/document-sharing/custom-configuration.png" width=60%>
+
+In this example, the default selected option for how to handle annotations ([`PSPDFDocumentSharingAnnotationOptions`][]) is inferred in order of relevance, which is defined as follows:
+
+1.  Embed
+1.  Flatten
+1.  Summary
+1.  Remove
+
+If one option is not available, the next one becomes the default one selected when the view controller is presented.
+
+The file format options behave differently, as the default selected option will be determined by the context of the documents being shared.
+
+1.  If the document is an image ([`PSPDFImageDocument`][]) and [`PSPDFDocumentSharingFileFormatOptionImage`][] is available, [`PSPDFDocumentSharingFileFormatOptionImage`][] will be the option selected by default.
+2.  If the document has an original file set and [`PSPDFDocumentSharingFileFormatOptionOriginal`][] is available, [`PSPDFDocumentSharingFileFormatOptionOriginal`][] will be the option selected by default.
+3.  For every other condition, [`PSPDFDocumentSharingFileFormatOptionPDF`][] will be the option selected by default.
+
+The default selected options can be updated via the [`selectedAnnotationOption`][], [`selectedFileFormatOption`][], and [`selectedPageSelectionOption`][] properties on [`PSPDFDocumentSharingViewController`][].
+
+By default, a [`PSPDFDocumentSharingViewController`][] instance will have only one configuration set on its [`sharingConfigurations`][] property. This default configuration has the destination [`PSPDFDocumentSharingDestinationActivity`][] and all configuration options enabled.
+
+Preconfigured [`PSPDFDocumentSharingConfiguration`][] instances can be obtained by calling [`+[PSPDFDocumentSharingConfiguration defaultConfigurationForDestination:]`][defaultconfigurationfordestination:].
+
+Setting a default set of Sharing Configurations can be done directly on the [`PSPDFConfiguration`][] object you use to instantiate your [`PSPDFViewController`][]:
+
+[==
+
+```swift
+let configuration = PSPDFConfiguration {
+    $0.sharingConfigurations = customSharingConfigurations
+}
+
+let controller = PSPDFViewController(document: document, configuration: configuration)
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+    builder.sharingConfigurations = customSharingConfigurations;
+}];
+
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:document configuration:configuration];
+```
+
+==]
+
+## Option Sanitization
+
+`PSPDFDocumentSharingViewController` will also perform some sanitization of the passed configurations to make sure that the provided options are compatible with the documents that are being shared. In some cases, it may also perform some adjustments.
+
+For instance, the following sharing configuration specifies that a subrange of the document’s pages will be shared to a `UIActivityViewController`:
+
+[==
+
+```swift
+let directPrintingConfiguration = PSPDFDocumentSharingConfiguration {
+	$0.destination = .activity
+	$0.fileFormatOptions = [.PDF]
+	$0.annotationOptions = [.flatten]
+	$0.pageSelectionOptions = [.range]
+}
+```
+
+```objc
+PSPDFDocumentSharingConfiguration *directPrintingConfiguration = [PSPDFDocumentSharingConfiguration configurationWithBuilder:^(PSPDFDocumentSharingConfigurationBuilder * builder) {
+	builder.destination = PSPDFDocumentSharingDestinationActivity;
+	builder.fileFormatOptions = PSPDFDocumentSharingFileFormatOptionPDF;
+	builder.annotationOptions = PSPDFDocumentSharingAnnotationOptionFlatten;
+	builder.pageSelectionOptions = PSPDFDocumentSharingPagesOptionRange;
+}];
+```
+
+==]
+
+Given the above configuration:
+
+- **When sharing a single-page document**, the `pageSelectionOptions` property from the sharing configuration will be internally overridden to behave as the `PSPDFDocumentSharingPagesOptionAll` option, because, for single-page documents, there’s no possible range to export other than `[0, 1)`.
+- **When sharing a multiple-page document**, the `shareablePageRange` property on the sharing view controller needs to be manually set to a valid range that fits within the available pages of the document being shared.
+
+This kind of sanitization happens for the file format, page selection, and annotation options. Below is a table with the breakdown of what will happen with the options you provide on a variety of cases.
+
+For `PSPDFDocumentSharingFileFormatOptions`:
+
+| Case                                                                          | Behavior                                                                                                   |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| The documents being shared don’t contain original files associated with them. | `PSPDFDocumentSharingFileFormatOptionOriginal` will be removed from the passed options if it was provided. |
+| The PSPDFKit license does not contain the Image Documents product.            | `PSPDFDocumentSharingFileFormatOptionImage` will be removed from the passed options.                       |
+
+For `PSPDFDocumentSharingPageSelectionOptions`:
+
+| Case                                                                                                                                             | Behavior                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Sharing a single-page document.                                                                                                                  | Ignores whatever value was passed and uses `PSPDFDocumentSharingPagesOptionAll`.                                        |
+| Sharing multiple documents at once, sharing multiple single-page documents, or sharing multiple documents when at least one of them is an image. | Removes `PSPDFDocumentSharingPagesOptionCurrent` and `PSPDFDocumentSharingPagesOptionRange` from the available options. |
+| Sharing one or more documents as Images, and the total page count is greater than 20.                                                            | Removes `PSPDFDocumentSharingPagesOptionAll` and `PSPDFDocumentSharingPagesOptionAnnotated` from the available options. |
+
+Please note that for the page selection options, the cases described above aren’t mutually exclusive. For instance, sharing 21 `PSPDFImageDocument` instances as images complies with both the second and third cases above. This means that all options will be removed, leaving the sharing configuration in an invalid state.
+
+For `PSPDFDocumentSharingAnnotationOptions`:
+
+| Case                                                   | Behavior                                                                                                                                                                   |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The current license does not have Annotations enabled. | Defaults to `PSPDFDocumentSharingAnnotationOptionFlattenForPrint` if present on the available options. Otherwise, defaults to `PSPDFDocumentSharingAnnotationOptionEmbed`. |
+
+When sharing, you need to make sure that after the rules above have been applied to the options, there’s at least one option remaining for each category. Otherwise, the sharing flow will assert.
+
+## Presenting the UI
+
+Once the sharing view controller instance has been updated with the desired configuration, call [`-presentFromViewController:sender:`][] to show the UI:
+
+[==
+
+```swift
+sharingController.delegate = self
+sharingController.present(from: self, sender: sender)
+```
+
+```objc
+sharingController.delegate = self;
+[sharingController presentFromViewController:self sender:sender];
+```
+
+==]
+
+When [`-presentFromViewController:sender:`][] is called, the sharing view controller will review its configurations and decide whether or not it’s appropriate to show the sharing option picking UI or not. If it is not, the files will be generated immediately and the final destination UI will be shown instead of the standard configuration UI.
+
+The following example illustrates this:
+
+[==
+
+```swift
+@objc func customPrintButtonTapped(sender: Any) {
+    let directPrintingConfiguration = PSPDFDocumentSharingConfiguration {
+    	$0.destination = .print
+    	$0.fileFormatOptions = [.PDF]
+    	$0.annotationOptions = [.remove]
+    	$0.pageSelectionOptions = [.all]
+    }
+
+    let sharingController = PSPDFDocumentSharingViewController(documents: [document])
+    sharingController.sharingConfigurations = [directPrintingConfiguration]
+    sharingController.present(from: self, sender: sender)
+}
+```
+
+```objc
+- (void)printButtonTapped:(id)sender {
+    PSPDFDocumentSharingConfiguration *directPrintingConfiguration = [PSPDFDocumentSharingConfiguration configurationWithBuilder:^(PSPDFDocumentSharingConfigurationBuilder * builder) {
+        builder.destination = PSPDFDocumentSharingDestinationPrint;
+        builder.fileFormatOptions = PSPDFDocumentSharingFileFormatOptionPDF;
+        builder.annotationOptions = PSPDFDocumentSharingAnnotationOptionRemove;
+        builder.pageSelectionOptions = PSPDFDocumentSharingPagesOptionAll;
+    }];
+
+    PSPDFDocumentSharingViewController *sharingController = [[PSPDFDocumentSharingViewController alloc] initWithDocuments:@[self.document]];
+    sharingController.sharingConfigurations = @[directPrintingConfiguration];
+    [sharingController presentFromViewController:self sender:sender];
+}
+```
+
+==]
+
+The code sample above creates a Sharing Configuration that has single options for all categories (PDF, Remove Annotations, All Pages), and has the Print destination set. Since there are no options to choose from in this scenario, the option picking UI will be skipped entirely, and the printing interface will be shown instead.
+
+<img src="/images/guides/ios/miscellaneous/document-sharing/no-options-demo.gif" width=70%>
+
+Furthermore, you can call [`-commitWithCurrentConfiguration`][] on your [`PSPDFDocumentSharingViewController`][] instance to take whatever is currently selected on the current configuration, generate the appropriate files, and send them to the appropriate destination in a single step.
+
+## Hooking Into the Sharing Flow
+
+The [`PSPDFDocumentSharingViewControllerDelegate`][] protocol offers a comprehensive set of callbacks that let you hook into the sharing process.
+
+For instance, here’s how to change the file names for the documents being shared:
+
+[==
+
+```swift
+func documentSharingViewController(_ shareController: PSPDFDocumentSharingViewController, willShare files: [PSPDFFile]) -> [PSPDFFile] {
+	var newFiles = [PSPDFFile]()
+
+	for file in files {
+		// For this example, we only handle file-backed PDFs.
+		guard let fileURL = file.fileURL else {
+			continue
+		}
+
+		let fileManager = FileManager.default
+		let tempFile = fileManager.temporaryDirectory.appendingPathComponent("NewName.pdf")
+
+		do {
+			try fileManager.copyItem(at: fileURL, to: tempFile)
+			newFiles.append(PSPDFFile(name: "NewName", url: tempFile, data: nil))
+		} catch {
+			continue
+		}
+	}
+
+	if newFiles.isEmpty {
+		newFiles = files
+	}
+
+	return newFiles
+}
+```
+
+```objc
+- (NSArray<PSPDFFile *> *)documentSharingViewController:(PSPDFDocumentSharingViewController *)shareController willShareFiles:(NSArray<PSPDFFile *> *)files {
+    NSMutableArray<PSPDFFile *> *newFiles = [NSMutableArray arrayWithCapacity:files.count];
+
+    [files enumerateObjectsUsingBlock:^(PSPDFFile * file, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (!file.fileURL) {
+            return;
+        }
+
+        NSFileManager *fileManager = NSFileManager.defaultManager;
+        NSURL *tempFile = [[fileManager temporaryDirectory] URLByAppendingPathComponent:@"NewName.pdf"];
+
+        NSError *copyError;
+        [fileManager copyItemAtURL:file.fileURL toURL:tempFile error:&copyError];
+
+        if (copyError) {
+            return;
+        }
+
+        PSPDFFile *newFile = [[PSPDFFile alloc] initWithName:@"NewName" URL:tempFile data:nil];
+        [newFiles addObject:newFile];
+    }];
+
+    if (newFiles.count == 0) {
+        return files;
+    }
+
+    return newFiles;
+}
+
+```
+
+==]
+
+And here’s how to be notified about how far along the file processing is:
+
+[==
+
+```swift
+func documentSharingViewController(_ shareController: PSPDFDocumentSharingViewController, preparationProgress progress: CGFloat) {
+    updateProgressBar(progress: progress)
+}
+```
+
+```objc
+- (void)documentSharingViewController:(PSPDFDocumentSharingViewController *)shareController preparationProgress:(CGFloat)progress {
+    [self updateProgressBar:progress];
+}
+```
+
+==]
+
+You can even react to the user canceling the sharing of the documents based on how far along in the process they were:
+
+[==
+
+```swift
+func documentSharingViewController(_ shareController: PSPDFDocumentSharingViewController, didCancelSharingAt sharingStep: PSPDFDocumentSharingStep, with configuration: PSPDFDocumentSharingConfiguration) {
+    switch sharingStep {
+    case .configuration:
+        // Files hadn't been generated yet.
+
+    case .destination:
+        // User canceled after files were generated.
+    }
+}
+```
+
+```objc
+- (void)documentSharingViewController:(PSPDFDocumentSharingViewController *)shareController didCancelSharingAtStep:(PSPDFDocumentSharingStep)sharingStep withConfiguration:(PSPDFDocumentSharingConfiguration *)configuration {
+    switch (sharingStep) {
+        case PSPDFDocumentSharingStepConfiguration:
+            // Files hadn't been generated yet.
+            break;
+
+        case PSPDFDocumentSharingStepDestination:
+            // User canceled after files were generated.
+            break;
+    }
+}
+```
+
+==]
+
+There’s much more that can be done via the [`PSPDFDocumentSharingViewControllerDelegate`][] protocol, so make sure you take a dive into its documentation.
+
+## Modifying the Email Subject
+
+When sharing to the `PSPDFDocumentSharingDestinationEmail` destination, the default subject on the mail compose view will be the title of the document that’s being shared.
+
+If you wish to have the email subject be something else, you can update the sharing document’s `Title` property. Be advised that modifying the `-[PSPDFDocument title]` property directly does not save the new value back to the actual PDF file, and this will only affect the current instance of the document you’re working with.
+
+To update the document’s title and make sure the changes are saved into the actual document (not just the in-memory instance), you can use the [`PSPDFDocumentPDFMetadata` class][]. You can learn more about updating a PDF’s metadata in our [Customizing Document Metadata guide][].
+
+## Printing
+
+Printing in the context of the sharing workflow can be achieved in two main ways:
+
+- By specifying `PSPDFDocumentSharingDestinationPrint`, or
+- By specifying `PSPDFDocumentSharingDestinationActivity` and then selecting the print action in the system activity view controller UI.
+
+When using the second option, it is important to note that `UIActivityViewController` does not provide PSPDFKit with any opportunity to preprocess the PDF for printing. The document is handed to the iOS printing service, where native iOS PDF support is used to interpret the document and issue printing commands. This might result in printing-related annotation visibility flags not being honored correctly and in annotations appearing slightly different on printed pages compared to how they look when rendered inside PSPDFKit. To achieve the best printing results, it is recommended you flatten the document for printing before it is sent to the native printing UI. This can be achieved using the `PSPDFDocumentSharingAnnotationOptionFlattenForPrint` annotation option, which is included by default when using `PSPDFDocumentSharingDestinationPrint`.
+
+[`pspdfdocumentsharingviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html
+[`pspdfdocumentsharingviewcontrollerdelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSharingViewControllerDelegate.html
+[`pspdfdocumentsharingconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfiguration.html
+[`destination`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfiguration.html#/c:objc(cs)PSPDFDocumentSharingConfiguration(py)destination
+[`sharingconfigurations`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(py)sharingConfigurations
+[`pspdfdocumentsharingdestinationactivity`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationActivity
+[`pspdfdocumentsharingdestinationexport`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationExport
+[`pspdfdocumentsharingdestinationmessage`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationMessage
+[`pspdfdocumentsharingdestinationemail`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationEmail
+[`pspdfdocumentsharingdestinationotherapplication`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationOtherApplication
+[`pspdfdocumentsharingdestinationprint`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSharingDestinationPrint
+[`-commitwithcurrentconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(im)commitWithCurrentConfiguration
+[`-presentfromviewcontroller:sender:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(im)presentFromViewController:sender:
+[`selectedannotationoption`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(py)selectedAnnotationOption
+[`selectedfileformatoption`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(py)selectedFileFormatOption
+[`selectedpageselectionoption`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingViewController.html#/c:objc(cs)PSPDFDocumentSharingViewController(py)selectedPageSelectionOption
+[defaultconfigurationfordestination:]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfiguration.html#/c:objc(cs)PSPDFDocumentSharingConfiguration(im)defaultConfigurationForDestination:
+[`annotationoptions`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfiguration.html#/c:objc(cs)PSPDFDocumentSharingConfiguration(py)annotationOptions
+[`pspdfdocumentsharingannotationoptions`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSharingAnnotationOptions.html
+[`pspdfimagedocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFImageDocument.html
+[`pspdfdocumentsharingfileformatoptionimage`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSharingFileFormatOptions.html#/c:@E@PSPDFDocumentSharingFileFormatOptions@PSPDFDocumentSharingFileFormatOptionImage
+[`pspdfdocumentsharingfileformatoptionoriginal`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSharingFileFormatOptions.html#/c:@E@PSPDFDocumentSharingFileFormatOptions@PSPDFDocumentSharingFileFormatOptionOriginal
+[`pspdfdocumentsharingfileformatoptionpdf`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSharingFileFormatOptions.html#/c:@E@PSPDFDocumentSharingFileFormatOptions@PSPDFDocumentSharingFileFormatOptionPDF
+[`pspdfdocumentpdfmetadata` class]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentPDFMetadata.html
+[customizing document metadata guide]: https://pspdfkit.com/guides/ios/current/customizing-pdf-pages/customizing-document-metadata

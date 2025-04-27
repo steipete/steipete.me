@@ -1,0 +1,31 @@
+---
+title: Getting the Currently Used Version
+section: developers
+
+---
+
+If you are unsure about the version of PSPDFKit you are using, there are ways to find out.
+
+The current way to ask for the framework version at runtime is:
+
+[==
+
+```swift
+let pspdfVersionString = PSPDFKitGlobal.versionString
+```
+
+```objc
+NSString *pspdfVersionString = PSPDFKitGlobal.versionString;
+```
+
+==]
+
+Another option is to open `PSPDFKit.framework` or `PSPDFKitUI.framework`. Inside, you will find the file `VERSION` with the version number inside.
+
+**Note:** You are required to use the same version from the same disk image for both `PSPDFKit.framework` and `PSPDFKitUI.framework`.
+
+<img src="/images/guides/ios/license-issues/how-do-i-see-the-currently-used-version/dynamic-version.png" srcset="/images/guides/ios/license-issues/how-do-i-see-the-currently-used-version/dynamic-version@2x.png 2x">
+
+Beginning with PSPDFKit 6.6.0 for iOS, the topmost folder in the downloaded disk image has the same name as the version of PSPDFKit in use.
+
+<img src="/images/guides/ios/license-issues/how-do-i-see-the-currently-used-version/version.png" srcset="/images/guides/ios/license-issues/how-do-i-see-the-currently-used-version/version@2x.png 2x">

@@ -1,0 +1,256 @@
+---
+title: JavaScript Support
+section: developers
+---
+
+The PDF specification includes JavaScript support based on JavaScript version 1.5 of ISO-16262 (formerly known as ECMAScript).
+
+PDF JavaScript is currently supported on our iOS and Android SDKs, as well as on Web Standalone and Electron.
+
+<% if web? %>
+On PSPDFKit for Web and Electron, JavaScript support is disabled by default, as many documents might not need this functionality.
+
+To enable JavaScript support, set `PSPDFKit.Options.PDF_JAVASCRIPT` to `true` right before loading PSPDFKit:
+
+```es
+PSPDFKit.Options.PDF_JAVASCRIPT = true;
+PSPDFKit.load(configuration);
+```
+
+<% end %>
+
+See also: [How to Program a Calculator in a PDF][]
+
+## Use
+
+There are many places in a PDF where JavaScript can be used.
+
+- Document-Level Scripts: These scripts are executed when the document is open. To add a new document-level script in Adobe Acrobat, go to Tools and search for Document JavaScripts. A dialog box will open, which is where you can add a new document-level script to the PDF file.
+
+<img src="/images/guides/shared/features/javascript/javascript-document-level-scripts.png">
+
+You can retrieve the document in a document-level script by accessing the `event.target` property, like this:
+
+```js
+var document = event.target;
+var textField = document.getField("MyTextField");
+// Do things with `textField`.
+```
+
+This code snippet will get a reference to the form field with the name `MyTextField` in the document.
+
+Document-level scripts are useful for reusing information and functions that will be accessed from several action scripts. For more information about document-level scripts, read the Doc/Open subsection on page 363 of the [JavaScript™ for Acrobat® API Reference][] guide.
+
+- Action Scripts: Form fields and annotations can be extended with JavaScript actions. A JavaScript action is represented by the class <% if ios? %>`PSPDFJavaScriptAction`<% end %><% if android? %>`JavaScriptAction`<% end %><% if web? %>`JavaScriptAction`<% end %>. You can initialize a <% if ios? %>[`PSPDFJavaScriptAction`][]<% end %><% if android? %>[`JavaScriptAction`][]<% end %> <% if web? %>[`PSPDFKit.Actions.JavaScriptAction`][]<% end %> with a script and associate it with a form element and a particular trigger event. For more information about PDF actions, read our [PDF Actions guide][].
+
+You can set regular action scripts in Adobe Acrobat too. Open the Prepare Form tool and double-click on a form field. Click on the Actions tab and choose Run a JavaScript from the Select Action dropdown box.
+
+<img src="/images/guides/shared/features/javascript/javascript-run-action.png">
+
+One interesting set of JavaScript actions is that of the format, validation, and calculation actions. A format action modifies the appearance of a form element so that its contents are shown in a particular way (like a date or time or the number of decimal places). A validation action validates the contents of a form field, ensuring they are always correct. A calculation action is invoked after certain events, like setting a form field value, and lets you establish relationships between form elements and perform calculations.
+
+<% if ios? %>
+
+## Disable JavaScript
+
+JavaScript can be disabled per document. To do this, set the `javaScriptStatus` property like this:
+
+[==
+
+```swift
+document.javaScriptStatus = .disabled
+```
+
+```objc
+document.javaScriptStatus = PSPDFJavaScriptStatusDisabled;
+```
+
+==]
+<% end %>
+
+<% if android? %>
+
+## Disable JavaScript
+
+JavaScript can be disabled per document via the following call. Set this before the document is displayed:
+
+[==
+
+```kotlin
+document.javaScriptProvider.setJavaScriptEnabled(false)
+```
+
+```java
+document.getJavaScriptProvider().setJavaScriptEnabled(false);
+```
+
+==]
+
+By default, JavaScript is automatically executed in [`PdfFragment`][]. It can be disabled in [`PdfConfiguration`][] via the following call:
+
+[==
+
+```kotlin
+val builder = PdfConfiguration.Builder()
+...
+builder.setJavaScriptEnabled(false);
+```
+
+```java
+PdfConfiguration.Builder builder = new PdfConfiguration.Builder();
+...
+builder.setJavaScriptEnabled(false);
+```
+
+==]
+
+If you are using [`PdfActivity`][], JavaScript can be disabled by using the same property in [`PdfActivityConfiguration`][].
+
+<% end %>
+
+## Example of How to Create a JavaScript-Enabled PDF Document Using Adobe Acrobat
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ezxKxqoOd1Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<% if web? %>
+
+## Supported Triggers
+
+PSPDFKit for Web supports running JavaScript actions from the following triggers.
+
+### LinkAnnotation
+
+- [Click][link-click]
+
+Link annotations can be laid on top of any existing annotation. This effectively means that, by means of a corresponding link annotation, any other annotation type can trigger a JavaScript action on click as well.
+
+### WidgetAnnotation
+
+- [Focus][widget-focus]
+- [Blur][widget-blur]
+
+### FormField
+
+- [Calculate][ff-calculate]
+- [Change][ff-change]
+- [Format][ff-format]
+- [Input][ff-input]
+  <% end %>
+
+## Supported Features
+
+PSPDFKit has basic support for the most common JavaScript API methods and properties, detailed below.
+
+### App
+
+- `alert`, `launchURL`, `viewerVersion`
+
+### Console
+
+- `println`
+
+### Doc
+
+- `getField`, `removeField`, `mailDoc`, `getNthFieldName`, `resetForm`, `print`
+
+- `numFields`, `pageNum`, `info`, `gotoNamedDest`
+
+### Util
+
+- `printx`, `printd`, `printf`
+
+### Color
+
+- `transparent`, `black`, `white`, `red`, `green`, `blue`, `cyan`, `magenta`, `yellow`, `dark gray`, `gray`, `light gray`
+
+### Event
+
+- `value`, `rc`, `selStart`, `selEnd`, `willCommit`, `target`, `change`, `name`, `type`
+
+### Field
+
+- `getArray`, `checkThisBox`, `isBoxChecked`, `getItemAt`, `setItems`, `clearItems`, `setItems`, `insertItemAt`, `deleteItemAt`, `setAction`, `buttonImportIcon`
+
+- `name`, `value`, `textColor`, `fillColor`, `strokeColor`, `readonly`, `exportValues`, `currentValueIndices`, `multipleSelection`, `commitOnSelChange`, `numItems`, `hidden`, `editable`, `type`, `page`, `borderStyle`, `rotation`, `defaultValue`, `doNotSpellCheck`, `userName`, `alignment`, `rect`, `doc`, `required`, `display`, `calcOrderIndex`, `comb`, `doNotScroll`, `richText`, `multiline`, `fileSelect`, `password`, `charLimit`
+
+<% if web? %>
+**ℹ️ Note:** At the moment, there is no support for `buttonImportIcon` in PSPDFKit for Web and Electron.
+<% end %>
+
+Various functions for formatting, validation, and calculation are also supported. You can read Adobe’s documentation to learn more about them.
+
+### Number Formatting
+
+- `AFNumber_Format`, `AFNumber_Keystroke`, `AFMakeNumber`
+
+### Percent Formatting
+
+- `AFPercent_Format`, `AFPercent_Keystroke`
+
+### Date Formatting
+
+- `AFDate_Format`, `AFDate_FormatEx`, `AFDate_Keystroke`, `AFDate_KeystrokeEx`, `AFTime_Format`, `AFTime_FormatEx`, `AFTime_Keystroke`
+
+### Special Formatting
+
+- `AFSpecial_Format`, `AFSpecial_Keystroke`, `AFSpecial_KeystrokeEx`
+
+### Simple Formatting
+
+- `AFSimple`, `AFSimple_Calculate`
+
+### Range Validation
+
+- `AFRange_Validate`
+
+JavaScript support is an experimental feature, and methods might be incomplete or return unexpected results. You are advised to test your JavaScript-enabled documents thoroughly. Please ping us if you have a document that isn’t quite working, and we’ll see what we can do.
+
+## Debugging
+
+If there is a problem with the JavaScript in a document, it’s a good idea to first check that the scripts do not contain syntax or logic errors. To see all JavaScript code that is used in a document, open Adobe Acrobat, click on Tools, select Prepare Form, click the small down arrow on the sidebar, and then choose All JavaScripts. The screenshots below show how the All JavaScripts window appears in Adobe Acrobat.
+
+<img src="/images/guides/shared/features/javascript/all-javascripts-menu.png">
+
+<img src="/images/guides/shared/features/javascript/all-javascripts.png">
+
+### JavaScript Logs
+
+If JavaScript is enabled, PSPDFKit will log errors to the console if there’s a problem with the JavaScript code. We tried to make diagnostics as specific as possible to help you debug your documents more easily. For example, the following error message is logged if the script creator mistakenly writes `this.getField(4);`:
+
+```sh
+PSPDFCatalog[58188:7996163] [JavaScript] [Error] Error: Argument name 'cName' has wrong type. Argument has type number, but expected string.
+```
+
+As you can read in [the API documentation][], `getField`’s `cName` argument must be a string.
+
+In this other example, the script contains one API property that we currently don’t support:
+
+```sh
+PSPDFCatalog[58188:7996163] [JavaScript] [Error] TypeError: undefined not callable (property 'notSupportedAPI' of [object global])
+```
+
+## Learn More
+
+- [JavaScript™ for Acrobat® API Reference (Acrobat 8)][]
+- [Developing Acrobat® Applications Using JavaScript™][]
+- [Acrobat JavaScript Object Specification][]
+- [Adobe DevNet JavaScript Overview][]
+
+[how to program a calculator in a pdf]: /blog/2018/how-to-program-a-calculator-pdf/
+[javascript™ for acrobat® api reference]: https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/js_api_reference.pdf
+[`javascriptaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/JavaScriptAction.html
+[`pspdfjavascriptaction`]: https://pspdfkit.com/api/ios/Classes/PSPDFJavaScriptAction.html
+[`pspdfkit.actions.javascriptaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.JavaScriptAction.html
+[pdf actions guide]: ../../annotations/pdf-actions/
+[the api documentation]: http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/js_api_reference.pdf
+[javascript™ for acrobat® api reference (acrobat 8)]: http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/js_api_reference.pdf
+[developing acrobat® applications using javascript™]: http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/js_developer_guide.pdf
+[acrobat javascript object specification]: http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/5186AcroJS.pdf
+[adobe devnet javascript overview]: http://www.adobe.com/devnet/acrobat/javascript.html
+[link-click]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.LinkAnnotation.html#action
+[widget-focus]: https://pspdfkit.com/api/web/PSPDFKit.WidgetAnnotationAdditionalActions.html#onFocus
+[widget-blur]: https://pspdfkit.com/api/web/PSPDFKit.WidgetAnnotationAdditionalActions.html#onBlur
+[ff-calculate]: https://pspdfkit.com/api/web/PSPDFKit.FormFieldAdditionalActions.html#onCalculate
+[ff-change]: https://pspdfkit.com/api/web/PSPDFKit.FormFieldAdditionalActions.html#onChange
+[ff-format]: https://pspdfkit.com/api/web/PSPDFKit.FormFieldAdditionalActions.html#onFormat
+[ff-input]: https://pspdfkit.com/api/web/PSPDFKit.FormFieldAdditionalActions.html#onInput

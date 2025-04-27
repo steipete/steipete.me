@@ -1,0 +1,157 @@
+---
+title: Scrollbars
+section: developers
+---
+
+PSPDFKit comes with out-of-the-box scrollbars indicating the current scroll position and remaining scroll range (i.e. the remaining pages in the document). You can change the scrollbar’s default visual appearance, turn scrollbars off if you don’t need them, or replace scrollbars completely with your own custom scrollbar logic using scroll event listeners.
+
+<figure>
+  <video src="/images/guides/android/customizing-the-interface/scrollbars/default-scrollbars.mp4" class="no-mejs" width="65%" autoplay playsinline loop muted></video>
+</figure>
+
+## Disabling Scrollbars
+
+By default, the [`PdfFragment`][] shows vertical and horizontal scrollbars. If you are using the [`PdfActivity`][], you can disable these scrollbars by setting [`PdfActivityConfiguration.Builder#scrollbarsEnabled`][] to `false`:
+
+[==
+
+```kotlin
+val config = PdfActivityConfiguration.Builder(context)
+    .scrollbarsEnabled(false)
+    .build()
+```
+
+```java
+final PdfActivityConfiguration config
+    = new PdfActivityConfiguration.Builder(context)
+        .scrollbarsEnabled(false)
+        .build();
+```
+
+==]
+
+If you are using the [`PdfFragment`][] instead of the activity, you can disable scrollbars using the equivalent method, [`PdfConfiguration.Builder#scrollbarsEnabled`][]:
+
+[==
+
+```kotlin
+val config = PdfConfiguration.Builder()
+    .scrollbarsEnabled(false)
+    .build()
+```
+
+```java
+final PdfConfiguration config
+    = new PdfConfiguration.Builder()
+        .scrollbarsEnabled(false)
+        .build();
+```
+
+==]
+
+## Styling the Scrollbars
+
+It’s possible to change the appearance of scrollbars by [using a custom theme][pspdfkit guide appearance styling]. Set the `pspdf__documentViewStyle` attribute of the theme to a style containing all your desired scrollbar properties. Since PSPDFKit uses the default scrollbars of the [`View`][] class, you can use all of the existing scrollbar properties defined by that class:
+
+```styles.xml
+<!-- Your custom PSPDFKit theme. -->
+<style name="MyApp.Theme" parent="Theme.AppCompat.NoActionBar">
+    <item name="pspdf__documentViewStyle">@style/MyApp_DocumentViewStyle</item>
+</style>
+
+<!-- Your scrollbar styles can go here. -->
+<style name="MyApp_DocumentViewStyle">
+    <item name="android:scrollbarSize">6dp</item>
+    <item name="android:scrollbarThumbVertical">@color/my_scrollbar_color</item>
+    <item name="android:scrollbarThumbHorizontal">@color/my_scrollbar_color</item>
+    <item name="android:scrollbarStyle">insideOverlay</item>
+    <item name="android:scrollbars">horizontal|vertical</item>
+</style>
+```
+
+The above scrollbar style only contains a subset of the existing scrollbar properties. For a full list of available style attributes, take a look at the [available `View` attributes in the official Android documentation][android guide view]. If you are interested in a live example, check out the `DarkThemeExample` inside the Catalog app.
+
+> **💡 Tip:** If you are interested in the default scrollbar style, see `@style/PSPDFKit.DocumentView`, which is automatically used by PSPDFKit if your theme does not define a different style.
+
+## Document Scroll Listeners
+
+If the default scrollbars don’t provide the features your app requires, you can use a [`DocumentScrollListener`][] to observe scrollbar events on [`PdfFragment`][]. Once you register the listener using [`PdfFragment#addDocumentScrollListener`][], it receives all raw scrollbar events for consumption of your own scrollbar code:
+
+[==
+
+```kotlin
+val myListener: DocumentScrollListener = MyScrollListener()
+fragment.addDocumentScrollListener(myListener)
+```
+
+```java
+final DocumentScrollListener myListener = new MyScrollListener();
+fragment.addDocumentScrollListener(myListener);
+```
+
+==]
+
+> **ℹ️ Note:** To prevent undesired leaks, the [`PdfFragment`][] removes all registered [`DocumentScrollListener`][] instances inside its `#onDetach` method. This means that you need to register your listener every time the fragment is attached to your activity (for example, at activity creation time). You are encouraged to manually unregister the document scroll listener if you no longer need it by using [`PdfFragment#removeDocumentScrollListener`][].
+
+### Scrollbar Events
+
+Document scrollbar events consist of three different values. A [`DocumentScrollListener`][] will receive those values inside its [`#onDocumentScrolled`][] method. For each value, there is an X dimension and a Y dimension, since the document can scroll both vertically and horizontally. The received values are expressed in an arbitrary zero-based unit and should only be treated in relation to each other. The values are:
+
+- Range — The total scrollable range inside the document. Range is expressed by `maxX` and `maxY`.
+- Offset — The current scrollbar position, which is always inside the range. Offset is expressed by `currX` and `currY`.
+- Extend — The relative size of the scrollbar compared to the total range. Extend is expressed by `extendX` and `extendY`.
+
+[==
+
+```kotlin
+override fun onDocumentScrolled(fragment: PdfFragment, currX: Int, currY: Int, maxX: Int, maxY: Int, extendX: Int, extendY: Int) {
+    // Your custom scrollbar code.
+}
+```
+
+```java
+@Override
+public void onDocumentScrolled(@NonNull PdfFragment fragment, int currX, int currY, int maxX, int maxY, int extendX, int extendY) {
+    // Your custom scrollbar code.
+}
+```
+
+==]
+
+The current document scrolling state (dragged, settling, idle) is represented by the [`ScrollState`][] enum type. The [`DocumentScrollListener`][] can observe changes of the document scroll state inside its [`#onScrollStateChanged`][] method:
+
+[==
+
+```kotlin
+override fun onScrollStateChanged(fragment: PdfFragment, state: ScrollState) {
+    // Consume scroll state changes here.
+}
+```
+
+```java
+@Override
+public void onScrollStateChanged(@NonNull PdfFragment fragment, @NonNull ScrollState state) {
+    // Consume scroll state changes here.
+}
+```
+
+==]
+
+If you want to see a live demo of custom scrollbar events, take a look at `VerticalScrollbarExample` inside the Catalog app. It shows how to use the new scroll API together with the [`VerticalScrollBar`][] widget to allow quick document navigation.
+
+<figure>
+  <video src="/images/guides/android/customizing-the-interface/scrollbars/verticalscrollbar.mp4" class="no-mejs" width="100%" autoplay playsinline loop muted></video>
+</figure>
+
+[`verticalscrollbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/scrollbar/VerticalScrollBar.html
+[`pdfactivityconfiguration.builder#scrollbarsenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#scrollbarsEnabled(boolean)
+[`pdfconfiguration.builder#scrollbarsenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#scrollbarsEnabled(boolean)
+[`view`]: https://developer.android.com/reference/android/view/View.html
+[`documentscrolllistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/scrolling/DocumentScrollListener.html
+[`pdffragment#adddocumentscrolllistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#addDocumentScrollListener(com.pspdfkit.listeners.scrolling.DocumentScrollListener)
+[`pdffragment#removedocumentscrolllistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#removeDocumentScrollListener(com.pspdfkit.listeners.scrolling.DocumentScrollListener)
+[`#ondocumentscrolled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/scrolling/DocumentScrollListener.html#onDocumentScrolled(com.pspdfkit.ui.PdfFragment,%20int,%20int,%20int,%20int,%20int,%20int)
+[`scrollstate`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/scrolling/ScrollState.html
+[`#onscrollstatechanged`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/scrolling/DocumentScrollListener.html#onScrollStateChanged(com.pspdfkit.ui.PdfFragment,%20com.pspdfkit.listeners.scrolling.ScrollState)
+[pspdfkit guide appearance styling]: ../../customizing-the-interface/appearance-styling
+[android guide view]: https://developer.android.com/reference/android/view/View.html#lattrs

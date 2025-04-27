@@ -1,17 +1,23 @@
 ---
 title: Disabling Keyboard Avoidance in SwiftUI's UIHostingController
 pubDate: 2020-09-21T20:00:00.000Z
-description: "Fix an annoying iOS 14 behavior where UIHostingController automatically avoids the keyboard - even when it shouldn't. This tutorial shows how to identify and disable unwanted keyboard avoidance in SwiftUI by examining the UIHostingView class and using runtime tricks to modify its behavior. I demonstrate how to apply dynamic subclassing to override the keyboard notification handling methods, providing a clean solution that works for embedded SwiftUI views in table and collection cells. Learn how to implement this fix both with my InterposeKit library and using pure Objective-C runtime functions for a safer approach than traditional method swizzling."
+description: >-
+  UIHostingController has logic to avoid the keyboard, which is often unwanted.
+  We explore a hack to disable this feature.
 heroImage: /assets/img/2020/uihostingcontroller-keyboard/header.png
 tags:
   - iOS
-  - SwiftUI
-  - UIKit
-  - Runtime
-  - Keyboard
+  - development
 source: steipete.com
-AIDescription: true
+description: '<style type="text/css">
+div.post-content > img:first-child { display:none; }
+</style>'
 ---
+
+::ai[<style type="text/css">
+div.post-content > img:first-child { display:none; }
+</style>]
+
 
 <style type="text/css">
 div.post-content > img:first-child { display:none; }

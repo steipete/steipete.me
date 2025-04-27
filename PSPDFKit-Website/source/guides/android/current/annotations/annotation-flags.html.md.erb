@@ -1,0 +1,58 @@
+---
+title: Annotation Flags
+section: developers
+---
+
+Every [`Annotation`][] in a document can specify [`AnnotationFlags`][] that further define the annotation’s behavior and capabilities. With PSPDFKit, you can access these flags directly on your annotation objects using [`getFlags()`][`annotation#getflags()`] and [`setFlags()`][`annotation#setflags()`].
+
+## Capabilities of Flags
+
+Annotation flags are part of the PDF specification and define the annotation’s behavior, its presentation on the screen and on paper, and the available editing features given to your users. Here are a few examples of things you can do with flags:
+
+- An annotation that is marked [`HIDDEN`][`annotationflags.hidden`] won’t be displayed or printed.
+- By specifying [`PRINT`][`annotationflags.print`] as well, the annotation will be added to the print output while remaining hidden onscreen.
+- If you want to prevent your users from editing an annotation, you can set the [`LOCKED`][`annotationflags.locked`] and [`LOCKEDCONTENTS`][`annotationflags.lockedcontents`] flags.
+
+> **💡 Tip:** Check out the [`AnnotationFlags`][] API reference for a complete list of available flags.
+
+## Usage Example
+
+Here’s an example of how to create a locked annotation, i.e. an annotation that can’t be edited by your users:
+
+[==
+
+```kotlin
+// Create a new annotation.
+val annotation: Annotation = ...
+
+// Lock the annotation using flags.
+annotation.flags = EnumSet.of(
+    AnnotationFlags.LOCKED,
+    AnnotationFlags.LOCKEDCONTENTS
+)
+
+// Add the newly created annotation to the document.
+document.annotationProvider.addAnnotationToPage(annotation)
+```
+
+```java
+// Create a new annotation.
+final Annotation annotation = ...
+
+// Lock the annotation using flags.
+annotation.setFlags(EnumSet.of(
+    AnnotationFlags.LOCKED,
+    AnnotationFlags.LOCKEDCONTENTS)
+);
+
+// Add the newly created annotation to the document.
+document.getAnnotationProvider().addAnnotationToPage(annotation);
+```
+
+==]
+
+[`annotationflags.hidden`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html#HIDDEN
+[`annotationflags.print`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html#PRINT
+[`annotationflags.locked`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html#LOCKED
+[`annotationflags.lockedcontents`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html#LOCKEDCONTENTS
+[`annotationflags`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html

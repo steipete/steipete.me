@@ -1,0 +1,42 @@
+---
+title: Permissions
+section: developers
+---
+
+Certain features in PSPDFKit need additional permissions, which apps have to declare inside their manifest using `<uses-permission>` elements. Some permissions are required by PSPDFKit and are defined in the `AndroidManifest.xml` file that comes with the library. Other permissions are optional and can be added to the `AndroidManifest.xml` file of your app if you want to make use of them.
+
+> **Important:** To protect user privacy, starting with Android 6.0 (API 23), users can revoke permissions of apps using the system settings. For dangerous permissions, apps have to perform additional runtime requests for specific permissions, which the user has to manually grant.
+
+Learn more in [the official Android Permissions overview guide][android permissions].
+
+## Camera Permission
+
+The [`android.permission.CAMERA`][] permission is optional and is not part of PSPDFKit’s `AndroidManifest.xml`. It is usually not required to add this permission to an app’s `AndroidManifest.xml` file.
+
+PSPDFKit allows the creation of stamp annotations from gallery and camera images using [`AnnotationTool.CAMERA`][]. For this, PSPDFKit will launch an [`Intent`][] using the [`MediaStore.ACTION_IMAGE_CAPTURE`][] action, which is used to return an image from either the camera app or a gallery app. As long as this permission is not declared in the app’s manifest, Android will allow the app to launch the intent without any additional permission requests. However, as soon as the app declares [`android.permission.CAMERA`][] in the manifest, Android will require the app to perform a runtime request for this permission on all devices running Android 6.0+. PSPDFKit will automatically detect if the permission is declared and if a runtime permission request is necessary, and it will request access to the camera upon using the camera tool for adding an annotation.
+
+## External Storage Permission
+
+PSPDFKit’s `AndroidManifest.xml` comes with two permission declarations for accessing files on the public external storage. These permissions are:
+
+- [`android.permission.READ_EXTERNAL_STORAGE`][]
+- [`android.permission.WRITE_EXTERNAL_STORAGE`][]
+
+External storage permissions are required for direct file access when using file system [`Uris`][`uri`] that point to files on the external storage. Upon opening a document using a [`Uri`][], PSPDFKit will automatically check if the file resides on the external storage, and it will perform a runtime permission request if necessary.
+
+## Audio Recording Permission
+
+Creating sound annotations requires that you add the [`android.permission.RECORD_AUDIO`][] permission to your `AndroidManifest.xml`. This permission is optional and is not part of PSPDFKit’s `AndroidManifest.xml`.
+
+It is not required to add this permission to your app’s manifest if you don’t want to use `AnnotationTool.SOUND` for creating sound annotations; it will be disabled automatically when the audio recording permission is missing.
+
+`RECORD_AUDIO` is considered a dangerous permission. PSPDFKit automatically checks if the permission has been granted before recording and performs a runtime permission request if necessary.
+
+[`android.permission.camera`]: https://developer.android.com/reference/android/Manifest.permission#CAMERA
+[`android.permission.read_external_storage`]: https://developer.android.com/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE
+[`android.permission.write_external_storage`]: https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE
+[`android.permission.record_audio`]: https://developer.android.com/reference/android/Manifest.permission.html#RECORD_AUDIO
+[android permissions]: https://developer.android.com/guide/topics/permissions/overview
+[`annotationtool.camera`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationTool.html#CAMERA
+[`annotationtool.sound`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationTool.html#SOUND
+[`mediastore.action_image_capture`]: https://developer.android.com/reference/android/provider/MediaStore#ACTION_IMAGE_CAPTURE

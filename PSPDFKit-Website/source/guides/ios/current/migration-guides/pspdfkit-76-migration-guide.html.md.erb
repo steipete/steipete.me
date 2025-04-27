@@ -1,0 +1,120 @@
+---
+title: PSPDFKit 7.6 Migration Guide
+section: developers
+
+order: 104
+---
+
+This guide tells you how to update an iOS project from PSPDFKit 7.0 – 7.5 to PSPDFKit 7.6.
+
+PSPDFKit 7.6 for iOS fully supports iOS 10 and 11. Additionally, Xcode 9.4 is required to use this version of the SDK. Learn more in our [Version Support guide][].
+
+## Custom Page Templates
+
+In PSPDFKit 7.6 for iOS, you can now customize the set of templates that [`PSPDFNewPageViewController`][] offers on the picker via the new [`PSPDFPageTemplate`][] API.
+
+The page templates can be updated via the [`pageTemplates`][] property on [`PSPDFDocumentEditorConfiguration`][]. Then you can instantiate a [`PSPDFNewPageViewController`][] with that configuration. If you wish to make your custom set of templates available globally, you can update the page templates list on a [`PSPDFDocumentEditorConfiguration`][] and then assign that configuration to [`-[PSPDFConfiguration documentEditorConfiguration]`][`documenteditorconfiguration`].
+
+There are two common ways to create a custom template:
+
+- [`-[PSPDFPageTemplate initWithDocument:sourcePageIndex:]`][`initwithdocument:sourcepageindex:`] will instantiate a template that takes the source document’s page at the provided index.
+- [`-[PSPDFPageTemplate initWithTiledPatternFromDocument:sourcePageIndex:]`][`initwithtiledpatternfromdocument:sourcepageindex:`] will instantiate a template that’s intended to be used as a tiled pattern. If you want to add a page to a document with a repeating pattern, this is the initializer you’ll use.
+
+> **ℹ️ Note**: Creating a tiled pattern page template requires the source document to be exported correctly. This means that the source PDF needs to contain a pattern itself. If a `PSPDFPageTemplate` is instantiated using the tiled pattern initializer and the source document does not contain a pattern, the rendering will fail silently.
+
+Check out `DocumentEditorCustomTemplates.swift` in the Catalog to see `PSPDFPageTemplate` in action, and refer to our [Custom Page Templates guide][] to learn more about implementing this functionality in your app.
+
+## Builder Pattern for `PSPDFDocumentEditorConfiguration`
+
+We’ve also made `PSPDFDocumentEditorConfiguration` use the builder pattern that we use throughout the rest of the SDK in order to provide a more cohesive API. This is a breaking change, which means you’ll see compilation errors when you try to build your app with version 7.6 of the SDK.
+
+If you have a reference to a `PSPDFDocumentEditorConfiguration` object and need to update it, before you would’ve done this:
+
+[==
+
+```swift
+self.documentEditorConfiguration.selectedCompression = selectedCompression
+```
+
+```objc
+self.documentEditorConfiguration.selectedCompression = selectedCompression;
+```
+
+==]
+
+Now you should use the builder helper to update the entire editor configuration:
+
+[==
+
+```swift
+self.editorConfiguration = editorConfiguration.configurationUpdated { builder in
+	builder.selectedCompression = selectedCompression
+}
+```
+
+```objc
+self.documentEditorConfiguration = [self.documentEditorConfiguration configurationUpdatedWithBuilder:^(PSPDFDocumentEditorConfigurationBuilder * _Nonnull builder) {
+	builder.selectedCompression = selectedCompression;
+}];
+```
+
+==]
+
+## Customizing Document-Saving Options
+
+`PSPDFViewControllerDelegate` now offers two new methods that let you hook into the autosaving mechanism of `PSPDFDocument`.
+
+- `-pdfViewController:shouldSaveDocument:withOptions:` asks the `PSPDFViewController` delegate if the document should be saved. The `options` parameter is an inout parameter that can be updated to customize the options the document is going to be saved with.
+- `-pdfViewController:didSaveDocument:error:` lets the `PSPDFViewController` delegate know that the saving operation either succeeded or failed.
+
+## `PSPDFProcessor` Revamp
+
+The `PSPDFProcessor` API has been revamped to offer more flexibility and control over what’s going on when requesting PDF processing. The class-level methods have been deprecated and instance-level methods have been introduced, along with a new API for canceling document processing.
+
+A new `PSPDFProcessorDelegate` protocol has also been introduced. Objects that conform through this new delegate are able to receive progress updates from `PSPDFProcessorInstances`, in addition to being notified about processing completion or failure.
+
+For instance, previously you would’ve requested a PDF via `PSPDFProcessor` like this:
+
+[==
+
+```swift
+try PSPDFProcessor.generatePDF(from: processorConfiguration, securityOptions: nil, outputFileURL: temporaryDocumentUR, progressBlock: progressBlock)
+```
+
+```objc
+[PSPDFProcessor generatePDFFromConfiguration:processorConfiguration securityOptions:nil outputFileURL:temporaryDocumentURL progressBlock:progressBlock error:&error];
+```
+
+==]
+
+Now you need to create a `PSPDFProcessor` instance with a configuration and a set of security options and request a file write:
+
+[==
+
+```swift
+let processor = PSPDFProcessor(configuration: processorConfiguration, securityOptions: nil)
+processor.delegate = self // Required to track processing progress/completion status.
+try processor.write(toFileURL: temporaryDocumentURL)
+```
+
+```objc
+PSPDFProcessor *processor =  [[PSPDFProcessor alloc] initWithConfiguration:processorConfiguration securityOptions:nil];
+processor.delegate = self; // Required to track processing progress/completion status.
+[processor writeToFileURL:temporaryDocumentURL error:&error];
+```
+
+==]
+
+Finally, the `PSPDFPageRenderer` protocol was also deprecated.
+
+The newly deprecated API will be removed from the SDK in a future release.
+
+[version support guide]: ../../announcements/version-support
+[`pspdfnewpageviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFNewPageViewController.html
+[`pspdfpagetemplate`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html
+[`pagetemplates`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorConfiguration.html#/c:objc(cs)PSPDFDocumentEditorConfiguration(py)pageTemplates
+[custom page templates guide]: ../../miscellaneous/custom-page-templates/
+[`documenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)documentEditorConfiguration
+[`pspdfdocumenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorConfiguration.html
+[`initwithdocument:sourcepageindex:`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html#/c:objc(cs)PSPDFPageTemplate(im)initWithDocument:sourcePageIndex:
+[`initwithtiledpatternfromdocument:sourcepageindex:`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html#/c:objc(cs)PSPDFPageTemplate(im)initWithTiledPatternFromDocument:sourcePageIndex:

@@ -1,0 +1,92 @@
+---
+title: Try the Demo
+section: developers
+
+order: 100
+alternate_platform_links:
+  web: pspdfkit-for-web/try-the-demo
+---
+
+<div class="alert alert-warning hide-in-trial">
+<p><strong>Note:</strong> This article is about using the PSPDFKit trial for evaluation purposes. If you don’t yet have a trial license, fill out the <a href="https://pspdfkit.com/try">trial form</a> to get one.</p>
+</div>
+
+You can try PSPDFKit in a few simple steps and get the library up and running in your app with little to no effort.
+
+### Integrate the PSPDFKit Framework
+
+The easiest way to get started is using [CocoaPods][pspdfkit guide using cocoapods]. Add the following to your `Podfile`, and then run `pod install`:
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit', podspec: 'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/latest.podspec'
+end
+```
+
+<p class="force-replace-tokens">
+  To get the extensive sample app, <a href="https://customers.pspdfkit.com/download/YOUR_COCOAPODS_KEY_GOES_HERE">download the disk image (DMG)</a>. This includes the binary SDK, which can be used for <a href="../../getting-started/integrating-pspdfkit/">manual integration</a>.
+</p>
+
+### Set the License Key
+
+[==
+
+```swift
+func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    PSPDFKitGlobal.setLicenseKey("YOUR_LICENSE_KEY_GOES_HERE")
+    return true
+}
+```
+
+```objc
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [PSPDFKitGlobal setLicenseKey:@"YOUR_LICENSE_KEY_GOES_HERE"];
+    return YES;
+}
+```
+
+==]
+
+### Display a PDF Document
+
+[==
+
+```swift
+import PSPDFKit
+import PSPDFKitUI
+
+let fileURL = Bundle.main.url(forResource: "Document", withExtension: "pdf")!
+let document = PSPDFDocument(url: fileURL)
+
+let pdfController = PSPDFViewController(document: document)
+
+present(UINavigationController(rootViewController: pdfController), animated: true)
+```
+
+```objc
+#import <PSPDFKit/PSPDFKit.h>
+
+NSURL *documentURL = [NSBundle.mainBundle URLForResource:@"Document" withExtension:@"pdf"];
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+PSPDFViewController *pdfController = [[PSPDFViewController alloc] initWithDocument:document];
+
+UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:pdfController];
+[self presentViewController:navController animated:YES completion:NULL];
+```
+
+==]
+
+<blockquote class="force-replace-tokens">
+  <p><strong>Note:</strong> See the various example projects in the <a href="https://customers.pspdfkit.com/download/YOUR_COCOAPODS_KEY_GOES_HERE">download DMG</a> for additional details.</p>
+</blockquote>
+
+Feel free to [contact support][support] if you experience any issues during the integration.
+
+[integrating pspdfkit article]: ../../getting-started/integrating-pspdfkit/
+[pspdfkit guide using cocoapods]: ../../getting-started/using-cocoapods/
+[pspdfkit guide using carthage]: ../../getting-started/using-carthage/
+[pspdfkit guide integrating pspdfkit]: ../../getting-started/integrating-pspdfkit/
+[support]: /support/request/

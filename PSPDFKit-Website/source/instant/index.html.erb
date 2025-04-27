@@ -1,0 +1,100 @@
+---
+title: PSPDFKit Instant
+title_suffix: false
+description: Effortless multi-user data synchronization across all platforms.
+theme: instant
+section: instant
+---
+
+<%= partial 'shared/nav_sub', locals: {
+  items: %w(Overview Features Architecture Why-PSPDFKit Get-Started)
+} %>
+
+<!-- Hero -->
+<%= partial 'shared/hero', locals: {
+  title: "Effortless Multi-User Data Synchronization",
+  subtitle: "PSPDFKit Instant",
+  body: "
+    With <strong>PSPDFKit Instant</strong>, it’s easier than ever to add real-time collaboration,
+    efficient synchronization, <a href='/guides/ios/current/pspdfkit-instant/offline-support/' class='link-brand'>offline support</a>,
+    and data security to your apps. Instant is made especially for PSPDFKit, works extremely fast, and is available on all platforms.
+  ",
+} %>
+
+<!-- Features -->
+<%= partial 'shared/features', locals: {
+  title: "What You Get",
+  subtitle: "Features",
+  items: [
+    {
+      title: "Self-Hosted",
+      icon: "/images/icons/control.svg",
+      body: "
+        PSPDFKit Instant deploys within your existing infrastructure — you retain complete control
+        over your data.
+      ",
+    },
+    {
+      title: "Secure Authentication",
+      icon: "/images/icons/integration.svg",
+      body: "
+        Using <a href='https://pspdfkit.com/guides/web/current/server-backed/client-authentication/'
+        class='link-brand'>industry-standard JWT</a> allows for easy integration with your existing
+        authentication system.
+      ",
+    },
+    {
+      title: "Real-Time Collaboration",
+      icon: "/images/icons/real-time.svg",
+      body: "
+        Sync document edits, text highlights, and annotations across Android, iOS, and web
+        devices in real time. <a href='/instant/demo/' class='link-brand'>Try it!</a>
+      ",
+    },
+    {
+      title: "A Smarter Sync",
+      icon: "/images/icons/sync.svg",
+      body: "
+        PSPDFKit Instant only syncs changes, allowing for a smooth experience, even when working
+        with large PDF documents.
+      ",
+    },
+    {
+      title: "Easy Integration",
+      icon: "/images/icons/json.svg",
+      body: "
+        PSPDFKit Server provides a <a href='https://pspdfkit.com/guides/server/current/api/overview/'
+        class='link-brand'>straightforward JSON-based API</a> to access and update annotations.
+      ",
+    },
+    {
+      title: "Flexible Deployment",
+      icon: "/images/icons/deployment.svg",
+      body: "
+        Packaged as a Docker container, PSPDFKit Instant deploys to AWS, Azure, Google Cloud, or
+        your in-house server infrastructure.
+      ",
+    },
+  ]
+} %>
+
+<!-- Try CTA -->
+<%= partial 'shared/cta_try' %>
+
+<!-- Architecture -->
+<%= partial 'shared/architecture', locals: {
+  title: "Overview",
+  subtitle: "Architecture",
+  body: "
+    PSPDFKit Instant consists of two parts: the server backend and the client frameworks.
+    The PSPDFKit Server backend manages authentication and synchronizes documents and
+    annotations. The PSPDFKit Instant mobile and web frameworks integrate into your app and
+    communicate with the Server backend.
+  ",
+} %>
+
+<!-- Why PSPDFKit -->
+<%= partial 'shared/why_pspdfkit' %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales' %>

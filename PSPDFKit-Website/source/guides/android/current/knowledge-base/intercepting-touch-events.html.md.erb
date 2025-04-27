@@ -1,0 +1,12 @@
+---
+title: Intercepting touch events passed to PSPDFKit
+section: knowledge-base
+---
+
+PSPDFKit consumes touch events on displayed documents while providing simple callbacks for the most interesting events. See [Document Listeners guide][] for a full list of exposed events.
+
+If you need to observe all touch events, for example to detect multitouch, we recommend you to wrap the [`PdfFragment`][] inside a custom [`ViewGroup`][]. You can then observe all touch events and intercept them before being handled in `PdfFragment` by implementing [`ViewGroup#onInterceptTouchEvent()`][]. You can read more about this mechanism in [Manage touch events in a ViewGroup guide][manage touch events guide].
+
+[document listeners guide]: ../../miscellaneous/document-listeners#document-events
+[`viewgroup#onintercepttouchevent()`]: https://developer.android.com/reference/android/view/ViewGroup.html#onInterceptTouchEvent(android.view.MotionEvent)
+[manage touch events guide]: https://developer.android.com/training/gestures/viewgroup

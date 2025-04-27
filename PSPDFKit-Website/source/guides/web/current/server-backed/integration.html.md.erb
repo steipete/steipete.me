@@ -1,0 +1,147 @@
+---
+title: Integration
+section: developers
+
+order: 3
+alternate_platform_links:
+  ios: getting-started/integrating-pspdfkit
+  android: getting-started/integrating-pspdfkit
+  macos: getting-started/integrating-pspdfkit
+---
+
+This guide will walk you through integrating PSPDFKit for Web with your project for server-backed deployment.
+
+## Prerequisites
+
+1.  Include `pspdfkit.js` in your HTML page. This file is accessible at the root path of the server.
+    If you set up the server at `https://pspdfkit.example.com`, you can find the file located
+    at `https://pspdfkit.example.com/pspdfkit.js`.
+2.  Add a `<div>` with a defined `width` and `height` (can be `100%`) where the component will be mounted.
+    PSPDFKit for Web adapts to the dimensions of this element. This way, applying responsive rules will work as expected.
+3.  Initialize PSPDFKit for Web in JavaScript by calling `PSPDFKit.load()`.
+
+Here’s a basic example:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My App</title>
+    <!-- 1. Include required files. -->
+    <script src="https://pspdfkit.your-site.com/pspdfkit.js"></script>
+
+    <!-- Provide proper viewport information so that the layout works on mobile devices. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body>
+    <!-- 2. Element where PSPDFKit will be mounted. -->
+    <div id="pspdfkit" style="width: 100%; height: 480px;"></div>
+
+    <!-- 3. Initialize PSPDFKit. -->
+    <script>
+      PSPDFKit.load({
+        container: "#pspdfkit",
+        documentId: "<document_id>",
+        authPayload: { jwt: "<jwt>" },
+        instant: true
+      })
+        .then(function(instance) {
+          console.log("PSPDFKit loaded", instance);
+        })
+        .catch(function(error) {
+          console.error(error.message);
+        });
+    </script>
+  </body>
+</html>
+```
+
+The `<document_id>` placeholder in the code above should be replaced by the identifier of an
+existing document on the PSPDFKit Server. See the [server API documentation][pspdfkit guide managing documents] or the [example projects][] for information on how to upload documents.
+
+The `<jwt>` placeholder should be replaced with a valid and signed JSON Web Token (JWT). See the [Client Authentication][pspdfkit guide authentication] guide for details.
+
+Once you [have the server running][] and available at `https://pspdfkit.your-site.com`, load the example HTML page in a web browser and you should see it display the specified document.
+
+**ℹ️ Note**: If you are using [IIS][] Server, make sure that your server is configured to handle `.mem` files. In the case that the browser doesn’t support WebAssembly, we fall back to asm.js, and we provide a `.mem` file that our application loads during initialization. You can read more about how to allow it manually [here][allow manually].
+
+Please keep in mind that data stored in the beta version server will be deleted when
+migrating to the release version.
+
+## JavaScript API
+
+PSPDFKit for Web can be configured and controlled via its JavaScript API. It will be added to
+the `window` object after the JavaScript file is evaluated.
+
+Refer to our customization guides and the [API documentation][] for full details:
+
+[==
+
+```es
+/**
+ * PSPDFKit.load() accepts a configuration object with the following required values:
+ *
+ * container {string | HTMLElement} — Selector or element where PSPDFKit will be mounted.
+ * documentId {string}  — Document ID to load.
+ * authPayload {Object} — JSON Web Token in the format `{ jwt: 'xxx.xxx.xxx' }`.
+ * instant {boolean}    — The trial release gives you the option to try PSPDFKit Instant —
+ *                        our real-time, cross-platform, sync engine — by setting `instant: true`.
+ */
+PSPDFKit.load({
+  container: "#pspdfkit",
+  documentId: documentId,
+  authPayload: authPayload,
+  instant: true
+})
+  .then(instance => {
+    instance.totalPageCount; // => 10
+
+    const viewState = instance.viewState;
+    viewState.currentPageIndex; // => 0
+    instance.setViewState(viewState.set("currentPageIndex", 1));
+  })
+  .catch(error => {
+    console.error(error.message);
+  });
+```
+
+```js
+/**
+ * PSPDFKit.load() accepts a configuration object with the following required values:
+ *
+ * container {string | HTMLElement} — Selector or element where PSPDFKit will be mounted.
+ * documentId {string}  — Document ID to load.
+ * authPayload {Object} — JSON Web Token in the format `{ jwt: 'xxx.xxx.xxx' }`.
+ * instant {boolean}    — The trial release gives you the option to try PSPDFKit Instant —
+ *                        our real-time, cross-platform, sync engine — by setting `instant: true`.
+ */
+PSPDFKit.load({
+  container: "#pspdfkit",
+  documentId: documentId,
+  authPayload: authPayload,
+  instant: true
+})
+  .then(function(instance) {
+    instance.totalPageCount; // => 10
+
+    const viewState = instance.viewState;
+    viewState.currentPageIndex; // => 0
+    instance.setViewState(viewState.set("currentPageIndex", 1));
+  })
+  .catch(function(error) {
+    console.error(error.message);
+  });
+```
+
+==]
+
+[pspdfkit guide managing documents]: https://pspdfkit.com/guides/server/current/api/documents/
+[example projects]: ../../pspdfkit-for-web/example-projects/
+[pspdfkit guide authentication]: ../../server-backed/client-authentication/
+[have the server running]: ../../server-backed/setting-up-pspdfkit-server/
+[api documentation]: https://pspdfkit.com/api/web/
+[iis]: https://www.iis.net/
+[allow manually]: https://docs.microsoft.com/en-us/iis/configuration/system.webserver/staticcontent/mimemap

@@ -1,0 +1,225 @@
+// Colors
+
+$white: #fff;
+$gray: #b8c7d7;
+$neutral: #f9fbfe;
+$neutral-dark: #f2f7fe;
+$neutral-darker: #d5e3f7;
+$gray-100: #fbfbfc;
+$gray-200: #f2f5f8;
+$gray-300: #e8e9e9;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #868e96;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$shadow: #233340;
+
+$brand: #3d73d3;
+$brand-light: #5da3fc;
+$brand-lighter: #89ccff;
+$brand-dark: #245ac3;
+$brand-darker: #2b578c;
+
+$alt: #5920cb;
+$alt-dark: #3a2369;
+$alt-neutral: #f2eef8;
+
+$themes: (
+  ios: $brand,
+  android: #81bf0d,
+  web: #3cb1ad,
+  macos: #6ba3f2,
+  instant: #7372cf,
+  server: #7372cf,
+  windows: #3f78cd,
+  electron: #7db0bd,
+  docker: #2b91dd,
+  xamarin: #3498db,
+  cordova: #32383d,
+  react-native: #61dafb,
+  dotnet: #7372cf,
+  java: #7372cf
+);
+
+$backgrounds: (
+  white: $white,
+  neutral: $neutral,
+  neutral-dark: $neutral-dark,
+  neutral-darker: $neutral-darker,
+  gray: $gray-500,
+  gray-dark: $gray-700,
+  gray-light: $gray-100,
+  brand: $brand,
+  brand-light: $brand-light,
+  brand-lighter: $brand-lighter,
+  brand-dark: $brand-dark,
+  brand-darker: $brand-darker
+);
+
+$languages: (
+  objc: #0094d7,
+  swift: #f87500,
+  kotlin: #3d6ea6,
+  java: #f14b1e,
+  js: #ffc500,
+  javascript: #ffc500,
+  es: #ffc500,
+  json: #ffc500,
+  npm: #c12127,
+  yarn: #2c8ebb,
+  nodejs: #33c00c,
+  ruby: #fd2512,
+  rails: #fd2512,
+  shell: #000,
+  bat: #012456,
+  html: #f16529,
+  css: #2fa9dc,
+  scss: #2fa9dc,
+  xml: #fe6602,
+  xaml: #fe6602,
+  c: #5a75ba,
+  csharp: #a245bb,
+  vb: #a245bb,
+  cpp: #a245bb,
+  elm: #88d035
+);
+
+// Body
+
+$body-bg: $neutral;
+$body-color: $gray-700;
+
+// Links
+
+$link-color: $body-color;
+$link-hover-color: $link-color;
+
+// Fonts
+
+$font-family-sans-serif: "Canal Book", Helvetica, Arial, sans-serif;
+$font-family-medium: "Canal Medium", Helvetica, Arial, sans-serif;
+$font-family-bold: "Canal Bold", Helvetica, Arial, sans-serif;
+$font-family-icons: "icomoon";
+
+$small-font-size: 0.75rem;
+$font-size-base: 1.045rem;
+$font-size-md: 1.13rem;
+$font-size-lg: 1.25rem;
+$lead-font-size: 1.25rem;
+$line-height-base: 1.75;
+
+$headings-font-family: $font-family-medium;
+$headings-line-height: 1.4;
+
+$h1-font-size: 2.2rem;
+$h2-font-size: 1.8rem;
+$h3-font-size: 1.6rem;
+$h4-font-size: 1.2rem;
+$h5-font-size: $font-size-base;
+$h6-font-size: 0.8rem;
+$display4-size: 2.8rem;
+
+$text-muted: rgba($body-color, 0.6);
+$blockquote-small-color: rgba($body-color, 0.8);
+
+// Spacers
+
+$spacer: 1rem;
+$spacers: () !default;
+$spacers: map-merge(
+  (
+    0: 0,
+    1: $spacer * 0.25,
+    2: $spacer * 0.5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
+    6: $spacer * 5,
+    7: $spacer * 6,
+    8: $spacer * 7,
+    9: $spacer * 8,
+    10: $spacer * 9
+  ),
+  $spacers
+);
+
+// Sizes
+
+$sizes: (
+  33: 33.333%
+);
+
+// Responsive Breakpoints
+
+$nav-bar-breakpoint: 670px;
+
+// Components
+
+$border-radius: 5px;
+$border-radius-lg: 9px;
+$border-radius-xl: 3rem;
+$border-color: $gray-300;
+
+// Buttons
+
+$btn-font-family: $font-family-medium;
+$btn-border-radius-lg: $border-radius;
+$input-btn-line-height: 1.25;
+$input-btn-padding-y: 0.75rem;
+
+// Forms
+
+$input-placeholder-color: $gray-500;
+$input-border-radius-lg: $border-radius;
+$input-height: 3rem;
+$form-check-input-gutter: 1.4rem;
+
+// Cards
+
+$card-border-width: 0px;
+$card-border-radius: $border-radius-lg;
+$card-cap-bg: $white;
+$card-padding-sm: 2rem;
+$card-padding-md: 2.8rem;
+$card-padding-lg: 4rem;
+
+// Navs
+
+$nav-tabs-border-color: $gray-300;
+$nav-tabs-link-hover-border-color: $gray-300;
+$nav-pills-border-radius: $border-radius-xl;
+
+// Badges
+
+$badge-padding-y: 0.5em;
+$badge-padding-x: 0.75em;
+$badge-pill-padding-x: 0.8em;
+
+// Tables
+
+$table-cell-padding: 0.75rem;
+$table-accent-bg: $neutral;
+$table-hover-bg: rgba($gray-500, 0.15);
+$table-border-color: $gray-300;
+
+// List Groups
+
+$list-group-item-padding-y: 0.85rem;
+$list-group-border-color: #e9eff9;
+
+// Code
+
+$code-font-size: 90%;
+$code-color: $body-color;
+$code-bg: $white;
+
+// Popovers
+
+$popover-max-width: 400px;
+$popover-border-width: 0;
+$popover-arrow-color: $white;
+$popover-arrow-outer-color: $white;
+$popover-body-padding-y: 23px;
+$popover-body-padding-x: 23px;

@@ -1,0 +1,108 @@
+---
+title: Bookmarks
+section: developers
+theme: web
+---
+
+Bookmarks provide a quick way to jump to pages or trigger other actions, like opening a web page. In PSPDFKit for Web, you can open a list of bookmarks for the current PDF in the sidebar, as shown below.
+
+<img title="Bookmark bar" alt="Bookmark bar" width="250px" src="/images/guides/web/features/bookmarks/bookmark-bar.png" style="border-bottom: 1px solid #EEE">
+
+It’s possible to create bookmarks both in the sidebar and in your JavaScript code.
+
+## Bookmarking a Page
+
+Intuitively, you might think of a bookmark as a reference to a page of your PDF document. And in fact, this is the kind of bookmark you can create in the sidebar.
+
+<img title="New bookmark form" alt="New bookmark form" width="250px" src="/images/guides/web/features/bookmarks/new-bookmark-form.png" style="border-bottom: 1px solid #EEE">
+
+Here is how to create the same bookmark in JavaScript:
+
+```es
+const bookmark = new PSPDFKit.Bookmark({
+  name: "test bookmark",
+  action: new PSPDFKit.Actions.GoToAction({ pageIndex: 3 })
+});
+
+instance.createBookmark(bookmark);
+```
+
+In this example, we create a bookmark with a [`GoToAction`][]. There are several other actions you can use with bookmarks. These are described in the [PDF Actions guide][].
+
+## Linking to URIs
+
+Using the [`URIAction`][], you can link to a website from your bookmarks:
+
+```es
+const website = new PSPDFKit.Bookmark({
+  name: "PSPDFKit website",
+  action: new PSPDFKit.Actions.URIAction({
+    uri: "https://pspdfkit.com"
+  })
+});
+
+instance.createBookmark(website);
+```
+
+## Managing Bookmarks
+
+PSPDFKit provides several methods for managing bookmarks. We already used [`instance.createBookmark`][] in the examples above. You can list existing bookmarks with [`instance.getBookmarks`][] and update them with [`instance.updateBookmark`][]:
+
+```es
+async function bookmarksToUppercase() {
+  const bookmarks = await instance.getBookmarks();
+  const uppercasedBookmarks = bookmarks.map(bookmark =>
+    bookmark.set("name", bookmark.name.toUpperCase())
+  );
+  await Promise.all(
+    uppercasedBookmarks.map(bookmark => instance.updateBookmark(bookmark))
+  );
+}
+```
+
+You can also delete bookmarks using the [`instance.deleteBookmark`][] method:
+
+```es
+async function deleteFirstBookmark() {
+  const bookmarks = await instance.getBookmarks();
+  const firstBookmark = bookmarks.get(0);
+
+  if (firstBookmark) {
+    await instance.deleteBookmark(firstBookmark.id);
+  }
+}
+```
+
+## Tracking Bookmark Changes
+
+Managing bookmarks from your code or from the bookmarks sidebar will trigger events you can listen to. The [`BookmarksChangeEvent`][] gets triggered whenever a bookmark is created, updated, or deleted:
+
+```es
+instance.addEventListener("bookmarks.change", () => {
+  console.log("Your bookmarks changed!");
+});
+```
+
+If you want more information about how exactly a bookmark has changed, there are several other more fine-grained events you can listen to. You’ll find more details about this in the [API docs][]:
+
+- [`BookmarksCreateEvent`][]: Emitted whenever new bookmarks are created.
+- [`BookmarksUpdateEvent`][]: Emitted whenever bookmarks are updated.
+- [`BookmarksDeleteEvent`][]: Emitted whenever new bookmarks are deleted.
+- [`BookmarksLoadEvent`][]: Emitted whenever bookmarks are loaded from the bookmark provider.
+- [`BookmarksWillSaveEvent`][] and [`BookmarksDidSaveEvent`][]: Emitted before and after bookmarks are saved to the bookmark provider.
+
+[`gotoaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.GoToAction.html
+[pdf actions guide]: /guides/web/current/annotations/pdf-actions/
+[`uriaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.URIAction.html
+[`instance.createbookmark`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#createBookmark
+[`instance.getbookmarks`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#getBookmarks
+[`instance.updatebookmark`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#updateBookmark
+[`instance.deletebookmark`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#deleteBookmark
+[`bookmarkschangeevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksChangeEvent
+[api docs]: https://pspdfkit.com/api/web/
+[`bookmarkscreateevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksCreateEvent
+[`bookmarksupdateevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksUpdateEvent
+[`bookmarksdeleteevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksDeleteEvent
+[`bookmarksloadevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksLoadEvent
+[`bookmarkswillsaveevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksWillSaveEvent
+[`bookmarksdidsaveevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~BookmarksDidSaveEvent

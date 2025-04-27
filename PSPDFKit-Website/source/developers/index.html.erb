@@ -1,0 +1,286 @@
+---
+title: Developers
+section: developers
+---
+
+<%= partial 'nav_sub' %>
+
+<!-- Header -->
+<header class="text-center mb-4">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1>Developers</h1>
+        <p>
+          PSPDFKit is the leading cross-platform solution for integrating PDF support into your app
+          or website. Our SDKs require a commercial license. If you already have a license,
+          <a href="https://customers.pspdfkit.com/" class="link-brand">visit our customer portal to download</a>. Otherwise,
+          <a href="/try/" class="link-brand">request a trial here</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <!-- Products -->
+    <div class="row mb-4">
+      <% [
+        {
+          name: "PSPDFKit for iOS",
+          slug: "ios",
+          version: product_version('ios'),
+          requirements: "iOS 11+",
+          guide_url: "/guides/ios/current/getting-started/integrating-pspdfkit/"
+        },
+        {
+          name: "PSPDFKit for Android",
+          slug: "android",
+          version: product_version('android'),
+          requirements: "Android 4.4+ & API level 19+",
+          guide_url: "/guides/android/current/getting-started/integrating-pspdfkit/"
+        },
+        {
+          name: "PSPDFKit for Web",
+          slug: "web",
+          version: product_version('web'),
+          requirements: "modern browsers",
+          guide_url: "/guides/web/current/getting-started/integrating-pspdfkit/"
+        },
+        {
+          name: "PSPDFKit for Windows",
+          slug: "windows",
+          version: product_version('windows'),
+          requirements: "Windows 10",
+          guide_url: "/guides/windows/current/getting-started/integrating-pspdfkit/"
+        },
+        {
+          name: "PSPDFKit .NET Library",
+          slug: "dotnet",
+          version: product_version('dotnet'),
+          requirements: ".NET Standard 2.0",
+          guide_url: "/guides/dotnet/current/"
+        },
+        {
+          name: "PSPDFKit Java Library",
+          slug: "java",
+          version: product_version('java'),
+          requirements: "Java 8",
+          guide_url: "/guides/java/current/"
+        },
+        {
+          name: "PSPDFKit for Electron",
+          slug: "web",
+          icon: "electron",
+          version: product_version('web'),
+          requirements: "Electron",
+          guide_url: "/guides/web/current/pspdfkit-for-electron/getting-started/"
+        },
+        {
+          name: "PSPDFKit for macOS",
+          slug: "macos",
+          version: product_version('macos'),
+          requirements: "macOS 10.12+",
+          guide_url: "/guides/macos/current/getting-started/integrating-pspdfkit/"
+        },
+        {
+          name: "PSPDFKit Server",
+          slug: "server",
+          version: product_version('server'),
+          requirements: "Docker",
+          guide_url: "/guides/server/current/"
+        },
+      ].each do |p| %>
+        <div class="col-sm-6 col-lg-4 mb-4">
+          <div class="card card-sm card-hoverable h-100">
+            <div class="card-body">
+              <p class="text-center pb-3">
+                <i class="fa fa-xl fa-<%= p[:icon] || p[:slug] %> text-<%= p[:slug] %>"></i>
+              </p>
+              <h2 class="h5">
+                <%= p[:name] %>
+              </h2>
+              <p class="small">
+                <%= p[:version] %> for <%= p[:requirements] %>
+              </p>
+              <p class="small">
+                <a href="/guides/<%= p[:slug] %>/">Guides</a> •
+                <% unless p[:slug] == 'server' %>
+                  <a href="/api/<%= p[:slug] %>/">API</a> •
+                <% end %>
+                <a href="/changelog/<%= p[:slug] %>/">Changelog</a>
+              </p>
+              <p class="mb-0">
+                <a href="<%= p[:guide_url] %>" class="btn btn-block btn-brand">
+                  Quick Start Guide
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Wrappers -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card card-sm card-hoverable h-100">
+          <div class="card-body">
+            <p class="text-center pb-3">
+              <i class="fa fa-xl fa-cordova text-brand"></i>
+            </p>
+            <h2 class="h5">
+              Apache Cordova / PhoneGap
+            </h2>
+            <p class="small">
+              for iOS / Android
+            </p>
+            <p class="small">
+              <a href="https://github.com/PSPDFKit/Cordova-iOS">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/Cordova-iOS
+              </a>
+              <br>
+              <a href="https://github.com/PSPDFKit/Cordova-Android">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/Cordova-Android
+              </a>
+            </p>
+            <p class="mb-0">
+              <a href="https://pspdfkit.com/guides/ios/current/other-languages/apache-cordova-phonegap/"
+                 class="btn btn-block btn-brand">
+                Quick Start Guide
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card card-sm card-hoverable h-100">
+          <div class="card-body">
+            <p class="text-center pb-3">
+              <i class="fa fa-xl fa-appcelerator text-brand"></i>
+            </p>
+            <h2 class="h5">
+              Axway Appcelerator Titanium
+            </h2>
+            <p class="small">
+              for iOS / <span class="text-muted">Android (Coming Soon)</span>
+            </p>
+            <p class="small">
+              <a href="https://github.com/PSPDFKit/Appcelerator-iOS">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/Appcelerator-iOS
+              </a>
+              <br>
+              &nbsp;
+            </p>
+            <p class="mb-0">
+              <a href="https://pspdfkit.com/guides/ios/current/other-languages/appcelerator-titanium/"
+                 class="btn btn-block btn-brand">
+                Quick Start Guide
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card card-sm card-hoverable h-100">
+          <div class="card-body">
+            <p class="text-center pb-3">
+              <i class="fa fa-xl fa-pspdfkit text-brand"></i>
+            </p>
+            <h2 class="h5">
+              PDFXKit
+            </h2>
+            <p class="small">
+              Apple PDFKit replacement for iOS/macOS
+            </p>
+            <p class="small">
+              <a href="https://github.com/PSPDFKit/PDFXKit">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/PDFXKit
+              </a>
+              <br>
+              &nbsp;
+            </p>
+            <p class="mb-0">
+              <a href="https://pspdfkit.com/guides/ios/current/migration-guides/migrating-from-apple-pdfkit/"
+                 class="btn btn-block btn-brand">
+                Quick Start Guide
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card card-sm card-hoverable h-100">
+          <div class="card-body">
+            <p class="text-center pb-3">
+              <i class="fa fa-xl fa-react text-brand"></i>
+            </p>
+            <h2 class="h5">
+              React Native
+            </h2>
+            <p class="small">
+              for iOS / Android
+            </p>
+            <p class="small">
+              <a href="https://github.com/PSPDFKit/react-native">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/react-native
+              </a>
+              <br>
+              &nbsp;
+            </p>
+            <p class="mb-0">
+              <a href="https://pspdfkit.com/guides/ios/current/other-languages/react-native/"
+                 class="btn btn-block btn-brand">
+                Quick Start Guide
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card card-sm card-hoverable h-100">
+          <div class="card-body">
+            <p class="text-center pb-3">
+              <i class="fa fa-xl fa-xamarin text-brand"></i>
+            </p>
+            <h2 class="h5">
+              Microsoft Xamarin
+            </h2>
+            <p class="small">
+              for iOS / Android
+            </p>
+            <p class="small">
+              <a href="https://github.com/PSPDFKit/Xamarin-iOS">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/Xamarin-iOS
+              </a>
+              <br>
+              <a href="https://github.com/PSPDFKit/Xamarin-Android">
+                <i class="fa fa-lg fa-github"></i>
+                PSPDFKit/Xamarin-Android
+              </a>
+            </p>
+            <p class="mb-0">
+              <a href="https://pspdfkit.com/guides/ios/current/other-languages/xamarin/"
+                 class="btn btn-block btn-brand">
+                Quick Start Guide
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Viewer CTA -->
+<%= partial 'shared/cta_viewer' %>

@@ -1,0 +1,282 @@
+---
+title: Customizing the Annotation Toolbar
+section: developers
+---
+
+The [`PSPDFAnnotationToolbar`][] in PSPDFKit was designed to be flexible and highly configurable. It’s based on the [`PSPDFFlexibleToolbar`][], which is a subclass of `UIView` and not `UIToolbar`. Early versions of PSPDFKit used a toolbar-based version, but it turned out to be too inflexible.
+
+By default, the annotation toolbar can either dock to the top or anchor on the left/right side of the [`PSPDFViewController`][]’s view.
+
+This is fully configurable via setting `PSPDFFlexibleToolbarPosition` and setting either [`supportedToolbarPositions`][] or [`toolbarPosition`][] on the toolbar:
+
+[==
+
+```swift
+public struct PSPDFFlexibleToolbarPosition : OptionSet {
+    public init(rawValue: UInt)
+
+    public static var positionInTopBar: PSPDFFlexibleToolbarPosition { get }
+    public static var positionLeft: PSPDFFlexibleToolbarPosition { get }
+    public static var positionRight: PSPDFFlexibleToolbarPosition { get }
+    public static var positionsVertical: PSPDFFlexibleToolbarPosition { get }
+    public static var positionsAll: PSPDFFlexibleToolbarPosition { get }
+}
+```
+
+```objc
+typedef NS_OPTIONS(NSUInteger, PSPDFFlexibleToolbarPosition) {
+    PSPDFFlexibleToolbarPositionNone      = 0,
+    PSPDFFlexibleToolbarPositionInTopBar  = 1 << 0,
+    PSPDFFlexibleToolbarPositionLeft      = 1 << 1,
+    PSPDFFlexibleToolbarPositionRight     = 1 << 2,
+    PSPDFFlexibleToolbarPositionsVertical = PSPDFFlexibleToolbarPositionLeft | PSPDFFlexibleToolbarPositionRight,
+    PSPDFFlexibleToolbarPositionsAll      = PSPDFFlexibleToolbarPositionInTopBar | PSPDFFlexibleToolbarPositionsVertical
+};
+```
+
+==]
+
+## Presentation
+
+The annotation toolbar can be shown or hidden using the [`annotationButtonItem`][] defined on [`PSPDFViewController`][]. This bar button item is already part of the default `rightBarButtonItems` on [`PSPDFNavigationItem`][]. If you like, you can of course customize its placement to your liking.
+
+If you want to invoke the annotation toolbar programmatically, you have two options.
+
+You can invoke the `annotationButtonItem` by using action dispatching:
+
+[==
+
+```swift
+let annotationButtonItem = pdfController.annotationButtonItem
+let action = annotationButtonItem.action!
+UIApplication.shared.sendAction(action, to: annotationButtonItem.target, from: nil, for: nil)
+```
+
+```objc
+UIBarButtonItem *annotationButtonItem = pdfController.annotationButtonItem;
+[UIApplication.sharedApplication sendAction:annotationButtonItem.action to:annotationButtonItem.target from:nil forEvent:nil];
+```
+
+==]
+
+Or you can toggle the toolbar manually:
+
+[==
+
+```swift
+// If we're not in document view mode, it'll be weird.
+pdfController.setViewMode(.document, animated: true)
+pdfController.annotationToolbarController?.updateHostView(nil, container: nil, viewController: pdfController)
+PSPDFUsernameHelper.ask(forDefaultAnnotationUsernameIfNeeded: pdfController, completionBlock: { _ in
+    pdfController.annotationToolbarController?.toggleToolbar(animated: true)
+})
+```
+
+```objc
+// If we're not in document view mode, it'll be weird.
+[pdfController setViewMode:PSPDFViewModeDocument animated:YES];
+[pdfController.annotationToolbarController updateHostView:nil container:nil viewController:pdfController];
+[PSPDFUsernameHelper askForDefaultAnnotationUsernameIfNeeded:pdfController completionBlock:^(NSString *userName) {
+    [pdfController.annotationToolbarController toggleToolbarAnimated:YES];
+}];
+```
+
+==]
+
+Asking for the user’s author name is an optional (but recommended) step. This way, you will ensure the newly created annotations are associated with the correct author name.
+
+## Toolbar Buttons
+
+### Annotation Buttons
+
+The annotation toolbar utilizes button grouping order to efficiently display a large amount of annotation tools. The toolbar comes preconfigured with default annotation groups for both iPad and iPhone, but you can also set your own groups by assigning new groups, which is done by creating a [`PSPDFAnnotationToolbarConfiguration`][] object.
+
+Toolbar groups are defined as an array of [`PSPDFAnnotationGroup`][] objects, which themselves contain [`PSPDFAnnotationGroupItem`][] instances:
+
+[==
+
+```swift
+let configuration = PSPDFAnnotationToolbarConfiguration(annotationGroups: [
+        PSPDFAnnotationGroup(items: [
+            PSPDFAnnotationGroupItem(type: .ink, variant: .inkPen, configurationBlock: PSPDFAnnotationGroupItem.inkConfigurationBlock())
+        ]),
+        PSPDFAnnotationGroup(items: [
+            PSPDFAnnotationGroupItem(type: .line),
+            PSPDFAnnotationGroupItem(type: .polyLine)
+        ])
+])
+```
+
+```objc
+PSPDFAnnotationToolbarConfiguration *configuration = [[PSPDFAnnotationToolbarConfiguration alloc] initWithAnnotationGroups:@[
+
+	[PSPDFAnnotationGroup groupWithItems:@[
+		[PSPDFAnnotationGroupItem itemWithType:PSPDFAnnotationStringInk variant:PSPDFAnnotationStringInkPen configurationBlock:[PSPDFAnnotationGroupItem inkConfigurationBlock]]]],
+
+	[PSPDFAnnotationGroup groupWithItems:@[
+		[PSPDFAnnotationGroupItem itemWithType:PSPDFAnnotationStringLine],
+		[PSPDFAnnotationGroupItem itemWithType:PSPDFAnnotationStringPolyLine]]]
+]];
+```
+
+==]
+
+Finally, to set the [`PSPDFAnnotationToolbarConfiguration`][] in your [`PSPDFViewController`][], you can use this code after creating the [`PSPDFViewController`][]:
+
+[==
+
+```swift
+controller.annotationToolbarController?.annotationToolbar.configurations = [configuration]
+```
+
+```objc
+controller.annotationToolbarController.annotationToolbar.configurations = @[configuration];
+```
+
+==]
+
+To customize the button icon, return a `UIImage` containing your custom icon from the [`configurationBlock`][]. Whenever possible, try to return a template image from the configuration block ([`UIImageRenderingModeAlwaysTemplate`][]):
+
+[==
+
+```swift
+let configurationBlock = { (item: PSPDFAnnotationGroupItem, container: AnyObject?, tintColor: UIColor) -> UIImage in
+    let image = UIImage(named: "Custom Button Icon")!
+    return image.withRenderingMode(.alwaysTemplate)
+}
+```
+
+```objc
+PSPDFAnnotationGroupItemConfigurationBlock configurationBlock = ^UIImage *(PSPDFAnnotationGroupItem *item, id container, UIColor *tintColor) {
+    UIImage *image = [UIImage imageNamed:@"Custom Button Icon"];
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+};
+```
+
+==]
+
+Use the provided tint color only when you need multi-color images.
+
+You can disable annotation toolbar configurations by setting the configuration property to `nil`. In such a case, the toolbar will show a list of all [`editableAnnotationTypes`][] without any grouping.
+
+### Standard Buttons
+
+In addition to the annotation group buttons, the toolbar also provides some additional buttons to manage toolbar presentation, undo/redo actions, and access the style manager. The buttons get automatically added or are omitted, depending on the toolbar and PSPDFKit configuration settings. These buttons can be customized by overriding the `doneButton`, `undoButton`, `redoButton`, and `strokeColorButton` properties. The buttons can also be completely removed by returning `nil` from the overridden getters.
+
+To override the properties, you will have to subclass [`PSPDFAnnotationToolbar`][]. Please take a look at the [Overriding Classes][] guide for more information.
+
+### Custom Buttons
+
+The annotation toolbar also provides a convenient hook to add additional non-annotation type-specific buttons to the toolbar. You add these buttons by assigning an array of [`PSPDFToolbarButton`][] items to the [`additionalButtons`][] property on the annotation toolbar. The buttons will be positioned in between the annotation buttons and the undo/redo buttons.
+
+### Button Overflow
+
+The toolbar usually auto-sizes to accommodate all of its buttons. If this cannot be achieved due lack of available view real estate, the toolbar automatically clips buttons flagged with the `collapsible` flag (from [`PSPDFToolbarButton`][]) and groups them in a special `collapsedButtons` item.
+
+### Auto Sizing
+
+In vertical mode, the annotation toolbar will automatically size its height depending on the available screen real estate, the available toolbar configurations, and the active standard toolbar buttons. The final toolbar height is determined by first querying [`-[PSPDFFlexibleToolbarContainerDelegate flexibleToolbarContainerContentRect:forToolbarPosition:]`](<https://pspdfkit.com/api/ios/Protocols/PSPDFFlexibleToolbarContainerDelegate.html#/c:objc(pl)PSPDFFlexibleToolbarContainerDelegate(im)flexibleToolbarContainerContentRect:forToolbarPosition:>), a method `PSPDFViewController` implements and one you could override if you have custom elements that the toolbar should avoid. The toolbar then checks the required sizing constraints of all registered toolbar configurations and related standard buttons, trying to find the configuration that best fits the rect that [`flexibleToolbarContainerContentRect:forToolbarPosition:`][] returned. If toolbar configurations are disabled (`configurations == nil`), the toolbar will auto-size to fit as many annotation types from [`editableAnnotationTypes`][] as possible.
+
+The `buttons` property of the annotation toolbar is set only after toolbar sizing completes. This is required, because the toolbar size is a prerequisite for determining which buttons will actually be shown on the toolbar. If you modify the `buttons` property of the annotation toolbar manually, auto-sizing might no longer yield acceptable results. In that case, you will have to override [`preferredSizeFitting:forToolbarPosition:`][] and manually adjust the sizing.
+
+## Appearance Customization
+
+The annotation toolbar exposes a variety of staying hooks for either direct or `UIAppearance`-based customization. See the [Appearance Styling][] guide for additional information.
+
+### Setting the toolbarDelegate of the PSPDFFlexibleToolbar
+
+The [`toolbarDelegate`][] of the [`PSPDFFlexibleToolbar`][] isn’t used by PSPDFKit and can be set freely.
+
+The easiest way to do this is to simply access the annotation toolbar via the annotation toolbar controller:
+
+[==
+
+```swift
+let pdfController = PSPDFViewController(document: document)
+pdfController.annotationToolbarController?.annotationToolbar.toolbarDelegate = toolbarDelegate
+```
+
+```objc
+PSPDFViewController *pdfController = [[PSPDFViewController alloc] initWithDocument:document];
+pdfController.annotationToolbarController.annotationToolbar.toolbarDelegate = toolbarDelegate;
+```
+
+==]
+
+You can also create a subclass of [`PSPDFAnnotationToolbarController`][] and override [`annotationToolbar`][] to set it there, or create a subclass of [`PSPDFAnnotationToolbar`][] and override [`initWithAnnotationStateManager:`][] to set it.
+
+### Showing and Hiding the Annotation Toolbar
+
+You can show and hide the annotation toolbar with [`PSPDFAnnotationToolbarController`][].
+
+First you have to set the [`hostView`][] with [`-[PSPDFFlexibleToolbarController updateHostView:container:viewController:]`](<https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbarController.html#/c:objc(cs)PSPDFFlexibleToolbarController(im)updateHostView:container:viewController:>):
+
+[==
+
+```swift
+let pdfController = PSPDFViewController(document: document)
+pdfController.annotationToolbarController?.updateHostView(nil, container: nil, viewController: pdfController)
+```
+
+```objc
+PSPDFViewController *pdfController = [[PSPDFViewController alloc] initWithDocument:document];
+[pdfController.annotationToolbarController updateHostView:nil container:nil viewController:pdfController];
+```
+
+==]
+
+After that, you can show the toolbar with [`-[PSPDFFlexibleToolbarController showToolbarAnimated:]`](<https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbarController.html#/c:objc(cs)PSPDFFlexibleToolbarController(im)showToolbarAnimated:>):
+
+[==
+
+```swift
+let pdfController = PSPDFViewController(document: document)
+pdfController.annotationToolbarController?.showToolbar(animated: true)
+```
+
+```objc
+PSPDFViewController *pdfController = [[PSPDFViewController alloc] initWithDocument:document];
+[pdfController.annotationToolbarController showToolbarAnimated:YES];
+```
+
+==]
+
+To hide the toolbar, use [`-[PSPDFFlexibleToolbarController hideToolbarAnimated:]`](<https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbarController.html#/c:objc(cs)PSPDFFlexibleToolbarController(im)hideToolbarAnimated:>):
+
+[==
+
+```swift
+let pdfController = PSPDFViewController(document: document)
+pdfController.annotationToolbarController?.hideToolbar(animated: true)
+```
+
+```objc
+PSPDFViewController *pdfController = [[PSPDFViewController alloc] initWithDocument:document];
+[pdfController.annotationToolbarController hideToolbarAnimated:YES];
+```
+
+==]
+
+[overriding classes]: ../../getting-started/overriding-classes
+[appearance styling]: https://pspdfkit.com/guides/ios/current/customizing-the-interface/appearance-styling/
+[`pspdfannotationtoolbar`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationToolbar.html
+[`pspdfflexibletoolbar`]: https://pspdfkit.com/api/Classes/PSPDFFlexibleToolbar.html
+[`supportedtoolbarpositions`]: https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbar.html#/c:objc(cs)PSPDFFlexibleToolbar(py)supportedToolbarPositions
+[`toolbarposition`]: https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbar.html#/c:objc(cs)PSPDFFlexibleToolbar(py)toolbarPosition
+[`annotationbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)annotationButtonItem
+[`pspdfnavigationitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFNavigationItem.html
+[`pspdfannotationtoolbarconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbarConfiguration.html
+[`pspdfannotationgroup`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationGroup.html
+[`pspdfannotationgroupitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationGroupItem.html
+[`configurationblock`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationGroupItem.html#/c:objc(cs)PSPDFAnnotationGroupItem(cm)itemWithType:variant:configurationBlock:
+[`uiimagerenderingmodealwaystemplate`]: https://developer.apple.com/documentation/uikit/uiimagerenderingmode/uiimagerenderingmodealwaystemplate
+[`editableannotationtypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbar.html#/c:objc(cs)PSPDFAnnotationToolbar(py)editableAnnotationTypes
+[`pspdftoolbarbutton`]: https://pspdfkit.com/api/ios/Classes/PSPDFToolbarButton.html
+[`additionalbuttons`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbar.html#/c:objc(cs)PSPDFAnnotationToolbar(py)additionalButtons
+[`pspdfannotationtoolbarcontroller`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationToolbarController.html
+[`annotationtoolbar`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbarController.html#/c:objc(cs)PSPDFAnnotationToolbarController(py)annotationToolbar
+[`initwithannotationstatemanager:`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbar.html#/c:objc(cs)PSPDFAnnotationToolbar(im)initWithAnnotationStateManager:
+[`flexibletoolbarcontainercontentrect:fortoolbarposition:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFFlexibleToolbarContainerDelegate.html#/c:objc(pl)PSPDFFlexibleToolbarContainerDelegate(im)flexibleToolbarContainerContentRect:forToolbarPosition:
+[`preferredsizefitting:fortoolbarposition:`]: https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbar.html#/c:objc(cs)PSPDFFlexibleToolbar(im)preferredSizeFitting:forToolbarPosition:
+[`hostview`]: https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbarController.html#/c:objc(cs)PSPDFFlexibleToolbarController(py)hostView
+[`toolbardelegate`]: https://pspdfkit.com/api/ios/Classes/PSPDFFlexibleToolbar.html#/c:objc(cs)PSPDFFlexibleToolbar(py)toolbarDelegate

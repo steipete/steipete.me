@@ -1,0 +1,235 @@
+---
+title: Changing Configuration at Runtime
+section: developers
+---
+
+You might want to change the configuration used to display your documents at runtime. This can easily be achieved when using `PdfActivity` or `PdfFragment`. Continue reading for instructions on how to change the configuration for each of these.
+
+## Changing the Configuration of the PdfActivity
+
+In order to change the configuration of the [`PdfActivity`][], call [`PdfActivity#setConfiguration`][], which will take care of saving the state and recreating the activity with the new configuration:
+
+[==
+
+```DynamicConfigurationActivity.kt
+class DynamicConfigurationActivity : PdfActivity() {
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        menuInflater.inflate(R.menu.dynamic_configuration_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var handled = false
+        when (item.itemId) {
+            R.id.toggle_scroll_direction -> {
+                handled = true
+                // Create the configuration builder with the configuration prefilled from the current configuration.
+                val newConfiguration = PdfActivityConfiguration.Builder(configuration)
+                    .scrollDirection(
+                        if (configuration.configuration.scrollDirection == PageScrollDirection.HORIZONTAL)
+                            PageScrollDirection.VERTICAL
+                        else
+                            PageScrollDirection.HORIZONTAL)
+                    .build()
+                // Set the configuration on the activity. This will recreate the activity, similar to changing the orientation or language.
+                configuration = newConfiguration
+            }
+        }
+        return handled || super.onOptionsItemSelected(item)
+    }
+}
+```
+
+```DynamicConfigurationActivity.java
+public class DynamicConfigurationActivity extends PdfActivity {
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.dynamic_configuration_menu, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        boolean handled = false;
+        PdfActivityConfiguration configuration = getConfiguration();
+        switch (item.getItemId()) {
+            case R.id.toggle_scroll_direction: {
+                handled = true;
+                // Create the configuration builder with the configuration prefilled from the current configuration.
+                PdfActivityConfiguration newConfiguration = new PdfActivityConfiguration.Builder(getConfiguration())
+                        .scrollDirection(
+                                configuration.getConfiguration().getScrollDirection() == PageScrollDirection.HORIZONTAL ?
+                                        PageScrollDirection.VERTICAL :
+                                        PageScrollDirection.HORIZONTAL)
+                        .build();
+                // Set the configuration on the activity. This will recreate the activity, similar to changing the orientation or language.
+                setConfiguration(newConfiguration);
+                break;
+            }
+        }
+        return handled || super.onOptionsItemSelected(item);
+    }
+}
+```
+
+==]
+
+If you want to change the configuration immediately after the activity is opened, we recommend doing it before [`PdfActivity#onCreate()`][]. In this case, we won’t restart the current activity, thereby making the configuration change much quicker:
+
+[==
+
+```StartupConfigurationChangeActivity.kt
+class StartupConfigurationChangeActivity : PdfActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle) {
+        val newConfiguration = PdfActivityConfiguration.Builder(configuration)
+            // Change your configuration.
+            ...
+            .build()
+
+        // Set the new configuration.
+        this.configuration = newConfiguration
+
+        // Make sure to call `super.onCreate()` on the parent `PdfActivity`.
+        super.onCreate(savedInstanceState)
+    }
+}
+```
+
+```StartupConfigurationChangeActivity.java
+public class StartupConfigurationChangeActivity extends PdfActivity {
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        PdfActivityConfigurations newConfiguration = PdfActivityConfiguration.Builder(configuration)
+            // Change your configuration.
+            ...
+            .build();
+
+        // Set the new configuration.
+        setConfiguration(newConfiguration);
+
+        // Make sure to call `super.onCreate()` on the parent `PdfActivity`.
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+==]
+
+## Changing the Configuration of the PdfFragment
+
+In order to change the configuration of the [`PdfFragment`][], you need to:
+
+1.  Save the state of your current fragment using [`PdfFragment#getState`][].
+2.  Create a new fragment with the desired configuration using [`PdfFragment#newInstance`][].
+3.  Replace the original fragment with the new one.
+4.  Restore the state using [`PdfFragment#setState`][].
+
+[==
+
+```kotlin
+/** The currently displayed `PdfFragment`. **/
+private var fragment: PdfFragment? = null
+    set(fragment) {
+        // Remove the previous fragment.
+        this.fragment?.let {
+            it.removeDocumentListener(this)
+        }
+        field = fragment
+        if (fragment != null) {
+            // Replace the old fragment with a new one.
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit()
+            // Register the activity to be notified when the document is loaded.
+            fragment.addDocumentListener(this)
+        }
+    }
+
+/** Switches between horizontal and vertical scrolling. */
+private fun toggleScrollDirection() {
+    val currentFragment = fragment
+    val currentDocument = fragment?.document
+    if (currentFragment == null || currentDocument == null || currentFragment.configuration == null) return
+
+    val scrollDirection = currentFragment.configuration.scrollDirection
+
+    // Copy the existing configuration to a new configuration builder.
+    val configurationBuilder = PdfConfiguration.Builder(currentFragment.configuration)
+
+    // Toggle the scroll direction.
+    configurationBuilder.scrollDirection(
+        if (scrollDirection == PageScrollDirection.HORIZONTAL)
+            PageScrollDirection.VERTICAL
+        else
+            PageScrollDirection.HORIZONTAL)
+
+    // Save the old fragment state.
+    val state = currentFragment.state
+    // Create the fragment with the already loaded document and the new configuration.
+    val newFragment = PdfFragment.newInstance(currentDocument, configurationBuilder.build())
+    fragment = newFragment
+    // Restore the fragment state.
+    newFragment.state = state
+}
+```
+
+```java
+/** The currently displayed `PdfFragment`. **/
+private PdfFragment fragment;
+
+/** Replaces the currently displayed fragment. */
+private void setFragment(@NonNull PdfFragment fragment) {
+    // Remove the previous fragment.
+    if (this.fragment != null) {
+        this.fragment.removeDocumentListener(this);
+    }
+    this.fragment = fragment;
+
+    // Replace the old fragment with a new one.
+    getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit();
+
+    // Register the activity to be notified when the document is loaded.
+    fragment.addDocumentListener(this);
+}
+
+/** Switches between horizontal and vertical scrolling. */
+private void toggleScrollDirection() {
+    if (fragment == null || fragment.getDocument() == null || fragment.getConfiguration() == null) return;
+
+    PageScrollDirection scrollDirection = fragment.getConfiguration().getScrollDirection();
+
+    // Copy the existing configuration to a new configuration builder.
+    PdfConfiguration.Builder configurationBuilder = new PdfConfiguration.Builder(fragment.getConfiguration());
+
+    // Toggle the scroll direction.
+    configurationBuilder.scrollDirection(
+            scrollDirection == PageScrollDirection.HORIZONTAL ?
+                PageScrollDirection.VERTICAL :
+                PageScrollDirection.HORIZONTAL);
+
+    // Save the old fragment state.
+    Bundle state = fragment.getState();
+    // Create the fragment with the already loaded document and the new configuration.
+    PdfFragment newFragment = PdfFragment.newInstance(fragment.getDocument(), configurationBuilder.build());
+    setFragment(newFragment);
+    // Restore the fragment state.
+    newFragment.setState(state);
+}
+```
+
+==]
+
+For more details, you can check out `DynamicConfigurationExample` and `CustomFragmentDynamicConfigurationExample` in the Catalog app.
+
+[`pdfactivity#setconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setConfiguration(com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`pdffragment#getstate`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#getState()
+[`pdffragment#setstate`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setState(android.os.Bundle)
+[`pdffragment#newinstance`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#newInstance(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.configuration.PdfConfiguration)
+[`pdfactivity#oncreate()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#onCreate(android.os.Bundle)

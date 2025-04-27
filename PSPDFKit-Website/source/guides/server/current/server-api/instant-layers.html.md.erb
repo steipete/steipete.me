@@ -1,0 +1,237 @@
+---
+title: Instant Layers
+section: developers
+
+order: 10
+---
+
+![Instant Layers](/images/guides/shared/pspdfkit-instant/instant-layers.png)
+
+Instant layers are a new concept introduced in PSPDFKit Server 2017.9. They allow you to manage multiple versions of a document while uploading it only once.
+
+When uploading a document, the content of the document (that is, all annotations and values entered into form fields) is extracted into an immutable base layer. When synchronizing changes via PSPDFKit Instant or by using the API, you can now specify the layer name by setting the [`"layer"` claim][] in the JSON Web Token (JWT) or by using our layer endpoints. A layer mirrors the original content of a document (i.e. the content of the base layer) until the first change is made to its content. This means that layers don’t have to be manually created, but rather are created for you as soon you make the first changes, at which point the base layer’s content is copied into the layer and your changes are applied.
+
+If you need only one version of a document or don’t want to use layers, you can just omit the [`"layer"` claim][] and use the [annotation endpoints][]. In this case, all changes are persisted to the default layer with an empty name.
+
+Layer names are not allowed to contain the `*` character, and their maximum allowed length is 256 characters.
+
+## API Endpoints for Working with Layers
+
+To see which layers exist and get or change the content of a layer, we provide endpoints that mirror our [annotation endpoints][]. All [annotation endpoints][], [bookmark endpoints][], and [form field value endpoints][] are also available scoped to a layer by chasing the base path to `/api/documents/:document_id/layers/:layer_name`:
+
+- [Fetching Document Layers][]
+- [Creating a Layer][]
+- [Deleting a Layer][]
+- [Fetching a Layer’s PDF file][]
+
+---
+
+### Fetching Document Layers
+
+To fetch all existing layers, the following endpoint is provided. You need to specify the `application/json` content type header:
+
+**Request**
+
+```
+GET  /api/documents/:document_id/layers/
+Accept: application/json
+Authorization: Token token="<secret token>"
+```
+
+```curl
+$ curl http://localhost:5000/api/documents/abc/layers/ \
+   -H "Accept: application/json" \
+   -H "Authorization: Token token=<secret token>"
+```
+
+**Response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/x-ndjson
+
+{
+  "data": ["foo", "bar"]
+}
+...
+```
+
+### Creating a Layer
+
+To create a new layer for an existing document, send a `POST` request to `/api/documents/:document_id/layers`.
+
+The endpoint always requires a `name` attribute, but it supports different creation strategies:
+
+- With only `name`, the new layer will be an exact copy of the base layer.
+- With the `name` and `source_layer_name` attributes, the new layer will be an exact copy of the source layer. If the source layer doesn’t exist, the base one will be used as a fallback.
+- With the `name` and `instant.json` attributes, the new layer will be the result of applying the supplied Instant JSON file to the base layer.
+- With the `source_layer_name` and `instant.json` attributes, the new layer will be the result of applying the supplied Instant JSON file to the layer with the specified name. If the source layer doesn’t exist, the base one will be used as a fallback.
+
+**Request**
+
+Create a new layer copying the base one:
+
+```
+POST  /api/documents/:document_id/layers
+Content-Type: application/json
+Authorization: Token token="<secret token>"
+
+{
+  "name": "my-new-layer"
+}
+```
+
+```curl
+$ curl http://localhost:5000/api/documents/abc/layers \
+    -X POST \
+    -H "Authorization: Token token=<secret token>" \
+    -H "Content-type: application/json" \
+    -d '{"name": "my-new-layer"}'
+```
+
+Create a new layer copying another named layer:
+
+```
+POST  /api/documents/:document_id/layers
+Content-Type: application/json
+Authorization: Token token="<secret token>"
+
+{
+  "name": "my-new-layer",
+  "source_layer_name": "my-old-layer"
+}
+```
+
+```curl
+$ curl http://localhost:5000/api/documents/abc/layers \
+    -X POST \
+    -H "Authorization: Token token=<secret token>" \
+    -H "Content-type: application/json" \
+    -d '{"name": "my-new-layer", "source_layer_name": "my-old-layer"}'
+```
+
+Create a new layer importing an Instant JSON file:
+
+```
+POST  /api/documents/:document_id/layers
+Content-Type: multipart/form-data; boundary=customboundary
+Authorization: Token token="<secret token>"
+
+--customboundary
+Content-Disposition: form-data; name="instant.json"; filename="instant.json"
+Content-Type: application/json
+
+<instant.json data>
+--customboundary
+Content-Disposition: form-data; name="name"
+
+my-new-layer
+--customboundary--
+```
+
+```curl
+$ curl http://localhost:5000/api/documents/abc/layers \
+    -X POST \
+    -H "Authorization: Token token=<secret token>" \
+    -F 'name=my-new-layer' \
+    -F 'instant.json=@instant.json;type=application/json'
+```
+
+**Response**
+
+In case of success, the server will return an HTTP response with the status 200 with the name of the new layer:
+
+```
+HTTP/1.1 200 OK
+
+{
+  "data": {
+    "name": "my-new-layer",
+    "errors": []
+  }
+}
+```
+
+The errors list will be non-empty only if there were errors importing the Instant JSON file (if supplied). Each error will have the format `{"reason": "Error description"}`.
+
+When the document is not found, a 404 response will be returned:
+
+```
+HTTP/1.1 404 Not Found
+```
+
+When the request is malformed (e.g. when supplying both a source layer name and an Instant JSON file), a 400 response will be returned:
+
+```
+HTTP/1.1 400 Bad request
+```
+
+### Deleting a Layer
+
+To delete an existing layer, send a `DELETE` request to `/api/documents/:document_id/layers/:layer_name`:
+
+**Request**
+
+```
+DELETE  /api/documents/:document_id/layers/:layer_name
+Authorization: Token token="<secret token>"
+```
+
+```curl
+$ curl -X DELETE http://localhost:5000/api/documents/abc/layers/foo \
+   -H "Authorization: Token token=<secret token>"
+```
+
+**Response**
+
+The server will return an HTTP response with the status 200 and an empty body:
+
+```
+HTTP/1.1 200 OK
+```
+
+If no layer with the given name exists, an HTTP response with the status 404 will be returned:
+
+```
+HTTP/1.1 404 Not Found
+```
+
+## Fetching a Layer’s PDF File
+
+Download the latest version of a layer as a PDF, with annotations included:
+
+**Request**
+
+```
+GET /api/documents/:document_id/layers/:layer_name/pdf
+Authorization: Token token="<secret token>"
+```
+
+```curl
+$ curl "http://localhost:5000/api/documents/abc/layers/my-layer/pdf" \
+   -H "Authorization: Token token=<secret token
+```
+
+**Response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+
+<PDF data>
+```
+
+The file can be flattened by passing `flatten=true` as a query string parameter.
+
+[`"layer"` claim]: ../../pspdfkit-server/client-authentication/
+[annotation endpoints]: ../../server-api/annotations/
+[bookmark endpoints]: ../../server-api/bookmarks/
+[form field value endpoints]: ../../server-api/forms/
+[newline delimited json]: http://ndjson.org/
+[authentication]: ../../pspdfkit-server/client-authentication/
+[`ulid`]: https://github.com/alizain/ulid
+[json annotation format]: ../../server-api/json-format/
+[fetching document layers]: #fetching-document-layers
+[creating a layer]: #creating-a-layer
+[deleting a layer]: #deleting-a-layer
+[fetching a layer’s pdf file]: #fetching-a-layer-s-pdf-file

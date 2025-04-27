@@ -1,0 +1,44 @@
+---
+title: Encrypt or Decrypt Files on the Server
+section: developers
+
+---
+
+We have a standalone command-line tool written in Go, so it will work on Windows, Mac, and Linux/Unix.
+
+It’s in the distribution dmg under `Extras/cryptor-cli`.
+
+## Building
+
+To build the `cryptor-cli` on your system, follow these steps:
+
+1.  [Install Go][]. On macOS and Windows, package installers are available, and on Linux, you have to build from source.
+2.  `cd` to the `cryptor-cli` directory.
+3.  Type `go build`.
+
+## Usage
+
+```sh
+./cryptor-cli -h
+Usage of ./cryptor-cli:
+ -f=false: force overwrite of output file
+ -in="": input file
+ -o="encrypt": operation, can be [encrypt, decrypt]
+ -out="": output file
+ -p="": passphrase
+ -s="": salt (optional)
+```
+
+### Encrypt Example
+
+```sh
+./cryptor-cli -o "encrypt" -in "path/to/original.pdf" -out "path/to/encrypted" -p "test123" -s "salt"
+```
+
+### Decrypt Example
+
+```sh
+./cryptor-cli -o "decrypt" -in "path/to/encrypted" -f -out "path/to/decrypted.pdf" -p "test123" -s "salt"
+```
+
+[install go]: http://golang.org/doc/install

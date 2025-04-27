@@ -1,0 +1,75 @@
+---
+title: Conflict Resolution
+section: developers
+
+---
+
+PSPDFKit for iOS offers a built-in mechanism for detecting external file changes by levering system support for [file presentation][file coordination guide article] callbacks. In some cases, these outside file modifications can conflict with unsaved changes performed on the loaded document. The framework can detect these situations and offers both a bundled UI to present conflict resolution options to your end users and an API that enables you to perform conflict resolution programmatically.
+
+<div class="alert alert-warning">
+<p><b>ℹ️ Note:</b> The conflict resolution system builds on top of system file presentation APIs. Before continuing with this guide, you should familiarize yourself with file coordination and file presentation basics and how PSPDFKit implements those features by reading the <a href="../../features/file-coordination/">File Coordination guide article</a>.</p>
+</div>
+
+# Conflict Resolution Options
+
+PSPDFKit for iOS currently offers three conflict resolution options:
+
+- **Close** — The document is removed from the UI. This is mostly applicable during file deletion.
+- **Save** — The in-memory changes are written to disk, overriding any external modifications. If the file was previously deleted, it gets restored after invoking this option.
+- **Reload** — Any in-memory changes are discarded and the file is reloaded from disk. This is not applicable for externally deleted files.
+
+The above options have corresponding definitions in the [`PSPDFFileConflictResolution`][] enum.
+
+## Default Actions
+
+The framework will, in some cases, automatically pick the most appropriate conflict resolution option by:
+
+- Triggering an automatic **reload** from disk if the file changed and either there are no unsaved local changes or conflict resolution is not available.
+- **Removing** the document from the containing view controller if the on-disk file was removed and either the controller is currently not visible or conflict resolution is not available.
+
+In all other cases, a conflict resolution UI with user-selectable options is presented.
+
+## UI
+
+The built-in conflict resolution UI uses a `UIAlertController` to present selectable options to end users.
+
+| File Changes                                                                                  | File Deletion                                                                          |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| ![Conflict Resolution](/images/guides/ios/features/conflict-resolution/conflict-resolution-1.png) | ![Deleted File](/images/guides/ios/features/conflict-resolution/conflict-resolution-2.png) |
+
+## Customization
+
+The central customization point for conflict resolution is [`PSPDFConflictResolutionManager`][]. PSPDFKit view controllers — such as [`PSPDFViewController`][], [`PSPDFMultiDocumentViewController`][], and [`PSPDFTabbedViewController`][] — are set up to listen for [`PSPDFDocumentUnderlyingFileChangedNotification`][], which is forwarded to their internal conflict resolution manager instances. You can subclass [`PSPDFConflictResolutionManager`][] and leverage the provided subclassing hooks to customize the conflict resolution UI or to suppress the UI completely and perform default conflict resolution actions.
+
+After a conflict resolution option is selected, control is returned back to the invoking view controller via [`PSPDFConflictResolutionManagerDelegate`][]. The delegate handler then performs required UI actions to honor the selected option and invokes conflict resolution actions on [`PSPDFDocument`][] via [`resolveFileConflictForDataProvider:withResolution:error:`][].
+
+## Disabling Conflict Resolution
+
+A [`PSPDFConflictResolutionManager`][] subclass can also be used to completely disable conflict resolution by overriding the [`PSPDFDocumentUnderlyingFileChangedNotification`][] handler, [`handleUnderlyingFileChangedNotification:`][], and not calling through to the default implementation. PSPDFKit should continue to function normally in this case, if [APFS copies][] are available for the file in question. Saving could lead to undefined behavior, unless `PSPDFDocumentSaveStrategyRewrite` is used.
+
+Conflict resolution actions will also not be performed if [file coordination is disabled][disable file coordination].
+
+# APFS Copies
+
+To offer conflict resolution options, PSPDFKit needs to preserve the full document state as it was before any external modifications took place. Since the framework was designed to handle very large PDF documents, it won’t always have the full file data in memory for larger documents. If memory pressure raises too high, the data will be read incrementally and discarded from memory. This makes conflict resolution more challenging than with simple document-based applications, which can have the full file data available in memory at all times.
+
+To overcome this hurdle, the conflict resolution system in PSPDFKit relies on lightweight [APFS][]-powered file copies. By default, the framework will create an efficient temporary file copy when a file is first loaded via [`PSPDFCoordinatedFileDataProvider`][] — the default [data provider][data providers guide article] used by [`PSPDFDocument`][]. Due to the copy-on-write behavior supported by [APFS][], the copies are created with minimal overhead and do not cause any additional disk space use. PSPDFKit keeps monitoring the original file for changes, but at the same time, uses its safe internal copy for more efficient file access and to support conflict resolution actions should file conflicts arise.
+
+Since conflict resolution relies on [APFS][], it is only available for files residing on volumes that are using this file system. [APFS][] is the default file system for iOS devices running iOS 10.3 and later. On the desktop, [APFS][] is available on macOS High Sierra and later. You can determine whether conflict resolution is currently available by checking the [`isConflictResolutionAvailable`][] flag on [`PSPDFCoordinatedFileDataProvider`][].
+
+[`pspdffileconflictresolution`]: https://pspdfkit.com/api/ios/Enums/PSPDFFileConflictResolution.html#/c:@E@PSPDFFileConflictResolution
+[apfs]: https://developer.apple.com/documentation/foundation/file_system/about_apple_file_system
+[`pspdfcoordinatedfiledataprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFCoordinatedFileDataProvider.html
+[`pspdfdocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html
+[`isconflictresolutionavailable`]: https://pspdfkit.com/api/ios/Protocols/PSPDFCoordinatedFileDataProviding.html#/c:objc(pl)PSPDFCoordinatedFileDataProviding(py)isConflictResolutionAvailable
+[`pspdfconflictresolutionmanager`]: https://pspdfkit.com/api/ios/Classes/PSPDFConflictResolutionManager.html#/c:objc(cs)PSPDFConflictResolutionManager
+[`pspdfconflictresolutionmanagerdelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFConflictResolutionManagerDelegate.html
+[`resolvefileconflictfordataprovider:withresolution:error:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)resolveFileConflictForDataProvider:withResolution:error:
+[`pspdfmultidocumentviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFMultiDocumentViewController.html
+[`pspdftabbedviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedViewController.html
+[`pspdfdocumentunderlyingfilechangednotification`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentUnderlyingFileChangedNotification
+[`handleunderlyingfilechangednotification:`]: https://pspdfkit.com/api/ios/Classes/PSPDFConflictResolutionManager.html#/c:objc(cs)PSPDFConflictResolutionManager(im)handleUnderlyingFileChangedNotification:
+[file coordination guide article]: ../../features/file-coordination
+[data providers guide article]: ../../features/data-providers
+[disable file coordination]: ../../features/file-coordination/#disable-file-coordination
+[apfs copies]: #apfs-copies

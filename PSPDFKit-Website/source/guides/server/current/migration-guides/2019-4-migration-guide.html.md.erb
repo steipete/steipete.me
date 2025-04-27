@@ -1,0 +1,38 @@
+---
+title: 2019.4 Migration Guide
+section: developers
+
+order: 494
+---
+
+[This release][] introduces support for [applying][] and [persisting document editing operations][].
+
+**If your application doesn’t use Instant Layers or you don’t plan to implement any functionality on top of document operations, nothing will change.**
+
+PSPDFKit Server always applies document operations via an [Instant layer][], which can be specified via the `layer` attribute in the JSON Web Token (JWT) claim (see the [Client Authentication guide][] for more information) or as part of the URL when using the Server-to-Server API. When not specified, PSPDFKit will use the base layer, which is automatically created together with the original document.
+
+Document operations and Instant layers are linked, as all content for a layer (e.g. annotations or bookmarks) needs to be valid after document operations are applied. For example, you might decide to remove a page from a document, and under the hood, PSPDFKit Server will remove all annotations that were placed on that page in the currently selected layer.
+
+If you plan to leverage document operations, you will need to make sure you audit your PSPDFKit API usage to ensure you always operate on the expected PDF file.
+
+If you’re using a named layer and remove one of the PDF’s pages via a document operation, the base layer will still use the original PDF file.
+
+As an example, let’s assume we have document, doc-123, with its base layer and one other layer named my-layer.
+
+If we remove one page from the document without specifying which layer we want to operate on, PSPDFKit will default to the base layer, associating the modified PDF file with it. my-layer will remain untouched and continue to use the original version of the doc-123 document.
+
+Any Server-to-Server API call without a specified layer will therefore operate on the base layer and return data about the modified file.
+
+#### Migrate PSPDFKit for Web
+
+For more information, please take a look at the [PSPDFKit for Web 2019.4 Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[this release]: /blog/2019/pspdfkit-web-2019-4/
+[applying]: ../../server-api/documents/#editing-a-document-s-pdf-and-downloading-the-resulting-file
+[persisting document editing operations]: ../../server-api/documents/#editing-a-document-s-pdf-and-persisting-the-resulting-file
+[client authentication guide]: ../../pspdfkit-server/client-authentication
+[instant layer]: ../../server-api/instant-layers/
+[pspdfkit for web 2019.4 migration guide]: https://pspdfkit.com/guides/web/current/migration-guides/2019-4-migration-guide/
+[changelog]: /changelog/server/#2019.4

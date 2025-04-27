@@ -1,0 +1,40 @@
+---
+title: Building an Activity around the PdfFragment
+section: developers
+---
+
+You might want to customize the user interface of your app beyond what is possible with the predefined UI of the [`PdfActivity`][]. The greatest flexibility can be achieved by embedding the [`PdfFragment`][] into a custom [`AppCompatActivity`][]. This guide provides the foundation for using the fragment in a custom environment in conjunction with existing PSPDFKit widgets that are also used by the [`PdfActivity`][].
+
+> **ℹ️ Note:** This article describes how to manually build a custom activity that uses the [`PdfFragment`][] and other framework widgets. The other, simpler solutions are to either [extend the existing `PdfActivity`][pspdfkit guide extending pdfactivity] or [load a document into the default `PdfActivity`][pspdfkit guide using activity]. You can also use the [`PdfUiFragment`][] to display the document with the same UI the [`PdfActivity`][] uses. To see how, please refer to the [Using a Fragment guide][pspdfkit guide using fragment].
+
+## Embedding the Fragment
+
+Take a look at our [Using a Fragment][pspdfkit guide using fragment] guide, which shows the basics of setting up the [`PdfFragment`][] by providing a license and configuration. A runnable code example can be found inside our Catalog app: The `FragmentExample` showcases how to use the [`PdfFragment`][] in a custom [`AppCompatActivity`][].
+
+## Providing Search
+
+PSPDFKit has two predefined search widgets that are also used by the [`PdfActivity`][]:
+
+- [`PdfSearchViewInline`][] is a small search widget that, when expanded, sits inside the main action bar. It provides an input field, a results label showing the number of found results, and controls for navigating back and forth inside the results. This widget is useful on smaller devices, where a list of all results would overlay the viewed document.
+
+- [`PdfSearchViewModular`][] is an expandable panel that sits above the document area. It shows a full scrollable list of all results, including preview snippets. Tapping a result will close the search view and navigate to the page containing the result.
+
+> **ℹ️ Note:** As a third option, you can manually build a custom search widget using our [extensive search API][pspdfkit guide text search].
+
+## Providing Toolbars
+
+You can use all the PSPDFKit toolbars as standalone views in your custom activities. Have a look at the [Using Toolbars within Fragment][] guide for more information.
+
+## Form Editing UI
+
+[`PdfActivity`][] includes the form editing UI out of the box. Take a look at the [Using the Form Editing UI within Fragment][] guide if you want to integrate the form editing UI into your custom activity.
+
+[`pdfsearchviewinline`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/PdfSearchViewInline.html
+[`pdfsearchviewmodular`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/PdfSearchViewModular.html
+[`appcompatactivity`]: https://developer.android.com/reference/android/support/v7/app/AppCompatActivity.html
+[pspdfkit guide using fragment]: ../../getting-started/using-fragment
+[pspdfkit guide using activity]: ../../getting-started/using-activity
+[pspdfkit guide extending pdfactivity]: ../../customizing-the-interface/extending-pdfactivity
+[pspdfkit guide text search]: ../../features/text-search
+[using toolbars within fragment]: ../../customizing-the-interface/using-toolbars-within-fragment
+[using the form editing ui within fragment]: ../../customizing-the-interface/using-form-ui-within-fragment

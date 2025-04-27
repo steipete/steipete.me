@@ -1,0 +1,68 @@
+---
+title: Acknowledgements
+priority: 0.25
+---
+
+<% @title_suffix = product_name(platform) %>
+
+<%= partial 'legal/nav_sub' %>
+
+<section class="section section-sm">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col-12 text-center">
+        <header>
+          <h1>Acknowledgements</h1>
+          <ul class="nav nav-pills justify-content-center small">
+            <li class="nav-item">
+              <a href="/acknowledgements/ios" class="nav-link nav-link-brand <%= 'active' if platform == 'ios' %>">
+                iOS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/acknowledgements/android" class="nav-link nav-link-brand <%= 'active' if platform == 'android' %>">
+                Android
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/acknowledgements/web" class="nav-link nav-link-brand <%= 'active' if platform == 'web' %>">
+                Web
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/acknowledgements/windows" class="nav-link nav-link-brand <%= 'active' if platform == 'windows' %>">
+                Windows
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/acknowledgements/macos" class="nav-link nav-link-brand <%= 'active' if platform == 'macos' %>">
+                macOS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/acknowledgements/server" class="nav-link nav-link-brand <%= 'active' if platform == 'server' %>">
+                Server
+              </a>
+            </li>
+          </ul>
+        </header>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card">
+          <div class="card-body">
+            <pre class="pre-wrap small">
+              <%= partial "acknowledgements_#{platform}_raw.txt" %>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

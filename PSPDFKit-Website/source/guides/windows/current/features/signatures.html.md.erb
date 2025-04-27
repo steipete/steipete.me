@@ -1,0 +1,62 @@
+---
+title: Ink Signatures
+section: developers
+---
+
+PSPDFKit for Windows supports signature form fields (`pspdfkit/form-field/signature`) that represent handwritten signatures and can be signed using ink annotation signatures.
+
+Ink signatures are regular ink annotations that are automatically associated to a form field when their bounding box overlaps the form field’s bounding box.
+
+<img title="Signature Form Field" alt="Signature Form Field" width="250px" src="/images/guides/windows/features/signatures/field.png">
+
+## User Interface
+
+It’s possible to create an ink signature by clicking a signable form field or by using the main toolbar button for ink signatures.
+
+<img style="display: inline-block; margin: 0" alt role="presentation" width="30px" src="/images/guides/windows/features/signatures/button.png">
+
+When signing with a form element, the signature will be adapted to fit in the form element. If the signature is created via the toolbar button, the signature will instead be centered on the page.
+
+When there are no stored signatures, tapping an empty signature form element shows a signature modal dialog, which is where you can sign a document by drawing an ink annotation for your signature.
+
+<img title="Signature Creation" alt="Signature Creation" width="80%" src="/images/guides/windows/features/signatures/canvas.png">
+
+If there are already stored signatures, a signature picker is shown instead. This allows you to choose an existing signature or create a new one.
+
+<img title="Signature Picker" alt="Signature Picker" width="80%" src="/images/guides/windows/features/signatures/picker.png">
+
+## Storing Signatures
+
+When creating a new signature, checking the Store Signature option allows you to temporarily store the annotation for exporting later.
+
+<img title="Store Signature" alt="Store Signature" width="230px" src="/images/guides/windows/features/signatures/store.png">
+
+Stored ink signatures are available via the Signature Picker or the API method [`GetInkSignaturesAsync`][]. This method returns a `List` of [ink annotations][]:
+
+```csharp
+var inkSignatures = await pdfView.Controller.GetInkSignaturesAsync();
+```
+
+Consult our [Instant JSON][] guide for details on how to store the signatures.
+
+## Loading Signatures
+
+It’s possible to preload a list of signature templates after a document is loaded:
+
+```csharp
+// Load the signatures from somewhere.
+var inkSignatures = new List<IAnnotation>
+{
+    PSPDFKit.Pdf.Annotation.Factory.FromJson(sig1),
+    PSPDFKit.Pdf.Annotation.Factory.FromJson(sig2)
+};
+
+await pdfView.Controller.SetInkSignaturesAsync(inkSignatures);
+```
+
+[`getinksignaturesasync`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.Controller.html#PSPDFKit_UI_Controller_GetInkSignaturesAsync
+[`setinksignaturesasync`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.Controller.html#PSPDFKit_UI_Controller_SetInkSignaturesAsync_System_Collections_Generic_IList_PSPDFKit_Pdf_Annotation_IAnnotation__
+[ink annotations]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ink.html
+[`tojson`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html#PSPDFKit_Pdf_Annotation_IAnnotation_ToJson
+[`fromjson`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ink.html#PSPDFKit_Pdf_Annotation_Ink_FromJson_Windows_Data_Json_JsonObject_
+[instant json]: /guides/windows/current/importing-exporting/instant-json

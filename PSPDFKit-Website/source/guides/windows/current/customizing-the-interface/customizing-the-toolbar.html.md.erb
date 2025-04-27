@@ -1,0 +1,222 @@
+---
+title: Customizing the Toolbar
+section: developers
+---
+
+![](/images/guides/windows/custom-toolbar.png)
+
+PSPDFKit comes with a very useful toolbar by default, but it’s also important for individuals to modify toolbar items to suit their needs. As such, it’s possible to add, remove, or reorder all the buttons on the toolbar, and there are also more advanced options, like the responsive grouping of buttons and custom icons.
+
+### Add a Toolbar Item
+
+##### Built-In Toolbar Items
+
+There are many built-in toolbar items available. A list of these can be found in the [API reference][list of toolbar items]. The following code shows how to add a single built-in item:
+
+```csharp
+var toolbarItems = PdfView.GetToolbarItems();
+toolbarItems.Add(new PagerToolbarItem());
+await PdfView.SetToolbarItemsAsync(toolbarItems);
+```
+
+In some instances, you might want to configure how the toolbar looks or set it up in a particular order. To do this, you can create an `IList` of [`IToolbarItem`][]s and pass this to [`PdfView.SetToolbarItemsAsync`][]. The ordering of the buttons is determined by the order of the container:
+
+```csharp
+var defaultToolbarItems = new List<IToolbarItem>
+{
+    new SidebarThumbnailsToolbarItem(),
+    new SidebarDocumentOutlineToolbarItem(),
+    new SidebarAnnotationToolbarItem(),
+    new PagerToolbarItem(),
+    new LayoutConfigToolbarItem(),
+    new PanToolbarItem(),
+    new ZoomOutToolbarItem()
+};
+await PdfView.SetToolbarItemsAsync(defaultToolbarItems);
+```
+
+**ℹ️ Note:** Some built-in items are automatically grouped together with a dropdown arrow. For example, all the sidebar options are located under the same button, all line drawing annotations will be grouped together, and the highlighter and ink tool can be found under the same button.
+
+##### Custom Toolbar Items
+
+Along with the useful built-in toolbar items, we have also made it possible to provide your own custom toolbar items. Currently, you can define a [`ButtonToolbarItem`][] and a [`ToggleButtonToolbarItem`][]. The `ButtonToolbarItem` is a one-shot button that has no state, whereas the `ToggleButtonToolbarItem` has a state in which it can either be selected or not. This will be shown in the UI via a change of color. These buttons are added in the same way, so we’ll only show the `ButtonToolbarItem` example here:
+
+```csharp
+var toolbarItem = new ButtonToolbarItem()
+{
+    Attributes =
+    {
+        Id = "id",
+        Title = "title",
+        ClassName = "class-name",
+        ResponsiveGroup = "responsive-group",
+        MediaQueries = new List<string> { "max-width" },
+    },
+    Disabled = false,
+    Icon = new Uri("ms-appx-web:///Assets/ToolbarIcons/status_completed.svg")
+};
+toolbarItem.OnItemPressEvent += ToolbarItem_OnPressAsync;
+
+var toolbarItems = PdfView.GetToolbarItems();
+toolbarItems.Add(toolbarItem);
+await PdfView.SetToolbarItemsAsync(toolbarItems);
+```
+
+Set the `Id` to ensure the correct `onPress` listener is called and set a `Title` to be shown. Note that if an `Icon` is defined, the title will be used to show a hint if the mouse hovers over the icon button. `OnItemPressEvent` has a function callback assigned to receive notifications when the user clicks the custom button. The toolbar item can then be inserted into the list of toolbar items. The position of the item in the list determines the position where it appears on the toolbar. The `Selected` property of `ToggleButtonToolbarItem` denotes whether or not the item is selected. It can also be queried at runtime.
+
+### Remove a Toolbar Item
+
+Removing an item from the toolbar is even simpler than adding an item:
+
+```csharp
+var toolbarItems = PdfView.GetToolbarItems();
+toolbarItems.RemoveAt(0);
+await PdfView.SetToolbarItemsAsync(toolbarItems);
+```
+
+The code above will remove the item at position zero, i.e. remove the item at the start of the toolbar. Extra logic can be applied to find the required item and remove it from the list before `SetToolbarItemsAsync`.
+
+### Reorder the Toolbar Items
+
+As seen when adding and removing items, the order is determined by the order an item is inserted into the list. As such, we can simply reorder the items on the toolbar by reordering the items in the list. The following example shows how to randomly shuffle the items on the toolbar:
+
+```csharp
+var toolbarItems = PdfView.GetToolbarItems();
+var shuffledList = toolbarItems.OrderBy(a => Guid.NewGuid()).ToList();
+await PdfView.SetToolbarItemsAsync(shuffledList);
+```
+
+### Responsive Group
+
+As the size of screen is not often known, it is great to have the ability to dynamically hide toolbar items dependent upon a given metric. With PSPDFKit, you can define a `ResponsiveGroupToolbarItem` item that other [`IToolbarItem`][]s can reference in order to create a collapsed grouping:
+
+```csharp
+var responsiveGroup = new ResponsiveGroupToolbarItem
+{
+    Attributes =
+    {
+        Id = "my-group",
+        MediaQueries = new List<string> { "(max-width:4000px)" },
+        Title = "Responsive"
+    }
+};
+
+var toolbarItem = new PagerToolbarItem
+{
+    ResponsiveGroup = "my-group",
+};
+toolbarItem.OnItemPressEvent += ToolbarItem_OnPressAsync;
+
+var toolbarItems = PdfView.GetToolbarItems();
+toolbarItems.Insert(0, responsiveGroup);
+toolbarItems.Add(toolbarItem);
+await PdfView.SetToolbarItemsAsync(toolbarItems);
+```
+
+If the view is less than 600px wide, then the `ResponsiveGroupToolbarItem` will be shown at index 0. When the responsive group button is pressed, the custom button is revealed. But when the view is larger than 600px wide, the button will be shown as normal.
+
+### Dropdown Group
+
+The grouping of toolbar items can save space in the toolbar and make for logical grouping specific to your custom UI. A good example of this is how, by default, `Ink`, `Highlighter`, and `TextHighlighter` appear as one item with an arrow by the side.
+
+![Dropdown item](/images/guides/windows/customizing-the-interface/dropdown-item.png)
+
+It’s possible to override this behavior and/or create your own groupings.
+
+To add your own group, simply set the `DropdownGroup` string. Each subsequent item that also has a `DropdownGroup` of the same string will be grouped together:
+
+```csharp
+// Create an arrow toolbar item in the dropdown group of `my-group`.
+var arrowToolbarItem = new ArrowToolbarItem()
+{
+    Attributes =
+    {
+        DropdownGroup = "my-group",
+    }
+};
+```
+
+Some default items are already part of a default dropdown group. To override this behavior, simply set `DropdownGroup` with an empty string:
+
+```csharp
+// Create an ellipse toolbar item without a dropdown group.
+var ellipseToolbarItem = new EllipseToolbarItem()
+{
+    Attributes =
+    {
+        DropdownGroup = "",
+    }
+};
+```
+
+## Annotation Presets
+
+Annotation presets are sets of default properties assigned to each annotation button. With annotation presets, you can configure default values for annotation properties created with the annotation button — for example, default colors.
+
+Annotation presets can be modified to use customized property values. These values will be updated by default when the user changes the settings in the annotation toolbar. It is possible to disable update events if required.
+
+Below, the `line` item preset is modified so that line annotations have a red color, are transparent, and have a thick stroke width by default:
+
+```csharp
+// Get the Dictionary of string -> IAnnotation presets.
+var presets = await pdfView.Controller.GetAnnotationPresetsAsync();
+
+// We know "line" is a Line class.
+var line = (Line)presets["line"];
+
+// Change some defaults.
+line.StrokeWidth = 10;
+line.Opacity = 0.5f;
+line.StrokeColor = Colors.Red;
+
+// Set the preset.
+await pdfView.Controller.SetAnnotationPresetAsync("line", line);
+```
+
+### Preset Name to Annotation Type Table
+
+| Name               | Annotation Type                     |
+| ------------------ | ----------------------------------- |
+| `strikeout`        | `PSPDFKit.Pdf.Annotation.Strikeout` |
+| `arrow`            | `PSPDFKit.Pdf.Annotation.Line`      |
+| `underline`        | `PSPDFKit.Pdf.Annotation.Underline` |
+| `note`             | `PSPDFKit.Pdf.Annotation.Note`      |
+| `text-highlighter` | `PSPDFKit.Pdf.Annotation.Highlight` |
+| `ink-signature`    | `PSPDFKit.Pdf.Annotation.Ink`       |
+| `image`            | `PSPDFKit.Pdf.Annotation.Image`     |
+| `polygon`          | `PSPDFKit.Pdf.Annotation.Polygon`   |
+| `highlight`        | `PSPDFKit.Pdf.Annotation.Highlight` |
+| `rectangle`        | `PSPDFKit.Pdf.Annotation.Rectangle` |
+| `text`             | `PSPDFKit.Pdf.Annotation.Text`      |
+| `highlighter`      | `PSPDFKit.Pdf.Annotation.Ink`       |
+| `ellipse`          | `PSPDFKit.Pdf.Annotation.Ellipse`   |
+| `ink`              | `PSPDFKit.Pdf.Annotation.Ink`       |
+| `polyline`         | `PSPDFKit.Pdf.Annotation.Polyline`  |
+| `squiggle`         | `PSPDFKit.Pdf.Annotation.Squiggly`  |
+| `line`             | `PSPDFKit.Pdf.Annotation.Line`      |
+
+### Preset Update Events
+
+The following code is taken from the example Catalog app provided with our SDK. It demonstrates how to register an event handler for preset changes made by the user in the annotation toolbar:
+
+```csharp
+pdfView.Controller.OnAnnotationPresetUpdate += async (sender, annotation) =>
+{
+    var from = await Json.StringifyAsync(annotation.Current);
+    var to = await Json.StringifyAsync(annotation.New);
+    Events.Add($"Preset updated for {annotation.Name} from:\n {from}\nTo:\n{to}");
+};
+```
+
+Preset update events can be disabled. When disabled, any changes to the settings made by the user via the annotation toolbar will not be preserved after the user is finished creating an annotation:
+
+```csharp
+// Disable preset updating.
+await pdfView.Controller.DisableAnnotationPresetUpdatingAsync(true);
+```
+
+[list of toolbar items]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.ToolbarComponents.html
+[`itoolbaritem`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.ToolbarComponents.IToolbarItem.html
+[`buttontoolbaritem`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.ToolbarComponents.ButtonToolbarItem.html
+[`togglebuttontoolbaritem`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.ToolbarComponents.ToggleButtonToolbarItem.html
+[`pdfview.settoolbaritemsasync`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html#PSPDFKit_UI_PdfView_SetToolbarItemsAsync_System_Collections_Generic_IList_PSPDFKit_UI_ToolbarItem__

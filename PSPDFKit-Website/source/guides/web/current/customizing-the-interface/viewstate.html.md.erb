@@ -1,0 +1,68 @@
+---
+title: The View State
+section: developers
+
+---
+
+PSPDFKit for Web encapsulates the entire view state inside an immutable data structure. This is accessible for you via the [`ViewState`][]. This object is a snapshot representation of the current state of the PDF viewer and can be updated using the [`Instance#setViewState`][] method. Since it’s an immutable data structure, it’s not possible to alter the view state without going through this setter:
+
+[==
+
+```es
+// You can update the ViewState by calling `setViewState` with the new view state.
+const viewState = instance.viewState;
+instance.setViewState(viewState.set("showToolbar", false));
+
+// Or by passing in an updater that receives the current ViewState as an argument.
+instance.setViewState(viewState => viewState.zoomIn());
+
+// This will NOT work because the ViewState is immutable.
+instance.viewState.showToolbar = true;
+instance.viewState.showToolbar; // => false
+```
+
+```js
+// You can update the ViewState by calling `setViewState` with the new view state.
+const viewState = instance.viewState;
+instance.setViewState(viewState.set("showToolbar", false));
+
+// Or by passing in an updater that receives the current ViewState as an argument.
+instance.setViewState(function(viewState) {
+  return viewState.zoomIn();
+});
+
+// This will NOT work because the ViewState is immutable.
+instance.viewState.showToolbar = true;
+instance.viewState.showToolbar; // => false
+```
+
+==]
+
+The [`ViewState`][] is implemented using the [Immutable.js] library. You can refer to the [`Immutable.Map`][] documentation to find out how to update the record. Here’s a list of common methods:
+
+- `set()` Set a specific property:
+
+  ```js
+  viewState.set("currentPageIndex", 2);
+  ```
+
+- `merge()` Update multiple properties at once:
+
+  ```js
+  viewState.merge({
+    showToolbar: false,
+    viewportPadding: { horizontal: 0, vertical: 0 },
+    scrollMode: PSPDFKit.ScrollMode.CONTINUOUS
+  });
+  ```
+
+The benefit of having the complete application state encapsulated into a single data store is that it makes reasoning about the current state very easy; there’s no hidden state you need to be aware of. You can always snapshot the state and apply it at a different point in time to have the exact same visual representation of your document.
+
+You can observe state changes using the [`ViewStateChangeEvent`][]. This event will be emitted whenever the current view state changes either by the user (via clicking the UI) or via [`Instance#setViewState`][]. Please refer to the [API documentation][pspdfkit api viewstatechangeevent] to learn more about the emitting order of this `ViewStateChangeEvent` and other more specific events.
+
+[`viewstate`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html
+[`instance#setviewstate`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setViewState
+[`immutable.map`]: https://facebook.github.io/immutable-js/docs/#/Map
+[`viewstatechangeevent`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~ViewStateChangeEvent
+[pspdfkit api viewstatechangeevent]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~ViewStateChangeEvent
+[immutable.js]: http://facebook.github.io/immutable-js/

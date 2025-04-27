@@ -1,0 +1,146 @@
+---
+title: Customizing the Toolbar
+section: developers
+---
+
+By default, PSPDFKit works with `UINavigationController` to show the `UINavigationBar` as the toolbar. You can use regular `UIBarButtonItem` objects to populate the navigation bar or the (bottom) view controller toolbar.
+
+Since PSPDFKit uses custom toolbar logic (for example, when the thumbnails are displayed, we hide the annotation bar button item), [`PSPDFViewController`][] has a custom [`navigationItem`][] that you can use to configure the bar button items for different view modes. If you use the `leftBarButtonItems` and `rightBarButtonItems` API from `UINavigationItem`, you will set the items for all view modes. Most likely, this is not what you want. Instead, use [`setLeftBarButtonItems:forViewMode:animated:`][] or the [equivalent for the right side][] and specify the view mode you want to alter with that call.
+
+If the view mode you change is the one that is currently visible, the navigation bar will update to represent these changes.
+
+PSPDFKit provides [several custom bar button items][] for the most common features:
+
+| Property                       | Description                                                                                                                                                                                                                                                             |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`closeButtonItem`][]          | Closes the [`PSPDFViewController`][] if pushed modally. Default entry in `leftBarButtonItems`.                                                                                                                                                                          |
+| [`outlineButtonItem `][]       | Presents the [`PSPDFOutlineViewController`][] if there is an outline defined in the PDF. Default entry in `rightBarButtonItems`. Also available as an activity via [`PSPDFActivityTypeOutline`][].                                                                      |
+| [`searchButtonItem`][]         | Shows the [`PSPDFSearchViewController`][] or the [`PSPDFInlineSearchManager`][] for searching text in the current `document`. See [`PSPDFSearchMode`][] in [`PSPDFConfiguration`][] to configure this. Default entry in `rightBarButtonItems`.                          | Toggles between the document and the thumbnail view state. See [`PSPDFViewMode`][] and [`setViewMode:animated:`][]. Default entry in `rightBarButtonItems`. |
+| [`thumbnailsButtonItem`][]     | Toggles between the document and the thumbnail view state. See [`PSPDFViewMode`][] and [`setViewMode:animated:`][]. Default entry in `rightBarButtonItems`.                                                                                                             |
+| [`documentEditorButtonItem`][] | Toggles between the document and the Document Editor view state.                                                                                                                                                                                                        |
+| [`printButtonItem`][]          | Presents the `UIPrintInteractionController` for document printing. Only displayed if the document is allowed to be printed. See `allowsPrinting` in [`PSPDFDocument`][]. You should use the [`activityButtonItem`][] instead. Share to [`PSPDFActivityTypeOpenIn`][].   |
+| [`openInButtonItem`][]         | Presents the `UIDocumentInteractionController` controller to open documents in other apps. You should use the [`activityButtonItem`][] instead.                                                                                                                         |
+| [`emailButtonItem`][]          | Presents the `MFMailComposeViewController` to send the document via email. Will only work when sending emails is configured on the device. You should use the [`activityButtonItem`][] instead. Share to `UIActivityTypeMail`.                                          |
+| [`messageButtonItem`][]        | Presents the `MFMessageComposeViewController` to send the document via SMS/iMessage. Will only work if iMessage or SMS is configured on the device. You should use the [`activityButtonItem`][] instead. Share to `UIActivityTypeMessage`.                              |
+| [`annotationButtonItem`][]     | Shows and hides the [`PSPDFAnnotationToolbar`][] toolbar for creating annotations. Requires the `PSPDFFeatureMaskAnnotationEditing` feature flag.                                                                                                                       |
+| [`bookmarkButtonItem`][]       | Presents the [`PSPDFBookmarkViewController`][] for creating/editing/viewing bookmarks.                                                                                                                                                                                  |
+| [`brightnessButtonItem`][]     | Presents the [`PSPDFBrightnessViewController`][] to control screen brightness. iOS has a similar feature in the Control Center, but PSPDFKit includes an additional software brightener.                                                                     |
+| [`activityButtonItem`][]       | Presents the `UIActivityViewController` for various actions, including many of the above button items. You can configure which activities are included and excluded by setting [`applicationActivities`][] and [`excludedActivityTypes`][] in [`PSPDFConfiguration`][]. |
+
+## Positioning Buttons
+
+When setting navigation button items on either the left or the right side, PSPDFKit will check that no item on the left side is already set on the right side and vice versa, and it will throw an assertion if items on one side are also on the other side.
+
+PSPDFKit for iOS distributes the default navigation button items as follows:
+
+| View Mode                     | Default Right Buttons                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `PSPDFViewModeDocument`       | `thumbnailsButtonItem`, `activityButtonItem`, `outlineButtonItem`, `searchButtonItem`, `annotationButtonItem` |
+| `PSPDFViewModeDocumentEditor` | `thumbnailsButtonItem`, `documentEditorButtonItem`                                                            |
+| `PSPDFViewModeThumbnails`     | `thumbnailsButtonItem`, `documentEditorButtonItem`                                                            |
+
+This means that if you ever want to have, for instance, the `outlineButton` on the left rather than on the right, you first need to modify the buttons set on the right side to remove the `outlineButton` and then set the left items:
+
+[==
+
+```swift
+// First clean up the buttons on the right.
+controller.navigationItem.setRightBarButtonItems([], for: .document, animated: false)
+
+// Then set the left buttons.
+let leftButtons = [controller.settingsButtonItem, controller.outlineButtonItem]
+controller.navigationItem.setLeftBarButtonItems(leftButtons, for: .document, animated: false)
+```
+
+```objc
+// First clean up the buttons on the right.
+[controller.navigationItem setRightBarButtonItems:@[] forViewMode:PSPDFViewModeDocument animated:NO];
+
+// Then set the left buttons.
+NSArray *leftButtons = @[controller.settingsButtonItem, controller.outlineButtonItem];
+[controller.navigationItem setLeftBarButtonItems:leftButtons forViewMode:PSPDFViewModeDocument animated:NO];
+```
+
+==]
+
+## Customizing Button Appearance
+
+Instead of trying to customize existing bar button items, it’s better to create your own bar button item and connect both `target` and `action` from the predefined buttons that we offer to get both the same tap behavior and complete customizability in terms of appearance.
+
+If you want to call your own code before our stock code is invoked, you can set the target/action to your method and then call the stock method of the bar button item. Note that the spec allows for an optional sender parameter on target/action pairs, so to be absolutely correct, you should use a helper like the [`psc_targetActionBlock`][] that we ship in PSPDFCatalog. Our internal methods define a sender parameter, but this is a detail your code should not rely on.
+
+## Button Visibility
+
+When `document` is `nil` or `document.isValid` returns `NO`, most buttons will be disabled and not displayed by default. If you need a button to always be visible, add your bar buttons to the [`barButtonItemsAlwaysEnabled`][] array. By default, this contains the `closeButtonItem`.
+
+Changing any of these bar button-related properties will trigger a reload of the gallery.
+
+## Hiding the Close Button
+
+The close button, used to dismiss [`PSPDFViewController`][] when pushed modally, is added automatically to `leftBarButtonItems`. If you choose to manage the close behavior yourself, or if you just want to hide the close button, you can set [`closeBarButtonItem`][] on the [`PSPDFViewController`][]’s [`navigationItem`][] to `nil`.
+
+## Hiding the Toolbar Completely
+
+The navigation toolbar used in the standard configuration of PSPDFKit can be removed via the [`setNavigationBarHidden:animated:`] call from the standard `UINavigationController` that displays the `PSPDFViewController`. Since the `PSPDFViewController` also has logic to show/hide the HUD, you need to set `PSPDFConfiguration.userInterfaceViewMode` to `PSPDFUserInterfaceViewModeAlways`.
+
+Alternatively, you can subclass the `PSPDFViewController` to make sure that the navigation bar is always hidden:
+
+[==
+
+```swift
+override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
+}
+```
+
+```objc
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+```
+
+==]
+
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[`navigationitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)navigationItem
+[`setleftbarbuttonitems:forviewmode:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFNavigationItem.html#/c:objc(cs)PSPDFNavigationItem(im)setLeftBarButtonItems:forViewMode:animated:
+[equivalent for the right side]: https://pspdfkit.com/api/ios/Classes/PSPDFNavigationItem.html#/c:objc(cs)PSPDFNavigationItem(im)setRightBarButtonItems:forViewMode:animated:
+[`pspdfoutlineviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFOutlineViewController.html
+[`pspdfactivitytypeoutline`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFActivityTypeOutline
+[`pspdfsearchviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchViewController.html
+[`pspdfinlinesearchmanager`]: https://pspdfkit.com/api/ios/Classes/PSPDFInlineSearchManager.html
+[`pspdfsearchmode`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFSearchMode
+[`pspdfviewmode`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFViewMode
+[`setviewmode:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(im)setViewMode:animated:
+[`activitybuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)activityButtonItem
+[`closebarbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFNavigationItem.html#/c:objc(cs)PSPDFNavigationItem(py)closeBarButtonItem
+[`pspdfviewmode`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFViewMode
+[`setviewmode:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(im)setViewMode:animated:
+[`pspdfactivitytypeopenin`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFActivityTypeOpenIn
+[`pspdfannotationtoolbar`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbar.html
+[`pspdfbookmarkviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFBookmarkViewController.html
+[`pspdfbrightnessviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFBrightnessViewController.html
+[`closebuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)closeButtonItem
+[`outlinebuttonitem `]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)outlineButtonItem
+[`searchbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)outlineButtonItem
+[`thumbnailsbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)thumbnailsButtonItem
+[`documenteditorbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)documentEditorButtonItem
+[`printbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)printButtonItem
+[`openinbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)openInButtonItem
+[`emailbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)emailButtonItem
+[`messagebuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)messageButtonItem
+[`annotationbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)annotationButtonItem
+[`bookmarkbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)bookmarkButtonItem
+[`brightnessbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)brightnessButtonItem
+[`applicationactivities`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)applicationActivities
+[`excludedactivitytypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)excludedActivityTypes
+[`psc_targetactionblock`]: https://gist.github.com/steipete/faf0c5e4dc79dfb3fc173b4e91475409
+[`barbuttonitemsalwaysenabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)barButtonItemsAlwaysEnabled
+[several custom bar button items]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/Toolbar%20button%20items
+[`setnavigationbarhidden:animated:`]: https://developer.apple.com/documentation/uikit/uinavigationcontroller/1621885-setnavigationbarhidden
+[`userinterfaceviewmode`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)userInterfaceViewMode

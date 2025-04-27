@@ -1,0 +1,151 @@
+---
+title: Customizing Color Pickers
+section: developers
+---
+
+There are a couple of places in the framework that open a color picker to let the user choose, for example, which color an annotation should be drawn in. You can easily change the way these color pickers look throughout the framework.
+
+Each color picker uses a [`PSPDFColorSet`][] to identify the colors it will show. Each color set contains one or more [`PSPDFColorPalette`][]s. A color palette is represented in the UI by a single page of predefined colors. These colors are grouped into multiple [`PSPDFColorPatch`][]es. You can fully control which palettes are shown and which color patches and colors they contain. A special case of a color palette is the HSV color picker, which can also be used in your custom color sets.
+
+![Components of a Color Picker][color picker gif]
+
+## Color Patches
+
+A [`PSPDFColorPatch`][] represents a number of colors that should be grouped together in the UI. Currently, our UI can render six color patches on the screen at a time. If you add more color patches, the picker will scroll vertically. If you add fewer color patches, there will be empty space. As such, the ideal number of color patches per palette is six; keep this in mind when thinking about how to best group your colors:
+
+[==
+
+```swift
+let colorPatch = PSPDFColorPatch(colors: [
+    UIColor.red,
+    UIColor(hue: 0.0, saturation: 1.0, brightness: 0.8, alpha: 1.0),
+    UIColor(hue: 0.0, saturation: 1.0, brightness: 0.6, alpha: 1.0),
+    UIColor(hue: 0.0, saturation: 1.0, brightness: 0.4, alpha: 1.0),
+    UIColor(hue: 0.0, saturation: 1.0, brightness: 0.2, alpha: 1.0),
+])
+```
+
+```objc
+PSPDFColorPatch *colorPatch = [PSPDFColorPatch colorPatchWithColors:@[
+    UIColor.redColor,
+    [UIColor colorWithHue:0.0 saturation:1.0 brightness:0.8 alpha:1.0],
+    [UIColor colorWithHue:0.0 saturation:1.0 brightness:0.6 alpha:1.0],
+    [UIColor colorWithHue:0.0 saturation:1.0 brightness:0.4 alpha:1.0],
+    [UIColor colorWithHue:0.0 saturation:1.0 brightness:0.2 alpha:1.0],
+]];
+```
+
+==]
+
+<img alt="Shades of Red color patch" src="/images/guides/ios/customizing-the-interface/custom-color-picker/shades-of-red.png" srcset="/images/guides/ios/customizing-the-interface/custom-color-picker/shades-of-red@2x.png 2x">
+
+The sample code above creates a color patch with five different red colors. Starting with a pure red as the first element, we then add darker reds with the same hue and saturation.
+
+## Color Palettes
+
+A [`PSPDFColorPalette`][] can contain any number of [`PSPDFColorPatch`][]es. A color palette is currently represented in the UI by a single page inside the color picker. Different pages, and therefore different palettes, can be seen by swiping left and right.
+
+By default, PSPDFKit adds a special HSV color picker as the last color palette for each color set. You might want to do this as well if you want to mimic the framework’s appearance. This gives the user a set of predefined colors that are most suitable for the use case. This also enables the user to choose whichever color they want if they do not find the right color in the presets.
+
+The color patches inside a color palette can have any number of colors and they don’t need to match. Creating a color palette like the following is valid:
+
+[==
+
+```swift
+let palette = PSPDFColorPalette(title: "Shades of Gray", colorPatches: [
+    PSPDFColorPatch(color: .white),
+    PSPDFColorPatch(colors: [.lightGray, .gray, .darkGray]),
+    PSPDFColorPatch(color: .black)
+])
+```
+
+```objc
+PSPDFColorPalette *palette = [PSPDFColorPalette colorPaletteWithTitle:@"Shades of Gray" colorPatches:@[
+    [PSPDFColorPatch colorPatchWithColor:UIColor.whiteColor],
+    [PSPDFColorPatch colorPatchWithColors:@[UIColor.lightGrayColor, UIColor.grayColor, UIColor.darkGrayColor]],
+    [PSPDFColorPatch colorPatchWithColor:UIColor.blackColor]
+]];
+```
+
+==]
+
+This results in a large patch of white on the left, a large patch of black on the right, and three different gray colors in the middle patch, all vertically aligned.
+
+<img alt="Shades of gray color picker" src="/images/guides/ios/customizing-the-interface/custom-color-picker/shades-of-gray.png" srcset="/images/guides/ios/customizing-the-interface/custom-color-picker/shades-of-gray@2x.png 2x">
+
+## Color Sets
+
+There is currently a total of three different color sets. Each color set represents a certain use case in the framework:
+
+| Color Set                              | Use Case                                                                                                                                                                      |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PSPDFColorSetDefault`                 | The default color set used as the foreground color for all kinds of annotations.                                                                                              |
+| `PSPDFColorSetDefaultWithTransparency` | The default color set used as the background color for all kinds of annotations. It is similar to the default color set but contains an option to choose a transparent color. |
+| `PSPDFColorSetPageBackgrounds`         | This set contains colors that are suitable for large backgrounds. It is used for choosing the background color when creating new pages in the Document Editor.                |
+
+## Customization Hook
+
+To replace the colors displayed in a color picker, all you need to do is subclass [`PSPDFColorPickerFactory`][] and implement [`+colorPalettesInColorSet:`][]. You can then return your own array of color palettes. To tell PSPDFKit about your custom subclass, simply use the configuration when setting up your view controller:
+
+[==
+
+```swift
+let configuration = PSPDFConfiguration { builder in
+    builder.overrideClass(PSPDFColorPickerFactory.self, with: CustomColorPickerFactory.self)
+}
+let controller = PSPDFViewController(document: document, configuration: configuration)
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+    [builder overrideClass:PSPDFColorPickerFactory.class withClass:CustomColorPickerFactory.class];
+}];
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:document configuration:configuration];
+```
+
+==]
+
+When implementing [`+colorPalettesInColorSet:`][], prepare your code for new color sets. They will become available when new functionality is added to the framework. You should make sure that this does not break your code, e.g. by always adding a `default` case if you are using a `switch` statement to distinguish between color sets.
+
+The code to customize the default color set would look like this:
+
+[==
+
+```swift
+class CustomColorPickerFactory: PSPDFColorPickerFactory {
+    override class func colorPalettes(in colorSet: PSPDFColorSet) -> [PSPDFColorPalette] {
+        switch colorSet {
+        case .default:
+            let palette = ...
+            return [palette, PSPDFColorPalette.modern(), PSPDFColorPalette.hsv()]
+        default:
+            return super.colorPalettes(in: colorSet)
+        }
+    }
+}
+```
+
+```objc
++ (NSArray<PSPDFColorPalette *> *)colorPalettesInColorSet:(PSPDFColorSet)colorSet {
+    switch (colorSet) {
+        case PSPDFColorSetDefault: {
+            PSPDFColorPalette *palette = ...;
+            return @[palette, PSPDFColorPalette.modernColorPalette, PSPDFColorPalette.hsvColorPalette];
+        }
+        default:
+            return [super colorPalettesInColorSet:colorSet];
+    }
+}
+```
+
+==]
+
+That’s all you need to do. In the sample code above, we return a new custom palette, the framework’s modern color palette, and an HSV color palette. This results in three pages being shown to the user. If you want to know which other predefined color palettes are available, please refer to the documentation on [`PSPDFColorPicker`][].
+
+[`pspdfcolorset`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFColorSet
+[`pspdfcolorpalette`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPalette.html
+[`pspdfcolorpatch`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPatch.html
+[`pspdfcolorpickerfactory`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPickerFactory.html#/c:objc(cs)PSPDFColorPickerFactory(cm)colorPalettesInColorSet:
+[`+colorpalettesincolorset:`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPickerFactory.html#/c:objc(cs)PSPDFColorPickerFactory(cm)colorPalettesInColorSet:
+[`pspdfcolorpicker`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPalette.html#/PSPDFColorPalettes
+[color picker gif]: /images/guides/ios/customizing-the-interface/custom-color-picker/color-picker-components.gif

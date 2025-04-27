@@ -1,0 +1,103 @@
+---
+title: Viewer
+title_suffix: PSPDFKit for Android
+platform: android
+section: sdk
+---
+
+<%= partial 'shared/nav_sub' %>
+
+<!-- Videos -->
+<%= partial 'shared/product_videos', locals: {
+  title: "Core Viewer",
+  subtitle: "PSPDFKit for Android",
+  body: "As the most advanced PDF viewer on the market, Core Viewer serves as the foundation of our framework. It delivers exceptional rendering performance with a beautifully designed UI that can be customized to fit your exact use case.",
+  items: [
+    {
+      title: 'PDF Viewing',
+      url: '/images/pdf-sdk/android/viewer/pdf-viewing.mp4'
+    },
+    {
+      title: 'Thumbnails',
+      url: '/images/pdf-sdk/android/viewer/thumbnails.mp4'
+    },
+    {
+      title: 'Smart Zoom',
+      url: '/images/pdf-sdk/android/viewer/smart-zoom.mp4'
+    },
+    {
+      title: 'Outline',
+      url: '/images/pdf-sdk/android/viewer/outline.mp4'
+    },
+    {
+      title: 'Bookmarks',
+      url: '/images/pdf-sdk/android/viewer/bookmarks.mp4'
+    },
+    {
+      title: 'Accessibility',
+      url: '/images/pdf-sdk/android/viewer/accessibility.mp4'
+    },
+  ]
+} %>
+
+<!-- Details -->
+<%= partial 'shared/product_details', locals: {
+  items: [
+    {
+      title: "PDF Viewing",
+      body: "PSPDFKit supports multiple ways to view and navigate PDF documents – show single or double pages in side scrolling or continuous scrolling views. You can also set whether a PDF page should be fully displayed or fit to width.",
+      image: "/images/pdf-sdk/android/viewer/pdf-viewing-feature.png"
+    },
+    {
+      title: "Thumbnails",
+      body: "The thumbnail view is fully customizable. You can increase the thumbnail size, change how pages are numbered, or disable thumbnail mode if you prefer a scrolling thumbnail bar instead.",
+      image: "/images/pdf-sdk/android/viewer/thumbnails-feature.png"
+    },
+    {
+      title: "Smart Zoom",
+      body: "Double tap on a block of text to perform a smart page content analysis and zoom instantly to the selected region. Double tap again to zoom back out.",
+      image: "/images/pdf-sdk/android/viewer/smart-zoom-feature.png"
+    },
+    {
+      title: "Outline",
+      body: "PSPDFKit features a fast and accurate outline (table of contents) parser that deals with all custom variants and PDF action types. Long outlines are wrapped into multiple lines, and actions can be fully customized or replaced.",
+      image: "/images/pdf-sdk/android/viewer/outline-feature.png"
+    },
+    {
+      title: "Bookmarks",
+      body: "PSPDFKit provides a rich bookmark UI that enables your users to add, remove, and sort bookmarks. Bookmarks made in a PDF document show a thumbnail and an excerpt of the bookmarked page for easy reference. The bookmark API also allows you to substitute your own UI or use your own bookmark provider.",
+      image: "/images/pdf-sdk/android/viewer/bookmarks-feature.png"
+    },
+    {
+      title: "Multi-document Support",
+      body: "With document tabs, support for side-by-side documents, and the ability to show multiple documents inside Android's task switcher, PSPDFKit satisfies professional editing needs.",
+      image: "/images/pdf-sdk/android/viewer/multi-document-support-feature.png"
+    },
+    {
+      title: "Document Info View",
+      body: "View and edit important attributes of any PDF file, including the document title, author names, keywords, and creator.",
+      image: "/images/pdf-sdk/android/viewer/document-info-view-feature.png"
+    },
+    {
+      title: "Accessibility",
+      body: "Increase your app's versatility with our framework. PSPDFKit integrates various accessibility features to make your app more accessible for people using alternative input methods (e.g. Google's TalkBack system or keyboard navigation).",
+      image: "/images/pdf-sdk/android/viewer/accessibility-feature.png"
+    }
+  ]
+} %>
+
+<!-- Documentation -->
+<%= partial 'shared/product_documentation', locals: {
+  title: 'Getting Started',
+  url: '/guides/android/current/getting-started/integrating-pspdfkit/'
+} %>
+
+<!-- Try PDF Viewer -->
+<%= partial 'shared/product_try_viewer', locals: {
+  title: 'Core Viewer',
+  image: '/images/pdf-sdk/android/viewer/try.png',
+  device: 'phone_android'
+} %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales', locals: { title: 'PSPDFKit for Android' } %>

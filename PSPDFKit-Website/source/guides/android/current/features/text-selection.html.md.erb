@@ -1,0 +1,261 @@
+---
+title: Text Selection
+section: developers
+---
+
+The [`TextSelectionManager`][] interface contains [`OnTextSelectionModeChangeListener`][] and [`OnTextSelectionChangeListener`][], which can be used to listen for text selection changes. The default [`PdfActivity`] implementation will display a contextual toolbar — namely [`TextSelectionToolbar`][] — when the text is long-pressed and the text-selection mode starts. The toolbar provides five actions with selected text: highlight, speak, copy to clipboard, share, and search.
+
+<figure>
+  <video src="/images/guides/android/features/text-selection/text-selection.mp4" class="no-mejs" width="65%" autoplay playsinline loop muted></video>
+</figure>
+
+## Registering Custom Listeners
+
+You can also implement your own [`TextSelectionManager`][] listeners to react to both text selection changes and text selection mode changes (entering and exiting text selection mode):
+
+[==
+
+```MyActivity.kt
+class MyActivity : PdfActivity(), TextSelectionManager.OnTextSelectionChangeListener, TextSelectionManager.OnTextSelectionModeChangeListener {
+
+  const val TAG = "MyActivity.TextSelection"
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    PdfFragment.addOnTextSelectionModeChangeListener(this)
+    PdfFragment.addOnTextSelectionChangeListener(this)
+  }
+
+  override fun onDestroy(savedInstanceState: Bundle?) {
+    PdfFragment.removeOnTextSelectionModeChangeListener(this)
+    PdfFragment.removeOnTextSelectionChangeListener(this)
+  }
+
+  override fun onEnterTextSelectionMode(controller: TextSelectionController) {
+    Log.i(TAG, "Text selection mode has started.")
+  }
+
+  override fun onExitTextSelectionMode(controller: TextSelectionController) {
+    Log.i(TAG, "Text selection mode has ended.")
+  }
+
+  override fun onTextSelectionChange(newTextSelection: TextSelection?, currentTextSelection: TextSelection?): Boolean {
+    if (newTextSelection != null) {
+      Log.i(TAG, "Selected text was: ${newTextSelection.text}")
+    } else {
+      Log.i(TAG, "Text selection is cleared.")
+    }
+    // You can also return `false` to prevent changes to the current selection state.
+    return true
+  }
+}
+```
+
+```MyActivity.java
+public class MyActivity extends PdfActivity implements TextSelectionManager.OnTextSelectionChangeListener,
+    TextSelectionManager.OnTextSelectionModeChangeListener{
+
+  private static final String TAG = "MyActivity.TextSelection";
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      getPdfFragment().addOnTextSelectionModeChangeListener(this);
+      getPdfFragment().addOnTextSelectionChangeListener(this);
+  }
+
+  @Override
+  protected void onDestroy(Bundle savedInstanceState) {
+      getPdfFragment().removeOnTextSelectionModeChangeListener(this);
+      getPdfFragment().removeOnTextSelectionChangeListener(this);
+  }
+
+  @Override
+  public void onEnterTextSelectionMode(@NonNull TextSelectionController controller) {
+      Log.i(TAG, "Text selection mode has started.");
+  }
+
+  @Override
+  public void onExitTextSelectionMode(@NonNull TextSelectionController controller) {
+      Log.i(TAG, "Text selection mode has ended.");
+  }
+
+  @Override
+  public boolean onTextSelectionChange(@Nullable TextSelection newTextSelection, @Nullable TextSelection currentTextSelection) {
+      if (newTextSelection != null) {
+          Log.i(TAG, String.format("Selected text was: %s", newTextSelection.text));
+      } else {
+          Log.i(TAG, "Text selection is cleared.");
+      }
+
+      // You can also return `false` to prevent changes to the current selection state.
+      return true;
+  }
+}
+```
+
+==]
+
+This will not override the default behavior. Rather, it will register more listeners. If you’d like to have a completely different behavior than showing the toolbar when text selection starts, you need to use [`PdfFragment`][] inside a custom activity and bind the UI with the provided [`TextSelectionController`][].
+
+## Customize Text Selection Actions
+
+Existing text selection actions can be modified using [`toolbar.setMenuItems(...)`][`contextualtoolbar#setmenuitems`]. To access the [`TextSelectionToolbar`][], register the [`OnContextualToolbarLifecycleListener`][] and configure the actions inside its [`#onPrepareContextualToolbar`][`oncontextualtoolbarlifecyclelistener#onpreparecontextualtoolbar`] method:
+
+[==
+
+```MyActivity.kt
+class MyActivity : PdfActivity(), ToolbarCoordinatorLayout.OnContextualToolbarLifecycleListener {
+
+    private lateinit var customTextSelectionAction: ContextualToolbarMenuItem
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Register the activity as a callback for contextual toolbar changes.
+        // It will be called once the `TextSelectionToolbar` is going to be presented.
+        setOnContextualToolbarLifecycleListener(this)
+
+        // Create a custom menu item that will be shown inside the text selection toolbar.
+        customTextSelectionAction = ContextualToolbarMenuItem.create(
+            this,
+            R.id.custom_text_action,
+            AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_my_action),
+            "Custom text action",
+            Color.WHITE,
+            Color.RED,
+            false)
+    }
+
+    override fun onPrepareContextualToolbar(toolbar: ContextualToolbar) {
+        // Add the custom action once the selection toolbar is being prepared.
+        // At this point, you could also remove undesired actions from the toolbar.
+        if (toolbar is TextSelectionToolbar) {
+            val menuItems = toolbar.getMenuItems()
+            if (!menuItems.contains(customTextSelectionAction)) {
+                menuItems.add(customTextSelectionAction)
+                toolbar.setMenuItems(menuItems)
+            }
+        }
+    }
+
+    override fun onDisplayContextualToolbar(toolbar: ContextualToolbar) {
+        // Register a click listener to handle taps on the custom text selection action.
+        toolbar.setOnMenuItemClickListener { toolbar, menuItem ->
+            var handled = false
+
+            if (menuItem.id == R.id.custom_text_action) {
+                handled = true
+                Toast.makeText(this@MyActivity, "Text selection action triggered!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            handled
+        }
+    }
+
+    override fun onRemoveContextualToolbar(toolbar: ContextualToolbar) {
+        toolbar.setOnMenuItemClickListener(null)
+    }
+}
+```
+
+```MyActivity.java
+public class MyActivity extends PdfActivity
+    implements ToolbarCoordinatorLayout.OnContextualToolbarLifecycleListener {
+
+    private ContextualToolbarMenuItem customTextSelectionAction;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Register the activity as a callback for contextual toolbar changes.
+        // It will be called once the `TextSelectionToolbar` is going to be presented.
+        setOnContextualToolbarLifecycleListener(this);
+
+        // Create a custom menu item that will be shown inside the text selection toolbar.
+        customTextSelectionAction = ContextualToolbarMenuItem.create(
+            this,
+            R.id.custom_text_action,
+            AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_my_action),
+            "Custom text action",
+            Color.WHITE,
+            Color.RED,
+            false
+        );
+    }
+
+    @Override public void onPrepareContextualToolbar(@NonNull ContextualToolbar toolbar) {
+        // Add the custom action once the selection toolbar is being prepared.
+        // At this point, you could also remove undesired actions from the toolbar.
+        if (toolbar instanceof TextSelectionToolbar) {
+            final List<ContextualToolbarMenuItem> menuItems = toolbar.getMenuItems();
+            if (!menuItems.contains(customTextSelectionAction)) {
+                menuItems.add(customTextSelectionAction);
+                toolbar.setMenuItems(menuItems);
+            }
+        }
+    }
+
+    @Override public void onDisplayContextualToolbar(@NonNull ContextualToolbar toolbar) {
+        // Register a click listener to handle taps on the custom text selection action.
+        toolbar.setOnMenuItemClickListener((contextualToolbar, menuItem) -> {
+            boolean handled = false;
+
+            if (menuItem.getId() == R.id.custom_text_action) {
+                handled = true;
+                Toast.makeText(MyActivity.this, "Text selection action triggered!", Toast.LENGTH_SHORT)
+                    .show();
+            }
+
+            return handled;
+        });
+    }
+
+    @Override public void onRemoveContextualToolbar(@NonNull ContextualToolbar toolbar) {
+        toolbar.setOnMenuItemClickListener(null);
+    }
+}
+```
+
+==]
+
+## Selecting Text Programmatically
+
+You can easily select text programmatically by calling [`PdfFragment#enterTextSelectionMode`][] and providing the text range to be selected. You can retrieve the text of the current page by calling [`PdfDocument#getPageText`][].
+
+For example, select the first occurrence of a random string on the page:
+
+[==
+
+```kotlin
+// Search for the position of text that should be selected.
+val textToSelect = "text to select"
+val textIndexOnPage = document.getPageText(pageIndex).indexOf(textToSelect)
+if (textIndexOnPage >= 0) {
+    // Select the text.
+    fragment.enterTextSelectionMode(pageIndex, Range(textIndexOnPage, textToSelect.length))
+}
+```
+
+```java
+// Search for the position of text that should be selected.
+String textToSelect = "text to select";
+int textIndexOnPage = document.getPageText(pageIndex).indexOf(textToSelect);
+if (textIndexOnPage >= 0) {
+    // Select the text.
+    fragment.enterTextSelectionMode(pageIndex, new Range(textIndexOnPage, textToSelect.length()));
+}
+```
+
+==]
+
+[`oncontextualtoolbarlifecyclelistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ToolbarCoordinatorLayout.OnContextualToolbarLifecycleListener.html
+[`oncontextualtoolbarlifecyclelistener#onpreparecontextualtoolbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ToolbarCoordinatorLayout.OnContextualToolbarLifecycleListener.html#onPrepareContextualToolbar(com.pspdfkit.ui.toolbar.ContextualToolbar)
+[`contextualtoolbar#setmenuitems`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ContextualToolbar.html#setMenuItems(java.util.List<com.pspdfkit.ui.toolbar.ContextualToolbarMenuItem>)
+[`textselectionmanager`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/TextSelectionManager.html
+[`textselectiontoolbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/TextSelectionToolbar.html
+[`ontextselectionmodechangelistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/TextSelectionManager.OnTextSelectionModeChangeListener.html
+[`ontextselectionchangelistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/TextSelectionManager.OnTextSelectionChangeListener.html
+[`textselectioncontroller`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/TextSelectionController.html
+[`pdffragment#entertextselectionmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#enterTextSelectionMode(int,%20com.pspdfkit.datastructures.Range)
+[`pdfdocument#getpagetext`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPageText(int)

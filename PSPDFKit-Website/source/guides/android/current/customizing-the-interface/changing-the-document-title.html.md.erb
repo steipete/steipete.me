@@ -1,0 +1,108 @@
+---
+title: Changing the Document Title
+section: developers
+---
+
+By default, PSPDFKit parses documents and extracts the PDF title from the PDF metadata. If there is no metadata or the PDF name equals Untitled, then it’ll fall back to the file name and remove the `.pdf` file type.
+
+PSPDFKit exposes various metadata keys:
+
+```java
+public abstract class DocumentMetadata {
+    @Nullable
+    public abstract String getTitle();
+
+    @Nullable
+    public abstract String getAuthor();
+
+    @Nullable
+    public abstract String getSubject();
+
+    @Nullable
+    public abstract String getKeywords();
+
+    @Nullable
+    public abstract String getCreator();
+
+    @Nullable
+    public abstract String getProducer();
+
+    @Nullable
+    public abstract String getCreationDate();
+
+    @Nullable
+    public abstract String getModDate();
+}
+```
+
+You can learn more about PDF metadata in the PDF Reference 1.7, Table 317.
+
+<img src="/images/guides/shared/customizing-the-interface/change-the-document-title/pdf-reference.png">
+
+## Action Bar Changes
+
+By default, PSPDFKit sets the title of the action bar to the document title. To avoid this behavior and customize the action bar title, you’ll have to extend `PdfActivity` and override the `onSetActivityTitle()` method:
+
+[==
+
+```CustomActivity.kt
+override fun onSetActivityTitle(configuration: PdfActivityConfiguration, document: PdfDocument?) {
+    // Set the required title in the action bar.
+    supportActionBar?.title = "Custom title"
+```
+
+```CustomActivity.java
+@Override
+public void onSetActivityTitle(@NonNull PdfActivityConfiguration configuration, @Nullable PdfDocument document) {
+    // Set the required title in the action bar.
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+        actionBar.setTitle("Custom title");
+    }
+}
+```
+
+==]
+
+## Custom Document Title
+
+If you want to set a custom document title but don’t want to change the document title inside the document metadata, then:
+
+1. Create a [`DocumentDescriptor`][] for your document
+2. Set the required custom title via [`DocumentDescriptor#setTitle()`][].
+3. Open the document descriptor in [`PdfActivity`][].
+
+[==
+
+```kotlin
+// Create the document descriptor and set the custom title.
+val documentDescriptor = DocumentDescriptor.fromUri(documentUri)
+documentDescriptor.setTitle("Custom title")
+
+// Start the activity with the document loaded from the document descriptor.
+val intent = PdfActivityIntentBuilder.fromDocumentDescriptor(context, documentDescriptor)
+    .configuration(configuration)
+    .build()
+context.startActivity(intent)
+```
+
+```java
+// Create the document descriptor and set the custom title.
+DocumentDescriptor documentDescriptor = DocumentDescriptor.fromUri(documentUri);
+documentDescriptor.setTitle("Custom title");
+
+// Start the activity with the document loaded from the document descriptor.
+Intent intent PdfActivityIntentBuilder.fromDocumentDescriptor(context, documentDescriptor)
+    .configuration(configuration)
+    .build();
+context.startActivity(intent)
+```
+
+==]
+
+Alternatively, if you are not using tabs, you can use a simpler but less generic API, [`PdfActivityConfiguration.Builder#title()`][]. The custom title set in [`PdfActivityConfiguration`][] is displayed inside the action bar or the document title view (whichever is enabled). Note that this configuration is ignored when displaying [multiple documents][] in a single activity (for example, when using tabs).
+
+[`pdfactivityconfiguration.builder#title()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#title(java.lang.String)
+[`documentdescriptor`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/DocumentDescriptor.html
+[`documentdescriptor#settitle()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/DocumentDescriptor.html#setTitle(java.lang.String)
+[multiple documents]: ../../getting-started/working-with-multiple-documents/

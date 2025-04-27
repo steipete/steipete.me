@@ -1,0 +1,62 @@
+---
+title: Link Annotations
+section: developers
+---
+
+PSPDFKit supports all common types of link annotations, including page, web, and email links. Tapping on a link will automatically invoke both the saved action (see the [PDF Actions][] guide) and the correct task, such as changing the page or displaying another document/opening a URL.
+
+By default, PSPDFKit will parse annotations, including links, from the document.
+
+## Creation
+
+### User Interface
+
+It’s possible to create a link annotation in the UI either by selecting text and tapping the link annotation symbol in the contextual menu, or by using the link tool on the annotation toolbar and selecting text or an arbitrary rectangular area on the page. This will show a UI where you can choose between linking to a page in the current document or linking to a website.
+
+Link creation and editing in the UI is enabled by default. This can be disabled by removing [`PSPDFAnnotationStringLink`][] from [`editableAnnotationTypes`][].
+
+### Programmatically
+
+You can also manually create link annotations and add them to a document (see the [Programmatically Creating Annotations][] guide). For adding link annotations, you should create objects of the [`PSPDFLinkAnnotation`][] type.
+
+[`PSPDFLinkAnnotation`][] can be initialized with a [`PSPDFAction`][] subclass. The most used subclasses are [`PSPDFURLAction`][] for web links and [`PSPDFGoToAction`][] for page links.
+
+## Style
+
+By default, links are invisible, without a border and a background. But if a link annotation has [`borderColor`][] or [`lineWidth`][] set, this will be honored.
+
+Additionally, you can change the background color of link annotation views via `UIAppearance`. The set background color will always be shown for all link annotations. It should be used to highlight them, so it is recommended that this color has a high transparency. Setting the background color can be achieved with this logic:
+
+[==
+
+```swift
+// Customize the link annotation's appearance.
+PSPDFLinkAnnotationView.appearance().backgroundColor = UIColor.blue.withAlphaComponent(0.1)
+```
+
+```objc
+// Customize the link annotation's appearance.
+[[PSPDFLinkAnnotationView appearance] setBackgroundColor:[UIColor.blueColor colorWithAlphaComponent:0.1]];
+```
+
+==]
+
+## Autodetecting Links
+
+PSPDFKit is capable of analyzing the page contents and automatically adding links to URLs and phone numbers. This is slightly expensive since text needs to be parsed and analyzed, but it’s done in a background process, so in most cases, it’s not noticeably slower. Set [`autodetectTextLinkTypes`][] to [`PSPDFTextCheckingTypeAll`][] to enable detection for all supported types.
+
+Note that autodetecting a link only works if there is no overlapping link annotation at the same location the autodetected link would be located at on a PDF page. This is done to avoid creating duplicate link annotations over text that already has a link annotation saved in the PDF.
+
+[pdf actions]: ../../annotations/pdf-actions
+[programmatically creating annotations]: ../../annotations/programmatically-creating-annotations
+[`pspdflinkannotation`]: https://pspdfkit.com/api/Classes/PSPDFLinkAnnotation.html
+[`pspdfaction`]: https://pspdfkit.com/api/Classes/PSPDFAction.html
+[`pspdfurlaction`]: https://pspdfkit.com/api/Classes/PSPDFURLAction.html
+[`pspdfgotoaction`]: https://pspdfkit.com/api/Classes/PSPDFGoToAction.html
+[`autodetecttextlinktypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)autodetectTextLinkTypes
+[document listener guide]: ../../miscellaneous/document-listeners
+[`pspdftextcheckingtypeall`]: https://pspdfkit.com/api/ios/Enums/PSPDFTextCheckingType.html#/c:@E@PSPDFTextCheckingType@PSPDFTextCheckingTypeAll
+[`bordercolor`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)borderColor
+[`linewidth`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)lineWidth
+[`pspdfannotationstringlink`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFAnnotationStringLink
+[`editableannotationtypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)editableAnnotationTypes

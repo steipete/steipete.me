@@ -1,0 +1,29 @@
+---
+title: Integrating PSPDFKit Manually
+section: developers
+
+order: 3
+alternate_platform_links:
+  web: pspdfkit-for-web/getting-started
+---
+
+The simplest way to integrate PSPDFKit is to [use CocoaPods][]. If
+you prefer or require a manual setup, please follow the steps below.
+
+Log in to the [PSPDFKit Customer Portal][] and
+download the latest version of the PSPDFKit for macOS framework. You should now
+have `PSPDFKit-macOS.dmg` on your file system.
+
+1.  Open `PSPDFKit-macOS.dmg`.
+2.  Add `PSPDFKit.framework` to your Xcode project.
+3.  Drag `PSPDFKit.framework` to Embedded Binaries (in the General tab of your target).
+4.  Build and run.
+
+## Integrating with Tests
+
+If you need to integrate PSPDFKit into your test targets, just add
+`PSPDFKit.framework` to the Link Binaries With Libraries build phase (in the
+Build Phases tab of your test target).
+
+[use cocoapods]: ../../getting-started/using-cocoapods
+[pspdfkit customer portal]: https://customers.pspdfkit.com/

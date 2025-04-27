@@ -1,0 +1,168 @@
+---
+title: PSPDFKit 3 Migration Guide
+section: developers
+
+order: 61
+---
+
+This article provides a set of guidelines to migrate from version 2.x to version 3.0 of PSPDFKit for Android. It also highlights the biggest changes and features introduced in this milestone version.
+
+## Initialization
+
+We’ve simplified the way to initialize the PSPDFKit framework by removing the license key from configuration files and passing it through the bundle to the fragment. Instead of having to pass the license key as part of [`PdfConfiguration`][] or [`PdfActivityConfiguration`][], the framework will now be initialized automatically by reading the license key from your `AndroidManifest.xml` file.
+
+To migrate from previous solution, add a `<meta-data android:name="pspdfkit_license_key">` tag to your `AndroidManifest.xml` file and change `PSPDFActivityConfiguration.Builder` to `PdfActivityConfiguration.Builder` without the license key parameter:
+
+```AndroidManifest.xml
+<application..>
+
+    <meta-data
+        android:name="pspdfkit_license_key"
+        android:value="license_goes_here"/>
+
+</application>
+```
+
+The framework will then run the initialization process for you before the applications starts. If you still want to do it manually with [`PSPDFKit.initialize()`][], you’re free to do so — just omit the `<meta-data>` tag. However, due to changed configuration objects, you _must_ call the initialization method before using PSPDFKit calls if you do not want to use the `<meta-data>` approach.
+
+Read more about initialization in the [Adding the License Key][] guide.
+
+## Renamed Classes
+
+We dropped the `PSPDF` prefix from all our classes to be more in line with standard Android and Java APIs. We also changed capitalization to be in line with standard Android APIs — as such, `PSPDFDocument` became `PdfDocument`, `PSDPDFActivity` is now `PdfActivity`, `PSPDFFragment` is now `PdfFragment`, etc. All other classes have been renamed in similar way. The full list can be found at the [end of this guide](#list-of-renamed-classes).
+
+## Updated Dependencies
+
+We’ve updated RxJava to 2.0.8 and RxAndroid to 2.0.1. All public-facing methods are now using the new RxJava 2 types of Observable, Flowable, Single, and Completable. RxJava 2.0 is more performant and brings future proofing as a benefit. For a comprehensive overview of the changes in RxJava 2, please have a look at [the official RxJava 2 documentation][].
+
+If you’re using the recommended Maven repository approach to add PSPDFKit to your project, you don’t have to do anything — the dependency will be updated automatically.
+
+If you’re not using our Maven repository, make sure you update dependencies to the new version:
+
+```groovy
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+```
+
+If you must translate PSPDFKit RxJava 2.0 calls into RxJava 1.0-compatible calls, you can use the [RxJava2Interop][] library.
+
+## New Activity Initialization
+
+Starting `PdfActivity` is now encouraged through the use of the new `PdfActivityIntentBuilder` class, which replaces the old `PSPDFActivity.IntentBuilder` class. Most of the static `PSPDFActivity#showDocument()` calls — with the exception of two of the most used ones — have been removed in favor of using the intent builder.
+
+Example:
+
+[==
+
+```kotlin
+val intent = PdfActivityIntentBuilder.fromUri(context, documentUri)
+    .configuration(config)
+    .activity(CustomActionsActivity.class)
+    .passwords("some_password")
+    .contentSignatures("some_doc_signature")
+    .build()
+
+context.startActivity(intent)
+```
+
+```java
+final Intent intent = PdfActivityIntentBuilder.fromUri(context, documentUri)
+    .configuration(config)
+    .activity(CustomActionsActivity.class)
+    .passwords("some_password")
+    .contentSignatures("some_doc_signature")
+    .build();
+
+context.startActivity(intent);
+```
+
+==]
+
+See our [Using an Activity][] guide for more details.
+
+## Opening Documents
+
+We’ve moved `PSPDFKit.openDocument` calls to the [`PdfDocument`][] class:
+
+[==
+
+```kotlin
+// Old call.
+val document = PSPDFKit.openDocument(context, documentUri);
+
+// New call.
+val document = PdfDocument.openDocument(context, documentUri);
+```
+
+```java
+// Old call.
+PSPDFDocument document = PSPDFKit.openDocument(context, documentUri);
+
+// New call.
+PdfDocument document = PdfDocument.openDocument(context, documentUri);
+```
+
+==]
+
+`PSPDFKit.invalidatePageCache` and `PSPDFKit.invalidateDocumentCache` have also moved to a more natural location inside the [`PdfDocument`][] class. They are now named [`PdfDocument#invalidateCache()`][] and [`PdfDocument#invalidateCacheForPage(pageIndex)`][`pdfdocument#invalidatecacheforpage()`].
+
+## List of Renamed Classes
+
+- `PSPDFActivity` → `PdfActivity`
+- `PSPDFDocument` → `PdfDocument`
+- `PSPDFFragment` → `PdfFragment`
+  - `convertViewRectToPDFRect()` → `convertViewRectToPdfRect()`
+  - `convertPDFRectToViewRect()` → `convertPdfRectToViewRect()`
+  - `convertViewPointToPDFPoint()` → `convertViewPointToPdfPoint()`
+  - `convertPDFPointToViewPoint()` → `convertPdfPointToViewPoint()`
+  - `getVisiblePDFRect()` → `getVisiblePdfRect()`
+- `PSPDFPreferences` → `PSPDFKitPreferences`
+- `PSPDFDocumentMetadata` → `DocumentMetadata`
+- `PDFVersion` → `PdfVersion`
+- `PSPDFTextBlock` → `TextBlock`
+- `PSPDFLibrary` → `PdfLibrary`
+- `PSPDFAnnotationManager` → `AnnotationManager`
+- `PSPDFProcessor` → `PdfProcessor`
+- `PSPDFProcessorTask` → `PdfProcessorTask`
+- `PSPDFProcesorException` → `PdfProcessorException`
+- `PSPDFSearchOptions` → `SearchOptions`
+- `PSPDFSearchResult` → `SearchResult`
+- `PSPDFTextSearch` → `TextSearch`
+- `PSPDFException` → `PSPDFKitException`
+- `PSPDFNotInitializedException` → `PSPDFKitNotInitializedException`
+- `PSPDFInitializationFailedException` → `InitializationFailedException`
+- `PSPDFInvalidLayoutException` → `InvalidLayoutException`
+- `PSPDFInvalidLayoutException` → `InvalidLayoutException`
+- `PSPDFInvalidPasswordException` → `InvalidPasswordException`
+- `PSPDFInvalidSignatureException` → `InvalidSignatureException`
+- `PSPDFMissingDependencyException` → `MissingDependencyException`
+- `PSPDFYouTubeActivity` → `PdfYouTubeActivity`
+- `PSPDFDrawableManager` → `PdfDrawableManager`
+- `PSPDFDrawableProvider` → `PdfDrawableProvider`
+- `PSPDFDrawable` → `PdfDrawable`
+- `PSPDFOutlineView` → `PdfOutlineView`
+- `PSPDFThumbnailBar` → `PdfThumbnailBar`
+- `PSPDFThumbnailGrid` → `PdfThumbnailGrid`
+- `PSPDFSearchView` → `PdfSearchView`
+- `PSPDFViews` → `PSPDFKitViews`
+- `PdfActivity#getPSPDFViews()` → `PdfActivity#getPSPDFKitViews()`
+- `PDFUtils` → `PdfUtils`
+  - `createPDFRectUnion()` → `createPdfRectUnion()`
+- `PagePDF` → `PagePdf`
+- `PDFBox` → `PdfBox`
+- `URIAction` → `UriAction`
+- `HUDViewMode` → `HudViewMode`
+- `PSPDFDocumentEditor` → `PdfDocumentEditor`
+- `PSPDFDocumentEditorListener` → `PdfDocumentEditorListener`
+- `PSPDFDocumentEditorListenerCallbacks` → `PdfDocumentEditorListenerCallbacks`
+
+[`pspdfkit.initialize()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/PSPDFKit.html#initialize(android.content.Context,%20java.lang.String)
+[adding the license key]: https://pspdfkit.com/guides/android/current/getting-started/adding-the-license-key/
+[the official rxjava 2 documentation]: https://github.com/ReactiveX/RxJava/wiki
+[using an activity]: https://pspdfkit.com/guides/android/current/getting-started/using-activity/
+[`pdfconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.html
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.html
+[`pdfdocument`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html
+[rxjava2interop]: https://github.com/akarnokd/RxJava2Interop
+[`pdfdocument#invalidatecache()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#invalidateCache()
+[`pdfdocument#invalidatecacheforpage()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#invalidateCacheForPage(int)

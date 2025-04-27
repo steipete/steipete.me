@@ -1,0 +1,28 @@
+---
+title: Download PDFs
+section: developers
+
+order: 3
+---
+
+### Download a Document as a PDF
+
+```
+GET /documents/:document_id/pdf
+```
+
+Downloading a document as a PDF requires the query parameter `jwt`. It must be a valid JWT with a `document_id` and an optional `original: <boolean>` property. This allows you to have fine-grained control over the generated PDF. The server will not look at the URL parameters for this endpoint.
+
+By default, this endpoint returns the document as a PDF with all of the annotations saved into it. If you include `original: true` in the JSON Web Token (JWT), the PDF that was originally uploaded for the document will be returned unmodified.
+
+You can use this link to offer a download button for a document:
+
+```html
+<a
+  href="https://example.com/documents/abc/pdf?jwt=<jwt>"
+  download
+  target="_blank"
+>
+  Click here to download.
+</a>
+```

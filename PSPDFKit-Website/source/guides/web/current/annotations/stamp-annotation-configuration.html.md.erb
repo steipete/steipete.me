@@ -1,0 +1,116 @@
+---
+title: Stamp Annotation Configuration
+section: developers
+
+---
+
+To change the [default stamp annotation templates][] available in the stamp picker UI, you can modify [`PSPDFKit.defaultStampAnnotationTemplates`][] and pass the modified `Array` in the `PSPDFKit.load` function call:
+
+[==
+
+```js
+var stampAnnotationTemplates = PSPDFKit.defaultStampAnnotationTemplates;
+stampAnnotationTemplates.push(
+  new PSPDFKit.Annotations.StampAnnotation({
+    stampType: "Custom",
+    title: "My custom text",
+    color: new PSPDFKit.Color({ r: 0, g: 0, b: 64 }),
+    subtitle: "my custom subtitle",
+    boundingBox: new PSPDFKit.Geometry.Rect({
+      left: 0,
+      top: 0,
+      width: 300,
+      height: 100
+    })
+  })
+);
+PSPDFKit.load({ stampAnnotationTemplates: stampAnnotationTemplates });
+```
+
+```es
+const stampAnnotationTemplates = PSPDFKit.defaultStampAnnotationTemplates;
+const stampAnnotationTemplates.push(new PSPDFKit.Annotations.StampAnnotation({
+  stampType: "Custom",
+  title: "My custom text",
+  color: new PSPDFKit.Color({ r: 0, g: 0, b: 64 }),
+  subtitle: "my custom subtitle",
+  boundingBox: new PSPDFKit.Geometry.Rect({
+    left: 0,
+    top: 0,
+    width: 300,
+    height: 100
+  })
+}));
+PSPDFKit.load({ stampAnnotationTemplates });
+```
+
+==]
+
+> **Tip:** You can get the current list of stamp annotation templates available in a loaded instance from [`Instance#stampAnnotationTemplates`][].
+
+![Stamp picker dialog with a custom set of default stamps][stamp image]
+
+## Add Image Annotations to the Stamp Annotation Templates
+
+PSPDFKit supports stamp annotation templates generated from an [image annotation][]. These annotations are still image annotations, but they can be added to the stamp picker UI as well:
+
+[==
+
+```js
+var imageURL = "https://example.com/image.png";
+fetch(imageURL)
+  .then(function(response) {
+    return response.blob();
+  })
+  .then(function(file) {
+    instance.createAttachment(file).then(function(imageAttachmentId) {
+      var imageAnnotation = new PSPDFKit.Annotations.ImageAnnotation({
+        imageAttachmentId: imageAttachmentId,
+        contentType: "image/png",
+        description: "Example",
+        boundingBox: new PSPDFKit.Geometry.Rect({
+          width: 300,
+          height: 200,
+          top: 0,
+          left: 0
+        })
+      });
+      instance.setStampAnnotationTemplates(function(stampAnnotationTemplates) {
+        stampAnnotationTemplates.push(imageAnnotation);
+        return stampAnnotationTemplates;
+      });
+    });
+  });
+```
+
+```es
+(async () => {
+  const imageURL = "https://example.com/image.png";
+  const file = await fetch(imageURL).then(response => response.blob());
+  const imageAttachmentId = await instance.createAttachment(file);
+  const imageAnnotation = new PSPDFKit.Annotations.ImageAnnotation({
+    imageAttachmentId,
+    contentType: "image/png",
+    description: "Example",
+    boundingBox: new PSPDFKit.Geometry.Rect({
+      width: 300,
+      height: 200,
+      top: 0,
+      left: 0
+    })
+  });
+  instance.setStampAnnotationTemplates(stampAnnotationTemplates => [
+    ...stampAnnotationTemplates,
+    imageAnnotation
+  ]);
+})();
+```
+
+==]
+
+[stamp image]: /images/guides/web/annotations/picker-custom.png
+[image annotation]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.ImageAnnotation.html
+[`instance#stampannotationtemplates`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#stampAnnotationTemplates
+[configuration]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#stampAnnotationTemplates
+[default stamp annotation templates]: https://pspdfkit.com/api/web/PSPDFKit.html#.defaultStampAnnotationTemplates
+[`pspdfkit.defaultstampannotationtemplates`]: https://pspdfkit.com/api/web/PSPDFKit.html#.defaultStampAnnotationTemplates

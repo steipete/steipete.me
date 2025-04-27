@@ -1,0 +1,27 @@
+---
+title: Remove Apps from the Share Sheet
+section: knowledge-base
+---
+
+## Q: How do I remove the apps that get shown on the share sheet?
+
+A: To customize / remove apps the share sheet, we use a [`PSPDFDocumentSharingConfiguration`][] object. It defines the set of options available when sharing documents and also includes an option for [`excludedActivityTypes`][] that will help us customize / remove any unwanted apps on the share sheet. Please note that it currently not possible to exclude all third party applications from the share sheet. This is a restriction of Apple's `UIActivityViewController`.
+
+To remove unwanted apps from the share sheet, we would do something like this:
+
+```swift
+let sharingConfiguration = PSPDFDocumentSharingConfiguration.defaultConfiguration(forDestination: .activity).configurationUpdated {
+    $0.excludedActivityTypes = [.assignToContact, .postToWeibo, .postToFacebook, .postToTwitter]
+}
+
+let sharingController = PSPDFDocumentSharingViewController(documents: [document])
+sharingController.sharingConfigurations = [sharingConfiguration]
+```
+
+Now when the share sheet is shown, the activity types that we excluded will not be shown in the share sheet.
+
+For a more detailed explanation on all the different customizations available for the share sheet, check out our [Document Sharing guide][]. We also have an example in our Catalog (`CustomSharingOptionsExample`) which demonstrates several different ways to customize the share sheet.
+
+[`pspdfdocumentsharingconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfiguration.html
+[`excludedActivityTypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSharingConfigurationBuilder/excludedActivityTypes.html#/c:objc(cs)PSPDFDocumentSharingConfigurationBuilder(im)excludedActivityTypes
+[document sharing guide]: https://pspdfkit.com/guides/ios/current/miscellaneous/document-sharing/

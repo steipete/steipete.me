@@ -1,0 +1,34 @@
+---
+title: Rendering PDF Pages
+section: developers
+---
+
+Rendering a PDF to an image is made simple with the PSPDFKit Java Library. We leverage the JDK in order to maintain compatibility and stay efficient.
+
+## Render a Page
+
+Once you have a document instance, it’s very simple to render a page. The following will open a document and render page 0 with the dimensions of the page:
+
+```java
+File file = new File("Assets/default.pdf");
+PdfDocument document = new PdfDocument(new FileDataProvider(file));
+PdfPage page = document.getPage(0);
+BufferedImage image = page.renderPage();
+```
+
+It’s also possible to pass custom dimensions to scale the image:
+
+```java
+BufferedImage image = document.getPage(0).renderPage(50, 50);
+```
+
+## Save to File
+
+`renderPage` returns a native Java [`BufferedImage`][] object. Saving it out as a PNG image, for example, would look like this:
+
+```java
+File file = new File("out/test.png");
+boolean wrote = ImageIO.write(image, "png", file);
+```
+
+[`bufferedimage`]: https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html

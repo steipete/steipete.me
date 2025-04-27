@@ -1,0 +1,301 @@
+---
+title: PSPDFKit 9 Migration Guide
+section: developers
+
+order: 102
+---
+
+This guide covers updating an iOS project from PSPDFKit 8.x to PSPDFKit 9. We encourage you to update as soon as possible, in order to take advantage of future new features and fixes.
+
+PSPDFKit 9.0.0 for iOS fully supports iOS 11, 12, and 13. iOS 11 support will be removed later during the PSPDFKit 9 lifecycle. Xcode 11 or later is required to use this version of the SDK. Learn more in our [Version Support guide][].
+
+## XCFramework Integration
+
+PSPDFKit 9 for iOS is bundled as `.xcframework` files (XCFrameworks) instead of as `.framework` files. If you are using the [manual integration][integrating pspdfkit guide], you need to remove the old frameworks from the Frameworks, Libraries, and Embedded Content section of your target and add the XCFrameworks instead.
+
+![embedded-binaries](/images/guides/ios/migration-guides/pspdfkit-9-migration-guide/embedded-binaries.png)
+
+For more details, please follow our [Integrating PSPDFKit Manually][integrating pspdfkit guide] guide.
+
+## Dark Mode
+
+The entire PSPDFKit user interface was audited for compatibility using the new systemwide Dark Mode, which led to some updates to used default colors and visual effect materials. On iOS 13, most user interface colors are now dynamic `UIColor`s, which automatically adapt in Dark Mode. Color and material changes are mostly contained to iOS 13. However, due to the internal unification of used colors, certain defaults might also have changed slightly on previous iOS versions.
+
+The addition of Dark Mode support also led to some behavioral changes with PSPDFKit’s own internal dark interface implementation.
+
+On iOS 13, `PSPDFAppearanceManager` no longer transitions the UI into dark mode via `UIAppearance`-based theming when `PSPDFAppearanceModeNight` is selected. This is true for both programmatic switching via `PSPDFAppearanceManager.appearanceMode`, as well as when the appearance mode is specified via the built-in UI on `PSPDFSettingsViewController`. Instead, the UI follows the global interface mode setting that the end user selects. The page rendering style is still adjusted when `PSPDFAppearanceMode.appearanceMode` changes.
+
+We recommend following Apple guidelines and honoring the user’s selected interface mode. However, if you prefer to still use PSPDFKit’s UI to switch user interface styles inside your application, you can do so via `PSPDFAppearanceManagerDelegate` messages or via `PSPDFAppearanceModeChangedNotification` messages, all of which are still being sent out on appearance updates. You can listen for those updates and then set `overrideUserInterfaceStyle` on a view controller or view appropriate for your application.
+
+The behavior of `PSPDFAppearanceManager`, its delegates, and the related UI remains unchanged on iOS 11 and iOS 12.
+
+## PSPDFKitSwift Integration
+
+The introduction of both ABI and module stability in the Swift 5.1 compiler enabled us to merge our [PSPDFKitSwift][] wrapper into our main binary distribution. The standalone project is now deprecated and **should be removed from your project** when updating to PSPDFKit 9 for iOS. If you are using CocoaPods or Carthage, you should remove the `PSPDFKitSwift` dependency from your Podfile or Cartfile.
+
+During the integration, we made the following changes to the Swift and Objective-C APIs:
+
+- Changed: `PSPDFKit` Objective-C class<br>
+  _Renamed to `PSPDFKitGlobal` to avoid conflicts with the `PSPDFKit` module name. The previous `PSPDFKitObject` Swift typealias was removed._
+- Removed: `Result` struct<br>
+  _Removed in favor of the built-in struct with the same name in Swift 5._
+- Removed: `PDFDocument` convenience subclass<br>
+  _Most of its functionality was migrated to `PSPDFDocument` extensions. You should use `PSPDFDocument` instead._
+- Removed: Typealiases for annotation types<br>
+  _Use `PSPDF`-prefixed class names instead._
+
+If your application is targeting iOS versions **prior to iOS 12.2** and your application **does not already contain any Swift code**, then you need to make sure Xcode bundles Swift standard libraries with your application distribution. To do so, open your target Build Settings and enable Always Embed Swift Standard Libraries. After setting this, clean the project before building again.
+
+If testing on iOS 11 and 12 still leads to issues similar to `dyld: Library not loaded: @rpath/libswiftCore.dylib` (observed for Objective-C only test targets), then you can also try an alternative approach by including a minimal Swift class in your project that ensures Foundation libraries are loaded.
+
+Sample Swift class:
+
+```swift
+import Foundation
+
+class TokenSwiftFile {
+    func tokenFunction () {
+        NSLog("This file exists to force-load Swift libraries for iOS <12.2.")
+    }
+}
+```
+
+## UIWebView Removal
+
+[`PSPDFWebViewController`][] switched from the deprecated `UIWebView` to use the more modern `WKWebView` by default a long time ago. Support for `UIWebView` was kept for a transitional period, and it has now been removed. This means the following API changes have been made:
+
+- Removed: `PSPDFWebKitLegacyModeKey` setting on the `PSPDFKit` object (now `PSPDFKitGlobal`)
+- Removed: `PSPDFCommonWebView` protocol
+- Removed: `PSPDFWebViewController.useModernWebKit`<br>
+  _The more modern WebKit framework is now always used._
+- Changed: `PSPDFWebViewController.webView`<br>
+  _The property type has changed from `UIView<PSPDFCommonWebView>` to `WKWebView`._
+
+Note that, by default, PSPDFKit asks the system to open links, which usually means they open in Safari ([`PSPDFLinkActionOpenSafari`][]). This is our recommended user experience. If you would prefer to provide an in-app browser, then we recommend showing `SFSafariViewController` ([`PSPDFLinkActionInlineBrowser`][]) rather than `PSPDFWebViewController` ([`PSPDFLinkActionInlineWebViewController`][]).
+
+## Customizing Document Rendering
+
+PSPDFKit 9 for iOS introduces a new class, `PSPDFRenderOptions`, which is a concrete representation of the options that can be used to customize how a document or annotations are rendered.
+
+`PSPDFRenderOptions` replaces all the keys that were in the `PSPDFRenderOption` enumeration. This means keys such as `PSPDFRenderOptionPreserveAspectRatioKey`, `PSPDFRenderOptionInvertedKey`, and `PSPDFRenderOptionFiltersKey` are no longer available. Likewise, all of the rendering methods that take render options, such as `-[PSPDFDocument imageForPageAtIndex:size:clippedToRect:annotationsoptions:error:]`, have been updated to take `PSPDFRenderOptions` as options, as opposed to taking `NSDictionary<PSPDFRenderOption, id>`. If you use or implement any of these methods yourself, you’ll have to update them to the correct signature to resolve any compilation issues.
+
+APIs affected by this:
+
+- Changed: `-[PSPDFPageView renderOptionsDictWithZoomScale:animated:]`<br>
+  _Renamed to `-[PSPDFPageView renderOptionsWithZoomScale:animated:]`._
+- Changed: `PSPDFConfiguration.scrollOnTapPageEndAnimationEnabled`<br>
+  _Renamed to `animateScrollOnEdgeTaps`._
+- Changed: `PSPDFConfiguration.scrollOnTapPageEndMargin`<br>
+  _Renamed to `scrollOnEdgeTapMargin`._
+- Changed: `-[PSPDFAnnotation maybeRenderCustomAppearanceStreamWithContext:withOptions:]`<br>
+  _Renamed to `-[PSPDFAnnotation maybeRenderCustomAppearanceStreamWithContext:options:]`._
+- Changed: `-[PSPDFAnnotation drawInContext:withOptions:]`<br>
+  _Renamed to `-[PSPDFAnnotation drawInContext:options:]`._
+- Changed: `-[PSPDFAnnotation imageWithSize:withOptions:]`<br>
+  _Renamed to `-[PSPDFAnnotation imageWithSize:options:]`._
+- Changed: `-[PSPDFAnnotationSet drawInContext:withOptions:]`<br>
+  _Renamed to `-[PSPDFAnnotationSet drawInContext:options:]`._
+- Changed: `-[PSPDFDocument updateRenderOptions:type:]`<br>
+  _Use `-[PSPDFDocument updateRenderOptionsForType:withBlock:]`._
+- Changed: `-[PSPDFDocument renderOptionsForType:context:]`<br>
+  _Use `-[PSPDFDocument renderOptionsForType:]`._
+
+## PDF Generation and Modification
+
+PSPDFKit 9 for iOS improves the API for generating PDFs from website URLs and HTML strings, and it adds the ability to generate PDFs from `NSAttributedString`s.
+
+PDF generation methods are now unified in the form of class methods on `PSPDFProcessor`. They return one of several new operations — `PSPDFURLConversionOperation`, `PSPDFHTMLConversionOperation`, or `PSPDFAttributedStringConversionOperation`. The operations can be observed and canceled. The old instance method-based API for generating PDFs from URLs and HTML strings has been removed.
+
+`-[PSPDFProcessor cancel]` no longer cancels all ongoing conversion operations. The cancelation call only affects operations performed on existing PDFs with the instance method-based API. Use the new `+[PSPDFProcessor cancelAllConversionOperations]` to cancel conversion operations.
+
+APIs affected by this:
+
+- Removed: `-[PSPDFProcessor initWithOptions:]`<br>
+  _Pass `options` directly to the new PDF generation methods._
+- Removed: `-[PSPDFProcessor convertHTMLString:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromHTMLString:options:completionBlock:]`._
+- Removed: `-[PSPDFProcessor convertHTMLString:outputFileURL:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromHTMLString:outputFileURL:options:completionBlock:]`._
+- Removed: `-[PSPDFProcessor convertHTMLString:outputFileURL:completionBlock:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromHTMLString:outputFileURL:options:completionBlock:]`._
+- Removed: `-[PSPDFProcessor generatePDFFromURL:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromURL:options:completionBlock:]`._
+- Removed: `-[PSPDFProcessor generatePDFFromURL:outputFileURL:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromURL:outputFileURL:options:completionBlock:]`._
+- Removed: `-[PSPDFProcessor generatePDFFromURL:outputFileURL:completionBlock:]`<br>
+  _Use the new `+[PSPDFProcessor generatePDFFromURL:outputFileURL:options:completionBlock:]`._
+- Changed: `PSPDFConversionOperation`<br>
+  _Split into `PSPDFURLConversionOperation`, `PSPDFHTMLConversionOperation`, and `PSPDFAttributedStringConversionOperation`._
+
+The `PSPDFProcessor` API for PDF document modification has also been cleaned up. The non-throwing methods `data`, `writeToFileURL:`, and `outputToDataSink:` have been removed in favor of their throwing counterparts.
+
+APIs affected by this:
+
+- Removed: `-[PSPDFProcessor data]`<br>
+  _Use `-[PSPDFProcessor dataWithError:]`._
+- Removed: `-[PSPDFProcessor writeToFileURL:]`<br>
+  _Use `-[PSPDFProcessor writeToFileURL:error:]`._
+- Removed: `-[PSPDFProcessor outputToDataSink:]`<br>
+  _Use `-[PSPDFProcessor outputToDataSink:error:]`._
+
+The `PSPDFProcessorDelegate`-based error and completion handling via `processor:didFinishWithError:`, `processor:didFinishWithData:`, and `processor:didFinishWithFileURL:` have also been removed.
+
+APIs affected by this:
+
+- Removed: `-[PSPDFProcessorDelegate processor:didFinishWithError:]`<br>
+  _Use the `error` parameter in the PDF document modification methods and `completionBlock` in the new PDF generation methods._
+- Removed: `-[PSPDFProcessorDelegate processor:didFinishWithData:]`<br>
+  _Use `completionBlock` in the new PDF generation methods._
+- Removed: `-[PSPDFProcessorDelegate processor:didFinishWithFileURL:]`<br>
+  _Use `completionBlock` in the new PDF generation methods._
+
+All these changes result in simpler and safer APIs that are fully compatible with Swift.
+
+## Brightness Manager Cleanup
+
+With modern devices supporting a lower screen brightness, `PSPDFBrightnessManager` has been cleaned up. Additional software dimming is now no longer supported.
+
+- Removed: `-[PSPDFBrightnessManager brightness]`<br>
+  _Use `UIScreen.mainScreen.brightness` instead._
+- Removed: `-[PSPDFBrightnessManager wantsSoftwareDimming]`<br>
+  _Use `UIScreen.mainScreen.wantsSoftwareDimming` instead._
+- Removed: `-[PSPDFBrightnessManager wantsAdditionalSoftwareDimming]`<br>
+  _Additional software dimming support has been removed, as this is less useful with modern devices supporting a lower screen brightness._
+- Removed: `-[PSPDFBrightnessManager additionalBrightnessDimmingFactor]`<br>
+  _Additional software dimming support has been removed, as this is less useful with modern devices supporting a lower screen brightness._
+- Removed: `-[PSPDFBrightnessManager maximumAdditionalBrightnessDimmingFactor]`<br>
+  _Additional software dimming support has been removed, as this is less useful with modern devices supporting a lower screen brightness._
+- Removed: `-[PSPDFBrightnessViewController brightnessManager]`<br>
+  _The brightness is now directly handled on the main screen instead of going through the brightness manager._
+
+## Status HUD Support for Multiple Windows
+
+Previously, the status HUD was a singleton that was shared across the entire app. On iOS versions prior to 13, there was only ever a single window, so this was fine. But with the introduction of support for multiple windows in iOS 13, this approach was flawed, and each window scene needed its own status HUD to display content on the correct window. As a result, `PSPDFStatusHUD` and `PSPDFStatusHUDItem` changed a bit, since the status HUD now needs a window to coordinate where to show the status HUD item.
+
+- Removed: `+[PSPDFStatusHUD items]`<br>
+  _Changed to `+[PSPDFStatusHUD itemsForHUDOnWindow:]`._
+- Removed: `+[PSPDFStatusHUD popAllItemsAnimated:completion:]`<br>
+  _Changed to `+[PSPDFStatusHUD popAllItemsAnimated:forHUDOnWindow:completion:]`._
+- Removed: `-[PSPDFStatusHUDItem pushAnimated:completion:]`<br>
+  _Changed to `-[PSPDFStatusHUDItem pushAnimated:onWindow:completion:]`._
+- Removed: `-[PSPDFStatusHUDItem pushAndPopWithDelay:animated:completion:]`<br>
+  _Changed to `-[PSPDFStatusHUDItem pushAndPopWithDelay:animated:onWindow:completion:]`._
+
+## Other API Changes
+
+- Removed: `+[PSPDFAnnotation isWriteable]`<br>
+  _All non-abstract `PSPDFAnnotation` subclasses except the non-standard `PSPDFEraserAnnotation` can be considered writable._
+- Removed: `PSPDFBlurView` class<br>
+  _This class provided backward compatibility with iOS versions that did not support `UIVisualEffectView`. `UIVisualEffectView` should now be used directly._
+- Removed: `PSPDFTabbedBar.interactiveReorderingGestureRecognizer`<br>
+  The tabbed bar reordering has been changed to use the system drag and drop feature instead of interactive reordering.
+- Changed: `PSPDFKit` class<br>
+  _Renamed to `PSPDFKitGlobal` to avoid conflicts with the `PSPDFKit` module name in Swift._
+- Changed: `+[PSPDFAnnotation isDeletable]` and `PSPDFAnnotation.shouldDeleteAnnotation`<br>
+  _Replaced by a single `PSPDFAnnotation.isDeletable` property that consolidates both values._
+- Changed: `PSPDFConfiguration.scrollOnTapPageEndEnabled`<br>
+  _Renamed to `scrollOnEdgeTapEnabled`._
+- Changed: `PSPDFConfiguration.scrollOnTapPageEndAnimationEnabled`<br>
+  _Renamed to `animateScrollOnEdgeTaps`._
+- Changed: `PSPDFConfiguration.scrollOnTapPageEndMargin`<br>
+  _Renamed to `scrollOnEdgeTapMargin`._
+- Changed: `PSPDFUsernameHelperWillDismissAlertNotification`<br>
+  _Renamed to `PSPDFUsernameHelperDidDismissViewNotification`. This is posted after the dismissal ends rather than before in order to work better with sheets on iOS 13 that can be dismissed by swiping down._
+
+## Removal of Deprecated APIs
+
+All of the previously deprecated APIs have been removed.
+
+### PSPDFKitUI
+
+- Removed: `-[PSPDFAnnotationPresenting didShowPageView:]`<br>
+  _Implements `-willShowPageView:` instead, which is functionally the same but better conveys the timing involved in this method._
+- Removed: `-[PSPDFAnnotationStateManager drawingInputMode]`<br>
+  _Sets the state to `PSPDFAnnotationStringEraser` to use the eraser._
+- Removed: `[PSPDFAnnotationPresenting didShowPageView:]`<br>
+  _Implements `-willShowPageView:` instead, which is functionally the same but better conveys the timing involved in this method._
+- Removed: `[PSPDFAnnotationStateManager drawingInputMode]`<br>
+  _Sets the state to `PSPDFAnnotationStringEraser` to use the eraser._
+- Removed: `[PSPDFHSVColorPickerController minimumSize]`<br>
+  _No longer used._
+- Removed: `[PSPDFColorSelectionViewController minimumSize]`<br>
+  _No longer used._
+- Removed: `[PSPDFDocumentSharingViewControllerDelegate documentSharingViewController:willShareFiles:]`<br>
+  _The returned value from this method is now discarded. Use `-[PSPDFDocumentSharingViewControllerDelegate documentSharingViewController:filenameForGeneratedFileForDocument:destination:]` to change the names of the generated files._
+- Removed: `[PSPDFDocumentSharingProcessingManagerDelegate sharingProcessingManager:willShareFiles:]`<br>
+  _The returned value from this method is now discarded. Use `-[PSPDFDocumentSharingProcessingManager sharingProcessingManager:filenameForGeneratedFileForDocument:destination:]` to change the names of the generated files._
+- Removed: `[PSPDFSignatureViewController lines]`<br>
+  _Use the signature view controller’s `drawView.pointSequences` instead._
+- Removed: `[PSPDFSignatureViewController keepLandscapeAspectRatio]`<br>
+  _A landscape ratio for drawing is now always used by default. Not using a landscape aspect ratio will cause drawing to be cut off on rotation or on app size changes._
+- Removed: `[PSPDFSaveViewController initWithDocumentEditorConfiguration:]`<br>
+  _Use `initWithSaveDirectories:` instead._
+- Removed: `[PSPDFSaveViewController documentEditorConfiguration]`<br>
+  _Use `saveDirectories` and `selectedSaveDirectory` instead in order to configure the Document Editor._
+- Removed: `[PSPDFDocumentEditorToolbarController toggleSaveActionSheet:presentationOptions:completionHandler:]`<br>
+  _Use the new `-toggleSavingConfirmationViewController:presentationOptions:completionHandler:` method._
+- Removed: `PSPDFPersistentCloseButtonMode`<br>
+  _Persistent close buttons are no longer used by PSPDFKit itself and will be removed in a future release._
+- Removed: `[PSPDFNavigationController persistentCloseButtonMode]`<br>
+  _Persistent close buttons are no longer used by PSPDFKit itself and will be removed in a future release._
+- Removed: `[PSPDFNavigationController setDelegate:]`<br>
+  _Not available._
+- Removed: `[PSPDFNavigationController persistentCloseButton]`<br>
+  _Persistent close buttons are no longer used by PSPDFKit itself and will be removed in a future release._
+- Removed: `[PSPDFUserInterfaceView thumbnailBarInsets]`<br>
+  _Use `-[PSPDFUserInterfaceView scrubberBarInsets:]` instead to add insets to the thumbnail bar._
+- Removed: `PSPDFPresentationPersistentCloseButtonKey`<br>
+  _This option is no longer used by PSPDFKit itself and will be removed in a future release._
+- Removed: `[PSPDFDigitalSignatureCoordinator presentSignedDocument:showingPageIndex:]`<br>
+  _Use `presentSignedDocument:showingPageIndex:withPresentationContext:` instead._
+- Removed: `[PSPDFFlexibleToolbarContainer isFlickToCloseEnabled]`<br>
+  _The flick-to-close feature has been removed, and modifying this property no longer has any effect._
+- Removed: `[PSPDFBookmarkCell bookmarkString]`<br>
+  _The bookmark cell contains multiple labels now. Use the appropriate text fields or labels instead._
+- Removed: `[PSPDFScrubberBar isSmallToolbar]`<br>
+  _The toolbar can have more than two different sizes now. Override `scrubberBarHeight` to change the scrubber bar size. Overriding `isSmallToolbar` no longer has any effect._
+
+### PSPDFKit
+
+- Removed: `[PSPDFBookmarkManager removeBookmarkForPageAtIndex:]`<br>
+  _Use the more accurately named `removeBookmarksForPageAtIndex:` method instead._
+- Removed: `+[PSPDFStampAnnotation stampColorForSubject:]`<br>
+  _Use `colorForStampType:` instead._
+- Removed: `[PSPDFStampAnnotation initWithSubject:]`<br>
+  _For a standard stamp, use `initWithStampType:`. For custom text, use `initWithTitle:`._
+- Removed: `[PSPDFStampAnnotation localizedSubject]`<br>
+  _Use `title` instead._
+- Removed: `[PSPDFStampAnnotation subtext]`<br>
+  _Use `subtitle` instead._
+- Removed: `[PSPDFStampAnnotation subject]`<br>
+  _Consider `stampType` or `title`, or cast to `PSPDFAnnotation` if you really want the subject._
+- Removed: `[PSPDFDocument applyInstantJSONFromDataProvider:toDocumentProvider:error:]`<br>
+  _Use `applyInstantJSONFromDataProvider:toDocumentProvider:lenient:error:` instead_
+- Removed: `PSPDFDocumentSaveOptionForceRewrite`<br>
+  _Use `PSPDFDocumentSaveOptionForceSaving` instead._
+- Removed: `[PSPDFSigner externalSignatureDelegate]`<br>
+  _Instead of the `externalSignatureDelegate` property, you can use the `delegate` property for greater flexibility._
+- Removed: `[PSPDFSigner signFormElement:withCertificate:writeTo:appearance:biometricProperties:completionBlock:]`<br>
+  _Call `signFormElement:withCertificate:writeTo:completionBlock:` instead and set the `dataSource` to configure the signature properties._
+- Removed: `[PSPDFSigner signFormElement:withCertificate:writeToDataSink:appearance:biometricProperties:completionBlock:]`<br>
+  _Call `signFormElement:withCertificate:writeToDataSink:completionBlock:` instead and set the `dataSource` to configure the signature properties._
+- Changed: `PSPDFSignatureInputMethodNone`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+- Changed: `PSPDFSignatureInputMethodFinger`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+- Changed: `PSPDFSignatureInputMethodApplePencil`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+- Changed: `PSPDFSignatureInputMethodThirdPartyStylus`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+- Changed: `PSPDFDrawInputMethodThirdPartyStylus`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+- Changed: `PSPDFSignatureInputMethodMouse`<br>
+  _Enum has been renamed to `PSPDFDrawInputMethod*`._
+
+[integrating pspdfkit guide]: ../../getting-started/integrating-pspdfkit
+[version support guide]: ../../announcements/version-support
+[`pspdfwebviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFWebViewController.html
+[`pspdflinkactionopensafari`]: https://pspdfkit.com/api/ios/Enums/PSPDFLinkAction.html#/c:@E@PSPDFLinkAction@PSPDFLinkActionOpenSafari
+[`pspdflinkactioninlinebrowser`]: https://pspdfkit.com/api/ios/Enums/PSPDFLinkAction.html#/c:@E@PSPDFLinkAction@PSPDFLinkActionInlineBrowser
+[`pspdflinkactioninlinewebviewcontroller`]: https://pspdfkit.com/api/ios/Enums/PSPDFLinkAction.html#/c:@E@PSPDFLinkAction@PSPDFLinkActionInlineWebViewController
+[pspdfkitswift]: https://github.com/PSPDFKit/PSPDFKitSwift

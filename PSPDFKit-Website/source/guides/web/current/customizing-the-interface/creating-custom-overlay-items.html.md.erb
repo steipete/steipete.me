@@ -1,0 +1,215 @@
+---
+title: Creating Custom Overlay Items
+section: developers
+---
+
+[Custom overlay items][customoverlayitem] are user-generated DOM `Node`s that are rendered in a page at a given position and add custom functionality to PSPDFKit for Web. For example, they can be used to add images, videos, or complex widgets written either in plain JavaScript or with your framework of choice.
+
+Custom overlay items are not part of the PDF spec and are therefore never persisted in the PDF document or database by PSPDFKit for Web.
+
+## Creating a Custom Overlay Item
+
+A custom overlay item is a simple instance of [`PSPDFKit.CustomOverlayItem`][customoverlayitem]. In order to create this instance, we need to build our _item_ in JavaScript first.
+
+To start, we are going to create a sample `video` item. Such a widget could, for example, be used to provide instructions on how to fill out a PDF form:
+
+[==
+
+```es
+const videoWidget = document.createElement("div");
+videoWidget.innerHTML = `
+  <video width="400" controls>
+    <source src="https://pspdfkit.com/images/guides/web/customizing-the-interface/creating-custom-overlay-items/kitten.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+`;
+```
+
+```js
+const videoWidget = document.createElement("div");
+videoWidget.innerHTML =
+  '\
+  <video width="400" controls>\
+    <source src="https://pspdfkit.com/images/guides/web/customizing-the-interface/creating-custom-overlay-items/kitten.mp4" type="video/mp4"> \
+    Your browser does not support HTML5 video. \
+  </video> \
+';
+```
+
+==]
+
+Once we have our DOM `Node`, we can easily create the item:
+
+[==
+
+```es
+const item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 })
+});
+```
+
+```js
+var item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 })
+});
+```
+
+==]
+
+Finally, we can insert the item into the PDF document using the [`Instance#setCustomOverlayItem`][] method:
+
+[==
+
+```es
+instance.setCustomOverlayItem(item);
+```
+
+```js
+instance.setCustomOverlayItem(item);
+```
+
+==]
+
+<figure>
+  <img src="/images/guides/web/customizing-the-interface/creating-custom-overlay-items/example-video-item.jpg">
+  <figcaption>The video widget in the PDF document.</figcaption>
+</figure>
+
+This is how the above snippets look once put together:
+
+[==
+
+```es
+const videoWidget = document.createElement("div");
+videoWidget.innerHTML = `
+  <video width="400" controls>
+    <source src="https://pspdfkit.com/images/guides/web/customizing-the-interface/creating-custom-overlay-items/kitten.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+`;
+const item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 })
+});
+instance.setCustomOverlayItem(item);
+```
+
+```js
+const videoWidget = document.createElement("div");
+videoWidget.innerHTML =
+  '\
+  <video width="400" controls>\
+    <source src="https://pspdfkit.com/guides/web/customizing-the-interface/creating-custom-overlay-items/kitten.mp4" type="video/mp4"> \
+    Your browser does not support HTML5 video. \
+  </video> \
+';
+var item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 })
+});
+instance.setCustomOverlayItem(item);
+```
+
+==]
+
+[`Instance#setCustomOverlayItem`][] can also be used to update existing overlay items by `id`.
+
+For example, we could move the item to page `2`:
+
+[==
+
+```es
+const updatedItem = item.set("pageIndex", 1);
+instance.setCustomOverlayItem(updatedItem);
+```
+
+```js
+var updatedItem = item.set("pageIndex", 1);
+instance.setCustomOverlayItem(updatedItem);
+```
+
+==]
+
+We could also change the `node`:
+
+[==
+
+```es
+const message = document.createTextNode("instructions");
+videoWidget.appendChild(message);
+```
+
+```js
+var message = document.createTextNode("instructions");
+videoWidget.appendChild(message);
+```
+
+==]
+
+Notice that in the last example, we didn’t set the `node` property or call `setCustomOverlayItem`. Unlike with the first example, we can mutate the `node` directly, and any change to it will be reflected on the page without the need to call `setCustomOverlayItem` again.
+
+## Removing Custom Overlay Items
+
+Custom overlay items can be removed at any time using the [`Instance#removeCustomOverlayItem`][] API method, which accepts the `id` of the item to be removed:
+
+[==
+
+```es
+instance.removeCustomOverlayItem("video-instructions");
+```
+
+```js
+instance.removeCustomOverlayItem("video-instructions");
+```
+
+==]
+
+## Get Notifications When Items Are Rendered or Removed
+
+When a custom overlay item is shown on the page for the first time (rendered), it executes an optional `onAppear` callback. This callback is defined at creation time, like so:
+
+[==
+
+```es
+const item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 }),
+  onAppear: () => {
+    console.log("video instructions rendered!");
+  }
+});
+```
+
+```js
+var item = new PSPDFKit.CustomOverlayItem({
+  id: "video-instructions",
+  node: videoWidget,
+  pageIndex: 0,
+  position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 }),
+  onAppear: function() {
+    console.log("video instructions rendered!");
+  }
+});
+```
+
+==]
+
+Keep in mind that `onAppear` is invoked only when the page renders for the first time, so if we insert an item on page `2`, the callback will be invoked only when we visit that page.
+
+Similar to what happens with `onAppear`, custom overlay items invoke an optional `onDisappear` callback when the overlay item is removed.
+
+[customoverlayitem]: https://pspdfkit.com/api/web/PSPDFKit.CustomOverlayItem.html
+[`instance#setcustomoverlayitem`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setCustomOverlayItem
+[`instance#removecustomoverlayitem`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#removeCustomOverlayItem

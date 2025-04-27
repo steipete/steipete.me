@@ -1,0 +1,57 @@
+---
+title: Form Submission
+section: developers
+---
+
+Form submission is an action performed on a form element from a PDF document and is usually triggered by a submit button. It is a method of taking user input from the form described in the PDF and sending it as data to a given location. This data can be all the form fields in the form or just a subset of them.
+
+See our [PDF Actions][] guide for more details.
+
+## Submission Method
+
+It’s possible to catch form submission in PSPDFKit in order to implement your own submission logic. This is done by handling the [forms.willSubmit][] event:
+
+[==
+
+```es
+instance.addEventListener("forms.willSubmit", ({ preventDefault }) => {
+  preventDefault();
+  const formFieldValues = instance.getFormFieldValues();
+});
+```
+
+```js
+instance.addEventListener("forms.willSubmit", function(event) {
+  event.preventDefault();
+  var formFieldValues = instance.getFormFieldValues();
+});
+```
+
+==]
+
+## Format
+
+It’s possible to send the data in a variety of formats to allow the recipient to parse the data in a known format. This format is provided by the action flags within the PDF document. These flags can be found in [`SubmitFormAction`][] and the format should be chosen based on this information.
+
+#### HTML
+
+The HTML format can be chosen to create a GET or POST request to supply to a particular server. The form fields will be converted to key-value pairs, with the name being the ID of the form field and the value being the user input. This format abides by the [HTML 4.01 Specification][].
+
+The body of the HTML request will hold the values sent from the form. The following snippet shows how two form fields will be generated. Note that it is delimited by an ampersand. This can be parsed by most web server technologies with little work:
+
+```
+TextField1=TestText&TextField2=TestText2
+```
+
+#### PDF
+
+It is also possible to submit an entire PDF document. This option is useful when the recipient has no reference to the original document. As the entire PDF is transmitted with this format, it is a highly wasteful process, especially with large and complex documents.
+
+#### FDF/XFDF
+
+These formats are a defined subset of the PDF spec and are coming soon to PSPDFKit for Web.
+
+[forms.willsubmit]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~FormWillSubmitEvent
+[pdf actions]: ../../annotations/pdf-actions/
+[`submitformaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.SubmitFormAction.html
+[html 4.01 specification]: https://www.w3.org/TR/REC-html40/

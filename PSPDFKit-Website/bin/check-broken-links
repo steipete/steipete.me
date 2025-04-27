@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const link = require("linkinator");
+const PORT = 4567;
+
+async function run() {
+  console.log("Checking for broken links");
+  const checker = new link.LinkChecker();
+
+  const redirects = fs
+    .readFileSync("./REDIRECTS", "utf8")
+    .split(/\r?\n/)
+    .filter(line => line.match(/^\//))
+    .map(line => line.split(" ")[0]);
+
+  const results = [];
+
+  let currentURL = "";
+
+  checker.on("pagestart", url => {
+    currentURL = url;
+    console.log(`== Scanning ${url}`);
+  });
+
+  checker.on("link", result => {
+    const path = new URL(result.url).pathname;
+    const isBroken = result.state === "BROKEN";
+    const isRedirect =
+      redirects.includes(path) || redirects.includes(path.replace(/\/$/, ""));
+
+    if (isBroken && !isRedirect) {
+      console.warn(`== Broken link found! ${result.url}`);
+      results.push([currentURL, path]);
+    }
+  });
+
+  await checker.check({
+    port: PORT,
+    path: "build",
+    recurse: true,
+    linksToSkip: [
+      "^(?!http://localhost:4567)",
+      "/api",
+      "/guides/\\w+/(?!current)"
+    ]
+  });
+
+  console.log(`\n\n${JSON.stringify(results)}`);
+}
+
+run();

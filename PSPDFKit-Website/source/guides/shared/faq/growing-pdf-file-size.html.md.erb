@@ -1,0 +1,220 @@
+---
+title: Growing PDF File Size
+section: developers
+---
+
+In some cases, the file size of a document will increase with each save. This could be particularly noticeable if the document contains image annotations with large images and is saved often, either explicitly or via any of the available [save triggers][].
+
+Incremental saving, which is enabled by default, is the strategy PSPDFKit uses to make sure saving is as fast as possible: It always appends changes to the end of the document, but it never deletes anything. However, even though this is the fastest way of saving a document, it does come with the cost of incrementing the file size with each save. You can read more about [incremental vs. full saving in PDFs here][incremental and full save in pdfs].
+
+In most cases, the file size increase is negligible. However, there might be some cases in which you want to prioritize file size over saving performance. Below you’ll find some strategies to prevent the file size from growing unnecessarily when saving changes to a document.
+
+## Rewriting a Document When Saving
+
+You can trigger a non-incremental document save, which will rewrite the entire document instead of appending changes at the end.
+
+<% if ios? %>
+
+This can be done with the [`PSPDFDocumentSaveOptionForceSaving`][] save option as follows:
+
+[==
+
+```swift
+try document.save(options: [.forceSaving])
+```
+
+```objc
+[document saveWithOptions:@{PSPDFDocumentSaveOptionForceSaving: @YES} error:&error]
+```
+
+==]
+
+<% end %>
+
+<% if android? %>
+
+This can be done by manually saving the document and setting the `incrementalSave` property of [`DocumentSaveOptions`][] to `false` as follows:
+
+[==
+
+```kotlin
+val incrementalSave = false
+val options = DocumentSaveOptions(null, null, incrementalSave, null)
+document.saveIfModified(options)
+```
+
+```java
+final boolean incrementalSave = false;
+final DocumentSaveOptions options = DocumentSaveOptions(
+    null, null, incrementalSave, null
+);
+document.saveIfModified(options);
+```
+
+==]
+
+<% end %>
+
+Keep in mind that rewriting the document does not guarantee that the file size will be the same after saving.
+
+### Optimizing Size Even Further
+
+<% if ios? %>
+
+In addition to disabling incremental saving, you can also use [`PSPDFDocumentSaveStrategyRewriteAndOptimizeFileSize`][] in your saving options. This will cause PSPDFKit to first determine which objects in the PDF are no longer required and then remove them from the final output:
+
+[==
+
+```swift
+try document.save(options: [PSPDFDocumentSaveOption.strategy: PSPDFDocumentSaveStrategy.rewriteAndOptimizeFileSize.rawValue])
+```
+
+```objc
+[document saveWithOptions:@{PSPDFDocumentSaveOptionStrategy: @(PSPDFDocumentSaveStrategyRewriteAndOptimizeFileSize)} error:&error]
+```
+
+==]
+
+While this leads to smaller file sizes, performing this operation is not free and will increase the time it takes to save documents.
+
+When [`PSPDFDocumentSaveStrategyRewriteAndOptimizeFileSize`][] or [`PSPDFDocumentSaveStrategyRewrite`][] are used, incremental saving will automatically be disabled.
+
+<% end %>
+
+<% if android? %>
+
+In addition to disabling incremental saving, you can also set the `rewriteAndOptimizeFileSize` property of [`DocumentSaveOptions`][] to `true`. This will cause PSPDFKit to first determine which objects in the PDF are no longer required and then remove them from the final output:
+
+[==
+
+```kotlin
+val incrementalSave = false
+val options = DocumentSaveOptions(null, null, incrementalSave, null)
+options.setRewriteAndOptimizeFileSize(true)
+document.saveIfModified(options)
+```
+
+```java
+final boolean incrementalSave = false;
+final DocumentSaveOptions options = DocumentSaveOptions(
+    null, null, incrementalSave, null
+);
+options.setRewriteAndOptimizeFileSize(true);
+document.saveIfModified(options);
+```
+
+==]
+
+While this leads to smaller file sizes, performing this operation is not free and will increase the time it takes to save documents.
+
+When `rewriteAndOptimizeFileSize` is enabled, incremental saving will automatically be disabled.
+
+<% end %>
+
+> **ℹ️ Note:** Do not rely on file size optimization to get to a target file size. This option does not provide any kind of guarantee that the resulting file will be smaller by a fixed number of bytes.
+
+## Disabling Incremental Save When Using Auto-Save
+
+<% if ios? %>
+
+The method described above only works when you are [saving manually][]. But it is also possible to disable incremental saving when using auto-save with [`-pdfViewController:shouldSaveDocument:withOptions:`][]:
+
+[==
+
+```swift
+func pdfViewController(_ pdfController: PSPDFViewController, shouldSave document: PSPDFDocument, withOptions options: AutoreleasingUnsafeMutablePointer<NSDictionary>) -> Bool {
+    let mergedOptions = NSMutableDictionary(dictionary: options.pointee)
+    mergedOptions.addEntries(from:[PSPDFDocumentSaveOption.forceSaving: true])
+    options.pointee = mergedOptions
+    return true
+}
+```
+
+```objc
+- (BOOL)pdfViewController:(PSPDFViewController *)pdfController shouldSaveDocument:(PSPDFDocument *)document withOptions:(NSDictionary<PSPDFDocumentSaveOption,id> * _Nonnull __autoreleasing *)options {
+    NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithDictionary:*options];
+    [mergedOptions addEntriesFromDictionary:@{PSPDFDocumentSaveOptionForceSaving: @YES}];
+    *options = mergedOptions;
+    return YES;
+}
+```
+
+==]
+
+<% end %>
+
+<% if android? %>
+
+The method described above works only when you are [saving manually][]. But it is also possible to disable incremental saving when using auto-save with [`PdfActivity`][] or [`PdfFragment`][].
+
+The simplest method is to disable incremental saving via [`DocumentListener#onDocumentSave()`][]:
+
+[==
+
+```kotlin
+override fun onDocumentSave(document: PdfDocument, saveOptions: DocumentSaveOptions): Boolean {
+    saveOptions.isIncremental = false
+    return super.onDocumentSave(document, saveOptions)
+}
+```
+
+```java
+@Override
+public boolean onDocumentSave(@NonNull PdfDocument document, @NonNull DocumentSaveOptions saveOptions) {
+    saveOptions.setIncremental(false);
+    return super.onDocumentSave(document, saveOptions);
+}
+```
+
+==]
+
+Incremental saving can also be prevented by using a custom [`WritableDataProvider`][] with disabled appending:
+
+[==
+
+```kotlin
+// Return `false` from `supportsAppending()` to prevent incremental saving.
+val dataProvider = object: ContentResolverDataProvider(uri) {
+    override fun supportsAppending(): Boolean {
+        return false
+    }
+}
+
+// Start the activity.
+val intent = PdfActivityIntentBuilder.fromDataProvider(context, dataProvider)
+    .configuration(configuration)
+    .build()
+context.startActivity(intent)
+```
+
+```java
+// Return `false` from `supportsAppending()` to prevent incremental saving.
+DataProvider dataProvider = new ContentResolverDataProvider(uri) {
+    @Override
+    public boolean supportsAppending() {
+        return false;
+    }
+};
+
+// Start the activity.
+Intent intent = PdfActivityIntentBuilder.fromDataProvider(context, dataProvider)
+        .configuration(configuration)
+        .build();
+context.startActivity(intent);
+```
+
+==]
+
+<% end %>
+
+[incremental and full save in pdfs]: https://pspdfkit.com/blog/2019/incremental-and-full-save-in-pdfs/
+[save triggers]: ../../annotations/annotation-and-bookmark-saving-triggers/
+[`pspdfdocumentsaveoptionforcesaving`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSaveOptionForceSaving
+[`documentsaveoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentSaveOptions.html
+[saving manually]: ../../annotations/annotation-and-bookmark-saving-triggers#manual-saving
+[`incrementalsave`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentSaveOptions.html#setIncremental(boolean)
+[`writabledataprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/WritableDataProvider.html
+[`documentlistener#ondocumentsave()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSave(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.DocumentSaveOptions)
+[`-pdfviewcontroller:shouldsavedocument:withoptions:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldSaveDocument:withOptions:
+[`pspdfdocumentsavestrategyrewrite`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSaveStrategy.html#/c:@E@PSPDFDocumentSaveStrategy@PSPDFDocumentSaveStrategyRewrite
+[`pspdfdocumentsavestrategyrewriteandoptimizefilesize`]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentSaveStrategy.html#/c:@E@PSPDFDocumentSaveStrategy@PSPDFDocumentSaveStrategyRewriteAndOptimizeFileSize

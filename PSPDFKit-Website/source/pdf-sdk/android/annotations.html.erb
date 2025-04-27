@@ -1,0 +1,118 @@
+---
+title: Annotations
+title_suffix: PSPDFKit for Android
+platform: android
+section: sdk
+---
+
+<%= partial 'shared/nav_sub' %>
+
+<!-- Videos -->
+<%= partial 'shared/product_videos', locals: {
+  title: "PDF Annotations",
+  subtitle: "PSPDFKit for Android",
+  body: "Empower your users to collaborate on PDFs with our Annotations component. Whether they want to highlight text, add notes, draw, or use any of the many annotation types supported by the PDF spec, our Annotations component will give your app the tools they need.",
+  items: [
+    {
+      title: 'Toolbar',
+      url: '/images/pdf-sdk/android/annotations/annotation-toolbar.mp4'
+    },
+    {
+      title: 'Markup',
+      url: '/images/pdf-sdk/android/annotations/markup.mp4'
+    },
+    {
+      title: 'Notes',
+      url: '/images/pdf-sdk/android/annotations/note-annotations.mp4'
+    },
+    {
+      title: 'Ink Drawing',
+      url: '/images/pdf-sdk/android/annotations/ink-annotations.mp4'
+    },
+    {
+      title: 'Inspector',
+      url: '/images/pdf-sdk/android/annotations/annotation-inspector.mp4'
+    },
+    {
+      title: 'Rotation',
+      url: '/images/pdf-sdk/android/annotations/annotation-rotation.mp4'
+    },
+    {
+      title: 'Undo/Redo',
+      url: '/images/pdf-sdk/android/annotations/undo-redo.mp4'
+    },
+    {
+      title: 'Copy & Paste',
+      url: '/images/pdf-sdk/android/annotations/copy-paste.mp4'
+    },
+  ]
+} %>
+
+<!-- Details -->
+<%= partial 'shared/product_details', locals: {
+  items: [
+    {
+      title: "Annotation Toolbar",
+      body: "The Annotation Toolbar allows for quick access to all the annotation types in the PDF spec. It’s fully customizable, and it even supports predefined pen tool settings for quick switching between visual annotation styles.",
+      image: "/images/pdf-sdk/android/annotations/annotation-toolbar-feature.png"
+    },
+    {
+      title: "Markup",
+      body: "Enable your users to quickly conduct text reviews with our markup tools. Users can directly highlight, underline, strike out, and redact text in a PDF document via a popover that’s shown when text is selected. You can also programmatically customize the popover to fit your needs. And with custom notes for each text annotation, your users can add more context to their reviews.",
+      image: "/images/pdf-sdk/android/annotations/markup-feature.png"
+    },
+    {
+      title: "Note Annotations",
+      body: "Note annotations let you add longer comments to PDF documents and select a custom shape and color for the note through the custom note inspector.",
+      image: "/images/pdf-sdk/android/annotations/note-annotations-feature.png"
+    },
+    {
+      title: "Ink Annotations",
+      body: "Ink annotations enable free-form drawing on a PDF document. Color and line thickness are easily adjustable via the ink annotation inspector in the toolbar.",
+      image: "/images/pdf-sdk/android/annotations/ink-annotations-feature.png"
+    },
+    {
+      title: "Text Annotations",
+      body: "Add new text directly to the page, and take advantage of many convenient features, like automatic annotation sizing, copy and paste, text rotation, custom font selection, justification, and callout annotations.",
+      image: "/images/pdf-sdk/android/annotations/text-annotations-feature.png"
+    },
+    {
+      title: "Annotation Inspector",
+      body: "The context-sensitive annotation inspector provides fine-grained control over annotation appearance and positioning — including border thickness, fill, opacity, and annotation order settings.",
+      image: "/images/pdf-sdk/android/annotations/annotation-inspector-feature.png"
+    },
+    {
+      title: "Annotation Rotation",
+      body: "PSPDFKit supports rotation for stamp and free text annotations, which allows your users to freely rotate selected annotations. You can also change the rotation of annotations through the API.",
+      image: "/images/pdf-sdk/android/annotations/annotation-rotation-feature.png"
+    },
+    {
+      title: "Undo/Redo",
+      body: "Powerful undo and redo support enables easy navigation backward and forward through your annotation edit history.",
+      image: "/images/pdf-sdk/android/annotations/undo-redo-feature.png",
+      new: true
+    },
+    {
+      title: "Copy and Paste",
+      body: "Copy and paste annotations between pages and documents, or paste from other apps to easily create new annotations.",
+      image: "/images/pdf-sdk/android/annotations/copy-paste-feature.png",
+      new: true
+    }
+  ]
+} %>
+
+<!-- Documentation -->
+<%= partial 'shared/product_documentation', locals: {
+  title: 'Annotations',
+  url: '/guides/android/current/annotations/introduction-to-annotations/'
+} %>
+
+<!-- Try PDF Viewer -->
+<%= partial 'shared/product_try_viewer', locals: {
+  title: 'Annotations',
+  image: '/images/pdf-sdk/android/annotations/try.png',
+  device: 'phone_android',
+} %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales', locals: { title: 'PSPDFKit for Android' } %>

@@ -1,0 +1,105 @@
+---
+title: Encryption in PSPDFLibrary
+section: developers
+
+---
+
+## Enabling encryption support in [`PSPDFLibrary`][]
+[`PSPDFLibrary`][] supports encryption. This document outlines how to enable the encryption feature. If encryption is enabled, the main database will be encrypted.
+
+### Step 1: Register an [`PSPDFDatabaseEncryptionProvider`][] implementation
+The standard SQLite library does not support encryption out of the box. You therefore have to integrate a third-party option into your code base. [`PSPDFDatabaseEncryptionProvider`][] acts as a bridge between this third-party code and [`PSPDFLibrary`][]. We'll use [SQLCipher][] as an example, but the implementation should be very similar, if not identical for other providers.
+
+To integrate SQLCipher, follow the instructions for either the [commercial edition][] or the [community edition][].
+
+Once SQLCipher is correctly set up, you have to add an implementation of the [`PSPDFDatabaseEncryptionProvider`][] protocol. For SQLCipher, the implementation will look like this:
+
+[==
+
+```swift
+class YourEncryptionProvider: NSObject, PSPDFDatabaseEncryptionProvider {
+
+    public func encryptDatabase(_ db: UnsafeMutableRawPointer, withKey keyData: Data) -> Bool {
+        let data = keyData as NSData
+        assert(data.length == 32, "Danger: key is 32 byte long, hence it will not be pbkdf2'ed by SQLCipher!")
+        let error = sqlite3_key(COpaquePointer(db), data.bytes, Int32(data.length))
+        return error == SQLITE_OK
+    }
+
+    public func reEncryptDatabase(_ db: UnsafeMutableRawPointer, withKey keyData: Data) -> Bool {
+        let data = keyData as NSData
+        assert(data.length == 32, "Danger: key is 32 byte long, hence it will not be pbkdf2'ed by SQLCipher!")
+        let error = sqlite3_rekey(COpaquePointer(db), data.bytes, Int32(data.length))
+        return error == SQLITE_OK
+    }
+}
+```
+
+```objc
+@interface YourEncryptionProvider : NSObject <PSPDFDatabaseEncryptionProvider>
+@end
+
+@implementation YourEncryptionProvider
+- (BOOL)encryptDatabase:(void *)db withKey:(NSData *)keyData {
+  NSAssert([keyData length] == 32, @"Danger: key is 32 byte long, hence it will not be pbkdf2'ed by SQLCipher!");
+  int err = sqlite3_key(db, [keyData bytes], (int)[keyData length]);
+  return (err == SQLITE_OK);
+}
+
+- (BOOL)reEncryptDatabase:(void *)db withKey:(NSData *)keyData {
+  NSAssert([keyData length] == 32, @"Danger: key is 32 byte long, hence it will not be pbkdf2'ed by SQLCipher!");
+  int err = sqlite3_rekey(db, [keyData bytes], (int)[keyData length]);
+  return (err == SQLITE_OK);
+}    
+@end
+```
+
+==]
+
+Finally, you must register your encryption provider with PSPDFKit. To do so, simply set the [`databaseEncryptionProvider`][] property on [`PSPDFKitGlobal`][]. You have to do this early on. We recommend the following set up code:
+
+[==
+
+```swift
+func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    PSPDFKitGlobal.setLicenseKey("YOUR_LICENSE_KEY_GOES_HERE")
+    PSPDFKitGlobal.sharedInstance.databaseEncryptionProvider = YourEncryptionProvider()
+
+    return true
+}
+```
+
+```objc
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [PSPDFKitGlobal setLicenseKey:@"YOUR_LICENSE_KEY_GOES_HERE"];
+  PSPDFKitGlobal.sharedInstance.databaseEncryptionProvider = [YourEncryptionProvider new];
+
+  return YES;
+}
+```
+
+==]
+
+That's it. PSPDFKit is now configured to support encryption.
+
+### Step 2: Use an encrypted [`PSPDFLibrary`][]
+To use an encrypted [`PSPDFLibrary`][], simply use the `+[PSPDFLibrary encryptedLibraryWithPath:encryptionKeyProvider:]` factory method. The first argument is a path to an directory of your choice. The second parameter is the so-called encryption key provider. An encryption key provider is a simple block that returns the key in the form of an `NSData` instance. The provider block will be called whenever the library needs access to the encryption key. This allows us to only keep the encryption key in memory for a very short amount of time. Your encryption key provider implementation should therefore always fetch the key from secure storage, e.g. Apple's keychain. Your key provider implementation should also be free of side effects in the sense that it should always return the same key on every call.
+
+**Beware: Depending on the driver that you chose, there might be different requirements for the key provided by the encryption key provider block!** PSPDFKit does not process the key in any way, but passes it directly to your [`PSPDFDatabaseEncryptionProvider`][] implementation. For example, if you use SQLCipher your key will be treated as a passphrase. By default, SQLCipher will derive a key by using PBKDF2 with 64,000 iterations. However, if they key is exactly 32 Byte long, it will be used directly as the encryption key. Other drivers might have similar pitfalls, so be cautious and read the applicable documentation!
+
+The returned instance of the factory is either `nil` or an encrypted [`PSPDFLibrary`][] instance. `nil` is returned if the path points to an existing library, that is not encrypted or encrypted with a different key. Otherwise a new instance of [`PSPDFLibrary`][] will be returned, with the [`-[PSPDFLibrary isEncrypted]`](https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)isEncrypted) flag set to `YES`. You can now use the library as usual.
+
+### Step 3 (optional): Using an encrypted library by default
+You can override the default library. To do so, simply create a library (either encrypted or unencrypted) and call `PSPDFKitGlobal.sharedInstance.library = yourCustomLibrary;`. Please note: you should to this early on, e.g. in `application:willFinishLaunchingWithOptions:`. If you change the [`library`][] property in between, some parts of [`PSPDFKitGlobal`][] might still use the previous instance!
+
+### Step 4 (optional): Verifying encryption
+You should always ensure that your library is properly encrypted. An easy way to do this is the `hexdump` command. Simply run `hexdump -C /path/to/your/encrypted/library/index.sqlite`. If the database is encrypted, the output should contain no human-readable text. You can also use the `sqlite3` command to attempt to read from an encrypted library.
+
+
+[`PSPDFDatabaseEncryptionProvider`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDatabaseEncryptionProvider.html
+[SQLCipher]: https://www.zetetic.net/sqlcipher/
+[commercial edition]: https://www.zetetic.net/sqlcipher/sqlcipher-binaries-ios-and-osx/
+[community edition]: https://www.zetetic.net/sqlcipher/ios-tutorial/
+[`databaseEncryptionProvider`]: https://pspdfkit.com/api/ios/Classes/PSPDFKitGlobal.html#/c:objc(cs)PSPDFKitGlobal(py)databaseEncryptionProvider
+[`PSPDFKitGlobal`]: https://pspdfkit.com/api/ios/Classes/PSPDFKitGlobal.html
+[`library`]: https://pspdfkit.com/api/ios/Classes/PSPDFKitGlobal.html#/c:objc(cs)PSPDFKitGlobal(py)library

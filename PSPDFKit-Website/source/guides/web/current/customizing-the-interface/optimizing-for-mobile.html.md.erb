@@ -1,0 +1,53 @@
+---
+title: Optimizing for Mobile
+section: developers
+
+---
+
+PSPDFKit for Web has built-in mobile support for displaying your PDFs. To get the best experience for mobile, we require the viewport meta tag as shown below. This will adjust the width and scale for the mobile device and forbid pinching or double-tapping to zoom in:
+
+```html
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+/>
+```
+
+#### Why Does the Browser Zoom In When Clicking on Search?
+
+On mobile, when focusing on an input field, the browser zooms in to fit the input field to the viewport. This also happens when using search if the minimum, maximum, and initial scale don’t get added. To avoid this, just use the meta tag above.
+
+## Navbars and Headers
+
+A common layout for a (mobile) site is with a navbar or header on the top that is set to either `position: fixed` or `position: absolute`. To improve scrolling behavior on PSPDFKit for Web, you should also set the mounting container to `position: fixed` or `position: absolute`.
+
+Here is an example of how CSS and HTML might look like with a `position: fixed` header:
+
+```css
+.header {
+  position: fixed;
+  width: 100%;
+  height: 5vh;
+}
+
+#pspdfkit {
+  position: fixed;
+  top: 5vh;
+  width: 100%;
+  height: calc(100% - 5vh);
+}
+```
+
+### A Note on `vh` Units
+
+In case you didn’t notice, in the example above, we don’t use `vh` to define the `height` of `#pspdfkit`. The reason for this is that on iOS Safari and Chrome 56+, `height: 100vh` is [not the full viewport height][webkit height bug].
+
+This is due to the browser’s URL bar appearing and disappearing when scrolling up or down, and the fact that browsers don’t update the computed viewport height to avoid reflows and degradation in performances — it would be hard to get 60FPS.
+
+As it turns out though, elements with the `position` set to `fixed` and `height` in percentage — for example, `100%` — will always fill exactly the visible height, whether or not the URL bar is shown.
+
+For more information, we encourage you to read the [URL Bar Resizing article][] from Google and [this article][] from Nicolas Hoizey.
+
+[webkit height bug]: https://bugs.webkit.org/show_bug.cgi?id=141832
+[url bar resizing article]: https://developers.google.com/web/updates/2016/12/url-bar-resizing
+[this article]: https://nicolas-hoizey.com/2015/02/viewport-height-is-taller-than-the-visible-part-of-the-document-in-some-mobile-browsers.html

@@ -1,0 +1,99 @@
+---
+title: Custom Page Templates
+section: developers
+
+---
+
+Starting with PSPDFKit 7.6 for iOS, you can customize the set of templates that [`PSPDFNewPageViewController`][] offers on the picker via the new [`PSPDFPageTemplate`][] API.
+
+The page templates can be updated via the [`pageTemplates`][] property on [`PSPDFDocumentEditorConfiguration`][]. Then you can instantiate a [`PSPDFNewPageViewController`][] with that configuration. If you wish to make your custom set of templates available globally, you can update the page templates list on a [`PSPDFDocumentEditorConfiguration`][] and then assign that configuration to [`-[PSPDFConfiguration documentEditorConfiguration]`][`documenteditorconfiguration`].
+
+## Removing PSPDFKit-Provided Templates
+
+PSPDFKit ships with a predefined list of page templates, which are ready to use:
+
+- Blank
+- Line 5mm
+- Dot 5mm
+- Line 7mm
+
+When you don’t want some of these default templates to be available as options for creating or editing PDF documents, you can use [`-[PSPDFDocumentEditorConfiguration pageTemplates]`][`pagetemplates`]:
+
+[==
+
+```swift
+let documentEditorConfiguration = PSPDFDocumentEditorConfiguration { builder in
+    builder.pageTemplates = []
+}
+let configuration = PSPDFConfiguration { builder in
+    builder.documentEditorConfiguration = documentEditorConfiguration
+}
+let controller = PSPDFViewController(document: document, configuration: configuration)
+```
+
+```objc
+PSPDFDocumentEditorConfiguration *documentEditorConfiguration = [PSPDFDocumentEditorConfiguration configurationWithBuilder:^(PSPDFDocumentEditorConfigurationBuilder *builder) {
+    builder.pageTemplates = @[]
+}];
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+    builder.documentEditorConfiguration = documentEditorConfiguration
+}];
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:document configuration:configuration];
+```
+
+==]
+
+## The `PSPDFPageTemplate` Class
+
+You can use the [`PSPDFPageTemplate`][] class to build page templates from your own PDF documents.
+
+[`PSPDFPageTemplate`][] has two initializers you can use depending on what you’re trying to achieve:
+
+- [`-[PSPDFPageTemplate initWithDocument:sourcePageIndex:]`][`initwithdocument:sourcepageindex:`] will instantiate a template that takes the source document’s page at the provided index.
+- [`-[PSPDFPageTemplate initWithTiledPatternFromDocument:sourcePageIndex:]`][`initwithtiledpatternfromdocument:sourcepageindex:`] will instantiate a template that’s intended to be used as a tiled pattern. If you want to add a page with a repeating pattern to a document, this is the initializer you’ll use.
+
+> **ℹ️ Note**: Creating a tiled pattern page template requires the source document to be exported correctly. This means that the source PDF needs to contain a pattern itself. If a [`PSPDFPageTemplate`][] is instantiated using the tiled pattern initializer and the source document does not contain a pattern, the rendering will fail silently.
+
+Check out `DocumentEditorCustomTemplates.swift` in the Catalog to see [`PSPDFPageTemplate`][] in action.
+
+## Custom Tiled Templates
+
+Many uses for page templates require the background being tiled (or patterned).
+
+A page is considered tiled if there are one or more images repeated on the page.
+
+<img src="/images/blog/2018/custom-pdf-page-templates-with-ios/template_example_1.png" width=50%/>
+
+For a PDF to be able to work as a source for a tiled page template using the [new `-[PSPDFPageTemplate initWithTiledPatternFromDocument:sourcePageIndex:]` API][`initwithtiledpatternfromdocument:sourcepageindex:`], it has to have actual pattern path information embedded.
+
+To accomplish this, you can use Adobe Illustrator or any other vector editing tool.
+
+When creating your own patterns, please take the following points into consideration:
+
+1. What’s rendered on the page is the path information embedded in the PDF and not the actual PDF.
+2. If your custom pattern needs certain spacing between tiles, that information needs to be included within the pattern information as well. Currently, there’s no way to specify spacing between tiles from the PSPDFKit API.
+
+[Click here to download a custom sample template](/images/blog/2018/custom-pdf-page-templates-with-ios/template_sample.pdf).
+
+After you’ve created the PDF document that will serve as a pattern source, you can use it with PSPDFKit as follows:
+
+```swift
+let document = PSPDFDocument(url: url)
+let customTemplate = PSPDFPageTemplate(tiledPatternFrom: document, sourcePageIndex: 0)
+
+let editorConfiguration = PSPDFDocumentEditorConfiguration { (builder) in
+  builder.pageTemplates.append(contentsOf: [customTemplate])
+}
+
+let newPageViewController = PSPDFNewPageViewController(documentEditorConfiguration: editorConfiguration)
+
+present(newPageViewController, options: options, animated: true, sender: sender)
+```
+
+[`pspdfnewpageviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFNewPageViewController.html
+[`pspdfpagetemplate`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html
+[`pagetemplates`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorConfiguration.html#/c:objc(cs)PSPDFDocumentEditorConfiguration(py)pageTemplates
+[`documenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)documentEditorConfiguration
+[`initwithdocument:sourcepageindex:`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html#/c:objc(cs)PSPDFPageTemplate(im)initWithDocument:sourcePageIndex:
+[`initwithtiledpatternfromdocument:sourcepageindex:`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageTemplate.html#/c:objc(cs)PSPDFPageTemplate(im)initWithTiledPatternFromDocument:sourcePageIndex:
+[`pspdfdocumenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorConfiguration.html

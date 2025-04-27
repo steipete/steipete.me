@@ -1,0 +1,88 @@
+.nav-bar-mobile {
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: $nav-bar-breakpoint) {
+    display: none !important;
+  }
+
+  // Logo
+
+  .nav-brand {
+    padding: 0.4em 0;
+  }
+}
+
+// Hamburger Menu
+
+.nav-toggler {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  background: 0;
+  padding: 0;
+  width: 56px;
+  height: 56px;
+  line-height: 1.8;
+  color: $gray-500;
+  cursor: pointer;
+
+  > .fa {
+    font-size: 20px;
+  }
+
+  &:active,
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+}
+
+.nav-modal {
+  z-index: $zindex-popover;
+
+  .modal-dialog {
+    max-width: none;
+    margin: 10px;
+  }
+
+  .modal-content {
+    border: 0;
+    @include sh-3;
+  }
+
+  .modal-subtitle {
+    margin-bottom: $spacer;
+  }
+
+  .modal-block {
+    padding: ($spacer * 2);
+  }
+
+  .modal-media {
+    margin-bottom: $spacer;
+  }
+
+  .media-object {
+    width: 40px;
+    text-align: center;
+  }
+
+  .modal-list {
+    margin-bottom: 0;
+
+    li {
+      margin-bottom: ($spacer / 2);
+    }
+  }
+
+  .close {
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    outline: none;
+    opacity: 0.2;
+  }
+}

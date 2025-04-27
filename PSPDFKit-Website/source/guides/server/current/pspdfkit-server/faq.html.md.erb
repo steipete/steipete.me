@@ -1,0 +1,93 @@
+---
+title: FAQ
+section: developers
+
+---
+
+## How Are PSPDFKit Server, PSPDFKit for Web, and PSPDFKit Instant Related?
+
+Both PSPDFKit Instant and PSPDFKit for Web (when backed by PSPDFKit Server) rely on PSPDFKit Server. PSPDFKit Server stores PDF files, annotations, and metadata, and it handles connections between clients.
+
+PSPDFKit for Web also has a standalone deployment option that works without PSPDFKit Server.
+
+---
+
+## What Languages on the Backend Are Supported? Do You Support ASP.NET/PHP/Ruby/Java/etc.?
+
+PSPDFKit Server is _backend agnostic_. It uses a language-independent REST API. Your backend must be able to generate valid [JSON Web Tokens (JWTs) for authentication][pspdfkit guide authentication]. PSPDFKit Server is using the standardized JWT format. The benefit of this format is that it has [countless implementations in all different programming][jwt.io] languages.
+
+---
+
+## How Does User Authentication Work?
+
+Managing users and their access to certain documents is a responsibility of your application. Giving a user access to a document means that you sign a valid JWT with your private key. This signed token can then be passed to the clients, and in turn, back to PSPDFKit Server, which can verify if it is indeed authorized by your solution.
+
+---
+
+## Why Do I Get a 401 Response When Accessing the Server API?
+
+Make sure you have set the `Authorization` header to `Token token=<secret>`, where `<secret>` is the API authentication token you have set in your `docker-compose.yml` file with the `API_AUTH_TOKEN` environment variable.
+
+**Important:** The server API should only be accessed from your backend servers and not by the clients. Giving the API authentication token to clients is a security concern. More information about how PSPDFKit Server is secured can be found [here][pspdfkit guide security].
+
+---
+
+## Will API Requests Be Queued Up When I Send a Lot of Requests Concurrently?
+
+PSPDFKit Server handles API requests with pooling and queueing. Because every software system has limits in resources, such as memory, PSPDFKit Server has a [back-pressure][] mechanism built in to provide a stable system. When the queue is full, the server will respond with an error to the API request: `500 overload`. This mechanism ensures that the server stays reliable, and these errors have to be handled by the clients calling the API by throttling the API requests and retrying failed requests.
+
+---
+
+## Does PSPDFKit Server Support HTTPS?
+
+SSL/TLS support is not part of PSPDFKit Server. To secure connections, we recommend one of the following options.
+
+If you’ve deployed to the cloud, we recommend using a load balancing solution provided by your cloud platform provider:
+
+- [AWS Elastic Load Balancing][]
+- [Google Cloud Platform Load Balancing][]
+- [Azure Load Balancer][]
+
+An alternative is to set up an [NGINX][] server as a reverse proxy to PSPDFKit Server. You can configure [NGINX][] to support SSL/TLS and then you can point this to your certificate. A guide for this can be found [here][nginx reverse-proxy].
+
+---
+
+## Why Do I Get a 504 Response When Accessing the Server API?
+
+This response may be sent by your proxy server. Make sure to increase the timeouts of your proxy server to ensure that responses from PSPDFKit Server get redirected to the clients.
+
+---
+
+## Can I License PSPDFKit Server Separately?
+
+PSPDFKit Server is not its own product. You can only license it as part of PSPDFKit for Web or PSPDFKit Instant.
+
+---
+
+## Our Network Infrastructure Blocks Ingoing and Outgoing Requests. What URL Needs to Be Whitelisted to Activate PSPDFKit Server?
+
+The server where PSPDFKit Server is installed will need to connect to `https://customers.pspdfkit.com` for activation. Make sure to also allow requests to subroutes of this URL, such as `https://customers.pspdfkit.com/api/*`. The port is the default port for HTTPS connections, 443.
+
+---
+
+## How to Set Up Auto Scaling
+
+Auto scaling is a feature offered by some hosting providers that automatically spins up additional servers if a high load is detected. Various cloud hosting platforms have different solutions to this problem.
+
+Setting up auto scaling in your infrastructure is something that is best discussed with your DevOps team. We cannot provide an example of how to set it up, as the steps are both different for every cloud architecture and highly dependent upon your other application code.
+
+Here is some general information that’s useful when defining auto scaling settings for PSPDFKit Server:
+
+- All PSPDFKit Server instances use all the available memory, CPU, and storage by default.
+- We recommend having a managed database, which every major cloud provider offers, to scale PostgreSQL to your use case.
+- You can monitor memory, CPU, and IO with your existing tools and scale them like you would your existing applications. There is nothing special that you need to consider for PSPDFKit.
+
+[aws elastic load balancing]: https://aws.amazon.com/elasticloadbalancing/applicationloadbalancer/
+[back-pressure]: /blog/2018/back-pressure-queuing-system-with-sbroker/
+[google cloud platform load balancing]: https://cloud.google.com/compute/docs/load-balancing/http/
+[azure load balancer]: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview
+[nginx]: https://www.nginx.com/resources/wiki/
+[nginx reverse-proxy]: https://www.nginx.com/resources/admin-guide/reverse-proxy/
+[pspdfkit guide authentication]: ../../pspdfkit-server/client-authentication/
+[pspdfkit guide security]: ../../pspdfkit-server/security/
+[jwt.io]: http://jwt.io

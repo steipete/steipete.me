@@ -1,0 +1,72 @@
+---
+title: CSS Customization
+section: developers
+---
+
+PSPDFKit for Windows allows you to customize many parts of the UI that come as part of the SDK. This includes a number of supported public CSS classes borrowed from [PSPDFKit for Web][web], which you can use to apply custom styling to. The up-to-date list of customizable elements can be found in the CSS section of our [Web API documentation][api].
+
+## How to Change Colors the Simple Way
+
+Rather than having to set all the colors of each CSS class by hand, we’ve made it possible to set some of the main colors on the fly.
+
+1.  Create a new stylesheet to define the CSS changes required.
+
+<img src="/images/guides/windows/customizing-the-interface/css-customization/add-css-file-to-project.png" alt="Add a CSS file to your project">
+
+2.  Import the default CSS file used by the SDK and then override the following CSS variables with the desired colors:
+
+```css
+@import url("../pspdfkit/windows.css");
+
+:root {
+  --primary: #61d800; /* Highlight or hover color. */
+  --primary-dark-1: #09af00; /* Color for the main toolbar */
+  --primary-dark-2: #008b00; /* Color for the secondary toolbar */
+}
+```
+
+The code above demonstrates the ability to set the main toolbar color, the highlight color, and the secondary toolbar color, which should be adequate for most use cases. If required, you can add additional CSS modifications as well (see the advanced solution below).
+
+3. Now you will just have to pass the custom CSS file to the `PdfView` and your defined colors will be used:
+
+```xaml
+<ui:PdfView
+    License="{StaticResource PSPDFKitLicense}"
+    PdfUriSource="ms-appx:///Assets/pdfs/default.pdf"
+    Css="ms-appx-web:///Assets/css/my-pspdfkit.css"/>
+```
+
+## An Advanced Solution
+
+Let’s say you want to change the background color of the toolbar. If you look through our [Web CSS API documentation][api], you will find a section dedicated to all toolbar-related styling. You can use your mouse to move over the elements you want to style. For example, if you move over the toolbar, you’ll see the associated CSS class, [`.PSPDFKit-Toolbar`][].
+
+1.  With this information in mind, you can create a new stylesheet that overwrites the properties. For this example, you only want to change the background color. The first step is to add the stylesheet to your assets.
+
+<img src="/images/guides/windows/customizing-the-interface/css-customization/add-css-file-to-project.png" alt="Add a CSS file to your project">
+
+2.  Now you can populate this stylesheet with values to change the background color of the toolbar:
+
+```css
+/* my-pspdfkit.css */
+.PSPDFKit-Toolbar {
+  background-color: #f00;
+}
+```
+
+3. Then you have to pass the CSS when declaring the [`PdfView`][] XAML element in order to override the default styling:
+
+```xaml
+<ui:PdfView
+    License="{StaticResource PSPDFKitLicense}"
+    PdfUriSource="ms-appx:///Assets/pdfs/default.pdf"
+    Css="ms-appx-web:///Assets/css/my-pspdfkit.css"/>
+```
+
+Now all the CSS elements will be applied and you should see the following:
+
+<img class="shadow" alt="Toolbar with configured background color" src="/images/guides/web/customizing-the-interface/css-customization/customized-toolbar.png" width="795">
+
+[web]: https://pspdfkit.com/pdf-sdk/web/
+[api]: https://pspdfkit.com/api/web
+[`.pspdfkit-toolbar`]: https://pspdfkit.com/api/web/css-Toolbar.html#.PSPDFKit-Toolbar
+[`pdfview`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html

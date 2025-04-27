@@ -1,0 +1,11 @@
+---
+title: In Adobe Acrobat, Hyperlinks Are Clickable, but in PSPDFKit, Some or All of Them are Not Marked As Touchable
+section: developers
+
+---
+
+Adobe Acrobat and to some extent also Apple’s Preview use custom in-text hyperlink detection to create annotations on the fly. This is nothing the PDF references specifies, but it's a common practice.
+
+Since analyzing the page text can be expensive, this feature is disabled by default. Enable it via changing [`autodetectTextLinkTypes`][] to `PSPDFTextCheckingTypeAll`.
+
+[`autodetectTextLinkTypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)autodetectTextLinkTypes

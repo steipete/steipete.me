@@ -1,0 +1,24 @@
+---
+title: Undefined Symbols Error
+section: developers
+
+---
+
+If you get the following output when integrating PSPDFKit:
+
+```
+Undefined symbols for architecture i386:
+
+"operator delete(void*)", referenced from:
+___PSPDFInvokeRuntimePatches_block_invoke in PSPDFKit(PSPDFPatches.o)
+"operator new(unsigned long)", referenced from:
+___PSPDFInvokeRuntimePatches_block_invoke in PSPDFKit(PSPDFPatches.o)
+ld: symbol(s) not found for architecture i386
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+Then you’re missing the `-lc++` linker flag that has been required since PSPDFKit 4.2.0.
+
+See the [Integrating PSPDFKit][] guide for details.
+
+[Integrating PSPDFKit]: ../../getting-started/integrating-pspdfkit

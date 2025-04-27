@@ -1,0 +1,37 @@
+---
+title: PSPDFKit Doesn't Show the PDF Form
+section: developers
+
+---
+
+If you open a PDF and you see this:
+
+<img src="/images/guides/ios/rendering-issues/pspdfkit-doesnt-show-the-pdf-form/xfa.png">
+
+Chances are high that the PDF Form is actually a proprietary XFA Form, and not an AcroForm based on open standards. Documents created with Adobe LiveCycle Designer will be in the XFA format. PSPDFKit and other 3rd party frameworks will only be able to display documents based on AcroForm.
+
+XFA also allows a way where a form can be saved in compatibility mode so it can be rendered correctly. However, much of the functionality of XFA will not be converted to AcroForms. The result might be a document that just behaves incorrectly or misses JavaScript-hooks in 3rd-party readers. You can verify this by using Forms -> Edit in Adobe Acrobat Pro. If instead of the edit mode, you get this alert, it's XFA:
+
+<img src="/images/guides/ios/rendering-issues/pspdfkit-doesnt-show-the-pdf-form/alert.png">
+
+## Adobe XFA Forms (LiveCycle/Designer)
+XFA Forms (XML Forms Architecture) represents a significant change in direction for Adobe from the popular FDF and XFDF methodologies. XFA Forms have their roots in a former e-forms company called JetForm later renamed Accelio and acquired by Adobe in 2002. XFA concepts were first introduced in PDF 1.5 (Acrobat 6) and expanded in PDF 1.6, (Acrobat 7). Unlike Adobe’s earlier forms technology XFA Forms utilize XML throughout. While XML is the backbone for all types of structured documents, there are distinct drawbacks to be considered:
+
+* Creating XFA form requires Adobe LiveCycle Forms Designer which ships with Acrobat 7, 8, 9 and X Professional; and, is not included with Acrobat XI Professional.
+* Adobe XFA Forms are not compatible with AcroForms, and they cannot be modified in Acrobat.
+* On the backend there are no commercial or open-source alternatives to Adobe LiveCycle Enterprise Server for processing XFA Forms.
+* Existing Acrobat AcroForms cannot be automatically converted to XFA Forms. Typographic fidelity may need to be sacrificed when manually redrawing the forms with LiveCycle Designer.
+* Adobe XFA Form documents are not compatible with versions of Acrobat or Reader prior to 6.0.
+* AcroForms JavaScript is not supported with XFA Forms. A different, incompatible JavaScript syntax is used which leads to increased programming costs.
+* XFA Forms are not part of the PDF/A (Archiving) standard which is based on PDF Version 1.4. Applications for government or other institutions that must comply with digital archive standards may be problematic.
+* There are no commercial or open-source alternatives to using Adobe products for XFA Forms as there are with AcroForms. If you run into problems with XFA Forms you will have no one else to call besides Adobe.
+
+(excerpt from [Talking PDF][])
+
+You can read more about this topic [here][Appligent Acroforms PDF].
+
+Most features that are possible with XFA are also possible using AcroForms, so you should simply convert your existing forms. Sadly Adobe really wants people not breaking out of their ecosystem, so [converting XFA to AcroForm is tricky][Acrobatusers Convert Livecycle To Acroform].
+
+[Talking PDF]: http://talkingpdf.org/a-quick-introduction-to-acrobat-forms-technology
+[Appligent Acroforms PDF]: http://www.appligent.com/wp-content/uploads/2013/02/Acroforms+WhitePaper.pdf
+[Acrobatusers Convert Livecycle To Acroform]: http://answers.acrobatusers.com/convert-livecycle-acroform-q93419.aspx

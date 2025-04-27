@@ -1,0 +1,96 @@
+---
+title: Version Support
+section: developers
+---
+
+For PSPDFKit for iOS, we generally support n-1 versions of Apple’s iOS operating system. iOS is a fast-moving target, and Apple is rather aggressive in moving to newer versions. There’s also an important difference in behavior depending upon which SDK version the application is linked to.
+
+| PSPDFKit for iOS Version | Required Xcode Version | Supported iOS Versions |
+| ------------------------ | ---------------------- | ---------------------- |
+| PSPDFKit 9               | Xcode 11 (SDK 13)      | iOS 11, 12, 13         |
+| PSPDFKit 8.3 – 8.5       | Xcode 10 (SDK 12)      | iOS 11, 12, (13\*)     |
+| PSPDFKit 8.0 – 8.2.3     | Xcode 10 (SDK 12)      | iOS 10, 11, 12         |
+| PSPDFKit 7.6 – 7.7.2     | Xcode 9 (SDK 11)       | iOS 10, 11, (12\*)     |
+| PSPDFKit 7.0 – 7.5.2     | Xcode 9 (SDK 11)       | iOS 9, 10, 11          |
+| PSPDFKit 6               | Xcode 8 (SDK 10)       | iOS 9, 10, (11\*)      |
+| PSPDFKit 5               | Xcode 7 (SDK 9)        | iOS 8, 9, (10\*)       |
+| PSPDFKit 4               | Xcode 6 (SDK 8)        | iOS 7, 8, (9\*)        |
+| PSPDFKit 3               | Xcode 5 (SDK 7)        | iOS 6, 7, (8\*)        |
+| PSPDFKit 2               | Xcode 4 (SDK 6)        | iOS 5, 6               |
+| PSPDFKit 1               | Xcode 4 (SDK 5)        | iOS 4, 5               |
+
+(\*) Preliminary support for the next iOS version is usually added in the last release before the next major version of PSPDFKit.
+
+Apple is quite aggressive with requiring the latest version of their SDK (which implies using the latest Xcode): [Starting April 2020, all new apps and app updates will need to be built with the iOS 13 SDK and support the all-screen design of iPhone XS Max or later.](https://developer.apple.com/news/?id=09102019a)
+
+Versions up to 8.2.3 included 32-bit architectures, ARMv7, and i386, including bitcode slices.
+
+Unsure which version you currently use? [Learn how you can identify your current version][identify current version].
+
+[Bitcode is included as of PSPDFKit 5 for iOS][pspdfkit guide framework size]. Bitcode is architecture dependent, and we ship one bitcode slice per architecture (64-bit ARM). Since bitcode is an intermediary format, it’s larger and is responsible for about 80 percent of our framework size. This code is automatically stripped in the App Store and [can easily be removed manually][pspdfkit guide bitcode] if you do not yet support bitcode or use enterprise installs.
+
+As of January 2019, more than 95 percent of all active devices can use your product if your app supports iOS 11 upward (iOS 10 is no longer separately disclosed; in January 2019 it was at 5 percent and falling, as measured by the App Store). See [Mixpanel statistics][mixpanel ios statistics] or [Apple’s official device statistics][apple ios statistics] for details.
+
+In general, the most recent build will always require the most recent stable version of Xcode so that we can utilize all the improvements Apple is making on its tools and compiler infrastructure.
+
+## Base SDK
+
+The base SDK is usually tied to a version of Xcode and includes specific compiler and linker versions. Apple encodes the base SDK into your application, and frameworks often have behavior specific to a base SDK version to ensure backward compatibility. This is the main reason PSPDFKit is tied to a specific version of Xcode. We use the latest compiler and language improvements and have a very sophisticated usage of UIKit, which means we often have to tweak things so that everything runs perfectly whenever the base SDK is updated.
+
+## Deployment Target
+
+The deployment target is the minimum version supported by your application. If you see the following warning, it means PSPDFKit has detected that the Xcode version used is not the one we recommend:
+
+```
+PSPDFKit was built to be linked with Xcode X.X. (X).
+Your application has been built and linked with a different version (X).
+This may result in undefined behavior and bugs and is not supported.
+We strongly recommend updating PSPDFKit to a newer version that matches your current Xcode version.
+See https://pspdfkit.com/guides/ios/current/announcements/version-support for details.
+```
+
+This is a conservative warning, as Apple changes behavior based on the base SDK, including minor versions. This might trigger bugs in either Apple’s or PSPDFKit’s frameworks. We err on the side of extreme caution and issue a developer-only warning. We do not block you from compiling a version of PSPDFKit with a newer version of the SDK; we just discourage it and print a warning.
+
+## Device Support
+
+PSPDFKit for iOS supports all available iOS devices and form factors and includes many adjustments for optimal display for small and large screens: iPhone, iPhone Plus, iPod Touch, iPad, iPad Pro (binary ships with ARM4/x86_64).
+
+The arm64e 64-bit ARMv8.3-A architecture was introduced with the [Apple A12 chip][] and [Xcode 10.1][]. It first appeared in the iPhone XS, XS Max, and XR, which were introduced on 12 September 2018.
+
+The iPhone 4S, iPad 2, iPad 3, iPad mini, and fifth-generation iPod Touch will not run iOS 10.
+
+The iPhone 5, iPad 4, and iPhone 5C will not run iOS 11 (32-bit hardware has been dropped completely).
+
+All the iPads and iPhones that were compatible with iOS 11 [are also compatible with iOS 12][].
+
+For a detailed overview, see the [list of supported iOS releases][].
+
+## Troubleshooting 64-Bit Requirements
+
+Apple required 64-bit binaries [starting 1 February 2015][]. Support for 32-bit binaries was dropped with iOS 11. If your target deployment target is iOS 11 or later, you must have arm64 in your `Info.plist` file. Make sure it contains the following entry:
+
+```
+<key>UIRequiredDeviceCapabilities</key>
+<array>
+    <string>arm64</string>
+</array>
+```
+
+If you don’t, App Store Connect will report the error shown below.
+
+ERROR ITMS-90502: "Invalid Bundle. Apps that only contain the arm64 slice must also have 'arm64' in the list of `UIRequiredDeviceCapabilities` in Info.plist."
+
+[Wikipedia’s List of iOS devices][] article also features an in-depth capability overview.
+
+[identify current version]: ../../license-issues/getting-the-currently-used-version
+[pspdfkit guide framework size]: ../../faq/framework-size
+[pspdfkit guide bitcode]: ../../faq/bitcode
+[mixpanel ios statistics]: https://mixpanel.com/trends/#report/ios_12
+[apple ios statistics]: https://developer.apple.com/support/app-store/
+[apple a12 chip]: https://en.wikipedia.org/wiki/Apple_A12
+[xcode 10.1]: https://developer.apple.com/documentation/xcode_release_notes/xcode_10_1_release_notes
+[preview feature on xcode 10.1]: https://developer.apple.com/documentation/xcode_release_notes/xcode_10_1_beta_2_release_notes
+[are also compatible with ios 12]: https://www.macworld.co.uk/feature/iosapps/ios-12-compatibility-3521184/
+[list of supported ios releases]: https://en.wikipedia.org/wiki/List_of_iOS_devices#Supported_iOS_releases
+[starting 1 february 2015]: http://www.macrumors.com/2014/12/17/apple-64-bit-support-reminder
+[wikipedia’s list of ios devices]: https://en.wikipedia.org/wiki/List_of_iOS_devices

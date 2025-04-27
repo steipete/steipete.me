@@ -1,0 +1,19 @@
+{
+  "search.exclude": {
+    "pre-built/**": true,
+    // Workaround for https://github.com/Microsoft/vscode/issues/869#issuecomment-263006643
+    "source/guides/*/[012345689]*/**": true,
+  },
+  "files.exclude": {
+    "pre-built/**": true,
+    "node_modules/**": true,
+    "build/**": true,
+  },
+  "files.associations": {
+    "*.md.erb": "markdown",
+  },
+  "prettier.printWidth": 74,
+  "editor.rulers": [
+    74
+  ]
+}

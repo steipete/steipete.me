@@ -1,0 +1,43 @@
+---
+title: 2019.4 Migration Guide
+section: developers
+
+order: 494
+---
+
+[PSPDFKit for Web 2019.4][] comes with a few improvements that might require an ad hoc migration.
+
+### Notable Changes
+
+- We have changed our default UI to use a bright toolbar by default. Some changes might be necessary if you have used custom CSS that depended upon the dark toolbar, which is available by selecting `PSPDFKit.Theme.DARK` in [`PSPDFKit.Configuration#theme`][].
+- A new Document Editor component has been implemented. If your license includes the document editing feature, a new toolbar button that gives you access to this UI feature will be available in the main toolbar. You may need to update your toolbar items handling if your implementation depends on the toolbar items’ default configuration (see [`PSPDFKit.defaultToolbarItems`][]).
+- We updated the naming schema of our additional chunks delivered via the `pspdfkit-lib/` folder. The new names will now have prefixes you can use to preload specific parts of the app if necessary. Some examples include:
+
+  - `pspdfkit-lib/chunk-locale-<locale>-*.js` files are used for internationalization files, e.g. `pspdfkit-lib/chunk-locale-de-*.js` for the German localization.
+  - `chunk-standalone-*.js` is for all Standalone-specific artifacts.
+  - `chunk-server-*.js` is for all Server-specific artifacts.
+
+Please note that the last part of the file name is still a hash of its content. This ensures we don’t run into caching issues when artifacts are updated.
+
+- The icons in the toolbar were changed in order to shrink the toolbar height. Additionally, the icon size changed from 18x18&nbsp;px to 24x24&nbsp;px.
+- The WebAssembly and asm.js artifacts now have a content hash as part of the file name. This allows you to configure a long-term caching strategy and make use of advanced features like [WASM code caching][]. The affected files are:
+  - `pspdfkit-lib/pspdfkit.wasm` ➡️ `pspdfkit-lib/pspdfkit-<hash>.wasm`
+  - `pspdfkit-lib/pspdfkit.wasm.js` ➡️ `pspdfkit-lib/pspdfkit-<hash>.wasm.js`
+  - `pspdfkit-lib/pspdfkit.asm.js` ➡️ `pspdfkit-lib/pspdfkit-<hash>.asm.js`
+  - `pspdfkit-lib/pspdfkit.asm.js.mem` ➡️ `pspdfkit-lib/pspdfkit-<hash>.asm.js.mem`
+- The thumbnail sidebar now comes with a changed layout. All public CSS classes can still be used to customize the styling:
+  - `.PSPDFKit-Sidebar-Thumbnails-Page`
+  - `.PSPDFKit-Sidebar-Thumbnails-Page-Image`
+  - `.PSPDFKit-Sidebar-Thumbnails-Page-Label`
+  - `.PSPDFKit-Sidebar-Thumbnails-Page-Selected`
+
+If you use PSPDFKit Server, please make sure you read the [2019.4 Server Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2019.4]: https://pspdfkit.com/blog/2019/pspdfkit-web-2019-4/
+[wasm code caching]: https://v8.dev/blog/wasm-code-caching
+[changelog]: https://pspdfkit.com/changelog/web/#2019.4
+[2019.4 server migration guide]: https://pspdfkit.com/guides/server/current/migration-guides/2019-4-migration-guide/
+[`pspdfkit.defaulttoolbaritems`]: https://pspdfkit.com/api/web/PSPDFKit.html#.defaultToolbarItems
+[`pspdfkit.configuration#theme`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#theme

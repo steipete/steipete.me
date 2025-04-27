@@ -1,0 +1,126 @@
+---
+title: PSPDFKit for Android — Android PDF Library
+title_suffix: false
+description: Everything You Need to Add PDF Support to Your Android Apps. A high-performance viewer, extensive annotation and document editing tools, digital signatures, and more. PSPDFKit is the Android PDF Library to go.
+platform: android
+section: sdk
+---
+
+<%= partial 'shared/nav_sub', locals: {
+  items: %w(Overview Features Showcase Get-Started)
+} %>
+
+<!-- Hero -->
+<%= partial 'shared/hero', locals: {
+  title: "Everything You Need <br class='d-none d-xl-block'> to Add PDF Support to Your Android Apps",
+  subtitle: "PSPDFKit for Android — Android PDF Library",
+  body: "
+    A high-performance viewer, extensive annotation and document editing tools, digital
+    signatures, and more. All engineered for the best possible user and developer
+    experience. PSPDFKit — the Android PDF SDK made for you.
+  ",
+} %>
+
+<!-- Customers -->
+<%= partial 'shared/customers'%>
+
+<!-- Features -->
+<%= partial 'shared/product_components', locals: {
+  items: [
+    {
+      title: "Viewer",
+      body: "The most advanced PDF viewer on the market, and the foundation of
+      our framework.",
+      icon: "/images/icons/viewer.svg",
+      url: '/pdf-sdk/android/viewer/'
+    },
+    {
+      title: "Annotations",
+      body: "Highlight text, draw, and add notes. Make use of many more
+      annotation types, each with its own style controls.",
+      icon: "/images/icons/annotations.svg",
+      url: '/pdf-sdk/android/annotations/'
+    },
+    {
+      title: "Forms",
+      body: "Supports PDF AcroForms for viewing, saving, and submitting form
+      content to servers.",
+      icon: "/images/icons/forms.svg",
+      url: '/pdf-sdk/android/forms/'
+    },
+    {
+      title: "Digital Signatures",
+      icon: "/images/icons/signatures.svg",
+      body: "Sign documents via a personal certificate for instant identity
+      verification.",
+      url: '/pdf-sdk/android/digital-signatures/'
+    },
+    {
+      title: "Indexed Search",
+      body: "Search text across multiple documents, languages, and encoding
+      types with near-instant results.",
+      icon: "/images/icons/search.svg",
+      url: '/pdf-sdk/android/indexed-search/'
+    },
+    {
+      title: "Document Editor",
+      body: "Edit pages (move, rotate, delete, and more) of a document or add a
+      new page to take notes.",
+      icon: "/images/icons/document-editor.svg",
+      url: '/pdf-sdk/android/document-editor/'
+    },
+    {
+      title: "Replies",
+      body: "Collaboratively discuss any aspect of a document in context.
+      Supports both text comments and selecting a status such as
+      accepted/rejected.",
+      icon: "/images/icons/replies.svg",
+      url: '/pdf-sdk/android/replies/'
+    },
+    {
+      title: "Image Documents",
+      body: "Collaborate on images as you would with PDFs by annotating,
+      editing, and sharing in a non-destructive way.",
+      icon: "/images/icons/image-documents.svg",
+      url: '/pdf-sdk/android/image-documents/'
+    },
+    {
+      title: "Redaction",
+      body: "Securely and irrecoverably remove sensitive, confidential, or
+      privileged text from documents.",
+      icon: "/images/icons/redaction.svg",
+      url: '/pdf-sdk/redaction/#android',
+      new: true
+    },
+    {
+      title: "Comparison",
+      body: "Visually compare documents to clearly highlight the addition or
+      removal of graphic elements.",
+      icon: "/images/icons/comparison.svg",
+      url: '/pdf-sdk/comparison/#android',
+      new: true
+    }
+  ]
+} %>
+
+<!-- Try CTA -->
+<%= partial 'shared/cta_try' %>
+
+<!-- Showcase -->
+<%= partial 'shared/showcase' %>
+
+<!-- Integration -->
+<%= partial 'shared/integration', locals: {
+  title: "Using PSPDFKit",
+  subtitle: "Integration",
+  body: "
+    <strong>PSPDFKit</strong> can be integrated with just a few lines of code,
+    <br> and it comes with a rich API, which allows for complete customization.
+  ",
+} %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales' %>
+
+<!-- Blog Posts -->
+<%= partial 'shared/blog_posts', locals: { title: 'Latest Updates', posts: tagged_articles('Android') } %>

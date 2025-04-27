@@ -1,0 +1,17 @@
+---
+title: Navigate with Page Labels
+section: developers
+
+---
+
+![Page Labels](/images/blog/2019/pspdfkit-web-2019-3/page-labels.png)
+
+Each page in a PDF document can have a human-readable label associated with it. These kinds of labels, added by the document author, can result in a friendlier navigation experience by making content more easily identifiable.
+
+Furthermore, page labels are often used to assign a number to pages which otherwise would be identified by their page index. For example, the first few pages of a document could include a table of contents, introduction, etc., and the author may want the actual page number count to start from the sixth page of the document (e.g. pages i, ii, iii, iv, v, followed by 1, 2, 3).
+
+PSPDFKit for Web now joins PSPDFKit for iOS and Android, as well as other PDF solutions, in supporting page labels instead of numbers: In the above example, the page with the label 2 would actually be page 7.
+
+If the current page includes a label, it’s shown along with the actual page number in parentheses. When no label is available, only the page number is displayed.
+
+Users can also enter a page label in the pagination widget of the main toolbar to jump to it directly.

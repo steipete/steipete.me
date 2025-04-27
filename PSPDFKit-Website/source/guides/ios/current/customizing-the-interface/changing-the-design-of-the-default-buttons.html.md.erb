@@ -1,0 +1,14 @@
+---
+title: Changing the Design of the Default Buttons
+section: developers
+---
+
+If you want to use the stock toolbar buttons provided in PSPDFKit but with a different style, you can subclass `PSPDFAnnotationToolbar`. Please take a look at the [Overriding Classes][] guide article for more information. Ensure that you override the classes very early — before the toolbar buttons are accessed, since they are created lazily and changing the class once it’s created won’t affect anything.
+
+In most instances, you’ll want to change the `image` property or do something that UIKit doesn’t do or support by default (like getting rid of the button shadow on iOS 6). In such a case, you can create a `customView` instead and return that in your subclass. Make sure you create it once and that you don’t recreate it every time `customView` is accessed.
+
+If the button you override uses a `systemStyle`, you need to override the `systemStyle` as well and return `(UIBarButtonSystemItem)-1`, which means no system style will be in place.
+
+You can also use your own bar button items and simply call down to `action:` with your custom button as an argument.
+
+[overriding classes]: https://pspdfkit.com/guides/ios/current/getting-started/overriding-classes/

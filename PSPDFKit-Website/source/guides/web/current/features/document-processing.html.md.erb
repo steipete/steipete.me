@@ -1,0 +1,149 @@
+---
+title: Document Processing
+section: developers
+---
+
+PSPDFKit for Web allows annotation flattening when exporting PDF documents.
+
+## PDF Exporting
+
+PDF exporting can be done on the client (for both the server-backed and standalone case) as well as the server (only the server-backed case).
+
+### Client-Side PDF Exporting
+
+Regardless of the deployment option, you can always use [`Instance#exportPDF()`][] to get the PDF content as an `ArrayBuffer`:
+
+[==
+
+```es
+const content = await instance.exportPDF();
+console.log(content); // => ArrayBuffer
+```
+
+```js
+instance.exportPDF().then(function(content) {
+  console.log(content); // => ArrayBuffer
+});
+```
+
+==]
+
+**Adding a download button to the toolbar**
+
+With `instance.exportPDF()` and the possibility of [customizing the toolbar][], you can easily add a download button to PSPDFKit for Web:
+
+[==
+
+```es
+const downloadButton = {
+  type: "custom",
+  id: "download-pdf",
+  icon: "/download.svg",
+  title: "Download",
+  onPress: () => {
+    pspdfkitInstance.exportPDF().then(buffer => {
+      const blob = new Blob([buffer], { type: "application/pdf" });
+      const fileName = "document.pdf";
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+      } else {
+        const objectUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.style = "display: none";
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(objectUrl);
+        document.body.removeChild(a);
+      }
+    });
+  }
+};
+
+const items = PSPDFKit.defaultToolbarItems;
+// Add the download button to the toolbar.
+items.push(downloadButton);
+
+PSPDFKit.load({
+  toolbarItems: items
+});
+```
+
+```js
+var downloadButton = {
+  type: "custom",
+  id: "download-pdf",
+  icon: "/download.svg",
+  title: "Download",
+  onPress: function() {
+    pspdfkitInstance.exportPDF().then(function(buffer) {
+      var blob = new Blob([buffer], { type: "application/pdf" });
+      var fileName = "document.pdf";
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+      } else {
+        var objectUrl = window.URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = objectUrl;
+        a.style = "display: none";
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(objectUrl);
+        document.body.removeChild(a);
+      }
+    });
+  }
+};
+
+var items = PSPDFKit.defaultToolbarItems;
+// Add the download button to the Toolbar
+items.push(downloadButton);
+
+PSPDFKit.load({
+  toolbarItems: items
+});
+```
+
+==]
+
+### Sever-Side PDF Exporting
+
+To request the latest PDF from the server, please use the [`/pdf` endpoint of the document API][]. You have the option to download the latest version with all annotations included (the default option) or to access the original PDF content that was initially uploaded. Keep in mind that annotations will never be flattened when using this API.
+
+## Annotation Flattening
+
+When flattening an annotation, the annotation is removed from the document, while its visual representation is kept intact. A flattened annotation is still visible but no longer editable by your users or by your app. This can be used, for example, to permanently apply annotations to your document, or to make annotations visible to viewers that otherwise can’t show annotations (like Safari on iOS). If not specified, an export will keep all annotations as they are.
+
+To change how annotations are exported, use [`Instance#exportPDF()`][]. This method accepts a `flatten` option:
+
+[==
+
+```es
+const content = await instance.exportPDF({ flatten: true });
+console.log(content); // => ArrayBuffer
+```
+
+```js
+instance.exportPDF({ flatten: true }).then(function(content) {
+  console.log(content); // => ArrayBuffer
+});
+```
+
+==]
+
+## Strategy When Applying Changes to a PDF
+
+When exporting changes to an open document, two main strategies are available: incremental saving and full saving.
+
+Incremental saving consists of always appending new changes to the end of a document and keeping the previous versions of it intact. Full saving, on the other hand, rewrites the entire document instead of appending changes at the end of it. This prevents the document file size from growing on every revision, but it is slower than incremental saving.
+
+Unlike [PSPDFKit for Android][android incremental saving] and [PSPDFKit for iOS][ios incremental saving], PSPDFKit for Web uses full saving. However, this behavior could change in the future. If you need incremental saving, please [contact support][].
+
+[`instance#exportpdf()`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#exportPDF
+[`/pdf` endpoint of the document api]: https://pspdfkit.com/guides/server/current/api/documents/#fetching-document-s-pdf-file
+[customizing the toolbar]: http://pspdfkit.com/guides/web/current/customizing-the-interface/customizing-the-toolbar/
+[android incremental saving]: https://pspdfkit.com/guides/android/current/faq/growing-pdf-file-size/
+[ios incremental saving]: https://pspdfkit.com/guides/ios/current/faq/growing-pdf-file-size/
+[contact support]: https://pspdfkit.com/support/request

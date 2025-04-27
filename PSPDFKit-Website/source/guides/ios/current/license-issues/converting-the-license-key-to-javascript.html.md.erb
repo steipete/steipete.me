@@ -1,0 +1,69 @@
+---
+title: Converting the License Key to JavaScript
+section: developers
+
+---
+
+If you are using PSPDFKit in a JavaScript-based framework, you need to convert the licenses (which are provided in the form of Swift and Objective-C examples) to JavaScript first. This article explains how to properly perform this conversion.
+
+> **ℹ️ Note:** To use PSPDFKit inside your JavaScript-based project, you first need to obtain a valid license key. The license key can be obtained in the [PSPDFKit Customer Portal][customer portal] (for existing customers) or by following the link inside the [PSPDFKit Demo email][try the demo guide].
+
+---
+
+## Obtaining the License Key
+
+Our [license integration guides][adding the license key guide] explain how to integrate the the license into an app that is written in Swift or Objective-C. If you want to add the license in JavaScript, here's how to do it.
+
+The license code you get from the customer center or the demo email is similar to this:
+
+[==
+
+```swift
+PSPDFKitGlobal.setLicenseKey("PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y")
+```
+
+```objc
+[PSPDFKitGlobal setLicenseKey:@"PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y"];
+```
+
+==]
+
+## Converting for Appcelerator Titanium
+
+The JavaScript equivalent to [Appcelerator Titanium][] is this:
+
+```js
+pspdfkit.setLicenseKey("PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y");
+```
+
+## Converting for Apache Cordova
+
+The JavaScript equivalent to [Apache Cordova][] is this:
+
+```js
+PSPDFKit.setLicenseKey("PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y");
+```
+
+## Converting for Flutter
+
+The Dart equivalent to [Flutter][] is this:
+
+```dart
+Pspdfkit.setLicenseKey("PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y");
+```
+
+## Converting for React Native
+
+The JavaScript equivalent to [React Native][] is this:
+
+```js
+PSPDFKit.setLicenseKey("PQmgAnmE1GsqwrY8nV2Gaq4g9wcg8XDF3p9ymbsw1npPclRg9Wsd3FQZXF2s4OT9BeiKk6g9sutdcy9032sgf8afm432wkq50SrGfi71CDuJCoVdIbF6Zj+BIYeaz38ghlFfydfMOFlfd4H5t0y");
+```
+
+[customer portal]: https://customers.pspdfkit.com
+[try the demo guide]: ../../getting-started/try-the-demo
+[adding the license key guide]: ../../getting-started/adding-the-license-key
+[appcelerator titanium]: https://github.com/PSPDFKit/Appcelerator-iOS
+[apache cordova]: https://github.com/PSPDFKit/PSPDFKit-Cordova
+[React Native]: https://github.com/PSPDFKit/react-native
+[flutter]: https://github.com/PSPDFKit/pspdfkit-flutter

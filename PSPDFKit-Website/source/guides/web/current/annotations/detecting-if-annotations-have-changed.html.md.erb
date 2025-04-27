@@ -1,0 +1,62 @@
+---
+title: Detecting If Annotations Have Changed
+section: developers
+
+---
+
+In addition to controlling annotation changes via our [create, update, and delete APIs][], we also expose a number of events that can be used to intercept annotation changes that originate in the UI by clicks from the user or that are synced from the server.
+
+| Event                    | Use Case                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| [`annotations.load`][]   | Fires whenever annotations are loaded from the document.                                                  |
+| [`annotations.change`][] | Fires whenever the current annotations change due to a user action (e.g. clicking the UI) or via the API. |
+| [`annotations.create`][] | Fires whenever annotations are created.                                                                   |
+| [`annotations.update`][] | Fires whenever annotations are updated.                                                                   |
+| [`annotations.delete`][] | Fires whenever annotations are deleted.                                                                   |
+
+[==
+
+```es
+instance.addEventListener("annotations.load", loadedAnnotations => {
+  console.log(loadedAnnotations);
+});
+instance.addEventListener("annotations.change", () => {
+  console.log("Something in the annotations has changed.");
+});
+instance.addEventListener("annotations.create", createdAnnotations => {
+  console.log(createdAnnotations);
+});
+instance.addEventListener("annotations.update", updatedAnnotations => {
+  console.log(updatedAnnotations);
+});
+instance.addEventListener("annotations.delete", deletedAnnotations => {
+  console.log(deletedAnnotations);
+});
+```
+
+```js
+instance.addEventListener("annotations.load", loadedAnnotations => {
+  console.log(loadedAnnotations);
+});
+instance.addEventListener("annotations.change", function() {
+  console.log("Something in the annotations has changed.");
+});
+instance.addEventListener("annotations.create", function(createdAnnotations) {
+  console.log(createdAnnotations);
+});
+instance.addEventListener("annotations.update", function(updatedAnnotations) {
+  console.log(updatedAnnotations);
+});
+instance.addEventListener("annotations.delete", function(deletedAnnotations) {
+  console.log(deletedAnnotations);
+});
+```
+
+==]
+
+[create, update, and delete apis]: ../../annotations/introduction-to-annotations/#creating-annotations
+[`annotations.load`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsLoadEvent
+[`annotations.change`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsChangeEvent
+[`annotations.create`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsCreateEvent
+[`annotations.update`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsUpdateEvent
+[`annotations.delete`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsDeleteEvent

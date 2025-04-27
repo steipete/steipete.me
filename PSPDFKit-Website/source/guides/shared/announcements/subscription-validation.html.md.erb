@@ -1,0 +1,30 @@
+---
+title: Subscription License Validation
+section: developers
+---
+
+**Important: If you have shipped PSPDFKit 5.1.0 – 5.1.4 for iOS or 2.0.0 – 2.1.0 for Android, you should update to a newer version immediately.** These versions have a bug where expired licenses will fail the license verification process and cause your app to exit unexpectedly.
+
+Versions outside of this range will log if an expired subscription license is used, but they will continue to function as expected on actual devices. We strongly suggest updating as soon as possible.
+
+We apologize for any inconvenience this may have caused.
+
+## How License Validation Works
+
+License validation in PSPDFKit happens offline to ensure no network communication takes place between PSPDFKit and end user devices. <% if ios? %>(You can learn more in our [PSPDFKit SDK Security][] article.)<% end %> Simply renewing the license on our backend will not change anything about the behavior in your application, as we don’t have the ability to change how your apps behave in production.
+
+<% if ios? %>
+
+## Workarounds
+
+### Date
+
+As a temporary workaround, you can change the date on the iOS device — setting it back a few months should be sufficient, and this will hopefully reenable working with the app until you’ve pushed a fix that correctly addresses this issue.
+
+### App Store
+
+If your app is in the App Store and issues related to PSPDFKit 5.1.0. are causing problems, we recommend asking for an [expedited app review][apple support app review], which is usually processed in less than a day.
+<% end %>
+
+[pspdfkit sdk security]: ../../faq/sdk-security/
+[apple support app review]: https://developer.apple.com/support/app-review/

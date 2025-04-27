@@ -1,0 +1,228 @@
+---
+title: Generating PDF Reports
+section: developers
+---
+
+![](/images/blog/2018/generate-on-device-pdf-reports-on-ios/article-header.png)
+
+With PSPDFKit, you can use templates to create a PDF report on a mobile device and without an internet connection. This is useful in business intelligence and can potentially amend applications such as Crystal Reports or SQL Server Reporting Services.
+
+## Generating PDF Documents
+
+With a combination of features like the [Document Editor][] and annotations, PSPDFKit can create professional reports based on a template and include custom cover and final pages. See the `GenerateReportExample.java` example from the Catalog for more information.
+
+## Adding Text and Images
+
+You can add text with free text annotations and images using stamp annotations, like so:
+
+[==
+
+```kotlin
+// Create a free text annotation.
+val freeTextAnnotation = FreeTextAnnotation(
+	0,
+	RectF(228f, 1024f, 828f, 964f),
+	"Some Annotations"
+)
+freeTextAnnotation.textSize = 40f
+
+// Add the free text annotation to the document.
+document.annotationProvider.addAnnotationToPage(titleFreeTextAnnotation)
+
+ // Create an image stamp annotation.
+val image = BitmapFactory.decodeStream(context.assets.open("images/android.png"))
+
+val imageStampAnnotation = StampAnnotation(
+	0,
+	RectF(60f, 400f, (60 + image.width / 4).toFloat(), (400 - image.height / 4).toFloat()),
+	image
+)
+
+// Add the image stamp annotation to the document.
+document.annotationProvider.addAnnotationToPage(imageStampAnnotation)
+```
+
+```java
+// Create a free text annotation.
+FreeTextAnnotation freeTextAnnotation = new FreeTextAnnotation(
+	0,
+    new RectF(228, 1024, 828, 964),
+    "Some Annotations"
+);
+freeTextAnnotation.setTextSize(40);
+
+// Add the free text annotation to the document.
+document.getAnnotationProvider().addAnnotationToPage(freeTextAnnotation);
+
+// Create an image stamp annotation.
+Bitmap image = BitmapFactory.decodeStream(context.getAssets().open("images/android.png"));
+
+StampAnnotation imageStampAnnotation = new StampAnnotation(
+	0,
+	new RectF(60, 400, 60 + image.getWidth() / 4, 400 - image.getHeight() / 4),
+	image
+);
+
+// Add the image stamp annotation to the document.
+document.getAnnotationProvider().addAnnotationToPage(imageStampAnnotation);
+```
+
+==]
+
+## Adding PDF Pages/Content into Existing PDF Pages
+
+Stamp annotations allow you to embed and freely place/scale PDF pages _into_ other PDF pages, like so:
+
+[==
+
+```kotlin
+// Create the vector stamp annotation.
+val vectorStampAnnotation = StampAnnotation(
+	0,
+	RectF(50f, 724f, 250f, 524f),
+	"Stamp with custom AP stream"
+)
+// Set the PDF from assets containing the vector logo as the annotation's appearance stream generator.
+vectorStampAnnotation.appearanceStreamGenerator = AssetAppearanceStreamGenerator("images/PSPDFKit_Logo.pdf")
+
+// Add the vector stamp annotation to the document.
+document.annotationProvider.addAnnotationToPage(vectorStampAnnotation)
+```
+
+```java
+// Create the vector stamp annotation.
+StampAnnotation vectorStampAnnotation = new StampAnnotation(
+	0,
+	new RectF(50, 724, 250, 524),
+	"Stamp with custom AP stream"
+);
+// Set the PDF from assets containing the vector logo as the annotation's appearance stream generator.
+vectorStamp.setAppearanceStreamGenerator(new AssetAppearanceStreamGenerator("images/PSPDFKit_Logo.pdf"));
+
+// Add the vector stamp annotation to the document.
+document.getAnnotationProvider().addAnnotationToPage(vectorStampAnnotation);
+```
+
+==]
+
+Refer to the [Appearance Streams][] article for details.
+
+## Adding Form Elements
+
+PSPDFKit allows you to add, remove, and modify interactive form elements to allow things like user input or requesting a signature. These elements include text input, radio buttons, and checkboxes:
+
+[==
+
+```kotlin
+// Create the configuration for a new radio button.
+val radioButtonFormConfiguration = RadioButtonFormConfiguration.Builder(
+	0,
+	RectF(30f, 500f, 60f, 470f)
+).select().build()
+
+// Add the radio button to a document.
+val radioButtonFormField = document
+	.formProvider
+	.addFormElementToPage(
+		"RadioButton",
+		radioButtonFormConfiguration
+    ) as RadioButtonFormField
+```
+
+```java
+// Create the configuration for a new radio button.
+RadioButtonFormConfiguration radioButtonFormConfiguration = new RadioButtonFormConfiguration.Builder(
+	0,
+    new RectF(30, 500, 60, 470)
+).select().build();
+
+// Add the radio button to a document.
+RadioButtonFormField radioButtonFormField = (RadioButtonFormField) document
+	.getFormProvider()
+	.addFormElementToPage(
+		"RadioButton",
+		radioButtonFormConfiguration
+	);
+```
+
+==]
+
+Please refer to the [Form Creation][] article for details.
+
+## Flatten Annotations
+
+You can flatten annotations to prevent users from modifying them. Here’s how to flatten all annotation types except for link annotations:
+
+[==
+
+```kotlin
+val task: PdfProcessorTask = ...
+
+// We flatten all annotations.
+task.changeAllAnnotations(PdfProcessorTask.AnnotationProcessingMode.FLATTEN)
+// And then explicitly keep link annotations.
+task.changeAnnotationsOfType(AnnotationType.LINK, PdfProcessorTask.AnnotationProcessingMode.KEEP)
+```
+
+```java
+PdfProcessorTask task = ...
+
+// We flatten all annotations.
+task.changeAllAnnotations(PdfProcessorTask.AnnotationProcessingMode.FLATTEN);
+// And then explicitly keep link annotations.
+task.changeAnnotationsOfType(AnnotationType.LINK, PdfProcessorTask.AnnotationProcessingMode.KEEP);
+```
+
+==]
+
+Refer to the [Document Processing][] article for more details.
+
+## Securing Your PDF Document
+
+PSPDFKit allows you to secure a document against being opened by adding a password:
+
+[==
+
+```kotlin
+val task: PdfProcessorTask = ...
+val outputFile: File = ...
+
+// Only allow opening by users who know the password.
+val password = "password"
+val saveOptions = DocumentSaveOptions(
+	password,
+	EnumSet.of(DocumentPermissions.PRINTING),
+	false,
+	null
+)
+
+// Create the resulting document.
+PdfProcessor.processDocument(task, outputFile, saveOptions)
+```
+
+```java
+PdfProcessorTask task = ...
+File outputFile = ...
+
+// Only allow opening by users who know the password.
+final String password = "password";
+final DocumentSaveOptions saveOptions = new DocumentSaveOptions(
+	password,
+	EnumSet.of(DocumentPermissions.PRINTING),
+	false,
+	null
+);
+
+// Create the resulting document.
+PdfProcessor.processDocument(task, outputFile, saveOptions);
+```
+
+==]
+
+Refer to the [Creating a Password-Protected Document][] article for details.
+
+[form creation]: ../../forms/form-creation/
+[appearance streams]: ../../annotations/appearance-streams/
+[document editor]: ../../features/document-editor/#programmatic-access
+[creating a password-protected document]: ../../features/document-processing/?#protecting-a-document-with-a-password
+[document processing]: ../../features/document-processing/

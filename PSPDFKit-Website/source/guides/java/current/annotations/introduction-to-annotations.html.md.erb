@@ -1,0 +1,67 @@
+---
+title: Introduction to Annotations
+section: developers
+---
+
+![Annotations](/images/guides/shared/annotations/annotations-header.png)
+
+PSPDFKit Libraries supports most common annotation types:
+
+- [Link][]
+- [Highlight][], [Underline][], [Strikeout][], [Squiggle][]
+- [Text][]
+- [Ink][]
+- [Ellipse][], [Rectangle][], [Line][], [Polyline][], [Polygon][]
+- [Note][]
+
+These are standard annotations (as defined in the PDF Reference) that can be read and written by many apps, including Adobe Acrobat and Apple’s `Preview app`.
+
+## Working with Annotations in Code
+
+The PSPDFKit Java Library uses [Instant Annotation JSON][] to read and write annotations to and from a document, which allows for reusability across many of our products.
+
+When a document is loaded, it’s possible to query the document to return the annotation representation of the document. Using [`getAnnotationsJson`][`annotationprovider#getannotationsjson`], you will receive a `JSONArray` populated with the annotation information of the page queried.
+
+For more information on the Annotation JSON format, please see our [Server guides][annotation-server-guides].
+
+## Creating and Deleting Annotations
+
+To create an annotation on a page, simply use the [annotation JSON format][annotation-server-guides] to [add the annotation][`annotationprovider#addannotationjson`] you want:
+
+```java
+JSONObject annotationJson = new JSONObject();
+jsonObject.put("backgroundColor", "#FF0000");
+jsonObject.put("bbox", new float[]{10, 10, 400, 400});
+
+...
+
+jsonObject.put("fontColor", "#000000");
+jsonObject.put("fontSize", 72);
+
+document.getAnnotationProvider().addAnnotation(annotationJson);
+```
+
+To [delete an annotation][`annotationprovider#removeannotation`], you need to reference the `pageIndex` and `pdfObjectId` of the annotation in the document:
+
+```java
+document.getAnnotationProvider().removeAnnotation(0, 1);
+```
+
+[highlight]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Highlight.html
+[underline]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Underline.html
+[strikeout]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Strikeout.html
+[squiggle]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Squiggly.html
+[text]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Text.html
+[ink]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ink.html
+[line]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Line.html
+[rectangle]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Rectangle.html
+[ellipse]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ellipse.html
+[polyline]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polyline.html
+[polygon]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polygon.html
+[note]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Note.html
+[link]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Link.html
+[instant annotation json]: ../../importing-exporting/instant-json/#instant-annotation-json-api
+[`annotationprovider#getannotationsjson`]: /api/java/reference/com/pspdfkit/api/annotations/AnnotationProvider.html#getAnnotationsJson
+[`annotationprovider#removeannotation`]: /api/java/reference/com/pspdfkit/api/annotations/AnnotationProvider.html#removeAnnotation
+[`annotationprovider#addannotationjson`]: /api/java/reference/com/pspdfkit/api/annotations/AnnotationProvider.html#addAnnotationJson
+[annotation-server-guides]: /guides/server/current/server-api/json-format/

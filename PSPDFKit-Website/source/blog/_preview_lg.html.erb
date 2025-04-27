@@ -1,0 +1,17 @@
+<% article ||= locals[:preview_lg] %>
+
+<div class="col-lg-6 mb-5">
+  <a href="<%= article.url %>" class="card card-lg card-article card-hoverable h-100">
+    <div class="card-img-top card-img-top-lg">
+      <img src="/images/shared/placeholder.gif" data-src="<%= article_image(article) %>" alt="" class="img-fluid lazyload" loading="lazy">
+    </div>
+    <div class="card-body p-4 my-1">
+      <h3 class="card-title h4 mb-1">
+        <%= punctuate article.title %>
+      </h3>
+      <div class="card-meta">
+        <%= article_public_tags(article).take(3).join(', ') %>
+      </div>
+    </div>
+  </a>
+</div>

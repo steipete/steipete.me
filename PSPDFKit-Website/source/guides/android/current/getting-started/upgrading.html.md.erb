@@ -1,0 +1,50 @@
+---
+title: Upgrading
+section: developers
+---
+
+To upgrade PSPDFKit in your app, follow the relevant section below. Which one you choose depends upon whether you use automatic PSPDFKit integration with Maven or manual integration with the AAR file.
+
+## Maven-Based Integration
+
+If your app [automatically integrates PSPDFKit using our Maven repository][pspdfkit guide integrating pspdfkit automatically], all you need to do is update the PSPDFKit dependency inside your `build.gradle` file. You can also use a version wildcard to tell Gradle to look for a new version every time your app is built:
+
+```app/build.gradle
+...
+dependencies {
+    implementation 'com.pspdfkit:pspdfkit:<%= latest_version(:android, :min) %>' // keeps hotfix versions up to date
+}
+```
+
+> **ℹ️ Note:** While you can also use `com.pspdfkit:pspdfkit:+` to build with the most recent stable version, it is not recommended, as builds may fail if breaking API changes were introduced in the newer version.
+
+## Manual AAR File Integration
+
+If you manually [downloaded and integrated the PSPDFKit AAR file][pspdfkit guide integrating pspdfkit manually], you need to go to the customer portal download page and download the most recent AAR file from there. Replace the existing AAR file inside your `app/libs/` folder and update all dependencies (including required third-party dependencies) inside your `build.gradle` file to the latest versions:
+
+```app/build.gradle
+...
+dependencies {
+    implementation 'com.pspdfkit:pspdfkit:<%= latest_version(:android) %>@aar'
+    ...
+}
+```
+
+> **Important:** You need to update versions of all dependencies, [as stated in the online guides for the version you’re using][pspdfkit guide integrating pspdfkit manually], or your build will probably fail.
+
+## Migration Troubleshooting
+
+If you’re updating to a newer version, it might happen that you receive build time or even runtime errors. In such a situation, the first step is to do a clean build of your project:
+
+- In Android Studio — Build > Rebuild Project
+- From the command line — `./gradlew clean` before building the app
+
+Also try uninstalling any previously installed development version of your app in order to eliminate the problem of stale data.
+
+### API Changes
+
+After an upgrade, you might see new warnings or build errors due to PSPDFKit API changes. Commonly used APIs are normally deprecated before being changed — we annotate these methods with `@Deprecated` and provide a migration strategy. We recommend that you upgrade deprecated APIs as soon as possible, as APIs that are less commonly used may be changed without prior notice and this might lead to build failures on your side. If that happens, please consult the [changelog][] for details on how to resolve the issue.
+
+[pspdfkit guide integrating pspdfkit automatically]: ../../getting-started/integrating-pspdfkit/#automated-integration-using-gradle
+[pspdfkit guide integrating pspdfkit manually]: ../../getting-started/integrating-pspdfkit/#manual-library-file-integration
+[changelog]: /changelog/android/

@@ -1,0 +1,45 @@
+<% wrap_layout :layout do %>
+
+  <%= partial 'guides/shared/nav_sub' %>
+
+  <div class="container">
+    <div class="row mb-5">
+      <!-- Sidebar -->
+      <%= partial 'guides/shared/sidebar' %>
+
+      <!-- Content -->
+      <div class="col-lg-9" data-controller="license">
+        <div class="card card-lg mb-4">
+          <div class="card-header pb-0">
+            <select class="card-select form-control form-control-<%= current_platform %>" data-behavior="version-select"></select>
+          </div>
+          <article class="card-body article article-guide pb-4">
+            <h1 class="mt-0">
+              <%= punctuate current_page.data.title %>
+            </h1>
+            <div data-target="license.alert"></div>
+            <%= yield %>
+          </article>
+          <div class="card-footer pt-0">
+            <div class="alert alert-primary medium mb-0 p-4">
+              <p class="mb-2">
+                Was this page helpful? We're happy to <a href="/support/request" class="alert-link">answer any questions</a>.
+              </p>
+              <p class="mb-0">
+                The <strong><a href="/pdf-sdk/" class="alert-link">PSPDFKit SDK</a></strong> is a framework that allows you to view, annotate, sign, and fill PDF forms on iOS, Android, Windows, macOS, and Web.
+                <strong><a href="/instant/" class="alert-link">PSPDFKit Instant</a></strong> adds real-time collaboration features to seamlessly share, edit, and annotate PDF documents.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <ul class="nav d-flex justify-content-between text-muted small px-4">
+          <li><%= previous_guide_link %></li>
+          <li><%= next_guide_link %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<% end %>

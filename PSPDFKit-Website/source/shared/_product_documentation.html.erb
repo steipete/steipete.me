@@ -1,0 +1,35 @@
+<section id="get-started" class="section">
+  <div class="container">
+    <div class="card card-hoverable animated">
+      <div class="card-body overflow-hidden">
+        <div class="row align-items-center">
+          <div class="col-lg-2 pull-lg-1 d-none d-lg-block">
+            <img src="/images/icons/documentation.svg" alt="" class="img-fluid">
+          </div>
+          <div class="col-lg-7 mb-4 mb-lg-0">
+            <h3 class="card-title text-brand">
+              <%= locals[:title].present? ? "#{title} Documentation" : "SDK Documentation" %>
+            </h3>
+            <p class="card-lead lead mb-0">
+              Learn about the features of our SDKs in greater detail. Our guides, API reference, and example
+              projects will help you get up and running in no time.
+            </p>
+          </div>
+          <div class="col-lg-4 text-lg-right">
+            <% if locals[:urls].present? %>
+              <% urls.each do |platform, url| %>
+                <a href="https://pspdfkit.com<%= url %>" class="btn btn-lg btn-brand hidden" data-platform="<%= platform %>">
+                  View Documentation
+                </a>
+              <% end %>
+            <% else %>
+              <a href="https://pspdfkit.com<%= url %>" class="btn btn-lg btn-brand">
+                View Documentation
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

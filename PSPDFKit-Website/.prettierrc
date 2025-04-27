@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "files": "*.md.erb",
+      "options": {
+        "parser": "markdown"
+      }
+    },
+    {
+      "files": "*.html.erb",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ]
+}

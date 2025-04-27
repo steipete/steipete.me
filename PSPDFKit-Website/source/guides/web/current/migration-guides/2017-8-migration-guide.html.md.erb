@@ -1,0 +1,32 @@
+---
+title: 2017.8 Migration Guide
+section: developers
+
+order: 506
+---
+
+PSPDFKit for Web 2017.8 changes annotation IDs from integers to strings.
+
+This requires that all clients (iOS, Android, and Web), along with the server, are updated to the latest version at the same time. If you’re maintaining an Instant setup, make sure to check out the [server migration guides][].
+
+### Annotation API Changes
+
+- All [`Annotation`][] subclasses now have a string value for the [`id`][] field. This ID will still be generated automatically whenever [`Instance#createAnnotation`][] is called.
+- The concept of local ID and global ID is gone completely. The Web client can now generate a unique string ID, which is also used to reference the annotation when it is saved to Instant or Instant JSON.
+- `Instance#resolveLocalId` was removed and is now available as [`Instance#ensureAnnotationSaved`][]. This method still accepts an annotation and will resolve the promise when the annotation is persisted. The `id` property of the annotation will now stay stable and will no longer be updated when the promise resolves.
+- The document format of [Instant JSON][] no longer requires the `lastAnnotationId` property. Importing the previous version of Instant JSON (with number values for annotation IDs) using the [`Config#instantJSON`] option is still supported. When [`Instance#exportInstantJSON`] is called the next time, the format will automatically be upgraded. The IDs of existing annotations will simply be cast to string (so `-1` will become `"-1"`).
+
+For more details, check out our updated [Annotation][annotation guides] and [Instant JSON] guides.
+
+For a full list of changes, check out the [changelog][].
+
+[`id`]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.Annotation.html#id
+[`instance#createannotation`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#createAnnotation
+[`annotation`]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.Annotation.html
+[`instance#ensureannotationsaved`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#ensureAnnotationSaved
+[instant json]: ../../importing-exporting/instant-json/
+[`config#instantjson`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#instantJSON
+[`instance#exportinstantjson`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#exportInstantJSON
+[annotation guides]: ../../annotations/introduction-to-annotations/
+[server migration guides]: https://pspdfkit.com/guides/server/current/migration-guides/2017-8-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/web/#2017.8

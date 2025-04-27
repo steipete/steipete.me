@@ -1,0 +1,216 @@
+---
+title: PSPDFKit for Windows – UWP PDF Library
+title_suffix: false
+description: Add PDF support to your Windows app in no time. PSPDFKit offers PDF rendering, navigation, searching, annotation, and form filling capabilities.
+preview_image: /images/pdf-sdk/windows/hero.png
+platform: windows
+section: sdk
+---
+
+<%= partial 'shared/nav_sub', locals: {
+  items: %w(Overview Features Architecture Integration Get-Started)
+} %>
+
+<!-- Hero -->
+<%= partial 'shared/hero', locals: {
+  title: "The SDK You Love,<br>Now for Windows",
+  subtitle: "PSPDFKit for Windows",
+  body: "
+    Combines fast, native rendering with the flexibility of our <a href='/pdf-sdk/web/' class='link-brand'>Web SDK</a>
+    to offer a great experience and a component that’s easy to integrate and customize.
+  ",
+} %>
+
+<!-- Customers -->
+<%= partial 'shared/customers' %>
+
+<!-- Headlines -->
+<%= partial 'shared/headlines', locals: {
+  items: [
+    {
+      title: "Powerful Features",
+      icon: "/images/icons/customizable.svg",
+      body: "
+        PDF rendering, navigation, searching, annotation, and form filling capabilities.
+      ",
+    },
+    {
+      title: "Easy to Integrate",
+      icon: "/images/icons/documentation.svg",
+      body: "
+        Packaged as a native UWP PDF library component for easy integration with your app.
+      ",
+    },
+    {
+      title: "Drop-In UI",
+      icon: "/images/icons/ui.svg",
+      body: "
+        A fluid, adaptable UI based on fast Edge web technology, ready to go out of the box.
+      ",
+    },
+  ]
+} %>
+
+<!-- UI -->
+<%= partial 'shared/ui', locals: {
+  title: "Features",
+  body: "Seamlessly integrate these PDF features into your Windows apps:",
+} %>
+
+<!-- Features -->
+<%= partial 'shared/product_features', locals: {
+  items: [
+    {
+      title: "PDF Viewing",
+      icon: "/images/pdf-sdk/windows/view.svg",
+      icon_size: 20,
+      image: "/images/pdf-sdk/windows/view.png",
+      body: "A fast and smooth viewing experience — even with large documents.
+      Supports both single- and double-page layouts and page rotation.
+      Intuitive document navigation via scrolling, pagination, pan, and zoom.",
+    },
+    {
+      title: "Forms",
+      icon: "/images/pdf-sdk/windows/forms.svg",
+      image: "/images/pdf-sdk/windows/forms.png",
+      body: "Full support for PDF AcroForms, so your users can view, fill out, and submit forms with
+      ease.",
+    },
+    {
+      title: "Document Editor",
+      icon: "/images/pdf-sdk/windows/document-editor.svg",
+      image: "/images/pdf-sdk/windows/document-editor.png",
+      body: "The Document Editor comes with its own convenient UI for page manipulation, making it
+      easy to add, duplicate, rotate, reorder, delete, and import pages. It’s backed by a powerful API,
+      enabling you to build your own custom tools on top of it as well.",
+    },
+    {
+      title: "Digital Signatures",
+      icon: "/images/pdf-sdk/windows/digital-signatures.svg",
+      icon_size: 35,
+      image: "/images/pdf-sdk/windows/digital-signatures.png",
+      body: "
+        Digital Signatures enables you to apply and verify certificate-backed, encrypted
+        signatures in PDF documents with ease. Digitally sign documents with complete
+        confidence in their validity. View the validation status of digitally signed
+        documents via the UI, or programmatically retrieve complete signature information
+        with error detection using our API.
+      ",
+      new: true
+    },
+    {
+      title: "Text Highlighting",
+      icon: "/images/pdf-sdk/windows/highlight.svg",
+      image: "/images/pdf-sdk/windows/highlight.png",
+      body: "Easily mark up text on a document via an intuitive highlight menu
+      with support for highlighting, strikethrough, and underlining.",
+    },
+    {
+      title: "Freehand Drawing",
+      icon: "/images/pdf-sdk/windows/ink.svg",
+      image: "/images/pdf-sdk/windows/ink.png",
+      body: "Draw anywhere on a document. Move and resize, and change appearance —
+      including color, thickness, and opacity."
+    },
+    {
+      title: "Text Annotation",
+      icon: "/images/pdf-sdk/windows/text.svg",
+      image: "/images/pdf-sdk/windows/text.png",
+      body: "Add text anywhere on a document. Move and resize, and change appearance –
+      including font, size, alignment, and color.",
+    },
+    {
+      title: "Note Annotation",
+      icon: "/images/pdf-sdk/windows/note.svg",
+      image: "/images/pdf-sdk/windows/note.png",
+      body: "Add longer comments, which can be collapsed or expanded, to a document.
+      Change appearance with a variety of shapes and colors.",
+    },
+    {
+      title: "Image Annotation",
+      icon: "/images/pdf-sdk/windows/image.svg",
+      image: "/images/pdf-sdk/windows/image.png",
+      body: "Easily attach, move, and resize JPEG and PNG images in a PDF document.
+      Use PDFs as image annotations to have vector graphics support.",
+    },
+    {
+      title: "Stamp Annotations",
+      icon: "/images/pdf-sdk/windows/stamp.svg",
+      image: "/images/pdf-sdk/windows/stamp.png",
+      body: "
+        Place stamps on a PDF with our predefined stamp templates, or let your users
+        create their own using the stamp annotation builder UI. Easily swap out the
+        default stamp templates with your own.
+      ",
+    },
+    {
+      title: "Search",
+      icon: "/images/pdf-sdk/windows/search.svg",
+      image: "/images/pdf-sdk/windows/search.png",
+      body: "Quickly search documents with a fluid and fast search experience, including intuitive
+      keyboard shortcuts for power users.",
+    },
+    {
+      title: "Mouse and Touch",
+      icon: "/images/pdf-sdk/windows/mouse-touch.svg",
+      image: "/images/pdf-sdk/windows/mouse-touch.png",
+      body: "Handles input via mouse, keyboard, and touch to support a wide range of use cases and
+      devices.",
+    },
+    {
+      title: "Sidebar",
+      icon: "/images/pdf-sdk/windows/sidebar.svg",
+      image: "/images/pdf-sdk/windows/sidebar.png",
+      body: "
+      Choose from four sidebar options — Thumbnails, Outline, Annotations, or
+      Bookmarks — to get an overview of the content in a document. Show and hide
+      the sidebar at any time, resize it, or expand it into a full gallery view.
+      ",
+    },
+    {
+      title: "Printing",
+      icon: "/images/pdf-sdk/windows/print.svg",
+      image: "/images/pdf-sdk/windows/print.png",
+      body: "Print and export documents, including all annotations. Use the system print dialog to
+      allow for full control of the output.",
+    },
+  ]
+} %>
+
+<!-- Additional Features -->
+<%= partial 'shared/additional_features', locals: {
+  title: "Additional Features",
+  body: "
+    In addition to the UI layer, the <strong>PSPDFKit for Windows UWP PDF Library</strong> provides
+    comprehensive API access for building advanced PDF workflows into your application.
+  ",
+} %>
+
+<!-- Architecture -->
+<%= partial 'shared/architecture', locals: {
+  title: "Architecture",
+  subtitle: "Web UI, Native Speed",
+  body: "
+    <strong>PSPDFKit for Windows</strong> offers the best of both worlds — the speed and stability
+    of our C++ PSPDFKit Core running natively, and the flexibility and features of our Web SDK UI.
+  ",
+} %>
+
+<!-- Integration -->
+<%= partial 'shared/integration', locals: {
+  title: "Integration",
+  body: "
+    <strong>PSPDFKit for Windows</strong> can be integrated with just a few lines of code, and
+    <a href='/api/windows/' class='link-brand'>it comes with a rich API</a>, which allows for
+    complete customization.
+  ",
+} %>
+
+<!-- Quotes -->
+<%= partial 'shared/quotes' %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales', locals: { id: 'get-started' } %>
+
+<!-- Blog Posts -->
+<%= partial 'shared/blog_posts', locals: { title: 'Latest Updates', posts: tagged_articles('Windows') } %>

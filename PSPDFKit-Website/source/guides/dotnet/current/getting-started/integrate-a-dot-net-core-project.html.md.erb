@@ -1,0 +1,111 @@
+---
+title: Integrate PSPDFKit Libraries into a .NET Core Project
+section: developers
+---
+
+The PSPDFKit .NET Library was built to work with a wide variety of .NET frameworks. In this guide, we’ll show you how to integrate PSPDFKit Libraries for .NET into a cross-platform .NET Core project.
+
+## Requirements
+
+- [.NET Core][dot-net-core]
+
+#### Linux
+
+- GDI Plus (`sudo apt install libgdiplus`, for rendering only)
+
+#### macOS
+
+- GDI Plus (`brew install mono-libgdiplus`, for rendering only)
+
+## Create a New .NET Core Project
+
+Microsoft has written in depth on how to create a .NET Core project with various options. If you want more information on how to manage your project, we would advise reading through the [Get started with .NET Core on Windows/Linux/macOS using the command line][create-dot-net-project] article.
+
+### Create the PSPDFKit NuGet Source
+
+Rather than targeting a package held at nuget.org, you will have to set up a configuration to point to a local package.
+
+The local configuration is described by a file named `nuget.config`, which is placed next to the solution file (e.g `Test.sln`).
+
+The contents of the file should contain an XML element, `packageSources`, which describes where to find NuGet packages — as a child of a root node named `configuration`.
+
+#### If nuget.config Already Exists
+
+If `nuget.config` already exists, add the extra `packageSources` entry shown below:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+   <packageSources>
+       ...
+       <add key="PSPDFKitSource" value="path/to/directoryContainingNupkg" />
+       ...
+   </packageSources>
+</configuration>
+```
+
+#### If There Is No nuget.config File Present
+
+If there is no `nuget.config` file present, create the `nuget.config` file and copy and paste the following source into the newly created file:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+   <packageSources>
+       <add key="PSPDFKitSource" value="path/to/directoryContainingNupkg" />
+   </packageSources>
+</configuration>
+```
+
+Edit the value of the contents to correctly refer to the location of the directory containing the `PSPDFKit.NET-*.*.*.nupkg package` — for example, `/Users/me/nugetPackages`.
+
+### Add the PSPDFKit NuGet Package
+
+Now that we have the NuGet source, we can add the package to the project:
+
+- `cd` into your project solution.
+- Add the package by running `dotnet add <PROJECT_NAME> package PSPDFKit.NET`, replacing `<PROJECT_NAME>` with the project you want to add the package to.
+- Now restore all the newly added packages with `dotnet restore`. You will need an internet connection to retrieve the dependency projects.
+
+You have set up your project to use the PSPDFKit .NET package.
+
+## Use PSPDFKit Libraries for .NET Core
+
+Now that PSPDFKit .NET is added, you can use the SDK in your application. You will have to call the [`Initialize`][] method prior to calling any other SDK method.
+
+Here’s a small example showing how to import Instant JSON and save the document:
+
+```csharp
+using System;
+using PSPDFKit;
+
+namespace Test
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            Sdk.Initialize("YOUR_LICENSE_KEY_GOES_HERE");
+            var document = new Document(new FileDataProvider("myDocument.pdf"));
+            document.ImportJson(new FileDataProvider("myJson.json"));
+            document.Save(new DocumentSaveOptions
+            {
+                incremental = true
+            });
+        }
+    }
+}
+```
+
+For more examples on how to use the SDK, please refer to the Catalog example in `PSPDFKit.NET-{version}.zip` and the [API documentation][api-documentation].
+
+### IDE Integration
+
+The steps above are a great source for a cross-platform way of adding PSPDFKit Libraries, but it is possible to perform these steps on many IDEs. It will all depend on what your OS supports, and [.NET Core Tutorials][dot-net-core-ide] has some great information in this area.
+
+[vs-2019]: https://visualstudio.microsoft.com/vs/
+[dot-net-core]: https://www.microsoft.com/net/core
+[`initialize`]: /api/dotnet/PSPDFKit/PSPDFKit.Sdk.html#PSPDFKit_Sdk_Initialize_System_String_
+[create-dot-net-project]: https://docs.microsoft.com/en-us/dotnet/core/tutorials/using-with-xplat-cli
+[api-documentation]: /api/dotnet/
+[dot-net-core-ide]: https://dottutorials.net/best-cross-platform-net-ide-windows-macos-linux/

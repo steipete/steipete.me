@@ -1,0 +1,68 @@
+---
+title: Introduction to Annotations
+section: developers
+---
+
+![Annotations](/images/guides/shared/annotations/annotations-header.png)
+
+PSPDFKit Libraries supports most common annotation types:
+
+- [Link][]
+- [Highlight][], [Underline][], [Strikeout][], [Squiggle][]
+- [Text][]
+- [Ink][]
+- [Ellipse][], [Rectangle][], [Line][], [Polyline][], [Polygon][]
+- [Note][]
+
+These are standard annotations (as defined in the PDF Reference) that can be read and written by many apps, including Adobe Acrobat and Apple’s `Preview app`.
+
+## Working with Annotations in Code
+
+The PSPDFKit .NET Library uses [Instant Annotation JSON][] to read and write annotations to and from a document, which allows for reusability across many of our products.
+
+When a document is loaded, it’s possible to query the document to return the annotation representation of the document. Using [`GetAnnotations`][`annotationprovider#getannotationsjson`], you will receive a `JArray` populated with the annotation information of the page queried.
+
+For more information on the Annotation JSON format, please see our [Server guides][annotation-server-guides].
+
+## Creating and Deleting Annotations
+
+To create an annotation on a page, simply use the [annotation JSON format][annotation-server-guides] to add the annotation you want:
+
+```csharp
+var annotationJson = new JObject
+{
+    {"backgroundColor", "#FF0000"},
+    {"bbox", new JArray(10, 10, 400, 400)},
+    {"creatorName", "Me"},
+
+    ...
+
+    {"type", "pspdfkit/text"},
+    {"updatedAt", "2018-08-21T14:35:51Z"},
+    {"v", 1}
+};
+document.GetAnnotationProvider().AddAnnotation(annotationJson);
+```
+
+To delete an annotation, you need to reference the `pageIndex` and `pdfObjectId` of the annotation in the document:
+
+```csharp
+document.GetAnnotationProvider().RemoveAnnotation(0, 1);
+```
+
+[highlight]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Highlight.html
+[underline]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Underline.html
+[strikeout]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Strikeout.html
+[squiggle]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Squiggly.html
+[text]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Text.html
+[ink]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ink.html
+[line]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Line.html
+[rectangle]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Rectangle.html
+[ellipse]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ellipse.html
+[polyline]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polyline.html
+[polygon]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polygon.html
+[note]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Note.html
+[link]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Link.html
+[instant annotation json]: ../../importing-exporting/instant-json/#instant-annotation-json-api
+[`annotationprovider#getannotationsjson`]: /api/dotnet/PSPDFKit/PSPDFKit.Annotations.AnnotationProvider.html#PSPDFKit_Annotations_AnnotationProvider_AddAnnotationJson_Newtonsoft_Json_Linq_JToken_
+[annotation-server-guides]: /guides/server/current/server-api/json-format/

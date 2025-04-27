@@ -1,0 +1,217 @@
+---
+title: Annotation-Saving Mechanism
+section: developers
+---
+
+By default, PSPDFKit will save annotations asynchronously and automatically when the `onStop()` lifecycle event is called.
+
+PSPDFKit can write annotations into a PDF under the following conditions:
+
+- The PDF must be in a writeable location. This means that it either has to be in a writeable directory on the file system, or the ContentProvider from which the file is loaded must allow saving. For maximum performance, ask for `WRITE_EXTERNAL_STORAGE` permission when opening files from external storage. This will allow PSPDFKit to bypass the slow ContentProvider APIs.
+- If the PDF was opened from a custom [`DataProvider`][], it has to implement [`WriteableDataProvider`][writeabledataprovider] and properly handle writing to a file.
+- The PDF must be valid according to the Adobe PDF specification. Some PDFs are broken but still work somewhat, so PSPDFKit can render the content. If PSPDFKit detects a mismatch in the object tree or is unable to find objects, annotation saving will be stopped, since there would be a risk of damaging the document.
+
+## Annotation Saving
+
+By default, PSPDFKit auto-saves changes to a document and to annotations inside `PdfFragment#onStop` — effectively, this means every time the fragment is sent to the background, e.g. when switching to another application or when leaving the viewer activity. You can disable auto-saving via the [`#autosaveEnabled`][`pdfconfiguration.builder#autosaveenabled`] setter on the [`PdfConfiguration.Builder`][]:
+
+[==
+
+```kotlin
+// By default, auto-save is enabled.
+val config = PdfConfiguration.Builder()
+    .autosaveEnabled(false)
+    .build()
+
+val fragment = PdfFragment.newInstance(documentUri, config)
+...
+```
+
+```java
+// By default, auto-save is enabled.
+final PdfConfiguration config = new PdfConfiguration.Builder()
+    .autosaveEnabled(false)
+    .build();
+
+final PdfFragment fragment = PdfFragment.newInstance(documentUri, config);
+...
+```
+
+==]
+
+If you are using the [`PdfActivity`][], you can also deactivate auto-save via the [`#autosaveEnabled`][`pdfactivityconfiguration.builder#autosaveenabled`] setter of the [`PdfActivityConfiguration.Builder`][]:
+
+[==
+
+```kotlin
+// By default, auto-save is enabled.
+val config = PdfActivityConfiguration.Builder(context)
+    .autosaveEnabled(false)
+    .build()
+
+PdfActivity.showDocument(context, documentUri, config)
+...
+```
+
+```java
+// By default, auto-save is enabled.
+final PdfActivityConfiguration config =
+    new PdfActivityConfiguration.Builder(context)
+        .autosaveEnabled(false)
+        .build();
+
+PdfActivity.showDocument(context, documentUri, config);
+...
+```
+
+==]
+
+### Modifying and Saving Annotations
+
+If an annotation is modified (i.e. if it has been changed since the document has been loaded) a call to [`Annotation#isModified`][] will return `true`. Furthermore, the [`PdfDocument#wasModified`][] method will return `true` if annotations were added, changed, or removed. Once you save the document and its annotations, they are no longer marked as modified.
+
+> **ℹ️ Note:** If you are editing annotations using one of the annotation tools, modifications to the edited annotation and document will only be visible after you exit the current tool mode by calling [`PdfFragment#exitCurrentlyActiveMode`][]. If the annotation tool is still active (i.e. the tool is selected in the annotation creation toolbar), [`PdfDocument#wasModified`][] will still return `false`.
+
+To save a document and its annotations, you can use any of the synchronous or asynchronous save methods on the [`PdfDocument`][] class. The following example uses [`PdfDocument#saveIfModified`][], which writes the document back to its original location after testing if it has been modified:
+
+[==
+
+```kotlin
+override fun onDocumentLoaded(document : PdfDocument) {
+    assert(document.wasModified() == false)
+
+    // Add an annotation to the document.
+    val annotation = NoteAnnotation(0, RectF(100, 132, 132, 100), "Test annotation", NoteAnnotation.CROSS)
+    document.annotationProvider.addAnnotationToPage(annotation)
+
+    assert(annotation.isModified() == true)
+    assert(document.wasModified() == true)
+
+    // This will write the document back to its original location.
+    document.saveIfModified()
+
+    assert(annotation.isModified() == false)
+    assert(document.wasModified() == false)
+}
+```
+
+```java
+@Override public void onDocumentLoaded(@NonNull PdfDocument document) {
+    assert document.wasModified() == false;
+
+    // Add an annotation to the document.
+    NoteAnnotation annotation = new NoteAnnotation(0, new RectF(100, 132, 132, 100), "Test annotation", NoteAnnotation.CROSS);
+    document.getAnnotationProvider().addAnnotationToPage(annotation);
+
+    assert annotation.isModified() == true;
+    assert document.wasModified() == true;
+
+    // This will write the document back to its original location.
+    document.saveIfModified();
+
+    assert annotation.isModified() == false;
+    assert document.wasModified() == false;
+}
+```
+
+==]
+
+### Document-Saving Callbacks
+
+The [`DocumentListener`][] interface provides three callback methods that allow you to listen to and intercept saving attempts. [`#onDocumentSave(PdfDocument, DocumentSaveOptions)`][`#ondocumentsave`] is called right before the [`PdfFragment`][] or the [`PdfActivity`][] save a document, allowing you to alter the [`DocumentSaveOptions`][] or cancel the saving attempt completely by returning `false`.
+
+> **ℹ️ Note:** Saving callbacks are not called when using the [`PdfDocument`][] save methods directly, but only when the fragment or activity is saving the document — for example, when auto-save is enabled or when you explicitly call `fragment.save()`.
+
+[==
+
+```kotlin
+/**
+ * The password used to save the document may be null. Your app can
+ * ask for this prior to saving.
+ */
+private var documentPassword : String? = null
+
+override fun onDocumentSave(document : PdfDocument, saveOptions : DocumentSaveOptions) : Boolean {
+    saveOptions.setPassword(documentPassword)
+
+    // By returning true, saving is continued. Alternatively, you could return false to cancel saving.
+    return true
+}
+```
+
+```java
+/**
+ * The password used to save the document may be null. Your app can
+ * ask for this prior to saving.
+ */
+private String documentPassword;
+
+@Override
+public boolean onDocumentSave(PdfDocument document, DocumentSaveOptions saveOptions) {
+    saveOptions.setPassword(documentPassword);
+
+    // By returning true, saving is continued. Alternatively, you could return false to cancel saving.
+    return true;
+}
+```
+
+==]
+
+The [`DocumentListener#onDocumentSaved(PdfDocument)`][] method is called after the document has been successfully saved. If the document could not be saved due to an error, the [`#onDocumentSaveFailed(Throwable)`][] method is called instead, and it passes in the `exception` that caused the failure:
+
+[==
+
+```kotlin
+override fun onDocumentSaved(document : PdfDocument) {
+    Toast.makeText(context, "Document successfully saved.", Toast.LENGTH_SHORT).show()
+}
+
+override fun onDocumentSaveFailed(exception : Throwable?) {
+    AlertDialog.Builder(context)
+        .setMessage("Error while saving the document. Please try again.")
+        .show()
+}
+```
+
+```java
+@Override
+public void onDocumentSaved(@NonNull PdfDocument document) {
+    Toast.makeText(context, "Document successfully saved.", Toast.LENGTH_SHORT).show();
+}
+
+@Override
+public void onDocumentSaveFailed(Throwable exception) {
+    new AlertDialog.Builder(context)
+        .setMessage("Error while saving the document. Please try again.")
+        .show();
+}
+```
+
+==]
+
+> **💡 Tip:** We also have an [extensive guide about the `DocumentListener` interface][document listeners guide].
+
+[`annotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html
+[`noteannotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/NoteAnnotation.html
+[`annotation#getboundingbox`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getBoundingBox()
+[`annotationprovider#addannotationtopage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html#addAnnotationToPage(com.pspdfkit.annotations.Annotation)
+[`annotationprovider#getallannotationsoftype`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html#getAllAnnotationsOfType(java.util.EnumSet<com.pspdfkit.annotations.AnnotationType>)
+[`pdffragment#notifyannotationhaschanged`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#notifyAnnotationHasChanged(com.pspdfkit.annotations.Annotation)
+[`pspdfannotationmanager`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/PSPDFAnnotationManager.html
+[`#ondocumentsavefailed(throwable)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSaveFailed(java.lang.Throwable)
+[`documentlistener#ondocumentsaved(pdfdocument)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSaved(com.pspdfkit.document.PdfDocument)
+[`documentsaveoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentSaveOptions.html
+[`documentlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html
+[`#ondocumentsave`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSave(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.DocumentSaveOptions)
+[`pdfactivityconfiguration.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[`pdfactivityconfiguration.builder#autosaveenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#autosaveEnabled(boolean)
+[`pdfconfiguration.builder#autosaveenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#autosaveEnabled(boolean)
+[`annotationprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html
+[`pdfdocument#getannotationprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getAnnotationProvider()
+[`pdfdocument#wasmodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#wasModified()
+[`annotation#ismodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#isModified()
+[`pdfdocument#saveifmodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#saveIfModified()
+[`pdffragment#exitcurrentlyactivemode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#exitCurrentlyActiveMode()
+[data provider]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/DataProvider.html
+[writeabledataprovider]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/WritableDataProvider.html
+[document listeners guide]: ../../miscellaneous/document-listeners/

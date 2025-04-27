@@ -1,0 +1,46 @@
+---
+title: Programmatic Form Filling
+section: developers
+---
+
+PSPDFKit for Android fully supports the AcroForm standard and can view and fill forms inside the [`PdfFragment`][]/[`PdfActivity`][].
+
+Forms are an optional component that can be licensed. If not licensed, forms will simply be invisible. Forms can also be manually switched off via the [`disableFormEditing()`] call when building [`PdfConfiguration`][] or [`PdfActivityConfiguration`][].
+
+You can also modify and query forms in code — for example, you can fill out forms programmatically:
+
+[==
+
+```kotlin
+    val document: PdfDocument = ...
+
+    // This code shouldn't run on the main thread. Alternatively, use `getFormFieldsAsync()` to do this
+    // processing in the RxJava chain.
+    val formFields = document.formProvider.formFields
+    formFields.filter { field -> field.type == FormType.TEXT }
+                .forEach { field -> (field.formElement as TextFormElement).setText("Test ${field.name}") }
+    formFields.filter { field -> field.type == FormType.CHECKBOX }
+                .forEach { field -> (field.formElement as CheckBoxFormElement).toggleSelection() }
+```
+
+```java
+    PdfDocument document = ...
+
+    // This code shouldn't run on main thread. Alternatively, use `getFormFieldsAsync()` to do this
+    // processing in the RxJava chain.
+    List<FormField> formFields = document.getFormProvider().getFormFields();
+    for (FormField formField : formFields) {
+        if (formField.getType() == FormType.TEXT) {
+            TextFormElement textFormElement = (TextFormElement) formField.getFormElement();
+            textFormElement.setText("Test " + textFormElement.getName());
+        } else if (formField.getType() == FormType.CHECKBOX) {
+            CheckBoxFormElement checkBoxFormElement = (CheckBoxFormElement)formField.getFormElement();
+            checkBoxFormElement.toggleSelection();
+        }
+    }
+```
+
+==]
+
+[`disableformediting()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#disableFormEditing()
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.html

@@ -1,0 +1,61 @@
+---
+title: Focus on a widget annotation
+section: knowledge-base
+---
+
+## Q: How to focus on a widget annotation programmatically?
+
+A: You can set the focus on a widget annotation programmatically using the DOM API. The next example adds a custom toolbar item that focuses a form field when clicked. Remember that you would need to adjust the selector with a valid form field name:
+
+```js
+let instance = null;
+
+PSPDFKit.load({
+    ...defaultConfiguration,
+    toolbarItems: [
+      ...PSPDFKit.defaultToolbarItems,
+      {
+        type: "custom",
+        title: "Focus",
+        onPress() {
+          instance.contentDocument
+            .querySelector(".PSPDFKit-Annotation-Widget[name='form field name']")
+            .focus();
+        }
+      }
+    ]
+  }).then(_instance => {
+    instance = _instance;
+});
+```
+
+If the widget annotation is associated to a text form field you can also automatically set the selection to the end of the current value of the input using the [`HTMLInputElement.setSelectionRange`][] method:
+
+```js
+let instance = null;
+
+PSPDFKit.load({
+    ...defaultConfiguration,
+    toolbarItems: [
+      ...PSPDFKit.defaultToolbarItems,
+      {
+        type: "custom",
+        title: "Focus",
+        onPress() {
+          const element = instance.contentDocument.querySelector(
+            ".PSPDFKit-Annotation-Widget[name='form field name']"
+          );
+          element.focus();
+          element.setSelectionRange(element.value.length, element.value.length);
+        }
+      }
+    ]
+  }).then(_instance => {
+    instance = _instance;
+});
+```
+
+
+This has been tested with PSPDFKit for Web 2019.5.4.
+
+[`htmlinputelement.setselectionrange`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange

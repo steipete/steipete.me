@@ -1,0 +1,132 @@
+---
+title: Configuring Editable/Visible Annotation Types
+section: developers
+---
+
+By default, PSPDFKit will render all known annotation types. See [`AnnotationType`][] for a full list of the available types.
+
+## Hiding Specific Annotation Types
+
+When building your [`PdfConfiguration`][], you have the ability to specify [`excludedAnnotationTypes`][]. This allows you to exclude specific types from being rendered.
+
+For example, to allow only highlights and drawings to be rendered, configure the document like this:
+
+[==
+
+```kotlin
+val configuration: PdfConfiguration = ...
+
+// Create a list with all annotation types.
+val excludedAnnotationTypes = ArrayList(EnumSet.allOf(AnnotationType::class.java))
+// Then remove the ones you would like to display.
+excludedAnnotationTypes.remove(AnnotationType.HIGHLIGHT)
+excludedAnnotationTypes.remove(AnnotationType.INK)
+// Apply this to your configuration.
+configuration.excludedAnnotationTypes(excludedAnnotationTypes)
+```
+
+```java
+PdfConfiguration configuration = ...;
+
+// Create a list with all annotation types.
+ArrayList<AnnotationType> excludedAnnotationTypes = new ArrayList<>(EnumSet.allOf(AnnotationType.class));
+
+// Then remove the ones you would like to display.
+excludedAnnotationTypes.remove(AnnotationType.HIGHLIGHT);
+excludedAnnotationTypes.remove(AnnotationType.INK);
+
+// Apply this to your configuration.
+configuration.excludedAnnotationTypes(excludedAnnotationTypes);
+```
+
+==]
+
+Or, to exclude only highlights and drawings, configure the document like this:
+
+[==
+
+```kotlin
+val configuration: PdfConfiguration = ...
+
+// Excludes ink and stamps from being rendered.
+configuration.excludedAnnotationTypes(ArrayList(EnumSet.of(AnnotationType.INK, AnnotationType.HIGHLIGHT)))
+```
+
+```java
+PdfConfiguration configuration = ...;
+
+// Excludes ink and stamps from being rendered.
+configuration.excludedAnnotationTypes(new ArrayList<>(EnumSet.of(AnnotationType.INK, AnnotationType.HIGHLIGHT)));
+```
+
+==]
+
+You need to configure this before creating the [`PdfFragment`][]. If you are using a [`PdfActivity`][], you can update it using [`setConfiguration()`][].
+
+### Including and Excluding All Annotation Types
+
+You can also exclude all annotation types by passing in all types:
+
+[==
+
+```kotlin
+val configuration: PdfConfiguration = ...
+
+// Passing all annotation types will exclude all annotations from being rendered.
+configuration.excludedAnnotationTypes(ArrayList(EnumSet.allOf(AnnotationType::class.java)))
+```
+
+```java
+PdfConfiguration configuration = ...;
+
+// Passing all annotation types will exclude all annotations from being rendered.
+configuration.excludedAnnotationTypes(new ArrayList<>(EnumSet.allOf(AnnotationType.class)));
+```
+
+==]
+
+And to include them, pass in an empty array:
+
+[==
+
+```kotlin
+val configuration: PdfConfiguration = ...
+
+// Passing an empty list will render all annotations.
+configuration.excludedAnnotationTypes(ArrayList())
+```
+
+```java
+PdfConfiguration configuration = ...;
+
+// Passing an empty list will render all annotations.
+configuration.excludedAnnotationTypes(new ArrayList<>());
+```
+
+==]
+
+## Control Which Types Can Be Edited/Created
+
+The [`PdfConfiguration`][] also contains [`editableAnnotationTypes`][] to control which annotation types can be edited. Keep in mind that passing an empty list or `null` will result in ALL annotation types being editable. If you want to disable all types, you have to pass in `NONE`:
+
+[==
+
+```kotlin
+// Disable all annotation types.
+configuration.editableAnnotationTypes(listOf(AnnotationType.NONE))
+```
+
+```java
+// Disable all annotation types.
+configuration.editableAnnotationTypes(Collections.singletonList(AnnotationType.NONE));
+```
+
+==]
+
+The annotation toolbar will only display items that are in [`editableAnnotationTypes`][], but it also has [its own configuration][annotation toolbar].
+
+[`annotationtype`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationType.html
+[`excludedannotationtypes`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#excludedAnnotationTypes(java.util.ArrayList%3Ccom.pspdfkit.annotations.AnnotationType%3E)
+[`setconfiguration()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setConfiguration(com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`editableannotationtypes`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#editableAnnotationTypes(java.util.List%3Ccom.pspdfkit.annotations.AnnotationType%3E)
+[annotation toolbar]: ../../customizing-the-interface/customizing-the-toolbar/

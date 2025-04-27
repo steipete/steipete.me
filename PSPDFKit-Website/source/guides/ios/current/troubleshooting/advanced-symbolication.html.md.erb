@@ -1,0 +1,96 @@
+---
+title: Advanced Crash Report Symbolication
+section: developers
+
+---
+
+This article assumes that you’ve read our [Bug Reporting][Bug Reporting] guide and need to manually symbolicate a crash report. For most cases, simply ensuring our corresponding `.dSYM` files are uploaded to your crash reporting service will be sufficient.
+
+If you have a matching binary, crash log, and `.dSYM` file, you can symbolicate (add debugging symbols) the crash log manually using Xcode’s `symbolicatecrash` tool:
+
+```text
+/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash
+```
+
+Open bash and export your `DEVELOPER_DIR` as an enviroment variable:
+
+```bash
+export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
+```
+
+Place your `.crash`, `.app`, and `.dSYM` files (your app + dynamic frameworks) in the same directory and run the following:
+
+```bash
+symbolicatecrash MyAppCrash.crash ./MyApp.app/MyApp > Symbolicated.crash
+```
+
+If this doesn’t work, you can use `-v` to get more information. In most cases, the reason this doesn’t work is the binary does not match the `.dSYM` files. Ensure that Spotlight indexing is enabled for the location you run this on.
+
+## Bitcode Considerations
+
+If your application ships with [bitcode][PSPDFKit Guide Bitcode], Apple will recompile it on its servers before pushing it to the App Store. This will modify symbol positions and generate a new `.dSYM` file. [Apple allows you to download these `.dSYM` files from its server](https://developer.apple.com/library/tvos/documentation/IDEs/Conceptual/AppDistributionGuide/AnalyzingCrashReports/AnalyzingCrashReports.html), and there are also third-party tools like [`fastlane refresh_dsyms`](https://krausefx.com/blog/download-dsym-symbolication-files-from-itunes-connect-for-bitcode-ios-apps) that can automate this process.
+
+## How to Symbolicate Manually with atos
+
+This method uses [atos](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/atos.1.html) and is a little more advanced but worth trying if you are having trouble with the other methods.
+
+The atos command converts numeric addresses to their symbolic equivalents. If full debug symbol information is available — for example, in an `.app.dSYM` sitting beside an `.app`, then the output of atos will include the file name and source line number information.
+
+You need the following files in the same directory:
+
+* `PSPDFKit.framework`
+* `PSPDFKit.framework.ios-arm64.dSYM`
+* `mycrash.crash`
+
+Check if these are all from the same build by ensuring the UUIDs within them match. To extract the UUIDs from the binary and the `.dSYM` file, use the following:
+
+```bash
+dwarfdump PSPDFKit.framework/PSPDFKit -u
+dwarfdump PSPDFKit.framework.ios-arm64.dSYM -u
+```
+
+Look for the UUID of the appropriate architecture of the crash log you are examining — for example:
+
+`UUID: 35DA91E3-AECE-300A-AB16-158B42FF78DB (arm64) PSPDFKit.framework.dSYM/Contents/Resources/DWARF/PSPDFKit`
+
+In the “Binary Images” section of the crash log, the UUID of the framework binary has the UUID inside <...>, lowercased and without dashes  — for example:
+
+```bash
+0x1003d8000 -        0x100e47fff +PSPDFKit arm64  <35da91e3aece300aab16158b42ff78db> /Some Path to .../MyApp.app/Frameworks/PSPDFKit.framework/PSPDFKit
+```
+
+The first column is the load address. In this case, 0x1003d8000. The load address is given to atos so it can work out the correct offset in the `.dSYM` file, like so:
+
+`atos -arch arm64 -o ./PSPDFKit.framework/PSPDFKit -l 0x1003d8000`
+
+With the above line, atos will read lines from stdin and attempt to symbolicate the line. However, we need to find an address to give it.
+
+```bash
+   Thread 4 Crashed:
+           0   PSPDFKit  0x000000010079e5b8 std::__1::__hash_table<std::__1::__hash_value_type<void*, objc_object* __weak>...
+```
+
+Instead of letting atos read from stdin, we can instead pass addresses immediately. After the load address, we can pass a whitespace-separated list of addresses to symbolicate:
+
+`atos -arch arm64 -o ./PSPDFKit.framework/PSPDFKit -l 0x1003d8000 0x000000010079e5b8`
+
+atos should then print out the line.
+
+**Note:** The same procedure applies to `PSPDFKitUI.framework`.
+
+## Solving Symbolication Problems
+
+There are several resources that help if you have trouble symbolicating your crash logs.
+
+* [Understanding Crashes and Crash Logs from WWDC 2018](https://developer.apple.com/videos/play/wwdc2018/414/)
+* [PossibleMobile: Symbolicating Your iOS Crash Reports][]
+* [HockeyApp: How to solve symbolication problems][]
+* [Crashlytics: All about Missing dSYMs][]
+* [Apple Technical Q&A QA1765: How to Match a Crash Report to a Build][]
+
+[Bug Reporting]: ../../troubleshooting/bug-reporting/
+[PSPDFKit Guide Bitcode]: ../../faq/bitcode/
+[PossibleMobile: Symbolicating Your iOS Crash Reports]: https://possiblemobile.com/2015/03/symbolicating-your-ios-crash-reports/
+[HockeyApp: How to solve symbolication problems]: https://support.hockeyapp.net/kb/client-integration-ios-mac-os-x-tvos/how-to-solve-symbolication-problems
+[Crashlytics: All about Missing dSYMs]: https://docs.fabric.io/ios/crashlytics/missing-dsyms.html
+[Apple Technical Q&A QA1765: How to Match a Crash Report to a Build]: https://developer.apple.com/library/ios/qa/qa1765/_index.html#//apple_ref/doc/uid/DTS40012196

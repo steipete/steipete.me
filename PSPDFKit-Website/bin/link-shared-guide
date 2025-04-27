@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+  echo "Usage: $0 <category/page> <platform> <version>"
+  exit
+fi
+echo "Linking $1 to $2"
+ln -s ../../../shared/$1.html.md.erb source/guides/$2/$3/$1.html.md.erb

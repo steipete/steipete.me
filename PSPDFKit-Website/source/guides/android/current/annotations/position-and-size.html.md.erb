@@ -1,0 +1,112 @@
+---
+title: Position and Size
+section: developers
+---
+
+When working with annotations in documents, you will quickly come across a property called the bounding box of an annotation. The bounding box is the rectangle that the annotation covers on a page, i.e. its position and size in PDF page coordinates. Retrieving or setting the bounding box of an annotation is straightforward, but there are some things to consider when working with bounding boxes in your app. This article describes how to correctly handle bounding boxes.
+
+If you are interested in the different coordinate systems of PSPDFKit and PDFs, please take a look at our [coordinate conversion guide][pspdfkit guide coordinating spaces] instead.
+
+## Bounding Box
+
+Each annotation has a size and a position, known as the annotation’s bounding box. To access the bounding box, simply call [`Annotation#getBoundingBox`][]. This will return a [`RectF`][] instance, which holds the annotation’s size and position in PDF coordinates:
+
+[==
+
+```kotlin
+Log.d(TAG, "The annotation sits at coordinates [${annotation.boundingBox.left}, " +
+    "${annotation.boundingBox.bottom}].")
+
+Log.d(TAG, "The annotation is " +
+    "${annotation.boundingBox.width()} x ${annotation.boundingBox.height()} PDF points large.")
+```
+
+```java
+final RectF boundingBox = annotation.getBoundingBox();
+
+Log.d(TAG, String.format("The annotation sits at coordinates [%f, %f].",
+    boundingBox.left, boundingBox.bottom));
+
+Log.d(TAG, String.format("The annotation is %f x %f PDF points large.",
+    boundingBox.width(), boundingBox.height()));
+```
+
+==]
+
+## Calculating Screen Coordinates
+
+The bounding box returned by [`Annotation#getBoundingBox`][] is in the PDF coordinate space. If your app needs screen coordinates, convert the bounding box using the [coordinate conversion API][pspdfkit guide coordinating spaces]:
+
+[==
+
+```kotlin
+// IMPORTANT: Create a copy of the bounding box, as direct modification
+// of the returned instance will lead to an inconsistent annotation state.
+val boundingBox = RectF(annotation.boundingBox)
+
+// After conversion, the `boundingBox` will be in screen coordinates.
+fragment.convertPdfRectToViewRect(boundingBox, annotation.pageIndex)
+
+Log.d(TAG, "The annotation's screen size is " +
+    " ${boundingBox.width().toInt()} x ${boundingBox.height().toInt()} pixels")
+```
+
+```java
+// IMPORTANT: Create a copy of the bounding box, as direct modification
+// of the returned instance will lead to an inconsistent annotation state.
+final RectF boundingBox = new RectF(annotation.getBoundingBox());
+
+// After conversion, the `boundingBox` will be in screen coordinates.
+fragment.convertPdfRectToViewRect(boundingBox, annotation.getPageIndex());
+
+Log.d(TAG, String.format("The annotation's screen size is %d x %d pixels",
+    (int) boundingBox.width(), (int) boundingBox.height());
+```
+
+==]
+
+**⚠️ Warning:** Don’t modify the [`RectF`][] returned by [`Annotation#getBoundingBox`][] if you want to alter the position or size of the annotation. A returned `RectF` is a copy of the annotation’s bounding box. See the next section on correctly altering the bounding box.
+
+## Changing the Bounding Box
+
+To change the annotation’s bounding box, call [`Annotation#setBoundingBox`][] and provide a [`RectF`][] instance holding the desired size and position (in PDF coordinates). You can safely reuse the existing bounding box instance in this situation:
+
+[==
+
+```kotlin
+// Unlike in the previous example, the bounding box is not copied, but reused.
+val boundingBox = annotation.boundingBox
+
+// Move the bounding box 100 points up.
+boundingBox.offset(0, -100)
+
+// Write the new position back to the annotation.
+annotation.boundingBox = boundingBox
+
+// Make the changes visible on the screen.
+fragment.notifyAnnotationHasChanged(annotation)
+```
+
+```java
+// Unlike in the previous example, the bounding box is not copied, but reused.
+final RectF boundingBox = annotation.getBoundingBox();
+
+// Move the bounding box 100 points up.
+boundingBox.offset(0, -100);
+
+// Write the new position back to the annotation.
+annotation.setBoundingBox(boundingBox);
+
+// Make the changes visible on the screen.
+fragment.notifyAnnotationHasChanged(annotation);
+```
+
+==]
+
+**Important:** If you forget to call [`Annotation#setBoundingBox`][], your changes to the bounding box will not be applied, meaning they can’t be rendered or saved back to the document.
+
+[`annotation#getboundingbox`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getBoundingBox()
+[`annotation#setboundingbox`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#setBoundingBox(android.graphics.RectF)
+[`rectf`]: http://developer.android.com/reference/android/graphics/RectF.html
+[`documentlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html
+[pspdfkit guide coordinating spaces]: ../../faq/coordinate-spaces

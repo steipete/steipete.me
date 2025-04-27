@@ -1,0 +1,243 @@
+---
+title: Rendering PDF Pages
+section: developers
+
+---
+
+If you want to render an image of a page or part of a page, [`PSPDFRenderQueue`][] is what you need. This article explains how to use the render queue and the render cache, both of which underwent a big refactoring in PSPDFKit 6 for iOS. This article guides you through the necessary steps, regardless of whether you’ve never used the cache or the render queue before, or if you simply want to move your existing code from v5 over to v6.
+
+## Rendering a Page to an Image
+
+You can render a page from a document to a `UIImage` like so:
+
+[==
+
+```swift
+let document = ...
+let pageImageSize = ...
+let pageIndex = ...
+
+// Create a render request from your `PSPDFDocument`.
+let request = PSPDFMutableRenderRequest(document: document)
+request.imageSize = pageImageSize
+request.pageIndex = pageIndex
+task.delegate = self
+
+// Create a render task using the `PSPDFMutableRenderRequest`.
+let task = PSPDFRenderTask(request: request)!
+task.priority = .utility
+PSPDFKitGlobal.sharedInstance.renderManager.renderQueue.schedule(task)
+
+// The page rendered as a `UIImage`.
+let image = PSPDFKitGlobal.sharedInstance.cache.image(for: request, imageSizeMatching: [.allowLarger])
+```
+
+```objc
+PSPDFDocument document = ...
+PSPDFPageIndex pageIndex = ...
+CGSize pageImageSize = ...
+
+// Create a render request from your `PSPDFDocument`.
+PSPDFMutableRenderRequest *request = [[PSPDFMutableRenderRequest alloc] initWithDocument:document];
+request.imageSize = pageImageSize;
+request.pageIndex = pageIndex;
+task.delegate = self
+
+// Create a render task using the `PSPDFMutableRenderRequest`.
+PSPDFRenderTask *task = [[PSPDFRenderTask alloc] initWithRequest:request];
+task.priority = PSPDFRenderQueuePriorityUtility;
+[PSPDFKitGlobal.sharedInstance.renderManager.renderQueue scheduleTask:task];
+
+// The page rendered as a `UIImage`.
+UIImage *image = [PSPDFKitGlobal.sharedInstance.cache imageForRequest:request imageSizeMatching:PSPDFCacheImageSizeMatchingAllowLarger];
+```
+
+==]
+
+# Rendering and Caching
+
+## The Architecture
+
+As of v6, the architecture has changed a bit. The entry point for all sorts of image requests is a [`PSPDFRenderRequest`][], no matter whether you want to obtain an image from the cache or render a new image. The render request contains all the information that identifies the request and has an impact on how the resulting image will look.
+
+With the render request, you’re able to create a [`PSPDFRenderTask`][]. A render task controls all the things that are related to the actual rendering. You can use it to alter the priority of a task, cancel a task, or receive the rendered image once a task has completed.
+
+In order to execute a render task, you must schedule this task in the global [`PSPDFRenderQueue`][]. You can think of a task and its queue like `NSOperation` and `NSOperationQueue`. The concept is very similar, yet there are a couple of differences and optimizations going on under the hood.
+
+<img alt=“Rendering Architecture” src="/images/guides/ios/getting-started/rendering-pdf-pages/Render-Request-to-Cache.png" srcset="/images/guides/ios/getting-started/rendering-pdf-pages/Render-Request-to-Cache@2x.png 2x">
+
+Now that we have gone through the data flow in general, let’s look a bit closer at the different parts of rendering a page into an image. We’ll use the following example and go through it step by step:
+
+[==
+
+```swift
+let request = PSPDFMutableRenderRequest(document: document)
+request.imageSize = pageImageSize
+
+for pageIndex in UInt(0)..<document.pageCount {
+    request.pageIndex = pageIndex
+
+    guard let task = PSPDFRenderTask(request: request) else { continue }
+    task.priority = .utility
+    task.delegate = self
+    PSPDFKitGlobal.sharedInstance.renderManager.renderQueue.schedule(task)
+}
+```
+
+```objc
+PSPDFMutableRenderRequest *request = [[PSPDFMutableRenderRequest alloc] initWithDocument:document];
+request.imageSize = pageImageSize;
+
+for (int pageIndex = 0; pageIndex < document.pageCount; pageIndex++) {
+    request.pageIndex = pageIndex;
+
+    PSPDFRenderTask *task = [[PSPDFRenderTask alloc] initWithRequest:request];
+    task.priority = PSPDFRenderQueuePriorityUtility;
+    task.delegate = self;
+    [PSPDFKitGlobal.sharedInstance.renderManager.renderQueue scheduleTask:task];
+}
+```
+
+==]
+
+## `PSPDFRenderRequest`
+
+[`PSPDFRenderRequest`][] is a pair of two classes: a mutable and an immutable version. Usually you create a [`PSPDFMutableRenderRequest`][pspdfmutablerenderrequest], configure it, and then pass it on to [`-[PSPDFRenderTask initWithRequest:]`][pspdfrendertask-initwithrequest]. This will make a copy of the request so that you can no longer modify the request in a task. It also gives us the possibility of making many optimizations that will result in the fast execution of your task. Additionally, it means you can reuse your mutable render request in case you need to create a batch of render tasks, as is done in the above example.
+
+The example also illustrates the minimum amount of information you need to specify for both the request and the task. The request needs to be created with a [`PSPDFDocument`][] and requires an [`imageSize`][pspdfmutablerenderrequest-imagesize] to be set. The [`imageSize`][pspdfmutablerenderrequest-imagesize] specifies the resulting size of the `UIImage` in points — or rather, more precisely, it specifies the bounding box in which the resulting image will fit. If the aspect ratio of the specified image size does not match the one of the page, you will get an image that is smaller on one of the axes, as the image is always rendered by fitting its aspect ratio inside the specified [`imageSize`][pspdfmutablerenderrequest-imagesize].
+
+The request also needs to have a [`pageIndex`][pspdfmutablerenderrequest-pageindex] so that it knows which page to render. If you don’t specify a [`pageIndex`][pspdfmutablerenderrequest-pageindex], the request assumes the page is 0, which might be fine if you just want to render a cover image.
+
+The above setup results in an image that contains the full page. If you only want to render a part of a page, this can also be done by specifying a [`pdfRect`][pspdfmutablerenderrequest-pdfrect] in PDF coordinates. Note that the resulting image will still have the size of [`imageSize`][pspdfmutablerenderrequest-imagesize] but only contain the [`pdfRect`][pspdfmutablerenderrequest-pdfrect] you specified. This is different than in previous versions of PSPDFKit. The resulting image contains the content of the specified PDF rect, drawn by fitting its content inside the rect while keeping its aspect ratio. As a result, the image might be smaller than the requested size in one axis and will contain exactly the content of the specified PDF rect.
+
+## `PSPDFRenderTask`
+
+The render task is the object that can be used to alter the priority of requests or cancel them altogether. It is considered best practice to either cancel tasks that are no longer needed or reduce the priority of a task that is not needed anymore but is likely to be relevant again in the near future.
+
+You can set a task’s [`priority`][pspdfrendertask-priority] at any time, even after scheduling it in the render queue. Note that a task with a higher priority is not necessarily executed before a task with a lower priority. This depends on a variety of factors, such as other tasks requesting the same image and whether or not a given request produces a cache hit. PSPDFKit will execute as many tasks as possible in a timely manner. Also note that the order of execution might change as we improve our algorithms to determine the next most important task, so do not rely on execution orders.
+
+To get informed of the completion of a task, you have two options. A render task can have a `delegate` as well as a [`completionHandler`][pspdfrendertask-completionhandler]. You can use either one of them or both of them. To cancel a task, simply call `cancel` on it and you will no longer receive any callbacks from it.
+
+## The Cache
+
+As of PSPDFKit 6 for iOS, you no longer need to worry about [`PSPDFCache`][pspdfcache] under normal conditions. Scheduling a task in a render queue will automatically ensure that a new image is only rendered if there is nothing found in the cache, and the framework automatically stores images in the cache that are likely to be retrieved again in the future. If you schedule a render task that produces a cache hit, we will call your completion handler and the delegate in a prioritized way so that a task does not unnecessarily need to wait in the render queue.
+
+However, due to its nature, [`PSPDFRenderTask`][] is always asynchronous. If you, for some reason, need to render an image synchronously, you can use the same [`PSPDFRenderRequest`][] you would use to create a task to retrieve an image from the cache as well. All you need to do is call [`-[PSPDFCache imageForRequest:imageSizeMatching:]`][pspdfcache-imageforrequest-imagesizematching] with the request and a size-matching strategy. With size matching, you can tell the cache whether you would also be fine with images smaller or larger than your requested image size. Depending on your needs, this may be helpful, as it usually has a greater chance of returning an image from the cache. However, you should keep the memory implications of this in mind, especially when requesting larger images.
+
+Before directly querying the cache, think about your approach and whether it is really necessary to synchronously request images from the cache. If the cache does not contain an image for your request, you would need to schedule a render task anyway, so usually your code should be written to work with asynchronous requests. You should not use [`PSPDFCache`][pspdfcache] as your data store; instead, store images you are actively using in another data structure.
+
+While you have no control over whether or not a rendered image will be stored in the cache, you can control if a request accesses the cache and is able to perform an actual rendering. By default, [`PSPDFRenderRequest`][] automatically determines the best strategy to fulfill your request. Other options are to ignore the cache and render a new image, check the cache first and render an image only if the cache did not produce a result, or only check the cache and not render an image if the cache does not have a matching image.
+
+### iOS Data Protection for the Disk Cache
+
+You can customize the default iOS data protection level by setting a new default on the cache folder. Here’s how you can access this directory:
+
+[==
+
+```swift
+let cacheDirectory = PSPDFKitGlobal.sharedInstance.cache.diskCache.cacheDirectory
+```
+
+```objc
+NSString *cacheDirectory = PSPDFKitGlobal.sharedInstance.cache.diskCache.cacheDirectory;
+```
+
+==]
+
+**ℹ️ Note:** This directory is automatically created upon first cache write. Clearing the cache will delete all subdirectories but not the directory itself. To learn more, [read the Instant guide about iOS data protection][ios data protection].
+
+Also, please see the [PSPDFKit SDK Security][] guide for an overview of SDK security options.
+
+### Disabling the Disk Cache per Document
+
+The [`useDiskCache`][] property on [`PSPDFDocument`][] controls whether or not the disk cache is used for a certain document. It defaults to `YES` unless any data provider disables [`useDiskCache`][] or if any document provider is encrypted, in which case it returns `NO`:
+
+[==
+
+```swift
+document.useDiskCache = false
+```
+
+```objc
+document.useDiskCache = NO;
+```
+
+==]
+
+### Disabling the Disk Cache Globally
+
+By default, the cache will store images in memory and on disk. You can disable the disk cache by setting its [`allowedDiskSpace`][pspdfdiskcache-alloweddiskspace] to `0`. The disk cache is accessible from the shared [`PSPDFCache`][pspdfcache] object:
+
+[==
+
+```swift
+PSPDFKitGlobal.sharedInstance.cache.diskCache.allowedDiskSpace = 0
+```
+
+```objc
+PSPDFKitGlobal.sharedInstance.cache.diskCache.allowedDiskSpace = 0;
+```
+
+==]
+
+> ℹ️ **Note:** Disabling the cache may cause a some performance impact on older devices.
+
+## Cache Invalidation
+
+Cache invalidation is usually done by the framework itself, and you don’t need to worry about this. However, if you add custom functionality that may change the rendering of a page, you need to invalidate the cache manually. To do so, call [`-[PSPDFCache invalidateImageFromDocument:pageIndex:]`][pspdfcache-invalidateimagefromdocument-pageindex]. This removes all images for the given page from both the in-memory cache and the disk cache. All render requests that are executed after this method has been called will no longer produce a cache hit and will then render a new image for the page, which is then added to the cache again.
+
+If, for whatever reason, you only require a new rendering of a specific image size, you can also specify this while requesting a new image by setting the [`cachePolicy`][pspdfmutablerenderrequest-cachepolicy] property of [`PSPDFRenderRequest`][] to `PSPDFRenderRequestCachePolicyReloadIgnoringCacheData`. This will result in a new rendering that ignores eventual cache hits. The new image will then override any existing image in the cache that matches the given request. Keep in mind that the order in which requests are executed should be treated as non-deterministic, as mentioned above. Tasks you schedule after the task with the above request might in fact execute before it, resulting in the retrieval of the old image from the cache.
+
+## Synchronous Rendering
+
+Synchronous page rendering is generally discouraged because it blocks the main thread when rendering a large and complex page. You can request a page image using [`-[PSPDFDocument imageForPageAtIndex:size:clippedToRect:annotations:options:error:]`][imageforpageatindex:size:clippedtorect:annotations:options:error:]. You won’t need to create a render request or task, as the image is rendered synchronously. We recommend that you always use render requests and tasks and only use the synchronous method if there is no other way out:
+
+[==
+
+```swift
+let document = // PSPDFDocument object
+let pageInfo = document.pageInfoForPage(at: 0)!
+let pageImage = try! document.imageForPage(at: 0, size: pageInfo.size, clippedTo: .zero, annotations: nil, options: nil)
+```
+
+```objc
+PSPDFDocument *document = // PSPDFDocument object
+PSPDFPageInfo *pageInfo = [document pageInfoForPageAtIndex:0];
+UIImage *pageImage = [document imageForPageAtIndex:0 size:pageInfo.size clippedToRect:CGRectZero annotations:nil options:nil error:&error];
+```
+
+==]
+
+## Debugging
+
+If you are debugging things related to render requests, tasks, or the cache, PSPDFKit has a couple of environment variables you can set to alter the behavior of the render engine. This makes it easier to debug certain types of problems. To set an environment variable, go to your project’s scheme settings in Xcode by opening the scheme list next to the Run and Stop buttons in the top bar and select Edit Scheme… at the bottom of the list. In the Run section, tap the + icon in the Environment Variables list. Set the name and the value according to the list below. Make sure the checkmark next to the new entry is activated.
+
+<img alt=“Scheme Settings” src="/images/guides/ios/getting-started/rendering-pdf-pages/Scheme-Settings.png" srcset="/images/guides/ios/getting-started/rendering-pdf-pages/Scheme-Settings@2x.png 2x">
+
+If you run your app through Xcode now, the added variable affects the way the render engine handles things. In your scheme settings, you can tick or untick the box next to the environment variable to control whether or not you want to activate the environment variable.
+
+| Variable             | Value | Description                                                                                                                                                       |
+| -------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PSPDFCacheDisabled` | `YES` | Disables the cache so that every request to the cache produces a cache miss. This results in the render engine always scheduling a redraw of the requested image. |
+| `PSPDFSlowRendering` | `YES` | Makes the rendering slower by blocking each render call for multiple seconds.                                                                                     |
+
+Be aware that environment variables only have an effect if you are actually launching your app through Xcode. If you launch your application through the home screen or distribute it via the App Store, this setting has no effect.
+
+[pspdfrendertask]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderTask.html
+[pspdfmutablerenderrequest]: https://pspdfkit.com/api/ios/Classes/PSPDFMutableRenderRequest.html
+[pspdfrendertask-initwithrequest]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderTask.html#/c:objc(cs)PSPDFRenderTask(im)initWithRequest:
+[pspdfmutablerenderrequest-imagesize]: https://pspdfkit.com/api/ios/Classes/PSPDFMutableRenderRequest.html#/c:objc(cs)PSPDFMutableRenderRequest(py)imageSize
+[pspdfmutablerenderrequest-pageindex]: https://pspdfkit.com/api/ios/Classes/PSPDFMutableRenderRequest.html#/c:objc(cs)PSPDFMutableRenderRequest(py)pageIndex
+[pspdfmutablerenderrequest-pdfrect]: https://pspdfkit.com/api/ios/Classes/PSPDFMutableRenderRequest.html#/c:objc(cs)PSPDFMutableRenderRequest(py)pdfRect
+[pspdfrendertask-priority]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderTask.html#/c:objc(cs)PSPDFRenderTask(py)priority
+[pspdfrendertask-completionhandler]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderTask.html#/c:objc(cs)PSPDFRenderTask(py)completionHandler
+[pspdfcache]: https://pspdfkit.com/api/ios/Classes/PSPDFCache.html
+[pspdfcache-imageforrequest-imagesizematching]: https://pspdfkit.com/api/ios/Classes/PSPDFCache.html#/c:objc(cs)PSPDFCache(im)imageForRequest:imageSizeMatching:
+[pspdfdiskcache-alloweddiskspace]: https://pspdfkit.com/api/ios/Classes/PSPDFDiskCache.html#/c:objc(cs)PSPDFDiskCache(py)allowedDiskSpace
+[pspdfcache-invalidateimagefromdocument-pageindex]: https://pspdfkit.com/api/ios/Classes/PSPDFCache.html#/c:objc(cs)PSPDFCache(im)invalidateImageFromDocument:pageIndex:
+[pspdfmutablerenderrequest-cachepolicy]: https://pspdfkit.com/api/ios/Classes/PSPDFMutableRenderRequest.html#/c:objc(cs)PSPDFMutableRenderRequest(py)cachePolicy
+[imageforpageatindex:size:clippedtorect:annotations:options:error:]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)imageForPageAtIndex:size:clippedToRect:annotations:options:error:
+[pspdfkit sdk security]: ../../faq/sdk-security/
+[ios data protection]: ../../pspdfkit-instant/data-protection/
+[`usediskcache`]: https://www.pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)useDiskCache
+[`pspdfdocument`]: https://www.pspdfkit.com/api/ios/Classes/PSPDFDocument.html

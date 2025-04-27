@@ -1,0 +1,192 @@
+<section id="deployment" class="section bg-neutral-dark pt-0">
+  <div class="container">
+    <header class="text-center mb-5">
+      <h2><%= title %></h2>
+      <p class="lead"><%= body %></p>
+    </header>
+  </div>
+
+  <!-- Server -->
+  <div id="deployment-server" class="container pb-4">
+    <div class="row flex-lg-row-reverse">
+      <div class="col-12 mb-4">
+        <div class="d-flex flex-column flex-lg-row align-items-center">
+          <span class="sq-50 rounded-circle bg-brand mr-3 mb-3 mb-lg-0">
+            <i class="fa fa-lg fa-instant text-white"></i>
+          </span>
+          <h3 class="mb-0">
+            Server Deployment
+          </h3>
+        </div>
+      </div>
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card p-3 mb-5">
+          <a href="/guides/web/current/server-backed/overview/" class="link-img">
+            <img src="/images/shared/placeholder.gif" data-src="/images/pdf-sdk/web/server.png" class="img-fluid lazyload" loading="lazy">
+          </a>
+        </div>
+        <div class="d-flex align-items-center justify-content-around p-4 rounded bg-neutral-darker">
+          <p class="small mb-0">
+            <strong>
+              Host on-premises or in the cloud:
+            </strong>
+          </p>
+          <p class="mb-0 d-flex flex-nowrap">
+            <a href="https://www.docker.com/" class="link-img mr-3" data-toggle="tooltip" title="Docker">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/docker-gray.svg" alt="PDF Web Viewer powered by Docker" height="30" class="lazyload" loading="lazy">
+            </a>
+            <a href="https://cloud.google.com/" class="link-img mr-3" data-toggle="tooltip" title="Google Cloud Platform">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/gcp-gray.svg" alt="Google Cloud Platform" width="35" class="lazyload" loading="lazy">
+            </a>
+            <a href="https://azure.microsoft.com/" class="link-img mr-3" data-toggle="tooltip" title="Microsoft Azure">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/windows-gray.svg" alt="Microsoft Azure" height="28" class="lazyload" loading="lazy">
+            </a>
+            <a href="https://aws.amazon.com/" class="link-img" data-toggle="tooltip" title="Amazon AWS">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/aws-gray.svg" alt="Amazon Web Services" height="28" class="lazyload" loading="lazy">
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <p>
+          Server-backed deployment requires the installation of our <strong>PSPDFKit Server</strong>
+          component.
+        </p>
+        <p>
+          With rendering taking place on the server, the experience is smooth no matter the device.
+          The client intelligently downloads pages on demand, providing a fast viewing experience for documents of any size. Your users’ data remains safe with you thanks to precise access control via
+          <a class="link-brand" href="https://jwt.io/">JWT</a>.
+        </p>
+        <p>
+          The server is delivered as a Docker container for easy deployment, and it can work with a
+          dedicated file server or Amazon S3 cloud storage.
+        </p>
+        <h4 class="h5 mt-5 mb-3">
+          Unique Features:
+        </h4>
+        <ul class="medium fa-ul">
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Opens large PDF documents in milliseconds.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Built-in document and annotation management and  archiving on Amazon S3 or a dedicated
+            file server.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Fine-grained authentication control over who has  access to the original PDF document.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Supports collaboration with <a href="/instant" class="link-brand">PSPDFKit Instant</a>.
+          </li>
+        </ul>
+        <p class="mt-5 mb-0">
+          <a href="/guides/web/current/server-backed/overview/" class="link-brand">
+            Learn more about server deployment
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <!-- Standalone -->
+  <div id="deployment-standalone" class="container py-4">
+    <div class="row flex-lg-row-reverse">
+      <div class="col-12 mb-4">
+        <div class="d-flex flex-column flex-lg-row align-items-center">
+          <span class="sq-50 rounded-circle bg-brand mr-3 mb-3 mb-lg-0">
+            <i class="fa fa-lg fa-file text-white"></i>
+          </span>
+          <h3 class="mb-0">
+            Standalone Deployment
+          </h3>
+        </div>
+      </div>
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card p-3 mb-5">
+          <a href="/guides/web/current/standalone/overview/" class="link-img">
+            <img src="/images/shared/placeholder.gif" data-src="/images/pdf-sdk/web/standalone.png" class="img-fluid lazyload" loading="lazy">
+          </a>
+        </div>
+        <div class="d-flex align-items-center p-4 mb-4 rounded bg-neutral-darker">
+          <a href="/blog/2017/webassembly-a-new-hope/" class="link-img">
+            <img src="/images/shared/placeholder.gif" data-src="/images/logos/web-assembly.svg" alt="" height="60" class="lazyload" loading="lazy">
+          </a>
+          <div class="ml-4">
+            <h5>Web Assembly</h5>
+            <p class="small mb-0">
+              Uses state-of-the-art WebAssembly technology<br>
+              <a href="/blog/2017/webassembly-a-new-hope/" class="link-brand">Learn more</a>
+            </p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center p-4 rounded bg-neutral-darker">
+          <a href="/pdf-sdk/electron/" class="link-img">
+            <img src="/images/shared/placeholder.gif" data-src="/images/icons/electron.svg" alt="" height="60" class="lazyload" loading="lazy">
+          </a>
+          <div class="ml-4">
+            <h5>PSPDFKit for Electron</h5>
+            <p class="small mb-0">
+              Create cross-platform native apps using web technologies.<br>
+              <a href="/pdf-sdk/electron/" class="link-brand">Learn more</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <p>
+          Deploying and maintaining a dedicated server component is not always feasible, so we also
+          offer a standalone deployment option that uses WebAssembly technology
+          (with asm.js fallback for older browsers).
+        </p>
+        <p>
+          This deployment method requires nothing but the JavaScript files and essential assets.
+        </p>
+        <p>
+          The absence of a server component makes it easier to integrate this solution and allows
+          you to rapidly deploy it into your existing website.
+        </p>
+        <h4 class="h5 mt-5 mb-3">
+          Unique Features:
+        </h4>
+        <ul class="medium fa-ul">
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Workload is offloaded to clients.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Runs in contexts where no server is available.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Simple integration.
+          </li>
+          <li class="mb-2">
+            <i class="fa-li fa fa-check text-brand"></i>
+            Ability to easily manage and share document changes with support for both
+            <a href="/guides/web/current/importing-exporting/xfdf-support/" class="link-brand">
+              XFDF
+            </a>
+            and
+            <a href="/guides/web/current/importing-exporting/instant-json/" class="link-brand">
+              Instant JSON
+            </a>.
+          </li>
+        </ul>
+        <p class="mt-5 mb-0">
+          <a href="/guides/web/current/standalone/overview/" class="link-brand">
+            Learn more about standalone deployment
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

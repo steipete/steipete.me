@@ -1,0 +1,309 @@
+---
+title: Text Search
+section: developers
+---
+
+To search text inside a document, create an instance of [`TextSearch`][], passing in the loaded [`PdfDocument`][] via its constructor. The simplest way to retrieve search results is by calling [`TextSearch#performSearch(String)`][], which will return a list of found [`SearchResult`][] objects. If a search has no results, this method will return an empty list:
+
+[==
+
+```kotlin
+val textSearch = TextSearch(context, document)
+val query = "Weather reports"
+val searchResults : List<SearchResult> = textSearch.performSearch(query)
+```
+
+```java
+final TextSearch textSearch = new TextSearch(context, document);
+final String query = "Weather reports";
+final List<SearchResult> searchResults = textSearch.performSearch(query);
+```
+
+==]
+
+> **ℹ️ Note:** [`#performSearch`][`textsearch#performsearch(string)`] is a blocking call and should only be used on a background thread.
+
+### Asynchronous Search
+
+To keep the main thread operational and to avoid ANR dialogs while performing a search, you can use the non-blocking [`#performSearchAsync`][`textsearch#performsearchasync(string)`] method, which will return a [`Flowable<SearchResult>`][`flowable`]. The flowable emits search results as soon as they are available — you can already use them during the ongoing search, e.g. to populate your search UI:
+
+[==
+
+```kotlin
+// Perform an async search on a computation thread and update the UI on the main thread.
+val searchSubscription = search.performSearchAsync(query)
+    .subscribeOn(Schedulers.computation())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe { nextResult ->
+        // This will be called once for every `SearchResult` object.
+        // Put your search result handling here.
+    }
+```
+
+```java
+// Perform an async search on a computation thread and update the UI on the main thread.
+final Disposable searchSubscription = textSearch.performSearchAsync(query)
+    .subscribeOn(Schedulers.computation())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(nextResult -> {
+        // This will be called once for every `SearchResult` object.
+        // Put your search result handling here.
+    })
+```
+
+==]
+
+> **💡 Tip:** You can use [`Flowable#toList`][] to collect all search results if you want to handle them at once.
+
+### Specify Search Options
+
+Both methods — [`#performSearch`][`textsearch#performsearch(string)`] and [`#performSearchAsync`][`textsearch#performsearchasync(string)`] — offer overloaded versions that take [`SearchOptions`][] for specifying search options. Use this to limit search results or search result snippet length:
+
+[==
+
+```kotlin
+val options = SearchOptions.Builder(context)
+    .maxSearchResults(100)
+    .snippetLength(40)
+    .build()
+
+val results = textSearch.performSearch(query, options)
+```
+
+```java
+final SearchOptions options = new SearchOptions.Builder(context)
+    .maxSearchResults(100)
+    .snippetLength(40)
+    .build();
+
+final List<SearchResult> results = textSearch.performSearch(query, options);
+```
+
+==]
+
+> **ℹ️ Note**: Calling [`#performSearch(String)`][`textsearch#performsearch(string)`] without options will use default options.
+
+#### Compare Options
+
+[`SearchOptions.Builder#compareOptions()`][] can be used to tweak how the text search matches its results. A combination of the following options is possible.
+
+| Compare Option        | Description                                                                                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CASE_INSENSITIVE      | Text search ignores case when this option is used.                                                                                                                                                                                                |
+| DIACRITIC_INSENSITIVE | Text search ignores diacritic when this option is used.                                                                                                                                                                                           |
+| SMART_SEARCH          | Enables smart search. Smart search ignores white spaces and hyphens. It also resolves typographic quotes and apostrophes. For example, when searching for standard quotes or apostrophes, typographic variants such as `“”«»„“` are also matched. |
+| REGULAR_EXPRESSION    | Enables regular expression search. When this option is used, the `SMART_SEARCH` option is ignored.                                                                                                                                                |
+
+PSPDFKit uses a combination of `CASE_INSENSITIVE`, `DIACRITIC_INSENSITIVE`, and `SMART_SEARCH` compare options by default.
+
+> **ℹ️ Note:** [`TextSearch`][] uses regular expression capabilities available in Java. Refer to the [`Pattern` documentation][`pattern`] for the supported regular expression syntax.
+
+## Using Search Results
+
+Every [`SearchResult`][] consists of the `pageNumber`, a `textBlock` containing the PDF coordinates on the page, and an optional `snippet` containing a preview text usable for showing text around search matches in the user interface. For example, if you would like to zoom to a search result, you can do the following:
+
+[==
+
+```kotlin
+// The search result consists of at least one text rect. This will create a union of all of its rects.
+val searchResultRect: RectF = PdfUtils.createPdfRectUnion(searchResult.textBlock.pageRects)
+// This will also switch to the correct page if it is not active.
+fragment.zoomTo(searchResultRect, searchResult.pageNumber, 200)
+```
+
+```java
+// The search result consists of at least one text rect. This will create a union of all of its rects.
+final RectF searchResultRect = PdfUtils.createPdfRectUnion(searchResult.textBlock.pageRects);
+// This will also switch to the correct page if it is not active.
+fragment.zoomTo(searchResultRect, searchResult.pageNumber, 200);
+```
+
+==]
+
+[`SearchResult#snippet`][`searchresult`] can be used to present an upfront preview of the search result — for example, inside a search result list. The snippet consists of both the `text` and the `rangeInSnippet`, the latter of which gives the position of the actual result inside the snippet:
+
+[==
+
+```MainActivity.kt
+// Use the synthetic property for accessing a view from the layout.
+import kotlinx.android.synthetic.main.activity_main.previewText
+
+/**
+ * Sets the search result snippet to a TextView highlighting the actual search term inside the result.
+ */
+private fun showSearchResultText(result: SearchResult) {
+    // If you deactivated snippet extraction, it may be `null`.
+    val snippet = result.snippet ?: return
+
+    // This is the location of the search term inside the snippet.
+    val highlightStart = snippet.rangeInSnippet.startPosition
+    val highlightEnd = snippet.rangeInSnippet.endPosition
+
+    val previewText = SpannableString(snippet.text)
+    val resultHighlight = BackgroundColorSpan(Color.YELLOW)
+    previewText.setSpan(resultHighlight, highlightStart, highlightEnd, 0)
+}
+```
+
+```MainActivity.java
+// This has to be inflated from your layout before using it.
+private TextView previewText;
+
+/**
+ * Sets the search result snippet to a TextView highlighting the actual search term inside the result.
+ */
+private void showSearchResultText(@NonNull final SearchResult result) {
+    // If you deactivated snippet extraction, it may be `null`.
+    if (result.snippet == null) return;
+
+    // This is the location of the search term inside the snippet.
+    final int highlightStart = result.snippet.rangeInSnippet.getStartPosition();
+    final int highlightEnd = result.snippet.rangeInSnippet.getEndPosition();
+
+    final SpannableString previewText = new SpannableString(result.snippet.text);
+    final BackgroundColorSpan resultHighlight = new BackgroundColorSpan(Color.YELLOW);
+    previewText.setSpan(resultHighlight, highlightStart, highlightEnd, 0);
+}
+```
+
+==]
+
+> **ℹ️ Note:** The `SearchResult#snippet` may be `null` if you deactivated snippet extraction by setting the `SearchOptions.Builder#snippetLength` to `0`.
+
+## Highlighting Search Results
+
+To display search results on the [`PdfFragment`][], create a [`SearchResultHighlighter`][] and register it with your fragment. Once you have a list of search results, you can start highlighting them by calling [`#setSearchResults`][`searchresulthighlighter#setsearchresults`] on the highlighter:
+
+[==
+
+```MainActivity.kt
+lateinit var highlighter : SearchResultHighlighter
+
+/** Holds your PdfFragment. You don't need to define this when using PdfActivity. */
+val fragment: PdfFragment
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    // The context is used to retrieve the highlighter color from the theme.
+    highlighter = SearchResultHighlighter(context)
+    fragment.addDrawableProvider(highlighter)
+}
+
+/**
+ * Called by your application once a search is finished.
+ * The highlighter will immediately start highlighting the given results.
+ */
+fun onSearchFinished(searchResults : List<SearchResult>) = highlighter.setSearchResults(searchResults)
+```
+
+```MainActivity.java
+private SearchResultHighlighter highlighter;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // This is possible in all `PdfActivity` subclasses.
+    // If you aren't using `PdfActivity`, replace this with your own code.
+    final PdfFragment fragment = getPdfFragment();
+
+    // The context is used to retrieve the highlighter color from the theme.
+    highlighter = new SearchResultHighlighter(context);
+    fragment.addDrawableProvider(highlighter);
+
+    // ...
+}
+
+/**
+ * Called by your application once a search is finished.
+ */
+private void onSearchFinished(@NonNull final List<SearchResult> searchResults) {
+    // The highlighter will immediately start highlighting the given results.
+    highlighter.setSearchResults(searchResults);
+}
+```
+
+==]
+
+### Emphasizing the Selected Result
+
+You can emphasize a single, selected search result, which will reveal itself with a pop-out animation and receive an additional border. Note that you can only select a search result that was previously set on the highlighter using [`#setSearchResults(List<SearchResult>)`][`searchresulthighlighter#setsearchresults`]. Setting a search result that was not previously added will raise an exception:
+
+[==
+
+```MainActivity.kt
+/**
+ * Called by your application, e.g. if the user taps a search result inside a list.
+ */
+fun onSearchResultSelected(selectedResult : SearchResult) =
+    highlighter.setSelectedSearchResult(selectedResult)
+```
+
+```MainActivity.java
+/**
+ * Called by your application, e.g. if the user taps a search result inside a list.
+ */
+private void onSearchResultSelected(@NonNull final SearchResult selectedResult) {
+    highlighter.setSelectedSearchResult(selectedResult);
+}
+```
+
+==]
+
+> **ℹ️ Note:** [`SearchResultHighlighter#setSelectedSearchResult`][] also allows `null` as an argument, which will then clear any previously selected result.
+
+### Highlighter Customization
+
+The [`SearchResultHighlighter`][] uses predefined colors and styles. If you want to change the appearance, you can apply a custom style to the `pspdf__searchResultHighlighterStyle` attribute of your activity theme:
+
+```app/res/values/styles.xml
+<!-- This is the theme you set to your activity inside AndroidManifest.xml -->
+<style name="MyApp_Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pspdf__searchResultHighlighterStyle">@style/MyApp_Theme_SearchResultHighlighter</item>
+</style>
+
+<!-- This is a custom style for search result highlights. -->
+<style name="MyApp_Theme_SearchResultHighlighter" parent="PSPDFKit.SearchResultHighlighter">
+    <item name="pspdf__searchResultBackgroundColor">#FF009999</item>
+    <item name="pspdf__searchResultBorderColor">#FF888888</item>
+    <item name="pspdf__searchResultBorderWidth">2px</item>
+    <item name="pspdf__searchResultPadding">2dp</item>
+    <item name="pspdf__searchResultAnnotationPadding">3dp</item>
+    <item name="pspdf__searchResultAnimationPadding">8dp</item>
+    <item name="pspdf__searchResultCornerRadiusToHeightRatio">0.1</item>
+    <item name="pspdf__searchResultCornerRadiusMin">2dp</item>
+    <item name="pspdf__searchResultCornerRadiusMax">10dp</item>
+</style>
+```
+
+> **💡 Tip:** Take a look at `DarkThemeExample`, which explains how to apply custom themes, including a custom search result highlighter style.
+
+Below is a complete list of the style attributes you can define for the `pspdf__searchResultHighlighterStyle`.
+
+| Attribute                                      | Description                                                                                                |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `pspdf__searchResultBackgroundColor`           | Background color of the highlighted search result.                                                         |
+| `pspdf__searchResultBorderColor`               | Border color of the highlighted search result.                                                             |
+| `pspdf__searchResultBorderWidth`               | Border width of the highlighted search result.                                                             |
+| `pspdf__searchResultPadding`                   | Padding of the highlighted search result used when highlighting document text.                             |
+| `pspdf__searchResultAnnotationPadding`         | Padding of the highlighted search result used when highlighting annotations.                               |
+| `pspdf__searchResultAnimationPadding`          | Padding of the highlighted search result used when pop-out animating the currently selected search result. |
+| `pspdf__searchResultCornerRadiusToHeightRatio` | Ratio between corner radius of the search result rectangle and its height.                                 |
+| `pspdf__searchResultCornerRadiusMin`           | Minimal corner radius of the highlighted search result.                                                    |
+| `pspdf__searchResultCornerRadiusMax`           | Maximal corner radius of the highlighted search result.                                                    |
+
+[`textsearch`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/TextSearch.html
+[`textsearch#performsearch(string)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/TextSearch.html#performSearch(java.lang.String)
+[`textsearch#performsearchasync(string)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/TextSearch.html#performSearchAsync(java.lang.String)
+[`searchresult`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/SearchResult.html
+[`pdfconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.html
+[`documentthemeconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/theming/DocumentThemeConfiguration.html
+[`searchresulthighlighter`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/SearchResultHighlighter.html
+[`searchresulthighlighter#setsearchresults`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/SearchResultHighlighter.html#setSearchResults(java.util.List<com.pspdfkit.document.search.SearchResult>)
+[`searchresulthighlighter#setselectedsearchresult`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/SearchResultHighlighter.html#setSelectedSearchResult(com.pspdfkit.document.search.SearchResult)
+[`searchoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/SearchOptions.html
+[`searchoptions.builder#compareoptions()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/search/SearchOptions.Builder.html#compareOptions((com.pspdfkit.document.search.CompareOptions[])
+[`flowable`]: http://reactivex.io/RxJava/2.x/javadoc/io/reactivex/Flowable.html
+[`flowable#tolist`]: http://reactivex.io/RxJava/2.x/javadoc/io/reactivex/Flowable.html#toList()
+[`pattern`]: https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html

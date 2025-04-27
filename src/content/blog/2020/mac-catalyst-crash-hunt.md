@@ -19,6 +19,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[As of macOS 10.15.4, text input in Mac Catalyst apps sometimes crashes.]
+
+
 <style type="text/css">
 div.post-content > img:first-child { display:none; }
 </style>

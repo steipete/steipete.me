@@ -1,0 +1,108 @@
+---
+title: Opening and Saving PDFs
+section: developers
+---
+
+UWP has introduced new rules around file access permissions, and if you’re not familiar with them, it’s worth reading about them [here][].
+
+Microsoft also has [several guide articles][] that cover topics such as working with file pickers, tracking recently used files, and much more.
+
+## Opening PDFs
+
+UWP represents files with the [`StorageFile`][] class. You can use a file picker to present a UI to the user. This can be used for locating and retrieving a `StorageFile` for a PDF the user wishes to open.
+
+The following example code demonstrates how to show the file picker and open a selected PDF:
+
+```csharp
+// Open a picker so the user can choose a PDF.
+var picker = new FileOpenPicker
+{
+    ViewMode = PickerViewMode.Thumbnail,
+    SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+};
+picker.FileTypeFilter.Add(".pdf");
+
+var file = await picker.PickSingleFileAsync();
+if (file == null) return;
+
+// Open and display the PDF in the PSPDFKit `PdfView`.
+var documentSource = DocumentSource.CreateFromStorageFile(file);
+await PdfView.Controller.ShowDocumentAsync(documentSource);
+```
+
+You can also open a file from a buffer:
+
+```csharp
+// Get a buffer containing a PDF from somewhere, e.g. from a `StorageFile`.
+var buffer = await FileIO.ReadBufferAsync(file);
+
+var documentSource = DocumentSource.CreateFromBuffer(buffer);
+await PdfView.Controller.ShowDocumentAsync(documentSource);
+```
+
+## Saving PDFs
+
+In our API, the word export is synonymous with save. You have the choice to export from a [`Document`][] to a [`StorageFile`][] or a [`DataWriter`][]:
+
+```csharp
+// Export to a `StorageFile`.
+await pdfView.Document.ExportAsync(storageFile);
+
+// Export to an `InMemoryRandomAccessStream` via a `DataWriter`.
+using (var inMemoryStream = new InMemoryRandomAccessStream())
+using (var dataWriter = new DataWriter(inMemoryStream))
+{
+    await pdfView.Document.ExportToDataWriterAsync(dataWriter);
+
+    // Here, the in-memory stream will contain the exported PDF.
+}
+```
+
+Here is one way to save the currently open document to the file it was opened from:
+
+```csharp
+// Get the `StorageFile`.
+var file = pdfView.Controller?.GetPdfDocument()?.DocumentSource.GetFile();
+if (file != null)
+{
+  // Save it.
+  await pdfView.Document.ExportAsync(file);
+}
+```
+
+Note that the `PdfView` supports automatically saving changes. See the [related guide][autosave] for details.
+
+## Incremental Saving
+
+By default, PSPDFKit saves to files incrementally. This is a feature of PDF and means that when saving, the initial content of the original document is not altered and all changes are appended to the file. This can result in a significantly faster save when working with a large file, as changes are typically quite small.
+
+However, you should bear in mind that since the changes are always appended, the file will constantly increase in size with every save, regardless of the changes being made. Since this is sometimes undesirable, you can specify that the PDF should be completely rewritten upon saving.
+
+Here are some examples of saving incrementally:
+
+```csharp
+// Save incrementally by default.
+await pdfView.Document.ExportAsync(file);
+
+// Explicitly save incrementally.
+var exportOptions = new DocumentExportOptions{ Incremental = true };
+await pdfView.Document.ExportAsync(file, exportOptions);
+```
+
+Here is how to rewrite the PDF when saving:
+
+```csharp
+// Set `Incremental` to `false` to rewrite the document.
+var exportOptions = new DocumentExportOptions{ Incremental = false };
+await pdfView.Document.ExportAsync(file, exportOptions);
+```
+
+Note that you can also export a PDF with [flattened][] annotations. However, flattening requires a full rewrite of the document, so the `Incremental` property of `DocumentExportOptions` is ignored if `Flatten` is set to `true`.
+
+[here]: https://docs.microsoft.com/en-us/windows/uwp/files/file-access-permissions
+[several guide articles]: https://docs.microsoft.com/en-us/windows/uwp/files/
+[`document`]: /api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html
+[`storagefile`]: https://docs.microsoft.com/en-us/uwp/api/Windows.Storage.StorageFile
+[`datawriter`]: https://docs.microsoft.com/en-us/uwp/api/windows.storage.streams.datawriter
+[flattened]: /guides/windows/current/features/flatten-annotations/
+[autosave]: /guides/windows/current/features/automatically-saving-changes/

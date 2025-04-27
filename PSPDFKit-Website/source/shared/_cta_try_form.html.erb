@@ -1,0 +1,50 @@
+<%
+input_class ||= ''
+btn_class ||= 'btn-brand'
+%>
+
+<form id="try-now-form-cta-<%= page_slug %>"
+      class="card-form"
+      action="<%= LICENSE_API_URL %>trial_request"
+      method="post"
+      data-controller="form-remote"
+      data-form-remote-client-id-name="trial_request[gclid]"
+      data-form-remote-success-url="/try/thanks"
+      data-form-remote-recaptcha-site-key="<%= GOOGLE_RECAPTCHA_SITE_KEY %>"
+      data-form-remote-recaptcha-action="trial_form_cta"
+      data-action="submit->form-remote#submit">
+
+  <!-- reCAPTCHA -->
+  <input type="hidden"
+    data-target="form-remote.recaptchaInput"
+    name="trial_request[recaptcha_response]"
+    value="">
+
+  <!-- Email -->
+  <label for="email" class="sr-only">Email</label>
+  <div class="row">
+    <div class="col-lg-7 mb-4">
+      <input type="email"
+             id="trial_request_email"
+             class="form-control <%= input_class %>"
+             name="trial_request[email]"
+             data-target="form-remote.email"
+             placeholder="name@company.com"
+             required>
+    </div>
+    <div class="col-lg-5">
+      <button type="submit"
+              name="button"
+              class="btn btn-lg btn-block <%= btn_class %>"
+              data-target="form-remote.submit">
+        Download Trial
+      </button>
+    </div>
+    <div class="col-12">
+      <p class="small text-muted mb-2">
+        The data you submit is treated confidentially and will never be disclosed to third parties.<br>
+        We may occasionally send you product news and important announcements.
+      </p>
+    </div>
+  </div>
+</form>

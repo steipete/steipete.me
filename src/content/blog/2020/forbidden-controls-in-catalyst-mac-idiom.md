@@ -13,6 +13,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[div.post-content > img:first-child { display:none; } While working on our PDF Viewer update for Big Sur and switching to the new Catalyst Mac Interface Idiom, I was greeted with a new exception coming directly fro...]
+
+
 <style type="text/css">
 div.post-content > img:first-child { display:none; }
 </style>

@@ -1,0 +1,57 @@
+---
+title: PSPDFKit 6.1 Migration Guide
+section: developers
+
+order: 51
+---
+
+This article provides a set of guidelines for migrating from PSPDFKit 6.0 for Android to PSPDFKit 6.1 for Android.
+
+## Updated Build Versions
+
+With PSPDFKit 6.1, we updated various build properties and versions:
+
+- The `targetSdkVersion` of all examples was updated to `29`.
+- Updated transitive dependency versions:
+  - `androidx.appcompat:appcompat` was updated to version `1.1.0`.
+  - `com.squareup.okhttp3:okhttp` was updated to `4.2.1`.
+
+## Deprecations
+
+Here’s a list of fields and methods that have been deprecated:
+
+* `DocumentSharingIntentHelper#createChooser()` was deprecated. This method takes a pre-fetched list of explicit share targets. While showing an intent chooser using explicit share targets works on all Android versions up to API 28, starting with Android 10 (API 29) the system will truncate the list of explicit share targets, breaking this methods behavior.
+
+  Any use of this method should be migrated to the Android framework's [`Intent#createChooser()`][`intent#createchooser()`] method, which takes an implicit intent for targeting share targets.
+
+  Instead of this:
+
+  ```java
+  final List<Intent> explicitShareIntents = DocumentSharingIntentHelper.getShareIntents(context, shareUri, shareAction);
+  final Intent chooserIntent = DocumentSharingIntentHelper.createChooser(explicitShareIntents, null);
+  context.startActivity(chooserIntent);
+  ```
+
+  Do this:
+
+  ```java
+  final Intent implicitShareIntent = DocumentSharingIntentHelper.getShareIntent(context, shareUri, shareAction);
+  final Intent chooserIntent = Intent.createChooser(implicitShareIntent, null);
+  context.startActivity(chooserIntent);
+  ```
+
+* `DocumentSharingIntentHelper#queryMailToActivities()` was deprecated. Use `DocumentSharingIntentHelper#queryIntentActivities()` with an intent that has the `Intent#ACTION_SENDTO` action and `mailto:` Uri.
+* `DefaultEmbeddedFileSharingController` was deprecated. Use `DefaultDocumentSharingController` instead which provides the same functionality.
+
+## Private API Warnings
+
+PSPDFKit 6.1 added a linter check that warns developers when using PSPDFKit's private APIs, i.e. classes, methods or fields which are parts of the `com.pspdfkit.framework` Java package. Usage of private APIs is unsupported and will break starting with PSPDFKit 6.2 for Android in early 2020.
+
+If you are receiving linter warnings about private API usage after updating to 6.1, or if you are not sure whether your app is using private APIs, please reach out to our [customer support team][] or via mail to support@pspdfkit.com.
+
+For more information on private API usage, see our online guide about [Unsupported Private Symbols][private symbols guide].
+
+[`annotation#setborderdasharray()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#setBorderDashArray(java.util.List%3Cjava.lang.Integer%3E)
+[`intent#createchooser()`]: https://developer.android.com/reference/android/content/Intent.html#createChooser(android.content.Intent,%20java.lang.CharSequence)
+[customer support team]: https://pspdfkit.com/support/request/
+[private symbols guide]: /guides/android/current/announcements/unsupported-internal-symbols

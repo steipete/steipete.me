@@ -1,0 +1,67 @@
+---
+title: How do I Present a PSPDFTabbedViewController in Cordova?
+section: knowledge-base
+---
+
+## Q: How do I Present a `PSPDFTabbedViewController` in Cordova?
+
+A: Our Cordova plugin was designed to present a [`PSPDFViewController`][] modally. If your use case requires you to present a [`PSPDFTabbedViewController`][], you could extend the plugin in your own fork, as seen below.
+
+#### 1. Update `pspdfkit.js`
+
+Declare `presentTabs` in `pspdfkit.js`, like this:
+
+```js
+this.presentTabs = function(path, callback)
+{
+    cordova.exec(function (result) { if (callback) callback(result); }, function (error) { if (callback) callback(error); }, 'PSPDFKitPlugin', 'presentTabs', [path]);
+}
+```
+
+#### 2. Update `PSPDFKitPlugin.m`
+
+Implement the newly declared API in Objective-C, like so:
+
+```objc
+- (void)presentTabs:(CDVInvokedUrlCommand *)command {
+    NSArray *paths = [command argumentAtIndex:0];
+
+    PSPDFTabbedViewController *tabbedViewController = [[PSPDFTabbedViewController alloc] init];
+    NSMutableArray *documents = [NSMutableArray new];
+    for (NSString *path in paths) {
+        PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:[self fileURLWithPath:path]];
+        if (document) {
+            [documents addObject:document];
+        }
+    }
+    tabbedViewController.documents = [documents copy];
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:tabbedViewController];
+
+    if (!_navigationController.presentingViewController) {
+        [self.viewController presentViewController:_navigationController animated:YES completion:^{
+
+            [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                        callbackId:command.callbackId];
+        }];
+    } else {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR]
+                                    callbackId:command.callbackId];
+    }
+}
+```
+
+#### 3. Usage
+
+This is how the newly added API would look in your Cordova Javascript code:
+
+```js
+PSPDFKit.presentTabs(['pdf/PSPDFKit 8 QuickStart Guide.pdf', 'pdf/Form_example.pdf']);
+```
+
+<img alt="Overlayed Save Button" src="/images/guides/ios/knowledge-base/how-do-i-present-a-pspdftabbedviewcontroller-in-cordova/pspdftabbedviewcontroller-in-cordova.png" width="60%">
+
+For more details about please take a look at our [How to Expose native iOS APIs to Cordova blog post][].
+
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[`pspdftabbedviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedViewController.html
+[how to expose native ios apis to cordova blog post]: /blog/2019/how-to-expose-ios-api-to-cordova

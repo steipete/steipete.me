@@ -1,0 +1,50 @@
+---
+title: Add watermark only when printing
+section: knowledge-base
+---
+
+## Q: We want to add a watermark to the document only when printing.
+
+A: At the moment this is only possible when using [`PSPDFKit.PrintMode.DOM`](https://pspdfkit.com/guides/web/current/features/printing/#pspdfkit-printmode-dom). 
+The solution is to execute the drawing commands in `renderPageCallback` only during printing. This can be achieved with a similar snippet:
+
+
+```es
+let printingPage = -1
+let instance = null
+let isPrinting = false
+
+PSPDFKit.load({
+  renderPageCallback: (ctx, pageIndex, pageSize) => {
+    if (!isPrinting) { return }   
+
+    printingPage++  
+    if (printingPage === instance.totalPageCount - 1) {
+      // Finished printing. Reset.
+      printingPage = -1
+      isPrinting = false
+    }
+
+    // render the watermark
+  }
+}).then(_instance => {
+  instance = _instance
+})
+
+function pspdfkitPrint() {
+  isPrinting = true
+  instance.print(PSPDFKit.PrintMode.DOM)
+}
+
+function pspdfkitCancelPrint() {
+  isPrinting = false
+  instance.abortPrinting()
+}
+```
+
+Call `pspdfkitPrint()` to print. 
+
+Note it might be necessary to replace the built-in `print` toolbar button. 
+
+When pressing `cmd+p` or `ctrl+p` PSPDFKit will print using the default behavior and won't invoke the `pspdfkitPrint` function.
+You would need to register a custom event handler in `instance.contentDocument` to override the keyboard shortcut behavior or [disable keyboard shortcuts](https://pspdfkit.com/api/web/PSPDFKit.Options.html#DISABLE_KEYBOARD_SHORTCUTS).

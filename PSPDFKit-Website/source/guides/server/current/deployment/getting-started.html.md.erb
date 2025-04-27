@@ -1,0 +1,115 @@
+---
+title: Getting Started
+section: developers
+order: 1
+---
+
+PSPDFKit Server is the backend for PSPDFKit clients. It is distributed as a [Docker][] container.
+
+We recommend using [Docker Machine][], [Kubernetes][], or native Docker support by a cloud provider like [Amazon Web Services][], [Google Cloud Platform][], or [Microsoft Azure][] for deployment in production.
+
+> **ℹ️ Note:** If you just want to get an example up and running quickly, use the preconfigured Docker setup from our [Example Projects].
+
+The steps below outline how to get a simple setup on a single host up and running via `docker-compose`.
+
+1.  Make sure you have [Docker][install docker] installed and running.
+
+    On macOS we recommend the most recent version of [Docker for
+    Mac][].
+
+    On Windows we recommend the most recent version of [Docker for Windows][].
+
+2.  Pull the `pspdfkit` image from Docker Hub:
+
+    ```shell
+    docker pull pspdfkit/pspdfkit
+    ```
+
+3.  Create the following `docker-compose.yml` file somewhere on your file system:
+
+    ```docker-compose.yml
+    version: '2'
+
+    services:
+      db:
+        image: postgres:9.6
+        environment:
+          POSTGRES_USER: pspdfkit
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: pspdfkit
+          POSTGRES_INITDB_ARGS: --data-checksums
+          PGDATA: /var/lib/postgresql/data/pgdata
+        restart: always
+        volumes:
+          - pgdata:/var/lib/postgresql/data
+
+      pspdfkit:
+        image: "pspdfkit/pspdfkit:latest"
+        environment:
+          PGUSER: pspdfkit
+          PGPASSWORD: password
+          PGDATABASE: pspdfkit
+          PGHOST: db
+          PGPORT: 5432
+
+          # Activation key for your PSPDFKit Server installation.
+          ACTIVATION_KEY: YOUR_ACTIVATION_KEY_GOES_HERE
+
+          # Secret token used for authenticating API requests.
+          API_AUTH_TOKEN: secret
+
+          # Base key used for deriving secret keys for the purposes of authentication.
+          SECRET_KEY_BASE: secret-key-base
+
+          # Public key used for verification of JWTs from web clients. It has to be in the PEM format.
+          JWT_PUBLIC_KEY: |
+            -----BEGIN PUBLIC KEY-----
+            MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALd41vG5rMzG26hhVxE65kzWC+bYQ94t
+            OxsSxIQZMOc1GY8ubuqu2iku5/5isaFfG44e+VAe+YIdVeQY7cUkaaUCAwEAAQ==
+            -----END PUBLIC KEY-----
+          JWT_ALGORITHM: RS256
+
+          # Credentials to access the admin dashboard.
+          DASHBOARD_USERNAME: dashboard
+          DASHBOARD_PASSWORD: secret
+        depends_on:
+        - db
+        restart: always
+        ports:
+          - "5000:5000"
+        volumes:
+        - asset_storage:/srv/asset_storage
+
+    volumes:
+      pgdata:
+      asset_storage:
+    ```
+
+4.  In a terminal tab, navigate to the directory where you’ve placed the `docker-compose.yml` file and execute the following:
+
+    ```shell
+    docker-compose up
+    ```
+
+    Make sure that navigating to http://localhost:5000/dashboard in a web browser shows the [dashboard][pspdfkit guide dashboard], which can be accessed with the username `dashboard` and the password `secret` (you can configure these values using the environment variables in the `docker-compose.yml` file).
+
+    You can quit the running containers with Ctrl-C.
+
+5.  Now follow the guides to integrate **PSPDFKit for Web** into your app’s [frontend][pspdfkit guide web getting started] and [backend][pspdfkit guide api documents].
+
+Take a look at our [Troubleshooting guide][] for solutions to common issues.
+
+[docker]: https://www.docker.com/
+[docker machine]: https://docs.docker.com/machine/overview/
+[kubernetes]: https://kubernetes.io
+[amazon web services]: https://aws.amazon.com
+[google cloud platform]: https://cloud.google.com
+[microsoft azure]: https://azure.microsoft.com/
+[example projects]: ../../pspdfkit-server/example-projects/
+[install docker]: https://www.docker.com/community-edition#/download
+[docker for mac]: https://docs.docker.com/docker-for-mac/
+[docker for windows]: https://docs.docker.com/docker-for-windows/
+[pspdfkit guide dashboard]: ../../pspdfkit-server/dashboard/
+[pspdfkit guide web getting started]: https://pspdfkit.com/guides/web/current/server-backed/integration/
+[pspdfkit guide api documents]: ../../api/documents/
+[troubleshooting guide]: ../../pspdfkit-server/troubleshooting/

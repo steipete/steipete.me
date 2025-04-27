@@ -1,0 +1,63 @@
+---
+title: Zoom to a specific annotation when the PDF loads
+section: knowledge-base
+---
+
+## Q: When PDF loads in PSPDF, we want to zoom in a particular annotation.
+
+A: You can zoom to an annotation by setting the zoom to a value that would make the annotation fit in the viewport, and then using the annotation's bounding box as target for instance.jumpToRect().
+
+You can also add some padding around the annotation bounding box if needed:
+
+```javascript
+PSPDFKit.load(configuration).then(instance => {
+  function zoomToAnnotation(annotation, padding) {
+    const pageIndex = annotation.pageIndex;
+    const rect = annotation.boundingBox.grow(padding);
+    const viewportPxRect = instance.contentDocument
+      .querySelector(".PSPDFKit-Viewport")
+      .getBoundingClientRect();
+    const viewportSize = {
+      width: viewportPxRect.width / instance.currentZoomLevel,
+      height: viewportPxRect.height / instance.currentZoomLevel
+    };
+    const rectRatio = rect.width / rect.height;
+    const viewportSizeRatio = viewportSize.width / viewportSize.height;
+    let zoomMultiplier = 1;
+    if (rectRatio > viewportSizeRatio) {
+      zoomMultiplier = viewportSize.width / rect.width;
+    } else if (rectRatio < viewportSizeRatio) {
+      zoomMultiplier = viewportSize.height / rect.height;
+    }
+    instance.setViewState(viewState =>
+      viewState
+        .set("zoom", instance.currentZoomLevel * zoomMultiplier)
+        .set("currentPageIndex", pageIndex)
+    );
+    const scrollViewport = instance.contentDocument.querySelector(
+      ".PSPDFKit-Scroll"
+    );
+    const scrollContentPxRect = scrollViewport.firstChild.getBoundingClientRect();
+    const clientRect = instance.transformContentPageToClientSpace(
+      rect,
+      pageIndex
+    );
+    scrollViewport.scrollTo({
+      top: -scrollContentPxRect.top + clientRect.top,
+      left: -scrollContentPxRect.left + clientRect.left,
+      behavior: "auto"
+    });
+  }
+  // Set padding around annotation
+  const padding = 8
+  // Get annotations for page 0
+  instance.getAnnotations(0).then(annotations => {
+      // This will target the first annotation found in the page, with padding around
+      zoomToAnnotation(annotations.first(), padding);
+      // This will select the annotation
+      instance.setSelectedAnnotation(annotations.first().id);
+  });
+});
+```
+
+This has been tested with PSPDFKit for Web 2019.3.

@@ -1,0 +1,119 @@
+---
+title: Form Creation
+section: developers
+---
+
+In PSPDFKit 4.4, we added support for programmatic form field creation in a document. This can be useful, for instance, when a PDF document needs to be digitally signed but doesn’t contain a signature field.
+
+## Adding a Signature Form Field
+
+A form field is a model representation of a visual form element in a document. To be able to create a form field, we have exposed a handy set of configuration builders that make the entire process smooth. For more information on the difference between a form field and a form element, please see [Introduction to Forms][].
+
+The minimum amount of information required for the creation of a signature form configuration is the page index and the annotation bounding box that will contain the signature form element. Once built, it can be added to a document using [`FormProvider#addFormElementToPage`][]:
+
+[==
+
+```kotlin
+val page = 0
+val rectFSignatureFormConfiguration = RectF(
+    30f, // left
+    190f, // top
+    200f, // right
+    160f // bottom
+)
+val signatureFormConfiguration = SignatureFormConfiguration.Builder(page, rectFSignatureFormConfiguration)
+    .build()
+val signatureFormField = document.formProvider.addFormElementToPage("signaturefield-1", signatureFormConfiguration)
+```
+
+```java
+int page = 0;
+RectF rectFSignatureFormConfiguration = new RectF(
+    30, // left
+    190, // top
+    200, // right
+    160 // bottom
+);
+SignatureFormConfiguration signatureFormConfiguration = new SignatureFormConfiguration.Builder(page, rectFSignatureFormConfiguration)
+    .build();
+SignatureFormField signatureFormField = getDocument().getFormProvider().addFormElementToPage("signaturefield-1", signatureFormConfiguration);
+```
+
+==]
+
+You can add any kind of form field to a document, apart from signature form fields. Check out the Android documentation for more info about the [Forms API][].
+
+## Adding Radio Buttons and Checkboxes
+
+[`CheckBoxFormField`][] and [`RadioButtonFormField`][] can be made up of more than one form element. To add these form fields to a document, you can use [`FormProvider#addFormElementsToPage`][], which takes all the elements and attaches them to the newly created field:
+
+[==
+
+```kotlin
+val page = 0
+
+val rectFRadioButtonFormConfiguration1 = RectF(
+    30f, // left
+    500f, // top
+    60f, // right
+    470f // bottom
+)
+val radioButtonFormConfiguration1 = RadioButtonFormConfiguration.Builder(page, rectFRadioButtonFormConfiguration1)
+    .select()
+    .build()
+
+val rectFRadioButtonFormConfiguration2 = RectF(
+    30f, // left
+    450f, // top
+    60f, // right
+    420f // bottom
+)
+
+val radioButtonFormConfiguration2 = RadioButtonFormConfiguration.Builder(page, rectFRadioButtonFormConfiguration2)
+    .deselect()
+    .build()
+
+val radioButtonFormConfigurationList = Arrays.asList(radioButtonFormConfiguration1, radioButtonFormConfiguration2)
+val radioButtonFormField = document.formProvider.addFormElementsToPage("radiobuttonfield-1", radioButtonFormConfigurationList)
+```
+
+```java
+int page = 0;
+
+RectF rectFRadioButtonFormConfiguration1 = new RectF(
+    30, // left
+    500, // top
+    60, // right
+    470 // bottom
+);
+RadioButtonFormConfiguration radioButtonFormConfiguration1 = new RadioButtonFormConfiguration.Builder(page, rectFRadioButtonFormConfiguration1)
+    .select()
+    .build();
+
+RectF rectFRadioButtonFormConfiguration2 = new RectF(
+    30, // left
+    450, // top
+    60, // right
+    420 // bottom
+);
+
+RadioButtonFormConfiguration radioButtonFormConfiguration2 = new RadioButtonFormConfiguration.Builder(page, rectFRadioButtonFormConfiguration2)
+    .deselect()
+    .build();
+
+List<RadioButtonFormConfiguration> radioButtonFormConfigurationList = Arrays.asList(radioButtonFormConfiguration1, radioButtonFormConfiguration2);
+RadioButtonFormField radioButtonFormField = getDocument().getFormProvider().addFormElementsToPage("radiobuttonfield-1", radioButtonFormConfigurationList);
+```
+
+==]
+
+**⚠️ Warning:** [`FormProvider#addFormElementsToPage`][] only supports homogeneous lists. The mixing of configuration classes of different types is not supported.
+
+For more examples, check out `FormCreationExample` in our Catalog app.
+
+[`formprovider#addformelementtopage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/FormProvider.html#addFormElementToPage(java.lang.String,%20T)
+[`formprovider#addformelementstopage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/FormProvider.html#addFormElementsToPage(java.lang.String,%20java.util.List<T>)
+[`checkboxformfield`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/CheckBoxFormField.html
+[`radiobuttonformfield`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/RadioButtonFormField.html
+[forms api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/package-summary.html
+[introduction to forms]: ../../forms/introduction-to-forms

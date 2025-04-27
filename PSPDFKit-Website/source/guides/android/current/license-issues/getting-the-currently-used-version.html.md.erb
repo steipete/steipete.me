@@ -1,0 +1,22 @@
+---
+title: Getting the Currently Used Version
+section: developers
+---
+
+If you are unsure about the version of PSPDFKit you are using, there are ways to find out. In code, the `PSPDFKit` class will show the current version number via its static `VERSION` field. If your app depends on it, you can access it at runtime:
+
+[==
+
+```kotlin
+val versionString = PSPDFKit.VERSION
+```
+
+```java
+final String versionString = PSPDFKit.VERSION;
+```
+
+==]
+
+You can also inspect the contents of the `VERSION` field inside Android Studio to get the version number at development time.
+
+<img align="middle" src="/images/guides/android/license-issues/how-do-i-see-the-currently-used-version/version-field.png" srcset="/images/guides/android/license-issues/how-do-i-see-the-currently-used-version/version-field.png 2x">

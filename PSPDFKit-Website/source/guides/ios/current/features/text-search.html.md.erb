@@ -1,0 +1,70 @@
+---
+title: Text Search
+section: developers
+
+---
+
+PSPDFKit offers many different ways to search a document, including a highly customizable UI component.
+
+### Searching via [`PSPDFViewController`][]
+
+In most cases, you’ll just want to trigger a search inside the [`PSPDFViewController`][]. This can be done by calling [`searchForString:options:sender:animated:`][]. We’ll automatically anchor the popover to the search button or show a modal dialog for compact size classes like the iPhone. Options can take one parameter, [`PSPDFViewControllerSearchHeadlessKey`][], which invokes a search but does not trigger any UI. This is great for unobtrusive highlighting:
+
+[==
+
+```swift
+let searchString = "Example Search Text"
+pdfController.search(for: searchString, options: [PSPDFViewControllerSearchHeadlessKey: true], sender: nil, animated: true)
+```
+
+```objc
+NSString *searchString = @"Example Search Text";
+[pdfController searchForString:searchString options:@{PSPDFViewControllerSearchHeadlessKey: @YES} sender:nil animated:YES];
+```
+
+==]
+
+### Searching Manually
+
+To search text inside a document, create an instance of [`PSPDFTextSearch`][], passing in the loaded [`PSPDFDocument`][] via its initializer. Searching can be triggered via calling [`searchForString:`][], which will start a search on a background queue. Implement [`PSPDFTextSearchDelegate`][] on the receiving object and set the text search object’s `delegate` to your object to be notified of search result updates.
+
+Important: You need to retain the text search object while search is running. Otherwise, any running search will automatically be canceled and your delegate will not get called.
+
+### Specify Search Options
+
+Before triggering a search, you can configure various search options:
+
+- [`compareOptions`][] (see `NSStringCompareOptions`)
+- [`previewRange`][]
+- [`searchableAnnotationTypes`][]
+- [`maximumNumberOfSearchResults`][]
+
+Changing these properties once a search operation is running is not supported and might result in unexpected behavior.
+
+### Highlighting Search Results
+
+Search results, represented by [`PSPDFSearchResult`][], offer both the content (selection) as a [`PSPDFTextBlock`][] and a [`previewText`][]. You can use these objects to represent your own search result list or to manually highlight parts of a page.
+
+The [`PSPDFSearchHighlightViewManager`][] manages the task of showing and hiding search results. It can be accessed via the [`searchHighlightViewManager`][] property on [`PSPDFViewController`][], and it offers a way to both add ([`addHighlightSearchResults:animated:`][]) and clear ([`clearHighlightedSearchResultsAnimated:`][]) search results.
+
+The [`PSPDFSearchHighlightView`][] will be added on top of a visible [`PSPDFPageView`][] for each search result. It can be customized via `UIAppearance` — see [`selectionBackgroundColor`][] and [`cornerRadiusProportion`][].
+
+[`pspdfpageview`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageView.html
+[`pspdfsearchhighlightviewmanager`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightViewManager.html
+[`pspdfsearchhighlightview`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightView.html
+[`searchforstring:options:sender:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(im)searchForString:options:sender:animated:
+[`pspdfviewcontrollersearchheadlesskey`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFViewControllerSearchHeadlessKey
+[`searchforstring:`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(im)searchForString:
+[`compareoptions`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(py)compareOptions
+[`previewrange`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(py)previewRange
+[`searchableannotationtypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(py)searchableAnnotationTypes
+[`maximumnumberofsearchresults`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(py)maximumNumberOfSearchResults
+[`previewtext`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchResult.html#/c:objc(cs)PSPDFSearchResult(py)previewText
+[`addhighlightsearchresults:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightViewManager.html#/c:objc(cs)PSPDFSearchHighlightViewManager(im)addHighlightSearchResults:animated:
+[`clearhighlightedsearchresultsanimated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightViewManager.html#/c:objc(cs)PSPDFSearchHighlightViewManager(im)clearHighlightedSearchResultsAnimated:
+[`selectionbackgroundcolor`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightView.html#/c:objc(cs)PSPDFSearchHighlightView(py)selectionBackgroundColor
+[`cornerradiusproportion`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightView.html#/c:objc(cs)PSPDFSearchHighlightView(py)cornerRadiusProportion
+[`pspdfsearchresult`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchResult.html
+[`pspdfsearchhighlightviewmanager`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightViewManager.html
+[`searchhighlightviewmanager`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)searchHighlightViewManager
+[`pspdfsearchhighlightview`]: https://pspdfkit.com/api/ios/Classes/PSPDFSearchHighlightView.html

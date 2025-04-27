@@ -1,0 +1,330 @@
+---
+title: Customizing Menus
+section: developers
+---
+
+You can modify PSPDFKit’s menus by adding new actions or removing existing actions. For code examples, see `CustomActionsExample` (Java) or `CustomActionsKotlinExample` (Kotlin) from our example Catalog.
+
+## Modifying the Action Bar
+
+If you are using the [`PdfActivity`][] or a custom subclass of this activity, PSPDFKit will automatically show toolbar actions based on the loaded configuration. PSPDFKit uses the default support [`Toolbar`][] widget together with a dynamically populated [`Menu`][].
+
+<figure style="text-align:center;">
+    <img src="/images/guides/android/customizing-the-interface/customizing-menus/actionbar-icons.png">
+    <figcaption><strong>Default actions</strong>: Annotation editing, outline, searching, sharing, thumbnails, and the overflow menu.</figcaption>
+</figure>
+
+### Adding Custom Actions
+
+To add custom actions to existing actions, you need to [use a custom activity class][pspdfkit guide extending pdfactivity] and override `#onCreateOptionsMenu` or `#onPrepareOptionsMenu`, depending on your needs. The calls to these methods are made the same way they are by default on the Android system. `#onCreateOptionsMenu` is called the first time the menu is created, and `#onPrepareOptionsMenu` is called whenever the menu is changed or invalidated. To alter the list of items that will be displayed in the first place, you need to override `#onGenerateMenuItemIds` and return a final list of menu item IDs that will be displayed, like so:
+
+[==
+
+```kotlin
+class CustomActivity : PdfActivity() {
+    /**
+     * Override this method to get the list of menu item IDs, as they'll be ordered by default.
+     * You can add your own menu item IDs that you can later edit in `[.onCreateOptionsMenu]`
+     * or `[.onPrepareOptionsMenu]`.
+     */
+    override fun onGenerateMenuItemIds(menuItems: MutableList<Int>): List<Int> {
+        // For example, let's say we want to add custom menu items after the outline button.
+        // First, we get an index of outline buttons (all default button IDs can be retrieved
+        // via `MENU_OPTION_*` variables defined in the `PdfActivity`).
+        val indexOfOutlineButton = menuItems.indexOf(PdfActivity.MENU_OPTION_OUTLINE)
+
+        // Add a custom item after the outline button.
+        menuItems.addAll(indexOfOutlineButton + 1, R.id.custom_action1)
+
+        // Return the new menu items order.
+        return menuItems
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // This will populate the menu with items ordered as specified in `onGenerateMenuItemIds()`.
+        super.onCreateOptionsMenu(menu)
+
+        // Edit the custom button.
+        val customMenuItem = menu.findItem(R.id.custom_action1)
+        customMenuItem.title = "Menu Item 1"
+        customMenuItem.setIcon(R.drawable.ic_arrow_left)
+
+        // Let's say we want the icon to be tinted the same color as the default ones. We can read the color
+        // from the theme, or we can specify the same color we have in the theme. Reading from the theme is a bit
+        // more complex, but this a better way to do it, so here's how:
+        val a = theme.obtainStyledAttributes(
+                null,
+                R.styleable.pspdf__ActionBarIcons,
+                R.attr.pspdf__actionBarIconsStyle,
+                R.style.PSPDFKit_ActionBarIcons
+        )
+        val mainToolbarIconsColor = a.getColor(R.styleable.pspdf__ActionBarIcons_pspdf__iconsColor, ContextCompat.getColor(this, R.color.white))
+        a.recycle()
+
+        // Tinting custom menu drawable.
+        val customIcon = customMenuItem.icon
+        DrawableCompat.setTint(customIcon, mainToolbarIconsColor)
+        customMenuItem.icon = customIcon
+
+        // All our menu items are marked as `SHOW_AS_ALWAYS`. If you want to, for example,
+        // just show the first four items and send the others to the overflow, you can simply do:
+        for (i in 0 until menu.size()) {
+            menu.getItem(i).setShowAsAction(if (i < 4) MenuItem.SHOW_AS_ACTION_ALWAYS else MenuItem.SHOW_AS_ACTION_NEVER)
+        }
+
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        // Here, you can edit your items when the menu is being invalidated.
+        // To invalidate the menu, call `supportInvalidateOptionsMenu();`
+        return super.onPrepareOptionsMenu(menu)
+    }
+}
+```
+
+```java
+public class CustomActivity extends PdfActivity {
+
+    /**
+     * Override this method to get the list of menu item IDs, as they'll be ordered by default.
+     * You can add your own menu item IDs that you can later edit in `{@link #onCreateOptionsMenu(Menu)}`
+     * or `{@link #onPrepareOptionsMenu(Menu)}`.
+     */
+    @NonNull
+    @Override
+    public List<Integer> onGenerateMenuItemIds(@NonNull List<Integer> menuItems) {
+        // For example let's say we want to add custom menu items after the outline button.
+        // First, we get an index of outline buttons (all default button IDs can be retrieved
+        // via `MENU_OPTION_*` variables defined in the `PdfActivity`.
+        int indexOfOutlineButton = menuItems.indexOf(MENU_OPTION_OUTLINE);
+
+        // Add a custom item after the outline button.
+        menuItems.add(indexOfOutlineButton + 1, R.id.custom_action1);
+
+        // Return the new menu items order.
+        return menuItems;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // This will populate the menu with items ordered as specified in `onGenerateMenuItemIds()`.
+        super.onCreateOptionsMenu(menu);
+
+        // Edit the custom button.
+        MenuItem customMenuItem = menu.findItem(R.id.custom_action1);
+        customMenuItem.setTitle("Menu Item 1");
+        customMenuItem.setIcon(R.drawable.ic_arrow_left);
+
+        // Let's say we want the icon to be tinted the same color as the default ones. We can read the color
+        // from the theme, or we can specify the same color we have in the theme. Reading from the theme is a bit
+        // more complex, but this a better way to do it, so here's how:
+        final TypedArray a = getTheme().obtainStyledAttributes(
+                null,
+                R.styleable.pspdf__ActionBarIcons,
+                R.attr.pspdf__actionBarIconsStyle,
+                R.style.PSPDFKit_ActionBarIcons
+        );
+        int mainToolbarIconsColor = a.getColor(R.styleable.pspdf__ActionBarIcons_pspdf__iconsColor, ContextCompat.getColor(this, R.color.white));
+        a.recycle();
+
+        // Tinting custom menu drawable.
+        Drawable customIcon = customMenuItem.getIcon();
+        DrawableCompat.setTint(customIcon, mainToolbarIconsColor);
+        customMenuItem.setIcon(customIcon);
+
+        // All our menu items are marked as `SHOW_AS_ALWAYS`. If you want to, for example,
+        // just show the first four items and send the others to the overflow, you can simply do:
+        for (int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setShowAsAction(i < 4 ? MenuItem.SHOW_AS_ACTION_ALWAYS : MenuItem.SHOW_AS_ACTION_NEVER);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Here, you can edit your items when the menu is being invalidated.
+        // To invalidate the menu, call `supportInvalidateOptionsMenu();`
+        return super.onPrepareOptionsMenu(menu);
+    }
+}
+```
+
+==]
+
+### Specifying the Position for Custom Actions
+
+To add a custom action at a specific position, your activity has to override the `#onGenerateMenuItemIds` method. From there, you can control at which position the custom item should be inserted. Below is an example of how to insert a custom menu item directly after the outline button:
+
+[==
+
+```kotlin
+class CustomActivity : PdfActivity() {
+    override fun onGenerateMenuItemIds(menuItems: MutableList<Int>): List<Int> {
+        // First, we get an index of the outline button.
+        val indexOfOutlineButton = menuItems.indexOf(PdfActivity.MENU_OPTION_OUTLINE)
+
+        // Add items after the outline button.
+        menuItems.add(
+            indexOfOutlineButton + 1,
+            R.id.custom_action // Your custom action ID.
+        )
+
+        // Return the new order for menu items.
+        return menuItems
+    }
+}
+```
+
+```java
+public class CustomActivity extends PdfActivity {
+    @Override
+    public List<Integer> onGenerateMenuItemIds(@NonNull List<Integer> menuItems) {
+        // First, we get an index of the outline button.
+        int indexOfOutlineButton = menuItems.indexOf(MENU_OPTION_OUTLINE);
+
+        // Add items after the outline button.
+        menuItems.add(
+            indexOfOutlineButton + 1,
+            R.id.custom_action // Your custom action ID.
+        );
+
+        // Return the new order for menu items.
+        return menuItems;
+    }
+}
+```
+
+==]
+
+### Default Menu Option IDs
+
+Here are the IDs for all the menu options from the main action bar. You can reference them using `PdfActivity`:
+
+| ID                             | Default Action                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------ |
+| `MENU_OPTION_EDIT_ANNOTATIONS` | Enters annotation editing mode.                                                            |
+| `MENU_OPTION_OUTLINE`          | Shows `PdfOutlineView` with bookmarks, document info, an outline, and the annotation list. |
+| `MENU_OPTION_SEARCH`           | Enters the search document contents mode.                                                  |
+| `MENU_OPTION_SETTINGS`         | Shows the document settings menu.                                                          |
+| `MENU_OPTION_SHARE`            | Shows the share dialog.                                                                    |
+| `MENU_OPTION_THUMBNAIL_GRID`   | Enters document editor mode.                                                               |
+
+### Removing Default Actions
+
+To remove default actions (search, share, document settings, etc.), you need to override the `#onGenerateMenuItemIds` method and remove the corresponding IDs from the list:
+
+[==
+
+```kotlin
+class CustomActivity : PdfActivity() {
+    override fun onGenerateMenuItemIds(menuItems: MutableList<Int>): List<Int> {
+        // Take the default menu item IDs and remove the outlined items.
+        menuItems.remove(PdfActivity.MENU_OPTION_OUTLINE)
+
+        // Return the new order for the menu items.
+        return menuItems
+    }
+}
+```
+
+```java
+public class CustomActivity extends PdfActivity {
+    @Override
+    public List<Integer> onGenerateMenuItemIds(@NonNull List<Integer> menuItems) {
+        // Take the default menu item IDs and remove the outlined items.
+        menuItems.remove(PdfActivity.MENU_OPTION_OUTLINE);
+
+        // Return the new order for the menu items.
+        return menuItems;
+    }
+}
+```
+
+==]
+
+Keep in mind that manipulating menu items will not affect certain initialization steps performed for the actions they represent, and it will still be possible to trigger those actions programmatically. For example, removing the search action as described above will still initialize `SearchView` under the hood, and it can still be invoked programmatically.
+
+If you want to not only remove a certain action from the menu but also completely disable the functionality it represents, use one of the following `PdfActivityConfiguration` options:
+
+| Configuration Option                            | Result                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------ |
+| `disableAnnotationEditing()`                    | Disables annotation editing and removes all related UI elements.   |
+| `disableOutline()`                              | Disables the outline and removes all related UI elements.          |
+| `disableSearch()`                               | Disables search functionality and removes all related UI elements. |
+| `hideSettingsMenu()`                            | Removes the settings menu.                                         |
+| `setEnabledShareFeatures(ShareFeatures.none())` | Disables share functionality and removes all related UI elements.  |
+| `hideThumbnailGrid()`                           | Disables the thumbnail grid and removes all related UI elements.   |
+
+#### Customizing the Document Settings Menu
+
+You can control which items will be shown in a document settings menu (see the default version below).
+
+<img src="/images/guides/android/customizing-the-interface/customizing-menus/document-settings-default.png">
+
+To specify which items should be shown in this menu, use [`PdfActivityConfiguration.Builder#setSettingsMenuItems`][]. For example, the following code will result in the settings menu showing only the page transition, page layout, and document theme:
+
+[==
+
+```kotlin
+configuration.setSettingsMenuItems(EnumSet.of(
+    SettingsMenuItemType.THEME,
+    SettingsMenuItemType.PAGE_LAYOUT,
+    SettingsMenuItemType.PAGE_TRANSITION
+    )
+)
+```
+
+```java
+configuration.setSettingsMenuItems(EnumSet.of(
+    SettingsMenuItemType.THEME,
+    SettingsMenuItemType.PAGE_LAYOUT,
+    SettingsMenuItemType.PAGE_TRANSITION
+    )
+)
+```
+
+==]
+
+The result will look like the following.
+
+<img src="/images/guides/android/customizing-the-interface/customizing-menus/document-settings-custom.png">
+
+To exclude the settings menu completely, you can use [`PdfActivityConfiguration.Builder#hideSettingsMenu`][]:
+
+[==
+
+```kotlin
+configuration.hideSettingsMenu()
+```
+
+```java
+configuration.hideSettingsMenu()
+```
+
+==]
+
+#### Adding an Action to the Share Menu
+
+By overriding the `#onPrepareOptionsMenu` method, you can also add actions to submenus — for example, to the share menu. To do so, first fetch the menu item via its ID, `PdfActivity.MENU_OPTION_SHARE`, and then add your action to its submenu:
+
+[==
+
+```kotlin
+val shareMenu = menu.findItem(PdfActivity.MENU_OPTION_SHARE).subMenu
+shareMenu.add(0, R.id.my_custom_action, 0, "My custom share action")
+```
+
+```java
+final SubMenu shareMenu = menu.findItem(PdfActivity.MENU_OPTION_SHARE).getSubMenu();
+shareMenu.add(0, R.id.my_custom_action, 0, "My custom share action");
+```
+
+==]
+
+[`toolbar`]: https://developer.android.com/reference/android/support/v7/widget/Toolbar.html
+[`menu`]: https://developer.android.com/reference/android/view/Menu.html
+[`pdfactivityconfiguration.builder#setsettingsmenuitems`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#setSettingsMenuItems(java.util.EnumSet%3Ccom.pspdfkit.configuration.settings.SettingsMenuItemType%3E)
+[`pdfactivityconfiguration.builder#hidesettingsmenu`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#hideSettingsMenu()
+[pspdfkit guide extending pdfactivity]: ../../customizing-the-interface/extending-pdfactivity

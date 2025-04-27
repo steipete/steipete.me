@@ -1,0 +1,25 @@
+---
+title: Product Activation
+section: developers
+
+---
+
+PSPDFKit is a commercial product, and each installation needs to be activated according to your license.
+
+1.  This activation happens via the `ACTIVATION_KEY`, which you configure as part of PSPDFKit Server’s container environment — for example, in the `docker-compose.yml` file.
+
+2.  The first time this container is started, it will authenticate the key against the PSPDFKit Customer Portal and store license-related data in the configured database.
+
+3.  Each installation is identified by data stored in the configured database; the PSPDFKit Server containers are meant to be treated as ephemeral.
+
+4.  Production activation keys can only be used once, while trial and development keys have no such limitation.
+
+---
+
+If you see the following error message in the server logs, you need to set a valid `ACTIVATION_KEY`:
+
+```
+No ACTIVATION_KEY or LICENSE_KEY set. You need to set one of them in your docker-compose.yml. https://pspdfkit.com/guides/server/current/deployment/product-activation
+```
+
+To run a trial version of PSPDFKit for Web, simply [request a trial license][pspdfkit trial] and follow the instructions in the email on setting the `ACTIVATION_KEY`.

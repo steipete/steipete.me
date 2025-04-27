@@ -1,0 +1,42 @@
+---
+title: Customizing the Annotation Table View Controller
+section: developers
+---
+
+PSPDFKit allows you to customize the annotation table view controller. Here are the two approaches to customizing settings in the [`PSPDFAnnotationTableViewController`][]:
+
+1. Subclass the view controller, and then register your subclass, [`overrideClass:withClass:`][], in the [`PSPDFConfigurationBuilder`][]. Configure any properties in the `init` method of the subclass.
+
+2) Use the `shouldShowController:` delegate.
+
+This is a bit tedious, since the annotation controller is packed inside a container view controller unless all other view controller options are disabled in the outline bar button:
+
+```objc
+static id PSCControllerForClass(id theController, Class klass) {
+    if ([theController isKindOfClass:klass]) {
+        return theController;
+    }else if ([theController isKindOfClass:UINavigationController.class]) {
+        return PSCControllerForClass(((UINavigationController *)theController).topViewController, klass);
+    }else if ([theController isKindOfClass:PSPDFContainerViewController.class]) {
+        for (UIViewController *contained in ((PSPDFContainerViewController *)theController).viewControllers) {
+            if (PSCControllerForClass(contained, klass)) return PSCControllerForClass(contained, klass);
+        }
+    }
+    return nil;
+}
+
+- (BOOL)pdfViewController:(PSPDFViewController *)pdfController shouldShowController:(UIViewController *)controller options:(nullable NSDictionary<NSString *, id> *)options animated:(BOOL)animated {
+    PSCLog(@"shouldShowViewController: %@ animated: %d.", controller, animated);
+
+    PSPDFAnnotationTableViewController *annotCtrl = PSCControllerForClass(controller, PSPDFAnnotationTableViewController.class);
+    annotCtrl.showDeleteAllOption = NO;
+
+    return YES;
+}
+```
+
+Please take a look at `PSCKioskPDFViewController.m` in PSPDFCatalog for more details.
+
+[`pspdfannotationtableviewcontroller`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationTableViewController.html
+[`overrideclass:withclass:`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfigurationBuilder.html#/c:objc(cs)PSPDFConfigurationBuilder(im)overrideClass:withClass:
+[`pspdfconfigurationbuilder`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfigurationBuilder.html

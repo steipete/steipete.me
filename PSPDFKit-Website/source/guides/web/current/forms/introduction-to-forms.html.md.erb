@@ -1,0 +1,89 @@
+---
+title: Introduction to Forms
+section: developers
+
+order: 1
+---
+
+PSPDFKit supports most form types defined by the PDF specification. We have to differentiate between field objects and annotation objects.
+
+| Type               | Field Object               | Annotation Object      |
+| ------------------ | -------------------------- | ---------------------- |
+| Check Boxes        | [`CheckBoxFormField`][]    | [`WidgetAnnotation`][] |
+| Radio Buttons      | [`RadioButtonFormField`][] | [`WidgetAnnotation`][] |
+| Push Buttons       | [`ButtonFormField`][]      | [`WidgetAnnotation`][] |
+| List Boxes         | [`ListBoxFormField`][]     | [`WidgetAnnotation`][] |
+| Combo Boxes        | [`ComboBoxFormField`][]    | [`WidgetAnnotation`][] |
+| Text               | [`TextFormField`][]        | [`WidgetAnnotation`][] |
+| Digital Signatures | Coming in a future release |                        |
+
+Field objects have no visual representation of their own and are represented by [`FormField`][], while annotation objects are visual representations of a single control inside a form field and are represented by [`WidgetAnnotation`][].
+
+In order to render a [`WidgetAnnotation`][], the associated [`FormField`][] will be accessed via the [`WidgetAnnotation#formFieldName`][] property. Based on the type of this [`FormField`][], different form controls are rendered.
+
+We currently render generic elements for every form field type. Rendering the custom appearance stream for form fields is planned for a future release.
+
+We also allow creating a [`FormField`][] and a [`WidgetAnnotation`][] directly from a loaded instance, and this is described in the [Form Creation][] guide. You can also modify the values of these form fields using the UI or a [programmable form-filling API][].
+
+## Retrieving Form Field and Annotation Objects
+
+Retrieving all form field objects is easily done by using the [`Instance#getFormFields`][] API. This API is asynchronous and will return a [promise][] that resolves to an [immutable list][] of [`FormField`][] elements and contains their current values. Every [`FormField`][] has a unique [`name`][`formfield#name`] property. In the PDF spec, this is often referred to as the _fully qualified name_. This name is similar to an input name in an HTML form and is used to associate the filled-out value with the form field:
+
+[==
+
+```es
+const formFields = await instance.getFormFields();
+console.log(formFields.size);
+```
+
+```js
+instance.getFormFields().then(function(formFields) {
+  console.log(formFields.size);
+});
+```
+
+==]
+
+[`WidgetAnnotations`][`widgetannotation`] behave like regular [annotations][] and can be loaded via the regular [annotations API][].
+
+## Form Field Values
+
+To make it as easy as possible to get the current form field values of a PDF, we added another API. [`Instance#getFormFieldValues`][] returns a simple JavaScript object, where the keys refer to the [`FormField#name`][] of the form field and the value is either `null`, `string`, or `Array<string>`, depending upon the type of the [`FormField`][]:
+
+[==
+
+```es
+const formFieldValues = instance.getFormFieldValues();
+console.log(formFieldValues); // => { textField: 'Text Value', checkBoxField: ['A', 'B'], buttonField: null }
+```
+
+```js
+var formFieldValues = instance.getFormFieldValues();
+console.log(formFieldValues); // => { textField: 'Text Value', checkBoxField: ['A', 'B'], buttonField: null }
+```
+
+==]
+
+## JavaScript Support
+
+In standalone mode, PSPDFKit for Web supports executing JavaScript from within a document, allowing for custom behaviors in response to user interactions with form fields. The most common JavaScript API methods and properties useful for working with forms are supported, however, JavaScript is a relatively new feature that we are constantly working on improving, so please be aware that you may receive unexpected results. See the dedicated [JavaScript Support][] section for more information.
+
+[`widgetannotation`]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.WidgetAnnotation.html
+[`widgetannotation#formfieldname`]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.WidgetAnnotation.html#formFieldName
+[`checkboxformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.CheckBoxFormField.html
+[`radiobuttonformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.RadioButtonFormField.html
+[`buttonformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.ButtonFormField.html
+[`listboxformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.ListBoxFormField.html
+[`comboboxformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.ComboBoxFormField.html
+[`textformfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.TextFormField.html
+[`formfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.FormField.html
+[`formfield#name`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.FormField.html#name
+[promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[immutable list]: https://pspdfkit.com/api/web/PSPDFKit.Immutable.List.html
+[`instance#getformfields`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#getFormFields
+[annotations]: ../../annotations/introduction-to-annotations/
+[annotations api]: ../../annotations/introduction-to-annotations/#working-with-annotations-in-code
+[programmable form-filling api]: ../../forms/form-filling/
+[`instance#getformfieldvalues`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#getFormFieldValues
+[form creation]: ../../forms/form-creation
+[javascript support]: ../../features/javascript

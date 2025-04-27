@@ -1,0 +1,229 @@
+.carousel-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-item {
+  display: flex;
+  width: auto;
+  margin-right: 0;
+}
+
+.carousel-slide {
+  .carousel-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+
+    // Hide scrollbar
+    scrollbar-width: none; // Standard
+    -ms-overflow-style: none; // Edge
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Safari
+    }
+  }
+
+  .carousel-item {
+    flex-shrink: 0;
+    max-width: 100%;
+  }
+
+  // Modern scroll snap points (Chrome, Safari)
+  @supports (scroll-snap-align: start) {
+    .carousel-items {
+      scroll-snap-type: x mandatory;
+    }
+
+    .carousel-item {
+      scroll-snap-align: center;
+    }
+  }
+
+  // Old scroll snap points spec (Firefox)
+  @supports not (scroll-snap-align: start) {
+    .carousel-items {
+      scroll-snap-type: mandatory;
+      scroll-snap-destination: 0 50%;
+      scroll-snap-points-x: repeat(100%);
+    }
+
+    .carousel-slide-item {
+      scroll-snap-coordinate: 0 0;
+    }
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    @include sh-1;
+    background: $white;
+    border: 0;
+    padding: 0;
+    color: $brand;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 2;
+
+    .fa {
+      font-size: 14px;
+      line-height: 0;
+    }
+
+    &:hover {
+      color: $white;
+      background: $brand;
+    }
+
+    &:active {
+      background: $brand-dark;
+      svg path {
+        stroke: $white;
+      }
+    }
+  }
+
+  .carousel-control-prev {
+    left: -35px;
+  }
+
+  .carousel-control-next {
+    right: -35px;
+  }
+
+  .carousel-indicators {
+    position: relative;
+    margin: 0;
+
+    a {
+      filter: grayscale(100);
+      opacity: 0.7;
+      transition: all 0.3s;
+
+      &.active {
+        filter: none;
+        opacity: 0.8;
+        background: none;
+      }
+    }
+  }
+}
+
+.carousel-logos {
+  position: relative;
+
+  .carousel-items {
+    height: 80px;
+    align-items: center;
+    display: flex;
+  }
+
+  .carousel-item {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.6s;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .carousel-items {
+      justify-content: space-around;
+    }
+
+    .carousel-item {
+      position: relative;
+      opacity: 1;
+      width: auto;
+
+      img {
+        margin: 0 15px;
+      }
+    }
+  }
+}
+
+.carousel-stack {
+  margin: 0 auto;
+
+  @include media-breakpoint-up(xs) {
+    width: 300px;
+    height: 300px;
+    padding-top: 50px;
+  }
+
+  @include media-breakpoint-up(sm) {
+    width: 450px;
+    height: 450px;
+    padding-top: 70px;
+  }
+
+  @include media-breakpoint-up(md) {
+    width: 290px;
+    height: 290px;
+    padding-top: 50px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    width: 340px;
+    height: 310px;
+  }
+
+  @include media-breakpoint-up(xl) {
+    width: 520px;
+    height: 420px;
+  }
+
+  .carousel-items {
+    position: relative;
+  }
+
+  .carousel-item {
+    display: inline-block;
+    transition: all 0.5s;
+    backface-visibility: hidden;
+    transform-origin: 50% -50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 3px;
+    overflow: hidden;
+
+    &[data-step="0"] {
+      z-index: 4;
+      transform: scale(1);
+    }
+
+    &[data-step="1"] {
+      z-index: 3;
+      transform: scale(0.9);
+    }
+
+    &[data-step="2"] {
+      z-index: 2;
+      transform: scale(0.8);
+    }
+
+    &[data-step="3"] {
+      z-index: 1;
+      transform: scale(0.7);
+    }
+  }
+}

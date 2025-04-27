@@ -1,0 +1,35 @@
+---
+title: 2019.5 Migration Guide
+section: developers
+
+order: 493
+---
+
+**[This release][] removes support for API version 2017.6.**
+
+This change affects the following endpoints:
+
+- [Adding an Annotation to a Document][]
+- [Adding an Annotation with an Attachment to a Document][]
+- [Updating an Existing Annotation][]
+- [Updating an Existing Annotation with an Attachment][]
+
+If you’re using any of the above endpoints and manually setting the `pspdfkit-api-version` header, please make sure you update your application code to follow the examples included in the documentation.
+
+A more explicit API for [downloading the PDF file associated with a specific layer][] has been added, thereby deprecating the approach that uses the [document specific endpoint][] with a `:layer_name` query string parameter.
+
+#### Migrate PSPDFKit for Web
+
+For more information, please take a look at the [PSPDFKit for Web 2019.5 Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[this release]: /blog/2019/pspdfkit-web-2019-5/
+[adding an annotation to a document]: ../../server-api/annotations#creating-an-annotation
+[adding an annotation with an attachment to a document]: ../../server-api/annotations#creating-an-annotation-with-an-attachment
+[updating an existing annotation with an attachment]: ../../server-api/annotations#updating-an-annotation-with-an-attachment
+[updating an existing annotation]: ../../server-api/annotations#updating-an-annotation
+[downloading the pdf file associated with a specific layer]: ../../server-api/instant-layers/#fetching-a-layer-s-pdf-file
+[document specific endpoint]: ../../server-api/documents/#fetching-a-document-s-pdf-file
+[pspdfkit for web 2019.5 migration guide]: /guides/web/current/migration-guides/2019-5-migration-guide/
+[changelog]: /changelog/server/#2019.5

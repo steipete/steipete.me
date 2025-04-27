@@ -1,0 +1,134 @@
+---
+title: Amazon Web Services
+section: developers
+---
+
+This guide is designed to provide an overview of how to deploy PSPDFKit Server to AWS using S3, RDS, and ECS. It also includes information on how to set up all the services you need, like:
+
+- AWS S3 Bucket — stores all your documents and assets
+- AWS Relational Database Service — provides the PostgreSQL database needed by PSPDFKit Server
+- AWS Elastic Container Service — manages container configuration and scaling
+
+Following this guide will give you a completely cloud-based setup of PSPDFKit Server, including a hosted database and all your documents being stored on an S3 bucket.
+
+Please note that this guide only represents an example configuration and is by no means an optimal and production-ready way to set up PSPDFKit Server on AWS. As such, you’ll probably have to adjust networking and security options according to your requirements.
+
+We’ll start by setting up our storage backend and database. We will then continue by setting up an ECS cluster including services, task definitions, and scaling tactics.
+
+## Setting Up Your S3 Bucket
+
+Setting up your S3 bucket as your storage backend consists of two steps: creating a bucket, and adding a policy to control which users and roles should have access to the bucket. Create a bucket in the [AWS S3 Console][], give it a name, and set a region. You can leave all other settings at their default configurations.
+
+**ℹ️ Note:** You’ll need both the region and the name of the bucket later on when configuring your Docker container. Since you don’t want your bucket to be publicly accessible, you need to use a policy to grant access to a specific IAM user or role. You can create a minimal user with programmatic access and without any permissions via the IAM console.
+
+<center>
+  <img
+    alt="AWS IAM User"
+    src="/images/guides/server/aws-iam-user.png"
+    width="640">
+</center>
+
+After creating the user, you can find the user ARN in the user summary. It should look something like this: `arn:aws:iam::123345789012:user/pspdfkit`.
+
+You can now select your previously created S3 bucket and go to the permissions tab, where you’ll be able to set the bucket policy. You can allow a user full access to the bucket via the following policy, or else you can generate your own policy via the [AWS Policy Generator][]:
+
+```
+{
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "<IAM-User-ARN>"
+            },
+            "Action": "s3:*",
+            "Resource": "<S3-Bucket-ARN>/*"
+        }
+    ]
+}
+```
+
+After saving the policy, your bucket is ready to be used as your asset storage backend.
+
+## Setting Up Your Database
+
+Setting up a PostgreSQL database via AWS RDS is a bit more complicated; not only will you need to create the database, but this database will exist within a VPC and security group, requiring you to set up an inbound rule to allow PSPDFKit Server instances to access your database.
+
+Launch a new PostgreSQL database via the [AWS RDS Console][] and set a username and password. In the advanced setting, create a new VPC and set a database name. We’ll need the database name, username, and password later when configuring PSPDFKit Server. Once the database is launched, we can see its status in the [instances][aws rds instance console] list of the AWS RDS Console.
+
+Click on the newly created database, and then find and make note of the VPC group, as you’ll need it when setting up the container.
+
+## Setting Up the Container Cluster
+
+The next steps are setting up the cluster that groups and manages container instances and defining tasks that will run PSPDFKit Server. These containers will run images served by our container repository, connect to our PostgreSQL database, and save documents to our S3 bucket.
+
+The first step is creating a cluster on the [AWS ECS Cluster Console][]. Use the EC2 Linux + Networking cluster template, leave the instance configuration as is or adjust it to your liking, and set the VPC to match the one of your database, but create a new security group.
+
+Now you need to create a task definition on the [AWS ECS Task Definition Console][]. Select the EC2 launch type compatibility, give it a name, and select `bridge` as the network mode. You’ll also need to assign the task execution role and add a container. To configure the container, click Add Container and set the following options:
+
+- Set the image to `pspdfkit/pspdfkit:2019.5` (replacing the version number with the latest PSPDFKit Server release number).
+- Map host port `80` to container port `5000`.
+- Enter the environment variables as explained in the [configuration overview guide][] and as shown below.
+
+Please note that, since this example uses S3 as the storage backend, it’s also necessary to set S3-specific configuration options, as described in our [Asset Storage][] guide.
+
+<center>
+  <img
+    alt="AWS ECR Instructions"
+    src="/images/guides/server/aws-task-container-config.png"
+    width="640">
+</center>
+
+<center>
+  <img
+    alt="AWS ECR Instructions"
+    src="/images/guides/server/aws-task-environment-config.png"
+    width="640">
+</center>
+
+**ℹ️ Note:** To correctly paste the public key, it is necessary to use the Configure via JSON option.
+
+<center>
+  <img
+    alt="AWS ECR Instructions"
+    src="/images/guides/server/aws-task-json-config.png"
+    width="640">
+</center>
+
+The last step is to select your cluster on the [AWS ECS Cluster Console][] and create a service that actually runs the task. Select the task definition you just created and define the number of tasks you want to run. Select no load balancer and do not activate auto scaling.
+
+If you select your cluster in the [AWS ECS Cluster Console][], you should now see a running task in the Tasks tab. Click on it and check out the Logs tab to see your server starting up. If everything is set up correctly, it will show a message similar to the following: `info] Running server version 2017.9.3, licensed for production use. pid=<0.1912.0>`.
+
+Back in the Details tab, click on the container instance. You can now copy the public DNS value into your browser’s address bar to check if your server shows you a `PSPDFKit Server up and running.` message. Try to visit `/dashboard` and log in using the dashboard username and password set in the task definition.
+
+## Network Settings
+
+Next you’ll need to create a new inbound rule for our PostgreSQL database to allow our container instances network access. First you need to find out what security group our EC2 instance is part of, and then you need to allow access to the database from this security group. You can find the security group of your EC2 instance by going to your cluster’s EC2 Instances tab in the [AWS ECS Cluster Console][] and clicking on the EC2 instance ID. Take note of the group ID (similar to `sg-123abc4e`) of the security group.
+
+Select your instance in the [AWS RDS Instance Console][] and look for the Security Group property. Select the security group and add a new inbound rule: Select PostgreSQL as the type, paste the group ID you just noted down, and save the newly created rule.
+
+## Conclusion
+
+If everything worked out, you are now running a PSPDFKit Server setup using AWS Container Services connected to an AWS-hosted PostgreSQL database and using an S3 bucket as document and asset storage.
+
+You can now start using PSPDFKit for Web, Android, or iOS to integrate document serving and syncing capabilities into your applications.
+
+## Limitations
+
+Please note that this setup is by no means a one-size-fits-all solution, but rather a minimal setup for using the infrastructure and services provided by AWS to deploy and run PSPDFKit Server. We recommend looking deeper into [AWS][] to deploy a production-ready setup.
+
+## Troubleshooting
+
+- Make sure to use the activation token, instead of the license key from the customer portal, in your `/etc/ecs/ecs.config` file.
+- Ensure your host name in `/etc/ecs/ecs.config` is `https://docker.pspdfkit.com` and not docker.pspdfkit.com.
+
+[aws]: https://console.aws.amazon.com/
+[aws ecs cluster console]: https://console.aws.amazon.com/ecs/home#/clusters/
+[aws ecs console]: https://console.aws.amazon.com/ecs/home#/repositories
+[aws ecs task definition console]: https://console.aws.amazon.com/ecs/home#/taskDefinitions
+[aws rds console]: https://console.aws.amazon.com/rds/home
+[aws s3 console]: https://s3.console.aws.amazon.com/s3/home
+[aws rds instance console]: https://console.aws.amazon.com/rds/home?#dbinstances:
+[configuration overview guide]: https://pspdfkit.com/guides/server/current/configuration/overview
+[asset storage]: https://pspdfkit.com/guides/server/current/configuration/asset-storage/
+[customer portal]: https://customers.pspdfkit.com
+[aws policy generator]: http://awspolicygen.s3.amazonaws.com/policygen.html

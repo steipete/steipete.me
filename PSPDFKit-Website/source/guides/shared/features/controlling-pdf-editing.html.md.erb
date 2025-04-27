@@ -1,0 +1,389 @@
+---
+title: Controlling PDF Document Editing
+section: developers
+---
+
+PDF documents can be modified in several ways — for instance, by adding annotations or filling forms. The PDF format has standard restrictions (see [Secured Documents][]), but in addition to those built-in restrictions, PSPDFKit gives you control over how to restrict certain modifications of PDF documents.
+
+<% if android? %>
+
+## UI
+
+### Disable All UI Interaction
+
+If you want to disable all UI interactions, including scrolling, the thumbnail bar, and all toolbar items, you can call [`PdfActivity#setUserInterfaceEnabled(false)`][].
+
+### Disable Scrolling
+
+If you want to disable scrolling and zooming while keeping everything else (including the thumbnail bar and all toolbar items) enabled, you can call [`PdfActivity#setDocumentInteractionEnabled(false)`][]. Keep in mind that the user will still be able to change the current page using the thumbnail bar.
+
+<% end %>
+
+## Annotations
+
+The following section assumes you’re familiar with annotations. If not, first see [Introduction to Annotations][] for more details.
+
+### Disable the Modification of All Annotation Types
+
+You can disable all annotation modifications using <% if ios? %>[`PSPDFConfiguration`][] by setting the [`editableAnnotationTypes`][] property to `nil`.<% end %><% if android? %>[`PdfConfiguration`][] by setting [`editableAnnotationTypes`][] to `null`.<% end %> This will prevent users from adding new annotations and editing existing ones:
+
+<% if ios? %>
+[==
+
+```swift
+let configuration = PSPDFConfiguration { (builder) in
+	builder.editableAnnotationTypes = nil
+}
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+	builder.editableAnnotationTypes = nil;
+}];
+```
+
+==]
+<% end %>
+<% if android? %>
+[==
+
+```kotlin
+val builder = PdfActivityConfiguration.Builder(context)
+builder.editableAnnotationTypes(null)
+```
+
+```java
+PdfActivityConfiguration.Builder builder = new PdfActivityConfiguration.Builder(context);
+builder.editableAnnotationTypes(null);
+```
+
+==]
+<% end %>
+
+### Enable Modifications Only for Specific Annotation Types
+
+You can control which annotation types are editable and you can specify their types in `editableAnnotationTypes`. For example, you can allow only the modification of ink annotations:
+
+<% if ios? %>
+[==
+
+```swift
+let configuration = PSPDFConfiguration { (builder) in
+	builder.editableAnnotationTypes = [PSPDFAnnotationStringInk] // Only ink annotations are editable.
+}
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+	builder.editableAnnotationTypes = [NSSet setWithArray:@[PSPDFAnnotationStringInk]]; // Only ink annotations are editable.
+}];
+```
+
+==]
+<% end %>
+<% if android? %>
+[==
+
+```kotlin
+val builder = PdfActivityConfiguration.Builder(context)
+// Only ink annotations are editable.
+builder.editableAnnotationTypes(listOf(AnnotationType.INK))
+```
+
+```java
+PdfActivityConfiguration.Builder builder = new PdfActivityConfiguration.Builder(context);
+// Only ink annotations are editable.
+builder.editableAnnotationTypes(Collections.singletonList(AnnotationType.INK));
+```
+
+==]
+<% end %>
+
+### Disable Adding New Annotations But Allow Modification of Existing Ones
+
+<% if ios? %>
+Hiding your [`PSPDFViewController`][]’s [`annotationButtonItem`][] from the toolbar will prevent users from adding new annotations, but it will not stop them from editing or deleting existing ones:
+
+[==
+
+```swift
+// Notice that `pdfController.annotationButtonItem` is not included.
+pdfController.navigationItem.setRightBarButtonItems([pdfController.thumbnailsButtonItem, pdfController.outlineButtonItem, pdfController.searchButtonItem, pdfController.activityButtonItem], for: .document, animated: false)
+```
+
+```objc
+// Notice that `pdfController.annotationButtonItem` is not included.
+[pdfController.navigationItem setRightBarButtonItems:@[pdfController.thumbnailsButtonItem, pdfController.annotationButtonItem, pdfController.outlineButtonItem, pdfController.searchButtonItem, pdfController.activityButtonItem] forViewMode:PSPDFViewModeDocument animated:NO];
+```
+
+==]
+
+For more information, see the [Configuring Editable/Visible Annotation Types][] guide.
+<% end %>
+<% if android? %>
+
+Hiding your [`PdfActivity`][]’s annotation editing button from the toolbar will prevent users from adding new annotations, but it will not stop them from editing or deleting existing ones:
+
+[==
+
+```kotlin
+override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+    // It's important to call super before removing the item so that PSPDFKit can add its own items.
+    super.onPrepareOptionsMenu(menu)
+    // Remove the annotation item.
+    menu.removeItem(R.id.pspdf__menu_option_edit_annotations)
+    return true
+}
+```
+
+```java
+@Override
+public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
+    // It's important to call super before removing the item so that PSPDFKit can add its own items.
+    super.onPrepareOptionsMenu(menu);
+    // Remove the annotation item.
+    menu.removeItem(R.id.pspdf__menu_option_edit_annotations);
+    return true;
+}
+```
+
+==]
+
+<% end %>
+
+### Disable the Modification of a Specific Annotation
+
+<% if ios? %>
+You can disable the modification of a specific annotation by updating its [`flags`][] property to use [`PSPDFAnnotationFlagReadOnly`][], like so:
+
+[==
+
+```swift
+// Update the annotation flags.
+annotation.flags.update(with: .readOnly)
+```
+
+```objc
+// Update the annotation flags.
+annotation.flags |= ~PSPDFAnnotationFlagReadOnly;
+```
+
+==]
+<% end %>
+<% if android? %>
+You can disable the modification of a specific annotation by using [`setFlags`][] with the `READONLY` flag, like so:
+
+[==
+
+```kotlin
+// Make the annotation read-only.
+annotation.setFlags(EnumSet.of(AnnotationFlags.READONLY));
+```
+
+```java
+// Make the annotation read-only.
+annotation.setFlags(EnumSet.of(AnnotationFlags.READONLY));
+```
+
+==]
+<% end %>
+
+For more information, see the [Annotation Flags][] guide.
+
+<% if ios? %>
+
+### Disable Adding Annotations from Menu Items
+
+Annotations can be created via menu items. You can configure annotation creation using the [`createAnnotationMenuEnabled`][] property from [`PSPDFConfiguration`][]:
+
+[==
+
+```swift
+let configuration = PSPDFConfiguration { (builder) in
+	builder.isCreateAnnotationMenuEnabled = false
+}
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+	builder.createAnnotationMenuEnabled = NO;
+}];
+```
+
+==]
+
+Annotations can also be modified by copying and pasting them or by selecting text or images. For example, when you select text in a document, you can highlight it. Here’s how to disable the highlight menu item when selecting text:
+
+[==
+
+```swift
+public func pdfViewController(_ pdfController: PSPDFViewController, shouldShow menuItems: [PSPDFMenuItem], atSuggestedTargetRect rect: CGRect, for annotations: [PSPDFAnnotation]?, in annotationRect: CGRect, on pageView: PSPDFPageView) -> [PSPDFMenuItem] {
+	return menuItems.filter { $0.identifier != PSPDFAnnotationMenuHighlight }
+}
+```
+
+```objc
+- (NSArray<PSPDFMenuItem *> *)pdfViewController:(PSPDFViewController *)pdfController shouldShowMenuItems:(NSArray<PSPDFMenuItem *> *)menuItems atSuggestedTargetRect:(CGRect)rect forSelectedText:(NSString *)selectedText inRect:(CGRect)textRect onPageView:(PSPDFPageView *)pageView {
+    NSMutableArray *newMenuItems = [menuItems mutableCopy];
+    // Remove the highlight menu item.
+    for (PSPDFMenuItem *menuItem in menuItems) {
+        if ([menuItem isKindOfClass:PSPDFMenuItem.class] && [menuItem.identifier isEqualToString:PSPDFAnnotationMenuHighlight]) {
+            [newMenuItems removeObjectIdenticalTo:menuItem];
+            break;
+        }
+    }
+    return newMenuItems;
+}
+```
+
+==]
+
+You can configure menu items in the following [`PSPDFViewControllerDelegate` methods][menu handling api]:
+
+- [`pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forSelectedText:inRect:onPageView:`][]
+- [`pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forSelectedImage:inRect:onPageView:`][]
+- [`pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forAnnotations:inRect:onPageView:`][]
+
+See the [Customizing Menus][] guide for more details.
+
+### Disable Drag and Drop
+
+PDFs can be modified using drag and drop. For example, you can drag and drop text, images, and even other PDF documents. You can disable drag and drop by configuring your [`PSPDFDragAndDropConfiguration`][]:
+
+[==
+
+```swift
+let dragAndDropConfiguration = PSPDFDragAndDropConfiguration { (builder) in
+	builder.acceptedDropTypes = []
+	builder.allowedDropTargets = []
+}
+let configuration = PSPDFConfiguration { (builder) in
+	builder.dragAndDropConfiguration = dragAndDropConfiguration
+}
+```
+
+```objc
+PSPDFDragAndDropConfiguration *dragAndDropConfiguration = [PSPDFDragAndDropConfiguration configurationWithBuilder:^(PSPDFDragAndDropConfigurationBuilder * builder) {
+	builder.acceptedDropTypes = PSPDFDropTypeNone;
+	builder.allowedDropTargets = PSPDFDropTargetNone;
+}];
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+	builder.dragAndDropConfiguration = dragAndDropConfiguration;
+}];
+```
+
+==]
+
+For more information, see the [Drag and Drop][] guide.
+<% end %>
+
+## Forms
+
+The following section assumes you are familiar with forms. If not, first see [Introduction to Forms][] for more details.
+
+### Disable All Form Interactions
+
+<% if ios? %>
+You can disable all form interactions and modifications using `editableAnnotationTypes`:
+
+[==
+
+```swift
+let configuration = PSPDFConfiguration { builder in
+	var editableAnnotationTypes = builder.editableAnnotationTypes
+	editableAnnotationTypes?.remove(PSPDFAnnotationString.widget)
+	builder.editableAnnotationTypes = editableAnnotationTypes
+}
+```
+
+```objc
+PSPDFConfiguration *configuration = [PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+	NSMutableSet *editableAnnotationTypes = [builder.editableAnnotationTypes mutableCopy];
+	[editableAnnotationTypes removeObject:PSPDFAnnotationStringWidget];
+	builder.editableAnnotationTypes = editableAnnotationTypes;
+}];
+```
+
+==]
+<% end %>
+<% if android? %>
+You can disable all form interactions and modifications using [`disableFormEditing`][]:
+
+[==
+
+```kotlin
+val builder = PdfActivityConfiguration.Builder(context)
+builder.disableFormEditing()
+```
+
+```java
+PdfActivityConfiguration.Builder builder = new PdfActivityConfiguration.Builder(context);
+builder.disableFormEditing();
+```
+
+==]
+<% end %>
+
+<% if ios? %>
+
+### Disable Specific Form Element Types
+
+You can specify which form elements can be modified. For example, you can disable the modification of all text field form elements and allow all other form elements to be editable:
+
+[==
+
+```swift
+let document = PSPDFDocument(url: documentURL)
+
+// Loop through all form elements from a given document and only disable text field form elements from being modified.
+for formElement: PSPDFFormElement in (document.formParser?.forms)! where formElement is PSPDFTextFieldFormElement {
+	formElement.isEditable = false;
+}
+```
+
+```objc
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Loop through all form elements from a given document and only disable text field form elements from being modified.
+for (PSPDFFormElement *formElement in document.formParser.forms) {
+	if ([formElement isKindOfClass:PSPDFTextFieldFormElement.class]) {
+		formElement.editable = NO;
+	}
+}
+```
+
+==]
+<% end %>
+
+## Restricting Features
+
+### Document Editor
+
+PDF documents can be modified using the Document Editor feature, which allows new page creation, page duplication, and the reordering, rotation, or deletion of pages. See the [Document Editing][] guide for more details.
+
+[secured documents]: ../../security/secured-documents/
+[introduction to annotations]: ../../annotations/introduction-to-annotations/
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[`annotationbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)annotationButtonItem
+[`pspdfconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html
+[`pdfconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.html
+[`pspdfdraganddropconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDragAndDropConfiguration.html
+[`editableannotationtypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)editableAnnotationTypes
+[`editableannotationtypes`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#editableAnnotationTypes(java.util.List%3Ccom.pspdfkit.annotations.AnnotationType%3E)
+[`flags`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)flags
+[`setflags`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#setFlags(java.util.EnumSet%3Ccom.pspdfkit.annotations.AnnotationFlags%3E)
+[`pspdfannotationflagreadonly`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagReadOnly
+[annotation flags]: ../../annotations/annotation-flags/
+[`createannotationmenuenabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)createAnnotationMenuEnabled
+[configuring editable/visible annotation types]: ../../annotations/configuring-editablevisible-annotation-types/
+[customizing menus]: ../../customizing-the-interface/customizing-menus/
+[menu handling api]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/Menu%20Handling
+[`pdfviewcontroller:shouldshowmenuitems:atsuggestedtargetrect:forselectedtext:inrect:onpageview:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forSelectedText:inRect:onPageView:
+[`pdfviewcontroller:shouldshowmenuitems:atsuggestedtargetrect:forselectedimage:inrect:onpageview:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forSelectedImage:inRect:onPageView:
+[`pdfviewcontroller:shouldshowmenuitems:atsuggestedtargetrect:forannotations:inrect:onpageview:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldShowMenuItems:atSuggestedTargetRect:forAnnotations:inRect:onPageView:
+[introduction to forms]: ../../forms/introduction-to-forms/
+[document editing]: ../../features/document-editor/
+[drag and drop]: ../../features/drag-and-drop/
+[`disableformediting`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#disableFormEditing()
+[`pdfactivity#setuserinterfaceenabled(false)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setUserInterfaceEnabled(boolean)
+[`pdfactivity#setdocumentinteractionenabled(false)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setDocumentInteractionEnabled(boolean)

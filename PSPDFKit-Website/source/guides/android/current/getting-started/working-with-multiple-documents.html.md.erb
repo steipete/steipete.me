@@ -1,0 +1,123 @@
+---
+title: Working with Multiple Documents
+section: developers
+---
+
+PSPDFKit for Android supports loading multiple documents into a single [`PdfActivity`][]. This guide will outline how to launch the [`PdfActivity`][], as well as how to control which documents are displayed.
+
+## Launching PdfActivity
+
+Depending on how many documents you want to display in the [`PdfActivity`][], there are different ways to do it.
+
+### Displaying One Document
+
+If you’re just displaying a single document, the [`PdfActivity`][] itself has a convenient method to do this:
+
+[==
+
+```kotlin
+// Shows the document found at the given URI.
+PdfActivity.showDocument(context, uri, configuration)
+```
+
+```java
+// Shows the document found at the given URI.
+PdfActivity.showDocument(context, uri, configuration);
+```
+
+==]
+
+### Displaying Multiple Documents
+
+If you need to display two or more documents in a [`PdfActivity`][], you’ll have to use the [`PdfActivityIntentBuilder`][]:
+
+[==
+
+```kotlin
+// Shows the documents found at the given URIs.
+val intent = PdfActivityIntentBuilder.fromUri(context, uri1, uri2, uri3)
+    .configuration(configuration)
+    // Initially show the second document (zero-based index).
+    .visibleDocument(1)
+    .build()
+context.startActivity(intent)
+```
+
+```java
+// Shows the documents found at the given URIs.
+Intent intent = PdfActivityIntentBuilder.fromUri(context, uri1, uri2, uri3)
+    .configuration(configuration)
+    // Initially show the second document (zero-based index).
+    .visibleDocument(1)
+    .build();
+context.startActivity(intent);
+```
+
+==]
+
+### Displaying PdfActivity without Documents
+
+Finally, you can also start the [`PdfActivity`][] without any document at all using [`emptyActivity()`][]:
+
+[==
+
+```kotlin
+// Shows the empty activity.
+val intent = PdfActivityIntentBuilder.emptyActivity(context)
+    .configuration(configuration)
+    .build()
+context.startActivity(intent)
+```
+
+```java
+// Shows the empty activity.
+Intent intent = PdfActivityIntentBuilder.emptyActivity(context)
+    .configuration(configuration)
+    .build();
+context.startActivity(intent);
+```
+
+==]
+
+## Managing Displayed Documents
+
+Once you start the [`PdfActivity`][], you can manage the displayed documents by using the [`DocumentCoordinator`][]. To obtain an instance, use [`PdfActivity#getDocumentCoordinator()`][]. To see an example of how this can be used, check out `DocumentTabsExample` in our Catalog app:
+
+[==
+
+```kotlin
+// Add a new document.
+documentCoordinator.addDocument(descriptor)
+
+// Display the newly added document.
+documentCoordinator.setVisibleDocument(descriptor)
+
+// Remove some other document.
+documentCoordinator.removeDocument(otherDescriptor)
+```
+
+```java
+// Add a new document.
+getDocumentCoordinator().addDocument(descriptor);
+
+// Display the newly added document.
+getDocumentCoordinator().setVisibleDocument(descriptor);
+
+// Remove some other document.
+getDocumentCoordinator.removeDocument(otherDescriptor);
+```
+
+==]
+
+## UI for Handling Multiple Documents
+
+By default, PSPDFKit provides a tabbed user interface to allow the user to switch between all the currently opened documents.
+
+<img align="middle" src="/images/guides/android/getting-started/handling-multiple-documents/tab-bar.png">
+
+You can also build an entirely custom UI to switch between documents using the [`DocumentCoordinator`][] as shown in `DocumentSwitcherExample` found in the Catalog app.
+
+[`pdfactivityintentbuilder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html
+[`emptyactivity()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html#emptyActivity(android.content.Context)
+[`documentcoordinator`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/DocumentCoordinator.html
+[`pdfactivity#getdocumentcoordinator()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#getDocumentCoordinator()

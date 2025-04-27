@@ -1,0 +1,103 @@
+---
+title: PDF Actions
+section: developers
+---
+
+A PDF action is similar to a web hyperlink, but it’s much more flexible. PSPDFKit supports most common actions defined in Adobe’s PDF Reference (page 417ff).
+
+The most common types are GoTo and URI. However, many documents also use named actions for page changes.
+
+Every [`Action`][] subclass can be parsed from a PDF:
+
+| Action     | PSPDFKit Class         | Use Case                                                 |
+| ---------- | ---------------------- | -------------------------------------------------------- |
+| GoTo       | [`GoToAction`][]       | Go to a destination (page) in the current document.      |
+| URI        | [`UriAction`][]        | Resolve a uniform resource identifier (web link).        |
+| Hide       | [`HideAction`][]       | Set an annotation’s hidden flag.                         |
+| Named      | [`NamedAction`][]      | Execute an action predefined by the conforming reader.   |
+| SubmitForm | [`SubmitFormAction`][] | Submit form data.                                        |
+| ResetForm  | [`ResetFormAction`][]  | Set fields to their default values.                      |
+| JavaScript | [`JavaScriptAction`][] | Execute [JavaScript](../../features/javascript/) script. |
+
+Actions are chainable via the [`getSubActions`][] property. Certain annotations, such as the [`LinkAnnotation`][] and the [`WidgetAnnotation`][], can contain an action. An [`OutlineElement`][] also contains an [`action`][]; as such, it supports the same types of actions as an annotation (for example, a PDF outline can open a web link).
+
+## Trigger Events
+
+[`WidgetAnnotation`][] can contain a set of additional actions on top of the standard action described above. Each of these additional actions is tied to a specific [`AnnotationTriggerEvent`][].
+
+All trigger events can be parsed from a PDF. However, PSPDFKit only supports action execution for a subset of these events (unsupported events are ignored):
+
+| Event          | Use Case                                                                                                                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MOUSE_DOWN     | Action to be executed when touching down on an annotation.                                                                                                                                     |
+| MOUSE_UP       | Action to be executed when touching up after a successful tap gesture on an annotation.                                                                                                        |
+| RECEIVE_FOCUS  | Action to be executed when an annotation gets selected.                                                                                                                                        |
+| LOOSE_FOCUS    | Action to be executed when an annotation gets deselected.                                                                                                                                      |
+| FORM_CHANGED   | A JavaScript action to be executed when a user types a keystroke into text or combo box fields or modifies selected options in list box fields. The action can reject or modify the keystroke. |
+| FIELD_FORMAT   | A JavaScript action to be executed before the form field is formatted.                                                                                                                         |
+| FORM_VALIDATE  | A JavaScript action to be executed when the form field’s value is changed. This is used to check whether the new value is valid.                                                               |
+| FORM_CALCULATE | A JavaScript action to be executed to recalculate the value of this form field when another field changes.                                                                                     |
+
+**Note:** In order to stay backward compatible with older PDF specifications, PSPDFKit will give annotation actions returned by [`getAction()`][] precedence over an additional `MOUSE_UP` action.
+
+**Note:** Trigger events specific to form fields (`FORM_CHANGED`, `FIELD_FORMAT`, `FORM_VALIDATE`, and `FORM_CALCULATE`) only support [`JavaScriptAction`][].
+
+## Executing Actions
+
+You can use [`PdfFragment#executeAction`] to execute PDF actions:
+
+[==
+
+```kotlin
+annotation.action?.let { action ->
+  fragment.executeAction(action)
+}
+```
+
+```java
+if (annotation.getAction() != null) {
+  fragment.executeAction(annotation.getAction());
+}
+```
+
+==]
+
+You can also provide an optional [`ActionSender`][] to inform the action executor about the context in which it should execute the action:
+
+[==
+
+```kotlin
+formElement.annotation.action?.let { action ->
+  fragment.executeAction(action, ActionSender(formElement))
+}
+```
+
+```java
+WidgetAnnotation annotation = formElement.getAnnotation();
+if (annotation.action != null) {
+  fragment.executeAction(annotation.action, new ActionSender(formElement));
+}
+```
+
+==]
+
+You **must** provide [`ActionSender`][] when executing [`JavaScriptAction`][]. This way, you’ll provide the correct execution context to the action executor. If you don’t provide the action sender in this case, your JavaScript scripts will be executed as document-level scripts instead. This means that you won’t be able to format or validate form fields, nor will you be able to access form fields or annotations via the `this` object in your scripts.
+
+_Note:_ The file structure for the action has to be correctly specified for it to work. The files in question should be in a local folder.
+
+[`action`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/Action.html
+[`getsubactions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/Action.html#getSubActions()
+[`linkannotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LinkAnnotation.html
+[`widgetannotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/WidgetAnnotation.html
+[`outlineelement`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/OutlineElement.html
+[`pdffragment#executeaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#executeAction(com.pspdfkit.annotations.actions.Action)
+[`gotoaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/GoToAction.html
+[`uriaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/UriAction.html
+[`hideaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/HideAction.html
+[`submitformaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/SubmitFormAction.html
+[`resetformaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/ResetFormAction.html
+[`namedaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/NamedAction.html
+[`javascriptaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/JavaScriptAction.html
+[`annotationtriggerevent`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/AnnotationTriggerEvent.html
+[`actionsender`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/ActionSender.html
+[`getaction()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LinkAnnotation.html#getAction()

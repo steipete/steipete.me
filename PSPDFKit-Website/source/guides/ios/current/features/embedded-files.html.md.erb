@@ -1,0 +1,77 @@
+---
+title: Embedded Files and PDF Portfolio Collections
+section: developers
+
+---
+
+## Embedded Files
+
+![](/images/guides/shared/features/embedded-files/embedded-files.png)
+
+PDF 1.4 added support for embedded files, allowing objects to be embedded into any PDF — this includes deep nesting (e.g. a PDF can contain a PDF which contains a PDF which contains a DOCX file). Via the GoToE action, links that link to embedded files inside the PDF can be created.
+
+PSPDFKit automatically detects and shows embedded files via `PSPDFEmbeddedFilesViewController`, which is part of the default controller group that includes outlines, bookmarks, and annotations. The embedded files group is only visible if the document contains embedded files.
+
+Embedded files can be accessed via a document’s [`allEmbeddedFiles`][] property or be attached to a [`PSPDFFileAnnotation`][] object. The [`PSPDFEmbeddedFile`][] object abstracts these files and allows you to copy them to disk by calling [`fileURLWithError:`][].
+
+PSPDFKit 7.6 for iOS adds the ability to embed files using [`PSPDFFileAnnotation`][] and [`PSPDFEmbeddedFile`][]. Take a look at the [File Annotations with Embedded Files guide article][file annotations with embedded files guide] and `AddFileAnnotationProgrammaticallyExample` inside the Catalog app, both of which show how to programmatically create file annotations with embedded files.
+
+See also: [How to Embed Files Using File Annotations](/blog/2018/how-to-embed-files-using-file-annotations/) on our blog.
+
+## Preview and Open Embedded Files
+
+You can preview file attachments directly in PSPDFKit.
+
+<video src="/images/blog/2018/how-to-embed-files-using-file-annotations/preview-embedded-file.mp4" width="50%" loop muted playsinline data-controller="video" data-video-autoplay="true"></video>
+
+You can then open a copy in third-party applications or, on iOS, open it in Apple’s Files app using the share action.
+
+<video src="/images/blog/2018/how-to-embed-files-using-file-annotations/add-to-files-app.mp4" width="50%" loop muted playsinline data-controller="video" data-video-autoplay="true"></video>
+
+## Programmatically Create a File Annotation with an Embedded File
+
+You can create a file annotation with an embedded file using the URL of any file. Here’s how this looks in code:
+
+```swift
+// Create PSPDFDocument.
+let document = PSPDFDocument(url: documentURL)
+
+// Create the URL of the appearance stream that uses a PDF file.
+let samplesURL = Bundle.main.resourceURL!.appendingPathComponent("Samples")
+let embeddedFileURL = samplesURL.appendingPathComponent("Monthly Budget.xlsx")
+
+// Create a new file annotation and set its properties.
+let fileAnnotation = PSPDFFileAnnotation()
+fileAnnotation.pageIndex = 0
+fileAnnotation.iconName = .graph
+fileAnnotation.color = .blue
+fileAnnotation.boundingBox = CGRect(x: 500, y: 250, width: 32, height: 32)
+
+// Create an embedded file and add it to the file annotation.
+let embeddedFile = PSPDFEmbeddedFile(fileURL: embeddedFileURL, fileDescription: "Monthly Budget")
+fileAnnotation.embeddedFile = embeddedFile
+
+// Add the newly created annotation to the document.
+document.add([fileAnnotation])
+```
+
+To learn more about how to programmatically create file annotations with embedded files, check out `AddFileAnnotationProgrammaticallyExample`on iOS inside the [Catalog apps](/guides/ios/current/getting-started/example-projects/).
+
+## PDF Portfolio Collections
+
+In PDF 1.7, the term "PDF package" was created to describe a PDF document that contains a collection dictionary:
+
+> Beginning with PDF 1.7, PDF documents may specify how a conforming reader’s user interface presents collections of file attachments, where the attachments are related in structure or content. Such a presentation is called a portable collection.
+
+(PDF Reference 1.7, 12.3.5 Collections, Page 370ff)
+
+PDF packages have been improved upon to become PDF Portfolios in Acrobat 9. In most cases, portfolios use a Flash-based interface which was deprecated in PDF 2.0 and is unsupported. [Adobe Flash itself does not work on mobile devices and is deprecated as a whole.]
+
+PSPDFKit has no special support for packages and portfolios other than fully exposing the embedded files.
+
+[`allembeddedfiles`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)allEmbeddedFiles
+[`pspdffileannotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFFileAnnotation.html#/c:objc(cs)PSPDFFileAnnotation(py)embeddedFile
+[`pspdfembeddedfile`]: https://pspdfkit.com/api/ios/Classes/PSPDFEmbeddedFile.html
+[`fileurlwitherror:`]: https://pspdfkit.com/api/ios/Classes/PSPDFEmbeddedFile.html#/c:objc(cs)PSPDFEmbeddedFile(im)fileURLWithError:
+[file annotations with embedded files guide]: ../../annotations/programmatically-creating-annotations/#file-annotations-with-embedded-files
+[adobe flash itself does not work on mobile devices and is deprecated as a whole.]: https://blogs.adobe.com/conversations/2017/07/adobe-flash-update.html

@@ -1,0 +1,219 @@
+---
+title: Document Sharing
+section: developers
+---
+
+PSPDFKit allows you to securely share PDF documents with other apps via [`DocumentSharingManager`][], which provides several static methods for that purpose. Shared documents are served by [`DocumentSharingProvider`][], which is automatically registered at build time using the authority `${applicationId}.pdf.share` (where `applicationId` is defined by your app’s `build.gradle`).
+
+## Document Sharing
+
+You can use [`#shareDocument(Context, PdfDocument, ShareAction)`][] to share a loaded document with any other app supporting the PDF document format. If you want to share with an app supporting PDF sending (usually messengers, cloud providers, or file managers), call the method providing [`ShareAction.SEND`][`shareaction`]. If you want to launch an app for viewing instead, you can use [`ShareAction.VIEW`][`shareaction`]:
+
+[==
+
+```kotlin
+// Show the activity picker listing apps that can "send PDF files."
+DocumentSharingManager.shareDocument(context, document, ShareAction.SEND)
+```
+
+```java
+// Show the activity picker listing apps that can "send PDF files."
+DocumentSharingManager.shareDocument(context, document, ShareAction.SEND);
+```
+
+==]
+
+## Sharing Options
+
+[`DocumentSharingManager`][] has overloaded sharing methods that accept [`SharingOptions`][]. You can use these [`SharingOptions`][] to specify the title of the shared document, specify the document-processing options for flattening or removing annotations on the shared document, and extract a range of pages:
+
+[==
+
+```kotlin
+// The title of the document has to be specified without the file extension.
+val options = SharingOptions("Custom Document Title")
+DocumentSharingManager.shareDocument(context, document, ShareAction.SEND, options)
+```
+
+```java
+// The title of the document has to be specified without the file extension.
+final SharingOptions options = new SharingOptions("Custom Document Title");
+DocumentSharingManager.shareDocument(context, document, ShareAction.SEND, options);
+```
+
+==]
+
+You can decide to flatten or remove all annotations on the shared document by defining [`AnnotationProcessingMode`][] within the sharing options:
+
+[==
+
+```kotlin
+// Flatten all existing annotations on the shared document.
+val options = SharingOptions(AnnotationProcessingMode.FLATTEN)
+DocumentSharingManager.shareDocument(context, document, ShareAction.VIEW, options)
+```
+
+```java
+// Flatten all existing annotations on the shared document.
+final SharingOptions options = new SharingOptions(AnnotationProcessingMode.FLATTEN);
+DocumentSharingManager.shareDocument(context, document, ShareAction.VIEW, options);
+```
+
+==]
+
+If you want to share only a portion of a document, [`SharingOptions`][] lets you specify one or multiple page ranges that should be extracted before sharing:
+
+[==
+
+```kotlin
+// Share pages 0, 4, 5.
+val pages = listOf(Range(0,1), Range(4,2))
+// Delete all existing annotations from the shared document.
+val options = SharingOptions(AnnotationProcessingMode.DELETE, pages)
+DocumentSharingManager.shareDocument(context, document, ShareAction.VIEW, options)
+```
+
+```java
+// Share pages 0, 4, 5.
+final List<Range> pages = Arrays.asList(new Range(0,1), new Range(4,2));
+// Delete all existing annotations from the shared document.
+final SharingOptions options = new SharingOptions(AnnotationProcessingMode.DELETE, pages);
+DocumentSharingManager.shareDocument(context, document, ShareAction.VIEW, options);
+```
+
+==]
+
+## Sharing Dialog
+
+[`DocumentSharingDialog`][] is a ready-to-use dialog for letting users define the desired [`SharingOptions`][] prior to sharing.
+
+<figure>
+  <video src="/images/guides/android/miscellaneous/document-share-dialog.mp4" class="no-mejs" width="45%" autoplay playsinline loop muted></video>
+</figure>
+
+Below is a small snippet showing how to use the dialog. You can find a full example inside `DocumentSharingExample` of our Catalog app:
+
+[==
+
+```Activity.kt
+val listener : (SharingOptions) -> Unit = {
+    DocumentSharingManager.shareDocument(
+        this,
+        document,
+        ShareAction.VIEW,
+        // Use the share options configured in the share dialog.
+        it)
+}
+
+override fun onResume() {
+    super.onResume()
+    // As the sharing dialog listener can't be retained, restore it in the dialog after configuration changes.
+    DocumentSharingDialog.restore(supportFragmentManager, listener)
+}
+
+private fun showSharingDialog() {
+    // Build the dialog configuration.
+    val configuration = DocumentSharingDialogConfiguration.Builder(this, document, page)
+        .dialogTitle("Custom sharing dialog title")
+        .positiveButtonText("View")
+        .build()
+
+    // Show the sharing dialog.
+    DocumentSharingDialog.show(supportFragmentManager, configuration, listener)
+}
+```
+
+```MyActivity.java
+private SharingDialogListener listener = new SharingDialogListener() {
+    @Override
+    public void onAccept(@NonNull SharingOptions shareOptions) {
+        DocumentSharingManager.shareDocument(
+                DocumentSharingExampleActivity.this,
+                getDocument(),
+                ShareAction.VIEW,
+                // Use the share options configured in the share dialog.
+                shareOptions);
+    }
+};
+
+@Override protected void onResume() {
+    super.onResume();
+    // As the sharing dialog listener can't be retained, restore it in the dialog after configuration changes.
+    DocumentSharingDialog.restore(getSupportFragmentManager(), listener);
+}
+
+private void showSharingDialog() {
+    // Build the dialog configuration.
+    final DocumentSharingDialogConfiguration configuration =
+            new DocumentSharingDialogConfiguration.Builder(this, getDocument(), getPage())
+                .dialogTitle("Custom sharing dialog title")
+                .positiveButtonText("View")
+                .build();
+
+    // Show the sharing dialog.
+    DocumentSharingDialog.show(getSupportFragmentManager(), configuration, listener);
+}
+```
+
+==]
+
+## Sharing Action
+
+The [`PdfActivity`][] provides a sharing action using the same sharing API described in this article. The action is enabled by default and can be used by simply tapping on it. You can disable sharing within the [`PdfActivity`][] using the [`PdfActivityConfiguration.Builder#disableShare`][] method:
+
+[==
+
+```kotlin
+// Create a default configuration with sharing disabled.
+val config = PdfActivityConfiguration.Builder(context)
+    .disableShare()
+    .build()
+
+PdfActivity.showDocument(context, documentUri, config)
+```
+
+```java
+// Create a default configuration with sharing disabled.
+final PdfActivityConfiguration config = new PdfActivityConfiguration.Builder(context)
+    .disableShare()
+    .build();
+
+PdfActivity.showDocument(context, documentUri, config);
+```
+
+==]
+
+## Bypassing the Sharing Dialog
+
+By default, our [`PdfActivity`][] shows the [`DocumentSharingDialog`][] whenever the share action is used. If you want to bypass the dialog, you can provide a [`SharingOptionsProvider`][] that creates [`SharingOptions`][] using [`PdfActivity#setSharingOptionsProvider`][]:
+
+[==
+
+```kotlin
+// Inside your activity.
+setSharingOptionsProvider { document, currentPage ->
+    // We always share the entire document, flattening the annotations.
+    SharingOptions(PdfProcessorTask.AnnotationProcessingMode.FLATTEN)
+}
+```
+
+```java
+// Inside your activity.
+setSharingOptionsProvider((document, currentPage) -> {
+    // We always share the entire document, flattening the annotations.
+    return new SharingOptions(PdfProcessorTask.AnnotationProcessingMode.FLATTEN);
+});
+```
+
+==]
+
+[`pdfactivityconfiguration.builder#disableshare`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#disableShare()
+[`documentsharingmanager`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/DocumentSharingManager.html
+[`#sharedocument(context, pdfdocument, shareaction)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/DocumentSharingManager.html#shareDocument(android.content.Context,%20com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.sharing.ShareAction)
+[`sharingoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/SharingOptions.html
+[`shareaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/ShareAction.html
+[`documentsharingprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/DocumentSharingProvider.html
+[`annotationprocessingmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/processor/PdfProcessorTask.AnnotationProcessingMode.html
+[`documentsharingdialog`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/dialog/DocumentSharingDialog.html
+[`sharingoptionsprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/sharing/SharingOptionsProvider.html
+[`pdfactivity#setsharingoptionsprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setSharingOptionsProvider(com.pspdfkit.document.sharing.SharingOptionsProvider)

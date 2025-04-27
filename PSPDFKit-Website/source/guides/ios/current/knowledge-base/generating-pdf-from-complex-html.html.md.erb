@@ -1,0 +1,90 @@
+---
+title: Generating PDF files from complex HTML
+section: knowledge-base
+alternate_platform_links:
+  android: "generating-pdfs/generating-pdf-from-html"
+---
+
+[`PSPDFProcessor`][pspdfprocessor] provides a powerful API for generating PDF files directly from HTML strings. The conversion is fast but it only supports simple HTML tags, such as `<strong>`, `<a>` or `<font>`.
+
+If you want to generate a PDF file from a more complex HTML, you can use another technique — save your HTML to a temporary local file first and then generate a PDF file from that URL. PSPDFKit utilises full power of WebKit when generating PDF files from URLs, allowing you to use CSS, embed images or take advantage of a variety of tags and modern HTML costructs — giving you power that isn't possible with simple HTML to PDF conversion.
+
+> **Note:** Generating PDF files from URLs is a more time- and memory-consuming operation than simple HTML to PDF conversion. Make sure to perform the conversion and opt to do simple HTML to PDF conversion if possible.
+
+[==
+
+```swift
+let htmlURL = // URL to save temporary HTML file to.
+let pdfURL = // URL to save converted PDF file to.
+
+let html = """
+<html>
+    <head>
+        <style type="text/css">
+            h1 {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello, world!</h1>
+    </body>
+</html>
+"""
+
+do {
+    try html.data(using: .utf8)!.write(to: htmlURL)
+} catch {
+    // Handle the error.
+}
+
+PSPDFProcessor.generatePDF(from: htmlURL, outputFileURL: pdfURL, options: nil) { outputURL, error in
+    if let outputURL = outputURL {
+        let document = PSPDFDocument(url: outputURL)
+        // Handle the document.
+    } else if let error = error {
+        // Handle the error.
+    }
+}
+```
+
+```objc
+NSURL *htmlURL = // URL to save temporary HTML file to.
+NSURL *pdfURL = // URL to save converted PDF file to.
+
+NSString *html = @"\
+<html>\
+    <head>\
+        <style type=\"text/css\">\
+            h1 {\
+                color: red;\
+            }\
+        </style>\
+    </head>\
+    <body>\
+        <h1>Hello, world!</h1>\
+    </body>\
+</html>";
+
+if (![[html dataUsingEncoding:NSUTF8StringEncoding] writeToURL:htmlURL atomically:NO]) {
+    // Handle the error.
+}
+
+[PSPDFProcessor generatePDFFromURL:htmlURL outputFileURL:pdfURL options:nil completionBlock:^(NSURL *outputURL, NSError *error) {
+    if (outputURL != nil) {
+        PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:outputURL];
+        // Handle the document.
+    } else if (error != nil) {
+        // Handle the error.
+    }
+}];
+```
+
+==]
+
+![](/images/guides/ios/knowledge-base/generating-pdf-from-complex-html/result.png)
+
+For more details about how to generate PDF files from HTML strings, URLs and attributed strings, take a look at [`PSPDFProcessor` documentation][pspdfprocessor] and `ConvertHTMLToPDFExample` from our [Catalog app][catalog].
+
+[pspdfprocessor]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessor.html#/Conversion
+[catalog]: https://pspdfkit.com/guides/ios/current/getting-started/example-projects/#pspdfcatalog

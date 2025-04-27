@@ -1,0 +1,49 @@
+---
+title: Automatic and Manual Syncing
+section: developers
+---
+
+By default, PSPDFKit Instant automatically synchronizes annotations with your PSPDFKit Server in real time. This is configurable, and you can instead choose for it to sync manually when your app requests it.
+
+Using a network, especially a cellular network, is one of the most energy-intensive tasks on mobile devices. While we do our best to minimize the energy impact of Instant, it can be reduced further by disabling listening for changes from the server or by syncing less often after local changes are made.
+
+Syncing after making local changes and listening for server changes can be configured separately. However, syncing always sends all local changes and fetches all changes from the server. It is not possible to fetch remote changes without pushing local changes or to push local changes without fetching remote changes.
+
+## Automatic Syncing
+
+By default, when you show a document managed by Instant in <% if android? %>an [`InstantPdfFragment`][]<% end %><% if ios? %>a [`PSPDFInstantViewController`][]<% end %>, real-time syncing of annotations is fully automatic: Instant will push local changes to the server as they happen and listen for changes from the server.
+
+If you don’t show the document in <% if android? %>an [`InstantPdfFragment`][]<% end %><% if ios? %>a [`PSPDFInstantViewController`][]<% end %>, you can enable listening for changes using <% if android? %>[`setListenToServerChanges`][] on the [`InstantPdfDocument`][]<% end %><% if ios? %>[`startListeningForServerChanges`][] and [`stopListeningForServerChanges`][] on the [`PSPDFInstantDocumentDescriptor`][]<% end %>.
+
+By default, Instant will use the network efficiently by coalescing changes with a one-second delay. You can reduce energy consumption at the cost of less immediate syncing by <% if android? %>using [`setDelayForSyncingLocalChanges`][] on [`InstantPdfDocument`][] to increase the delay.<% end %><% if ios? %>increasing the [`delayForSyncingLocalChanges`][] property of a document descriptor. Unless syncing after local changes is disabled entirely (see below), if the app enters the background and there are local changes that have not been synced, Instant will immediately attempt to sync.<% end %>
+
+## Disabling Listening for Server Changes
+
+If your app does not require real-time syncing, it may be better to manually fetch changes from the server to reduce energy consumption — for example, when the view showing the document appears, or with a button the user can tap.
+
+If you show the document in <% if android? %>an [`InstantPdfFragment`][]<% end %><% if ios? %>a [`PSPDFInstantViewController`][]<% end %>, you can disable listening using <% if android? %>[`setListenToServerChangesWhenVisible`][]<% end %><% if ios? %>the [`shouldListenForServerChangesWhenVisible`][] property<% end %>. Then sync manually whenever you want to by calling <% if android? %>[`syncAnnotations`][] or [`syncAnnotationsAsync`][] on the document.<% end %><% if ios? %>[`syncChanges:`][]. This method is marked with `IBAction` for easy setup in the Interface Builder.<% end %>
+
+<% if ios? %>If you use a custom view controller or something else, you don’t have to do anything: Just sync manually when required by calling [`sync`][] on the document descriptor.<% end %>
+
+## Disabling Syncing after Local Changes
+
+In addition to disabling listening for changes from the server (see above), you can disable syncing after local changes are made by <% if android? %>calling [`setDelayForSyncingLocalChanges`][] on a document with `SYNC_LOCAL_CHANGES_DISABLED`<% end %><% if ios? %>setting a document descriptor’s [`delayForSyncingLocalChanges`][] property to the special constant [`PSPDFInstantSyncingLocalChangesDisabled`][]<% end %>. This means Instant will never sync annotations with the server unless your app requests this by calling <% if android? %>[`syncAnnotations`][] or [`syncAnnotationsAsync`][] on the document<% end %><% if ios? %>[`sync`][] (on the document descriptor) or [`syncChanges:`][] (on the Instant view controller) — these do the same thing, so use whichever is more convenient for you<% end %>.
+
+It is possible to configure Instant to not sync after local changes are made but to listen for changes. This combination makes little sense and is not recommended, as the local changes would be pushed at seemingly random times when changes are received from the server.
+
+[`instantpdfdocument`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/document/InstantPdfDocument.html
+[`syncannotations`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/document/InstantPdfDocument.html#syncAnnotations()
+[`syncannotationsasync`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/document/InstantPdfDocument.html#syncAnnotationsAsync()
+[`setlistentoserverchanges`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/document/InstantPdfDocument.html#setListenToServerChanges(boolean)
+[`setdelayforsyncinglocalchanges`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/document/InstantPdfDocument.html#setDelayForSyncingLocalChanges(long)
+[`instantpdffragment`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/ui/InstantPdfFragment.html
+[`setlistentoserverchangeswhenvisible`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/instant/ui/InstantPdfFragment.html#setListenToServerChangesWhenVisible(boolean)
+[`pspdfinstantdocumentdescriptor`]: https://pspdfkit.com/api/ios/Protocols/PSPDFInstantDocumentDescriptor.html
+[`sync`]: https://pspdfkit.com/api/ios/Protocols/PSPDFInstantDocumentDescriptor.html#/c:objc(pl)PSPDFInstantDocumentDescriptor(im)sync
+[`delayforsyncinglocalchanges`]: https://pspdfkit.com/api/ios/Protocols/PSPDFInstantDocumentDescriptor.html#/c:objc(pl)PSPDFInstantDocumentDescriptor(py)delayForSyncingLocalChanges
+[`startlisteningforserverchanges`]: https://pspdfkit.com/api/ios/Protocols/PSPDFInstantDocumentDescriptor.html#/c:objc(pl)PSPDFInstantDocumentDescriptor(im)startListeningForServerChanges
+[`stoplisteningforserverchanges`]: https://pspdfkit.com/api/ios/Protocols/PSPDFInstantDocumentDescriptor.html#/c:objc(pl)PSPDFInstantDocumentDescriptor(im)stopListeningForServerChanges
+[`pspdfinstantsyncinglocalchangesdisabled`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFInstantSyncingLocalChangesDisabled
+[`pspdfinstantviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFInstantViewController.html
+[`shouldlistenforserverchangeswhenvisible`]: https://pspdfkit.com/api/ios/Classes/PSPDFInstantViewController.html#/c:objc(cs)PSPDFInstantViewController(py)shouldListenForServerChangesWhenVisible
+[`syncchanges:`]: https://pspdfkit.com/api/ios/Classes/PSPDFInstantViewController.html#/c:objc(cs)PSPDFInstantViewController(im)syncChanges:

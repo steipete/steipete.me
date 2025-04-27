@@ -1,0 +1,22 @@
+---
+title: Overview
+section: developers
+
+order: 1
+---
+
+PSPDFKit Server provides an HTTP-based API for integrating with your existing backend. It allows you to:
+
+- Add documents by either uploading them or specifying URLs where the documents can be fetched from
+- Efficiently copy a previously added document, usually with the intention to share it with a
+  different set of users
+- Delete documents
+- Fetch, create, update, and delete annotations in a particular document
+
+Requests to this API are protected with a secret token [configurable via the `API_AUTH_TOKEN`][pspdfkit guide server configuration] variable.
+
+Because this API allows full access to all data stored on the server, it is only meant to be used by your backend services, which we assume are fully trusted. For example, when connecting PSPDFKit for iOS to PSPDFKit Server, you must create [document-scoped JSON Web Tokens][client authentication] (JWTs) that can be handed out to users.
+
+[dashboard]: ../../pspdfkit-server/dashboard/
+[pspdfkit guide server configuration]: ../../configuration/overview/
+[client authentication]: ../../pspdfkit-server/client-authentication/

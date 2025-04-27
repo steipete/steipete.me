@@ -1,0 +1,79 @@
+---
+title: Annotation-Saving Mechanism
+section: developers
+
+---
+
+## Server-Backed Deployments
+
+By default, changes to annotations are always synced to the server. This means you can always use the [backend API][] to interact with annotations. This auto-save behavior can be configured by the instantiation configuration option, [`Configuration#autoSaveMode`][].
+
+Before the change is sent to the server, we assign a stable ID ([ULID](https://github.com/alizain/ulid/)). This ID is also used by the server, and it allows you to track updates that happen to the annotation before the server responds. If you would like to ensure a new annotation has been saved by the server, you can use [`Instance.ensureAnnotationSaved`][]:
+
+[==
+
+```es
+PSPDFKit.load(configuration).then(async instance => {
+  const createdAnnotation = await instance.createAnnotation(newAnnotation);
+  const savedAnnotation = await instance.ensureAnnotationSaved(
+    createdAnnotation
+  );
+  console.log(savedAnnotation.id); // => '01BS964AM5Z01J9MKBK64F22BQ'
+});
+```
+
+```js
+PSPDFKit.load(configuration).then(function(instance) {
+  instance
+    .createAnnotation(newAnnotation)
+    .then(instance.ensureAnnotationSaved)
+    .then(function(savedAnnotation) {
+      console.log(savedAnnotation.id); // => '01BS964AM5Z01J9MKBK64F22BQ'
+    });
+});
+```
+
+==]
+
+Before annotations are saved, [`annotations.willSave`][] is emitted. When this event occurs, you can be sure we will commit changes to the underlying backend. As an example, this event can be used to display a loading indicator.
+
+After the server responds to our changes, [`annotations.didSave`][] is emitted. This event will always follow [`annotations.willSave`][].
+
+## Standalone Deployments
+
+In a PSPDFKit for Web installation that is deployed as standalone, annotations will be stored in memory until they are exported. The same persisting steps are traversed, which means we still divide between saved and unsaved annotations. Exported Instant JSON will only contain annotations that are saved. Please see the guide on [exporting and importing][] for more information.
+
+## [`Configuration#autoSaveMode`][]
+
+If nothing else is configured, PSPDFKit for Web will have auto-save enabled. This means that changes to annotations are automatically synced. You can use [`Configuration#autoSaveMode`][] to configure exactly when annotations are saved.
+
+| Save Mode                             | Use Case                                                                                                                                                     |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| _default_                             | If nothing is configured, [`PSPDFKit.AutoSaveMode.INTELLIGENT`][] or [`PSPDFKit.AutoSaveMode.IMMEDIATE`] will be used, based on the presence of [Instant][]. |
+| [`PSPDFKit.AutoSaveMode.IMMEDIATE`]   | Annotations are saved whenever something changes, so long as they are in a valid state. This is useful for real-time updates but increases server load.      |
+| [`PSPDFKit.AutoSaveMode.INTELLIGENT`] | Annotations are saved whenever we detect a complete operation. This merges multiple operations into one server request and saves, for example, on deselect.  |
+| [`PSPDFKit.AutoSaveMode.DISABLED`]    | Annotations are not saved by default. You can use [`PSPDFKit.Instance#saveAnnotations`][] to trigger a save manually whenever you want.                      |
+
+[==
+
+```es
+PSPDFKit.load({ autoSaveMode: PSPDFKit.AutoSaveMode.INTELLIGENT, ... });
+```
+
+```js
+PSPDFKit.load({ autoSaveMode: PSPDFKit.AutoSaveMode.INTELLIGENT, ... });
+```
+
+==]
+
+[backend api]: https://pspdfkit.com/guides/server/current/api/overview/
+[`instance.ensureannotationsaved`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#ensureAnnotationSaved
+[`annotations.willsave`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsWillSaveEvent
+[`annotations.didsave`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsDidSaveEvent
+[`configuration#autosavemode`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#autoSaveMode
+[`pspdfkit.autosavemode.immediate`]: https://pspdfkit.com/api/web/PSPDFKit.html#.AutoSaveMode
+[`pspdfkit.autosavemode.intelligent`]: https://pspdfkit.com/api/web/PSPDFKit.html#.AutoSaveMode
+[`pspdfkit.autosavemode.disabled`]: https://pspdfkit.com/api/web/PSPDFKit.html#.AutoSaveMode
+[`pspdfkit.instance#saveannotations`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#saveAnnotations
+[instant]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#instant
+[exporting and importing]: ../../importing-exporting/instant-json/

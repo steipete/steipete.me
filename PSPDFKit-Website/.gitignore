@@ -1,0 +1,36 @@
+# Bundler
+/.bundle
+/bundle
+/vendor
+
+# Middleman
+/build
+/.tmp
+
+# Sass
+/.sass-cache
+
+# Node
+/node_modules
+/npm-debug.log
+/.yarnrc
+/.cache
+.npm
+
+# Misc
+.env
+.DS_Store
+*.sublime-workspace
+/codekit-config.json
+.Ulysses-*.plist
+*.swp
+.rvmrc
+.ruby-gemset
+.cache
+.idea
+*.iml
+TODO.md
+.byebug_history
+
+# Dapper/Docker
+.bash_history

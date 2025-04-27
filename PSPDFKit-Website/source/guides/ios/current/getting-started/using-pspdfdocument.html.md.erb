@@ -1,0 +1,16 @@
+---
+title: Using PSPDFDocument
+section: developers
+
+---
+
+Creating a [`PSPDFDocument`][] is cheap, but accessing its various properties might require expensive PDF parsing. So it’s a very good idea to keep `PSPDFDocument`s around to avoid the expense of recreating them whenever necessary.
+
+Don’t create a [`PSPDFDocument`][] in code like `collectionView:cellForItemAtIndexPath:`, but instead keep a dictionary / other data structure around that can create these documents as needed and then return the same object when you need to access it again. This will improve performance a lot. Using `NSCache` with the `UID`s as keys and the documents as objects is ideal.
+
+If you already have a way to identify your documents uniquely, use this and set the `UID` property to your unique string. If you don’t set `UID`, PSPDFKit will extrapolate a `UID` automatically based on the file URL and possibly the content. This process might be a bit expensive, so manually setting the `UID` is a good idea — if you already have such a system in place. If not, let PSPDFKit do its thing and don’t worry too much.
+
+If you create [`PSPDFDocument`][] objects in a tight loop, add an `@autoreleasepool` so objects can be deallocated early.
+If you edit annotations or use the document editor, make sure there’s only one document instance where you edit. PSPDFKit automatically saves the document, and keeping multiple independent copies of the document around, all of which save to the file, might corrupt the file.
+
+Loading a `PSPDFDocument` from data in memory using `PSPDFDataContainerProvider` is not recommended. Since iOS is an environment without virtual memory, allocating more memory than is available by loading a large PDF will get your app terminated by iOS. Additionally, PSPDFKit is unable to automatically save annotation changes back into the PDF when using data in memory. If you want to use data in memory because of encryption, look into `PSPDFAESCryptoDataProvider` or a custom implementation of `PSPDFDataProviding` instead for a way to dynamically decrypt the needed portions of the PDF.

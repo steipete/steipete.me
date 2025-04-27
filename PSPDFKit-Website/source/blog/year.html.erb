@@ -1,0 +1,40 @@
+---
+section: blog
+change_frequency: weekly
+---
+
+<% @title = year %>
+
+<%= partial 'nav_sub' %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 small pt-3 pr-xl-5 mb-5 mb-md-0 text-center text-md-left">
+      <h6 class="mb-4">Years</h6>
+      <ul class="nav nav-pills flex-md-column justify-content-center justify-content-md-start">
+        <% blog_years.each do |y| %>
+          <li class="nav-item">
+            <a class="nav-link nav-link-brand <%= 'active' if year == y %>"
+               href="<%= "/blog/#{y}" %>">
+              <%= y %>
+            </a>
+          </li>
+        <% end %>
+        <li class="nav-item mt-2">
+          <a href="/blog/categories/" class="nav-link nav-link-brand text-muted">
+            Archive by Category
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <h2 class="mt-0"><%= year %></h2>
+      <div class="row">
+        <% articles.reject {|a| a.data[:secret]}.each do |a| %>
+          <%= partial 'preview_sm', locals: { article: a } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

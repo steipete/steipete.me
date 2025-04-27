@@ -1,0 +1,210 @@
+---
+title: Multimedia Annotations
+section: developers
+---
+
+Along with [rich media and video annotations][], PSPDFKit supports a custom gallery format that can display locally stored videos, websites, image galleries, and YouTube videos by using link annotations with URLs using the `pspdfkit://` scheme. With this feature, you can securely enrich standard PDF documents with interactive content.
+
+## Setup
+
+Depending on the type of content you want to present, PSPDFKit requires various third-party dependencies, as well as preparations to your project. In order to allow PSPDFKit to show image galleries, videos, or websites, you need to declare the [`PdfMediaDialog`][] activity inside your `AndroidManifest.xml`:
+
+```app/src/main/AndroidManifest.xml
+<activity
+    android:name="com.pspdfkit.ui.PdfMediaDialog"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:theme="@style/Theme.AppCompat.DialogWhenLarge" />
+```
+
+> [`PdfMediaDialog`][] is an activity that is launched as a modal dialog to overlay the viewed PDF. It can host an interactive image gallery, a video player, or a `WebView`. Unless you only want to show YouTube videos, you must add this activity to your `AndroidManifest.xml`.
+
+### Setting Up Image Galleries
+
+If you want to display image galleries, you have to add the [Picasso][] image loader library as a dependency in your `build.gradle` file:
+
+```app/build.gradle
+dependencies {
+    implementation 'com.squareup.picasso:picasso:<%= guide_constant('android', 'picasso_version') %>'
+}
+```
+
+### Setting Up YouTube Support
+
+By default, PSPDFKit will open YouTube videos in a [`WebView`][]. For a more immersive experience when presenting YouTube videos, your app can include the [YouTube Android Player API library][]. Here are the necessary steps for this:
+
+- [Register][google api register] your application in the Google Developer Console to obtain your YouTube API key.
+- [Download][google android player download] the latest version of `YouTubeAndroidPlayerApi.jar` and copy it into the `libs/` folder of your Android project.
+- Add [`PdfYouTubeActivity`][] and your previously obtained YouTube API key to the manifest, as shown below.
+
+```app/src/main/AndroidManifest.xml
+<activity
+    android:name="com.pspdfkit.ui.PdfYouTubeActivity"
+    android:theme="@style/Theme.AppCompat.DialogWhenLarge"
+    android:configChanges="orientation|keyboardHidden|screenSize" />
+
+<meta-data android:name="youtube_api_key" android:value="YOUR_YOUTUBE_API_KEY_GOES_HERE" />
+```
+
+Once the library is included, PSPDFKit will automatically use it instead of the [`WebView`][] when playing a YouTube video.
+
+## Showing Multimedia Content
+
+In order to show multimedia content, your PDF document must contain links with URIs that point to the content using the `pspdfkit://` scheme. All URIs follow the same pattern:
+
+```
+pspdfkit://[options]targetPath
+```
+
+All multimedia URIs use the `pspdfkit://` scheme. After the scheme, there’s an optional list of `options` enclosed in square brackets. These options are specific to the linked multimedia content and can be used to configure how it will be displayed. The `path` should point to the content, either local or remote.
+
+Links can be added to the document in two different ways:
+
+- As a [`LinkAnnotation`][] carrying a [`UriAction`][].
+- As an [`OutlineElement`][] whose action is also a [`UriAction`][].
+
+In addition, you can directly execute any given [`UriAction`][] by passing it to [`PdfFragment#executeAction`][].
+
+### Image Galleries
+
+PSPDFKit supports showing image galleries that are based on predefined JSON files. For every gallery that should be displayed inside a PDF, there has to be one file with the `.gallery` file extension inside the app’s assets.
+
+While galleries can be added programmatically, the simplest approach is via a link annotation. A link annotation already defines a bounding box for the position, which the gallery will use. Gallery annotations can be both created and saved in a file or in code. Here’s an example of how to create this in code:
+
+[==
+
+```kotlin
+// Create a link on the first page.
+val pageIndex = 0
+val galleryAnnotation = LinkAnnotation(pageIndex)
+
+// Define the location on the page.
+galleryAnnotation.boundingBox = RectF(0f, 0f, 10f, 10f)
+
+// Set the URL pointing to the gallery file.
+val url = "pspdfkit://localhost/galleries/sample.gallery"
+galleryAnnotation.action = UriAction(url)
+
+// Add the new annotation to the document.
+document.addAnnotationToPage(galleryAnnotation)
+```
+
+```java
+// Create a link on the first page.
+final int pageIndex = 0;
+final LinkAnnotation galleryAnnotation = new LinkAnnotation(pageIndex);
+
+// Define the location on the page.
+galleryAnnotation.setBoundingBox(new RectF(0f, 0f, 10f, 10f));
+
+// Set the URL pointing to the gallery file.
+final String url = "pspdfkit://localhost/galleries/sample.gallery";
+galleryAnnotation.setAction(new UriAction(url));
+
+// Add the new annotation to the document.
+document.addAnnotationToPage(galleryAnnotation);
+```
+
+==]
+
+The target is a `.gallery` JSON file that defines the contents and title of each image. Its definition is very simple and looks like this:
+
+```json
+[
+  {
+    "contentURL": "http://www.link-to-image1.com/image1.jpg",
+    "caption": "This is a small image."
+  },
+  {
+    "contentURL": "file://android_asset/local_file.jpg",
+    "caption": "This is a local image. Captions are optional."
+  }
+]
+```
+
+`contentURL` can point to a local or remote source. Image sources can be JPG, PNG, BMP, GIF, or WebP, as well as HEIF on all devices running Android 8 or newer. The image `caption` is optional.
+
+> **ℹ️ Note:** Currently, `.gallery` files must be stored inside the app’s `assets/` directory, and they must use the `.gallery` file extension.
+
+### Video Files
+
+PSPDFKit allows playback of videos that are stored within your app’s `assets/` folder. Videos have to be encoded using one of the [supported video formats][android guide media formats].
+
+Here’s how you can add a [`LinkAnnotation`][] to your PDF document for playing back a video file stored inside the app’s assets at `assets/videos/small.mp4`:
+
+[==
+
+```kotlin
+// Create a link on the first page.
+val pageIndex = 0
+val videoAnnotation = LinkAnnotation(pageIndex)
+
+// Define the location on the page.
+videoAnnotation.boundingBox = RectF(0f, 0f, 10f, 10f)
+
+// Set the URL pointing to the video file.
+val url = "pspdfkit://localhost/videos/small.mp4"
+videoAnnotation.action = UriAction(url)
+
+// Add the new annotation to the document.
+document.addAnnotationToPage(videoAnnotation)
+```
+
+```java
+// Create a link on the first page.
+final int pageIndex = 0;
+final LinkAnnotation videoAnnotation = new LinkAnnotation(pageIndex);
+
+// Define the location on the page.
+videoAnnotation.setBoundingBox(new RectF(0f, 0f, 10f, 10f));
+
+// Set the URL pointing to the video file.
+final String url = "pspdfkit://[autoplay:false,offset:10]localhost/videos/small.mp4";
+videoAnnotation.setAction(new UriAction(url));
+
+// Add the new annotation to the document.
+document.addAnnotationToPage(videoAnnotation);
+```
+
+==]
+
+All video URLs must begin with `pspdfkit://localhost/` (which maps to your app’s `assets/` directory), followed by the path of the video relative to your assets root. In the example, video playback is configured to not start automatically after showing the video (i.e. to wait for the user to press play) and to start video playback at second 10.
+
+#### Available Video Playback Options
+
+Here is a list of all supported options that can be used inside local video playback URLs:
+
+| name       | type    | default | description                                                                                                                         |
+| ---------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `autoplay` | Boolean | `false` | Indicates if the video should start playing automatically once it becomes visible.                                                  |
+| `offset`   | int     | `0`     | Defines the start time of the video in seconds. If this property is not set, a start time at the beginning of the video is assumed. |
+
+### YouTube
+
+In order to play YouTube videos, provide a link to the video you want to play, but using the `pspdfkit://` URL scheme. Available options are the [same as for the local videos](#available-video-playback-options), but they will be applied only if the video is opened using PSPDFKit’s [improved YouTube support](#setup-youtube-support).
+
+Here’s an example URL that will open a YouTube video within PSPDFKit:
+
+```
+pspdfkit://www.youtube.com/watch?v=JskztPPSJwY
+```
+
+### Web Content
+
+To display web content in a [`WebView`][], simply provide the link using the `pspdfkit://` scheme:
+
+    pspdfkit://pspdfkit.com
+
+[rich media and video annotations]: ../../annotations/video-annotations
+[`assetscontentprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/media/AssetsContentProvider.html
+[`pdfmediadialog`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfMediaDialog.html
+[`pdfyoutubeactivity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfYouTubeActivity.html
+[`webview`]: http://developer.android.com/reference/android/webkit/WebView.html
+[youtube android player api library]: https://developers.google.com/youtube/android/player/
+[google api register]: https://developers.google.com/youtube/android/player/register
+[google android player download]: https://developers.google.com/youtube/android/player/downloads/
+[android guide media formats]: http://developer.android.com/guide/appendix/media-formats.html
+[`linkannotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LinkAnnotation.html
+[`uriaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/actions/UriAction.html
+[`pdffragment#executeaction`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#executeAction(com.pspdfkit.annotations.actions.Action)
+[`outlineelement`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/OutlineElement.html
+[picasso]: https://github.com/square/picasso

@@ -1,0 +1,99 @@
+---
+title: Example Projects
+section: developers
+
+order: 20
+alternate_platform_links:
+  ios: getting-started/example-projects
+  android: getting-started/example-projects
+---
+
+PSPDFKit for Web comes with two example projects — one written in Node.js, and another one in Ruby on Rails — to demonstrate how to integrate server-backed deployment. Furthermore, we provide an example of how to use Webpack to build a project that uses PSPDFKit for Web Standalone.
+
+We currently don’t provide example applications for other languages (ASP.NET, PHP, Python, etc.). You can look into our existing examples and use the guides to build your own integration.
+
+---
+
+## Node.js or Ruby on Rails (Server-Backed Deployment)
+
+This example shows how to integrate PSPDFKit for Web into a Node.js or Ruby on Rails app.
+
+The Node.js example uses the [Express web framework][] to handle routing and [jsonwebtoken][] to build the [JSON Web Token][] (JWT). The [Ruby on Rails][] example uses [ruby-jwt][] to build the [JWT][json web token].
+
+Both the examples include the PSPDFKit bundle in the head via the script tag. However, you can also use the PSPDFKit npm package with a module bundler, like in the standalone examples.
+
+These steps show how to get the example apps, as well as PSPDFKit Server, up and running using Docker and Docker Compose. You can refer to the README of the individual examples for instructions on starting them outside of Docker.
+
+1.  Make sure you have [Docker][install docker] installed and running.
+
+    On macOS, we recommend the most recent version of [Docker for
+    Mac][].
+
+    On Windows, we recommend the most recent version of [Docker for Windows][].
+
+2.  Pull the `pspdfkit` image from Docker Hub:
+
+    ```shell
+    docker pull pspdfkit/pspdfkit
+    ```
+
+3.  Get one of our example apps.
+
+    The examples provide a `docker-compose.yml` file and a `Dockerfile` that will work without additional configuration:
+
+    - [Ruby on Rails example][]
+    - [Node.js example][]
+
+    <br /><br />
+
+4.  Run the container:
+
+    ```shell
+    ACTIVATION_KEY=YOUR_ACTIVATION_KEY_GOES_HERE docker-compose up
+    ```
+
+    For comprehensive instructions on how to install and run the example projects, please refer to the README in the repos.
+
+---
+
+## React App (Standalone Deployment)
+
+This is an example project for PSPDFKit for Web demonstrating how to embed it into a React app bootstrapped with [Create React App][]. It shows how to install the PSPDFKit package with npm or yarn and consume it in your host application.
+
+[View and download the source code on GitHub][react example source code].
+
+The [README in the repository][react example source code] will guide you through the setup steps.
+
+---
+
+## webpack (Standalone Deployment)
+
+This example shows how to integrate PSPDFKit for Web Standalone into a JavaScript application and how to build it with webpack.
+
+[View and download the source code on GitHub][webpack example source code].
+
+### Prerequisites
+
+- [Node.js][] (with npm)
+- PSPDFKit for Web license key ([existing customers][] or [evaluation trial][pspdfkit trial])
+
+Please refer to our [Adding to Your Project][] guide for further information on how to obtain a license key.
+
+To install and run the examples, please refer to the [README in the repository][webpack example source code].
+
+[express web framework]: http://expressjs.com/
+[jsonwebtoken]: https://github.com/auth0/node-jsonwebtoken
+[json web token]: ../../server-backed/client-authentication/
+[ruby on rails]: http://rubyonrails.org/
+[ruby-jwt]: https://github.com/jwt/ruby-jwt
+[install docker]: https://www.docker.com/
+[docker for mac]: https://docs.docker.com/docker-for-mac/
+[docker for windows]: https://docs.docker.com/docker-for-windows/
+[ruby on rails example]: https://github.com/pspdfkit/pspdfkit-server-example-rails
+[node.js example]: https://github.com/pspdfkit/pspdfkit-server-example-nodejs
+[create react app]: https://github.com/facebookincubator/create-react-app
+[react example source code]: https://github.com/PSPDFKit/pspdfkit-web-example-react
+[webpack example source code]: https://github.com/PSPDFKit/pspdfkit-web-example-webpack
+[node.js]: http://nodejs.org/
+[existing customers]: https://customers.pspdfkit.com
+[adding to your project]: ../../standalone/adding-to-your-project/

@@ -1,0 +1,128 @@
+---
+title: The View State
+section: developers
+---
+
+PSPDFKit for Windows offers a rich GUI environment. This provides a great end user experience, but sometimes developers need programmatic control of these moving parts.
+
+## Changing the Layout Mode
+
+Different documents and devices require the layout of a page to appear differently onscreen. It’s possible to control this [layout mode][layout mode api] programmatically rather than letting the user decide.
+
+This example shows how to set the layout mode to double width:
+
+```csharp
+await pdfView.Controller.SetLayoutModeAsync(LayoutMode.Double);
+```
+
+## Setting the Zoom Mode
+
+The [zoom mode][zoom mode api] is automatic by default, but this is controllable either via the UI or programmatically.
+
+To fix the zoom mode to `Fit to width`, the following code can be written:
+
+```csharp
+await pdfView.Controller.SetZoomModeAsync(ZoomMode.FitToWidth);
+```
+
+## Setting the Currently Shown Page
+
+It’s possible to programmatically select which page is currently shown. The parameter passed is a zero-based index of the page to show:
+
+```csharp
+await pdfView.Controller.SetCurrentPageIndexAsync(1);
+```
+
+An exception will be thrown if the page index requested is less than zero or greater than the number of pages in the document. In such a case, the page index will not change.
+
+## Controlling the Interaction Mode
+
+PSPDFKit for Windows offers a wide range of tools for manipulating a document. Examples of this are panning, searching, and adding annotations. A full list of these modes can be found in the [API reference][interaction mode api].
+
+For example, if we want to enter search mode programmatically, we can write the following:
+
+```csharp
+await pdfView.Controller.SetInteractionModeAsync(InteractionMode.Search);
+```
+
+To exit out of the mode, we can state the following:
+
+```csharp
+await pdfView.Controller.SetInteractionModeAsync(InteractionMode.None);
+```
+
+## Controlling the Sidebar Mode
+
+Controlling the sidebar mode is similar to controlling the interaction mode. There are [sidebar modes][sidebar mode api] that select both if the side is visible and which tool is being shown.
+
+For example, if we want to show the thumbnail mode programmatically, we can write the following:
+
+```csharp
+await pdfView.Controller.SetSidebarModeAsync(SidebarMode.Thumbnails);
+```
+
+To hide the sidebar again, we simply set the mode to `None`:
+
+```csharp
+await pdfView.Controller.SetSidebarModeAsync(SidebarMode.None);
+```
+
+## Toolbar Visibility
+
+Sometimes a toolbar is not required, and PSPDFKit for Windows offers the ability to hide the toolbar.
+
+There are three ways to apply a view state to the toolbar. If a [`PdfView`][pdfview api] is being used, then the option can be set in `xaml`:
+
+```xaml
+<ui:PdfView ShowToolbar="false" Name="PDFView"/>
+```
+
+Alternatively, you can set this at runtime:
+
+```csharp
+pdfView.ShowToolbar = false;
+```
+
+If you are not using a [`PdfView`][pdfview api], then it’s still possible to set it via the controller:
+
+```csharp
+await controller.SetShowToolbarAsync(false);
+```
+
+## Showing Annotations
+
+It’s possible to show or hide annotations in the [`PdfView`][pdfview api]. The methods of achieving this are similar to setting the visibility of the toolbar.
+
+If a [`PdfView`][pdfview api] is being used, then the options can be set in `xaml`:
+
+```xaml
+<ui:PdfView ShowAnnotations="false" Name="PDFView"/>
+```
+
+Alternatively, you can set this at runtime:
+
+```csharp
+pdfView.ShowAnnotations = false;
+```
+
+If you are not using a [`PdfView`][pdfview api], then it’s still possible to set it via the controller:
+
+```csharp
+await controller.SetShowAnnotationsAsync(false);
+```
+
+## Keeping the First Spread as a Single Page
+
+In double-page spread layout mode, the title page or first page will appear next to the second page. Aesthetically, this may not be as pleasing to the eye as a standalone title page. This is often true for magazines that want to show a cover page before the regular content starts.
+
+To set the first page to show as a single page, we can write the following:
+
+```csharp
+await pdfView.Controller.SetKeepFirstSpreadAsSinglePageAsync(true);
+```
+
+[pdfview api]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html
+[layout mode api]: /api/windows/PSPDFKit/PSPDFKit.UI.LayoutMode.html
+[zoom mode api]: /api/windows/PSPDFKit/PSPDFKit.UI.ZoomMode.html
+[interaction mode api]: /api/windows/PSPDFKit/PSPDFKit.UI.InteractionMode.html
+[sidebar mode api]: /api/windows/PSPDFKit/PSPDFKit.UI.SidebarMode.html

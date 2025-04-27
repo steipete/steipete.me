@@ -1,0 +1,38 @@
+---
+title: A Grey/White/Black Page Is Rendered
+section: developers
+
+---
+
+While there can be a lot of reasons why you're experiencing this issue, the most common is improper use of view controllers.
+
+Please read up on [Apple's Guide for Child View Controller Containment][].
+
+To make it simple - adding the PSPDFViewController's view onto another view alone **will not work**.
+You need to connect the controllers as well.
+
+[==
+
+```swift
+func displayContentController(_ content: UIViewController) {
+    addChild(content)
+    content.view.frame = frameForContentController()
+    view.addSubview(currentClientView)
+    content.didMove(toParentViewController: self)
+}
+```
+
+```objc
+- (void)displayContentController:(UIViewController*) content {
+   [self addChildViewController:content];
+   content.view.frame = [self frameForContentController];
+   [self.view addSubview:self.currentClientView];
+   [content didMoveToParentViewController:self];
+}
+```
+
+==]
+
+ObjC.io has good content on this as well: http://www.objc.io/issue-1/containment-view-controller.html
+
+[Apple's Guide for Child View Controller Containment]: https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/ImplementingaContainerViewController.html

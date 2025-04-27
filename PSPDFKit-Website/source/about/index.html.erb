@@ -1,0 +1,222 @@
+---
+title: About
+description: Meet the team behind PSPDFKit
+---
+
+<%= partial 'nav_sub' %>
+
+<section class="section section-sm">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="row mb-5">
+      <div class="col-12 text-center">
+        <header>
+          <h1>The Team</h1>
+        </header>
+      </div>
+    </div>
+
+    <!-- Management -->
+    <div class="row justify-content-center align-items-center pb-5 mb-5">
+
+      <!-- Peter -->
+      <div class="col-sm-10 col-lg-4 mb-5 mb-lg-0">
+        <div class="card">
+          <img src="/images/shared/placeholder.gif" data-src="/images/people/peter-steinberger.jpg" alt="Peter Steinberger, CEO" class="card-img-profile rounded-circle mx-auto lazyload" loading="lazy" width="120" height="120">
+          <div class="card-body small pt-3">
+            <h4 class="card-title mb-1">Peter Steinberger</h4>
+            <p><em>Founder &amp; CEO</em></p>
+            <p class="mb-4">
+              Peter founded and bootstrapped PSPDFKit GmbH in 2011, and has since gradually expanded the company with the goal of providing the highest-quality PDF Framework to mobile. While Peter is responsible for the day-to-day management of the team, he never misses the chance to go under PSPDFKit's hood and continue improving on the original code he wrote back in 2011.
+            </p>
+            <p class="text-center text-muted mb-0">
+              <a href="https://twitter.com/steipete" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/steipete/" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-linkedin"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jonathan -->
+      <div class="col-sm-10 col-lg-4 mb-5 mb-lg-0">
+        <div class="card">
+          <img src="/images/shared/placeholder.gif" data-src="/images/people/jonathan-rhyne.jpg" alt="Jonathan D. Rhyne, COO" class="card-img-profile rounded-circle mx-auto lazyload" loading="lazy" width="120" height="120">
+          <div class="card-body small pt-3">
+            <h4 class="card-title mb-1">Jonathan D. Rhyne</h4>
+            <p><em>Co-Founder &amp; COO</em></p>
+            <p class="mb-4">
+              Jonathan joined PSPDFKit in 2014, bringing a unique perspective to business development and strategy in the mobile industry. Jonathan is responsible for managing our sales team, legal matters, and providing vision for where the company should go. He is a graduate of North Carolina State University and the Norman Adrian Wiggins School of Law.
+            </p>
+            <p class="text-center text-muted mb-0">
+              <a href="https://twitter.com/jdrhyne" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/jonathan-rhyne-54084811/" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-linkedin"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Martin -->
+      <div class="col-sm-10 col-lg-4 mb-5 mb-lg-0">
+        <div class="card">
+          <img src="/images/shared/placeholder.gif" data-src="/images/people/martin-schurrer.jpg" alt="Martin Schürrer, CTO" class="card-img-profile rounded-circle mx-auto lazyload" loading="lazy" width="120" height="120">
+          <div class="card-body small pt-3">
+            <h4 class="card-title mb-1">Martin Schürrer</h4>
+            <p><em>Co-Founder &amp; CTO</em></p>
+            <p class="mb-4">
+              Martin joined PSPDFKit in 2014, bringing a massive amount of experience in developing backend services. He is our lead engineer and is responsible for managing the development of the upcoming products in our pipeline. Martin uses Elixir, Erlang, Ruby, PostgreSQL, and Riak every day in his work. Martin studied at the Vienna University of Technology.
+            </p>
+            <p class="text-center text-muted mb-0">
+              <a href="https://twitter.com/msch" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-twitter"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/martinschuerrer/" target="_blank" rel="noopener" class="link-fa mx-2">
+                <i class="fa fa-lg fa-linkedin"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="row justify-content-center">
+      <% team = [
+        { name: "Samo Korošec", title: "UX & Design<br>Vienna" },
+        { name: "Christoph Mantler", title: "QA Engineer<br>Vienna" },
+        { name: "Daniel Demiss", title: "iOS/Instant Engineer<br>Hamburg" },
+        { name: "Daniel Martin", title: "Core Engineer<br>Madrid" },
+        { name: "David Schreiber-Ranner", title: "Android Engineer<br>Vienna" },
+        { name: "Douglas Hill", title: "iOS Engineer<br>London/World Traveller" },
+        { name: "Giuseppe Gurgone", title: "Web Engineer<br>Sicily" },
+        { name: "James Swift", title: "Core Engineer<br>Ireland" },
+        { name: "Julian Grosshauser", title: "QA Engineer<br>Pfaffstädten" },
+        { name: "Nishant Desai", title: "iOS Engineer<br>Mumbai" },
+        { name: "Matej Bukovinski", title: "iOS Engineer<br>Ljubljana" },
+        { name: "Patrik Weiskircher", title: "Core Engineer<br>Columbus" },
+        { name: "Rad Azzouz", title: "iOS Engineer/Support<br>Montreal" },
+        { name: "Reinhard Hafenscher", title: "Android Engineer<br>Vienna" },
+        { name: "Richard Malloy", title: "Sales<br>Raleigh" },
+        { name: "Simone Arpe", title: "Android Engineer<br>Genova" },
+        { name: "Ivan Skoric", title: "Android Engineer<br>Zagreb" },
+        { name: "Stefan Kieleithner", title: "iOS Engineer<br>Vienna" },
+        { name: "Tomáš Šurín", title: "Android Engineer<br>Bratislava" },
+        { name: "William Meleyal", title: "Web Engineer<br>Scarborough" },
+        { name: "Yann Domalain", title: "Sales<br>Raleigh" },
+        { name: "Miguel Calderón", title: "Web Engineer<br>Madrid" },
+        { name: "Kelly Benitez", title: "Marketing<br>London" },
+        { name: "Nick Winder", title: "Core Engineer<br>Texas" },
+        { name: "Wei Li", title: "Finance & Administration<br>China/Vienna" },
+        { name: "Oscar Swanros", title: "iOS Engineer<br>Colima" },
+        { name: "Steven Izzo", title: "QA Engineer/Support<br>Raleigh" },
+        { name: "Claudio Ortolina", title: "Web Engineer<br>London/Istanbul" },
+        { name: "Akshat Patel", title: "iOS Engineer<br>Ahmedabad" },
+        { name: "Marco Scannadinari", title: "Web Engineer<br>London" },
+        { name: "Sam Fleder", title: "Sales/Legal<br>Raleigh" },
+        { name: "Petra Bukovinski", title: "Design<br>Ljubljana" },
+        { name: "Maša Majce", title: "Design<br>Ljubljana" },
+        { name: "Natalye Childress", title: "Editor<br>Berlin" },
+        { name: "Adrian Kashivskyy", title: "iOS Engineer<br>Warsaw" },
+        { name: "Amit Nayar", title: "Core Engineer<br>Manchester" },
+        { name: "Arek Gil", title: "Web Engineer<br>Seville/Cracow" },
+        { name: "Veronica Marini", title: "Web Engineer<br>Vienna" },
+        { name: "Ritesh Kumar", title: "Web Engineer<br>Mumbai" },
+        { name: "Guillermo Peralta", title: "Web Engineer<br>Asunción" },
+        { name: "Markus Woschank", title: "Core Engineer<br>Vienna" },
+      ] %>
+      <% team.sort_by {|p| p[:name].split(' ').last.parameterize }.each do |p| %>
+        <div class="col-6 col-md-4 col-lg-3 mb-5 d-flex">
+          <div class="card w-100">
+            <img src="/images/shared/placeholder.gif" data-src="/images/people/<%= p[:name].parameterize %>.jpg" alt="<%= p[:name] %>, <%= p[:title] %>" class="card-img-profile rounded-circle mx-auto lazyload" loading="lazy" width="120" height="120">
+            <div class="card-body text-center small pt-2 pb-4">
+              <h5 class="card-title"><%= p[:name] %></h5>
+              <p class="mb-0"><em><%= p[:title] %></em></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</section>
+
+<section class="section pb-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <header class="text-center">
+          <h2>About PSPDFKit</h2>
+        </header>
+        <p>PSPDFKit is helping companies and users increase productivity across the globe. With our robust PDF solutions, we ensure developers and end-users have the highest quality tools available to do their best work. Trusted by industry leaders throughout the world such as IBM, SAP, Lufthansa & United Airlines, PSPDFKit is the go-to solution for integrating PDFs into your app.</p>
+
+        <p>With our flagship Software Development Kits (SDKs), companies are able to deliver superior customer experiences on any platform and any device, effectively replacing the need for paper processes. PSPDFKit is designed and built in a modular way so that it scales with development needs allowing developers to focus on building great apps. In less than 15 minutes, customers can seamlessly integrate PSPDFKit adding powerful PDF viewing, annotating and form filling/signing into their app saving months of development time and expense.</p>
+
+        <p>With our real-time document syncing solution, PSPDFKit Instant, users can seamlessly share and annotate PDF documents across all devices and platforms they use. Instant integrates with our SDKs on Android, iOS and Web and is designed to be self-hosted, so customers retain complete control over their data and infrastructure.</p>
+
+        <p>Founded in 2011, PSPDFKit has grown into a global company serving over half a billion users worldwide. Due to a keen focus on the developers who build these products, PSPDFKit has been chosen as the technology provider by thousands of companies for its powerful performance, versatility and stability. Paired with second to none enterprise class support, PSPDFKit has become a global leader for integrating PDF class features in any app whether on iOS, Android, macOS, Windows or the Web.</p>
+
+        <header class="text-center">
+          <h3 id="core-values">Our Core Values</h3>
+        </header>
+        <ul>
+        <li>Continuous Improvement</li>
+        <li>Be open to feedback and to changing your mind</li>
+        <li>Search out and welcome different perspectives</li>
+        <li>It’s always about people, our people and our customers</li>
+        <li>Trust and be excellent to one another</li>
+        <li>Explore, be creative, experiment and be willing to embrace the latest technology</li>
+        <li>Aim to get things done the right way and care about quality</li>
+        </ul>
+      </div>
+
+    <!-- Blog Posts -->
+    <div class="text-center mb-4">
+      <h2>Learn More About Our Culture</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="row">
+          <%= partial 'blog/preview_md', collection: custom_articles([
+            '/blog/2019/how-we-work/',
+            '/blog/2019/my-first-pspdfkit-retreat/',
+            '/blog/2019/remote-work-what-ive-learned/',
+            '/blog/2018/how-to-use-slack-and-not-go-crazy/',
+            '/blog/2018/2018-in-review/',
+            '/blog/2018/music-for-concentration/'
+            ]) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Careers CTA -->
+<section class="section">
+  <div class="container">
+    <div class="card card-hoverable">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-md-6 col-lg-8">
+            <h3 class="card-title text-brand">Join the Team</h3>
+            <p class="card-lead lead mb-md-0">
+              Work here is challenging, but you'll absolutely love it.
+            </p>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <a href="/careers/" class="btn btn-block btn-lg btn-brand">
+              View Openings
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

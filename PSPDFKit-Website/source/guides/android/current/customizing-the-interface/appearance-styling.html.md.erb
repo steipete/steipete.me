@@ -1,0 +1,738 @@
+---
+title: Appearance Styling
+section: developers
+alternate_platform_links:
+  ios: "customizing-the-interface/appearance-mode-manager"
+---
+
+To customize UI elements, PSPDFKit uses the standard Android [style and theme system][]. When declaring a theme for your application, you can define the primary colors using the attributes `colorPrimary`, `colorAccent`, and `colorPrimaryDark`. All UI components of PSPDFKit (toolbars, views, dialogs, etc.) will use these colors to style the rest of the UI.
+
+Out of the box, PSPDFKit comes with two predefined themes — `PSPDFKit.Theme.Default` and `PSPDFKit.Theme.Dark` — for the [`PdfActivity`][] and all of its views. This guide describes how to tweak the default appearance to match the look of your app.
+
+## Defining a Custom Theme
+
+Since PSPDFKit adheres to Android’s style and theme framework, you have full control over styling the appearance of all PSPDFKit components. The [`PdfActivity`][] is built on top of the Android Compatibility Library v7, which means your theme has to inherit from `Theme.AppCompat`.
+
+Furthermore, since [`PdfActivity`][] uses a [custom toolbar system][], the decor action bar of the activity has to be deactivated. The easiest way to do this is to use the default PSPDFKit themes (`PSPDFKit.Theme.Default` and `PSPDFKit.Theme.Dark`) or `Theme.AppCompat.NoActionBar` as a parent theme.
+
+1.  Inside your app’s `styles.xml`, create a custom theme with `Theme.AppCompat.NoActionBar` as the parent. Or, to tweak the default style, a custom theme can inherit directly from `PSPDFKit.Theme.Default` or `PSPDFKit.Theme.Dark` as a parent:
+
+    ```styles.xml
+    <style name="MyApp.PSPDFKitTheme" parent="PSPDFKit.Theme.Default">
+        <item name="colorPrimary">@color/mymain_color</item>
+        <item name="colorPrimaryDark">@color/mymain_color_dark</item>
+        <item name="colorAccent">@color/mymain_color_accent</item>
+
+        <!-- PSPDFKit comes with several styleable components. -->
+        <item name="pspdf__inlineSearchStyle">@style/MyInlineSearch</item>
+    </style>
+
+    <style name="MyInlineSearch">
+        <item name="pspdf__textColor">@color/my_inline_search_color</item>
+    </style>
+    ```
+
+    > **💡 Tip:** If you want to use a different parent theme, you can manually disable the default window decor action bar by setting `windowActionBar` to `false` and `windowNoTitle` to `true`.
+
+2.  Next, set your theme to the [`PdfActivity`][] using the `android:theme` property inside your `AndroidManifest.xml`:
+
+    ```AndroidManifest.xml
+    <application>
+        <activity android:name="com.pspdfkit.ui.PdfActivity"
+                  android:theme="@style/MyApp.PSPDFKitTheme"/>
+    </application>
+    ```
+
+A custom theme can be set either using the manifest or via [`PdfActivityConfiguration#Builder`][]. In default mode, it can be set via [`PdfActivityConfiguration.Builder#theme(int)`][], while in night theme mode, it can be set via [`PdfActivityConfiguration.Builder#themeDark(int)`][]. When a custom theme is set using the builder configuration, it overwrites the custom theme set in the manifest.
+
+PSPDFKit resolves the used style values in the following order, using the first style found:
+
+1.  Styles provided by the custom theme (i.e. your `MyApp.PSPDFKitTheme` in the above example) set in the manifest for `com.pspdfkit.ui.PdfActivity`.
+2.  Default styles/internal PSPDFKit styles.
+
+This means that PSPDFKit will use default values for all styles not covered under the current theme’s customization.
+
+## Night Theme Mode
+
+PSPDFKit allows you to customize PDF rendering styles (i.e. page and text colors), along with its app theme. PSPDFKit offers a night theme mode that can be set via [`PdfActivityConfiguration.Builder#themeMode(ThemeMode)`][]. Night theme mode sets our internal predefined dark theme and inverts pages colors. A custom dark theme for night mode can easily be set via [`PdfActivityConfiguration.Builder#themeDark(int)`][].
+
+ℹ️ Note: Inverting the page colors will change the PDF rendering style, but it does not modify the PDF on disk.
+
+### Dynamically Change Themes
+
+Night theme mode can be dynamically applied by selecting the Night button under the Theme configuration option.
+
+<img width="60%" alt="Selecting Night Theme" src="/images/guides/android/customizing-the-interface/appearance-styling/theme-mode.png">
+
+### Document Rendering
+
+The most obvious aspect of the night theme mode is that the rendering of document pages is changed from the default rendering to the inverted-color rendering. This is done by post-processing the rendered document page image. Below you’ll see the default rendering.
+
+<img width="60%" alt="Default Rendering" src="/images/guides/android/customizing-the-interface/appearance-styling/default-rendering.png">
+
+Inverting colors is a simple way to achieve night mode, as this will result in, for example, a white page background becoming black. However, since this will also change the colors of text and images, below you’ll see that the text colors are no longer similar to their original colors.
+
+<img width="60%" alt="Inverted Colors" src="/images/guides/android/customizing-the-interface/appearance-styling/inverted-colors.png">
+
+## Available Styles
+
+PSPDFKit provides a large set of style attributes for both default and dark themes. This allows you to alter the appearance according to your needs. For a comprehensive usage example, have a look at `DarkThemeExample` and `DarkThemeActivity` inside the Catalog app.
+
+### Navigation History Buttons Styling
+
+If you want to tweak the default appearance of the chevron icon color inside the navigation history buttons, you can use the `pspdf__navigationHistoryIconColor` attribute:
+
+```styles.xml
+<style name="MyApp.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pspdf__navigationHistoryIconColor">@color/dark_icons_blue</item>
+</style>
+```
+
+### Toolbar Styling
+
+You can easily tweak the main toolbar style using the `pspdf__mainToolbarStyle` attribute of your theme:
+
+```styles.xml
+<style name="MyApp.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pspdf__mainToolbarStyle">@style/MyApp.MainToolbarStyle</item>
+</style>
+
+<style name="MyApp.MainToolbarStyle">
+    <item name="pspdf__backgroundColor">?colorPrimary</item>
+    <item name="pspdf__textColor">@color/dark_icons_blue</item>
+
+    <item name="pspdf__toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <item name="pspdf__toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+</style>
+```
+
+The following attributes can be modified for `pspdf__mainToolbarStyle`.
+
+| Attribute                  | Description                                                             |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `pspdf__backgroundColor`   | Background color of the main toolbar. This defaults to `?colorPrimary`. |
+| `pspdf__textColor`         | Text color of the main toolbar. This defaults to white.                 |
+| `pspdf__toolbarTheme`      | Toolbar theme (set via `android:theme` on the `Toolbar` widget).        |
+| `pspdf__toolbarPopupTheme` | Toolbar popup theme (set via `app:popupTheme` on the `Toolbar` widget). |
+
+> **💡 Tip:** If you want to fully tweak the default appearance of the main toolbar, use the `pspdf__toolbarTheme` attribute to override the default theme used by the toolbar. Additionally, you can apply different themes used by toolbar popups with the `pspdf__toolbarPopupTheme` attribute of your theme.
+
+If you want to tweak the default appearance of the icons inside the [`PdfActivity`][]’s action bar, you can apply an icon style using the `pspdf__actionBarIconsStyle` attribute of your theme:
+
+```styles.xml
+<style name="MyApp.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pspdf__actionBarIconsStyle">@style/MyApp.ActionBarIconsStyle</item>
+</style>
+
+<style name="MyApp.ActionBarIconsStyle">
+    <item name="pspdf__iconsColor">@color/dark_icons_blue</item>
+    <item name="pspdf__iconsColorActivated">@color/color_dark</item>
+</style>
+```
+
+The following attributes can be modified for `pspdf__actionBarIconsStyle`.
+
+| Attribute                             | Description                                                  |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `pspdf__iconsColor`                   | Color of the icons.                                          |
+| `pspdf__outlineIcon`                  | Icon for the outline menu option.                            |
+| `pspdf__searchIcon`                   | Icon for the search menu option.                             |
+| `pspdf__gridIcon`                     | Icon for the thumbnail grid menu option.                     |
+| `pspdf__editAnnotationsIcon`          | Icon for the editing annotations menu option.                |
+| `pspdf__settingsIcon`                 | Icon for the settings menu option.                           |
+| `pspdf__shareIcon`                    | Icon for the share menu option.                              |
+| `pspdf__iconsColorActivated`          | Color of the icons when activated.                           |
+| `pspdf__outlineIconActivated`         | Icon for the outline menu option when activated.             |
+| `pspdf__searchIconActivated`          | Icon for the search menu option when activated.              |
+| `pspdf__gridIconActivated`            | Icon for the thumbnail grid menu option when activated.      |
+| `pspdf__editAnnotationsIconActivated` | Icon for the editing annotations menu option when activated. |
+| `pspdf__settingsIconActivated`        | Icon for the settings menu option when activated.            |
+
+### Styling Contextual Toolbars
+
+PSPDFKit uses custom contextual toolbars to present annotation editing, annotation creation, text selection, and document editing toolbars. To style contextual toolbars, use the `pspdf__contextualToolbarStyle` attribute of your theme:
+
+```styles.xml
+<style name="MyApp.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="pspdf__contextualToolbarStyle">@style/MyApp.ContextualToolbarStyle</item>
+</style>
+
+<style name="MyApp.ContextualToolbarStyle">
+    <item name="pspdf__backgroundColor">?colorPrimaryDark</item>
+    <item name="pspdf__submenuBackgroundColor">?colorPrimary</item>
+    <item name="pspdf__iconsColor">@color/pspdf__color_white</item>
+    <item name="pspdf__iconsColorActivated">@color/pspdf__color_white</item>
+</style>
+```
+
+The following attributes can be modified for `pspdf__contextualToolbarStyle`.
+
+| Attribute                       |  Description                                                                                                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__backgroundColor`        | Background color of the contextual toolbars. This defaults to the theme’s `?colorPrimaryDark`.                                                                |
+| `pspdf__submenuBackgroundColor` | Background color of the contextual toolbars submenus. This defaults to `?colorPrimary`.                                                                       |
+| `pspdf__iconsColor`             | Default icons color in the contextual toolbars. This property can be overridden for each contextual toolbar (see below). This defaults to white.              |
+| `pspdf__iconsColorActivated`    | Default color of activated icons in the contextual toolbars. This property can be overridden for each contextual toolbar (see below). This defaults to white. |
+
+Additionally, you can customize each of the toolbars with their own configuration, as shown below.
+
+#### Annotation Creation Toolbar
+
+```xml
+<item name="pspdf__annotationCreationToolbarIconsStyle">@style/MyApp.Theme.AnnotationCreationToolbarIconsStyle</item>
+```
+
+| Attribute                    | Description                                                                                          |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `pspdf__iconsColor`          | Icon color. Overrides `pspdf__iconsColor` set in `pspdf__contextualToolbarStyle`.                    |
+| `pspdf__iconsColorActivated` | Activated icon color. Overrides `pspdf__iconsColorActivated` set in `pspdf__contextualToolbarStyle`. |
+| `pspdf__highlightIcon`       | Icon for the highlight annotation menu option.                                                       |
+| `pspdf__underlineIcon`       | Icon for the underline annotation menu option.                                                       |
+| `pspdf__strikeoutIcon`       | Icon for the strikeout annotation menu option.                                                       |
+| `pspdf__squigglyIcon`        | Icon for the squiggly annotation menu option.                                                        |
+| `pspdf__noteIcon`            | Icon for the note annotation menu option.                                                            |
+| `pspdf__inkIcon`             | Icon for the ink annotation menu option.                                                             |
+| `pspdf__freeTextIcon`        | Icon for the free text annotation menu option.                                                       |
+
+#### Annotation Editing Toolbar
+
+```xml
+<item name="pspdf__annotationEditingToolbarIconsStyle">@style/MyApp.Theme.AnnotationEditingToolbarIconsStyle</item>
+```
+
+| Attribute                    | Description                                                                                          |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `pspdf__iconsColor`          | Icon color. Overrides `pspdf__iconsColor` set in `pspdf__contextualToolbarStyle`.                    |
+| `pspdf__iconsColorActivated` | Activated icon color. Overrides `pspdf__iconsColorActivated` set in `pspdf__contextualToolbarStyle`. |
+| `pspdf__editIcon`            | Icon for the edit annotation menu option.                                                            |
+| `pspdf__shareIcon`           | Icon for the share annotation contents menu option.                                                  |
+| `pspdf__deleteIcon`          | Icon for the delete annotation menu option.                                                          |
+
+#### Text Selection Toolbar
+
+```xml
+<item name="pspdf__textSelectionToolbarIconsStyle">@style/MyApp.Theme.TextSelectionToolbarIconsStyle</item>
+```
+
+| Attribute                    | Description                                                                                          |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `pspdf__iconsColor`          | Icon color. Overrides `pspdf__iconsColor` set in `pspdf__contextualToolbarStyle`.                    |
+| `pspdf__iconsColorActivated` | Activated icon color. Overrides `pspdf__iconsColorActivated` set in `pspdf__contextualToolbarStyle`. |
+| `pspdf__shareIcon`           | Icon for the share selected text menu option.                                                        |
+| `pspdf__copyIcon`            | Icon for the copy selected text menu option.                                                         |
+| `pspdf__speakIcon`           | Icon for the speak selected text menu option.                                                        |
+| `pspdf__highlightIcon`       | Icon for the highlight selected text menu option.                                                    |
+| `pspdf__searchIcon`          | Icon for the search selected text menu option.                                                       |
+
+#### Document Editing Toolbar
+
+```xml
+<item name="pspdf__documentEditingToolbarIconsStyle">@style/MyApp.Theme.DocumentEditingToolbarIconsStyle</item>
+```
+
+| Attribute                    | Description                                                                                                               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__iconsColor`          | Icon color. Overrides `pspdf__iconsColor` set in `pspdf__contextualToolbarStyle`.                                         |
+| `pspdf__iconsColorActivated` | Activated icon color. Overrides `pspdf__iconsColorActivated` set in `pspdf__contextualToolbarStyle`.                      |
+| `pspdf__undoIcon`            | Icon for the undo document editing menu option.                                                                           |
+| `pspdf__redoIcon`            | Icon for the redo document editing menu option.                                                                           |
+| `pspdf__rotatePagesIcon`     | Icon for the rotate selected pages menu option.                                                                           |
+| `pspdf__removePagesIcon`     | Icon for the remove selected pages menu option.                                                                           |
+| `pspdf__exportPagesIcon`     | Icon for the export selected pages menu option.                                                                           |
+| `pspdf__duplicatePagesIcon`  | Icon for the duplicate selected pages menu option.                                                                        |
+| `pspdf__editPagesIcon`       | Icon for the edit selected pages menu option, which is shown if there’s not enough room in the toolbar for all the icons. |
+| `pspdf__doneIcon`            | Icon for the done with document editing menu option.                                                                      |
+
+### Toolbar Coordinator Layout
+
+The positioning and moving of contextual toolbars is handled by the [`ToolbarCoordinatorLayout`][], which can also be themed:
+
+```xml
+<item name="pspdf__toolbarCoordinatorLayoutStyle">@style/MyApp.Theme.ToolbarCoordinatorLayoutStyle</item>
+```
+
+| Attribute                | Description                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pspdf__dragTargetColor` | Tint the color of available toolbar target locations when dragging the toolbar. This can also be set programmatically using [`ToolbarCoordinatorLayout#setDragTargetColor`][]. |
+
+### Inline Search
+
+```xml
+<item name="pspdf__inlineSearchStyle">@style/MyApp.InlineSearchStyle</item>
+```
+
+<!-- Inline search attrs. -->
+
+| Attribute                         | Description                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------- |
+| `pspdf__backgroundColor`          | Default background color.                                                       |
+| `pspdf__borderColor`              | Default border color.                                                           |
+| `pspdf__borderWidth`              | Default border width.                                                           |
+| `pspdf__inputFieldTextAppearance` | Input field text appearance.                                                    |
+| `pspdf__resultTextAppearance`     | Text appearance for the result text (that states the current displayed result). |
+| `pspdf__throbberColor`            | Loading throbber color.                                                         |
+| `pspdf__prevIconDrawable`         | Icon for going to the previous result.                                          |
+| `pspdf__nextIconDrawable`         | Icon for going to the next result.                                              |
+| `pspdf__prevIconColorFilter`      | Previous icon color.                                                            |
+| `pspdf__nextIconColorFilter`      | Next icon color.                                                                |
+| `pspdf__backIconColorTint`        | Back icon color.                                                                |
+
+### Modular Search
+
+```xml
+<item name="pspdf__modularSearchStyle">@style/MyApp.ModularSearchStyle</item>
+```
+
+| Attribute                          | Description                                                   |
+| ---------------------------------- | ------------------------------------------------------------- |
+| `pspdf__backgroundColor`           | Modular search background color.                              |
+| `pspdf__inputFieldTextColor`       | Input field text color.                                       |
+| `pspdf__inputFieldHintColor`       | Input field hint text color.                                  |
+| `pspdf__inputFieldBackgroundColor` | Input field background color.                                 |
+| `pspdf__separatorColor`            | Color of the horizontal line separator below the input field. |
+| `pspdf__listItemBackgroundColor`   | Background color of the list items.                           |
+| `pspdf__listItemTitleColor`        | Text color of the list item title (page number).              |
+| `pspdf__listItemSubtitleColor`     | Text color of the list item subtitle (search snippet).        |
+| `pspdf__listItemSelector`          | Search result list item selector.                             |
+| `pspdf__highlightBackgroundColor`  | Highlighted search result background color.                   |
+| `pspdf__highlightTextColor`        | Highlighted search result text color.                         |
+
+**⚠️ Warning**: Note that `pspdf__highlightBackgroundColor` is used exclusively for highlighter styling inside the modular search view results list. If you want to change the search result highlighting color when displaying search results in the document view, please refer to the [Highlighter Customization][] section of the Text Search guide.
+
+### Thumbnail Bar
+
+```xml
+<item name="pspdf__thumbnailBarStyle">@style/MyApp.ThumbnailBarStyle</item>
+```
+
+| Attribute                     | Description                                                                                                                                                                                                                 |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__backgroundColor`      | Thumbnail bar background color.                                                                                                                                                                                             |
+| `pspdf__thumbnailWidth`       | Width of thumbnails in thumbnail bar.                                                                                                                                                                                       |
+| `pspdf__thumbnailHeight`      | Height of thumbnails in thumbnail bar.                                                                                                                                                                                      |
+| `pspdf__usePageAspectRatio`   | If this is set to `true`, thumbnails will not be uniformly sized, but each will have its own aspect ratio. When this is `true`, the `pspdf__thumbnailWidth` is ignored and only the `pspdf__thumbnailHeight` has an effect. |
+| `pspdf__thumbnailBorderColor` | Border colors of thumbnails in thumbnail bar.                                                                                                                                                                               |
+
+### Scrollable Thumbnail Bar
+
+```xml
+<item name="pspdf__scrollableThumbnailBarStyle">@style/MyApp.ScrollableThumbnailBarStyle</item>
+```
+
+| Attribute                             | Description                                                            |
+| ------------------------------------- | ---------------------------------------------------------------------- |
+| `pspdf__backgroundColor`              | Scrollable thumbnail bar background color.                             |
+| `pspdf__thumbnailWidth`               | Width of thumbnails in scrollable thumbnail bar.                       |
+| `pspdf__thumbnailHeight`              | Height of thumbnails in scrollable thumbnail bar.                      |
+| `pspdf__thumbnailBorderColor`         | Border colors of thumbnails in scrollable thumbnail bar.               |
+| `pspdf__thumbnailSelectedBorderColor` | Border colors of thumbnails in scrollable thumbnail bar when selected. |
+
+### Thumbnail Grid
+
+```xml
+<item name="pspdf__thumbnailGridStyle">@style/MyApp.ThumbnailGridStyle</item>
+```
+
+| Attribute                              | Description                                         |
+| -------------------------------------- | --------------------------------------------------- |
+| `pspdf__backgroundColor`               | Thumbnail grid background color.                    |
+| `pspdf__itemLaberlTextStyle`           | Default style for the item label text.              |
+| `pspdf__itemLabelBackground`           | Default background for the item label.              |
+| `pspdf__selectionCheckBackgroundColor` | Default background for the selected item icon.      |
+| `pspdf_fabIconColor`                   | Default icon color for the edit document FAB.       |
+| `pspdf__itemRippleBackgroundColor`     | Default ripple background color for item selection. |
+
+### Outline View
+
+```xml
+<item name="pspdf__outlineViewStyle">@style/MyApp.OutlineStyle</item>
+```
+
+| Attribute                               | Description                                            |
+| --------------------------------------- | ------------------------------------------------------ |
+| `pspdf__backgroundColor`                | Outline view background color.                         |
+| `pspdf__listItemSelector`               | Outline view list selector.                            |
+| `pspdf__defaultTextColor`               | Default text color (if not specified by the document). |
+| `pspdf__tabIndicatorColor`              | Color of the tab indicator.                            |
+| `pspdf__bookmarksBarBackgroundColor`    | Background color of the bookmark bar.                  |
+| `pspdf__bookmarksBarIconColor`          | Color for icons on the bookmark bar.                   |
+| `pspdf__bookmarksAddIcon`               | Default icon for the add option.                       |
+| `pspdf__bookmarksEditIcon`              | Default icon for the edit option.                      |
+| `pspdf__bookmarksDoneIcon`              | Default icon for the done option.                      |
+| `pspdf__bookmarksDeleteIcon`            | Default icon for the delete option.                    |
+| `pspdf__bookmarksDeleteIconColor`       | Icon color for the delete option.                      |
+| `pspdf__bookmarksDeleteBackgroundColor` | Background icon color for the delete option.           |
+| `pspdf__bookmarksDragHandleIcon`        | Default icon for the bookmark drag handle.             |
+| `pspdf__bookmarksDragHandleIconColor`   | Icon color for the bookmark drag handle.               |
+| `pspdf__annotationsBarBackgroundColor`  | Background color of the annotations bar.               |
+| `pspdf__annotationsBarIconColor`        | Color for icons on the annotations bar.                |
+| `pspdf__annotationsDeleteIcon`          | Default icon for the delete option.                    |
+| `pspdf__annotationsDeleteIconColor`     | Icon color for the delete option on list items.        |
+| `pspdf__annotationsEditIcon`            | Default icon for the edit option.                      |
+| `pspdf__annotationsDoneIcon`            | Default icon for the done option.                      |
+
+### Document
+
+```xml
+<item name="pspdf__documentViewStyle">@style/MyApp.DocumentViewStyle</item>
+```
+
+| Attribute                | Description                                                           |
+| ------------------------ | --------------------------------------------------------------------- |
+| `android:scrollbarStyle` | Default scrollbar style and position.                                 |
+| `android:scrollbars`     | Define which scrollbars (if any) should be displayed while scrolling. |
+| `android:scrollbarSize`  | Width of vertical scrollbars and height of horizontal scrollbars.     |
+
+### Annotations
+
+Use this to style the appearance of PDF annotations:
+
+```xml
+<item name="pspdf__annotationStyle">@style/MyApp.AnnotationStyle</item>
+```
+
+| Attribute                                       | Description                                                      |
+| ----------------------------------------------- | ---------------------------------------------------------------- |
+| `pspdf__linkAnnotationBackgroundColor`          | Normal background color of link annotations.                     |
+| `pspdf__linkAnnotationBorderColor`              | Normal border color of link annotations.                         |
+| `pspdf__linkAnnotationHighlightBackgroundColor` | Background color of highlighted (i.e. touched) link annotations. |
+| `pspdf__linkAnnotationHighlightBorderColor`     | Border color of highlighted (i.e. touched) link annotations.     |
+
+### Annotation Hints
+
+Use this to style the appearance of PDF annotation hints:
+
+```xml
+<item name="pspdf__annotationNoteHinterStyle">@style/MyApp.AnnotationHintsStyle</item>
+```
+
+| Attribute                                | Description                                                           |
+| ---------------------------------------- | --------------------------------------------------------------------- |
+| `pspdf__noteHinterWidth`                 | Note hinter drawable width (in dp).                                   |
+| `pspdf__pspdf__noteHinterHeight`         | Note hinter drawable height (in dp).                                  |
+| `pspdf__noteHinterColor`                 | Tint color to use on note hinter drawable.                            |
+| `pspdf__noteHinterAlpha`                 | Alpha of the hint icon. Has to be in the range 0 to 255.              |
+| `pspdf__noteHinterIcon`                  | Note hinter drawable resource.                                        |
+| `pspdf__noteHinterTextMarkupLeftPadding` | Padding between text markup annotations and the note hint icon in dp. |
+| `pspdf__useNoteHinterIntrinsicSize`      | Boolean that specifies whether or not to use intrinsic size.          |
+
+### Search Result Highlighter
+
+This defines styling for the search result highlighter:
+
+```xml
+<item name="pspdf__searchResultHighlighterStyle">@style/MyApp.SearchResultHighlighterStyle</item>
+```
+
+| Attribute                                      | Description                                                                                                                                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__searchResultBackgroundColor`           | Search result highlighter background color.                                                                                                                                        |
+| `pspdf__searchResultBorderColor`               | Search result highlighter border color.                                                                                                                                            |
+| `pspdf__searchResultBorderWidth`               | Search result highlighter border width (in dp).                                                                                                                                    |
+| `pspdf__searchResultPadding`                   | Search result highlighter padding (in dp).                                                                                                                                         |
+| `pspdf__searchResultAnnotationPadding`         | Search result highlighter padding (in dp) when the annotation is highlighted.                                                                                                      |
+| `pspdf__searchResultAnimationPadding`          | Search result highlighter padding (in dp) when animated (the highlighter will size up to the desired padding and then come back).                                                  |
+| `pspdf__searchResultCornerRadiusToHeightRatio` | Float that specifies the search result highlighter corner radius to height ratio. The default is 0.1, meaning the highlight area with a height of 20dp will have 2dp corner radii. |
+| `pspdf__searchResultCornerRadiusMin`           | Minimum allowed corner radius (in dp) for the search result highlighter.                                                                                                           |
+| `pspdf__searchResultCornerRadiusMax`           | Maximum allowed corner radius (in dp) for the search result highlighter.                                                                                                           |
+
+### Link Annotation Highlighter
+
+This defines styling for the link annotations highlighter:
+
+```xml
+<item name="pspdf__linkAnnotationHighlighterStyle">@style/MyApp.LinkAnnotationHighlighterStyle</item>
+```
+
+| Attribute                                              | Description                                                                                                                                                                          |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pspdf__highlightedBackgroundColor`                    | Link annotation highlighter background color.                                                                                                                                        |
+| `pspdf__highlightedBorderColor`                        | Link annotation highlighter border color.                                                                                                                                            |
+| `pspdf__highlightedBorderWidth`                        | Link annotation highlighter border width (in dp).                                                                                                                                    |
+| `pspdf__highlightedLinkAnnotationPadding`              | Link annotation highlighter padding (in dp).                                                                                                                                         |
+| `pspdf__highlightedLinkAnnotationAnimationPadding`     | Link annotation highlighter padding (in dp) when animated (the highlighter will size up to the desired padding and then come back).                                                  |
+| `pspdf__highlightedRectangleCornerRadiusToHeightRatio` | Float that specifies the link annotation highlighter corner radius to height ratio. The default is 0.1, meaning the highlight area with a height of 20dp will have 2dp corner radii. |
+| `pspdf__highlightedRectangleMinCornerRadius`           | Minimum allowed corner radius (in dp) for the link annotation highlighter.                                                                                                           |
+| `pspdf__highlightedRectangleMaxCornerRadius`           | Maximum allowed corner radius (in dp) for the link annotation highlighter.                                                                                                           |
+
+### Annotation Selection
+
+This defines styling for the annotation selection UI (scale handles, resize guides, etc.):
+
+```xml
+<item name="pspdf__annotationSelectionStyle">@style/MyApp.AnnotationSelectionStyle</item>
+```
+
+| Attribute                  | Description                                                                                                                                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__borderColor`       | Annotation selection border color.                                                                                                                                                          |
+| `pspdf__borderWidth`       | Annotation selection border width (in dp).                                                                                                                                                  |
+| `pspdf__scaleHandleColor`  | Color of the annotation selection scale handle.                                                                                                                                             |
+| `pspdf__editHandleColor`   | Color of the annotation selection editing handle (e.g. when editing polygon lines).                                                                                                         |
+| `pspdf__padding`           | Annotation selection padding.                                                                                                                                                               |
+| `pspdf__guideLineWidth`    | Annotation selection resize guide line width (in dp).                                                                                                                                       |
+| `pspdf__guideLineColor`    | Annotation selection resize guide line color.                                                                                                                                               |
+| `pspdf__guideLineIncrease` | Length of the piece of the guide line outside of the annotation selection (in dp). Used to show the scaling trajectory if we start scaling the selected annotation beyond its current size. |
+
+### Text Selection
+
+```xml
+<item name="pspdf__textSelectionStyle">@style/MyApp.TextSelectionStyle</item>
+```
+
+| Attribute                 | Description                                  |
+| ------------------------- | -------------------------------------------- |
+| `pspdf__highlightColor`   | Text selection highlight (background) color. |
+| `pspdf__leftHandleColor`  | Text selection left handle color.            |
+| `pspdf__rightHandleColor` | Text selection right handle color.           |
+
+### Password View
+
+```xml
+<item name="pspdf__passwordViewStyle">@style/MyApp.PasswordViewStyle</item>
+```
+
+| Attribute                   | Description                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `pspdf__color`              | Password text input area color.                                                  |
+| `pspdf__hintColor`          | Password text input area hint text color.                                        |
+| `pspdf__floatingHintColor`  | Password text input area hint text color (when hint moves above the input area). |
+| `pspdf__errorColor`         | Password text input area error text color.                                       |
+| `pspdf__icon`               | Password text input area icon.                                                   |
+| `pspdf__iconTintingEnabled` | Password text input area icon tint.                                              |
+
+### Signature Layout
+
+```xml
+<item name="pspdf__passwordViewStyle">@style/MyApp.SignatureLayoutStyle</item>
+```
+
+| Attribute                                            | Description                                                      |
+| ---------------------------------------------------- | ---------------------------------------------------------------- |
+| `pspdf__addSignatureIcon`                            | Icon for the add signature action.                               |
+| `pspdf__addSignatureIconColor`                       | Icon color for the add signature action.                         |
+| `pspdf__addSignatureIconBackgroundColor`             | Icon background color for the add signature action.              |
+| `pspdf__acceptSignatureIcon`                         | Icon for the accept signature action.                            |
+| `pspdf__acceptSignatureIconColor`                    | Icon color for the accept signature action.                      |
+| `pspdf__acceptSignatureIconBackgroundColor`          | Icon background color for the accept signature action.           |
+| `pspdf__deleteSelectedSignaturesIcon`                | Icon for the delete selected signatures action.                  |
+| `pspdf__deleteSelectedSignaturesIconColor`           | Icon color for the delete selected signatures action.            |
+| `pspdf__deleteSelectedSignaturesIconBackgroundColor` | Icon background color for the delete selected signatures action. |
+| `pspdf__clearSignatureCanvasIcon`                    | Icon for the clear signature canvas action.                      |
+| `pspdf__clearSignatureCanvasIconColor`               | Icon color for the clear signature canvas action.                |
+| `pspdf__clearSignatureCanvasIconBackgroundColor`     | Icon background color for the clear signature canvas action.     |
+| `pspdf__signatureInkColorPrimary`                    | Primary signature ink color.                                     |
+| `pspdf__signatureInkColorSecondary`                  | Secondary signature ink color.                                   |
+| `pspdf__signatureInkColorTertiary`                   | Tertiary signature ink color.                                    |
+| `pspdf__backgroundColor`                             | Signature layout background color.                               |
+| `pspdf__textColor`                                   | Signature layout text color.                                     |
+| `pspdf__signerChipIconRes`                           | Signer chip icon resource.                                       |
+| `pspdf__signerChipIconTint`                          | Signer chip icon tint.                                           |
+| `pspdf__signerChipIconBackground`                    | Signer chip icon background color.                               |
+| `pspdf__signerListSelectedItemBackground`            | Signer list selected item background color.                      |
+| `pspdf__signerListSelectedItemForeground`            | Signer list selected item foreground color.                      |
+| `pspdf__signatureListSelectedItemBackground`         | Signature list selected item background color.                   |
+
+### Property Inspector
+
+```xml
+<item name="pspdf__propertyInspectorStyle">@style/MyApp.PropertyInspectorStyle</item>
+```
+
+| Attribute                 | Description                                                            |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `pspdf__minHeight`        | Minimum height of property inspector (in dp).                          |
+| `pspdf__maxHeight`        | Maximum height of property inspector (in dp).                          |
+| `pspdf__maxWidth`         | Maximum width of property inspector (in dp).                           |
+| `pspdf__backgroundColor`  | Property inspector background color.                                   |
+| `pspdf__textColor`        | Property inspector text color.                                         |
+| `pspdf__itemHeight`       | Property inspector item height (in dp).                                |
+| `pspdf__searchVisible`    | Whether or not the search bar will be added to the property inspector. |
+| `pspdf__modalDialogStyle` | Property inspector modal dialog style (see below).                     |
+
+The modal dialog style is set inside the previously mentioned `pspdf__propertyInspectorStyle` via:
+
+```xml
+<item name="pspdf__modalDialogStyle">@style/MyApp.ModalDialog.PropertyInspector</item>
+```
+
+| Attribute                | Description                                              |
+| ------------------------ | -------------------------------------------------------- |
+| `pspdf__titleBackground` | Property inspector modal dialog title background color.  |
+| `pspdf__titleTextColor`  | Property inspector modal dialog title text color.        |
+| `pspdf__titleIconsColor` | Property inspector modal dialog title icons color.       |
+| `pspdf__titleHeight`     | Property inspector modal dialog title height (in dp).    |
+| `pspdf__titleTextSize`   | Property inspector modal dialog title text size (in sp). |
+| `pspdf__titlePadding`    | Property inspector modal dialog title padding (in dp).   |
+| `pspdf__cornerRadius`    | Property inspector modal dialog corner radius (in dp).   |
+
+### Action Menu
+
+This is used for styling the bottom action menu (pops up when sharing a document, for example):
+
+```xml
+<item name="pspdf__actionMenuStyle">@style/MyApp.ActionMenuStyle</item>
+```
+
+| Attribute                                 | Description                                        |
+| ----------------------------------------- | -------------------------------------------------- |
+| `pspdf__maxWidth`                         | Action menu bar maximum width (in dp).             |
+| `pspdf__backgroundColor`                  | Action menu background color.                      |
+| `pspdf__labelColor`                       | Action menu label color.                           |
+| `pspdf__fixedActionsPanelBackgroundColor` | Background color of the fixed actions panel.       |
+| `pspdf__fixedActionsIconColor`            | Icons color in the fixed actions panel.            |
+| `pspdf__fixedActionsIconBackground`       | Icons background color in the fixed actions panel. |
+
+### Stamp Picker
+
+```xml
+<item name="pspdf__stampPickerStyle">@style/MyApp.StampPickerStyle</item>
+```
+
+| Attribute                                     | Description                                        |
+| --------------------------------------------- | -------------------------------------------------- |
+| `pspdf__maxHeight`                            | Stamp picker maximum height (in dp).               |
+| `pspdf__maxWidth`                             | Stamp picker maximum width (in dp).                |
+| `pspdf__backgroundColor`                      | Stamp picker background color.                     |
+| `pspdf__textColor`                            | Stamp picker text color.                           |
+| `pspdf__hintColor`                            | Stamp picker hint color.                           |
+| `pspdf__acceptCustomStampIcon`                | Icon for the accept stamp button.                  |
+| `pspdf__acceptCustomStampIconColor`           | Icon color for the accept stamp button.            |
+| `pspdf__acceptCustomStampIconBackgroundColor` | Icon background color for the accept stamp button. |
+
+### Sharing Dialog
+
+```xml
+<item name="pspdf__sharingDialogStyle">@style/MyApp.SharingDialogStyle</item>
+```
+
+| Attribute                | Description                      |
+| ------------------------ | -------------------------------- |
+| `pspdf__backgroundColor` | Sharing dialog background color. |
+| `pspdf__errorColor`      | Sharing dialog error color.      |
+
+### New Page Dialog
+
+```xml
+<item name="pspdf__newPageDialogStyle">@style/MyApp.NewPageDialogStyle</item>
+```
+
+| Attribute                | Description                       |
+| ------------------------ | --------------------------------- |
+| `pspdf__backgroundColor` | New page dialog background color. |
+
+### Settings Mode Picker Items
+
+This is used for styling settings mode picker items:
+
+```xml
+<item name="pspdf__settingsModePickerItemStyle">@style/MyApp.SettingsModePickerItemStyle</item>
+```
+
+| Attribute         | Description                                                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `pspdf__itemTint` | Item tint for each of the settings mode picker items (use the selector to specify tint color for various item states). |
+
+### Settings Mode Line Separator
+
+This is used for styling the line separator between settings mode picker items:
+
+```xml
+<item name="pspdf__settingsModeLineSeparatorStyle">@style/MyApp.SettingsModeLineSeparatorStyle</item>
+```
+
+Attributes: Style it with all the regular Android attributes for styling views. To get a horizontal line, use `android:layoutWidth="match_parent"` and `android:layoutHeight="1dp".`
+
+### Document View
+
+This accepts a style defining `View` attributes for modifying the appearance of scrollbars:
+
+```xml
+<item name="pspdf__documentViewStyle">@style/MyApp.DocumentViewStyle</item>
+```
+
+| Attribute                | Description                                  |
+| ------------------------ | -------------------------------------------- |
+| `android:scrollbarStyle` | The style of the document view scrollbar.    |
+| `android:scrollbars`     | Enabled document view scrollbars (horizontal | vertical). |
+| `android:scrollbarSize`  | Document view scrollbar size (in dp).        |
+
+### Form Selection
+
+```xml
+<item name="pspdf__formSelectionStyle">@style/MyApp.FormSelectionStyle</item>
+```
+
+| Attribute                                   | Description                                                 |
+| ------------------------------------------- | ----------------------------------------------------------- |
+| `pspdf__highlightColor`                     | Form selection highlight color.                             |
+| `pspdf__requiredTextElementBorderColor`     | Form selection border color for required text elements.     |
+| `pspdf__selectedTextElementBackgroundColor` | Form selection background color for selected text elements. |
+| `pspdf__selectedTextElementBorderColor`     | Form selection border color for selected text elements.     |
+| `pspdf__touchedFormElementHighlightColor`   | Form selection highlight color for touched text elements.   |
+
+### Form Editing Bar
+
+```xml
+<item name="pspdf__formEditingBarStyle">@style/MyApp.FormEditingBarStyle</item>
+```
+
+| Attribute                               | Description                                         |
+| --------------------------------------- | --------------------------------------------------- |
+| `pspdf__backgroundColor`                | Form editing bar background color.                  |
+| `pspdf__textColor`                      | Form editing bar text color.                        |
+| `pspdf__iconsColor`                     | Form editing bar icons color.                       |
+| `pspdf__prevIconDrawable`               | Form editing bar previous element icon resource.    |
+| `pspdf__nextIconDrawable`               | Form editing bar next element icon resource.        |
+| `pspdf__validationErrorBackgroundColor` | Form editing bar validation error background color. |
+| `pspdf__validationErrorTextColor`       | Form editing bar validation error text color.       |
+
+### Popup Toolbar
+
+This is used for styling popup toolbars (e.g. when text is selected or when pasting elements):
+
+```xml
+<item name="pspdf__popupToolbarStyle">@style/MyApp.PopupToolbarStyle</item>
+```
+
+| Attribute                 | Description                                    |
+| ------------------------- | ---------------------------------------------- |
+| `pspdf__backgroundColor`  | Popup toolbar background color.                |
+| `pspdf__itemTint`         | Popup toolbar item tint.                       |
+| `pspdf__itemTintDisabled` | Popup toolbar item tint when item is disabled. |
+
+### Tab Bar
+
+This is used for styling the tab bar that allows you to switch between different documents:
+
+```xml
+<item name="pspdf__tabBarStyle">@style/MyApp.TabBarStyle</item>
+```
+
+| Attribute                     | Description                                             |
+| ----------------------------- | ------------------------------------------------------- |
+| `pspdf__backgroundColor`      | Tab bar background color.                               |
+| `pspdf__tabColor`             | Color of the tab items.                                 |
+| `pspdf__tabIndicatorColor`    | Color of the indicator of the currently selected tab.   |
+| `pspdf__tabTextColor`         | Color of the text on tab items when not selected.       |
+| `pspdf__tabTextColorSelected` | Color of the text on tab items when selected.           |
+| `pspdf__tabIconColor`         | Color of the close icon on tab items when not selected. |
+| `pspdf__tabIconColorSelected` | Color of the close icon on tab items when selected.     |
+| `pspdf__tabBarHeight`         | The height of the tab bar.                              |
+| `pspdf__tabBarMinimumWidth`   | The minimum width of a single tab bar item.             |
+| `pspdf__tabBarMaximumWidth`   | The maximum width of a single tab bar item.             |
+| `pspdf__tabBarTextSize`       | The size of the document title text on a tab item.      |
+
+[style and theme system]: https://developer.android.com/guide/topics/ui/themes.html
+[custom toolbar system]: ../../customizing-the-interface/using-toolbars-within-fragment/
+[highlighter customization]: ../../features/text-search/#highlighter-customization
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.html
+[`inlinesearchthemeconfiguration.builder#settextcolor`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/theming/InlineSearchThemeConfiguration.Builder.html#setTextColor(int)
+[`contextthemewrapper`]: https://developer.android.com/reference/android/view/ContextThemeWrapper.html
+[`invalidthemeexception`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/exceptions/InvalidThemeException.html
+[`toolbarcoordinatorlayout`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ToolbarCoordinatorLayout.html
+[`toolbarcoordinatorlayout#setdragtargetcolor`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ToolbarCoordinatorLayout.html#setDragTargetColor(int)
+[`pdfactivityconfiguration.builder#theme(int)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#theme(int)
+[`pdfactivityconfiguration.builder#themedark(int)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#themeDark(int)
+[`pdfactivityconfiguration.builder#thememode(thememode)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#themeMode(com.pspdfkit.configuration.theming.ThemeMode)
+[`pdfactivityconfiguration#builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html

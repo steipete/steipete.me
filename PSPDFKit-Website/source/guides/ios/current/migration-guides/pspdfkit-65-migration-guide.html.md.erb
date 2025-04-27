@@ -1,0 +1,48 @@
+---
+title: PSPDFKit 6.5 Migration Guide
+section: developers
+
+order: 106
+---
+
+## Forms
+
+In 6.5 we completely reengineered how form fields are represented in PSPDFKit. The biggest difference is that form elements are split into two distinct classes now, [`PSPDFFormField`][] and [`PSPDFFormElement`][].
+
+Previously, [`PSPDFFormElement`][] represented both non-UI form field data and the widget annotation which occasionally caused problems and required us to keep a hierarchy of annotations. With this change, a [`PSPDFFormElement`][] is strictly only a annotation that will be displayed on the screen while [`PSPDFFormField`][] takes over all the backend work of modifying form field states.
+
+### Changes
+
+In addition to being able to get all [`PSPDFFormElement`][] from [`PSPDFFormParser`][], we introduced a property called `formFields` to retrieve all form fields.
+
+The `parent` or `kids` properties are no longer available because a `PSPDFFormElement` no longer forms a hierarchy. You can retrieve the linked [`PSPDFFormField`][] using the `formField` property.
+
+The [`PSPDFFormField`][] has a `annotations` property that lists all annotations connected to this specific form field. For example, a [`PSPDFButtonFormField`][] can have multiple `PSPDFButtonFormElement` listed in its `annotations` property that form one radio button group.
+
+Properties that only dealt with form field data, like `mappingName` and `alternativeFieldName`, have been moved to [`PSPDFFormField`][].
+
+The [`PSPDFWidgetAnnotation`][] property `shouldRenderApperanceStream` has been removed due to internal changes that require us to render the appearance stream.
+
+After setting the `contents` or `value` of a [`PSPDFFormElement`][] it is no longer necessary to send a `PSPDFAnnotationChangedNotification` notification. This will be handled framework internally and the UI updates accordingly.
+
+### XFDF changes
+
+Previously it was possible to import [`PSPDFFormElement`][] annotations using XFDF. According to the XFDF spec, this is actually not supported and has been removed.
+
+### Swift 2.3
+
+With PSPDFKit 6.5 for iOS we changed the superclass of [`PSPDFConfigurationBuilder`][] to [`PSPDFBaseConfigurationBuilder`][]. When using Swift 2.3 this type is not correctly inferred, which leads to a compiler error and seems to be a bug in Swift 2.3. To fix this, you need to cast the closure parameter to [`PSPDFConfigurationBuilder`][]:
+
+```swift
+let configuration = PSPDFConfiguration { (builder: PSPDFConfigurationBuilder) in
+```
+
+This works correctly on Swift 3 and doesn't need any casting.
+
+[`PSPDFFormField`]: https://pspdfkit.com/api/ios/Classes/PSPDFFormField.html
+[`PSPDFFormElement`]: https://pspdfkit.com/api/ios/Classes/PSPDFFormElement.html
+[`PSPDFWidgetAnnotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFWidgetAnnotation.html
+[`PSPDFButtonFormField`]: https://pspdfkit.com/api/ios/Classes/PSPDFButtonFormField.html
+[`PSPDFFormParser`]: https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html
+[`PSPDFConfigurationBuilder`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfigurationBuilder.html
+[`PSPDFBaseConfigurationBuilder`]: https://pspdfkit.com/api/ios/Classes/PSPDFBaseConfigurationBuilder.html

@@ -1,0 +1,125 @@
+---
+title: Microsoft Xamarin
+section: developers
+---
+
+![Xamarin PDF SDK](/images/guides/shared/other-languages/xamarin/xamarin-logo.png)
+
+Developers can use [Xamarin][] to write native iOS, Android, and macOS apps with a shared C# codebase. We provide separate bindings for iOS and Android, as they are different SDKs and have an API that closely matches the underlying system.
+
+## PSPDFKit for iOS
+
+PSPDFKit for iOS includes full-featured [bindings for Xamarin][xamarin-ios] (formerly called MonoTouch). We work closely with Xamarin to provide up-to-date bindings shortly after the regular PSPDFKit releases. These bindings allow extensive customization and subclassing.
+
+You can try the demo by requesting it from [our website][pspdfkit trial] and then adding the PSPDFKit binary to the Xamarin binding.
+
+Xamarin.Forms users can show the [`PSPDFViewController`][] in fullscreen.
+
+## Building PSPDFKit.iOS.dll
+
+**ℹ️ Note:** You must have at least _Xamarin.iOS 13.x_ and macOS 10.15.x to _compile_ this binding project. Additionally, your Xamarin project minimum iOS version must be 11 or later.
+
+In order to use the bindings please follow the instructions below.
+
+### Step 1 — Get the Bindings
+
+1. Clone the [`PSPDFKit/Xamarin-iOS`][] repository from GitHub.
+2. Switch into the `Xamarin-iOS` directory.
+
+### Step 2 — Get PSPDFKit and Copy the Required Files
+
+1. In order to use this C# binding, because Xamarin does not support `xcframework` yet, you will need to obtain the full PSPDFKit framework files using the `COCOAPODS_KEY` from the [Customer Portal][] if you haven’t done so already, or [request an evaluation version][trial].
+2. Replace `COCOAPODS_KEY` with your key and download the following two ZIP files (replace 9.x.x with the current version number):
+   - https://customers.pspdfkit.com/cocoapods/COCOAPODS_KEY/pspdfkit/9.x.x.zip
+   - https://customers.pspdfkit.com/cocoapods/COCOAPODS_KEY/instant/9.x.x.zip
+3. Extract the ZIP files and copy the following files into the specified directories:
+
+iOS — from the PSPDFKit-for-iOS ZIP
+
+- Copy `PSPDFKit.framework` into the `PSPDFKit.iOS.Model` folder.
+- Copy `PSPDFKitUI.framework` into the `PSPDFKit.iOS.UI` folder. \*
+- Copy `Instant.framework` into the `PSPDFKit.iOS.Instant` folder. \*
+
+macOS — from the PSPDFKit-for-macOS DMG
+
+- Copy `PSPDFKit.framework` into the `PSPDFKit.Mac.Model` folder. \*
+
+Items with an asterisk (\*) are optional. If you do not provide a framework, by default we won’t generate its bindings. However, most of the time you will want to provide at least `PSPDFKit.framework` and `PSPDFKitUI.framework`.
+
+If you’re on Windows, [the free 7-Zip][] file archiver can unpack DMG files.
+
+This binding provides [Unified API][] support out of the box.
+
+### Step 3 — Get the DLL
+
+You have two options to get the DLL.
+
+#### Using Visual Studio for Mac or Windows
+
+1. Open `PSPDFKit.sln`, which is located in the root folder.
+2. Build the iOS project inside the solution.
+3. Get the DLL from the `bin` folder of each project.
+
+#### Using the Command Line / Terminal
+
+We are using [Cake][] as our build system, as this allows us to build on both Windows and macOS from a single script.
+
+1. Just run the `./build.sh` command (macOS) or the `.\build.ps1` command (Windows) from the `root` directory.
+2. All the resulting DLLs will be inside the root folder.
+
+### Step 4 — Integrate into Your Project
+
+1. Add the references `PSPDFKit.iOS.Model.dll` and `PSPDFKit.iOS.UI.dll` to your project.
+2. Add the following namespaces to your project, depending on what you need:
+
+```csharp
+using PSPDFKit.Model;
+using PSPDFKit.UI;
+using PSPDFKit.Instant;
+```
+
+#### Set the License Key
+
+Call `PSPDFKitGlobal.SetLicenseKey("YOUR_LICENSE_KEY_GOES_HERE");` early on in your app delegate, before accessing any other PSPDFKit classes.
+
+#### Open a PDF
+
+```csharp
+var configuration = PSPDFConfiguration.FromConfigurationBuilder ((builder) => {
+	builder.PageMode = PSPDFPageMode.Single;
+	builder.PageTransition = PSPDFPageTransition.ScrollContinuous;
+	builder.ScrollDirection = PSPDFScrollDirection.Vertical;
+}));
+
+var document = new PSPDFDocument (NSUrl.FromFilename ("document.pdf"));
+var pdfViewController = new PSPDFViewController (document, configuration);
+```
+
+#### Xamarin.Forms
+
+We also support Xamarin.Forms and have a great [example project][xforms example project] that shows how to build an app with PSPDFKit using Xamarin.Forms. To run this example, follow the steps provided in the [Xamarin-iOS repo][xamarin-ios].
+
+#### PSPDFKit Instant
+
+Support for Instant was added with the PSPDFKit 7.2.0 for iOS Xamarin Bindings.
+
+With PSPDFKit Instant, it’s easier than ever to add real-time collaboration features to your PSPDFKit-powered app, allowing your users to seamlessly share, edit, and annotate PDF documents across iOS, Android, and Web. With just a few lines of code, PSPDFKit Instant gives your users a massive productivity boost.
+
+For more information about Instant, please have a look at our [website][instant].
+
+To get started, you can take a look at our Instant example [here][instant example].
+
+[xamarin]: http://xamarin.com/
+[xamarin-ios]: https://github.com/PSPDFKit/Xamarin-iOS
+[`pspdfkit/xamarin-ios`]: https://github.com/PSPDFKit/Xamarin-iOS
+[`pspdfkit.ios`]: https://github.com/PSPDFKit/Xamarin-iOS/tree/master/PSPDFKit.iOS
+[`pspdfkit.ios.ui`]: https://github.com/PSPDFKit/Xamarin-iOS/tree/master/PSPDFKit.iOS.UI
+[`pspdfkit.ios.instant`]: https://github.com/PSPDFKit/Xamarin-iOS/tree/master/PSPDFKit.iOS.Instant
+[unified api]: http://developer.xamarin.com/guides/cross-platform/macios/unified/
+[instant example]: https://github.com/PSPDFKit/Xamarin-iOS#pspdfkit-instant-example
+[xforms example project]: https://github.com/PSPDFKit/Xamarin-iOS/tree/master/Examples/XamarinForms
+[customer portal]: https://customers.pspdfkit.com/
+[trial]: https://pspdfkit.com/#trynow
+[the free 7-zip]: http://www.7-zip.org/
+[cake]: https://cakebuild.net
+[instant]: https://pspdfkit.com/instant/

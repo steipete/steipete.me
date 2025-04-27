@@ -1,0 +1,205 @@
+---
+title: Bookmarks
+section: developers
+
+order: 7
+---
+
+Bookmarks are stored in the [JSON bookmark format][] on the server. PSPDFKit Server provides the following endpoints for fetching, creating, updating, and deleting bookmarks:
+
+- [Fetching Bookmarks of a Document][]
+- [Creating a Bookmark in a Document][]
+- [Updating an Existing Bookmark][]
+- [Deleting an Existing Bookmark][]
+
+---
+
+### Fetching Document Bookmarks
+
+To fetch all bookmarks in a given document, the following endpoint is provided:
+
+**Request**
+
+```
+GET /api/documents/:document_id/bookmarks
+Accept: application/json
+Authorization: Token token="<secret token>"
+```
+
+```curl
+$ curl http://localhost:5000/api/documents/abc/bookmarks \
+   -H "Accept: application/json" \
+   -H "Authorization: Token token=<secret token>"
+```
+
+**Response**
+
+```
+HTTP/1.1 200 OK
+content-type: application/json; charset=utf-8
+
+{
+  "data": {
+    "bookmarks": [
+      {
+        "updatedBy": null,
+        "createdBy": null,
+        "content": {
+          "type": "pspdfkit/bookmark",
+          "action": {
+            "type": "goTo",
+            "pageIndex": 1
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+### Creating Bookmarks
+
+Bookmarks can be created with and without specifying the ID for the bookmark. When no ID is specified, PSPDFKit Server will assign a random ID to the bookmark. If you want to rely on a specific ID being the ID of the created bookmark, the ID can be set with the `id` property in the JSON payload. This is useful if you, for example, want a bookmark with the same ID in multiple documents.
+
+To create a bookmark, send a `POST` request with a JSON body containing the bookmark content — and optionally, an ID — to `/api/documents/:document_id/bookmarks`:
+
+**Request**
+
+```
+POST /api/documents/:document_id/bookmarks
+Content-Type: application/json
+Authorization: Token token="<secret token>"
+{
+  "id": "exampleId",
+  "content": {
+    "action": {
+      "pageIndex": 3,
+      "type": "goTo"
+    },
+    "name": "example bookmark",
+    "type": "pspdfkit/bookmark"
+  }
+}
+```
+
+```curl
+$ curl -XPOST http://localhost:5000/api/documents/abc/bookmarks \
+   -H "ContentType: application/json" \
+   -H "Authorization: Token token=<secret token>" \
+   -d '{"content": [{"name": "example bookmark"}, ...]}'
+```
+
+**Response**
+
+The server will validate the content and return an HTTP response with the status 200 and the JSON body containing the created ID. If no ID field was set in this request, the server will generate a new ID:
+
+```
+{
+  "data": {
+    "id": "exampleId"
+  }
+}
+POST http://127.0.0.1:5000/i/d/abc/bookmarks
+HTTP/1.1 200 OK
+```
+
+If there’s a validation error, the server will respond with the status code 400 and the following error message:
+
+```
+POST http://127.0.0.1:5000/api/documents/1/bookmarks
+HTTP/1.1 400 Bad Request
+
+The JSON request must have a content field.
+```
+
+### Updating Bookmarks
+
+To update an existing bookmark, send a `PUT` request with a JSON body containing the bookmark content to `/api/documents/:document_id/bookmarks/:id`:
+
+**Request**
+
+```
+PUT  /api/documents/:document_id/bookmarks/:id
+Content-Type: application/json
+Authorization: Token token="<secret token>"
+{
+  "content": {
+    "action": {
+      "pageIndex": 2,
+      "type": "goTo"
+    },
+    "name": "example bookmark",
+    "type": "pspdfkit/bookmark"
+  }
+}
+```
+
+```curl
+$ curl -XPUT http://localhost:5000/api/documents/abc/bookmarks/exampleId \
+   -H "ContentType: application/json" \
+   -H "Authorization: Token token=<secret token>" \
+   -d '{"content": [{"name": "example bookmark"}, ...]}'
+```
+
+**Response**
+
+The server will validate the content and return an HTTP response with the status 200 if the bookmark is updated successfully:
+
+```
+PUT http://127.0.0.1:5000/i/d/abc/bookmarks/exampleId
+HTTP/1.1 200 OK
+```
+
+If there’s a validation error, the server will respond with the status code 400 and the following error message:
+
+```
+PUT http://127.0.0.1:5000/api/documents/1/bookmarks/exampleId
+HTTP/1.1 400 Bad Request
+
+The JSON request must have a content field.
+```
+
+### Deleting Bookmarks
+
+To delete an existing bookmark, send a `DELETE` request to `/api/documents/:document_id/bookmarks/:id`:
+
+**Request**
+
+```
+DELETE /api/documents/:document_id/bookmarks/exampleId
+```
+
+```curl
+$ curl -XDELETE http://localhost:5000/api/documents/abc/bookmarks/exampleId \
+   -H "Authorization: Token token=<secret token>"
+```
+
+**Response**
+
+The server will return an HTTP response with the status 200 if an existing record was deleted:
+
+```
+DELETE http://127.0.0.1:5000/i/d/abc/bookmarks/exampleId
+HTTP/1.1 200 OK
+```
+
+If there’s an error, the server will respond with the status code 400 and the following error message:
+
+```
+DELETE http://127.0.0.1:5000/api/documents/1/bookmarks
+HTTP/1.1 400 Bad Request
+
+The record with the given id does not exist.
+```
+
+### Using the Bookmark API with Layers
+
+All the endpoints described above work on the default [layer][instant layers] of a document and can also be used on a specific [layer][instant layers] in a document by replacing `documents/:document_id` with `documents/:document_id/layers/:layer_id` in the URL of the endpoint. For more information on layers and how to use them, take a look at [Instant Layers][].
+
+[authentication]: https://pspdfkit.com/guides/server/current/pspdfkit-server/client-authentication/
+[creating a bookmark in a document]: #creating-bookmarks
+[deleting an existing bookmark]: #deleting-bookmarks
+[fetching bookmarks of a document]: #fetching-document-bookmarks
+[instant layers]: ../../server-api/instant-layers/
+[json bookmark format]: ../../server-api/json-format/#bookmarks
+[updating an existing bookmark]: #updating-bookmarks

@@ -1,0 +1,53 @@
+---
+title: Catalog Example
+section: developers
+---
+
+The PSPDFKit Java Library comes with an example application called the Catalog app, which contains many useful examples for exploring the different features of PSPDFKit and getting started quickly. You can find the app in the `Example` folder of the SDK zip file. The SDK zip file can be downloaded from [the customer portal][customer portal] or by [requesting an evaluation license][pspdfkit trial] of PSPDFKit.
+
+## Windows
+
+#### Requirements
+
+- Windows 10
+- JDK8+ from [Oracle][oracle-jdk8] or [Adopt][]
+- [Gradle][]
+
+### Running the Catalog App
+
+To build the Catalog app:
+
+- Extract `PSPDFKit-java-{version}.zip` to your desired location and `cd` into the root of its directory.
+- `cd` into the Catalog (`cd catalog`).
+- Replace the `YOUR_LICENSE_KEY_GOES_HERE` string in `build.gradle` with the trial or development activation key you have been issued.
+- Build and run the Catalog application (`gradlew.bat runJava`).
+
+## Linux
+
+#### Requirements
+
+- Ubuntu 18.04 (other distros and versions will also work)
+- JDK8+ (`sudo apt install default-jdk`)
+- [Gradle][] or [JetBrains IntelliJ IDEA][intellij-idea]
+
+## Mac
+
+#### Requirements
+
+- macOS 10.14.6 Mojave
+- JDK8+ (`brew cask install java`)
+- Gradle (`brew install gradle`)
+
+#### Running the Catalog App
+
+To build the Catalog app:
+
+- Extract `PSPDFKit-java-{version}.zip` to your desired location and `cd` into the root of its directory.
+- `cd` into the Catalog (`cd catalog`).
+- Replace the `YOUR_LICENSE_KEY_GOES_HERE` string in `build.gradle` with the trial or development activation key you have been issued.
+- Build and run the Catalog application (`./gradlew runJava`).
+
+[oracle-jdk8]: https://docs.oracle.com/en/java/javase/12/install/installation-jdk-microsoft-windows-platforms.html
+[adopt]: https://adoptopenjdk.net/
+[gradle]: https://gradle.org/install/
+[intellij-idea]: https://www.jetbrains.com/idea/

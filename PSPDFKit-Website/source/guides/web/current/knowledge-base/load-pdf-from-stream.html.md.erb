@@ -1,0 +1,54 @@
+---
+title: Load a PDF from a Stream
+section: knowledge-base
+---
+
+## Q: How can I load a PDF from a stream?
+
+A: PSPDFKit for Web can load a document from an `ArrayBuffer`. You will need to convert your stream into an `ArrayBuffer` that can be passed in [`PSPDFKit.Configuration#pdf`][]. Here is a possible way to do so:
+
+```es
+// replace "URL" with your stream URL
+fetch(URL)
+  // Retrieve its body as ReadableStream
+  .then(response => response.body)
+  .then(rs => {
+    const reader = rs.getReader();
+
+    return new ReadableStream({
+      async start(controller) {
+        while (true) {
+          const { done, value } = await reader.read();
+
+          // When no more data needs to be consumed, break the reading
+          if (done) {
+            break;
+          }
+
+          // Enqueue the next data chunk into our target stream
+          controller.enqueue(value);
+        }
+
+        // Close the stream
+        controller.close();
+        reader.releaseLock();
+      }
+    })
+  })
+  // Create a new response out of the stream
+  .then(rs => new Response(rs))
+  // Create an object URL for the response
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => {
+    PSPDFKit.load({
+      pdf: arrayBuffer
+    }).then(instance => {
+      // Your PSPDFKit code here
+    });
+  });
+```
+
+This snippet was adapted from a [MDN example][].
+
+[`pspdfkit.configuration#pdf`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#pdf
+[MDN example]: https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams

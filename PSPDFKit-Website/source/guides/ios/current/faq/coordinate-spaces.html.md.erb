@@ -1,0 +1,167 @@
+---
+title: Coordinate Space Conversions
+section: developers
+
+alternate_platform_links:
+  web: "pspdfkit-for-web/coordinate-spaces"
+  server: "pspdfkit-server/coordinate-spaces"
+---
+
+By specification, PDF documents have their own coordinate space, which is different from the coordinate space used by UIKit. While UIKit views have their origin in the top-left corner, with y coordinates increasing in a _downward_ direction, the y coordinates in PDF documents increase _upward_, starting in the bottom-left corner.
+
+![PDF page coordinates](/images/guides/shared/faq/document-coordinate-space.gif)
+
+Additionally, the PDF coordinate space can be offset from the visible bottom-left corner of a page due to a crop box, and it can also be rotated due to the page being rotated. This is efficient because it means cropping or rotating a page is just setting a value: You don’t need to change the content stream or any of the annotations on the page. However, this can also be confusing to work with. Therefore, PSPDFKit exposes a normalized page coordinate space, which always puts the origin in the bottom-left corner of the visible area of the page.
+
+PSPDFKit provides an easy-to-use API for transforming between PDF page and view coordinate spaces. For example, the following code uses the PSPDFKit conversion API to retrieve the onscreen coordinates of an annotation:
+
+[==
+
+```swift
+let pdfController: PSPDFViewController = ...
+let annotation: PSPDFAnnotation = ...
+if let pageView = pdfController.pageViewForPage(at: annotation.pageIndex) {
+    // Get the (normalized) PDF coordinates of the annotation.
+    let annotationPDFRect = annotation.boundingBox
+    // Convert the annotation's PDF coordinates to view coordinates.
+    let annotationViewRect = pageView.convert(rect: annotationPDFRect, from: pageView.pdfCoordinateSpace)
+}
+```
+
+```objc
+PSPDFViewController *pdfController = ...;
+PSPDFAnnotation *annotation = ...;
+PSPDFPageView *pageView = [pdfController pageViewForPage:annotation.pageIndex];
+if (pageView) {
+    // Get the (normalized) PDF coordinates of the annotation.
+    CGRect annotationPDFRect = annotation.boundingBox;
+    // Convert the annotation's PDF coordinates to view coordinates.
+    CGRect annotationViewRect = [pageView convertRect:annotationPDFRect fromCoordinateSpace:pageView.pdfCoordinateSpace];
+}
+```
+
+==]
+
+## Conversion with Page Views
+
+[`PSPDFPageView`][] has a `pdfCoordinateSpace` property, which is an object conforming to the [`UICoordinateSpace`][] protocol. This represents the coordinate space of that page view’s PDF page. Each `UIView` also conforms to [`UICoordinateSpace`][]. Therefore, to convert between PDF page and view coordinates, you can call the following methods from [`UICoordinateSpace`][] on either a PDF coordinate space or a view:
+
+[==
+
+```swift
+public func convert(_ point: CGPoint, to coordinateSpace: UICoordinateSpace) -> CGPoint
+public func convert(_ point: CGPoint, from coordinateSpace: UICoordinateSpace) -> CGPoint
+public func convert(_ rect: CGRect, to coordinateSpace: UICoordinateSpace) -> CGRect
+public func convert(_ rect: CGRect, from coordinateSpace: UICoordinateSpace) -> CGRect
+```
+
+```objc
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id <UICoordinateSpace>)coordinateSpace;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id <UICoordinateSpace>)coordinateSpace;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id <UICoordinateSpace>)coordinateSpace;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id <UICoordinateSpace>)coordinateSpace;
+```
+
+==]
+
+## Page Info
+
+[`PSPDFPageInfo`][] can be used to get information for a specific page in a document. You can get this object by retrieving the [`PSPDFPageInfo`][] object for a specific page on a [`PSPDFDocument`][] using [`pageInfoForPageAtIndex:`][].
+
+[`PSPDFPageInfo`][] includes information like the size of a page, transforms, and page rotation.
+
+Note that some PDF files can also have rotation set on pages. You can get this value by checking the [`savedRotation`][] property. This can be a value between 0 and 270 in 90-degree steps.
+
+## Conversion with Other Views
+
+There are also conversion functions that can be used with any view. There is rarely a case where you need to use these functions, as the above property on [`PSPDFPageView`][] is better suited for most use cases. Use these functions only when the page is shown in a view other than a [`PSPDFPageView`][]. For these to work correctly, the page must fill the view’s bounds:
+
+[==
+
+```swift
+func PSPDFConvertViewPointToPDFPoint(_ viewPoint: CGPoint, _ pageInfo: PSPDFPageInfo, _ viewBounds: CGRect) -> CGPoint
+func PSPDFConvertPDFPointToViewPoint(_ pdfPoint: CGPoint, _ pageInfo: PSPDFPageInfo, _ viewBounds: CGRect) -> CGPoint
+func PSPDFConvertPDFRectToViewRect(_ pdfRect: CGRect, _ pageInfo: PSPDFPageInfo, _ viewBounds: CGRect) -> CGRect
+func PSPDFConvertViewRectToPDFRect(_ viewRect: CGRect, _ pageInfo: PSPDFPageInfo, _ viewBounds: CGRect) -> CGRect
+```
+
+```objc
+CGPoint PSPDFConvertViewPointToPDFPoint(CGPoint viewPoint, PSPDFPageInfo *pageInfo, CGRect viewBounds);
+CGPoint PSPDFConvertPDFPointToViewPoint(CGPoint pdfPoint, PSPDFPageInfo *pageInfo, CGRect viewBounds);
+CGRect PSPDFConvertPDFRectToViewRect(CGRect pdfRect, PSPDFPageInfo *pageInfo, CGRect viewBounds);
+CGRect PSPDFConvertViewRectToPDFRect(CGRect viewRect, PSPDFPageInfo *pageInfo, CGRect viewBounds);
+```
+
+==]
+
+## Converting between the Normalized PDF Coordinate Space and the Raw PDF Coordinate Space
+
+The PSPDFKit API uses a normalized page coordinate space, which always puts the origin in the bottom-left corner of the visible area of the page.
+
+You can convert from the raw PDF coordinate space to PSPDFKit’s normalized space using the [`transform`][] property of [`PSPDFPageInfo`][]. For example, to place a 100-point by 100-point square annotation at the page origin stored in the PDF, use code like the following:
+
+[==
+
+```swift
+let document: PSPDFDocument = ...
+let pageInfo = document.pageInfoForPage(at: 13)
+let rawPDFRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+let normalizedPDFRect = rawPDFRect.applying(pageInfo.transform)
+
+let annotation: PSPDFSquareAnnotation = ...
+annotation.boundingBox = normalizedPDFRect
+```
+
+```objc
+PSPDFDocument *document = ...
+PSPDFPageInfo *pageInfo = [document pageInfoForPageAtIndex:13];
+CGRect rawPDFRect = CGRectMake(0, 0, 100, 100);
+CGRect normalizedPDFRect = CGRectApplyAffineTransform(rawPDFRect, pageInfo.transform);
+
+PSPDFSquareAnnotation *annotation = ...
+annotation.boundingBox = normalizedPDFRect;
+```
+
+==]
+
+> **ℹ️ Note:** The annotation might not end up visible if there is a crop box offset.
+
+To convert from the normalized PDF coordinate space used by PSPDFKit to the raw PDF coordinate space, use the inverse of the page info’s [`transform`][]. For example, to read an annotation’s bounding box as it would be serialized in the PDF, use the following:
+
+[==
+
+```swift
+let document: PSPDFDocument = ...
+let pageInfo = document.pageInfoForPage(at: 13)
+let annotation: PSPDFAnnotation = ...
+
+let normalizedPDFRect = annotation.boundingBox
+let rawPDFRect = normalizedPDFRect.applying(pageInfo.transform.inverted())
+```
+
+```objc
+PSPDFDocument *document = ...
+PSPDFPageInfo *pageInfo = [document pageInfoForPageAtIndex:13];
+PSPDFAnnotation *annotation = ...
+
+CGRect normalizedPDFRect = annotation.boundingBox;
+CGRect rawPDFRect = CGRectApplyAffineTransform(normalizedPDFRect, CGAffineTransformInvert(pageInfo.transform));
+```
+
+==]
+
+## How to Convert between Raster Image Pixels and Points
+
+The concept of resolution does not apply to PDF documents unless they have been converted into raster images, i.e. images whose dimensions are expressed in pixels. The default unit PSPDFKit returns for page sizes is the point, which is easily converted into inches by taking into account the fact that 1 inch is equal to 72 points. Inch separation results from dividing the size in points of a particular page by 72. Resolution, expressed in DPI (dots per inch), is thus the result of dividing the page size in points by the inch separation. To summarize, these are the relations you have to consider when you need to convert between points/inches and pixels in PDF:
+
+1 inch = 72 points<br>
+Inch separation = points / 72<br>
+DPI (resolution) = pixels / inch separation
+
+Note that, since PDF 1.6, the relationship between inches and points may be specified as greater than 1⁄72 by means of the `UserUnit` entry of the page dictionary. See table 30 on page 79 of the [PDF 1.7 specification][] for more information.
+
+[`transform`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageInfo.html#/c:objc(cs)PSPDFPageInfo(py)transform
+[`savedrotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFPageInfo.html#/c:objc(cs)PSPDFPageInfo(py)savedRotation
+[`pageinfoforpageatindex:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)pageInfoForPageAtIndex:
+[pdf 1.7 specification]: http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+[`uicoordinatespace`]: https://developer.apple.com/documentation/uikit/uicoordinatespace

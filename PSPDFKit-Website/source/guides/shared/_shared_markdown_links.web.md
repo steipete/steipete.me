@@ -1,0 +1,19 @@
+[asm.js]: http://asmjs.org/faq.html
+[WebAssembly]: http://webassembly.org/
+
+[`LayoutMode.AUTO`]: https://pspdfkit.com/api/web/PSPDFKit.html#.LayoutMode
+[`LayoutMode.DOUBLE`]: https://pspdfkit.com/api/web/PSPDFKit.html#.LayoutMode
+[`LayoutMode.SINGLE`]: https://pspdfkit.com/api/web/PSPDFKit.html#.LayoutMode
+[`ScrollMode.CONTINUOUS`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ScrollMode
+[`ScrollMode.PER_SPREAD`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ScrollMode
+[`ViewState#keepFirstSpreadAsSinglePage`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#keepFirstSpreadAsSinglePage
+[`ViewState#layoutMode`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#layoutMode
+[`ViewState#pageSpacing`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#pageSpacing
+[`ViewState#scrollMode`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#scrollMode
+[`ViewState#spreadSpacing`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#spreadSpacing
+[`ViewState#viewMode`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#viewMode
+[`ViewState`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html
+[`ZoomMode.FIT_TO_VIEWPORT`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ZoomMode
+[`ZoomMode.FIT_TO_WIDTH`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ZoomMode
+[`ZoomMode.PAGE_FIT`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ZoomMode
+[`ZoomMode.PAGE_WIDTH`]: https://pspdfkit.com/api/web/PSPDFKit.html#.ZoomMode

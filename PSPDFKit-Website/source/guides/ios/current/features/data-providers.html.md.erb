@@ -1,0 +1,294 @@
+---
+title: Data Providers
+section: developers
+
+---
+
+PSPDFKit supports loading data from many different sources: in fact, from any object that conforms to the [`PSPDFDataProviding`][] protocol, known as a data provider. This is especially helpful if you want to support your own encryption or compression scheme.
+
+A data provider allows you to define how to read and how to write data to it, making it very customizable and giving you the freedom to store your data in the exact way you need it.
+
+## Existing Data Providers
+
+PSPDFKit ships with several pre-made data provider classes:
+
+* [`PSPDFFileDataProvider`][] reads from and writes to a local file.
+
+* [`PSPDFCoordinatedFileDataProvider`][] is similar but uses [file coordination][]. `PSPDFDocuments` initialized with `initWithURL:` will be backed by a `PSPDFCoordinatedFileDataProvider` by default.
+
+* [`PSPDFAESCryptoDataProvider`][] allows you to transparently encrypt and decrypt a given PDF using the [`RNCryptor`][] spec.
+
+* [`PSPDFDataContainerProvider`][] is used for reading and writing to an [`NSData`][] object. Useful if you want to keep your PDF strictly in memory.
+
+## Custom Data Providers
+
+You can also write your own, custom data provider and pass it along to [`initWithDataProviders:`][].
+
+### Read Support
+
+To provide read support, you have to implement the [`PSPDFDataProviding`][] protocol. It offers methods to read the data at a specific offset and to uniquely identify the content. Implementing the more specialized [`PSPDFFileDataProviding`][] protocol is preferred if your data provider backed by a file on disk.
+
+Here's a simple example of how to implement it to read from an [`NSData`][] instance.
+
+[==
+
+```swift
+class YourDataProvider: NSObject, NSSecureCoding, PSPDFDataProviding {
+
+    // MARK: Properties
+
+    var size: UInt64 {
+        // Returns the size of the data.
+        guard let data = self.data else { return 0 }
+        return UInt64(data.count)
+    }
+
+    var uid: String {
+        // This can be anything that uniquely identifies your data.
+        // Resource-name from the original data, UUID, you name it.
+        return uniqueIdentifierForYourData
+    }
+
+    // [...]
+
+    // MARK: PSPDFDataProviding
+
+    func readData(withSize size: UInt64, atOffset offset: UInt64) -> Data {
+        guard let data = self.data else { return Data() }
+        // We have to clamp the given size and offset to make sure we don't try
+        // to read data that doesn't exist.
+        let length = self.size
+        let clampedOffset = min(offset, length)
+        let clampedSize = min(size, length - clampedOffset)
+        // Actually return the data.
+        let range: Range = Int(clampedOffset)..<Int(clampedOffset+clampedSize)
+        return data.subdata(in: range)
+    }
+}
+```
+
+```objc
+@interface YourDataProvider : NSObject <PSPDFDataProviding> @end
+
+@implementation YourDataProvider
+
+#pragma mark - Properties
+
+- (uint64_t)size {
+    // Returns the size of the data.
+    return self.data.length;
+}
+
+- (NSString *)UID {
+    // This can be anything that uniquely identifies your data.
+    // Resource-name from the original data, UUID, you name it.
+    return uniqueIdentifierForYourData;
+}
+
+// [...]
+
+#pragma mark - PSPDFDataProviding
+
+- (NSData *)readDataWithSize:(uint64_t)size atOffset:(uint64_t)offset {
+    // We have to clamp the given size and offset to make sure we don't try
+    // to read data that doesn't exist.
+    const NSUInteger length = self.size;
+    NSUInteger clampedOffset = MIN((NSUInteger)offset, length);
+    NSUInteger clampedSize =  MIN((NSUInteger)size, length - clampedOffset);
+    // Actually return the data.
+    return [self.data subdataWithRange:NSMakeRange(clampedOffset, clampedSize)];
+}
+
+@end
+```
+
+==]
+
+### Write Support
+
+Write support is a little more difficult than simply offering a `write` method. The reason for this is that PSPDFKit actually has to be able to read the document while writing it, which means we can't simply overwrite data.
+
+For this reason, we introduced the concept of a [`PSPDFDataSink`][]. It supports the following options ([`PSPDFDataSinkOptions`][]):
+
+* `PSPDFDataSinkOptionNone` - the writes that are incoming are from the beginning of the file (this is the default option).
+* `PSPDFDataSinkOptionAppend` - the writes that are incoming should be *appended* to the file.
+
+To support writing, we first need to write a [`PSPDFDataSink`][].
+
+[==
+
+```swift
+class YourDataSink: NSObject, PSPDFDataSink {
+
+    // MARK: Properties
+
+    private(set) var isFinished = false
+    let options: PSPDFDataSinkOptions
+    var writtenData = Data()
+
+    // MARK: Lifecycle
+
+    init(options: PSPDFDataSinkOptions) {
+        self.options = options
+        super.init()
+    }
+
+    // MARK: PSPDFDataSink
+
+    func write(_ data: Data) -> Bool {
+        // We append the passed in data to our writtenData.
+        writtenData.append(data)
+        return true
+    }
+
+    func finish() -> Bool {
+        // If you're implementing compression or encryption writing, you might need
+        // to tell the compression or encryption library that you are finished
+        // writing. You can do this here. For our purposes with the `NSData`, we
+        // don't need to do anything.
+        isFinished = true
+        return true
+    }
+}
+```
+
+```objc
+@interface YourDataSink : NSObject <PSPDFDataSink>
+
+@property (nonatomic, readonly) PSPDFDataSinkOptions options;
+@property (nonatomic, readonly) NSMutableData *writtenData;
+
+@end
+
+@interface YourDataSink ()
+
+@property (nonatomic) BOOL isFinished;
+
+@end
+
+@implementation YourDataSink
+
+- (instancetype)initWithOptions:(PSPDFDataSinkOptions)options {
+    if ((self = [super init])) {
+        // We initialize `writtenData` with a empty, mutable `NSMutableData`
+        _writtenData = [NSMutableData data];
+        _options = options;
+    }
+    return self;
+}
+
+- (BOOL)writeData:(NSData *)data {
+    // We append the passed in data to our writtenData.
+    [self.writtenData appendData:data];
+    return YES;
+}
+
+- (BOOL)finish {
+    // If you're implementing compression or encryption writing, you might need
+    // to tell the compression or encryption library that you are finished
+    // writing. You can do this here. For our purposes with the `NSData`, we
+    // don't need to do anything.
+    self.isFinished = YES;
+    return YES;
+}
+
+@end
+```
+
+==]
+
+This is a basic [`PSPDFDataSink`][] implementation that simply writes to the passed in [`NSData`][]. In order for the data provider to make use of it, we have to extend it just a little:
+
+[==
+
+```swift
+class YourDataProvider: NSObject, NSSecureCoding, PSPDFDataProviding {
+
+    // ... your previous implementation ...
+
+    var additionalOperationsSupported: PSPDFDataProvidingAdditionalOperations {
+        // Signal to PSPDFKit that this data provider can support writing by
+        // returning the following option:
+        return .write
+    }
+
+    func createDataSink(options: PSPDFDataSinkOptions) -> PSPDFDataSink {
+        // When PSPDFKit wants to write to the data provider, it will call this
+        // method and passes in if it wants to overwrite or append to the file.
+        return YourDataSink(options: options)
+    }
+
+    func replace(with replacementDataSink: PSPDFDataSink) -> Bool {
+        // After PSPDFKit finishes writing, it passes in the data sink
+        // that was previously created in `-createDataSinkWithOptions:`.
+        let dataSink = replacementDataSink as! YourDataSink
+
+        // We have to check if we have to overwrite or append
+        if dataSink.options.contains(.append) {
+            // We have to append the data to ours
+            guard let data = data else { return false }
+            var replacementData = data
+            replacementData.append(dataSink.writtenData)
+        } else {
+            // We can simply replace our data
+            data = dataSink.writtenData
+        }
+
+        return true
+    }
+}
+```
+
+```objc
+@implementation YourDataProvider
+
+// ... your previous implementation ...
+
+- (PSPDFDataProvidingAdditionalOperations)additionalOperationsSupported {
+    // Signal to PSPDFKit that this data provider can support writing by
+    // returning the following option:
+    return PSPDFDataProvidingAdditionalOperationWrite;
+}
+
+- (id<PSPDFDataSink>)createDataSinkWithOptions:(PSPDFDataSinkOptions)options {
+    // When PSPDFKit wants to write to the data provider, it will call this
+    // method and passes in if it wants to overwrite or append to the file.
+    return [[YourNSDataSink alloc] initWithOptions:options];
+}
+
+- (BOOL)replaceWithDataSink:(id<PSPDFDataSink>)replacementDataSink {
+    // After PSPDFKit finishes writing, it passes in the data sink
+    // that was previously created in `-createDataSinkWithOptions:`.
+    YourNSDataSink *dataSink = (YourNSDataSink*)replacementDataSink;
+    // We have to check if we have to overwrite or append
+    if (dataSink.options & PSPDFDataSinkOptionAppend) {
+        // We have to append the data to ours
+        NSMutableData *replacementData = [self.data mutableCopy];
+        [replacementData appendData:dataSink.writtenData];
+        self.data = replacementData;
+    } else {
+        // We can simply replace our data
+        self.data = dataSink.writtenData;
+    }
+    return YES;
+}
+
+@end
+```
+
+==]
+
+Always remember that even while writing, the data provider must be able to fully read the document.
+
+[`PSPDFDataProviding`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDataProviding.html
+[`PSPDFFileDataProvider`]: https://pspdfkit.com/api/ios/Classes/PSPDFFileDataProvider.html
+[`PSPDFCoordinatedFileDataProvider`]: https://pspdfkit.com/api/ios/Classes/PSPDFCoordinatedFileDataProvider.html
+[file coordination]: ../../features/file-coordination
+[`PSPDFAESCryptoDataProvider`]: https://pspdfkit.com/api/ios/Classes/PSPDFAESCryptoDataProvider.html
+[`PSPDFDataContainerProvider`]: https://pspdfkit.com/api/ios/Classes/PSPDFDataContainerProvider.html
+[`RNCryptor`]: https://github.com/RNCryptor/RNCryptor-Spec
+[`NSData`]: https://developer.apple.com/documentation/foundation/nsdata
+[`initWithDataProviders:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)initWithDataProviders:
+[`PSPDFFileDataProviding`]: https://pspdfkit.com/api/ios/Protocols/PSPDFFileDataProviding.html
+[`PSPDFDataSink`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDataSink.html
+[`PSPDFDataSinkOptions`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFDataSinkOptions

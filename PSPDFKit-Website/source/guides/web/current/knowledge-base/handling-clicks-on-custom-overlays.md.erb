@@ -1,0 +1,37 @@
+---
+title: Handling clicks on custom overlays
+section: knowledge-base
+---
+
+## Q: How do I prevent `page.press` event from firing when the user clicks on a custom overlay?
+
+A: By default, when we click on a custom overlay, `page.press` event also gets fired. There might be cases when you don't want to do that.
+
+`page.press` internally uses the browser's `onpointerup` event. So in order to prevent that event from firing, we will have to stop the propagation of the same event (`onpointerup`) from the custom overlay.
+
+So we recommend that you use the `onpointerup` event on the custom overlay instead of the `onclick` event:
+
+```js
+PSPDFKit.load(options).then(instance => {
+    const div = document.createElement("div");
+    div.className = "overlay" // give some height and width to the div so that it's practically clickable.
+
+    div.onpointerup = e => {
+        // We need to call `e.stopPropogation()` stop the propagation of the onpointerup event and `page.press` event won't get fired.
+        e.stopPropagation();
+
+        // do what you wanted to do on click.
+    }
+
+    const item = new PSPDFKit.CustomOverlayItem({
+      id: "id",
+      node: div,
+      pageIndex: 0,
+      position: new PSPDFKit.Geometry.Point({ x: 50, y: 600 })
+    });
+
+    instance.setCustomOverlayItem(item);
+})
+```
+
+This has been tested with PSPDFKit for Web 2019.5.4

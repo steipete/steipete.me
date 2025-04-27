@@ -1,0 +1,91 @@
+---
+title: Annotations
+title_suffix: PSPDFKit for iOS
+
+
+platform: ios
+section: sdk
+---
+
+<%= partial 'shared/nav_sub' %>
+
+<!-- Videos -->
+<%= partial 'shared/product_videos', locals: {
+  title: "PDF Annotations",
+  subtitle: "PSPDFKit for iOS",
+  body: "Empower your users to collaborate on PDFs with our Annotations component. Whether they want to highlight text, add notes, draw, or use any of the many annotation types supported by the PDF spec, our Annotations component will give your app the tools they need.",
+  items: [
+    {
+      title: 'Toolbar',
+      url: '/images/pdf-sdk/ios/annotations/annotation-toolbar.mp4'
+    },
+    {
+      title: 'Notes',
+      url: '/images/pdf-sdk/ios/annotations/note-annotations.mp4'
+    },
+    {
+      title: 'Ink Drawing',
+      url: '/images/pdf-sdk/ios/annotations/ink-annotations.mp4'
+    },
+    {
+      title: 'Inspector',
+      url: '/images/pdf-sdk/ios/annotations/annotation-inspector.mp4'
+    },
+    {
+      title: 'Rotation',
+      url: '/images/pdf-sdk/ios/annotations/annotation-rotation.mp4'
+    },
+  ]
+} %>
+
+<!-- Details -->
+<%= partial 'shared/product_details', locals: {
+  items: [
+    {
+      title: "Annotation Toolbar",
+      body: "The Annotation Toolbar allows for quick access to all the annotation types in the PDF spec. It's fully customizable, and it even supports predefined pen tool settings for quick switching between visual annotation styles.",
+      image: "/images/pdf-sdk/ios/annotations/annotation-toolbar-feature.png"
+    },
+    {
+      title: "Note Annotations",
+      body: "Note annotations let you add longer comments to PDF documents, along with selecting a custom shape and color for the note through the custom note inspector.",
+      image: "/images/pdf-sdk/ios/annotations/note-annotations-feature.png"
+    },
+    {
+      title: "Ink Annotations",
+      body: "Ink annotations enable free-form drawing on a PDF document. Color and line thickness are easily adjustable via the ink annotation inspector in the toolbar.",
+      image: "/images/pdf-sdk/ios/annotations/ink-annotations-feature.png"
+    },
+    {
+      title: "Text Annotations",
+      body: "Add new text directly to the page, and take advantage of many convenient features, like automatic annotation sizing, copy and paste, text rotation, custom font selection, justification, and callout annotations.",
+      image: "/images/pdf-sdk/ios/annotations/text-annotations-feature.png"
+    },
+    {
+      title: "Annotation Inspector",
+      body: "The context-sensitive Annotation Inspector provides fine-grained control over how annotations look — from border and fill colors, to opacity and font settings.",
+      image: "/images/pdf-sdk/ios/annotations/annotation-inspector-feature.png"
+    },
+    {
+      title: "Annotation Rotation",
+      body: "PSPDFKit supports rotation for stamp and free text annotations, which allows your users to freely rotate selected annotations. You can also change the rotation of annotations through the API.",
+      image: "/images/pdf-sdk/ios/annotations/annotation-rotation-feature.png"
+    }
+  ]
+} %>
+
+<!-- Documentation -->
+<%= partial 'shared/product_documentation', locals: {
+  title: 'Annotations',
+  url: '/guides/ios/current/annotations/introduction-to-annotations/'
+} %>
+
+<!-- Try PDF Viewer -->
+<%= partial 'shared/product_try_viewer', locals: {
+  title: 'Annotations',
+  image: '/images/pdf-sdk/ios/annotations/try.png',
+  device: 'phone_ios'
+} %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales', locals: { title: 'PSPDFKit for iOS' } %>

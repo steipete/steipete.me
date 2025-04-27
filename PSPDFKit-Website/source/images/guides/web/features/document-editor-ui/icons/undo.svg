@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.25 11L6.75 7.5L10.25 4" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"/>
+<path d="M7.5 7.5H13.5C15.0913 7.5 16.6174 8.13214 17.7426 9.25736C18.8679 10.3826 19.5 11.9087 19.5 13.5C19.5 15.0913 18.8679 16.6174 17.7426 17.7426C16.6174 18.8679 15.0913 19.5 13.5 19.5" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="square"/>
+<rect x="12" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.9" x="11" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.8" x="10" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.7" x="9" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.6" x="8" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.5" x="7" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.4" x="6" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.3" x="5" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.2" x="4" y="19" width="1" height="1" fill="currentColor"/>
+<rect opacity="0.1" x="3" y="19" width="1" height="1" fill="currentColor"/>
+</svg>

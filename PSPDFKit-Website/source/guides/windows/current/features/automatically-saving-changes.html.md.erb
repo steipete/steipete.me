@@ -1,0 +1,38 @@
+---
+title: Automatically Saving Changes
+section: developers
+---
+
+`PdfView` can handle saving changes to a `StorageFile` automatically. By default, `PdfView`’s [`AutoSave`][autosave property] property is set to `AutoSaveMode.None` and you must manually save changes to the document before loading a new PDF into the view or unloading the `PdfView` control.
+
+However, by setting [`AutoSave`][autosave property] to `AutoSaveMode.Incremental` or `AutoSaveMode.Rewrite`, the `PdfView` will attempt to save the file before unloading the document or the `PdfView` control.
+
+```csharp
+// Automatically save changes incrementally.
+myPdfView.AutoSave = AutoSaveMode.Incremental;
+
+// Automatically save changes to a rewritten PDF.
+myPdfView.AutoSave = AutoSaveMode.Rewrite;
+```
+
+Alternatively, you can also set this property in XAML:
+
+```xml
+<ui:PdfView
+  AutoSave="Incremental"
+  Name="PdfView"/>
+```
+
+See the [Opening and Saving PDFs][opening] guide for an explanation of the differences between incremental saving and rewriting.
+
+## Export Events
+
+If you require notification of saving, you can subscribe to two event handlers on the `PdfView`.
+
+[`OnFileExported`] is invoked whenever a file has saved successfully, and [`OnFileExportFailed`] is invoked if an error has occurred.
+
+[`pdfview`]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html
+[opening]: /guides/windows/current/features/opening-and-saving-pdfs/#incremental-saving
+[autosave property]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html#PSPDFKit_UI_PdfView_AutoSave
+[`onfileexported`]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html#PSPDFKit_UI_PdfView_OnFileExported
+[`onfileexportfailed`]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html#PSPDFKit_UI_PdfView_OnFileExportFailed

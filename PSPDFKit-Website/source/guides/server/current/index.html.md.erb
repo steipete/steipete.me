@@ -1,0 +1,68 @@
+---
+title: Overview
+section: developers
+
+order: 1
+---
+
+## High-Level Overview
+
+PSPDFKit Server is our server-side component used by [PSPDFKit for Web][] and [PSPDFKit Instant][]. It is delivered as a [Docker container][] that you deploy to your own infrastructure. Your PSPDFKit-powered apps then connect to it.
+
+The server requires a PostgreSQL database and dedicated file storage, the latter of which can be either a local Docker volume, any S3-compatible object storage, or the Postgres database itself.
+
+- **PSPDFKit for Web**
+
+  PSPDFKit Server preprocesses uploaded documents into a format that PSPDFKit for Web can render and stores annotations. PSPDFKit for Web intelligently downloads pages on demand, so even large documents can be browsed quickly.
+
+  More information can be found in the [PSPDFKit for Web guides][].
+
+- **PSPDFKit Instant**
+
+  As with PSPDFKit for Web, PSPDFKit Server stores uploaded documents and annotations. PSPDFKit for Android, iOS, and Web connect to PSPDFKit Server to synchronize annotations and download documents.
+
+  More information can be found in the guides for each platform.
+
+## Document Management
+
+Users upload documents to your backend, which simply forwards the uploaded PDF file to PSPDFKit Server. In return, it receives a document identifier. In your server, you only have to store this identifier; we store the PDF document, its annotations, and the meta information.
+
+<center>
+  <img
+    alt="PSPDFKit Server is used to store the PDF document and its annotations. Your server has access to a rich HTTP API."
+    src="/images/guides/server/pspdfkit-server.png"
+    width="640">
+</center>
+
+The PDFs are stored in the asset storage, which can be one of the supported [asset storage backends][]. PSPDFKit Server also supports [adding documents from URLs][], which means PDFs are not stored in an asset storage and instead get fetched from the URLs whenever the server needs them.
+
+We regularly release new updates, which will be announced via [Twitter][], our [blog][], and a [newsletter you can subscribe to][newsletter].
+
+Please see the [changelog](https://pspdfkit.com/changelog/server/) for details of what is new in each release.
+
+If you experience any problems with PSPDFKit Server, please look at our [Troubleshooting][] section or [contact support][pspdfkit support].
+
+## Requirements
+
+- [Postgres][] 9.6.6+ or 10.1+
+- [Docker][] 1.10.0 or newer
+
+## Supported Cloud Database Services
+
+- [Azure Database for PostgreSQL][]
+- [Google Cloud SQL for Postgres][]
+- [PostgreSQL on Amazon RDS][]
+
+[pspdfkit for web]: https://pspdfkit.com/web
+[pspdfit instant]: https://pspdfkit.com/instant
+[docker container]: ../../deployment/docker
+[pspdfkit for web guides]: https://pspdfkit.com/guides/web/current/
+[adding documents from urls]: ../../api/documents/#adding-a-document-from-a-url
+[asset storage backends]: ../../configuration/asset-storage/
+[azure database for postgresql]: https://azure.microsoft.com/en-us/services/postgresql/
+[google cloud sql for postgres]: https://cloud.google.com/sql/docs/postgres/
+[postgresql on amazon rds]: https://aws.amazon.com/rds/postgresql/
+[postgres]: https://www.postgresql.org/
+[docker]: https://docs.docker.com
+[troubleshooting]: https://pspdfkit.com/guides/server/current/pspdfkit-server/troubleshooting/
+[newsletter]: https://pspdfkit.com/newsletter/

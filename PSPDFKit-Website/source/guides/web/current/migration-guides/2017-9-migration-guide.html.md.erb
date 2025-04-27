@@ -1,0 +1,27 @@
+---
+title: 2017.9 Migration Guide
+section: developers
+
+order: 505
+---
+
+[PSPDFKit for Web 2017.9][] adds support for forms, a responsive toolbar, and a headless mode.
+
+If you’re maintaining a Server installation, make sure to check out the [server migration guides][].
+
+### Notable Changes
+
+- All [annotation APIs][annotation guides] will now also return [`WidgetAnnotation`][]s. This special type of annotation is required to render form widgets in a PDF and cannot be modified. Calling any of the modifying APIs (create, update, or delete) will cause an error when a [`WidgetAnnotation`][] is used.
+- A comprehensive guide for forms in PDFs can be found in our [form guides][].
+- A new default toolbar item was added: `annotate`. This item will show the annotation button on small screens. To remove one specific annotation tool, it’s still sufficient to remove the individual type from the toolbar items list. An example can be found in our [toolbar customization guide][].
+- Since migrating `Instance#destroy()` in 2017.7, the method is now no longer available. Please refer to the [2017.7 Migration Guide](../2017-7-migration-guide/#destroy-api) for information on how to upgrade.
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2017.9]: https://pspdfkit.com/blog/2017/pspdfkit-web-2017-9/
+[form guides]: ../../forms/introduction-to-forms/
+[`widgetannotation`]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.WidgetAnnotation.html
+[annotation guides]: ../../annotations/introduction-to-annotations/
+[server migration guides]: https://pspdfkit.com/guides/server/current/migration-guides/2017-9-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/web/#2017.9
+[toolbar customization guide]: ../../customizing-the-interface/customizing-the-toolbar/

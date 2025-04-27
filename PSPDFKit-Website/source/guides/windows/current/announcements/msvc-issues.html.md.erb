@@ -1,0 +1,50 @@
+---
+title: Microsoft Visual Studio Known Issues
+section: developers
+
+published: true
+---
+
+## Visual C++ 16.3 Runtime Uses an Unsupported API for UWP
+
+At the time of writing, the current Windows App Certification Kit incorrectly fails UWP apps. Microsoft claims this can now be ignored and that the Store will accept your application. We have had reports that this is not working for everyone.
+
+With PSPDFKit for Windows 2.4.2, we implemented the official workaround, so your app should pass a local run of the Windows App Cert Kit.
+
+If you are still getting the error, please ensure your entire build has been cleaned. Any stray objects or other build files can cause a failure.
+
+Read more about it [here][wack-bug].
+
+## Visual Studio 2017 19.5
+
+Since Visual Studio 15.9, many users of the IDE, including us, have been experiencing issues seemingly related to manifest generation.
+
+Symptoms include errors like the following at build time:
+
+> Task 'GenerateAppxManifest' failed. An item with the same key has already been added
+
+They also include runtime exceptions such as the following:
+
+> System.Runtime.InteropServices.COMException: 'Class not registered'
+
+Or:
+
+> System.Exception: Class not registered
+
+[Microsoft has confirmed the issue][bug] and there is a fix that will be implemented in the upcoming Visual Studio 2019 release. Microsoft has also confirmed it will not be fixing this bug in any new releases of Visual Studio 2017.
+
+Microsoft has also provided the following workaround, which uses an undocumented flag:
+
+Add the following element to the topmost `<PropertyGroup>` in your app’s project file (the element without a `Condition` attribute):
+
+```xml
+<AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
+```
+
+This is not a permanent solution, but it will help until the fix is shipped in Visual Studio 2019.
+
+The only other known workaround at this time is to do a clean rebuild of the application. Fortunately, it is not possible to accidentally ship an application with this problem, as such an application will not pass the [WACK][] tests.
+
+[bug]: https://developercommunity.visualstudio.com/content/problem/398249/instantiating-winrt-component-excepts-with-systemr.html
+[wack]: https://developer.microsoft.com/en-us/windows/develop/app-certification-kit
+[wack-bug]: https://developercommunity.visualstudio.com/content/problem/746534/visual-c-163-runtime-uses-an-unsupported-api-for-u.html

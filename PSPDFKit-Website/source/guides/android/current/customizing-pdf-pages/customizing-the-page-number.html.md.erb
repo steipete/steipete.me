@@ -1,0 +1,40 @@
+---
+title: Customizing the Page Number
+section: developers
+---
+
+PSPDFKit supports the PDF page label feature, which means you can rewrite and change the regular absolute one-based numbering in PDF documents.
+
+This means that a document that usually has the page numbering 1, 2, 3, 4 can be changed to have numbering like Prelude, Table of Contents, 1, 2. Page labels can be numbers, Roman numerals, or even free-text strings.
+
+<img src="/images/guides/shared/customizing-pdf-pages/customizing-the-page-number/acrobat-thumbnails.png">
+
+PSPDFKit fully supports page labels and will show custom labels instead of the default numbering, when available, in all places where page labels are displayed. This includes the Table of Contents view controller, the page position view, and the thumbnail views.
+
+<img src="/images/guides/shared/customizing-pdf-pages/customizing-the-page-number/page-labels-android.png">
+
+You can configure page labels via Adobe Acrobat by opening the thumbnail view, right-clicking on a page, and choosing the Number Pages... menu entry.
+
+<img src="/images/guides/shared/customizing-pdf-pages/customizing-the-page-number/acrobat-config.png">
+
+## Page Labels Visibility
+
+You can disable/enable page labels through `PdfActivityConfiguration` by calling `hidePageLabels()`/`showPageLabels()` in the `PdfActivityConfiguration.Builder`. Page labels are displayed by default (if there are any — if not, regular page numbers are displayed instead).
+
+Example:
+
+[==
+
+```kotlin
+val config = PdfActivityConfiguration.Builder(context)
+    .showPageLabels()
+    .build()
+```
+
+```java
+final PdfActivityConfiguration config = new PdfActivityConfiguration.Builder(context)
+    .showPageLabels()
+    .build();
+```
+
+==]

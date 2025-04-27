@@ -1,0 +1,92 @@
+---
+title: PSPDFKit 3 Migration Guide
+section: developers
+
+order: 110
+---
+
+PSPDFKit v3 is the forthcoming major release of [PSPDFKit][], an extensive PDF displaying and editing framework for iOS. As a major release, 3.0 introduces several API-breaking changes and new architecture.
+
+This guide is a starting point in order to ease the transition to PSPDFKit v3.
+
+## Requirements: iOS 6 and Xcode 5.x.
+Starting with PSPDFKit 3.3, we require Xcode 5 and no longer support compilation with legacy mode.
+
+### New Licensing Model
+PSPDFKit v3 now requires a serial number to unlock its features. Log in at http://customers.pspdfkit.com with your account details. If you don't yet have an account, request one at [support@pspdfkit.com][]. You will have to add the call to PSPDFSetLicenseKey() in your AppDelegate, at a time before you call or use any classes of PSPDFKit.
+
+## Project Settings
+PSPDFKit v3 requires several new frameworks - if you use the `PSPDFKit.xcconfig`, you're all set, unless you manually changed the "Other Linker Flags" setting in your project. Either merge the settings, remove yours, or manually add the required frameworks (you find all details if you open the `PSPDFKit.xcconfig` file)
+
+## API changes
+Several API methods, enums and constants have been renamed to improve clarity in the API. Most constants are now named like `PSPDFObjectsGlyphs`, while they were named inconsistently in v2 and mostly had a style like `kPSPDFObjectsGlyphs `. In general, a look at the header should allow you to find the new matching API quickly. Several methods also have additional parameters and no simple counterpart to keep the API clean. For example the method `dismissAnimated:` in `PSPDFBarButtonItem` has been extended to `dismissAnimated:completion:`.
+
+### Classes
+Several classes have been renamed. All `PSPDFAction***` classes now are named `PSPDF***Action` to better reflect their type.
+
+### Deprecations
+All deprecated methods in v2 have been removed. PSPDFKit v3 doesn't feature deprecated methods, so for deeper integrations some time has to be invested upfront to upgrade your code base to v3.
+
+### Class overriding
+Direct access to the `overrideClassNames` has been removed. Use  [`overrideClass:withClass:`][] to register your subclasses. Remember that all view/controller related classes need to be registered in [`PSPDFConfiguration`][], while model-classes are in [`PSPDFDocument`][].
+
+### New annotation toolbar
+The annotation bar has been completely redesigned. Several subclassing hooks have been changed as well to reflect those changes. PSPDFKit v3 also has several new annotation tools that you might want to enable if you manually set the contents of the [`editableAnnotationTypes`][] dictionary in the [`PSPDFDocument`][]. Notable additions are the [`PSPDFAnnotationStringEraser`][] and the [`PSPDFAnnotationStringSelectionTool`][] instruments.
+
+## The annotation data model
+In PSPDFKit v2, several annotation types were groups for multiple annotations. This has been simplified. Starting with v3, each annotation type string corresponds to exactly one annotation type. You can convert between those two representations via [`PSPDFStringFromAnnotationType()`][] and [`PSPDFAnnotationTypeFromString()`][]. Further, the annotations string name has been simplified from `PSPDFAnnotationTypeString***` to just `PSPDFAnnotationString***`.
+To create a Underline annotation with the v3 model, you now use the [`PSPDFUnderlineAnnotation`][] instead of setting a custom `PSPDFHighlightAnnotationType` on the `PSPDFHighlightAnnotation`.
+
+### Saving
+In PSPDFKit v2, saving by calling `saveChangedAnnotationsWithError:` was only allowed to be called on the main thread, took quite some time and afterwards destroyed your current `documentProviders`. Afterwards annotations were parsed again. This process has been greatly optimized and streamlined. PSPDFKit v3 can now deal with saving in the background and can correctly update the current annotation set without the need to re-parse. There's a new, async API for saving: [`saveAnnotationsWithCompletionBlock:`][] and the sync API has been renamed to `saveAnnotationsWithError:`, since depending on the set of annotationProviders, save might save all annotations, not just the changed ones.
+
+### The external annotation data model (NSCoder)
+The NSCoder-data model for saving annotations has been changed quite radically. To support archives that have been saved with v2, you need to call `PSPDFAnnotationSupportLegacyFormat()` with the `NSKeyedUnarchiver` as argument and afterwards process the unarchived annotations with `PSPDFPostprocessAnnotationInLegacyFormat()` to convert them into the v3 format.
+
+### JSON serialization
+There is no direct support to parse v2 JSON-format in v3 - you need to write your own converter if this is required. In v3, you can create JSON using the `PSPDFJSONAdapter` class and calling [`JSONDictionaryFromModel:`][] . [`PSPDFAnnotation`][] now also has a factory method that converts the JSON to the correct types, via the static `+ annotationFromJSONDictionary:document:error:` method. The `document` parameter is only required if you have subclasses defined that should be used instead of the default annotation types.
+
+### XFDF Support
+PSPDFKit now supports the [Adobe XFDF 3.0 spec][], which can be read in Adobe Acrobat and other frameworks that support XFDF. This is your **new preferred way to send data to a server**, since it's standardized XML, compared to the proprietary way of encoding annotation data that is used in NSCoder and JSON serialization. There is also a [`PSPDFXFDFAnnotationProvider`][] for your convenience which takes a fileURL to load/save but can be used as a template to build your web-based version for sending/receiving XFDF.
+
+### Value Transformers
+JSON serialization uses various value transformers to convert e.g. enums into more a useful representation (strings). The `NSValueTransformer` subclasses have been directly exposed in v2. In v3, we use the more appropriate way of only exposing the name (like `PSPDFLinesTransformerName`) and you can fetch them from the global registry of the `NSValueTransformer` class with `valueTransformerForName:`.
+
+### Change Notifications
+In v2, it was necessary to call `copyAndDeleteOriginalIfNeeded` for changing annotations, and sending a `PSPDFAnnotationChangeNotificationOriginalAnnotationKey`. This was the reason for lots of subtle bugs and unnecessary complexity and has been removed in v3. You still need to send change notifications ([`PSPDFAnnotationChangedNotification`][]) but it's no longer needed to create a copy of the annotation.
+
+### Deleting Annotations
+In v2, the only way to delete annotations was setting `deleted = YES` on the annotation object. Starting with v3, there is an API for that, both in [`PSPDFDocument`][] [`removeAnnotations:`][] and also more low-level in the [`PSPDFAnnotationManager`][]. Annotations might still use the above soft-delete or a real delete, this is decided in the current [`PSPDFAnnotationProvider`][] implementation.
+
+#### PSPDFAnnotationProvider
+Annotation providers now have to deal with annotation deletion, and the API has been changed in several other ways. Study the new protocol header for details.
+
+#### PSPDFAnnotationManager
+`PSPDFAnnotationParser` has been renamed to [`PSPDFAnnotationManager`][] to better reflect what it actually does.(collecting annotations and managing annotation providers). Accessor methods have been changed from `annotationParser` and `annotationParserForPage:` to simply `annotationManagerForPage:`.
+
+### Document sharing
+The methods to send a document via email or use the Open In... feature have been unified. Both have lost their custom configuration methods and are replaced with the new `PSPDFDocumentSharingController`, which features a simpler and more flexible way of selecting flattening/annotations and the page range.
+
+### PSPDFViewControllerDelegate
+*  The `pdfViewController:willDisplayDocument:` delegates were confusing and mostly just a forwarding of the viewWillAppear: event and have been replaced by `pdfViewController:shouldChangeDocument:` and `pdfViewController:didChangeDocument:`.
+*  APIs that had one annotation as argument have been replaced with `NSArray*`, since v3 now supports selecting multiple annotations at once. For example `pdfViewController:didSelectAnnotation:onPageView:` now is called `pdfViewController:didSelectAnnotations:onPageView:` and sends an `NSArray*` instead of a single `PSPDFAnnotation*`.
+*  The `pdfViewController:shouldShowController:embeddedInController:animated:` API now offers an additional `options:` argument.
+*  The `pdfViewController:willShowHUD:` method was redundant and has been removed. Use the `pdfViewController:shouldShowHUD` and return YES to be notified before the HUD shows.
+
+[PSPDFKit]: http://pspdfkit.com
+[support@pspdfkit.com]: mailto:support@pspdfkit.com
+[`overrideClass:withClass:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)overrideClass:withClass:
+[`editableAnnotationTypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)editableAnnotationTypes
+[`PSPDFAnnotationStringEraser`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFAnnotationStringEraser
+[`PSPDFAnnotationStringSelectionTool`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFAnnotationStringSelectionTool
+[`PSPDFStringFromAnnotationType()`]: https://pspdfkit.com/api/ios/Other%20Functions.html#/c:@F@PSPDFStringFromAnnotationType
+[`PSPDFAnnotationTypeFromString()`]: https://pspdfkit.com/api/ios/Other%20Functions.html#/c:@F@PSPDFAnnotationTypeFromString
+[`PSPDFUnderlineAnnotation`]: https://pspdfkit.com/api/Classes/PSPDFUnderlineAnnotation.html
+[`saveAnnotationsWithCompletionBlock:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)saveAnnotationsWithCompletionBlock:
+[`JSONDictionaryFromModel:`]: https://pspdfkit.com/api/ios/Classes/PSPDFJSONAdapter.html#/c:objc(cs)PSPDFJSONAdapter(cm)JSONDictionaryFromModel:
+[Adobe XFDF 3.0 spec]: http://partners.adobe.com/public/developer/en/xml/XFDF_Spec_3.0.pdf
+[`PSPDFXFDFAnnotationProvider`]: https://pspdfkit.com/api/Classes/PSPDFXFDFAnnotationProvider.html
+[`removeAnnotations:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)removeAnnotations:options:
+[`PSPDFAnnotationManager`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationManager.html
+[`PSPDFAnnotationProvider`]: https://pspdfkit.com/api/Protocols/PSPDFAnnotationProvider.html
+[`PSPDFAnnotationChangedNotification`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFAnnotationChangedNotification

@@ -1,0 +1,8 @@
+# dSYMs
+
+$(PROJECT_DIR)/PSPDFKit-dSYMs/PSPDFKit.framework.ios-arm64.dSYM
+$(PROJECT_DIR)/PSPDFKit-dSYMs/PSPDFKit.framework.ios-x86_64-maccatalyst.dSYM
+$(PROJECT_DIR)/PSPDFKit-dSYMs/PSPDFKit.framework.ios-x86_64-simulator.dSYM
+$(PROJECT_DIR)/PSPDFKitUI-dSYMs/PSPDFKitUI.framework.ios-arm64.dSYM
+$(PROJECT_DIR)/PSPDFKitUI-dSYMs/PSPDFKitUI.framework.ios-x86_64-maccatalyst.dSYM
+$(PROJECT_DIR)/PSPDFKitUI-dSYMs/PSPDFKitUI.framework.ios-x86_64-simulator.dSYM

@@ -18,6 +18,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[A week after Apple's initial macOS Core Dump reply, I received a detailed explanation about the process of capturing kernel dumps via networking and a second Mac.]
+
+
 A week after Apple's initial "macOS Core Dump" reply, and me sending a lot of questions their way, I got a really nice, human reply that explains the process via networking and a second Mac.
 
 If you started here, read the backstory first: [How to macOS Core Dump](/posts/how-to-macos-core-dump/)

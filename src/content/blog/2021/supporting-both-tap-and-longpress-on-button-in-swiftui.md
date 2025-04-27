@@ -16,6 +16,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[My task today was quite simple: adding an optional long-press handler to a button in SwiftUI. A regular tap opens our website and a long press does… something else.]
+
+
 My task today was quite simple: adding an optional long-press handler to a button in SwiftUI. A regular tap opens our website and a long press does… something else. Not so difficult, right?
 
 ## Naive First Version

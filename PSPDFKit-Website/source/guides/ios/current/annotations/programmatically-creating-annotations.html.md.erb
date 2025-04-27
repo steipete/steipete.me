@@ -1,0 +1,441 @@
+---
+title: Programmatically Creating Annotations
+section: developers
+---
+
+You can programmatically create link, highlight, free text, ink, or note annotations just like any other types of supported annotations, but it’s easy to get this wrong.
+
+To create annotations programmatically, roughly follow these steps:
+
+1. Create the annotation by initializing it and optionally setting its contents.
+2. Define where you want to put the annotation in the document. You can do this by setting the [`boundingBox`][] property of the annotation object.
+3. [Customize the appearance of the annotation][customize the appearance] (optional).
+4. Add the annotation to the document with [`addAnnotations:options:`][].
+
+For a list of supported annotations, please see the [Introduction to Annotations][] guide.
+
+## Customize the Appearance
+
+There are a few different ways to customize the appearance of annotations. You can set the properties on [`PSPDFAnnotation`][] or any of its subclasses to style the annotation to your liking.
+
+Use [`PSPDFAnnotationStyleManager`][] to get the last used styles that were changed in the UI for a specific annotation type and apply them to a new annotation:
+
+[==
+
+```swift
+let annotation = // Create a `PSPDFAnnotation` (subclass) instance.
+let style = PSPDFKitGlobal.sharedInstance.styleManager.lastUsedStyle(forKey: annotation.typeString)
+style?.apply(to: annotation)
+```
+
+```objc
+PSPDFAnnotation *annotation = // Create a `PSPDFAnnotation` (subclass) instance.
+PSPDFAnnotationStyle *style = [PSPDFKitGlobal.sharedInstance.styleManager lastUsedStyleForKey:annotation.typeString];
+[style applyStyleToAnnotation:annotation];
+```
+
+==]
+
+## Examples for Creating Some Annotation Types
+
+The PSPDFCatalog contains many examples for programmatically adding annotations. Take a look at `AddAnnotationsProgrammaticallyExamples` for more details.
+
+### Link Annotations
+
+[`PSPDFLinkAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new link annotation and set its URL.
+let linkAnnotation = PSPDFLinkAnnotation(url: URL(string: "https://pspdfkit.com")!)
+
+// Define where you want to place the annotation in the document.
+let boundingBox = CGRect(x: 200, y: 400, width: 50, height: 300)
+linkAnnotation.boundingBox = boundingBox
+
+// Customize the link annotation's appearance.
+PSPDFLinkAnnotationView.appearance().borderColor = .blue
+
+// Add the newly created annotation to the document.
+document.add([linkAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new link annotation and set its URL.
+PSPDFLinkAnnotation *linkAnnotation = [[PSPDFLinkAnnotation alloc] initWithURL:[NSURL URLWithString:@“https://pspdfkit.com”]];
+
+// Define where you want to place the annotation in the document.
+CGRect boundingBox = { .origin.x = 200.f, .origin.y = 400.f, .size.height = 50.f, .size.width = 300.f };
+linkAnnotation.boundingBox = boundingBox;
+
+// Customize the link annotation's appearance.
+[[PSPDFLinkAnnotationView appearance] setBorderColor:[UIColor blueColor]];
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[linkAnnotation] options:nil];
+```
+
+==]
+
+### Highlight Annotations
+
+[`PSPDFHighlightAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new highlight annotation.
+let highlightAnnotation = PSPDFHighlightAnnotation()
+
+// Define where you want to place the annotation in the document.
+let boundingBox = CGRect(x: 200, y: 400, width: 50, height: 300)
+highlightAnnotation.boundingBox = boundingBox
+
+// For highlight annotations, you also need to set the rect array accordingly.
+highlightAnnotation.rects = [NSValue(cgRect: boundingBox)]
+
+// Add the newly created annotation to the document.
+document.add([highlightAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new highlight annotation.
+PSPDFHighlightAnnotation *highlightAnnotation = [[PSPDFHighlightAnnotation alloc] init];
+
+// Define where you want to place the annotation in the document.
+CGRect boundingBox = { .origin.x = 200.f, .origin.y = 400.f, .size.height = 50.f, .size.width = 300.f };
+highlightAnnotation.boundingBox = boundingBox;
+
+// For highlight annotations, you also need to set the rect array accordingly.
+highlightAnnotation.rects = @[[NSValue valueWithCGRect:boundingBox]];
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[highlightAnnotation] options:nil];
+```
+
+==]
+
+### Free Text Annotations
+
+[`PSPDFFreeTextAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new free text annotation by defining its contents.
+let freeTextAnnotation = PSPDFFreeTextAnnotation(contents: "PSPDFKit")
+
+// Define where you want to place the annotation in the document.
+let boundingBox = CGRect(x: 200, y: 400, width: 50, height: 300)
+freeTextAnnotation.boundingBox = boundingBox
+
+// Add the newly created annotation to the document.
+document.add([freeTextAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new free text annotation by defining its contents.
+PSPDFFreeTextAnnotation *freeTextAnnotation = [[PSPDFFreeTextAnnotation alloc] initWithContents:@"PSPDFKit"];
+
+// Define where you want to place the annotation in the document.
+CGRect boundingBox = { .origin.x = 200.f, .origin.y = 400.f, .size.height = 50.f, .size.width = 300.f };
+freeTextAnnotation.boundingBox = boundingBox;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[freeTextAnnotation] options:nil];
+```
+
+==]
+
+### Ink Annotations
+
+[`PSPDFInkAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a line by defining the start and end points.
+let startPoint = CGPoint(x: 200, y: 400)
+let endPoint = CGPoint(x: 400, y: 600)
+
+let lines = [[NSValue(cgPoint: startPoint), NSValue(cgPoint: endPoint)]]
+
+// Create a new ink annotation by setting lines.
+let inkAnnotation = PSPDFInkAnnotation(lines: lines)
+
+// There is no need to set `boundingBox` for ink annotations if the lines are defined.
+
+// Customize the line color.
+// Note that the `fillColor` property changes the background color of the entire bounding box.
+inkAnnotation.borderColor = .blue
+
+// Customize the line width.
+inkAnnotation.lineWidth = 5
+
+// Add the newly created annotation to the document.
+document.add([inkAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a line by defining the start and end points.
+CGPoint startPoint = { .x = 200.f, .y = 400.f };
+CGPoint endPoint = { .x = 400.f, .y = 600.f };
+
+NSArray *lines = @[@[[NSValue valueWithCGPoint:startPoint], [NSValue valueWithCGPoint:endPoint]]];
+
+// Create a new ink annotation by setting lines.
+PSPDFInkAnnotation *inkAnnotation = [[PSPDFInkAnnotation alloc] initWithLines:lines];
+
+// There is no need to set `boundingBox` for ink annotations if the lines are defined.
+
+// Customize the line color.
+// Note that the `fillColor` property changes the background color of the entire bounding box.
+inkAnnotation.borderColor = [UIColor blueColor];
+
+// Customize the line width.
+inkAnnotation.lineWidth = 5.f;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[inkAnnotation] options:nil];
+```
+
+==]
+
+### Note Annotations
+
+[`PSPDFNoteAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new note annotation and set its contents.
+let noteAnnotation = PSPDFNoteAnnotation(contents: "PSPDFKit")
+
+// The note annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render note annotations at a fixed size of 32x32pt. We recommend that you set the `boundingBox` to the same value.
+let boundingBox = CGRect(x: 200, y: 400, width: 32, height: 32)
+noteAnnotation.boundingBox = boundingBox
+
+// Add the newly created annotation to the document.
+document.add([noteAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new note annotation and set its contents.
+PSPDFNoteAnnotation *noteAnnotation = [[PSPDFNoteAnnotation alloc] initWithContents:@"PSPDFKit"];
+
+// The note annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render note annotations at a fixed size of 32x32pt. We recommend that you set the `boundingBox` to the same value.
+CGRect boundingBox = { .origin.x = 200.f, .origin.y = 400.f, .size.height = 32.f, .size.width = 32.f };
+noteAnnotation.boundingBox = boundingBox;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[noteAnnotation] options:nil];
+```
+
+==]
+
+### Sound Annotations
+
+[`PSPDFSoundAnnotation` API][]
+
+To create a sound annotation with an existing audio file, you need to use a Core Audio Format (`.caf`) file. You can convert an MP3 file to CAF using `afconvert` in the Terminal:
+
+```shell
+/usr/bin/afconvert -f caff -d LEI16 sound.mp3 sound.caf
+```
+
+Learn more in [Apple’s Technical Q&A: QA1534 — Creating Core Audio Format (.caf) Files][apple guide qa1534].
+
+For more information about converting the file in your own app, please refer to Apple’s [Audio Toolbox Convert File][] sample project.
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new sound annotation with the sound URL.
+// The sound file needs to be a `.caf` file.
+let soundAnnotation = try! PSPDFSoundAnnotation(url: soundURL)
+
+// The sound annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render sound annotations at a fixed size of 74x44pt. We recommend that you set the `boundingBox` to the same value.
+let boundingBox = CGRect(x: 200, y: 400, width: 74, height: 44)
+soundAnnotation.boundingBox = boundingBox
+
+// Add the newly created annotation to the document.
+document.add([soundAnnotation])
+
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new sound annotation with the sound URL.
+// The sound file needs to be a `.caf` file.
+PSPDFSoundAnnotation *soundAnnotation = [[PSPDFSoundAnnotation alloc] initWithURL:soundURL error:&error];
+if (!soundAnnotation) {
+	// Handle error.
+	return;
+}
+
+// The sound annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render sound annotations at a fixed size of 74x44pt. We recommend that you set the `boundingBox` to the same value.
+CGRect boundingBox = { .origin.x = 200.f, .origin.y = 400.f, .size.height = 32.f, .size.width = 32.f };
+noteAnnotation.boundingBox = boundingBox;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[soundAnnotation] options:nil];
+```
+
+==]
+
+### Stamp Annotations
+
+[`PSPDFStampAnnotation` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new stamp annotation using the appearance stream generator.
+let imageStamp = PSPDFStampAnnotation()
+
+// Set the image.
+imageStamp.image = UIImage(named: "exampleimage.jpg")
+
+// Set the bounding box.
+let boundingBox = CGRect(x: 300, y: 150, width: 200, height: 200)
+imageStamp.boundingBox = boundingBox
+
+// Add the newly created annotation to the document.
+document.add([imageStamp])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new stamp annotation using the appearance stream generator.
+PSPDFStampAnnotation *imageStamp = [[PSPDFStampAnnotation alloc] init];
+
+// Set the image.
+imageStamp.image = [UIImage imageNamed:@"exampleimage.jpg"];
+imageStamp.boundingBox = CGRectMake(300.f, 150.f, 200.f, 200.f);
+
+// Set the bounding box.
+CGRect boundingBox = { .origin.x = 300.f, .origin.y = 150.f, .size.height = 200.f, .size.width = 200.f };
+imageStamp.boundingBox = boundingBox;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[imageStamp] options:nil];
+```
+
+==]
+
+### File Annotations with Embedded Files
+
+[`PSPDFFileAnnotation` API][] and [`PSPDFEmbeddedFile` API][]
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create the URL of the embedded file that uses an Excel document file.
+let samplesURL = Bundle.main.resourceURL?.appendingPathComponent("Samples")
+let embeddedFileURL = samplesURL?.appendingPathComponent("Monthly Report.docx")
+
+// Create a new file annotation and set its properties.
+let fileAnnotation = PSPDFFileAnnotation()
+fileAnnotation.pageIndex = 0
+fileAnnotation.iconName = .graph
+fileAnnotation.color = .blue
+fileAnnotation.boundingBox = CGRect(x: 500, y: 250, width: 32, height: 32)
+
+// Create an embedded file and add it to the file annotation.
+let embeddedFile = PSPDFEmbeddedFile(fileURL: embeddedFileURL, fileDescription: "Monthly Report")
+fileAnnotation.embeddedFile = embeddedFile
+
+// Add the newly created annotation to the document.
+document.add([fileAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create the URL of the embedded file that uses an Excel document file.
+NSURL *samplesURL = [NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"Samples"];
+NSURL *embeddedFileURL = [samplesURL URLByAppendingPathComponent:@"Monthly Report.docx"];
+
+// Create a new file annotation and set its properties.
+PSPDFFileAnnotation *fileAnnotation = [[PSPDFFileAnnotation alloc] init];
+fileAnnotation.pageIndex = 0;
+fileAnnotation.iconName = PSPDFFileIconNameGraph;
+fileAnnotation.color = UIColor.blueColor;
+fileAnnotation.boundingBox = CGRectMake(500.f, 250.f, 32.f, 32.f);
+
+// Create an embedded file and add it to the file annotation.
+PSPDFEmbeddedFile *embeddedFile = [[PSPDFEmbeddedFile alloc] initWithFileURL:embeddedFileURL fileDescription:@"Monthly Report"];
+fileAnnotation.embeddedFile = embeddedFile;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[fileAnnotation] options:nil];
+```
+
+==]
+
+[`boundingbox`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)boundingBox
+[customize the appearance]: #customize-the-appearance
+[`addannotations:options:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)addAnnotations:options:
+[introduction to annotations]: https://pspdfkit.com/guides/ios/current/annotations/introduction-to-annotations/
+[`pspdfannotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html
+[`pspdfannotationstylemanager`]: https://pspdfkit.com/api/ios/Protocols/PSPDFAnnotationStyleManager.html
+[`pspdflinkannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFLinkAnnotation.html
+[`pspdfhighlightannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFHighlightAnnotation.html
+[`pspdffreetextannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFFreeTextAnnotation.html
+[`pspdfinkannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFInkAnnotation.html
+[`pspdfnoteannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFNoteAnnotation.html
+[`pspdfsoundannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFSoundAnnotation.html
+[`pspdfstampannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFStampAnnotation.html
+[`pspdffileannotation` api]: https://pspdfkit.com/api/ios/Classes/PSPDFFileAnnotation.html
+[`pspdfembeddedfile` api]: https://pspdfkit.com/api/ios/Classes/PSPDFEmbeddedFile.html
+[apple guide qa1534]: https://developer.apple.com/library/content/qa/qa1534/_index.html#//apple_ref/doc/uid/DTS40008152
+[audio toolbox convert file]: https://developer.apple.com/library/content/samplecode/ConvertFile/Introduction/Intro.html

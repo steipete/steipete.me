@@ -1,0 +1,33 @@
+---
+title: Cache
+section: developers
+
+---
+
+## Built-In Caches
+
+PSPDFKit Server uses two different kinds of caches to improve performance and reduce the load on the asset backend.
+
+- When PSPDFKit Server needs to access a PDF file via the [asset storage backend][], the document is cached on the local file system to speed up future access. You can configure this cache via the following environment variables: `ASSET_STORAGE_CACHE_PATH` and `ASSET_STORAGE_CACHE_SIZE`.
+- When a PSPDFKit for Web client requests a document, PSPDFKit Server renders the individual pages and provides them to the client. These pages are cached in memory to speed up future rendering.
+
+Since both caches only work for a single PSPDFKit Server node and are not shared across multiple PSPDFKit Server nodes, you can use Redis to enable a shared cache.
+
+## Redis Cache
+
+PSPDFKit Server 2018.2 introduced the possibility of using Redis as a shared cache for rendered pages. This allows multiple PSPDFKit Server nodes to share their work, since only one has to render a document and others will be able to access the cached results. Please be aware that this only works with PSPDFKit for Web.
+
+Check out the [configuration overview][] for more information on how to configure PSPDFKit Server to use Redis as an additional cache.
+
+Please note that you also have to manage and configure Redis. Examples of doing this include setting the memory limit and setting an eviction policy. We recommend the `allkeys-lru` eviction policy for most use cases. Check out [Using Redis as an LRU Cache][] for more information.
+
+When moving from a trial to a production license, we also recommend deleting all cached data, as this will prevent trial overlays from showing up in production.
+
+## Prerendering
+
+Refer to the documentation on the [prerendering endpoint][] to find out how you can render and cache documents in advance to speed up the loading of your documents even more.
+
+[asset storage backend]: ../../configuration/asset-storage/
+[configuration overview]: ../../configuration/overview/
+[prerendering endpoint]: https://pspdfkit.com/guides/server/current/api/documents/#pre-render-a-document
+[using redis as an lru cache]: https://redis.io/topics/lru-cache

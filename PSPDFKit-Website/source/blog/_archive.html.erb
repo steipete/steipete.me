@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 small pt-3 pr-xl-5 mb-5 mb-md-0 text-center text-md-left">
+      <h6 class="mb-4">Categories</h6>
+      <ul class="nav nav-pills flex-md-column justify-content-center justify-content-md-start">
+        <li class="nav-item">
+          <a class="nav-link nav-link-brand <%= 'active' if active == 'all' %>"
+             href="/blog/categories/">
+            All
+          </a>
+        </li>
+        <% %w(Products Development Design Company Customers iOS macOS Android Web Instant Windows).sort_by(&:downcase).each do |s| %>
+          <li class="nav-item">
+            <a class="nav-link nav-link-brand <%= 'active' if active == s %>"
+               href="<%= "/blog/categories/#{s.parameterize}" %>">
+              <%= s %>
+            </a>
+          </li>
+        <% end %>
+        <li class="nav-item mt-2">
+          <a href="/blog/<%= blog_years.first %>" class="nav-link nav-link-brand text-muted">
+            Archive by Year
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <% archive.each do |year, articles| %>
+        <h2 class="mt-0"><%= year %></h2>
+        <div class="row">
+          <% articles.each do |a| %>
+            <%= partial 'preview_sm', locals: { article: a } %>
+          <% end %>
+        </div>
+        <hr>
+      <% end %>
+    </div>
+  </div>
+</div>

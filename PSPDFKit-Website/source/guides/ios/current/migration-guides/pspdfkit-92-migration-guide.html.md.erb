@@ -1,0 +1,70 @@
+---
+title: PSPDFKit 9.2 Migration Guide
+section: developers
+
+order: 101
+---
+
+This guide covers updating an iOS or Mac Catalyst project from PSPDFKit 9 for iOS to PSPDFKit 9.2 for iOS. We encourage you to update as soon as possible, in order to take advantage of future new features and fixes.
+
+PSPDFKit 9.2 for iOS fully supports iOS 11, 12, and 13. iOS 11 support will be removed later during the PSPDFKit 9 lifecycle. Xcode 11.3 or later is required to use this version of the SDK. Learn more in our [Version Support][] guide.
+
+## Third-Party Styluses No Longer Supported
+
+PSPDFKit for iOS added support for third-party styluses in 2014 with the release of PSPDFKit 3.7 for iOS. Today, that comes to an end as PSPDFKit 9.2 for iOS removes support for third-party styluses, in order to favor the much more prevalent option in 2020: Apple Pencil.
+
+With this, we’re also simplifying our stylus-selection UI, as well as redesigning the API that you can use to get notified about the status of the Apple Pencil that might be connected to the device.
+
+The APIs that have been affected by this are listed below.
+
+- Removed: `PSPDFStylusManager`<br> _Use `PSPDFApplePencilManager` instead._
+- Removed: `-[PSPDFKitGlobal stylusManager]`<br> _Use `-[PSPDFKitGlobal applePencilManager]` instead._
+- Removed: `PSPDFStylusViewController`<br> _Use `PSPDFApplePencilController` instead._
+- Removed: `PSPDFStylusDriver`<br> _This is no longer supported._
+- Removed: `PSPDFStylusDriverDelegate`<br> _This is no longer supported._
+- Removed: `PSPDFStylusTouch`<br> _This is no longer supported._
+- Removed: `PSPDFStylusTouchClassification`<br> _This is no longer supported._
+- Removed: `PSPDFStylusTouchClassificationInfo`<br> _This is no longer supported._
+- Removed: `PSPDFDefaultStylusTouch`<br> _This is no longer supported._
+- Removed: `PSPDFApplePencilDriver`<br> _This driver’s functionality is now handled by `PSPDFApplePencilManager`._
+- Removed: `PSPDFStylusButtonAction`<br> _This is no longer supported._
+- Removed: `PSPDFStylusManagerConnectionStatusChangedNotification`<br> _Use `PSPDFApplePencilEnabledChangedNotification` to get notified when Apple Pencil is enabled/disabled._
+- Removed: `PSPDFStylusStatusButton`<br> _Use `PSPDFApplePencilStatusButton` instead._
+- Removed: `-PSPDFAnnotationToolbar.showsStylusButtonAutomatically`<br> _Use `-PSPDFAnnotationToolbar.showsApplePencilButtonAutomatically` instead._
+- Removed: `-PSPDFAnnotationToolbar.showingStylusButton`<br> _Use `PSPDFAnnotationToolbar.showingApplePencilButton` instead._
+- Removed: `-[PSPDFAnnotationToolbar setShowingStylusButton:animated:]`<br> _Use `-[PSPDFAnnotationToolbar setShowingApplePencilButton:animated:]` instead._
+- Removed: `-PSPDFAnnotationToolbar.stylusButton`<br> _Use `-PSPDFAnnotationToolbar.applePencilButton` instead._
+
+Apple Pencil (first and second generation) continues to be [fully supported by PSPDFKit][] for iOS out of the box.
+
+## Localized String Key Changes
+
+The localized string keys for annotation types and tools have been simplified. If you are providing a custom localization, please check your use of any of the string keys below and ensure you are using the correct keys in the correct contexts.
+
+Before:
+
+| Key       | English Text | Use                                                    |
+| --------- | ------------ | ------------------------------------------------------ |
+| Redact    | Redact       | Accessibility label for text selection menu item.      |
+| Redaction | Redaction    | Type of an annotation for redaction.                   |
+| Note      | Note         | Type of an annotation for adding notes/comments.       |
+| Text      | Text         | This was not used.                                     |
+| FreeText  | Text         | Type of an annotation that shows text on the page.     |
+| File      | File         | This was not used.                                     |
+| Squiggle  | Squiggle     | This was not used.                                     |
+| Squiggly  | Squiggly     | Type of an annotation that shows a squiggly underline. |
+
+The new localized string keys always use the annotation type names from the PDF specification. Entries for other keys listed above have been removed. You can obtain all of these keys using constants like `PSPDFAnnotationStringRedaction` and `PSPDFAnnotationStringNote` etc.
+
+After:
+
+| Key            | English Text | Use                                                                                                        |
+| -------------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
+| Redact         | Redaction    | Type of an annotation for redaction. Now also used as the accessibility label for the text selection menu. |
+| Text           | Note         | Type of an annotation for adding notes/comments.                                                           |
+| FreeText       | Text         | Type of an annotation that shows text on the page.                                                         |
+| FileAttachment | File         | Type of an annotation that contains an embedded file.                                                      |
+| Squiggly       | Squiggle     | Type of an annotation that shows a squiggly underline.                                                     |
+
+[version support]: ../../announcements/version-support
+[fully supported by pspdfkit]: ../../annotations/apple-pencil

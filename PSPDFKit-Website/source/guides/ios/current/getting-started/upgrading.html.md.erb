@@ -1,0 +1,22 @@
+---
+title: Upgrading
+section: developers
+
+---
+
+### CocoaPods
+
+If you set up your podfile to use [the latest release URL][PSPDFKit Guide Using CocoaPods], then all you need to do is issue `pod update`. If you used a [pinned version URL][PSPDFKit Guide Pinning Version] instead, first update the URL to the desired version and then run `pod update`.
+
+### Dynamic Framework
+
+In most cases, all you need to do to upgrade a [manual PSPDFKit integration][PSPDFKit Guide Integrating PSPDFKit] is to replace the `PSPDFKit.framework` and `PSPDFKitUI.framework` files in your project’s references. Simply copy the new `PSPDFKit.framework` and `PSPDFKitUI.framework` files to the disk location of your existing `PSPDFKit.framework` and `PSPDFKitUI.framework` files and replace them when prompted.
+
+### API Changes
+
+After an upgrade, you might see new warnings or build errors due to PSPDFKit API changes. Commonly used APIs are normally deprecated before being changed — we annotate these methods with `@Deprecated` and provide a migration strategy. We recommend that you upgrade deprecated APIs as soon as possible, as APIs that are less commonly used may be changed without prior notice and this might lead to build failures on your side. If that happens, please consult the [changelog][] for details on how to resolve the issue.
+
+[PSPDFKit Guide Using CocoaPods]: ../../getting-started/using-cocoapods/#always-use-latest-release
+[PSPDFKit Guide Pinning Version]: ../../getting-started/using-cocoapods/#pinning-to-a-specific-version-e-g-5-3-6
+[PSPDFKit Guide Integrating PSPDFKit]: ../../getting-started/integrating-pspdfkit/
+[changelog]: /changelog/ios/

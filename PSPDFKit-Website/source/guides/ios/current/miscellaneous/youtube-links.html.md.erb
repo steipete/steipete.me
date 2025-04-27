@@ -1,0 +1,24 @@
+---
+title: YouTube Links
+section: developers
+
+---
+
+iOS 9 tries to open YouTube links within the YouTube app, but only if your app is configured correctly.
+
+## The Issue
+
+If your document contains `https://youtube.com` links they will open up in a webpage like other links.
+This changes when the YouTube app is installed. Then iOS tries to open the YouTube app, but fails with a "No handler found for https://youtube.com/..." alert. Additionally you will see the following log message:
+
+```
+-canOpenURL: failed for URL: "youtube://www.youtube.com/..." - error: "This app is not allowed to query for scheme youtube"
+```
+
+## The Solution
+
+In order for your app to be allowed to query for the `youtube` scheme you need to add a `LSApplicationQueriesSchemes` key to your `Info.plist` containing the scheme you want to allow:
+
+<img src="/images/guides/ios/miscellaneous/youtube-links/info-plist.png">
+
+After that you can tap on a YouTube link and an alert will appear, asking if you want to open the link in the YouTube app or not.

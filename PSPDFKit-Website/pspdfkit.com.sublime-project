@@ -1,0 +1,16 @@
+{
+  "folders":
+  [
+   {
+      "name": "source",
+      "follow_symlinks": true,
+      "path": "./source"
+    },
+    {
+      "name": "other",
+      "follow_symlinks": true,
+      "path": ".",
+      "folder_exclude_patterns": ["bin", "build", "node_modules", "pre-built", "source", ".tmp"],
+    }
+  ]
+}

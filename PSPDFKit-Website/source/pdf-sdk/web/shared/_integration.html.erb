@@ -1,0 +1,166 @@
+<section id="integration" class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-9">
+
+        <!-- Header -->
+        <header class="text-center mb-5">
+          <h6 class="text-brand"><%= subtitle %></h6>
+          <h2><%= title %></h2>
+          <p><%= body %></p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="nav-btn-group justify-content-center mb-5">
+          <nav class="nav justify-content-center mb-4">
+            <button type="button" class="nav-item nav-link active" data-toggle="tab" href="#tab-basic">
+              Basic <span class="d-none d-lg-inline-block">Example</span>
+            </button>
+            <button type="button" class="nav-item nav-link" data-toggle="tab" href="#tab-toolbar">
+              <span class="d-none d-lg-inline-block">Custom</span> Toolbar
+            </button>
+            <button type="button" class="nav-item nav-link" data-toggle="tab" href="#tab-annotation">
+              <span class="d-none d-lg-inline-block">Create</span> Annotation
+            </button>
+          </nav>
+        </div>
+
+        <!-- Code -->
+        <div class="card card-lg mb-4">
+          <div class="card-body bg-light p-0">
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-basic">
+                <%= partial 'pdf-sdk/web/shared/example_basic.md' %>
+              </div>
+              <div class="tab-pane" id="tab-toolbar">
+                <%= partial 'pdf-sdk/web/shared/example_toolbar.md' %>
+              </div>
+              <div class="tab-pane" id="tab-annotation">
+                <%= partial 'pdf-sdk/web/shared/example_annotation.md' %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guides / API -->
+        <p class="text-muted text-center mb-5">
+          Check out our <a href="/guides/web" class="link-brand">guides</a> and
+          <a href="/api/web" class="link-brand">API docs</a> for more examples.
+        </p>
+
+        <div class="row">
+
+          <!-- Column A -->
+          <div class="col-sm-6 mb-4 mb-lg-0">
+
+            <!-- Example Projects -->
+            <h3 class="h4 mb-4">Example Projects</h3>
+
+            <!-- React -->
+            <a href="https://github.com/pspdfkit/pspdfkit-web-example-react"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/react.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for React">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">React</h4>
+                <p class="small mb-0">
+                  React example project
+                </p>
+              </div>
+            </a>
+
+            <!-- Webpack -->
+            <a href="https://github.com/pspdfkit/pspdfkit-web-example-webpack"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/webpack.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for Webpack">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Webpack</h4>
+                <p class="small mb-0">
+                  Webpack example project
+                </p>
+              </div>
+            </a>
+
+            <!-- Node.js -->
+            <a href="https://github.com/pspdfkit/pspdfkit-server-example-nodejs"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/nodejs.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for Node.js">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Node.js</h4>
+                <p class="small mb-0">
+                  Node.js example project
+                </p>
+              </div>
+            </a>
+
+            <!-- Rails -->
+            <a href="https://github.com/pspdfkit/pspdfkit-server-example-rails"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/rails.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for Ruby on Rails">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Ruby on Rails</h4>
+                <p class="small mb-0">
+                  Rails example project
+                </p>
+              </div>
+            </a>
+
+          </div>
+
+          <!-- Column B -->
+          <div class="col-sm-6">
+
+            <!-- Custom Integration -->
+            <h3 class="h4 mb-4">Custom Integration</h3>
+
+            <!-- npm -->
+            <a href="/guides/web/current/standalone/adding-to-your-project/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/npm.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for npm" >
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">npm</h4>
+                <p class="small mb-0">
+                  Install via npm
+                </p>
+              </div>
+            </a>
+
+            <!-- Yarn -->
+            <a href="/guides/web/current/standalone/adding-to-your-project/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/yarn.svg" width="60" class="lazyload" loading="lazy"
+                   alt="JavaScript PDF Web Viewer for Yarn">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Yarn</h4>
+                <p class="small mb-0">
+                  Install via Yarn
+                </p>
+              </div>
+            </a>
+
+            <!-- Migration -->
+            <h3 class="h4 mt-5 mb-4">Migration</h3>
+
+            <!-- PDF.js -->
+            <a href="/guides/web/current/migration-guides/migrating-from-mozilla-pdfjs/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/logos/pdf-js.svg" width="60" class="lazyload" loading="lazy"
+                   alt="PSPDFKit for Web is a powerful PDF.js alternative">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">PDF.js</h4>
+                <p class="small mb-0">
+                  Migrate from PDF.js to PSPDFKit
+                </p>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

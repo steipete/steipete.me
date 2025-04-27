@@ -1,0 +1,38 @@
+---
+title: Zooming
+section: developers
+
+---
+
+## Manual Zooming
+
+You can use [`-[PSPDFDocumentViewController zoomToPDFRect:forPageAtIndex:animated:]`](https://pspdfkit.com/api/ios/Classes/PSPDFDocumentViewController.html#/c:objc(cs)PSPDFDocumentViewController(im)zoomToPDFRect:forPageAtIndex:animated:) to zoom to a specific rect inside a page of the current document.
+
+**Note:** This method's rect needs to be specified in [pdf coordinates][].
+
+## Disable Zooming
+
+Zooming can be disabled by setting [`maximumZoomScale`][] of [`PSPDFConfiguration`][] to 1. It's **important** to set this value before creating the view. Alternatively you can set [`zoomEnabled`][] to `NO` on [`PSPDFDocumentViewController`][].
+
+[==
+
+```swift
+let controller = PSPDFViewController(document: document, configuration: PSPDFConfiguration { builder in
+    builder.maximumZoomScale = 1
+})
+```
+
+```objc
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:document configuration:[PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+    builder.maximumZoomScale = 1.0f;
+}]];
+```
+
+==]
+
+[`maximumZoomScale`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)maximumZoomScale
+[`zoomEnabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentViewController.html#/c:objc(cs)PSPDFDocumentViewController(py)zoomEnabled
+[`PSPDFViewControllerDelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html
+[`PSPDFConfiguration`]: https://pspdfkit.com/api/ios/Protocols/PSPDFConfiguration.html
+[`PSPDFDocumentViewController`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentViewController.html
+[pdf coordinates]: ../../faq/coordinate-spaces

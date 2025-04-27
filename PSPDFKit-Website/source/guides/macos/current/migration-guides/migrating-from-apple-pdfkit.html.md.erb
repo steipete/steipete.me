@@ -1,0 +1,166 @@
+---
+title: Migrating from Apple PDFKit
+section: developers
+
+order: 52
+---
+
+Apple’s PDFKit provides a great starting point for integrating PDF support into your macOS app. It is a system library, and as such, the easiest to integrate.
+
+PSPDFKit, on the other hand, is a cross-platform PDF framework with more advanced features, fine-grained control over various aspects of PDF handling, and a lot of customization options, including:
+
+- Support for all annotations defined in the PDF specification.
+- Importing and exporting of annotations in JSON and XFDF formats.
+- Accessing files embedded in documents.
+- Adding watermarks to documents.
+- Programmatic form filling.
+- Indexed Full-Text Search (near-instant search results).
+- Loading of documents from custom sources, with on-the-fly decryption
+- Advanced, customizable rendering, including CMYK color space support.
+- Custom bookmark implementation (bookmarks are not part of the PDF spec).
+- Availability on multiple platforms with great interoperability.
+- Active development.
+- First-class support directly from our engineers.
+
+## Introduction
+
+The PSPDFKit API can be overwhelming at first, especially when coming from Apple PDFKit. But once you understand the basic concepts, it becomes straightforward. We’ve traded a bit of simplicity for flexibility and performance, and we achieve this by using a couple of techniques and patterns.
+
+For example, the responsibility for providing, parsing, and managing various PDF objects and concepts is split into individual classes. These are called `PSPDF...Provider`, `PSPDF...Parser`, and `PSPDF...Manager`, respectively. We expose these classes publicly in order to give you hooks for customization as well as advanced control and performance optimization.
+
+## Overview
+
+The only UI classes provided by Apple’s PDFKit are `PDFView` and `PDFThumbnailView`. Right now, PSPDFKit doesn’t offer any UI classes, but it still gives you all the APIs necessary to write your own. All remaining classes in Apple’s PDFKit are what Apple refers to as utility classes. Let’s take a look at them and see how they relate to PSPDFKit.
+
+The following table shows an overview of Apple’s PDFKit classes that have a roughly corresponding class in PSPDFKit:
+
+| Apple’s PDFKit         | PSPDFKit                   |
+| ---------------------- | -------------------------- |
+| [`PDFView`][]          | Views not supported (yet). |
+| [`PDFThumbnailView`][] | Views not supported (yet). |
+| [`PDFDocument`][]      | [`PSPDFDocument`][]        |
+| [`PDFAnnotation`][]    | [`PSPDFAnnotation`][]      |
+| [`PDFOutline`][]       | [`PSPDFOutlineElement`][]  |
+
+The [`PDFPage`][] class doesn’t have a corresponding class in PSPDFKit; the concept of a page is supported mainly via page indexes, as described in more detail in the [Page Handling](../../migration-guides/migrating-from-apple-pdfkit/#page-handling) section below.
+
+Additionally, the [`PDFSelection`][] class doesn’t have a corresponding class in PSPDFKit. While
+`PDFSelection` is very generic in Apple’s PDFKit and covers multiple use cases, PSPDFKit offers more dedicated objects for each use case. Text selected by a user is a UI concept and, as such, not part of PSPDFKit for macOS (yet). For more information, please refer to the [Text Handling](../../migration-guides/migrating-from-apple-pdfkit/#text-handling) section below.
+
+## Document Handling
+
+The [`PDFDocument`][] class in Apple PDFKit represents a single PDF document either stored on disk as a file or loaded via an `NSData` object. This class corresponds to [`PSPDFDocument`][] in PSPDFKit.
+
+A [`PSPDFDocument`][] consists of one or more [`PSPDFDocumentProvider`][]s. You can think of one provider as corresponding to a single file on disk. This allows you to treat multiple PDF files as a single document in cases where you need to. Many customers use this feature to split large documents into individual files to, for example, download each part individually on demand.
+
+## Page Handling
+
+As noted above, PSPDFKit doesn’t have a corresponding class for [`PDFPage`][]. Anything related to a page is accessed via the document or a related object by passing a page index. For example, use [`PSPDFDocument`][]’s [`annotationsForPageAtIndex:type:`][] to get annotations for a specific page. Page-indexed access is optimized for performance.
+
+The main object for manipulating pages of a document is the [`PSPDFDocumentEditor`][], along with its related classes ([see our announcement blog post][]). It allows you to:
+
+- Add pages
+- Remove pages
+- Duplicate pages
+- Rotate pages
+- Extract pages (saving as a new PDF document)
+
+Please consult the iOS [Document Editing][] guide. The section on [Programmatic Access][] applies to the macOS version as well.
+
+## Text Handling
+
+Other than selecting text at the UI level, extracting text and inspecting blocks of text are probably the two main use cases of [`PDFSelection`][] in Apple PDFKit.
+
+In PSPDFKit, both of these use cases are covered by [`PSPDFTextParser`][], which you can access via the [`textParserForPageAtIndex:`][] method of [`PSPDFDocument`][]. It offers a simple API to get the text, glyphs ([`PSPDFGlyph`][]), words ([`PSPDFWord`][]), text blocks ([`PSPDFTextBlock`][]), and even images ([`PSPDFImageInfo`][]).
+
+In a PDF, text usually corresponds to glyphs positioned at an absolute location on a specific page. PSPDFKit uses advanced heuristics to group these glyphs into meaningful words and text blocks.
+
+## Outline
+
+The [`PDFOutline`][] class encapsulates the outline concept of a PDF document. PSPDFKit has a corresponding class, named [`PSPDFOutlineElement`][], which works similarly to [`PDFOutline`][]. You can access the outline via the [`outline`][] property on [`PSPDFDocument`][]:
+
+[==
+
+```swift
+let document = /* Create a PSPDFDocument.  */
+let rootOutlineElement = document.outline
+```
+
+```objc
+PSPDFDocument *document = /* Create a PSPDFDocument. */;
+PSPDFOutlineElement* rootOutlineElement = document.outline;
+```
+
+==]
+
+With the root outline element, you can walk the outline tree, get information, and perform operations on the outline elements, similar to how you would do it with [`PDFOutline`][]. For more information, please consult the [API reference][api reference macos].
+
+## Annotations
+
+Apple PDFKit provides a single [`PDFAnnotation`][] class, together with a small [`PDFBorder`][] utility class representing annotations and their borders. PSPDFKit supports all annotations as defined by the PDF specification with a very rich and flexible API. We have [an extensive guide][annotations guide ios] covering all aspects of annotations for iOS, most of which applies to the macOS version as well.
+
+## Search
+
+PSPDFKit offers two search options:
+
+- Regular search — equivalent to Apple PDFKit, easy to use
+- Indexed Full-Text Search — blazing fast, requires more setup
+
+To perform a regular search for a document, create an instance of [`PSPDFTextSearch`][], passing in the loaded [`PSPDFDocument`][] via its initializer. Searching can be triggered via calling [`searchForString:`][], which will start a search in a background queue. Implement [`PSPDFTextSearchDelegate`][] on the receiving object and set the text search object’s delegate to your object to be notified of search result updates.
+
+To learn more about our super-fast Indexed Full-Text Search, please take a look at the [corresponding guide][indexed full-text search ios], which applies to macOS too (with the exception of the Spotlight Indexing section).
+
+## Rendering
+
+Apple PDFKit allows you to render a `PDFPage` into a specific context using the `drawWithBox:toContext:` method. Similarly, the easiest way to render a page with PSPDFKit is to use one of the following [`PSPDFDocument`][] methods:
+
+[==
+
+```swift
+// PSPDFDocument
+func imageForPage(at pageIndex: UInt, size: CGSize, clippedTo clipRect: CGRect, annotations: [PSPDFAnnotation]?, options: [PSPDFRenderOption : Any]? = nil) throws -> UIImage
+func renderPage(at pageIndex: UInt, context: CGContext, size: CGSize, clippedTo clipRect: CGRect, annotations: [PSPDFAnnotation]?, options: [PSPDFRenderOption : Any]? = nil) throws
+```
+
+```objc
+// PSPDFDocument
+- (nullable UIImage *)imageForPageAtIndex:(NSUInteger)pageIndex size:(CGSize)size clippedToRect:(CGRect)clipRect annotations:(nullable NSArray<PSPDFAnnotation *> *)annotations options:(nullable NSDictionary<PSPDFRenderOption, id> *)options error:(NSError **)error;
+- (BOOL)renderPageAtIndex:(NSUInteger)pageIndex context:(CGContextRef)context size:(CGSize)size clippedToRect:(CGRect)clipRect annotations:(nullable NSArray<PSPDFAnnotation *> *)annotations options:(nullable NSDictionary<PSPDFRenderOption, id> *)options error:(NSError **)error;
+```
+
+==]
+
+Beyond this basic rendering support, PSPDFKit offers an advanced, asynchronous rendering pipeline, which provides you with control over various aspects of the rendering result and performance. First, create a [`PSPDFRenderRequest`][], which specifies what and how to render a page. Use that render request to create a [`PSPDFRenderTask`][], set yourself as a delegate on that, and schedule it in a [`PSPDFRenderQueue`][]. Once finished, the render task will notify the delegate and pass it the resulting image. See the [Rendering PDF Pages][] guide article for more details.
+
+For more information on advanced rendering, please consult the [API reference][api reference macos] for the classes mentioned above, as well as our `PSPDFCatalog` example project — specifically the `PDFViewController` class.
+
+## Conclusion
+
+If you have experience with Apple PDFKit, by now you should have a rough idea of how to translate that to PSPDFKit.
+
+While PDFKit is a great starting point for adding basic PDF support to your app, PSPDFKit goes much further, offering you a cross-platform, drop-in solution with many additional UI components, advanced PDF features, and first-class support directly from the developers.
+
+Please consult our [website][], our [guides][], and our [API reference][] for additional information about various parts of PSPDFKit.
+
+[rendering pdf pages]: /guides/ios/current/getting-started/rendering-pdf-pages/
+[`pdfview`]: https://developer.apple.com/documentation/pdfkit/pdfview
+[`pdfpage`]: https://developer.apple.com/documentation/pdfkit/pdfpage
+[`pdfthumbnailview`]: https://developer.apple.com/documentation/pdfkit/pdfthumbnailview
+[`pdfdocument`]: https://developer.apple.com/documentation/pdfkit/pdfdocument
+[`pdfannotation`]: https://developer.apple.com/documentation/pdfkit/pdfannotation
+[`pdfoutline`]: https://developer.apple.com/documentation/pdfkit/pdfoutline
+[`pdfselection`]: https://developer.apple.com/documentation/pdfkit/pdfselection
+[`pdfborder`]: https://developer.apple.com/documentation/pdfkit/pdfborder
+[pdfxkit announcement]: /blog/2017/introducing-pdfxkit/
+[document editing]: https://pspdfkit.com/guides/ios/current/features/document-editor/
+[programmatic access]: https://pspdfkit.com/guides/ios/current/features/document-editor/#programmatic-access
+[`annotationsforpageatindex:type:`]: https://pspdfkit.com/api/macos/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)annotationsForPageAtIndex:type:
+[see our announcement blog post]: /blog/2016/the-document-editor/
+[`textparserforpageatindex:`]: https://pspdfkit.com/api/macos/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)textParserForPageAtIndex:
+[`searchforstring:`]: https://pspdfkit.com/api/macos/Classes/PSPDFTextSearch.html#/c:objc(cs)PSPDFTextSearch(im)searchForString:
+[annotations guide ios]: https://pspdfkit.com/guides/ios/current/annotations/introduction-to-annotations/
+[indexed full-text search ios]: https://pspdfkit.com/guides/ios/current/features/indexed-full-text-search/
+[`outline`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)outline
+[website]: https://pspdfkit.com/
+[guides]: https://pspdfkit.com/guides/macos/current/
+[api reference]: https://pspdfkit.com/api/macos/

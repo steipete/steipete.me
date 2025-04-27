@@ -1,0 +1,87 @@
+<div class="container" id="nav">
+  <h2 class="mb-5">Navigation</h2>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Links</label>
+    </div>
+    <div class="col-9">
+      <% %w(brand).each do |t| %>
+        <a class="link-<%= t %> mr-4" href="#"><%= platform_name(t) %></a>
+      <% end %>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-3">
+      <label class="text-muted">Buttons</label>
+    </div>
+  </div>
+  <% %w(brand).each do |t| %>
+    <div class="row mb-3">
+      <div class="col-3">
+        <label class="text-muted"><small><%= platform_name(t) %></small></label>
+      </div>
+      <div class="col-9">
+        <p>
+          <a href="#" class="btn btn-<%= t %> mr-3">
+            Button
+          </a>
+          <a href="#" class="btn btn-outline-<%= t %> mr-3">
+            Button
+          </a>
+          <a href="#" class="btn btn-inverse-<%= t %> mr-3">
+            Button
+          </a>
+        </p>
+        <p class="mb-5">
+          <a href="#" class="btn btn-lg btn-<%= t %> mr-3">
+            Button
+          </a>
+          <a href="#" class="btn btn-lg btn-outline-<%= t %> mr-3">
+            Button
+          </a>
+          <a href="#" class="btn btn-lg btn-inverse-<%= t %> mr-3">
+            Button
+          </a>
+        </p>
+      </div>
+    </div>
+  <% end %>
+  <div class="row my-5">
+    <div class="col-3">
+      <label class="text-muted">Tabs</label>
+    </div>
+    <div class="col-9">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link nav-link-brand active" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Pagination</label>
+    </div>
+    <div class="col-9">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<hr/>

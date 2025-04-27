@@ -1,0 +1,141 @@
+---
+title: PSPDFKit SDK Security
+section: developers
+---
+
+PSPDFKit has been implemented using the latest and best security practices and is used in security-conscious applications.
+
+- PSPDFKit supports [iOS Data Protection][].
+- Encrypted PDFs are supported and cannot be accessed without the matching password.
+- PDF passwords are never persisted.
+- The [`PSPDFAESCryptoDataProvider`][] allows you to access encrypted documents by decrypting only the parts that are required to render the page. The parts are dynamically decrypted in memory instead of the entire file being decrypted.
+- [`PSPDFDocument`][] can be initialized with an `NSData` object for custom encryption.
+- Signatures are saved in the secure keychain.
+- Customers are using PSPDFKit with GOOD, Mobile Iron, and AirWatch.
+- Code commits are always peer reviewed and have to pass our large test case set before being merged.
+- We use a large set of compiler warnings and the latest version of Clang Analyzer to detect and fix potential problems before the product is released.
+
+## Permissions
+
+PSPDFKit has optional features such as adding images or recording sound annotations. If you allow these in your app, make sure to [set the required permissions in your `Info.plist` file][pspdfkit guide permissions].
+
+## Security Exceptions
+
+Client applications can implement a custom [`PSPDFApplicationPolicy`][] class that manages security-related callbacks. By default, PSPDFKit will use a standard implementation that allows all special actions. However, you can modify this if you are in a restricted environment. The following security actions are currently tracked:
+
+[==
+
+```swift
+public let PSPDFPolicyEventOpenIn: String
+public let PSPDFPolicyEventPrint: String
+public let PSPDFPolicyEventEmail: String
+public let PSPDFPolicyEventMessage: String
+public let PSPDFPolicyEventQuickLook: String
+public let PSPDFPolicyEventAudioRecording: String
+public let PSPDFPolicyEventCamera: String
+public let PSPDFPolicyEventPhotoLibrary: String
+public let PSPDFPolicyEventPasteboard: String // includes Copy/Paste
+public let PSPDFPolicyEventSubmitForm: String
+public let PSPDFPolicyEventNetwork: String
+```
+
+```objc
+PSPDF_EXPORT NSString *const PSPDFPolicyEventOpenIn;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventPrint;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventEmail;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventMessage;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventQuickLook;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventAudioRecording;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventCamera;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventPhotoLibrary;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventPasteboard; // includes Copy/Paste
+PSPDF_EXPORT NSString *const PSPDFPolicyEventSubmitForm;
+PSPDF_EXPORT NSString *const PSPDFPolicyEventNetwork;
+```
+
+==]
+
+[==
+
+```swift
+class DisallowCopyApplicationPolicy: NSObject, PSPDFApplicationPolicy {
+
+    func hasPermission(forEvent event: String, isUserAction: Bool) -> Bool {
+        if event == PSPDFPolicyEventPasteboard {
+            return false
+        }
+        return true
+    }
+
+}
+```
+
+```objc
+@interface PSCDisallowCopyApplicationPolicy : NSObject <PSPDFApplicationPolicy> @end
+
+@implementation PSCDisallowCopyApplicationPolicy
+
+- (BOOL)hasPermissionForEvent:(NSString *)event isUserAction:(BOOL)isUserAction {
+    if ([event isEqualToString:PSPDFPolicyEventPasteboard]) {
+        return NO;
+    }
+    return YES;
+}
+
+@end
+```
+
+==]
+
+You can register a custom [`PSPDFApplicationPolicy`][] instance by calling [`+[PSPDFKitGlobal setLicenseKey:options:]`](<https://pspdfkit.com/api/ios/Classes/PSPDFKitGlobal.html#/c:objc(cs)PSPDFKitGlobal(cm)setLicenseKey:options>). PSPDFKit expects your instance to be set in the options dictionary under the [`PSPDFApplicationPolicyKey`][] key.
+
+## Cache
+
+Rendered pages will be cached to disk by default to ensure fast display and browsing. The disk cache can be customized on a [per-document level via the `useDiskCache` property][pspdfdocument usediskcache] and for a [data provider][pspdfdataproviding usediskcache], and it can also be disabled globally by setting its [`allowedDiskSpace`][] to `0`.
+
+Please refer to the [Rendering PDF Pages][] guide for more details.
+
+There are also specific hooks to add a custom crypto layer to the disk cache. See [`decryptionHelper`][] and [`encryptionHelper`][].
+
+Implementing a custom crypto layer might decrease performance slightly, but is hardly noticeable on modern devices. PSPDFCatalog contains sample code using the open source [RNCryptor][].
+
+## Security-Related Considerations
+
+- PSPDFKit might keep parts of extracted text, annotations, or passwords in memory to perform the requested operations. If rogue code has access to your application’s memory, there is nothing you can do and the device has already been compromised. This could happen if a device is jailbroken.
+- Taking a screenshot cannot be prevented on iOS. There is a `UIApplicationUserDidTakeScreenshotNotification` notification that is sent when the user takes a screenshot using the Lock+Home Button combination, however, there are other ways to make screenshots that won’t emit such a notification (like using Xcode’s Device Manager).
+- Using `PSPDFDocument` with data in memory using [`PSPDFDataContainerProvider`][] will only work for documents that are small enough to fit into the available process memory space. This is device and state dependent. When saving annotations, the `NSData` object is mutated, and you can use the document delegate [`pdfDocumentDidSave:`][] to save the data object back to your (encrypted) disk store. However, it is strongly recommended to use [`PSPDFAESCryptoDataProvider`][] or a custom implementation of [`PSPDFDataProviding`][] to avoid loading the entire file in memory.
+
+## Network Access
+
+PSPDFKit only performs network access when required for following actions:
+
+- Submitting a PDF form
+- Accessing images/videos/audio from the gallery
+- Simple analytics for demo, nightly, and beta builds/licenses
+- Via the inline web browser if a URL was tapped ([`PSPDFWebViewController`][])
+
+Production license verification happens offline and does not ping our servers.
+
+## Copy Text
+
+PDF documents have a flag that indicates if copying text is allowed, which is reflected in the `PSPDFDocumentPermissionsExtract` flag in the [`permissions`][] property of [`PSPDFDocument`][]. This is a read-only property that cannot be changed.
+
+To disable copying text when the PDF allows it, implement the [`PSPDFApplicationPolicy`][] protocol in a custom class as explained above.
+
+[`pspdfaescryptodataprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFAESCryptoDataProvider.html
+[`pspdfapplicationpolicy`]: https://pspdfkit.com/api/ios/Protocols/PSPDFApplicationPolicy.html
+[`pspdfapplicationpolicykey`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFApplicationPolicyKey
+[`pspdfdatacontainerprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFDataContainerProvider.html
+[`pspdfdataproviding`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDataProviding.html
+[`pspdfwebviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFWebViewController.html
+[`pdfdocumentdidsave:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentDelegate.html#/c:objc(pl)PSPDFDocumentDelegate(im)pdfDocumentDidSave:
+[`alloweddiskspace`]: https://pspdfkit.com/api/ios/Classes/PSPDFDiskCache.html#/c:objc(cs)PSPDFDiskCache(py)allowedDiskSpace
+[rendering pdf pages]: ../../getting-started/rendering-pdf-pages/#the-cache
+[`decryptionhelper`]: https://pspdfkit.com/api/ios/Classes/PSPDFDiskCache.html#/c:objc(cs)PSPDFDiskCache(py)decryptionHelper
+[`encryptionhelper`]: https://pspdfkit.com/api/ios/Classes/PSPDFDiskCache.html#/c:objc(cs)PSPDFDiskCache(py)encryptionHelper
+[`permissions`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)permissions
+[pspdfdocument usediskcache]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)useDiskCache
+[pspdfdataproviding usediskcache]: https://pspdfkit.com/api/ios/Protocols/PSPDFDataProviding.html#/c:objc(pl)PSPDFDataProviding(py)useDiskCache
+[ios data protection]: https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+[pspdfkit guide permissions]: ../../getting-started/permissions/
+[rncryptor]: https://github.com/RNCryptor/RNCryptor

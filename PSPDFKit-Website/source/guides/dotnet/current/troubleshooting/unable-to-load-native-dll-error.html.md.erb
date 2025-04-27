@@ -1,0 +1,24 @@
+---
+title: Unable to Load Native DLL Error
+section: developers
+---
+
+Often, .NET build tools can get into a situation where the cache is too aggressive. This can happen when switching between branches with fundamental build changes or even when switching the OS when using the same project folder. Because of this issue, sometimes the applicable library files are not carried over from the PSPDFKit .NET NuGet package, causing the following error:
+
+```
+'The type initializer for 'PSPDFKitInternal.swigPINVOKE' threw an exception.'
+
+Inner exception 1
+TypeInitializationException: The type initializer for 'SWIGExceptionHelper' threw an exception.
+
+Inner exception 2:
+DllNotFoundException: Unable to load DLL 'pspdfkit_dot_net': The specified module could not be found. (Exception from HRESULT: 0x8007007E)
+```
+
+One of the best ways to get around this is to completely clean out the project build folders. This involves a few manual steps:
+
+1. From the Visual Studio toolbar click Build > Clean Solution.
+2. In a file browser, navigate to the project folder and remove the `bin`, `obj`, and `packages` folders.
+3. From the Visual Studio toolbar click Build > Clean Solution.
+4. From the Visual Studio toolbar click Build > Rebuild Solution.
+5. Attempt to run the program once again.

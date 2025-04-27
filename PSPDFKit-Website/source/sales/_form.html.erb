@@ -1,0 +1,432 @@
+<form id="contact-sales-form"
+      action="<%= LICENSE_API_URL %>sales_request"
+      method="post"
+      data-controller="form-remote form-validation"
+      data-form-remote-client-id-name="sales_request[gclid]"
+      data-form-remote-success-url="/sales/thanks"
+      data-form-remote-recaptcha-site-key="<%= GOOGLE_RECAPTCHA_SITE_KEY %>"
+      data-form-remote-recaptcha-action="sales_form"
+      data-action="submit->form-remote#submit
+                   change->form-remote#change
+                   change->form-validation#change">
+
+  <!-- reCAPTCHA -->
+  <input type="hidden"
+    data-target="form-remote.recaptchaInput"
+    name="sales_request[recaptcha_response]"
+    value="">
+
+  <!-- Email -->
+  <div class="form-group required">
+    <label for="sales_request_email" class="form-control-label">
+      Your company email
+    </label>
+    <input type="email"
+      id="sales_request_email"
+      class="form-control"
+      name="sales_request[email]"
+      data-target="form-remote.email"
+      placeholder="name@company.com"
+      required>
+    <p class="form-text small text-muted">Please use your company email address.</p>
+  </div>
+
+  <!-- Name -->
+  <div class="form-group required">
+    <label for="sales_request_name" class="form-control-label">
+      Your name
+    </label>
+    <input type="text" id="sales_request_name" name="sales_request[name]" class="form-control" placeholder="Full Name" required>
+  </div>
+
+  <!-- Client -->
+  <div class="form-group required">
+    <label for="sales_request_client" class="form-control-label">
+      Who are you building this for?
+    </label>
+    <input type="text" id="sales_request_client" name="sales_request[client]" class="form-control" required maxlength="255">
+    <p class="form-text small text-muted">Please provide company name and website link and if this is for your company or for a separate entity.</p>
+  </div>
+
+  <!-- Users -->
+  <div class="form-group required">
+    <label for="sales_request_current_users" class="form-control-label">
+      Current number of users
+    </label>
+    <div class="d-block small">
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input type="radio" name="sales_request[current_users]" value="0-100"
+                 class="form-check-input" required>
+          0-100
+        </label>
+        <label class="form-check-label">
+          <input type="radio" name="sales_request[current_users]" value="100-1000"
+                 class="form-check-input" required>
+          100-1,000
+        </label>
+        <label class="form-check-label">
+          <input type="radio" name="sales_request[current_users]" value="1000-5000"
+                 class="form-check-input" required>
+          1,000-5,000
+        </label>
+        <label class="form-check-label">
+          <input type="radio" name="sales_request[current_users]" value="5000-10000"
+                 class="form-check-input" required>
+          5,000-10,000
+        </label>
+        <label class="form-check-label">
+          <input type="radio" name="sales_request[current_users]" value="10000+"
+                 class="form-check-input" required>
+          10,000+
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source -->
+  <div class="form-group required">
+    <label for="sales_request_source" class="form-control-label">
+      How did you hear about us?
+    </label>
+    <div class="d-block small">
+      <% # DANGER: Don't modify the list of values here, since they are linked to Salesforce %>
+      <% [["Google", "Google"], ["Twitter", "Twitter"], ["Blog", "Blog"], ["Word-of-mouth", "Word-of-mouth"], ["Used Before", "Used-Before"], ["PDF Viewer", "PDF-Viewer"], ["Other", "Other"]].each do |human_name, value| %>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" name="sales_request[source]" value="<%= value %>" class="form-check-input" required>
+            <%= human_name %>
+          </label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="form-group required my-4" data-target="form-validation.checkboxGroup">
+    <label class="form-control-label mb-3">
+      Which products are you interested in?
+    </label>
+    <input type="hidden" id="sales_request_platforms">
+    <div class="row">
+      <div class="col-6 col-md-5">
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_ios"
+                 name="sales_request[platforms][]"
+                 value="ios"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_ios">
+            <i class="fa fa-lg fa-ios mr-1 text-ios"></i>
+            iOS
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_android"
+                 name="sales_request[platforms][]"
+                 value="android"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_android">
+            <i class="fa fa-lg fa-android mr-1 text-android"></i>
+            Android
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_web"
+                 name="sales_request[platforms][]"
+                 value="web"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_web">
+            <i class="fa fa-lg fa-web mr-1 text-web"></i>
+            Web
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_windows"
+                 name="sales_request[platforms][]"
+                 value="windows"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_windows">
+            <i class="fa fa-lg fa-windows mr-1 text-windows"></i>
+            Windows
+          </label>
+        </div>
+      </div>
+      <div class="col-6 col-md-5">
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_macos"
+                 name="sales_request[platforms][]"
+                 value="macos"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_macos">
+            <i class="fa fa-lg fa-macos mr-1 text-macos"></i>
+            macOS
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_electron"
+                 name="sales_request[platforms][]"
+                 value="electron"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_electron">
+            <i class="fa fa-lg fa-electron mr-1 text-brand"></i>
+            Electron
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_dotnet"
+                 name="sales_request[platforms][]"
+                 value="dotnet"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_dotnet">
+            <i class="fa fa-lg fa-dotnet mr-1 text-alt"></i>
+            .NET
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_platforms_java"
+                 name="sales_request[platforms][]"
+                 value="java"
+                 data-name="platform"
+                 data-target="form-remote.platform"
+                 class="form-check-input">
+          <label class="form-check-label" for="sales_request_platforms_java">
+            <i class="fa fa-lg fa-java mr-1 text-alt"></i>
+            Java
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="form-group required" data-target="form-validation.checkboxGroup" data-controller="feature-checkboxes">
+    <label class="form-control-label">
+      Which features are you interested in?
+      <small class="text-muted">
+        <a href="/pdf-sdk#comparison">(Learn more)</a>
+      </small>
+    </label>
+    <p class="form-text small text-muted mb-3">
+      Note that some components depend on each other (e.g. Forms requires Annotations).
+    </p>
+    <div class="row mb-3">
+      <div class="col-6 col-md-5">
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_core_viewer"
+                 name="sales_request[features][]"
+                 value="core_viewer"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.coreViewer"
+                 data-action="feature-checkboxes#check"
+                 checked />
+          <label class="form-check-label" for="sales_request_features_core_viewer">
+            <span>Viewer</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_annotations"
+                 name="sales_request[features][]"
+                 value="annotations"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.annotations"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_annotations">
+            <span>Annotations</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_forms"
+                 name="sales_request[features][]"
+                 value="forms"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.forms"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_forms">
+            <span>Forms</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_form_designer"
+                 name="sales_request[features][]"
+                 value="form_designer"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.formDesigner"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_form_designer">
+            <span>
+              Form Designer
+              <span class="small text-muted">(Web only)</span>
+            </span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_digital_signatures"
+                 name="sales_request[features][]"
+                 value="digital_signatures"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.digitalSignatures"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_digital_signatures">
+            <span>Digital Signatures</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_redaction"
+                 name="sales_request[features][]"
+                 value="redaction"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.redaction"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_redaction">
+            <span>Redaction</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-6 col-md-5">
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_full_text_search"
+                 name="sales_request[features][]"
+                 value="full_text_search"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.fullTextSearch"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_full_text_search">
+            <span>Indexed Search</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_document_editor"
+                 name="sales_request[features][]"
+                 value="document_editor"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.documentEditor"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_document_editor">
+            <span>Document Editor</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_replies"
+                 name="sales_request[features][]"
+                 value="replies"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.replies"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_replies">
+            <span>Replies</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_image_documents"
+                 name="sales_request[features][]"
+                 value="image_documents"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.imageDocuments"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_image_documents">
+            <span>Image Documents</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox"
+                 id="sales_request_features_comparison"
+                 name="sales_request[features][]"
+                 value="comparison"
+                 class="form-check-input"
+                 data-target="feature-checkboxes.comparison"
+                 data-action="feature-checkboxes#check" />
+          <label class="form-check-label" for="sales_request_features_comparison">
+            <span>Comparison</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-check">
+      <input type="checkbox"
+             id="sales_request_features_instant"
+             name="sales_request[features][]"
+             value="instant"
+             class="form-check-input"
+             data-target="feature-checkboxes.instant"
+             data-action="feature-checkboxes#check" />
+      <label class="form-check-label text-nowrap" for="sales_request_features_instant">
+        <i class="fa fa-lg fa-instant mr-1 text-alt"></i>
+        Instant Annotation Sync Server
+      </label>
+      <p class="form-text small text-muted">
+        Smart, fast, offline-capable document and annotation sync engine.
+      </p>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div class="form-group my-4">
+    <label for="sales_request_product" class="form-control-label">
+      Please describe the product you're building:
+    </label>
+    <textarea name="sales_request[product]" value="" id="sales_request_product" class="form-control" rows="5"></textarea>
+  </div>
+
+  <!-- Phone -->
+  <div class="form-group">
+    <label for="sales_request_phone" class="form-control-label">
+      Phone number
+    </label>
+    <input type="tel" id="sales_request_phone" name="sales_request[phone]" class="form-control" placeholder="+1 (123) 456-7890" maxlength="255">
+    <p class="form-text small text-muted">Please include country code.</p>
+  </div>
+
+  <!-- Submit -->
+  <div class="form-group pt-4 mb-4">
+    <button type="submit" class="btn btn-lg btn-brand"
+      data-target="form-remote.submit form-validation.submit"
+      data-action="click->form-validation#beforeSubmit"
+      disabled>
+       Request a Quote
+     </button>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="form-group mb-0">
+    <p class="small text-muted mb-2">
+      The data you submit is treated confidentially and will never be disclosed to third parties.
+    </p>
+    <p class="small text-muted mb-2">
+      This site is protected by reCAPTCHA and the Google
+      <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+      <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+    </p>
+  </div>
+</form>

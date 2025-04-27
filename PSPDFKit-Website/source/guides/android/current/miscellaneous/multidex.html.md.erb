@@ -1,0 +1,45 @@
+---
+title: Multidex
+section: developers
+---
+
+The Catalog app is configured to use multidex. This is because we don’t perform optimization to remove unused classes in debug builds. This causes us to run into the 65&nbsp;K method limit imposed by the DEX format. In certain cases, you might get an exception that looks like this:
+
+```
+java.lang.RuntimeException: Unable to instantiate application com.pspdfkit.example.sdk.PSPDFCatalog: java.lang.ClassNotFoundException: Didn't find class "com.pspdfkit.example.sdk.PSPDFCatalog" on path: DexPathList[[zip file "/data/app/com.pspdfkit.pspdfcatalog-2.apk"],nativeLibraryDirectories=[/data/app-lib/com.pspdfkit.pspdfcatalog-2, /vendor/lib, /system/lib]]
+    at android.app.LoadedApk.makeApplication(LoadedApk.java:516)
+    at android.app.ActivityThread.handleBindApplication(ActivityThread.java:4317)
+    at android.app.ActivityThread.access$1500(ActivityThread.java:135)
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1256)
+    at android.os.Handler.dispatchMessage(Handler.java:102)
+    at android.os.Looper.loop(Looper.java:136)
+    at android.app.ActivityThread.main(ActivityThread.java:5017)
+    at java.lang.reflect.Method.invokeNative(Native Method)
+    at java.lang.reflect.Method.invoke(Method.java:515)
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:779)
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:595)
+    at dalvik.system.NativeStart.main(Native Method)
+ Caused by: java.lang.ClassNotFoundException: Didn't find class "com.pspdfkit.example.sdk.PSPDFCatalog" on path: DexPathList[[zip file "/data/app/com.pspdfkit.pspdfcatalog-2.apk"],nativeLibraryDirectories=[/data/app-lib/com.pspdfkit.pspdfcatalog-2, /vendor/lib, /system/lib]]
+    at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:56)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:497)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:457)
+    at android.app.Instrumentation.newApplication(Instrumentation.java:975)
+    at android.app.LoadedApk.makeApplication(LoadedApk.java:511)
+    at android.app.ActivityThread.handleBindApplication(ActivityThread.java:4317)
+    at android.app.ActivityThread.access$1500(ActivityThread.java:135)
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1256)
+    at android.os.Handler.dispatchMessage(Handler.java:102)
+    at android.os.Looper.loop(Looper.java:136)
+    at android.app.ActivityThread.main(ActivityThread.java:5017)
+    at java.lang.reflect.Method.invokeNative(Native Method)
+    at java.lang.reflect.Method.invoke(Method.java:515)
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:779)
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:595)
+    at dalvik.system.NativeStart.main(Native Method)
+```
+
+This happens because, as part of the multidex process, all classes are split across multiple DEX files. If, for whatever reason, any of the classes required to start an app are not in the primary DEX file, you’ll get an exception like the one above.
+
+We already provide the correct [multidex configuration][] to tell the system which classes to keep in the primary DEX file. So if the above still happens, the best solution is to invalidate the caches in Android Studio and do a clean build of the Catalog app.
+
+[multidex configuration]: https://developer.android.com/studio/build/multidex#keep

@@ -1,0 +1,128 @@
+---
+title: Introduction to Annotations
+section: developers
+
+order: 1
+---
+
+![Annotations](/images/guides/shared/annotations/annotations-header.png)
+
+PSPDFKit for Windows supports most common annotation types:
+
+- [Link][]
+- [Highlight][], [Underline][], [Strikeout][], [Squiggle][]
+- [Text][]
+- [Ink][]
+- [Ellipse][], [Rectangle][], [Line][], [Polyline][], [Polygon][]
+- [Note][]
+
+These are standard annotations (as defined in the PDF Reference) that can be read and written by many apps, including Adobe Acrobat and Apple’s `Preview app`.
+
+## Working with Annotations in Code
+
+Once PSPDFKit for Windows has loaded annotations from a PDF, these annotations will be made available via the [`Document`][] API.
+
+The API will return a `List` of [`IAnnotation`][]s. This interface allows you to determine the [`AnnotationType`][] and several other properties and methods common to all annotations, such as [`BoundingBox`][], [`Id`][], [`PageIndex`][], and [`ToJson()`][].
+
+The [`BoundingBox`][] describes the annotation’s location and size on the page. This property is represented by a [`Rect`][], with `X` and `Y` describing the top left coordinate of the annotation on the page, and the `Width` and `Height` describing the size of the annotation. PSPDFKit for Windows and PSPDFKit for Web use Instant JSON coordinates. In other words, the origin of the page, "0,0," is at the top left, with the Y axis value increasing as you move down the page. If you need to convert between these coordinates and PDF coordinates — which have their origin, "0,0," at the bottom left, with the Y axis value increasing as you move up the page — you can use the [conversion utility methods here][].
+
+Using the [`AnnotationType`][] property, you can cast to a specific annotation type to work with its specific APIs:
+
+```csharp
+if (annotation.AnnotationType == AnnotationType.Ink)
+{
+    var ink = annotation as AnnotationType.Ink;
+    return ink.IsSignature;
+}
+```
+
+## Creating, Updating, and Deleting Annotations
+
+To create an annotation on a page, simply instantiate the type you want:
+
+```csharp
+var textAnnot = new Text
+{
+    Contents = "A new text annotation",
+    HorizontalAlign = HorizontalAlign.Right,
+    VerticalAlign = VerticalAlign.Center,
+    BoundingBox = new Rect(10, 10, 300, 300),
+    FontSize = 48,
+    Bold = true,
+    Italic = true,
+    FontColor = Colors.Cyan
+};
+```
+
+Then you can add it to a page like this:
+
+```csharp
+var createdTextAnnotation = await pdfView.Document.CreateAnnotationAsync(textAnnot);
+```
+
+After is it added to a page, the new annotations will have a unique [`Id`][].
+
+If you wish to update an existing annotation, this can be done like so:
+
+```csharp
+createdTextAnnotation.VerticalAlign = VerticalAlign.Top;
+createdTextAnnotation.Opacity = 0.5f;
+await pdfView.Document.UpdateAnnotationAsync(createdTextAnnotation);
+```
+
+To delete an annotation, you only need its [`Id`][]:
+
+```csharp
+await pdfView.Document.DeleteAnnotationAsync(createdTextAnnotation.Id);
+```
+
+## Annotation Events
+
+There are several events you can subscribe to in order to be informed of changes to annotations:
+
+- [`AnnotationsCreated`][]
+- [`AnnotationsDeleted`][]
+- [`AnnotationsUpdated`][]
+
+Here’s how you can add a handler to be informed of deleted annotations:
+
+```csharp
+{
+    // After the PDF has been loaded.
+    pdfView.Document.AnnotationsDeleted += OnAnnotationsDeleted;
+}
+
+private void OnAnnotationsDeleted(object sender, IList<IAnnotation> annotations)
+{
+    foreach (var annotation in annotations)
+    {
+        Debug.WriteLine($"OnAnnotationsDeleted: {annotation.Id}");
+    }
+}
+```
+
+[highlight]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Highlight.html
+[underline]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Underline.html
+[strikeout]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Strikeout.html
+[squiggle]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Squiggly.html
+[text]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Text.html
+[ink]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ink.html
+[line]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Line.html
+[rectangle]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Rectangle.html
+[ellipse]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Ellipse.html
+[polyline]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polyline.html
+[polygon]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Polygon.html
+[note]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Note.html
+[link]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.Link.html
+[`document`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_GetAnnotationsAsync_System_Int32_
+[`iannotation`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html
+[`annotationtype`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.AnnotationType.html
+[`boundingbox`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html#PSPDFKit_Pdf_Annotation_IAnnotation_BoundingBox
+[`id`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html#PSPDFKit_Pdf_Annotation_IAnnotation_Id
+[`pageindex`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html#PSPDFKit_Pdf_Annotation_IAnnotation_PageIndex
+[`tojson()`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Annotation.IAnnotation.html#PSPDFKit_Pdf_Annotation_IAnnotation_ToJson
+[`rect`]: https://docs.microsoft.com/en-us/uwp/api/windows.foundation.rect
+[conversion utility methods here]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Utils.html
+[`annotationscreated`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_AnnotationsCreated
+[`annotationsdeleted`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_AnnotationsDeleted
+[`annotationsupdated`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_AnnotationsUpdated

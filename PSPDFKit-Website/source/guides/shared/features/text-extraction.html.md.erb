@@ -1,0 +1,143 @@
+---
+title: Text Extraction
+section: developers
+---
+
+Extracting text from a PDF can be a complex task, so we offer several abstractions to make this simpler. In a PDF, text usually consists of glyphs that are absolutely positioned. PSPDFKit heuristically splits these glyphs up into words and blocks of text. Our [text selection component][text selection guide] leverages this information to allow users to select and annotate text.
+
+<% if ios? %>
+
+## Text Parser
+
+[`PSPDFTextParser`][] offers a simple API to get the [`text`][], [`glyphs`][] ([`PSPDFGlyph`][]), [`words`][] ([`PSPDFWord`][]), [`textBlocks`][] ([`PSPDFTextBlock`][]), and even [`images`][] ([`PSPDFImageInfo`][]) from a given PDF page. Every page of a PDF has a text parser that returns information about the text on a page:
+
+[==
+
+```swift
+let document: PSPDFDocument = ...;
+let textParser = document.textParserForPage(at: 0)!
+let glyphs = textParser.glyphs
+```
+
+```objc
+PSPDFDocument *document = ...;
+PSPDFTextParser *textParser = [document textParserForPageAtIndex:0];
+NSArray<PSPDFGlyph *> *glyphs = textParser.glyphs;
+```
+
+==]
+
+[`PSPDFTextParser`][] also ensures that the text it extracts from a PDF follows any logical structure defined in the PDF (see section 14.7 of the [PDF Specification][]), thereby enabling support for correctly handling different text-writing directions.
+
+## Glyphs, Text Blocks, Words, and Images
+
+<img src="/images/guides/ios/features/text-extraction/ClassesVisualization.png" alt="A PDF page with annotations for classes relevant to text extraction.">
+
+### Glyphs
+
+[`PSPDFGlyph`][] is the building block for all text extraction in PSPDFKit. It represents a single glyph on a PDF page. Its [`frame`][pspdfglyph frame] property specifies, in PDF coordinates, where it is located on the page, and its [`contents`][pspdfglyph contents] property returns the text it contains. The [`indexOnPage`][pspdfglyph indexonpage] property specifies the index of the glyph on the page, in reading order. Consider a page with the following text:
+
+```
+The quick brown fox jumps over the lazy dog.
+--------------------------^
+```
+
+The [`PSPDFGlyph`][] that represents the o in over will have an `indexOnPage` of 26. This index is unique to this glyph, and it can be used to directly access it from the [`glyphs`][] array of a [`PSPDFTextParser`][]:
+
+[==
+
+```swift
+let document: PSPDFDocument = ...;
+let textParser = document.textParserForPage(at: 0)!
+let glyphs = textParser.glyphs
+let glyph = glyphs[26]
+
+// Guaranteed to be `true`.
+let indexEqualTo26 = (glyph.indexOnPage == 26)
+```
+
+```objc
+PSPDFDocument *document = ...;
+PSPDFTextParser *textParser = [document textParserForPageAtIndex:0];
+NSArray<PSPDFGlyph *> *glyphs = textParser.glyphs;
+PSPDFGlyph *glyph = glyphs[26];
+// Guaranteed to be `YES`.
+BOOL indexEqualTo26 = (glyph.indexOnPage == 26);
+```
+
+==]
+
+This makes getting a particular glyph (and glyphs near it) much faster, as you already know the index. Ordering glyphs correctly is important if, for example, you wish to combine multiple glyphs and display something to the user.
+
+### Text Blocks
+
+A [`PSPDFTextBlock`][] returned from the [`PSPDFTextParser`][] represents a contiguous group of glyphs, usually in a single line. For PDFs with multiple columns of text, a text block is a single line in a given column. [`PSPDFTextBlock`][] is backed by an `NSRange` ([`PSPDFTextBlock.range`][]) that describes the range of glyphs in [`PSPDFTextParser.glyphs`][`glyphs`] that the block represents. The same information is available for a [`PSPDFWord`][] via [`PSPDFWord.range`][].
+
+To fetch the glyphs associated with a given text block, simply retrieve them from [`PSPDFTextParser.glyphs`][`glyphs`]:
+
+[==
+
+```swift
+let block: PSPDFTextBlock = ...
+let parser: PSPDFTextParser = ...
+let glyphs: [PSPDFGlyph] = parser.glyphs(in: block.range)
+```
+
+```objc
+PSPDFTextBlock *block = ...;
+PSPDFTextParser *parser = ...;
+NSArray<PSPDFGlyph *> *glyphsInBlock = [parser glyphsInRange:block.range];
+```
+
+==]
+
+### Words
+
+A [`PSPDFWord`][], as the name suggests, represents a single word in a PDF. [`PSPDFTextParser`][] automatically generates these words when parsing the text blocks, and they can be retrieved via the [`words`][] property. You can also access the words in a particular text block via the [`PSPDFTextBlock.words`][] property.
+
+### Images
+
+Embedded images in a PDF page are represented by the [`PSPDFImageInfo`][] class and can be retrieved via the [`images`][] property on [`PSPDFTextParser`][]. [`PSPDFImageInfo`][] also provides methods to extract an image from a PDF as a `UIImage`.
+
+<% end %>
+
+<% if android? %>
+
+## Reading the Text
+
+[`PdfDocument`][] offers methods that allow you to access text from a given PDF page. It also ensures that the text it extracts from a PDF follows any logical structure defined in the PDF (see section 14.7 of the [PDF Specification][]), thereby enabling support for correctly handling different text-writing directions. Using [`PdfDocument#getPageText()`][] like so allows you to get all text found on a single page:
+
+[==
+
+```kotlin
+val document: PdfDocument = ...
+val pageText = document.getPageText(0)
+```
+
+```java
+PdfDocument document = ...
+String pageText = document.getPageText(0);
+```
+
+==]
+
+<% end %>
+
+[`text`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextParser.html#/c:objc(cs)PSPDFTextParser(py)text
+[`glyphs`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextParser.html#/c:objc(cs)PSPDFTextParser(py)glyphs
+[`words`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextParser.html#/c:objc(cs)PSPDFTextParser(py)words
+[`textblocks`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextParser.html#/c:objc(cs)PSPDFTextParser(py)textBlocks
+[`images`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextParser.html#/c:objc(cs)PSPDFTextParser(py)images
+[`pspdfglyph`]: https://pspdfkit.com/api/ios/Classes/PSPDFGlyph.html
+[`pspdfword`]: https://pspdfkit.com/api/ios/Classes/PSPDFWord.html
+[`pspdftextblock`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextBlock.html
+[`pspdftextblock.range`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextBlock.html#/c:objc(cs)PSPDFTextBlock(py)range
+[`pspdfword.range`]: https://pspdfkit.com/api/ios/Classes/PSPDFWord.html
+[text selection guide]: ../../features/text-selection/
+[pspdfglyph frame]: https://pspdfkit.com/api/ios/Classes/PSPDFGlyph.html#/c:objc(cs)PSPDFGlyph(py)frame
+[pspdfglyph contents]: https://pspdfkit.com/api/ios/Classes/PSPDFGlyph.html#/c:objc(cs)PSPDFGlyph(py)contents
+[pspdfglyph indexonpage]: https://pspdfkit.com/api/ios/Classes/PSPDFGlyph.html#/c:objc(cs)PSPDFGlyph(py)indexOnPage
+[`pspdftextblock.words`]: https://pspdfkit.com/api/ios/Classes/PSPDFTextBlock.html#/c:objc(cs)PSPDFTextBlock(py)words
+[`pspdfimageinfo`]: https://pspdfkit.com/api/ios/Classes/PSPDFImageInfo.html
+[pdf specification]: https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf
+[`pdfdocument#getpagetext()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPageText(int)

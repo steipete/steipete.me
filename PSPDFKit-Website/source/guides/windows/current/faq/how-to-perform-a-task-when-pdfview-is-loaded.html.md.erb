@@ -1,0 +1,34 @@
+---
+title: How to Perform a Task When PdfView is Loaded
+section: developers
+---
+
+Sometimes you might want to perform a task after the SDK is loaded. This can be easily done with [`PdfView`][] events.
+
+In [`PdfView`][], there is an event, `InitializationCompletedHandler`, which is fired when the [`PdfView`][] is ready to receive commands. You can subscribe to this event, and afterward, you can perform any task you need:
+
+```csharp
+public OpenFileProgramatically()
+{
+    InitializeComponent();
+    PDFView.InitializationCompletedHandler += PdfView_InitializationCompletedHandler;
+}
+private async void PdfView_InitializationCompletedHandler(PdfView sender, Document document)
+{
+    try
+    {
+        var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/pdfs/default.pdf"));
+        if (file == null) return;
+        await sender.OpenStorageFileAsync(file);
+    }
+    catch (Exception e)
+    {
+        var messageDialog = new MessageDialog(e.Message);
+        await messageDialog.ShowAsync();
+    }
+}
+```
+
+The example above shows how to change the document shown in the [`PdfView`][] when [`PdfView`][] is loaded.
+
+[`pdfview`]: /api/windows/PSPDFKit/PSPDFKit.UI.PdfView.html

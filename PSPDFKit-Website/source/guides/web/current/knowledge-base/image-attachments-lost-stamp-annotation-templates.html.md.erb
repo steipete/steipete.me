@@ -1,0 +1,156 @@
+---
+title: Preserve attachments used for stamp annotation templates
+section: knowledge-base
+---
+
+## Q: How can I avoid losing the image attachments of image annotations I created for stamp annotation templates after document operations are applied?
+
+A: When document operations are applied, either by calling [`PSPDFKit.Instance#applyOperations`][] or using the [Document Editor UI][], the current instance is reloaded to reflect the new version of the document. In that process, image attachments that aren't currently used anywhere on the document are destroyed. Thus, if you had created some image annotations and added those as [stamp annotation templates][], their image attachments will no longer appear.
+
+In order to avoid this, you can keep a cached copy of the image attachments in memory and re-create the image attachments once the document has changed. Here is an example where we store the image attachments used on image annotations added for stamp annotation templates whenenver the current interaction mode changes to [`PSPDFKit.InteractionMode#DOCUMENT_EDITOR`] and restore that copy on [`document.change` events][]:
+
+```js
+let instance = null;
+
+// Object that will contain our attachments
+let attachmentsCache = null;
+
+PSPDFKit.load({
+    // your configuration
+  }).then(async _instance => {
+    instance = _instance;
+    const filePaths = ["a.png", "b.png"] // path to your images
+    const imageBlobs = await Promise.all(
+      filePaths.map(name => fetch(`/assets/${name}`).then(response => response.blob()))
+    );
+    const attachments = await Promise.all(
+      imageBlobs.map(file => instance.createAttachment(file))
+    );
+    const annotations = attachments.map(
+      imageAttachmentId =>
+        new PSPDFKit.Annotations.ImageAnnotation({
+          imageAttachmentId,
+          contentType: "image/png",
+          boundingBox: new PSPDFKit.Geometry.Rect({
+            width: 300,
+            height: 200,
+            top: 0,
+            left: 0
+          })
+        })
+    );
+
+    // We add the image annotations created as stamp annotation templates 
+    instance.setStampAnnotationTemplates(stampAnnotationTemplates => [
+      ...annotations,
+      ...stampAnnotationTemplates
+    ]);
+
+    instance.addEventListener("viewState.change", state => {
+      if (
+        state.interactionMode === PSPDFKit.InteractionMode.DOCUMENT_EDITOR
+      ) {
+        // As soon as the document editor is opened we cache the
+        // current attachments used on stamp annotation templates
+        const attachmentIds = instance.stampAnnotationTemplates
+          .filter(annotation => annotation.imageAttachmentId)
+          .map(annotation => annotation.imageAttachmentId);
+        // from the image attachment id we need to obtain the underlying
+        // Blob
+        attachmentsCache = Promise.all(
+          attachmentIds.map(id => instance.getAttachment(id))
+        );
+      }
+    });
+    instance.addEventListener("document.change", async () => {
+      // "document.change" events are invoked after operations are
+      // applied to the current instance
+      if (!attachmentsCache) {
+        return;
+      }
+      const attachments = await attachmentsCache;
+      await Promise.all(
+        attachments.map(attachment => instance.createAttachment(attachment))
+      );
+      // All attachments were re-created at this point
+    });
+});
+```
+
+If document operations are applied programmatically using `PSPDFKit.Instance#applyOperations` you can in turn cache the current image attachments just before calling that method and re-create the attachments once the `Promise` returned by the former method resolves:
+
+```js
+let instance = null;
+
+// Object that will contain our attachments
+let attachmentsCache = null;
+
+PSPDFKit.load({
+    // your configuration
+  }).then(async _instance => {
+    instance = _instance;
+    const filePaths = ["a.png", "b.png"] // path to your images
+    const imageBlobs = await Promise.all(
+      filePaths.map(name => fetch(`/assets/${name}`).then(response => response.blob()))
+    )
+    const attachments = await Promise.all(
+      imageBlobs.map(file => instance.createAttachment(file))
+    );
+    const annotations = attachments.map(
+      imageAttachmentId =>
+        new PSPDFKit.Annotations.ImageAnnotation({
+          imageAttachmentId,
+          contentType: "image/png",
+          boundingBox: new PSPDFKit.Geometry.Rect({
+            width: 300,
+            height: 200,
+            top: 0,
+            left: 0
+          })
+        })
+    );
+
+    // We add the image annotations created as stamp annotation templates
+    instance.setStampAnnotationTemplates(stampAnnotationTemplates => [
+      ...annotations,
+      ...stampAnnotationTemplates
+    ]);
+    const attachmentIds = instance.stampAnnotationTemplates
+      .filter(annotation => annotation.imageAttachmentId)
+      .map(annotation => annotation.imageAttachmentId);
+    // from the image attachment id we need to obtain the underlying
+    // Blob
+    attachmentsCache = await Promise.all(
+      attachmentIds.map(id => instance.getAttachment(id))
+    );
+
+    const additionalPDF = await fetch("assets/example.pdf").then(response =>
+      response.blob()
+    );
+
+    // Manually apply a "importDocument" operation
+    await instance.applyOperations([
+      {
+        type: "importDocument",
+        afterPageIndex: instance.totalPageCount - 1,
+        document: additionalPDF
+      }
+    ]);
+
+    await Promise.all(
+      attachmentsCache.map(attachment => instance.createAttachment(attachment))
+    );
+
+    // All attachments were re-created at this point
+});
+```
+
+
+
+This has been tested with PSPDFKit for Web 2019.5.4.
+
+[`pspdfkit.instance#applyoperations`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#applyOperations
+[document editor ui]: https://pspdfkit.com/guides/web/current/features/document-editor-ui/
+[stamp annotation templates]: https://pspdfkit.com/guides/web/current/features/stamp-annotation-templates/
+[`pspdfkit.interactionmode#document_editor`]: https://pspdfkit.com/api/web/PSPDFKit.html#.InteractionMode
+[`document.change` events]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~DocumentChangeEvent

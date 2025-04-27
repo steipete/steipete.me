@@ -1,0 +1,153 @@
+---
+title: Custom Rendered Annotations
+section: developers
+---
+
+At PSPDFKit, we created an API that allows customers to override or decorate specific parts of the UI when rendering them.
+
+We call these custom renderers, and they are a way for customers to hook into our application-rendering mechanism.
+
+These renderers are functions that take properties as input and return a DOM node reference. When a renderer returns `null`, we instead render the default UI for that slot.
+
+Our customers can register [custom renderers][] when initializing PSPDFKit:
+
+```js
+PSPDFKit.load({
+  customRenderers: {
+    Annotation: ({ annotation }) => {
+      if (annotation instanceof PSPDFKit.Annotations.NoteAnnotation) {
+        return {
+          node: document.createTextNode(`📝 ${annotation.text}`),
+          append: false // Replace the entire note annotation UI.
+        };
+      } else {
+        return null; // Render the default UI.
+      }
+    }
+  }
+});
+```
+
+If you want to get a glimpse of the power of custom rendered annotations, you should look at the following two examples in our Catalog, [Customize Annotations][] and [Obscure Annotations][].
+
+## Using Custom Renderers
+
+In the case of annotations, the Custom Renderers API consists of a callback function that is called by each annotation component at render time. This callback, if provided by the user, must return a [`PSPDFKit.AnnotationRenderConfiguration`][] object, or `null` if the annotation’s appearance should not be modified.
+
+Let’s examine this object’s members:
+
+- `node` — a DOM node. This is the only mandatory field of the returned object if it’s not `null`. Make sure you don’t return the same node for different annotations that are rendered simultaneously, as DOM nodes cannot exist in more than one place at the same time.
+- `append` — determines if the node should be appended to the default annotation appearance (`true`) or replaced altogether (`false`). When `append` is set to `true`, the provided DOM node can be used to enhance the default annotation’s appearance. However, it will not inherit the default annotation behavior (i.e. it will not select the annotation when receiving the `pointerdown` event), so such a case would need to be handled by the user. For example, let’s assume all the custom renderer’s returned nodes include the corresponding annotation `id` property in a `data-annotation-id` attribute:
+
+```js
+instance.contentDocument.addEventListener(
+  "pointerdown",
+  event => {
+    if (event.target && event.target.getAttribute("data-annotation-id")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      instance.setSelectedAnnotation(
+        event.target.getAttribute("data-annotation-id")
+      );
+    }
+  },
+  { capture: true }
+);
+```
+
+The code above would ensure that when the custom rendered annotation is targeted by a `pointerdown` event, the corresponding annotation is selected so it can be moved, resized, etc.
+
+- `noZoom` — by default, the annotation’s appearance is zoomed when the page is zoomed, and so the DOM node will also be returned in this callback. You can opt out of this behavior by setting this property to `true` (defaults to `false`).
+- `onDisappear` — an optional callback that will be called whenever the annotation component is unmounted, in order to allow for releasing resources or any other cleanup operation.
+
+## Use Case Study: Show Annotation Creator’s Name
+
+As custom renderers allow us to associate any renderable content with an annotation, it’s quite easy to extend the default API capabilities with our own features, such as showing the annotation’s creator name:
+
+```js
+const annotationRenderer = ({ annotation }) => {
+  // Don't show the creator's name if it's not set, or if it's empty.
+  if (!annotation.creatorName || annotation.creatorName.length === 0) {
+    return null;
+  }
+  const authorLabel = instance.contentDocument.createElement("div");
+  // Style our node. We may as well just set the element's class
+  // to one of our own, but sometimes we'll also need to set
+  // properties individually for each annotation.
+  authorLabel.style.cssText = `
+        font-family: Helvetica, sans-serif;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        color: blue;
+        position: absolute;
+        left: 50%;
+        top: -12px;
+        transform: translate(-50%, -100%);
+    `;
+  // Add the annotation's author name string.
+  authorLabel.appendChild(
+    instance.contentDocument.createTextNode(annotation.creatorName)
+  );
+  // Return the `PSPDFKit.AnnotationRenderConfiguration` object.
+  return {
+    // Return the created node.
+    node: authorLabel,
+    // Append to the annotation's appearance instead of replacing it.
+    append: true,
+    // Zoom automatically with the page.
+    noZoom: false
+  };
+};
+PSPDFKit.load({
+  customRenderers: {
+    // Currently, only annotations can be custom rendered.
+    Annotation: annotationRenderer
+  }
+});
+```
+
+The DOM node will be appended to the same container the annotation component is mounted in, only after it. This parent container has `position: relative` set, so usually you don’t need to know about the annotation’s coordinates unless you require some specific absolute position handling.
+
+## Replacing the Annotation’s Appearance
+
+Note that when `append=false` (which is the default value for the property), the default appearance of the annotation, including the pointer event listeners, is not rendered.
+
+This means that if you want your custom content to select the annotation when clicked, you’ll have to add some logic to support it.
+
+You can add an event listener to your node in your custom renderer code and also supply a callback to the `onDisappear` property to remove the listener:
+
+```js
+PSPDFKit.load({
+  customRenderers: {
+    Annotation: ({ annotation }) => {
+      function selectAnnotation(event) {
+        event.stopImmediatePropagation();
+        instance.setSelectedAnnotation(annotation.id);
+      }
+      const node = document
+        .createElement("div")
+        .appendChild(document.createTextNode("Custom rendered!"));
+      node.addEventListener("pointerdown", selectAnnotation, {
+        capture: true
+      });
+      return {
+        node,
+        append: false, // default=false
+        onDisappear: () => {
+          node.removeEventListener("pointerdown", selectAnnotation, {
+            capture: true
+          });
+        }
+      };
+    }
+  }
+});
+```
+
+These are just basic examples of the possibilities offered by the Custom Renderers API, which opens the door to a wide variety of annotation customizations and can greatly enhance the user experience at the developer’s will.
+
+[customize annotations]: https://web-examples.pspdfkit.com/customize-annotations
+[obscure annotations]: https://web-examples.pspdfkit.com/obscure-annotations
+[`pspdfkit.annotationrenderconfiguration`]: https://pspdfkit.com/api/web/PSPDFKit.AnnotationRenderConfiguration.html
+[custom renderers]: https://pspdfkit.com/api/web/PSPDFKit.CustomRenderers.html

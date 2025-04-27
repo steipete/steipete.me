@@ -1,0 +1,22 @@
+---
+title: PSPDFKit 5.3 Migration Guide
+section: developers
+
+order: 54
+---
+
+This article provides a set of guidelines for migrating from PSPDFKit 5.2 for Android to PSPDFKit 5.3 for Android. If you’re upgrading from a version earlier than 5.2, please review the [Android 5.2 Migration Guide][] first.
+
+## Updated Dependencies
+
+With PSPDFKit 5.3, we updated various dependencies of PSPDFKit:
+
+- **Build System Dependencies**
+  - We updated all example projects and the internal PSPDFKit build system to Android Gradle plugin 3.3.1 and Gradle 5.2.1.
+
+## Notable Changes and Deprecations
+
+- Ink drawing is now automatically split into ink annotations based on the timing of strokes and the distance between drawn points. If you want to revert to the old behavior, refer to the [Ink Aggregation Strategy][] section of the Annotation Configuration guide article for more details.
+
+[android 5.2 migration guide]: ../../migration-guides/pspdfkit-5-2-migration-guide/
+[ink aggregation strategy]: ../../annotations/annotation-configuration#ink-aggregation-strategy

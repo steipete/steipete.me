@@ -1,0 +1,96 @@
+---
+title: Customized Search
+section: developers
+
+---
+
+The PSPDFKit interface offers full-text search for your PDFs. It lists the number of results for a given term, lets you walk through the results, and highlights all occurrences of the search term in the document. You could say that it pretty much behaves like your browser’s search feature.
+
+<img title="Search field" alt="Search field" width="400px" src="/images/guides/web/features/customized-search/screenshot.png">
+
+But what if you wanted it to behave differently?
+
+## Customizing Search
+
+PSPDFKit lets you hook into search queries by listening to the `search.termChange` event. It will get triggered on every text change of the search field:
+
+```es
+let lastSearchTerm = "";
+
+instance.addEventListener("search.termChange", async event => {
+  // Opt out from the default implementation.
+  event.preventDefault();
+
+  const { term } = event;
+  // Update the search term in the search box. Without this line,
+  // the search box would stay empty.
+  instance.setSearchState(state => state.set("term", term));
+  lastSearchTerm = term;
+
+  // Perform a custom search for the term.
+  const results = await customSearch(term, instance);
+
+  // Our results could return in a different order than expected.
+  // Let's make sure only results matching our current term are applied.
+  if (term !== lastSearchTerm) {
+    return;
+  }
+
+  // Finally, we apply the results. Note that you can also modify
+  // the search state first and then pass the new state
+  // to `instance.setSearchState`.
+  const newState = instance.searchState.set("results", results);
+  instance.setSearchState(newState);
+});
+```
+
+Let’s say your search should only match whole words in your document. By default, the search lists all matching text fragments of a document, regardless of if they are whole words or not.
+
+In our `customSearch` function, we use PSPDFKit’s `instance.search` under the hood, which is why we need to pass `instance` as an argument as well.
+
+After the regular search, we can filter search results to only contain whole words:
+
+```es
+async function customSearch(term, instance) {
+  // We would get an error if we called `instance.search` with a term of
+  // 2 characters or less.
+  if (term.length <= 2) {
+    return PSPDFKit.Immutable.List([]);
+  }
+
+  // Let's take the results from the default search as the foundation.
+  const results = await instance.search(term);
+
+  // We only want to find whole words that match the term we entered.
+  const filteredResults = results.filter(result => {
+    const searchWord = new RegExp(`\\b${term}\\b`, "i");
+    return searchWord.test(result.previewText);
+  });
+
+  return filteredResults;
+}
+```
+
+## Providing Your Own Search
+
+Taking this approach even further, you could provide your own search implementation.
+
+Your `customSearch` function could be a little local implementation like the one above, but it could also be a request to a huge search data center. The only thing that matters is that you provide the result in the correct format to the `searchState`:
+
+Your results should be a [`PSPDFKit.Immutable.List`][] of [`PSPDFKit.SearchResult`][]s.
+
+## Additional Information
+
+To learn more about this topic, check out these API documentation pages:
+
+- [`PSPDFKit.SearchTermChangeEvent`][]
+- [`PSPDFKit.SearchState`][]
+- [`PSPDFKit.Instance.setSearchState`][]
+- [`PSPDFKit.SearchResult`][]
+
+[`pspdfkit.immutable.list`]: https://pspdfkit.com/api/web/PSPDFKit.Immutable.List.html
+[`pspdfkit.searchresult`]: https://pspdfkit.com/api/web/PSPDFKit.SearchResult.html
+[`pspdfkit.searchtermchangeevent`]: https://pspdfkit.com/api/web/PSPDFKit.SearchTermChangeEvent.html
+[`pspdfkit.searchstate`]: https://pspdfkit.com/api/web/PSPDFKit.SearchState.html
+[`pspdfkit.instance.setsearchstate`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setSearchState
+[`pspdfkit.searchresult`]: https://pspdfkit.com/api/web/PSPDFKit.SearchTermChangeEvent.html

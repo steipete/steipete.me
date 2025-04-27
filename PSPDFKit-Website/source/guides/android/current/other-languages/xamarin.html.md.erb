@@ -1,0 +1,89 @@
+---
+title: Microsoft Xamarin
+section: developers
+---
+
+![Xamarin PDF SDK](/images/guides/shared/other-languages/xamarin/xamarin-logo.png)
+
+Developers can use [Xamarin][] to write native iOS, Android, and macOS apps with a shared C# codebase. We provide separate bindings for iOS and Android, as they are different SDKs that each have an API that closely matches their respective underlying system.
+
+We offer [bindings for PSPDFKit for Android][xamarin-android] and regularly update them to be compatible with new releases. A recent version of Visual Studio for Mac or Windows is required. See the project [README][] for details.
+
+## Building PSPDFKit.Android.dll
+
+### Requirements
+
+PSPDFKit runs on Android devices running:
+
+- Xamarin.Android >= 9.4.1.0
+- Microsoft Mobile OpenJDK 1.8.0
+- Android 4.4 or newer / API level 19 or higher
+- 32/64-bit ARM (armeabi-v7a with NEON/ arm64-v8a) or 32/64-bit Intel x86 CPU
+
+It’s also important that:
+
+- Projects using `PSPDFKit.Android.dll` set the [target framework][] to API 28 (Android 9.0).
+- In Android Options, select `d8` as your `Dex compiler`. Otherwise, you will get errors about default interface methods not being supported.
+
+### Step 1 — Get the Bindings
+
+1. Clone the [`PSPDFKit/Xamarin-Android`][xamarin-android] repository from GitHub.
+2. Switch to the `Xamarin-Android` directory.
+
+### Step 2 — Get PSPDFKit AAR files
+
+1. Download PSPDFKit from the [Customer Portal][] if you haven’t done so already, or [request an evaluation version][trial].
+2. Unzip the PSPDFKit file you downloaded above and copy `pspdfkit-x.x.x.aar` to the `PSPDFKit.Android/Jars` folder.
+3. Run the `./build.sh` command (on macOS) or the `./build.ps1` command (on Windows, PowerShell) from the root directory. This will download additional resources needed by the binding. Note that running this will require you to have [Xamarin][] already installed on your computer.
+
+**ℹ️ Note:** Ensure the files are named `pspdfkit-x.x.x.aar` and `pspdfkit-instant-x.x.x.aar` so that there is no hidden `.zip` file ending. macOS likes to add these things and doesn’t show them by default. Use the Inspector to be sure.
+
+Visual Studio will use the default Java, but this can be customized in Preferences > SDK Locations > Java SDK (JDK).
+
+### Step 3 — Get your DLLs
+
+You have two options to do this.
+
+#### Build from PSPDFKit.Android.sln
+
+1. Open `PSPDFKit.Android.sln` in `Visual Studio`.
+2. Build the project.
+3. Get the DLLs from the `PSPDFKit.Android/bin` folder.
+4. Enjoy.
+
+#### Build from Terminal
+
+1. Just grab `PSPDFKit.Android.dll` from the root folder. If you successfully followed Step 1 from above, both should be there.
+2. Enjoy.
+
+**ℹ️ Note:** `PSPDFKit.Android.Instant.dll` is an optional dependency, and you only need it if you are using [PSPDFKit Instant][] collaboration features in your application.
+
+## Xamarin.Forms
+
+Xamarin.Forms does not support embedding `Fragments`. However, you can show a new `Activity`, so fullscreen PDF display is possible. See [the provided Xamarin.Forms example][] for more details.
+
+Xamarin.Forms does not allow hijacking the `ContentPage`, so by default, only fullscreen presentation is allowed. With the new [Xamarin.Forms embedding][], you can take any `ContentPage` and add it to your native applications. This technique is also showcased by our [PSPDFCatalog example app][].
+
+### Open a PDF
+
+Opening a PDF with PSPDFKit for Xamarin is as simple as this:
+
+```csharp
+var pspdfkitConfiguration = new PdfActivityConfiguration.Builder (ApplicationContext)
+	.PageMode (PSPDFPageMode.Single)
+	.PageTransition (PSPDFPageTransition.ScrollContinuous)
+	.ScrollDirection (PSPDFScrollDirection.Vertical)
+
+PdfActivity.ShowDocument (this, docUri, pspdfkitConfiguration);
+```
+
+[xamarin]: http://xamarin.com/
+[xamarin-android]: https://github.com/PSPDFKit/Xamarin-Android
+[readme]: https://github.com/PSPDFKit/Xamarin-Android/blob/master/README.md
+[the provided xamarin.forms example]: https://github.com/PSPDFKit/Xamarin-Android/tree/master/samples/XamarinForms
+[xamarin.forms embedding]: https://blog.xamarin.com/unleashed-embedding-xamarin-forms-in-xamarin-native/
+[pspdfcatalog example app]: https://github.com/PSPDFKit/Xamarin-Android/tree/master/samples/PSPDFCatalog
+[target framework]: https://developer.xamarin.com/guides/android/application_fundamentals/understanding_android_api_levels/#framework
+[customer portal]: https://customers.pspdfkit.com
+[trial]: https://pspdfkit.com/#trynow
+[pspdfkit instant]: https://pspdfkit.com/instant/

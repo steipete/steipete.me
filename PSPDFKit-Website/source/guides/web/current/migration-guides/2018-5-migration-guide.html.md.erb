@@ -1,0 +1,33 @@
+---
+title: 2018.5 Migration Guide
+section: developers
+
+order: 500
+---
+
+[PSPDFKit for Web 2018.5][] adds image annotations to place arbitrary images on a PDF page, along with two new sidebar modes — one to show the table of contents (document outlines) of a PDF, and one that lists all annotations. It also includes a new option to create annotation variants with the new ink highlighter and arrow tools enabled by default, plus a whole lot more!
+
+If you’re maintaining a Server installation, be sure to check out the [2018.5 Server Migration Guide][].
+
+### API Changes
+
+- Adds `Configuration#enableServiceWorkerSupport` to not bypass service workers when loading stylesheets inside PSPDFKit for Web.
+- Adds [`defaultAnnotationPresets`][] for annotation presets. You can read more about customizing annotation presets in our [Customizing the Toolbar][] guide.
+- Removes `InteractionMode.LAYOUT_CONFIGURATION`. The state of the layout configurator will be no longer be exposed.
+
+### Notable Changes
+
+- The order of [`defaultToolbarItems`][] was changed.
+- New toolbar items for document outline, document annotation sidebar, the `highlighter` variant, and the `arrow` variant were added to the [`defaultToolbarItems`][].
+- We fixed an issue with exported and imported XFDF files on rotated pages.
+- The placement logic of dropdowns has changed, and CSS rules that rely on the HTML structure of the dropdowns might need to be updated.
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2018.5]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-5/
+[changelog]: https://pspdfkit.com/changelog/web/#2018.5
+[cover endpoint]: https://pspdfkit.com/guides/web/current/server-backed/document-api/#load-a-cover-photo-of-a-document-65facf
+[`defaulttoolbaritems`]: https://pspdfkit.com/api/web/PSPDFKit.html#.defaultToolbarItems
+[`defaultannotationpresets`]: https://pspdfkit.com/api/web/PSPDFKit.html#.defaultAnnotationPresets
+[2018.5 server migration guide]: https://pspdfkit.com/guides/server/current/migration-guides/2018-5-migration-guide/
+[customizing the toolbar]: https://pspdfkit.com/guides/web/current/customizing-the-interface/customizing-the-toolbar/#annotation-variant-buttons

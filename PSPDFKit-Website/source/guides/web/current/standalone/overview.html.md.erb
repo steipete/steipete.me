@@ -1,0 +1,36 @@
+---
+title: Overview
+section: developers
+
+order: 1
+---
+
+<center>
+  <img
+    alt="A high-level overview showing that PSPDFKit for Web doesn't require PSPDFKit Server."
+    src="/images/guides/web/high-level-standalone.png"
+    width="640">
+</center>
+
+A standalone deployment does not require the installation of an additional server component and uses the state-of-the-art [WebAssembly][] technology (with fallback to [asm.js][]). This deployment method requires nothing but the JavaScript files and essential assets.
+
+When using standalone deployment, opening documents requires additional loading time (necessary to download and compile the WebAssembly or asm.js code). The absence of a server component makes it easier to integrate this solution and allows you to rapidly deploy it into your existing website. PDF documents and annotations need to be persisted on your server. To help with this process, we developed Instant JSON, a small layer that includes only the changes to a PDF file, thereby avoiding the need to transfer a PDF file whenever your users make changes.
+
+With this deployment option, you receive access to the required JavaScript files and assets.
+
+**Unique Features:**
+
+- Workload is offloaded to clients
+- Runs in contexts where no server is available
+
+<center>
+  <img
+    alt="WebAssembly logo"
+    src="/images/guides/web/web-assembly-logo-256px.png"
+    width="128">
+</center>
+
+## Getting Started
+
+- [Add PSPDFKit for Web to Your Project](../adding-to-your-project)
+- [Integrate PSPDFKit for Web](../integration)

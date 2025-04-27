@@ -1,0 +1,93 @@
+---
+title: Annotation Tooltips
+section: developers
+
+---
+
+PSPDFKit for Web supports showing contextual tooltips when an annotation is selected.
+
+To add tooltips, we need to define the `annotationTooltipCallback` in the configuration object that gets used to load PSPDFKit. Every time an annotation is selected, PSPDFKit calls this function with the selected annotation. When the function returns an array of [`ToolItem`][]s, then PSPDFKit shows a tooltip for the annotation.
+
+As an example, we will implement a tooltip that will be able to duplicate text annotations:
+
+[==
+
+```es
+const duplicateAnnotationTooltipCallback = annotation => {
+  // Check if the annotation is a text annotation.
+  if (annotation instanceof PSPDFKit.Annotations.TextAnnotation) {
+    // This is the tooltip item that will be used.
+    const duplicateItem = {
+      type: "custom",
+      title: "Duplicate",
+      id: "tooltip-duplicate-annotation",
+      className: "TooltipItem-Duplication",
+      onPress: () => {
+        // For the new annotation, we will copy the current one but
+        // translate the annotation for 50px so that our users see the
+        // duplicated annotation.
+        const newBoundingBox = annotation.boundingBox
+          .set("top", annotation.boundingBox.top + 50)
+          .set("left", annotation.boundingBox.left + 50);
+        // To make duplication work, we also need to remove the ID
+        // of the annotation.
+        const duplicatedAnnotation = annotation
+          .set("id", null)
+          .set("boundingBox", newBoundingBox);
+        // In the end, we just use `createAnnotation` on our
+        // PSPDFKit instance.
+        pspdfkitInstance.createAnnotation(duplicatedAnnotation);
+      }
+    };
+    return [duplicateItem];
+  } else {
+    return [];
+  }
+};
+
+PSPDFKit.load({
+  ...configuration,
+  annotationTooltipCallback: duplicateAnnotationTooltipCallback
+});
+```
+
+```js
+var duplicateAnnotationTooltipCallback = function(annotation) {
+  // Check if the annotation is a text annotation.
+  if (annotation instanceof PSPDFKit.Annotations.TextAnnotation) {
+    // This is the tooltip item that will be used.
+    var duplicateItem = {
+      type: "custom",
+      title: "Duplicate",
+      id: "tooltip-duplicate-annotation",
+      className: "TooltipItem-Duplication",
+      onPress: function() {
+        // For the new annotation, we will copy the current one but
+        // translate the annotation for 50px so that our users see the
+        // duplicated annotation.
+        var newBoundingBox = annotation.boundingBox
+          .set("top", annotation.boundingBox.top + 50)
+          .set("left", annotation.boundingBox.left + 50);
+        // To make duplication work, we also need to remove the ID
+        // of the annotation.
+        var duplicatedAnnotation = annotation
+          .set("id", null)
+          .set("boundingBox", newBoundingBox);
+        // In the end, we just use `createAnnotation` on our
+        // PSPDFKit instance.
+        pspdfkitInstance.createAnnotation(duplicatedAnnotation);
+      }
+    };
+    return [duplicateItem];
+  } else {
+    return [];
+  }
+};
+
+configuration.annotationTooltipCallback = duplicateAnnotationTooltipCallback;
+PSPDFKit.load(configuration);
+```
+
+==]
+
+[`toolitem`]: https://pspdfkit.com/api/web/PSPDFKit.ToolItem.html

@@ -13,6 +13,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[With macOS 10.15.5 out, it was time to update my Hackintosh again.]
+
+
 With macOS 10.15.5 out, it was time to update my Hackintosh again. This does take a bit more preparation than updating genuine Mac hardware. Since a few folks on Twitter were curious, here’s how this works.
 
 ## Background

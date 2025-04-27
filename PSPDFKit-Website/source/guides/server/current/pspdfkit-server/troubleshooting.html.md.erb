@@ -1,0 +1,60 @@
+---
+title: Troubleshooting
+section: developers
+
+---
+
+## Common Issues
+
+### Accessing the Error Log
+
+PSPDFKit Server will pipe useful logging information to the attached [standard streams][], stdout and stderr. When you submit a bug report, always make sure to include the relevant lines.
+
+Accessing this information depends on your [deployment option][deployment]. If you have started PSPDFKit Server locally, you can open the terminal window the server is running in to see the output.
+
+In production, you can use [`docker logs`][] or a similar tool, depending on your deployment option.
+
+If the log does not contain useful information, you can try to set the log level to `debug` with the `LOG_LEVEL` environment variable.
+
+### Invalid Token
+
+When receiving the error “Invalid Token,” you can debug and verify your token on [jwt.io][]. You’ll also get an error in the server log, where you can see if the token has expired or if the user has no access for the given document.
+
+### Running PSPDFKit Server with Docker Toolbox
+
+Docker Toolbox is for older versions of Mac and Windows, and we recommend updating to [Docker for Mac][] or [Docker for Windows][] if possible.
+
+When running PSPDFKit Server on [Docker Toolbox][], it won’t be reachable with `localhost`, because Docker Toolbox is running a Linux VM in VirtualBox.
+
+To get the IP address of your Docker machine, which can be used instead of `localhost`, run the following:
+
+```shell
+docker-machine ip
+```
+
+### The Server Does Not Start Due To a `Pending migration` Error
+
+This error occurs when the server is not able to do database migrations. Make sure you use Postgres 9.6 or newer, as older versions of Postgres are not supported.
+
+### Issue When Running on Windows: Pulling from PSPDFKit Image Operating System “Linux” Cannot Be Used on This Platform
+
+This may happen when your Docker engine is configured to run Windows containers and PSPDFKit Server is packaged as a Linux image. We recommend installing [Docker for Windows][], which adds a thin VM that can run Linux containers. See [this issue][docker issue 27668] on Docker’s issue tracker for more technical details.
+
+Learn more in our [Docker guide][].
+
+---
+
+## Bug Reports
+
+If you experience an issue you believe is related to PSPDFKit Server, [please report this to us][pspdfkit support]. When reporting, please give us as much information as possible so that we can help you more effectively.
+
+[standard streams]: https://en.wikipedia.org/wiki/Standard_streams
+[deployment]: /guides/server/current/deployment/getting-started/
+[`docker logs`]: https://docs.docker.com/engine/reference/commandline/logs/
+[jwt.io]: https://jwt.io/
+[docker for mac]: https://docs.docker.com/docker-for-mac/
+[docker for windows]: https://docs.docker.com/docker-for-windows/
+[docker toolbox]: https://docs.docker.com/toolbox/overview/
+[docker for windows 17-11 blogpost]: https://blog.docker.com/2017/11/docker-for-windows-17-11/
+[docker issue 27668]: https://github.com/docker/docker/issues/27668#issuecomment-255608035
+[docker guide]: ../../deployment/docker

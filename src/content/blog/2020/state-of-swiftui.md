@@ -17,6 +17,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[Let's look at SwiftUI in iOS 14 and macOS Big Sur by evaluating Apple's Fruta sample app.]
+
+
 <style type="text/css">
 div.post-content > img:first-child { display:none; }
 </style>

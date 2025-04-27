@@ -1,0 +1,258 @@
+---
+title: Integration
+section: developers
+
+order: 3
+alternate_platform_links:
+  ios: getting-started/integrating-pspdfkit
+  android: getting-started/integrating-pspdfkit
+  macos: getting-started/integrating-pspdfkit
+---
+
+This guide will walk you through integrating PSPDFKit for Web with your project for standalone deployment.
+
+## Prerequisites
+
+If you haven’t added PSPDFKit for Web to your project yet, please read our [Adding to Your Project][guides-installing] guide.
+
+Note that PSPDFKit for Web automatically fetches the necessary library files at startup time via XHR (AJAX) requests. These requests require the artifacts to be in the same directory as the `pspdfkit.js` entry point.
+
+Because of security restrictions, browsers are typically not allowed to make requests to the local file system; therefore, PSPDFKit for Web artifacts must be served from your (local) web server.
+
+To start a simple web server, you can use Python’s `SimpleHTTPServer` module:
+
+```shell
+# From the built project folder
+python3 -m http.server 8080
+```
+
+Or, use the npm [`serve`][serve-npm] package:
+
+```shell
+npm install --global serve
+serve -l 8080 ./
+```
+
+For a working example, you may want to check out our [webpack example application][webpack-example].
+
+Note that the `Content-Type` header for the `pspdfkit.wasm` file must be set to `application/wasm`. Otherwise, you might get a [`Response has unsupported MIME type` error][].
+
+## Integration Modes
+
+PSPDFKit for Web is distributed as a [UMD][umd] module, which means it can be consumed as a global variable `window.PSPDFKit` or as a CommonJS/AMD module.
+
+In the beginning, independent of your integration mode, open your HTML page and add a `<div>` with a defined `width` and `height` where the component will be mounted (this can be `100%` if the parent element has a `height` that is not set to `auto`).
+
+PSPDFKit for Web adapts to the dimensions of this element. In this way, applying responsive rules will work as expected.
+
+### Integrate as a Global Variable
+
+1.  After downloading and extracting the PSPDFKit for Web archive, include `pspdfkit.js` in your HTML page.
+    The framework files can be served from anywhere in your (local) web server.
+    If you set up the server at `https://pspdfkit.example.com`, you will find the file located
+    at `https://pspdfkit.example.com/pspdfkit.js`.
+    Similarly, if the files are in a subdirectory in your web server — for example, `assets` —
+    they will be accessible accordingly at `https://pspdfkit.example.com/assets/pspdfkit.js`.
+    The only constraint is that the library files should all be in the same folder.
+2.  Initialize PSPDFKit for Web in JavaScript by calling `PSPDFKit.load()`.
+
+Here’s a basic example:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My App</title>
+    <!-- 1. Include required files. -->
+    <script src="https://pspdfkit.your-site.com/pspdfkit.js"></script>
+
+    <!-- Provide proper viewport information so that the layout works on mobile devices. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body>
+    <!-- 2. Element where PSPDFKit will be mounted. -->
+    <div id="pspdfkit" style="width: 100%; height: 480px;"></div>
+
+    <!-- 3. Initialize PSPDFKit. -->
+    <script>
+      PSPDFKit.load({
+        container: "#pspdfkit",
+        pdf: "<pdf-file-path>",
+        licenseKey: "YOUR_LICENSE_KEY_GOES_HERE"
+      })
+        .then(function(instance) {
+          console.log("PSPDFKit loaded", instance);
+        })
+        .catch(function(error) {
+          console.error(error.message);
+        });
+    </script>
+  </body>
+</html>
+```
+
+### Integrate as a Module
+
+1.  Require `pspdfkit` in your application.
+2.  Initialize PSPDFKit for Web in JavaScript by calling `PSPDFKit.load()`:
+
+[==
+
+```es
+// src/index.js
+
+import PSPDFKit from "pspdfkit";
+
+PSPDFKit.load({
+  container: "#pspdfkit",
+  pdf: "<pdf-file-path>",
+  licenseKey: "YOUR_LICENSE_KEY_GOES_HERE"
+})
+  .then(instance => {
+    console.log("PSPDFKit loaded", instance);
+  })
+  .catch(error => {
+    console.error(error.message);
+  });
+```
+
+```js
+// src/index.js
+
+var PSPDFKit = require("pspdfkit");
+
+PSPDFKit.load({
+  container: "#pspdfkit",
+  pdf: "<pdf-file-path>",
+  licenseKey: "YOUR_LICENSE_KEY_GOES_HERE"
+})
+  .then(function(instance) {
+    console.log("PSPDFKit loaded", instance);
+  })
+  .catch(function(error) {
+    console.error(error.message);
+  });
+```
+
+==]
+
+Require your JavaScript file from your HTML page:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My App</title>
+
+    <!-- Provide proper viewport information so that the layout works on mobile devices. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body>
+    <!-- 2. Element where PSPDFKit will be mounted. -->
+    <div id="pspdfkit" style="width: 100%; height: 480px;"></div>
+    <script src="https://pspdfkit.your-site.com/dist/index.js"></script>
+  </body>
+</html>
+```
+
+### Configuration
+
+The `<pdf-file-path>` placeholder in the code above should be replaced with the PDF filename/URI you wish to load. Alternatively, `pdf` can be an `ArrayBuffer` if, for example, you are reading PDFs from the file system using the HTML FileReader API.
+
+For more information, please refer to the [API documentation][api-documentation] and to our [Importing and Exporting][importing-exporting] guides, where we explain how to load and persist PDF changes and annotations.
+
+### JavaScript API
+
+PSPDFKit for Web can be configured and controlled via its JavaScript API.
+
+Refer to our customization guides and the [API documentation][api-documentation] for full details:
+
+[==
+
+```es
+/**
+ * PSPDFKit.load() accepts a configuration object with the following required values:
+ *
+ * container {string|HTMLElement} — Selector or element where PSPDFKit will be mounted.
+ * pdf {string|ArrayBuffer} — The URL to the PDF document or the read PDF content as `ArrayBuffer`.
+ * licenseKey {string} — PSPDFKit for Web license key from https://customers.pspdfkit.com.
+ */
+PSPDFKit.load({
+  container: container,
+  pdf: "default.pdf",
+  licenseKey: "YOUR_LICENSE_KEY_GOES_HERE"
+})
+  .then(instance => {
+    instance.totalPageCount; // => 10
+
+    const viewState = instance.viewState;
+    viewState.currentPageIndex; // => 0
+    instance.setViewState(viewState.set("currentPageIndex", 1));
+  })
+  .catch(error => {
+    console.error(error.message);
+  });
+```
+
+```js
+/**
+ * PSPDFKit.load() accepts a configuration object with the following required values:
+ *
+ * container {string|HTMLElement} — Selector or element where PSPDFKit will be mounted.
+ * pdf {string|ArrayBuffer} — The URL to the PDF document or the read PDF content as `ArrayBuffer`.
+ * licenseKey {string} — PSPDFKit for Web license key from https://customers.pspdfkit.com.
+ */
+PSPDFKit.load({
+  container: container,
+  pdf: "default.pdf",
+  licenseKey: "YOUR_LICENSE_KEY_GOES_HERE"
+})
+  .then(function(instance) {
+    instance.totalPageCount; // => 10
+
+    const viewState = instance.viewState;
+    viewState.currentPageIndex; // => 0
+    instance.setViewState(viewState.set("currentPageIndex", 1));
+  })
+  .catch(function(error) {
+    console.error(error.message);
+  });
+```
+
+==]
+
+## Example Application
+
+We encourage you to check out our [webpack example][webpack-example] to see how to set up and build a simple standalone application.
+
+<div class="show-in-trial">
+
+  <p>
+    Follow the links in the registration email and then open this page to find your license key below:
+  </p>
+
+  <div class="code-block">
+    <div class="code-scroller">
+      <table class="code-table">
+        <td class="code-content">
+          <pre style="white-space: normal; word-wrap: break-word; word-break: break-all; padding-right: 13px">YOUR_LICENSE_KEY_GOES_HERE</pre>
+        </td>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+[serve-npm]: https://www.npmjs.com/package/serve
+[webpack-example]: https://github.com/PSPDFKit/pspdfkit-web-example-webpack
+[`response has unsupported mime type` error]: https://pspdfkit.com/guides/web/current/pspdfkit-for-web/troubleshooting/#response-has-unsupported-mime-type-error
+[umd]: https://github.com/umdjs/umd
+[api-documentation]: https://pspdfkit.com/api/web/
+[guides-installing]: ../../standalone/adding-to-your-project
+[importing-exporting]: ../../importing-exporting/instant-json/

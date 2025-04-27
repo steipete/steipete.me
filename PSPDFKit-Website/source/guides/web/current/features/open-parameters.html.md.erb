@@ -1,0 +1,31 @@
+---
+title: Open Parameters
+section: developers
+
+---
+
+PSPDFKit for Web supports a PDF feature called [PDF open parameters][], which allows you to control specific view options via parts of the URL.
+
+To pass open parameters to the PDF viewer, include them in the URL of the page that embeds the PDF. Open parameters are passed in the hash of the URL. Take care not to pass open parameters to the `load` function’s `pdf` argument, as this won’t work.
+
+At the moment, PSPDFKit only supports the open parameter `page`. For example, when you’d like the viewer to show page 12 of a PDF directly after loading, you could add the open parameter to your URL like this:
+
+```
+https://your-host.com/your-pdf-page.html#page=12
+```
+
+## Custom View State
+
+When you pass an `initialViewState` to PSPDFKit’s `load` method, this view state will override your open parameters. To avoid this, create your custom view state using [`viewStateFromOpenParameters`][]:
+
+```es
+PSPDFKit.load({
+  ...myConfiguration,
+  initialViewState: PSPDFKit.viewStateFromOpenParameters(
+    new PSPDFKit.ViewState({ showToolbar: false })
+  )
+});
+```
+
+[pdf open parameters]: https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDFOpenParameters.pdf
+[`viewstatefromopenparameters`]: https://pspdfkit.com/api/web/PSPDFKit.html#.viewStateFromOpenParameters

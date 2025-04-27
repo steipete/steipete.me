@@ -1,0 +1,75 @@
+<%
+lead ||= "Our PDF SDK is split into components &mdash; start with the parts you need, and add
+          features as your needs grow."
+%>
+
+<section id="features" class="section bg-neutral-dark mb-0">
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8 text-center">
+        <header>
+          <h6 class="text-brand">Features</h6>
+          <h2>The PSPDFKit Components</h2>
+        </header>
+        <p>
+          <%= lead %>
+        </p>
+      </div>
+    </div>
+    <%= yield if block_given? %>
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="row justify-content-center">
+
+          <% items.each do |i| %>
+            <div class="col-md-6 mb-5">
+              <% if i[:url] %>
+                <a href="<%= i[:url] %>" class="
+                  media media-link-block
+                  <%= 'op-5 disabled' if i[:disabled] %>
+                  <%= 'version-a' if current_platform == 'ios' && ['Viewer', 'Annotations', 'Forms', 'Digital Signatures'].include?(i[:title]) %>
+                ">
+                  <div class="d-flex mr-4">
+                    <div class="bg-white sh-1 sq-80 rounded-app">
+                      <img src="/images/shared/placeholder.gif" data-src="<%= i[:icon] %>" alt="<%= i[:title] %>" class="lazyload" loading="lazy" height="60">
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-title">
+                      <%= i[:title] %><% if i[:new] %><span class="badge badge-pill badge-brand ml-2">New</span><% end %>
+                      <% if i[:disabled] %>
+                        <small class="ml-2">(Coming Soon)</small>
+                      <% end %>
+                    </h4>
+                    <p>
+                      <%= i[:body] %>
+                    </p>
+                  </div>
+                </a>
+              <% else %>
+                <div class="media <%= 'op-5' if i[:disabled] %>">
+                  <div class="d-flex mr-4">
+                    <div class="bg-white sh-1 sq-80 rounded-app">
+                      <img src="/images/shared/placeholder.gif" data-src="<%= i[:icon] %>" alt="<%= i[:title] %>" class="lazyload" loading="lazy" height="60">
+                    </div>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-title">
+                      <%= i[:title] %><% if i[:new] %><span class="badge badge-pill badge-brand ml-2">New</span><% end %>
+                      <% if i[:disabled] %>
+                        <small class="ml-2">(Coming Soon)</small>
+                      <% end %>
+                    </h4>
+                    <p>
+                      <%= i[:body] %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

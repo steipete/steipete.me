@@ -1,0 +1,92 @@
+---
+title: PSPDFKit 5 Migration Guide
+section: developers
+
+order: 108
+---
+
+PSPDFKit 5 for iOS is the largest framework update so far.
+
+## New Renderer Core
+
+While developing PSPDFKit for Android, which we released in early 2015, we started working on a new “core” shared C++ library that is now used in PSPDFKit for iOS with the 5.0 update. This was a long process that started early 2014. Android did not have a capable PDF renderer: Google added a few calls in the KitKat 4.4 update, but they are far too limited and only meant for printing. And we are striving for compatibility with Ice Cream Sandwich 4.0, so we had to include our own renderer.
+
+Once we built and released that, we noticed that in many cases our renderer performed better than Apple’s Core Graphics PDF renderer that was used on iOS — and at the same time having full control over the whole stack would allow us to ship features that were previously unthinkable (like eager loading of linearized PDF, layers and more — stay tuned for what we have in the pipeline!)
+
+Using a shared core also means even better test coverage. Of course our main goal always is to design a beautiful, simple to use API, so the core is entirely internal and you will still get your native Objective-C APIs.
+
+## iOS and Xcode Requirements
+
+With PSPDFKit 5 for iOS, we finally dropped support for iOS 7. As we’re writing this post, [less than 9% of all devices run either iOS 7 or an earlier version][Apple Article App Store] and we follow [our usual pattern][PSPDFKit Guide Version Support] of supporting n-1 major iOS versions, which currently spans iOS 8.0, 8.1, 8.2, 8.3, 8.4, 9.0 and 9.1. This build also requires the just released Xcode 7.1. Xcode 7.1 runs on 10.10 or 10.11, and we recommend El Capitan 10.11.1 or higher.
+
+If you require support for iOS 7, we just updated the PSPDFKit 4 branch with more iOS 9 related fixes and you’re free to continue this version until you can drop the old OS requirements. Note that PSPDFKit 4 works best with Xcode 6.4, not Xcode 7.
+
+## Dynamic Framework
+
+Alongside dropping iOS 7 we simplified our setup and now exclusively ship with a dynamic SDK. This means that you probably need to update your integration, and [we made a handy guide to show you how.][PSPDFKit Guide Integrating PSPDFKit]
+
+CocoaPods now finally (!) has support for binary dynamic frameworks with the just released 0.39.0 version, so after a `gem update` and adding an `use_frameworks!` directive that will work great as well.
+
+## API Modernization
+
+All API is now annotated for nullability and generics, so it works nicely with Swift 2.0.
+
+We’ve slightly modernized our API to reflect new features and changed requirements:
+
+- The `pageRange` property didn’t make it into 5.0, but if there’s a lot of demand we might bring it back.
+
+- [`PSPDFProcessor`][] still looks similar, but now has more consistent calls with completion blocks and can now be called on any thread.
+
+- Separating and merging documents is now done without Apple’s renderer and thus works faster and more reliably: fixing erratic issues with larger files or missing content that we reported to Apple over the years, but have almost never been fixed. We now own the full parsing and rendering stack and can deliver fixes ourselves.
+
+- We’ve converted many accessor methods to read-only properties, following Apple’s guidelines, and because property syntax often gives you better compile time checks.
+
+- We took the chance and renamed `PSPDFScrobbleBar` with [`PSPDFScrubberBar`][] to make it more obvious for new people coming to the framework.
+
+- Instead of Boolean settings we added `PSPDFAdaptiveConditional` which better works in adaptive environments without requiring you to manually update the configuration object on such changes. This is currently only used for [`documentLabelEnabled`][].
+
+- The `PDFBox` property on [`PSPDFDocument`][] was exposed in earlier versions. However it is extremely unlikely that you really need that, and the logic for choosing the correct box is actually a bit more complex than that. We now fully comply to what the PDF spec and Adobe Acrobat do by default and no longer expose this detail.
+
+- We’ve optimized the way text blocks are detected, which should result in an even more reliable zoom-to-fit experience. While doing that a lot of our core was rewritten and we no longer expose `PSPDFFontInfo`.
+
+- The new parser now detects more cases of images, and `PSPDFImageInfo` works more reliably in extracting image data from the PDF when required.
+
+## Data Providers
+
+`PSPDFAESCryptoDataProvider` now has a `passphraseProvider` since we can run into situations where we require the passphrase again, and calling a block allows you to securely store it in the keychain instead of us having to keep it in memory. We also — finally — allow writing annotations back into encrypted files. Note that this is not the same as writing into PDF password protected files, which is on the roadmap and will come early next year.
+
+Since we no longer use Apple’s renderer, there is no need to pack things into a `CGDataProvider` and we ship our own `PSPDFDataProvider` with a more convenient API and optional support to request a `PSPDFDataSink` for writing files.
+
+## Full-Text Indexing Library
+
+Our indexed FTS library can now deal with [CJK characters (Chinese, Japanese, and Korean languages). Find out more in our 5.0 blog article.][PSPDFKit Blog PSPDFKit 5.0 for iOS]
+
+## UIKit Modernization and Adaptivity
+
+Dropping iOS 7 allowed us to fully switch over from the deprecated `UIPopoverController` to the new `UIPresentationController` APIs, which made the whole popover and adaptivity logic much more streamlined. We’ve also updated all our UI to be fully adaptive. [(See blog post announcement for images)][PSPDFKit Blog PSPDFKit 5.0 for iOS]. This means we ditched properties like `isInPopover` since this can be found from the current presentation style, without us adding extra API.
+
+This means that any API that gave or took a `UIPopoverController` has been changed, and popovers can now be dismissed the same way as modal views. This includes our half modal view controller, which is now handled by a custom presentation controller as well.
+
+We haven’t stopped there: the annotation and text toolbars are now adaptive as well and we updated the configuration options to allow setting “sets” of configurations. PSPDFKit will select the set that fits best in the space available. See the documentation around the new [`PSPDFAnnotationToolbarConfiguration`][] object for details.
+
+UIKit API modernization also implies that we don’t use deprecated methods from iOS 7 anymore. Your view controller overrides should no longer override `willRotateToInterfaceOrientation:duration:`, `willAnimateRotationToInterfaceOrientation:duration:` or `didRotateFromInterfaceOrientation:` since these might cause conflicts with the more modern and flexible `viewWillTransitionToSize:withTransitionCoordinator:`.
+
+## Tabs
+
+There have been many changes to the tabbed UI, which now properly animates and feels and looks much, much better. Use properties on [`PSPDFTabbedViewController`][] to customize the behavior and its [`tabbedBar`][] (an instance of [`PSPDFTabbedBar`][]) to customize the appearance. There’s new related API such as [`PSPDFMultiDocumentListController`][], which shows all open documents when the tabbed bar is overflowing.
+
+## What’s next
+
+We’re still working on updating our bindings for Xamarin, Appcelerator Titanium and Cordova and will ship compatible updates of these in the coming weeks. Our stylus drivers will receive updates as well and we can’t wait to get our hands on the iPad Pro and add support for the Apple Pencil. With our new renderer core, features such as PDF layers or displaying linearized PDFs on the fly are finally reachable, so stay tuned what 2016 will bring…
+
+[Apple Article App Store]: https://developer.apple.com/support/app-store/
+[PSPDFKit Guide Version Support]: https://pspdfkit.com/guides/ios/current/announcements/version-support/
+[PSPDFKit Guide Integrating PSPDFKit]: https://pspdfkit.com/guides/ios/current/getting-started/integrating-pspdfkit/
+[PSPDFKit Blog PSPDFKit 5.0 for iOS]: https://pspdfkit.com/blog/2015/pspdfkit-ios-5-0/
+[`documentLabelEnabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)documentLabelEnabled
+[`PSPDFAnnotationToolbarConfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbarConfiguration.html
+[`tabbedBar`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedViewController.html#/c:objc(cs)PSPDFTabbedViewController(py)tabbedBar
+[`PSPDFTabbedViewController`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedViewController.html
+[`PSPDFTabbedBar`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedBar.html
+[`PSPDFMultiDocumentListController`]: https://pspdfkit.com/api/ios/Classes/PSPDFMultiDocumentListController.html
+[`PSPDFProcessor`]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessor.html

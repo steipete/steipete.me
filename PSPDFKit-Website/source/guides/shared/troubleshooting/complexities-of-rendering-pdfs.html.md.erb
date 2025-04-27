@@ -1,0 +1,40 @@
+---
+title: The Complexities of Rendering PDF Documents
+section: developers
+---
+
+PSPDFKit renders documents pixel perfect. We use a custom renderer based on C++ that is [shared across all our platforms][pspdfkit blog cross platform]. This guarantees the broadest test coverage and allows us to focus on a highly tuned codebase for all supported platforms. If you have a document that renders incorrectly or different than with Adobe Acrobat, [please report it to us][pspdfkit support].
+
+<% if ios? or android? %>
+To learn about our rendering API, please see the [Rendering PDF Pages][] guide article.
+<% end %>
+
+## Understanding the Complexities
+
+PDF has been around since 1993 and has evolved a lot since then. This also means that there is a lot of legacy baggage in the specification — and one of the main promises of PDF is that even your 20-year-old documents will still render as when they were first created.
+
+[The specification, currently at version 1.7, has 756 pages][adobe specification pdf]. There are also quite a few extensions required ([Adobe® Supplement to ISO 32000-1, Extension Level 3][], [Adobe® Supplement to ISO 32000-1, Extension Level 5][]) to parse more modern documents correctly. Additionally, there is an [amendment for Adobe Acrobat-specific quirks][adobe pdf implementation], and basically everyone else has to follow this to be correct. There’s [the older original 1.7 version of the document from November 2006][adobe pdf reference 1.7], which includes many details — missing in the most current version of the spec — about correctly supporting older documents (1,310 pages) and the [Errata][] and [Redaction][] amendments. ([This page provides a good overview][adobe pdf reference archive].)
+
+PDF also has a JavaScript API that is most often used to make forms interactive and to validate input. It is critical that this API is supported by us, as it is also often used for things like turning pages or opening a hyperlink. The [API specification][adobe js api] is another whopping 769 pages. The specification for character maps, required to convert PDF glyph data into Unicode for searching purposes, [is in another separate document with more than 100 pages][adobe cidfont specification]. And while PSPDFKit does not support XFA, some information about handling mixed-mode documents with both AcroForms and XFA is part of the [XML Forms Architecture (XFA) Specification][adobe xfa specification], which is a document with about 1,600 pages. (To fully understand the details, sometimes we also need older versions of this document, and [this page provides a good overview][adobe xfa overview].) Since PDF is based on PostScript, the documentation often references the [PostScript language reference (1999)][], which has about 900 pages, and the Errata from 2004. There are various additional documents required for certain encodings used, but these are rarely larger than 100 pages.
+
+Along with the official specification, there’s also “real-world” PDF, which often has bugs based on misunderstandings or bugs in creation software that need specific workarounds and hacks. Adobe Acrobat is very forgiving in terms of invalid references, duplicate entries, and typos, and it allows various drawing command variations that aren’t documented anywhere — these are things that have to be found out via trial and error, and which also add to the complexity of a rendering engine. Our code around this engine is mostly written in modern C++; however, the codebase has to deal with many variants and edge cases, so the code is quite large and complex, resulting in a noticeable binary footprint.
+
+PDF also supports many image formats that require additional libraries to decode — such as [JPEG 2000][wikipedia jpeg 2000] or [JBIG2][wikipedia jbig2] — which contributes to the binary size.
+
+[pspdfkit blog cross platform]: /blog/2016/a-pragmatic-approach-to-cross-platform
+[rendering pdf pages]: ../../getting-started/rendering-pdf-pages/
+[adobe specification pdf]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf
+[adobe® supplement to iso 32000-1, extension level 3]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/adobe_supplement_iso32000.pdf
+[adobe® supplement to iso 32000-1, extension level 5]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/adobe_supplement_iso32000_1.pdf
+[adobe pdf implementation]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/pdf_reference_archives/pdf_implementation.pdf
+[adobe pdf reference 1.7]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/pdf_reference_1-7.pdf
+[errata]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/pdf_reference_archives/pdf_17_errata.pdf
+[redaction]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/pdf_reference_archives/pdf_reference_addendum_redaction.pdf
+[adobe pdf reference archive]: http://www.adobe.com/devnet/pdf/pdf_reference_archive.html
+[adobe js api]: http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/js_api_reference.pdf
+[adobe cidfont specification]: https://www.adobe.com/content/dam/Adobe/en/devnet/font/pdfs/5014.CIDFont_Spec.pdf
+[adobe xfa specification]: http://partners.adobe.com/public/developer/en/xml/xfa_spec_3_3.pdf
+[adobe xfa overview]: https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/Adobe_XML_Form_Object_Model_Reference.pdf
+[postscript language reference (1999)]: https://www.adobe.com/products/postscript/pdfs/PLRM.pdf
+[wikipedia jpeg 2000]: https://en.wikipedia.org/wiki/JPEG_2000
+[wikipedia jbig2]: https://en.wikipedia.org/wiki/JBIG2

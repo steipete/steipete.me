@@ -1,0 +1,95 @@
+---
+title: Overview
+section: developers
+
+order: 1
+---
+
+You will likely want to customize some of the server’s options for your own app. Configuration options for the server are exposed via environment variables for the service `pspdfkit` in the [`docker-compose.yml`][pspdfkit guide getting started] file. The following options are available:
+
+- `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGHOST`, `PGPORT` — these options determine how the
+  `pspdfkit` service will communicate with the `db` service. Don’t forget to
+  replace the default password with a custom one, using the same value for both `PGPASSWORD` and
+  `POSTGRES_PASSWORD`.
+
+- `PGSSL` — a Boolean string that can be used to enable connection to a PostgreSQL server that supports encrypted SSL connections.
+  Defaults to `"false"`.
+
+- `API_AUTH_TOKEN` — a string used for authenticating with the [Server API][pspdfkit guide managing documents].
+  Choose a sufficiently long random string for this option in order to prevent unauthorized access
+  to the API.
+
+- `SECRET_KEY_BASE` — a string used as the base key for deriving secret keys for the purposes of
+  authentication. Choose a sufficiently long random string for this option.
+  To generate a random string, use: `openssl rand -hex 256`.
+
+- `JWT_PUBLIC_KEY` — this key has to correspond to the private key you will use when generating
+  JWTs in your app. See the [Client Authentication][] guide for details.
+
+- `JWT_ALGORITHM` — the algorithm used for JSON Web Token (JWT) verification. This should be the same as the one you
+  will use for signing JWTs in your app. Supported algorithms: RS256, RS512, ES256, ES512. See
+  [RFC 7518][ietf rfc 7518] for details about specific algorithms.
+
+- `DASHBOARD_USERNAME`, `DASHBOARD_PASSWORD` — the username and password to access the [dashboard][]. To disable the dashboard, leave these unset.
+
+- `TRUSTED_PROXIES` — a comma-separated list of IP addresses or IP address ranges of trusted
+  proxies in front of the server. Setting it to `default` will use the default list of private
+  addresses defined by IPv4 and IPv6.
+
+  When set, the server will examine some of the request headers to determine the IP address of the
+  actual client, even if the server is behind one or more proxies.
+
+  Leaving it empty or omitting the setting completely will make the server just use the IP address
+  of the immediate connection that sent a request.
+
+- `ASSET_STORAGE_BACKEND` — how PSPDFKit Server stores uploaded PDFs and attachments. Supported
+  backends are `built-in` and `s3`. The default value for this option is `built-in`.
+
+  The S3 backend supports further configuration; please see the [asset storage configuration guide][].
+
+- `ALLOW_DOCUMENT_UPLOADS` — allow or prevent uploading documents to PSPDFKit Server. Supported values are `true` and `false`. The default value for this option is `true`.
+
+- `ALLOW_REMOTE_DOCUMENTS` — allow or prevent [adding documents from URLs][] to PSPDFKit Server. Supported values are `true` and `false`. The default value for this option is `true`.
+
+- `AUTOMATIC_LINK_EXTRACTION` — automatically extract link annotations from text. Check out the [Link Annotations][autodetecting-links] guide for more information. The default value for this option is `false`.
+
+- `IGNORE_INVALID_ANNOTATIONS` — if set to `true`, PSPDFKit Server will ignore invalid annotations on PDF export instead of throwing an error. Invalid annotations will still be logged. If set to `false`, PDF export for PDFs containing invalid annotations will throw and log an error. Supported values are `true` and `false`. The default value for this option is `true`.
+
+- `USE_REDIS_CACHE` — if set to true, PSPDFKit Server will use [Redis][] as an additional image cache. Supported values are `true` and `false`. The default value for this option is `true`.
+
+- `REDIS_HOST`, `REDIS_PORT`, `REDIS_DATABASE`, `REDIS_PASSWORD` — only relevant if `USE_REDIS_CACHE` is set to `true`. These options determine how PSPDFKit Server will communicate with [Redis][].
+
+- `REDIS_SSL` - if set to `true`, enables an encrypted SSL connection to [Redis][].
+
+- `ASSET_STORAGE_CACHE_PATH`, `ASSET_STORAGE_CACHE_SIZE` — these options determine the behavior of the [document cache][]. `ASSET_STORAGE_CACHE_PATH` sets the path on the containers’ filesystem where the document cache should be located and defaults to `/srv/asset_storage`. `ASSET_STORAGE_CACHE_SIZE` sets the maximum size used for caching documents in bytes and defaults to `2000000000` (=2GB).
+
+- `DATABASE_CONNECTIONS` — this option defines the database connection pool size. The default value for this option is 20.
+
+- `ROOT_PATH` — this option is used to set the server’s path when it is not running on the root of the domain. This is needed for the authentication cookie. The default value for this option is an empty string. If the server appears to the client as `https://example.com/pspdfkit`, this needs to be set to `/pspdfkit`.
+
+- `MIN_SEARCH_QUERY_LENGTH` — this option defines the minimum amount of characters required to start a search on a document. By default, the minimum length is three characters.
+
+- `REMOTE_URL_FETCH_TIMEOUT` — this option defines the maximum timeout period used (in milliseconds) when waiting for a remote PDF to download (please see [adding documents from URLs][] for more information on this feature) and can be increased if PSPDFKit Server needs to handle large files and defaults to 5,000 milliseconds.
+
+- `LOG_LEVEL` — this option defines a minimum log level. The allowed values, from higher to lower, are `debug`, `info`, `warn`, and `error`. The application will emit logs from the chosen level and all lower ones, so if the value is set to `debug`, it will log `debug`, `info`, `warn`, and `error`. This defaults to `info`.
+
+- `SIGNING_SERVICE_URL` — this option only affects a PSPDFKit instance with support for Digital Signatures. It defines the URL used by PSPDFKit Server when contacting the external signing service required to apply a digital signature to a document.
+
+- `DEFAULT_SIGNER_NAME`, `DEFAULT_SIGNATURE_REASON`, and `DEFAULT_SIGNATURE_LOCATION` — these options only affect a PSPDFKit instance with support for Digital Signatures. When signing a document, they’re used to prepare the signature metadata.
+
+- `DIGITAL_SIGNATURE_HASH_ALGORITHM` — this option only affects a PSPDFKit instance with support for Digital Signatures. If you require a hash algorithm that’s different than the default `sha256`, you can choose between any of these allowed values: `md5`, `sha160`, `sha224`, `sha256`, `sha384`, or `sha512`. We recommend using `sha256` or higher.
+
+Make sure to run `docker-compose up --force-recreate pspdfkit` when you have an existing PSPDFKit container and want to run it with a new configuration.
+
+[pspdfkit guide getting started]: ../../deployment/getting-started/
+[pspdfkit guide managing documents]: ../../api/documents/
+[client authentication]: ../../pspdfkit-server/client-authentication/#generating-tokens
+[ietf rfc 7518]: https://tools.ietf.org/html/rfc7518#section-3
+[dashboard]: ../../pspdfkit-server/dashboard/
+[asset storage configuration guide]: ../../configuration/asset-storage/
+[integrating pspdfkit for web guide]: /guides/web/current/server-backed/integration/
+[amazon s3]: https://aws.amazon.com/s3
+[adding documents from urls]: ../../api/documents/#adding-a-document-from-a-url
+[autodetecting-links]: https://pspdfkit.com/guides/web/current/annotations/link-annotations/#autodetecting-links
+[redis]: https://redis.io/
+[document cache]: ../../pspdfkit-server/cache/

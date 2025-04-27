@@ -1,0 +1,143 @@
+---
+title: Store and Load the View State
+section: developers
+---
+
+The view state is the data we capture, store and eventually use to restore what the user is currently looking at after recreating a [`PdfFragment`][] — for example, after a configuration change.
+
+This guide aims to provide a more in–depth explanation of the concepts behind the view state and how it is used inside PSPDFKit.
+
+## What’s in a View State?
+
+Every view state has a page index. This is the currently visible dominant page. Just like the page index returned by [`PdfFragment#getPageIndex`][], the view state’s page index that relates to the first page in a document is `0`.
+
+In addition to the page index, a view state may have a viewport, which is the currently visible rectangle of the page defined in PDF coordinates.
+
+Here are some things to keep in mind:
+
+- The dominant page is the page that is most visible. PSPDFKit uses various criteria to determine this.
+- [Android and the PDF format use different coordinate systems][]. While PDF uses right–handed Cartesian coordinates with the origin in the lower-left corner, Android features a flipped y–axis and moves the origin to the upper-left corner. In addition to that, a page in a PDF document can be rotated in steps of 90 degrees. In order to not define _yet another_ coordinate system, we use the page coordinates directly — the result may surprise you, as we’ll see in a bit.
+- Given our layout of the pages, we can transform the bounds rectangle of the PDF view from view coordinates to the coordinates of the dominant page. Note that this rectangle can extend even beyond the media box of a page: Its origin _can_ be negative in x and y, just as its height and width can be greater than the dimensions of the page (for greater detail on the various “boxes” of a page, see section 14.11.2 “Page Boundaries” in the [Portable Document Format reference][].
+
+With that out of the way, let’s explore the viewport and its behaviors.
+
+## The Viewport
+
+The following graphic shows two different viewports on the same page of a document in continuous scrolling mode. For the sake of simplicity, the PDF view is displayed fullscreen on a tablet. In green, you see the coordinate system of that view, while the coordinate systems of the pages are displayed in black. Offscreen content is dimmed.
+
+<img alt="Two viewports on the same page" src="/images/guides/ios/view-management/store-load-view-state/viewport.001.png" srcset="/images/guides/ios/view-management/store-load-view-state/viewport.001@2x.png 2x">
+
+If the dominant page is rotated, the viewport will be too. The image below displays the dimensions of the viewport in orange and labeled with their meaning. The document on the left has a regular dominant page, whereas the one on the right has one that is rotated by 90 degrees. Similar to the axes, the arrowheads of the viewport dimensions point in the direction of increasing width/height.
+
+<img alt="Dimensions of a viewport for a regular and rotated page" src="/images/guides/ios/view-management/store-load-view-state/viewport.002.png" srcset="/images/guides/ios/view-management/store-load-view-state/viewport.002@2x.png 2x">
+
+## Restoring a View State
+
+Restoring a view state without (or when discarding) a viewport is identical to just setting the page on [`PdfFragment`][].
+In any other case, we try to restore the viewport as best as possible.
+
+Given that the aspect ratio of the stored viewport and the PDF view match, the precision of this is limited only by rounding. If, however, there is a change in the aspect ratio, we preserve the center and width of the viewport. This means that when the width/height ratio shrinks, more content will be visible than before. When that ratio increases, less content will be visible.
+
+The image below shows this behavior for rotation on a tablet using the same document. The dotted orange rectangle shows the effective viewport on the same document after rotation of the device. Note how that preview of the viewport after rotation on the left is _smaller_ than the current one but keeps the center and relative width — _some of the currently visible content will be clipped_. On the other hand, the viewport preview on the right reveals more of the content, still keeping the center.
+
+<img alt="Restoring a viewport during change in aspect ratio" src="/images/guides/ios/view-management/store-load-view-state/viewport.003.png" srcset="/images/guides/ios/view-management/store-load-view-state/viewport.003@2x.png 2x">
+
+This is a deliberate choice. The rationale behind it is as follows:
+
+1.  Rotating the device to another orientation and back should behave as if nothing happened.
+2.  Because we tend to focus our attention on what’s in the center of our field of vision, zooming into an image will most likely result in the most relevant part of it being in the center.
+3.  The surroundings of the center then provide additional context.
+4.  Most scripts lay out information horizontally _and then_ vertically, so when zooming in to text, this is most likely to happen in a way that aligns well with the text’s columns.
+5.  Again, the vertical surroundings of a line provide additional context.
+
+## Example: Persistently Storing the Exact View State
+
+By default, PSPDFKit will automatically restore the view state when you rotate the device or when the [`PdfFragment`][] goes into the background and comes back. However, if you want to persist the current view state beyond the [`PdfFragment`][] lifecycle, you can manually store the necessary information and restore it at a later point.
+
+### Storing the State
+
+Getting the necessary information to assemble the view state is as easy as calling [`PdfFragment#getPageIndex`][] and [`PdfFragment#getVisiblePdfRect`][]:
+
+[==
+
+```kotlin
+private fun saveViewState() {
+    val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+    val currentPageIndex = fragment.pageIndex
+    val visiblePdfRect = RectF()
+    fragment.getVisiblePdfRect(visiblePdfRect, currentPageIndex)
+    preferences.edit()
+        .putInt("LAST_PAGE_INDEX", currentPageIndex)
+        .putFloat("LAST_PAGE_RECT_TOP", visiblePdfRect.top)
+        .putFloat("LAST_PAGE_RECT_RIGHT", visiblePdfRect.right)
+        .putFloat("LAST_PAGE_RECT_BOTTOM", visiblePdfRect.bottom)
+        .putFloat("LAST_PAGE_RECT_LEFT", visiblePdfRect.left)
+        .apply()
+}
+```
+
+```java
+private void saveViewState() {
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    PdfFragment fragment = getPdfFragment();
+    int currentPageIndex = fragment.getPageIndex();
+    RectF visiblePdfRect = new RectF();
+    fragment.getVisiblePdfRect(visiblePdfRect, currentPageIndex);
+
+    preferences.edit()
+        .putInt("LAST_PAGE_INDEX", currentPageIndex)
+        .putFloat("LAST_PAGE_RECT_TOP", visiblePdfRect.top)
+        .putFloat("LAST_PAGE_RECT_RIGHT", visiblePdfRect.right)
+        .putFloat("LAST_PAGE_RECT_BOTTOM", visiblePdfRect.bottom)
+        .putFloat("LAST_PAGE_RECT_LEFT", visiblePdfRect.left)
+        .apply();
+}
+```
+
+==]
+
+### Restoring the State
+
+To restore the state, you can use [`PdfFragment#zoomTo`][] once the document is loaded:
+
+[==
+
+```kotlin
+private fun restoreViewState() {
+    val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+    // Make sure that we have stored the state once before.
+    if (preferences.contains("LAST_PAGE_INDEX")) {
+        val lastPageIndex = preferences.getInt("LAST_PAGE_INDEX", 0)
+        val lastVisibleRect = RectF(preferences.getFloat("LAST_PAGE_RECT_LEFT", 0f),
+            preferences.getFloat("LAST_PAGE_RECT_TOP", 0f),
+            preferences.getFloat("LAST_PAGE_RECT_RIGHT", 0f),
+            preferences.getFloat("LAST_PAGE_RECT_BOTTOM", 0f))
+        // Restore the view state to our last stored state.
+        fragment.zoomTo(lastVisibleRect, lastPageIndex, 0)
+    }
+}
+```
+
+```java
+private void restoreViewState() {
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    // Make sure that we have stored the state once before.
+    if (preferences.contains("LAST_PAGE_INDEX")) {
+        int lastPageIndex = preferences.getInt("LAST_PAGE_INDEX", 0);
+        RectF lastVisibleRect = new RectF(preferences.getFloat("LAST_PAGE_RECT_LEFT", 0),
+            preferences.getFloat("LAST_PAGE_RECT_TOP", 0),
+            preferences.getFloat("LAST_PAGE_RECT_RIGHT", 0),
+            preferences.getFloat("LAST_PAGE_RECT_BOTTOM", 0));
+        // Restore the view state to our last stored state.
+        getPdfFragment().zoomTo(lastVisibleRect, lastPageIndex, 0);
+    }
+}
+```
+
+==]
+
+[portable document format reference]: https://wwwimages2.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf
+[`pdffragment#getpageindex`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#getPageIndex()
+[`pdffragment#getvisiblepdfrect`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#getVisiblePdfRect(android.graphics.RectF,%20int)
+[android and the pdf format use different coordinate systems]: https://pspdfkit.com/guides/android/current/faq/coordinate-spaces
+[`pdffragment#zoomto`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#zoomTo(android.graphics.RectF,%20int,%20long)

@@ -17,6 +17,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbs...]
+
+
 Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbsp;TB SSD, 1&nbsp;GbE).
 
 The Geekbench Score is 1705/7379 vs. 1100/5465, so the promise is more than 30 percent increased performance — even more so for single-threaded operations. Linking and code-signing are tasks Apple hasn't yet parallelized, so single-core performance is a significant factor for CI performance.

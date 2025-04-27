@@ -1,0 +1,27 @@
+---
+title: SQLite Database Encryption
+section: developers
+
+---
+
+SQLite databases created by PSPDFKit are not encrypted by default. They are still protected by iOS Data Protection just like all application's data. In case you need to add additional level of security there're SQLite extensions that enable database encryption. These extensions encrypt database content and SQLite metadata.
+
+One of such extensions is [SQLite Encryption Extension][]. This extension requires SEE license.
+
+Another alternative implementation is [SQLCipher][] which is an open source project with [BSD-style license][].
+
+To integrate SQLCipher, follow the instructions for either [commercial edition][] or the [community edition][].
+
+You can read more about how PSPDFKit integrates with your [custom SQLite library here][PSPDFKit Guide Custom SQLite Library].
+
+### Encrypting PSPDFKit databases
+
+SQLite database encryption is currently supported by [`PSPDFLibrary`][], which is described in detail [here][PSPDFKit Guide Encryption Support]. We plan to extend this to all internal PSPDFKit SQLite databases in future release.
+
+[SQLite Encryption Extension]: https://www.sqlite.org/see/
+[SQLCipher]: https://www.zetetic.net/sqlcipher/
+[BSD-style license]: https://www.zetetic.net/sqlcipher/license/
+[commercial edition]: https://www.zetetic.net/sqlcipher/sqlcipher-binaries-ios-and-osx/
+[community edition]: https://www.zetetic.net/sqlcipher/ios-tutorial/
+[PSPDFKit Guide Custom SQLite Library]: ../../miscellaneous/custom-sqlite-library
+[PSPDFKit Guide Encryption Support]: ../../security/encryption-in-pspdflibrary

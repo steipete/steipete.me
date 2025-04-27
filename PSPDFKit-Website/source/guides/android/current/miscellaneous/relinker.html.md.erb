@@ -1,0 +1,49 @@
+---
+title: ReLinker
+section: developers
+---
+
+PSPDFKit has integrated support for [ReLinker][], which is a robust native library loader for Android. When using Android apps with native libraries (like PSPDFKit does), you occasionally will see errors like the following, which are caused by Android’s unreliable `PackageManager` implementation:
+
+```
+Caused by: java.lang.UnsatisfiedLinkError: Library libpspdfkit not found
+at java.lang.Runtime.loadLibrary(Runtime.java:461)
+at java.lang.System.loadLibrary(System.java:557)
+at com.example.NativeStuff.<clinit>(Native.java:16)
+... 5 more
+```
+
+ReLinker fixes these issues by replacing the standard `System.loadLibrary` call with a more reliable implementation. With Gradle, PSPDFKit [automatically adds][] ReLinker as a transitive dependency — no further action is required to make ReLinker work. However, if you are using [manual library integration][], you need to add ReLinker to the `dependencies` block of your `build.gradle` file.
+
+## Add ReLinker
+
+> **Important:** This integration is only required if you manually integrate the PSPDFKit `.aar` file. If you used Maven/Gradle for integrating PSPDFKit, ReLinker has already been set up for you.
+
+1. Go to https://github.com/KeepSafe/ReLinker and look for the current version of ReLinker.
+2. Inside the `dependencies` block of your `app/build.gradle`, add the following (replace the version with the current one):
+
+   ```build.gradle
+   dependencies {
+       implementation 'com.getkeepsafe.relinker:relinker:<%= guide_constant('android', 'relinker_version') %>'
+   }
+   ```
+
+3. Run your app. PSPDFKit will automatically pick up ReLinker and use it.
+
+## Remove ReLinker
+
+If you do not want to use ReLinker in your app, you can disable it by excluding the transitive Gradle dependency inside your `build.gradle`. PSPDFKit will detect that ReLinker is no longer present and it will fall back to the default `System.loadLibrary` call:
+
+```build.gradle
+dependencies {
+    implementation('com.pspdfkit:pspdfkit:<%= latest_version(:android) %>') {
+        exclude group: 'com.getkeepsafe.relinker', module: 'relinker'
+    }
+}
+```
+
+> **ℹ️ Note:** Deactivate ReLinker at your own risk, as this may cause unwanted app crashes on some devices.
+
+[relinker]: https://medium.com/keepsafe-engineering/the-perils-of-loading-native-libraries-on-android-befa49dce2db#.e8op3v8i0
+[automatically adds]: ../../getting-started/integrating-pspdfkit/#automated-integration-using-gradle
+[manual library integration]: ../../getting-started/integrating-pspdfkit/#manual-library-file-integration

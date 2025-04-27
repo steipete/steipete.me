@@ -1,0 +1,82 @@
+---
+title: Try the Demo
+section: developers
+
+order: 100
+alternate_platform_links:
+  web: pspdfkit-for-web/try-the-demo
+---
+
+<div class="alert alert-warning hide-in-trial">
+<p><strong>Note:</strong> This article is about using the PSPDFKit trial for evaluation purposes. If you don’t yet have a trial license, fill out the <a href="https://pspdfkit.com/try">trial form</a> to get one.</p>
+</div>
+
+You can try PSPDFKit in a few simple steps and get the library up and running in your app with little to no effort. For other integration options and setting up for a production app, please read all of the articles in our [Getting Started][] guide.
+
+### Integrate the PSPDFKit Framework
+
+The easiest way to get started is using [CocoaPods][pspdfkit guide using cocoapods]. Add the following to your `Podfile`, and then run `pod install`:
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit', podspec: 'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/latest.podspec'
+  platform :osx, '10.12'
+end
+```
+
+<p class="force-replace-tokens">
+If you prefer, you can directly <a href="https://customers.pspdfkit.com/download/YOUR_COCOAPODS_KEY_GOES_HERE">download the framework</a> instead and then follow the <a href="../integrating-pspdfkit/">manual integration guide</a>.
+</p>
+
+### Set the License Key
+
+[==
+
+```swift
+func applicationWillFinishLaunching(_ notification: Notification) {
+    PSPDFKitGlobal.setLicenseKey("YOUR_LICENSE_KEY_GOES_HERE")
+}
+```
+
+```objc
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    [PSPDFKitGlobal setLicenseKey:@"YOUR_LICENSE_KEY_GOES_HERE"];
+}
+```
+
+==]
+
+### Load a PDF Document
+
+[==
+
+```swift
+import PSPDFKit
+
+let fileURL = Bundle.main.url(forResource: "Document", withExtension: "pdf")!
+let document = PSPDFDocument(url: fileURL)
+
+// Do something with the document instance:
+print("Document: \(document)")
+```
+
+```objc
+#import <PSPDFKit/PSPDFKit.h>
+
+NSURL *documentURL = [NSBundle.mainBundle URLForResource:@"Document" withExtension:@"pdf"];
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Do something with the document instance:
+NSLog(@"Loaded document: %@", document);
+```
+
+==]
+
+<blockquote class="force-replace-tokens">
+  <p><strong>Note:</strong> See the various example projects in the <a href="https://customers.pspdfkit.com/download/YOUR_COCOAPODS_KEY_GOES_HERE">download DMG</a> for additional details.</p>
+</blockquote>
+
+[getting started]: ../../getting-started/prerequisites
+[pspdfkit guide using cocoapods]: ../../getting-started/using-cocoapods

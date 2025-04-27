@@ -1,0 +1,20 @@
+---
+title: Customize the Appearance of the Navigation Bar Shown Above the Crop UI
+section: knowledge-base
+---
+
+## Q: How do I customize the appearance of the navigation bar shown above the crop UI after taking a photo with the camera when adding an image annotation?
+
+A: This navigation bar is part of `PSPDFImagePickerController`, which is a subclass of `UIImagePickerController`, which is a subclass of `UINavigationController`. You can use `UIAppearance` to customize all instances of this class like this:
+
+```swift
+UINavigationBar.appearance(whenContainedInInstancesOf: [PSPDFImagePickerController.self]).barTintColor = UIColor.yellow
+```
+
+If you need to access a particular instance of the picker controller, you could use the PSPDFViewController delegate method [`pdfViewController:shouldShowController:options:animated:`][].
+
+This will look like this:
+
+<img src="/images/guides/ios/knowledge-base/customize-the-navigation-bar-in-crop/yellow.jpg">
+
+[`pdfViewController:shouldShowController:options:animated:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFViewControllerDelegate.html#/c:objc(pl)PSPDFViewControllerDelegate(im)pdfViewController:shouldShowController:options:animated:

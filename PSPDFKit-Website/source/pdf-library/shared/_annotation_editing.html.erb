@@ -1,0 +1,100 @@
+<style>
+  #annotation-editing {
+    padding-top: 60px;
+    height: 2200px;
+    margin-bottom: -1000px;
+    overflow: hidden;
+    position: relative;
+  }
+  #annotation-editing::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background-image: linear-gradient(-150deg, #d3dcff 0%, #e0d2fd 60%, #f9fbfe 60% 100%);
+  }
+  #annotation-editing-illustration {
+    flex-shrink: 0;
+    margin-left: -1200px;
+    margin-top: -400px;
+  }
+  #annotation-editing-bullets {
+    margin-top: -30px;
+  }
+  @media (min-width: 768px) {
+    #annotation-editing {
+      height: 1300px;
+      margin-bottom: -470px;
+    }
+    #annotation-editing-illustration {
+      margin-top: -620px;
+      margin-left: -1260px;
+    }
+    #annotation-editing-bullets {
+      margin-top: -370px;
+    }
+  }
+  @media (min-width: 992px) {
+    #annotation-editing {
+      height: 2500px;
+      margin-bottom: -1750px;
+    }
+    #annotation-editing::after {
+      top: -850px;
+    }
+    #annotation-editing-illustration {
+      margin-top: -610px;
+      margin-left: -1020px;
+    }
+    #annotation-editing-bullets {
+      margin-top: -380px;
+    }
+  }
+</style>
+<section id="annotation-editing">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-5 ml-auto">
+        <h2 class="h6 text-alt mt-0 mb-2">
+          Annotation Editing
+        </h2>
+        <h3 class="h2 text-alt-dark mt-0 mb-4">
+          Import and Export Annotations to XFDF and Instant JSON
+        </h3>
+        <p class="text-alt-dark mb-5">
+          Extract annotation data from large volumes of PDF documents for exporting to a database. Optimize for speed and network traffic by transmitting only the user’s edited changes via XFDF or Instant JSON.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/images/pdf-library/annotation-editing.png" id="annotation-editing-illustration" width="1640" height="988">
+    </div>
+    <div class="row" id="annotation-editing-bullets">
+      <div class="col-md-6 col-lg-5 ml-auto">
+        <ul class="list-unstyled text-alt-dark">
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-import-export.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Use our proprietary <a href="/blog/2017/instant-json/">Instant JSON</a> format or XFDF to import and export large amounts of annotation data
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-flatten.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Permanently apply annotations by batch-flattening all changes to prevent further revision
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-forms.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Extract user data from PDF form fields in XFDF
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

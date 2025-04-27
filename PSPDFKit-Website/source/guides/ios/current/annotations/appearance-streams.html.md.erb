@@ -1,0 +1,120 @@
+---
+title: Appearance Streams
+section: developers
+---
+
+PSPDFKit allows you to define custom appearance streams on any annotation type by setting the [`PSPDFAnnotation`][]’s [`appearanceStreamGenerator`][] property.
+
+This is especially useful for stamp annotations. In this article, we’ll discuss the advantages of using a vector (appearance stream) stamp annotation over a bitmap stamp annotation.
+
+Unlike bitmap stamp (`UIImage`-based) annotations, vector annotations allow transparency and high-resolution zooming.
+
+For more on this topic, please refer to our [Use Vector Stamps Instead of Blurry Shapes][] and [What Are Appearance Streams?][] blogs.
+
+## Stamp Annotation with a Bitmap Image
+
+Here’s how to programmatically add a bitmap stamp annotation:
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create a new stamp annotation with a `UIImage`.
+let imageStamp = PSPDFStampAnnotation()
+
+// Set the appearance stream.
+imageStamp.image = UIImage(named: "PSPDFKit Logo.jpg")
+
+// Set the bounding box.
+imageStamp.boundingBox = CGRect(x: 180, y: 150, width: 444, height: 500)
+
+// Add the newly created annotation to the document.
+document.add([imageStamp])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create a new stamp annotation with a `UIImage`.
+PSPDFStampAnnotation *imageStampAnnotation = [[PSPDFStampAnnotation alloc] init];
+
+// Set the appearance stream.
+imageStampAnnotation.image = [UIImage imageNamed: @"PSPDFKit Logo.jpg"];
+
+// Set the bounding box.
+imageStampAnnotation.boundingBox = { .origin.x = 180.f, .origin.y = 150.f, .size.height = 444.f, .size.width = 500.f };
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[imageStampAnnotation] options:nil];
+```
+
+==]
+
+<img width="50%" src="/images/guides/ios/annotations/appearance-streams/bitmap-stamp.png">
+
+## Stamp Annotation with an Appearance Stream
+
+Here’s how to programmatically add a vector stamp annotation:
+
+[==
+
+```swift
+// Create `PSPDFDocument`.
+let document = PSPDFDocument(url: documentURL)
+
+// Create the URL of the appearance stream that uses a PDF file.
+let samplesURL = Bundle.main.resourceURL?.appendingPathComponent("Samples")
+let logoURL = samplesURL?.appendingPathComponent("PSPDFKit Logo.pdf")
+
+// Create a new stamp annotation using the appearance stream generator.
+let vectorStampAnnotation = PSPDFStampAnnotation()
+
+// Set the appearance stream.
+vectorStampAnnotation.appearanceStreamGenerator = PSPDFFileAppearanceStreamGenerator(fileURL: logoURL)
+
+// Set the bounding box.
+vectorStampAnnotation.boundingBox = CGRect(x: 180, y: 150, width: 444, height: 500)
+
+// Add the newly created annotation to the document.
+document.add([vectorStampAnnotation])
+```
+
+```objc
+// Create `PSPDFDocument`.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+
+// Create the URL of the appearance stream that uses a PDF file.
+NSURL *samplesURL = [NSBundle.mainBundle.resourceURL URLByAppendingPathComponent:@"Samples"];
+NSURL *logoURL = [samplesURL URLByAppendingPathComponent:@"PSPDFKit Logo.pdf"];
+
+// Create a new stamp annotation using the appearance stream generator.
+PSPDFStampAnnotation *vectorStampAnnotation = [[PSPDFStampAnnotation alloc] init];
+
+// Set the appearance stream.
+vectorStampAnnotation.appearanceStreamGenerator = [[PSPDFFileAppearanceStreamGenerator alloc] initWithFileURL:logoURL];
+vectorStampAnnotation.boundingBox = CGRectMake(180.f, 150.f, 444.f, 500.f);
+
+// Set the bounding box.
+vectorStampAnnotation.boundingBox = { .origin.x = 180.f, .origin.y = 150.f, .size.height = 444.f, .size.width = 500.f };;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[vectorStampAnnotation] options:nil];
+```
+
+==]
+
+<img width="50%" src="/images/guides/ios/annotations/appearance-streams/vector-stamp.png">
+
+Take a look at `AddVectorStampAnnotationProgrammaticallyExample` inside the Catalog app, as it shows how to create vector stamp annotations programmatically.
+
+You can also refer to the [Default Stamp Annotations][] section of the [Stamp Annotations Configuration][] guide, which illustrates how to customize the default stamp annotations available in the stamp picker dialog.
+
+[`appearancestreamgenerator`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)appearanceStreamGenerator
+[`pspdfannotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html
+[use vector stamps instead of blurry shapes]: /blog/2017/vector-stamps/
+[what are appearance streams?]: /blog/2018/what-are-appearance-streams/
+[default stamp annotations]: ../../annotations/stamp-annotations-configuration/#default-stamp-annotations
+[stamp annotations configuration]: https://pspdfkit.com/guides/ios/current/annotations/stamp-annotations-configuration/#default-stamp-annotations

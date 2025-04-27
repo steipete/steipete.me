@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ "$BUILDKITE_BRANCH" = "master" ]]; then
+  export DOCKER_IMAGE_TAG="latest"
+else
+  # Replace every occurence of `/` in the Git branch with `-`,
+  # and remove all non-alphanumeric characters, except `-` and `_`.
+  export DOCKER_IMAGE_TAG="$(echo ${BUILDKITE_BRANCH//\//-} | tr -cd '[a-zA-Z0-9]_-')"
+fi

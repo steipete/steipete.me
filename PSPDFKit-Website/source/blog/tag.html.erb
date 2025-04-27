@@ -1,0 +1,11 @@
+---
+section: blog
+change_frequency: weekly
+---
+
+<%= partial 'nav_sub' %>
+
+<%= partial 'archive', locals: {
+  active: tagname,
+  archive: archived_articles(tagname)
+} %>

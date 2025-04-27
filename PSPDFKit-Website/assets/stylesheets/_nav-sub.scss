@@ -1,0 +1,187 @@
+.nav-sub {
+  position: relative;
+  z-index: $zindex-modal;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+    }
+  }
+
+  .nav-breadcrumb {
+    background: 0;
+    margin: 0;
+    padding: 1.5rem 0;
+    font-size: ($font-size-base * 0.8);
+
+    .breadcrumb-item {
+      &,
+      &::before {
+        color: $text-muted;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .nav-toggle {
+    position: absolute;
+    padding: 0;
+    top: 10px;
+    right: 10px;
+
+    @include media-breakpoint-up(md) {
+      display: none !important;
+    }
+
+    .fa {
+      margin-right: 0 !important;
+    }
+
+    .fa-angle-up {
+      display: block;
+    }
+
+    .fa-angle-down {
+      display: none;
+    }
+
+    &.collapsed {
+      .fa-angle-up {
+        display: none;
+      }
+
+      .fa-angle-down {
+        display: block;
+      }
+    }
+  }
+
+  .nav-collapse {
+    display: none;
+    list-style: none;
+    margin: 0 0 30px 0;
+    padding: 0;
+    flex-wrap: wrap;
+
+    &.show {
+      display: flex;
+    }
+
+    .nav-item {
+      width: 100%;
+      border-bottom: 1px solid #d3dcff;
+    }
+
+    .nav-link {
+      border-top: 5px solid transparent;
+    }
+
+    @include media-breakpoint-up(sm) {
+      .nav-item {
+        width: 45%;
+        margin-right: 5%;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      display: flex;
+      margin: 0;
+      margin-left: auto;
+
+      .nav-item {
+        width: auto;
+        margin: 0;
+        border: 0;
+      }
+    }
+  }
+
+  .nav-block {
+    > .nav-item {
+      padding-top: 0;
+    }
+  }
+
+  .nav-link {
+    color: $text-muted;
+    font-size: ($font-size-base * 0.8);
+    padding: 0.5rem 0.65rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+
+    > .fa {
+      margin-right: 0.4rem;
+    }
+
+    @include media-breakpoint-up(md) {
+      padding: 1.5rem 0.65rem;
+    }
+  }
+
+  .nav-item:last-child {
+    .nav-link:not(.nav-btn) {
+      @include media-breakpoint-up(sm) {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.nav-sub.is-sticky {
+  position: sticky;
+  transition: background-color 0.2s;
+
+  &.is-fixed {
+    top: 0;
+    background: $white;
+    @include sh-1;
+
+    .nav-link,
+    .breadcrumb-item {
+      color: $brand;
+
+      &:hover:not(.nav-btn),
+      &:focus:not(.nav-btn) {
+        color: $brand-darker !important;
+      }
+
+      &.active {
+        border-top-color: $brand;
+      }
+    }
+
+    &.text-sticky-alt {
+      .nav-link,
+      .breadcrumb-item {
+        color: $alt;
+
+        @include hover-focus {
+          color: $alt-dark !important;
+        }
+
+        &.active {
+          border-top-color: $alt;
+        }
+      }
+    }
+  }
+}
+
+// Make hovered nav items visible over a dark background
+.nav-sub.text-light,
+.content-backdrop ~ .nav-sub {
+  .nav-link,
+  .breadcrumb-item {
+    color: rgba($white, 0.7);
+
+    @include hover-focus {
+      color: $white !important;
+    }
+  }
+}

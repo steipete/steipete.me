@@ -1,0 +1,59 @@
+---
+title: Backup and Recovery
+section: developers
+
+---
+
+Before you deploy PSPDFKit Server in a production environment, you should set up a backup strategy with scheduled automated backups and a tested disaster recovery plan.
+
+PSPDFKit Server uses PostgreSQL as a data store, while binary assets including PDFs are stored in a Docker volume. You need to make backups of both.
+
+## PostgreSQL
+
+The easiest way to take a snapshot of your PostgreSQL database is to run `pg_dump` inside the PSPDFKit container and redirect the dump to a file you can back up using your existing backup infrastructure.
+
+Using the recommended `docker-compose.yml` configuration, you can dump a snapshot to the `pspdfkit_db_dump.sql` file:
+
+```shell
+docker-compose run --rm pspdfkit pg_dump > pspdfkit_db_dump.sql
+```
+
+You can then restore the dump into a fresh PostgreSQL container:
+
+```shell
+docker-compose run --rm pspdfkit pg_isready --timeout=15 # Wait until PostgreSQL has started
+docker-compose run --rm pspdfkit psql < pspdfkit_db_dump.sql
+```
+
+## Assets
+
+### Built-In Storage
+
+When you use the built-in storage option, all assets are backed up with the [PostgreSQL backup](#postgresql).
+
+### Docker Volume
+
+Be aware that this storage option was **deprecated** in 2017.7 and will be removed in a future version of PSPDFKit Server.
+
+Using the recommended `docker-compose.yml` configuration, you can dump a snapshot to the `pspdfkit_asset_dump.tar.gz` file:
+
+```shell
+docker-compose run -T --rm pspdfkit tar -czf - -C /srv/asset_storage . > pspdfkit_asset_dump.tar.gz
+```
+
+You can then restore the dump into a clean asset volume:
+
+```
+docker-compose run --rm pspdfkit tar -xz -C /srv/asset_storage -f - < pspdfkit_asset_dump.tar.gz
+```
+
+Alternatively, you can use `docker volume inspect` to find the mount point of the volume, which you can back up using tar or any other technology.
+
+## Large Installations
+
+While these approaches are easy to set up and automate via cron or something similar, for larger installations we recommend using a log-shipping backup product, like [Barman][] or [WAL-E][] for PostgreSQL and [BorgBackup][] or [duplicity](http://duplicity.nongnu.org) for the asset volume.
+
+[barman]: http://www.pgbarman.org
+[wal-e]: https://github.com/wal-e/wal-e
+[borgbackup]: https://borgbackup.readthedocs.io/en/stable/
+[duplicity]: http://duplicity.nongnu.org

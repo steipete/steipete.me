@@ -1,0 +1,64 @@
+---
+title: Horizontal Scaling
+section: developers
+
+---
+
+PSPDFKit Server supports horizontal scaling via connecting multiple server nodes to your
+Postgres database.
+
+This allows you to scale PSPDFKit Server in cloud environments like [Amazon EC2 Container Service (ECS)][], [Azure Kubernetes Service (AKS)][], and [Google Kubernetes Engine (GKE)][]. Deployments as a pod in a [Kubernetes][] environment, on [Docker Compose][], or to [Docker Swarm][] are also fully supported.
+
+Whenever you start a new PSPDFKit Server node and connect it to your existing database, it will
+register itself with your database, and from then on, it will automatically receive and broadcast
+updates of all the changes made to your documents.
+
+### Configuration
+
+Please note that all nodes have to use the same configuration. Always check `docker-compose.yml` to verify the configuration. Please also ensure all nodes are running the same PSPDFKit Server version.
+
+Important: Since the local asset storage backend stores all assets within a Docker instance, it doesn’t work with the deployment of multiple nodes. Please migrate to S3 or to our built-in asset storage backend before deploying multiple nodes. See our guide on [storage migration][] for information on how to migrate your asset storage backend.
+
+### Load Balancing
+
+We recommend using a load balancer to distribute clients across your nodes.
+
+- For custom deployments, you can use [NGINX load balancing][].
+- For deployment in the cloud, you can use load balancing solutions from your cloud platform
+  provider:
+- [AWS][]
+- [Google Cloud][]
+- [Azure][]
+
+### Dashboard
+
+The dashboard shows you all of the currently connected nodes, along with their IDs, PSPDFKit Server versions, IP addresses, and times of first connection.
+
+<center>
+  <img
+    alt="PSPDFKit Server Dashboard"
+    src="/images/guides/server/pspdfkit-server/dashboard/dashboard-nodes.png"
+    width="600">
+</center>
+
+### Caching
+
+Check out the [Cache guide][] for more information on how to improve caching in a PSPDFKit Server setup with multiple nodes.
+
+### Licensing
+
+Your license will define the number of servers that can be used. If you have questions, please [contact][sales] our sales team for details.
+
+[amazon ec2 container service (ecs)]: https://aws.amazon.com/ecs/
+[azure kubernetes service (aks)]: https://azure.microsoft.com/en-us/services/container-service/
+[google kubernetes engine (gke)]: https://cloud.google.com/kubernetes-engine/
+[kubernetes]: https://kubernetes.io
+[docker compose]: https://docs.docker.com/compose/
+[docker swarm]: https://docs.docker.com/swarm/
+[nginx load balancing]: http://nginx.org/en/docs/http/load_balancing.html
+[aws]: https://aws.amazon.com/elasticloadbalancing/applicationloadbalancer/
+[google cloud]: https://cloud.google.com/compute/docs/load-balancing/
+[azure]: https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview
+[storage migration]: https://pspdfkit.com/guides/server/current/configuration/asset-storage/#migration-between-asset-storage-options
+[cache guide]: ../../pspdfkit-server/cache/
+[sales]: https://pspdfkit.com/sales/

@@ -1,0 +1,31 @@
+---
+title: Apache Cordova (Adobe PhoneGap)
+section: developers
+
+---
+
+[Apache Cordova][] is an open source platform for building native apps using HTML5, CSS, and JavaScript.
+
+### PSPDFKit for Web Standalone Deployment
+
+[PSPDFKit for Web][] is not currently supported in Cordova and [Ionic][] projects.
+
+[Standalone deployment][] requires an HTTP server, and Cordova does not use a localhost server to serve the contents of the `www` folder (HTML, JavaScript, and CSS). Instead, Cordova uses the `file:///path/to/resource/` scheme. The [cordova-plugin-httpd][] third-party plugin can be used to run a localhost HTTP server in our Cordova project and redirect to the Standalone deployment example’s `index.html` as soon as the local server is available.
+
+We discovered performance issues, such as running out of memory when executing JavaScript in the web views. This is especially noticeable on real devices; it was less of an issue in the iOS simulator and Android emulator. For example, in our tests, it worked acceptably well in iOS 10, but things actually regressed on iOS 11. In-app mobile performance isn’t yet good enough.
+
+#### Our Solution
+
+We suggest you use the currently recommended integration for Cordova projects, which is based on the [Native SDKs for iOS and Android][apache cordova].
+
+If you absolutely wish to use [PSPDFKit for Web][], you can run it on your own remote server and not in localhost. This way, your Cordova app acts as a web browser without having to run any high-performance JavaScript in the web view.
+
+#### Our Long-Term Goal
+
+We are constantly working on improving and optimizing PSPDFKit for Web, and hopefully future versions of iOS and Android will improve JavaScript performance in web views.
+
+[apache cordova]: https://cordova.apache.org/
+[ionic]: https://ionicframework.com/
+[pspdfkit for web]: ../../pspdfkit-for-web/getting-started/
+[standalone deployment]: ../../standalone/overview/
+[cordova-plugin-httpd]: https://www.npmjs.com/package/cordova-plugin-httpd

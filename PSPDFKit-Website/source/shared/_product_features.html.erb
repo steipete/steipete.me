@@ -1,0 +1,42 @@
+<section id="features" class="section pb-0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <% items.each_with_index do |item, index| %>
+          <% even = index % 2 == 0 %>
+          <!-- <%= item[:title] %> -->
+          <div class="row align-items-center <%= 'flex-md-row-reverse' if even %>">
+            <div class="col-md-6 mb-3 mb-md-0 <%= 'offset-md-1' if even %>">
+              <img src="/images/shared/placeholder.gif"
+                   data-src="<%= item[:image] %>"
+                   class="img-fluid lazyload border"
+                   loading="lazy"
+                   alt="<%= current_page.data.title %> - <%= item[:title] %> Feature">
+            </div>
+            <div class="col-md-5 <%= 'offset-md-1' if !even %>">
+              <h3 class="d-flex align-items-center">
+                <span class="sq-50 rounded-circle bg-brand mr-3">
+                  <img src="/images/shared/placeholder.gif"
+                       data-src="<%= item[:icon] %>"
+                       width="<%= item[:icon_size] || 30 %>"
+                       class="lazyload"
+                       loading="lazy">
+                </span>
+                <%= item[:title] %>
+                <% if item[:new] %>
+                  <span class="badge badge-pill badge-brand ml-2">NEW</span>
+                <% end %>
+              </h3>
+              <p class="medium mb-0">
+                <%= item[:body] %>
+              </p>
+            </div>
+          </div>
+          <% unless item == items.last %>
+            <hr class="my-5">
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

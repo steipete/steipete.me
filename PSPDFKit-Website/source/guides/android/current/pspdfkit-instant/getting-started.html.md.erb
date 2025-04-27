@@ -1,0 +1,76 @@
+---
+title: Getting Started
+section: developers
+
+order: 2
+---
+
+With PSPDFKit Instant, it’s easier than ever to add real-time collaboration features to your PSPDFKit-powered app, allowing your users to seamlessly share, edit, and annotate PDF documents across Android, iOS, and Web apps. This article will guide you through integrating Instant into your own apps.
+
+## Requirements
+
+- **PSPDFKit for Android with Instant**
+
+PSPDFKit and Instant are two separate Android libraries available in the same download. <span class="hide-in-trial">Download the latest release from [customers.pspdfkit.com][], or, for evaluation purposes, fill out the <a href="https://pspdfkit.com/try">trial form</a>.</span> <span class="show-in-trial force-replace-tokens ">Download <a href="https://customers.pspdfkit.com/download/YOUR_MAVEN_KEY_GOES_HERE">the latest release</a>.</span>
+
+- **A PSPDFKit Server instance**
+
+  See the [Example Projects guide][] to get an instance up and running.
+
+## Quick Start with the Example Project
+
+Instant comes with an example Android project named `instant-example`, which connects to either of our example server apps.
+
+1. Run PSPDFKit Server locally using one of our [example projects][example projects guide].
+1. Add a document to the server using the Upload PDF button.
+1. Select the document to view it with PSPDFKit for Web.
+1. Import the `example/instant` project into Android Studio and run it.
+1. Run `adb reverse tcp:5000 tcp:5000 && adb reverse tcp:3000 tcp:3000` to forward emulator/device ports to host ports. (`5000` is the port of PSPDFKit Server, while `3000` is the port of our Web example).
+1. Once the example app is running, you can use `http://localhost:3000` as a host name to access your local example server.
+1. Tap the document in the app to download it and show it in the activity.
+1. Add annotations in the app or in the browser to see annotation syncing.
+
+## Integrating into Your App
+
+PSPDFKit Instant for Android is part of the PSPDFKit for Android library. To add Instant to your project:
+
+1. [Integrate PSPDFKit][integrating pspdfkit].
+
+1. Add the specific dependencies required for Instant to your `build.gradle` file:
+
+   ```build.gradle
+   ...
+   implementation 'com.pspdfkit:pspdfkit-instant:<%= latest_version(:android) %>'
+   implementation 'com.squareup.okhttp3:okhttp:<%= guide_constant('android', 'okhttp_version') %>'
+   ```
+
+## Manual Library File Integration
+
+1. [Integrate PSPDFKit][integrating pspdfkit] following the [manual library file integration][].
+
+1. Add the specific dependencies required for Instant to your `build.gradle` file:
+
+   ```build.gradle
+   ...
+   implementation 'com.pspdfkit:pspdfkit-instant:<%= latest_version(:android) %>@aar'
+   implementation 'com.squareup.okhttp3:okhttp:<%= guide_constant('android', 'okhttp_version') %>'
+   ```
+
+_**ℹ️ Note:** Gradle looks for either the `pspdfkit-instant.aar` file or the `pspdfkit-instant<version>.aar` file, so inclusion will not work if you rename the AAR file._
+
+## ProGuard
+
+There is no need to specify additional ProGuard rules since PSPDFKit uses `consumersProguardFiles` to keep ProGuard from obfuscating the required symbols. If you want to check out the rules, you should take a look in `proguard.txt`, which is located inside the PSPDFKit `.aar`:
+
+```shell
+cd [YOUR_AAR_LOCATION]
+unzip [YOUR_AAR_NAME].aar -d aar-contents
+cat aar-contents/proguard.txt
+```
+
+[customers.pspdfkit.com]: https://customers.pspdfkit.com
+[integrating pspdfkit]: ../../getting-started/integrating-pspdfkit
+[example projects guide]: /guides/server/current/pspdfkit-server/example-projects
+[ruby on rails example]: https://github.com/pspdfkit/pspdfkit-server-example-rails
+[node.js example]: https://github.com/pspdfkit/pspdfkit-server-example-nodejs
+[manual library file integration]: ../../getting-started/integrating-pspdfkit/#manual-library-file-integration

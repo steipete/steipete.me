@@ -1,0 +1,120 @@
+---
+title: Licensing
+section: developers
+alternate_platform_links:
+  web: "pspdfkit-for-web/licensing"
+---
+
+<% if ios? %>
+Thanks for your interest in PSPDFKit for iOS. Our SDK is licensed as a subscription on a per-bundle ID basis. We do allow additional [bundle IDs][pspdfkit guide bundle id] for beta testing.
+<% end %>
+
+<% if android? %>
+Thanks for your interest in PSPDFKit for Android. Our SDK is licensed as a subscription on a per-app ID basis. We do allow additional [app IDs][pspdfkit guide bundle id] for beta testing.
+<% end %>
+
+<hr>
+
+We offer flexible licensing options to accommodate customers and projects of all types and sizes. Our aim is to provide the best possible PDF solution on the market, as well as a license specifically tailored to help you achieve your goals.
+
+Please get in touch with us through our [contact sales form][].
+
+## Component Selection
+
+PSPDFKit is modular, and [components build on top of each other][pspdfkit guide features] in the following order:
+
+- [Core Viewer][]
+- [Annotations][]
+- [Forms][]
+- [Digital Signatures][]
+
+The following components require Core Viewer and Annotations:
+
+- [Replies][]
+- [Redaction][]
+- [Comparison][]
+
+The following components are separate and just require Core Viewer:
+
+- [Indexed Full-Text Search][]
+- [Document Editor][]
+
+You can license Core Viewer alone or with Annotations. If you require Digital Signatures, Forms and Annotations are required as well. This is due to how features require one another based on the PDF specification. (Forms are a special subtype of annotations, and digital signatures are a special subtype of forms.)
+
+## License Agreement
+
+By downloading and evaluating the PSPDFKit SDK demo, you accept the terms of the [evaluation license agreement][pspdfkit guide license].
+
+To purchase PSPDFKit, a license contract needs to be signed with the company that owns the end product/app. We use [DocuSign][] for a fast and secure digital signing experience. If you require a physical copy of a contract, we can accommodate this need as well. Licensing is done on a per-year basis. It is not possible to change this to a monthly license or purchase multiple years in advance.
+
+## Contract Modifications
+
+Because PSPDFKit licenses technology to a large number of companies, we need to keep modifications to our contract to a minimum, as modifications incur additional management and reviewing overhead. The quote we send is based on the acceptance of our standard license agreement. We’re somewhat flexible; however, making changes to a contract will take more time and likely increase your cost. As we’re an Austria-based company, the place of jurisdiction is Vienna, Austria.
+
+## Payment
+
+Payment can be made via Visa, MasterCard, American Express, or wire transfer. Checks or other means of digital payment (e.g. PayPal) cannot be accepted.
+
+## Reseller Info
+
+Before we can issue an invoice, a license contract needs to be signed with the end customer. A reseller can optionally take over the actual payment. We do not offer discounts, but we also do not charge extra for resellers. Banking details are listed on the license agreement.
+
+If a purchase order is required, please tell us in advance so we can make sure to put this information on the invoice before sending it out. A license is bound to a user account in our backend. This email will be used both for sending out invoices and allowing the customer to activate purchased licenses by entering a [bundle ID][pspdfkit guide bundle id].
+
+The customer uses the registered email address to assign a password and then has immediate access to a digital binary download of our SDK, including updates thereof. We do not send physical copies of the product.
+
+## Common Questions
+
+### What Happens When My Contract Expires?
+
+Our contract is simple. You pay the yearly license fee as long as you/your customers use PSPDFKit or the product that includes PSPDFKit. License renewal reminders are automatically sent 45 days before the license expires, and we’ll manually follow up if we don’t hear back from you in time. Please make sure the email registered in our backend is monitored. The license can be canceled on a yearly basis if you no longer need our SDK. The termination period and terms are stated in the signed license agreement. After cancelation, any copies of the framework need to be destroyed and your application(s) needs to be updated to no longer use or contain PSPDFKit.
+
+### I Am Unable to Access/Lost My Username/Password
+
+You can [write us anytime][mail to sales] if you have issues [logging into our backend][pspdfkit backend]. Please use your company email address or we might have to ask for other means of verification before we can change or reassign an account to a different user.
+
+Your account is bound to one email-based login and password. As long as the company email domain stays the same, you can change these details in our [customer portal][]. If multiple people need access, we recommend using a shared login. To change the email to a different domain, [please contact our sales team][mail to sales], as license transfers need to be signed off on by us.
+
+### I Have Technical Issues — How Does Support Work?
+
+We offer support for subscribed customers. We also offer limited support while you are evaluating our product. Typically, most support is required while developing your product, so delaying signing the license agreement could hinder our ability to offer support. [Your developers can contact us directly, ideally with one question per ticket][pspdfkit support].
+
+## Company Address and Legal Information
+
+You can find our full company address in the [website imprint][company address].
+
+**ℹ️ Note** This information is based on our standard terms and agreement. Check your contract to make sure this applies to your case as well.
+
+[pspdfkit guide bundle id]: ../../faq/what-is-a-bundle-id/
+[contact sales form]: /sales/
+[pspdfkit guide features]: ../../features/
+
+<% if ios? %>
+[core viewer]: /pdf-sdk/ios/viewer/
+[annotations]: /pdf-sdk/ios/annotations/
+[replies]: /pdf-sdk/ios/replies/
+[forms]: /pdf-sdk/ios/forms/
+[digital signatures]: /pdf-sdk/ios/digital-signatures/
+[indexed full-text search]: /pdf-sdk/ios/indexed-search/
+[document editor]: /pdf-sdk/ios/document-editor/
+[redaction]: /pdf-sdk/redaction/
+[comparison]: /pdf-sdk/comparison/
+<% end %>
+
+<% if android? %>
+[core viewer]: /pdf-sdk/android/viewer/
+[annotations]: /pdf-sdk/android/annotations/
+[replies]: /pdf-sdk/android/replies/
+[forms]: /pdf-sdk/android/forms/
+[digital signatures]: /pdf-sdk/android/digital-signatures/
+[indexed full-text search]: /pdf-sdk/android/indexed-search/
+[document editor]: /pdf-sdk/android/document-editor/
+[redaction]: /pdf-sdk/android/redaction
+[comparison]: /pdf-sdk/android/comparison/
+<% end %>
+
+[pspdfkit guide license]: /license/
+[docusign]: https://www.docusign.com/
+[mail to sales]: mailto:sales@pspdfkit.com
+[pspdfkit backend]: https://customers.pspdfkit.com/
+[company address]: /privacy-legal/

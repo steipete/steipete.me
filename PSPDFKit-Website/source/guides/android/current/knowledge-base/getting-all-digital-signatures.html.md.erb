@@ -1,0 +1,95 @@
+---
+title: How to retrieve all signatures in a signed document?
+section: knowledge-base
+---
+
+## Q: How to retrieve all signatures in a signed document?
+
+### Finding All Digital Signatures
+
+If you want to retrieve all digital signatures in document, you can retrieve all signed form fields via:
+
+[== 
+
+```kotlin
+override fun onDocumentLoaded(document: PdfDocument) {
+    // This will return all signed signature form fields in the document.
+    val signatureFormFields = document.documentSignatureInfo.signatureFormFields
+
+    for (signatureFormField in signatureFormFields) {
+        val signatureInfo = signatureFormField.signatureInfo
+        // Process the signature info.
+        ...
+    }
+}
+```
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    // This will return all signed signature form fields in the document.
+    List<SignatureFormField> signatureFormFields = document.getDocumentSignatureInfo().getSignatureFormFields();
+
+    for (SignatureFormField signatureFormField : signatureFormFields) {
+        DigitalSignatureInfo signatureInfo = signatureFormField.getSignatureInfo();
+        // Process the signature info.
+        ...
+    }
+}
+```
+
+==]
+
+See [here][digital signing] on how to create digital signatures.
+
+### Finding All Form Fields With Overlapping Ink Signatures
+
+If you want to find signature form fields that aren't digitally signed but contain an ink signature you can use the following snippet:
+
+[== 
+
+```kotlin
+// This will return all form elements in the document.
+document.formProvider.formElementsAsync
+    // Convert them to an observable stream.
+    .flatMapObservable {
+        Observable.fromIterable(it)
+    }
+    // Filter all signature form elements and cast them.
+    .filter { formElement -> formElement is SignatureFormElement }
+    .cast(SignatureFormElement::class.java)
+    // This will create a list of all form elements with a signature on them.
+    .flatMapMaybe({ signatureFormElement -> signatureFormElement.getOverlappingInkSignatureAsync().map({ inkAnnotation -> signatureFormElement }) })
+    .toList()
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe({ formElements ->
+        // A list of all form elements with ink signatures on them, or an empty list if there are none.
+    }, { throwable ->
+        // An error was thrown.
+    })
+```
+
+```java
+// This will return all form elements in the document.
+document.getFormProvider().getFormElementsAsync()
+    // Convert them to an observable stream.
+    .flatMapObservable(Observable::fromIterable)
+    // Filter all signature form elements and cast them.
+    .filter(formElement -> formElement instanceof SignatureFormElement)
+    .cast(SignatureFormElement.class)
+    // This will create a list of all form elements with a signature on them.
+    .flatMapMaybe(signatureFormElement -> signatureFormElement.getOverlappingInkSignatureAsync().map(inkAnnotation -> signatureFormElement))
+    .toList()
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(formElements -> {
+        // A list of all form elements with ink signatures on them, or an empty list if there are none.
+    }, throwable -> {
+        // An error was thrown.
+    });
+```
+
+==]
+
+[digital signing]: ../../features/digital-signatures/#how-to-create-digital-signatures

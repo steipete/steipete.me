@@ -1,0 +1,52 @@
+---
+title: Getting Started
+section: developers
+
+order: 2
+---
+
+Before using PSPDFKit Instant with PSPDFKit for Web, make sure a [PSPDFKit Server is running][] and [PSPDFKit for Web is connected to the server][]. After that, enabling Instant on PSPDFKit for Web is very simple. All you have to do is set the [Instant flag][] in the configuration object to `true`:
+
+[==
+
+```es
+PSPDFKit.load({ instant: true, ... });
+```
+
+```js
+PSPDFKit.load({ instant: true, ... });
+```
+
+==]
+
+## Listening for Client Updates
+
+PSPDFKit Instant comes with an additional set of APIs to utilize the power of real-time collaboration. This includes an API to receive updates whenever new clients connect to the document, as well as an API to access all currently connected clients.
+
+Both methods return an [`Immutable.Map`][] of [`InstantClient`][]s:
+
+[==
+
+```es
+instance.connectedClients.count(); // => 12
+
+instance.addEventListener("instant.connectedClients.change", clients => {
+  console.log(clients.toJS());
+});
+```
+
+```js
+instance.connectedClients.count(); // => 12
+
+instance.addEventListener("instant.connectedClients.change", function(clients) {
+  console.log(clients.toJS());
+});
+```
+
+==]
+
+[instant flag]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#instant
+[`immutable.map`]: https://facebook.github.io/immutable-js/docs/#/Map
+[`instantclient`]: https://pspdfkit.com/api/web/PSPDFKit.InstantClient.html
+[pspdfkit server is running]: ../../server-backed/setting-up-pspdfkit-server/
+[pspdfkit for web is connected to the server]: ../../server-backed/integration/

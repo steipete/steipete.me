@@ -1,0 +1,26 @@
+---
+title: Change default line width for Ink Annotations
+section: knowledge-base
+---
+
+## Q: How do I change the default line width for Ink Annotations?
+
+A: This can be done by using annotation presets: https://pspdfkit.com/api/web/PSPDFKit.AnnotationPreset.html.
+
+```js
+const myAnnotationPresets = instance.annotationPresets
+myAnnotationPresets['ink'] = {
+ lineWidth: 3,
+}
+instance.setAnnotationPresets(myAnnotationPresets);
+```
+
+or (if you want to preserve the other values for the ink annotation):
+
+```js
+myAnnotationPresets['ink'] = Object.assign({}, instance.annotationPresets.ink, {
+  lineWidth: 3
+}
+```
+
+After this is run, if the user clicks in the Ink tool button, the line width will be set to `3`, the new default until the value is changed.

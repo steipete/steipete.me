@@ -1,0 +1,52 @@
+---
+title: Using PdfDocument
+section: developers
+---
+
+PSPDFKit represents loaded PDF documents using instances of the [`PdfDocument`][] class. A document can be loaded from various sources, including the app’s assets, the local device storage, a content provider, or any custom data source of your app.
+
+## Load Documents
+
+The [`PdfDocumentLoader`][] class offers various methods for loading and opening PDF documents in a synchronous or asynchronous fashion. [`DocumentSource`][] gives developers a generic structure to define the input source of a document. You can create a document source from a [`Uri`][] or [`DataProvider`][]:
+
+[==
+
+```kotlin
+// Using an Android Uri.
+val document = PdfDocumentLoader.openDocument(Uri.fromFile(File("/path/to/document.pdf")))
+
+// Using a custom `DataProvider`.
+val assetsDataSource = DocumentSource(AssetDataProvider("document.pdf"))
+val document = PdfDocumentLoader.openDocument(context, assetsDataSource)
+```
+
+```java
+// Using an Android Uri.
+PdfDocument document = PdfDocumentLoader.openDocument(context, Uri.fromFile(new File("/path/to/document.pdf")));
+
+// Using a custom `DataProvider`.
+DocumentSource assetsDataSource = new DocumentSource(new AssetDataProvider("document.pdf"));
+PdfDocument document = PdfDocumentLoader.openDocument(context, assetsDataSource);
+```
+
+==]
+
+> To see a full list of available methods for loading documents, check out our [API reference][`pdfdocumentloader`].
+
+## Document Structure
+
+Each [`PdfDocument`][] instance consists of one or more pages (there are no PDF documents with zero pages). To get the total count of pages in a document, use the [`PdfDocument#getPageCount`][] method. Page indices are zero-based and are in the half-open interval, `[0, pageCount)`.
+
+### Page Coordinates and Sizes
+
+Each page of a PDF document has its own coordinate space, which has its origin at the bottom left of the page, with x coordinates increasing to the right of the page, and y coordinates increasing to the top of the page. A detailed explanation of PDF coordinates can be found in our [Coordinate Space Conversions][] guide.
+
+The size of a page (in PDF coordinates) can be retrieved by calling [`PdfDocument#getPageSize`][].
+
+[`pspdfkit`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/PSPDFKit.html
+[`documentsource`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentSource.html
+[`pdfdocument#getpagecount`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPageCount()
+[`dataprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/DataProvider.html
+[`pdfdocument#getpagesize`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPageSize(int)
+[`uri`]: https://developer.android.com/reference/android/net/Uri.html
+[coordinate space conversions]: ../../faq/coordinate-spaces

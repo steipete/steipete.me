@@ -1,0 +1,76 @@
+---
+title: Performance
+section: developers
+theme: web
+---
+
+The performance of a web application is extremely important for usability, as it directly affects the time it takes for a user to complete their task. PSPDFKit for Web’s performance can be influenced by three main factors:
+
+- The way PSPDFKit and the PDF are loaded in the browser.
+- If the PDF is rendered in the browser or on the server.
+- If PDFs are cached or rendered on the fly on the server.
+
+## Improving Browser Loading Time
+
+Ideally, everything required to load PSPDFKit should be loaded in the browser before a user even enters a page that displays a PDF.
+
+Using PSPDFKit in standalone mode, this applies especially to the `pspdfkit.js` (> 6&nbsp;MB) and the `pspdfkit.wasm` (> 8&nbsp;MB) files. To precache these assets, a [service worker][] is the ideal solution.
+
+Service workers have many nice features — among them, the ability to add files to the browser cache when the service worker is installing. This feature is called precaching.
+
+An easy solution to implement precaching is using the [Workbox][] library. Workbox will not only precache assets, but it also takes care of both loading a newer version when something has changed and removing old versions from the cache. This way, your browser cache is used more efficiently than it is with HTTP caching.
+
+You’ll find all the details relevant to this in the [Workbox precaching guide][].
+
+If you are using webpack, there is a [Workbox webpack plugin][]. This will precache all files of your webpack build by default. If you only want to precache the PSPDFKit assets, you can set a limit in the plugin configuration:
+
+```es
+new Workbox.GenerateSW({
+  include: ["pspdfkit.js", "pspdfkit.wasm"]
+});
+```
+
+## Browser Rendering vs. Server Rendering
+
+There are two options for running PSPDFKit for Web:
+
+- As a [standalone][] solution only in your browser
+- With a [server][] backend
+
+While the standalone solution is easier to set up, its performance is inferior to a server-backed setup for the following reasons:
+
+1. Loading rendering code — In standalone mode, PSPDFKit has to load the PDF rendering engine in the browser. More specifically, this rendering engine is the `pspdfkit.wasm` file, which is larger than 8&nbsp;MB. When using a server, the rendering code stays on the server, and as a result, the browser doesn’t have to load it, meaning the overall loading time decreases.
+
+2. Loading the PDF — In standalone mode, in order to display the PDF, PSPDFKit has to download the entire PDF file first before it can start to render it. With a server backend, the server takes care of the rendering, and PSPDFKit only loads the pages it needs intelligently. Therefore, pages can be displayed faster, which is especially helpful when it comes to large PDFs.
+
+3. Rendering the PDF — Rendering a PDF takes time. While in standalone mode, the client is responsible for all jobs, including rendering. Meanwhile, with a server setup, the work is split between server and client. The client only needs to display the result of the potentially expensive rendering process that the server has already taken care of.
+
+Using a server backend can improve performance, especially when:
+
+- Your PDF files are large.
+- You expect your users to access PDFs from a slow network connection, like on a mobile phone or in a rural area.
+- You expect your users to have low CPU performance, like on a mobile phone or on an old computer.
+
+## Multiple Servers
+
+When using PSPDFKit with a server backend, you might run into problems when too many PDF rendering requests hit a single server. To handle a multitude of requests, you can run an arbitrary number of PSPDFKit servers in parallel behind a load balancer.
+
+Find out how to achieve this in our [Horizontal Scaling][] guide.
+
+## Caching on the Server
+
+The PSPDFKit Server caches rendered pages in memory to speed up future rendering. When you run into server performance issues, increasing the server’s memory will keep more pages in the cache, leading to faster page loads on average.
+
+For a multi-server setup, you can use [Redis][] to cache pages that have been rendered by an arbitrary server, and a server can even access a cached page created by another server.
+
+For more details on this, see the [server caching guide][].
+
+[service worker]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+[workbox]: https://developers.google.com/web/tools/workbox/
+[workbox precaching guide]: https://developers.google.com/web/tools/workbox/modules/workbox-precaching
+[workbox webpack plugin]: https://developers.google.com/web/tools/workbox/guides/precache-files/webpack
+[standalone]: /guides/web/current/standalone/overview/
+[server]: /guides/web/current/server-backed/overview/
+[horizontal scaling]: /guides/server/current/deployment/horizontal-scaling/
+[redis]: https://redis.io/
+[server caching guide]: /guides/server/current/pspdfkit-server/cache/

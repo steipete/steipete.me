@@ -1,0 +1,85 @@
+---
+title: Integrating PSPDFKit
+section: developers
+
+order: 1
+---
+
+The PSPDFKit Java Library can be integrated in many different ways. In this guide, we’ll show you how to integrate the PSPDFKit Java Library with the most common build systems.
+
+## Gradle
+
+Integrating the PSPDFKit Java Library with [Gradle][] is very simple. A good example of this can be seen in the [Catalog example][catalog-example] distributed in the downloaded ZIP.
+
+- Create a folder within your project named `libs`.
+- In the downloaded ZIP file, there will be a JAR name, `pspdfkit-*.*.*.jar`. Copy this jar file into the `libs` folder you just created.
+- In your project’s `build.gradle` folder, add a dependency to the copied JAR file (replace the wildcards with the version number):
+
+```groovy
+dependencies {
+    ...
+    implementation files('libs/pspdfkit-*.*.*.jar')
+
+    // Required by PSPDFKit.
+    implementation 'org.json:json:20180813'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.9'
+    ...
+}
+```
+
+Now your Gradle project will depend upon the PSPDFKit JAR. More information about declaring dependencies can be found in the [Gradle documentation][gradle-documentation].
+
+## Maven
+
+To use the PSPDFKit Java Library with [Maven][], it is first necessary to install the PSPDFKit JAR to a Maven repository. Only when this is done can it be a reference for a Maven project.
+
+- Within your project, using `mvn` on the command line, add the PSPDFKit JAR to a repository, replacing both the version (where necessary) and the path to the JAR and POM (extracted from `PSPDFKit-Java-binary-*.*.*.zip`):
+
+```bash
+mvn install:install-file -Dfile=/path/to/jar/pspdfkit-*.*.*.jar -DpomFile=/path/to/pom/pspdfkit-pom.xml
+```
+
+This will install the JAR to a local repository. It is also possible to publish this JAR remotely; please see the [Maven guides][maven-guide-repo] if this is a requirement.
+
+- Add the PSPDFKit Java Library as a dependency of your project. In your project’s `pom.xml`, add the following, replacing the version with the target version:
+
+```xml
+...
+<dependencies>
+    <dependency>
+        <groupId>com.pspdfkit.api</groupId>
+        <artifactId>pspdfkit</artifactId>
+        <version>*.*.*</version>
+    </dependency>
+</dependencies>
+...
+```
+
+Now your Maven project will depend on the PSPDFKit JAR published to the chosen repository.
+
+## Using the PSPDFKit Java Library
+
+Now that the PSPDFKit Java Library is added, you can use the SDK in your application. You will have to call the [`initialize`][] method prior to calling any other PSPDFKit method.
+
+Here’s a small example showing how to import Instant JSON and save the document:
+
+```csharp
+public void exampleOperation() throws NativePSPDFKitLibraryLoadException {
+    PSPDFKit.initialize("YOUR_LICENSE_KEY_GOES_HERE");
+    File documentFile = new File("Assets/default.pdf");
+    PdfDocument document = new PdfDocument(new FileDataProvider(documentFile));
+
+    File jsonFile = new File("Assets/instant.json");
+    document.importJson(new FileDataProvider(jsonFile));
+}
+```
+
+For more examples on how to use the SDK, please refer to both the Catalog example in `PSPDFKit-Java-binary-*.*.*.zip` and the [API documentation][api-documentation].
+
+[gradle]: https://gradle.org/
+[catalog-example]: ../../getting-started/catalog-example/
+[gradle-documentation]: https://docs.gradle.org/current/userguide/declaring_dependencies.html
+[maven]: https://maven.apache.org/
+[maven-guide-repo]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+[`initialize`]: /api/java/reference/com/pspdfkit/api/PSPDFKit.html#initialize(java.lang.String)
+[api-documentation]: /api/java/

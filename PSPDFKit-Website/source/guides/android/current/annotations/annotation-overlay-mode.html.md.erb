@@ -1,0 +1,81 @@
+---
+title: Annotation Overlay Mode
+section: developers
+---
+
+By default, all annotations (except notes) are rendered as part of a page image, which makes annotations cheap in terms of memory usage. However, this means that whenever they are updated, the entire page needs to be rerendered. This also poses a problem when selecting an annotation, as the annotation needs to be extracted from the page. The page then needs to be rerendered without the extracted annotation, and the annotation needs to be drawn in its own separate view that supports dragging and resizing. This entire process could take a noticeable amount of time, leading to a non-optimal user experience.
+
+To deal with this, PSPDFKit can be configured to not render annotations as part of the page image and instead show each one in a separate `View` in Android’s view hierarchy. We call this mode overlay mode.
+
+## Overlay Mode
+
+If you frequently change annotations, rendering them in overlay mode is more performant. Using overlay mode makes annotation selection almost instantaneous — there’s no need to rerender a page when selecting/deselecting annotations. Updates to annotations in overlay mode are also propagated to the UI much faster.
+
+That said, there are a few points you should keep in mind before enabling overlay mode in your app:
+
+- Rendering annotations in overlay mode increases memory usage because each annotation needs to be drawn in a separate view instead of being part of an existing page image. This means you should never enable overlay mode for too many annotations on low-end devices. We recommend only enabling overlay mode for all annotations when using high-end devices.
+- Overlay mode could increase CPU usage and slightly increase page loading time because each annotation view needs to be laid out in the view hierarchy.
+
+## Overlay Mode Configuration
+
+You can configure which annotation types should be rendered in overlay mode via [`setOverlaidAnnotationTypes()`][]. You can also configure specific annotations to be rendered in overlay mode on top of these overlaid annotation types via [`setOverlaidAnnotations()`][]. Both methods are defined in [`PdfFragment`][].
+
+> **⚠️ Warning:** Make sure you call these methods on `PdfFragment` after the document has been loaded — for example, in `onDocumentLoaded()` or later. Otherwise, the defaults will override the set values once the document is loaded into the fragment.
+
+For example, if you wish to enable overlay mode for all supported annotation types, do the following:
+
+[==
+
+```kotlin
+// Passing all annotation types enables overlay mode for all types that support overlay.
+pdfFragment.setOverlaidAnnotationTypes(EnumSet.allOf(AnnotationType::class.java))
+```
+
+```java
+// Passing all annotation types enables overlay mode for all types that support overlay.
+getPdfFragment().setOverlaidAnnotationTypes(EnumSet.allOf(AnnotationType.class));
+```
+
+==]
+
+Or, if you just want to enable some annotation types, do this:
+
+[==
+
+```kotlin
+pdfFragment.setOverlaidAnnotationTypes(EnumSet.of(AnnotationType.INK, AnnotationType.CIRCLE))
+```
+
+```java
+getPdfFragment().setOverlaidAnnotationTypes(EnumSet.of(AnnotationType.INK, AnnotationType.CIRCLE));
+```
+
+==]
+
+There are some annotation types — such as note, file, and sound annotations — that always need to be rendered in the overlay. If you set custom types as mentioned, the default ones will be added as well.
+
+> **💡 Tip:** For a complete example, take a look at `AnnotationOverlayActivity` inside the Catalog app.
+
+## Supported Annotation Types
+
+The following annotation types are supported in overlay mode:
+
+- [`HIGHLIGHT`][`annotationtype`]
+- [`STRIKEOUT`][`annotationtype`]
+- [`UNDERLINE`][`annotationtype`]
+- [`SQUIGGLY`][`annotationtype`]
+- [`FREETEXT`][`annotationtype`]
+- [`NOTE`][`annotationtype`]
+- [`STAMP`][`annotationtype`]
+- [`INK`][`annotationtype`]
+- [`LINE`][`annotationtype`]
+- [`SQUARE`][`annotationtype`]
+- [`CIRCLE`][`annotationtype`]
+- [`POLYGON`][`annotationtype`]
+- [`POLYLINE`][`annotationtype`]
+
+> **ℹ️ Note:** Note annotations are always rendered in overlay mode.
+
+[`setoverlaidannotationtypes()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setOverlaidAnnotationTypes(java.util.EnumSet<com.pspdfkit.annotations.AnnotationType>)
+[`setoverlaidannotations()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setOverlaidAnnotations(java.util.List<com.pspdfkit.annotations.Annotation>)
+[`annotationtype`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationType.html

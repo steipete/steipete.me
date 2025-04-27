@@ -1,0 +1,161 @@
+---
+title: Localization
+section: developers
+
+---
+
+PSPDFKit for iOS comes with many built-in languages:
+
+- Arabic (ar) ([including R2L interface support][])
+- Chinese Simplified / Chinese Traditional (zh-Hans/zh-Hant)
+- Croatian (hr)
+- Czech (cs)
+- Danish (da)
+- Dutch (nl)
+- English (en)
+- English United Kingdom (en-GB)
+- Finnish (fi)
+- French (fr)
+- French Canada (fr-CA)
+- German (de)
+- Greek (el)
+- Indonesian (id)
+- Italian (it)
+- Japanese (ja)
+- Korean (ko)
+- Malay (ms)
+- Norwegian Bokmål (nb-NO)
+- Polish (pl)
+- Portuguese Brazil / Portugal (pt-BR/pt-PT)
+- Russian (ru)
+- Serbian (sr)
+- Slovak (sk)
+- Slovenian (sl)
+- Spanish (es)
+- Swedish (sv)
+- Thai (th)
+- Turkish (tr)
+- Ukrainian (uk)
+- Welsh (cy)
+
+These languages are used automatically depending on the preferred language. To enable a language, your application must also be localized in that language — otherwise, PSPDFKit will fall back to English (the reason being that you would otherwise end up with a partially translated app, which isn’t a good user experience).
+
+To translate your app, follow Apple’s localization guidelines and provide your `.strings` file in all the languages you want to support.
+
+You can also use PSPDFKit’s [`PSPDFSetLocalizationDictionary`][] or [`PSPDFSetLocalizationBlock`][] to customize the localization.
+
+**ℹ️ Note:** iTunes Connect does not support all of these languages. However, iOS devices can still be set to these languages. Just be aware that there’s no localized storefront. See [this][xcode language codes] for a detailed list of Xcode language codes.
+
+### Add Additional Localization to PSPDFKit
+
+You can add additional localization by adding the corresponding folders or setting new localization programmatically.
+
+To see all strings that should be localized, look inside `PSPDFKit/PSPDFKit.bundle/en.lproj/PSPDFKit.strings`. PSPDFKit uses `NSLocale.preferredLanguages` to determine a language and falls back to English if this method doesn’t return anything or the language is not available either in the `PSPDFKit.bundle` or the language dictionary. PSPDFKit will not look into your default project strings file. To get all strings translated (including OS-level default buttons like Edit or Done), you need to add a `Localizable.strings` file of your target language to your project:
+
+[==
+
+```swift
+PSPDFSetLocalizationDictionary([
+    "en": [
+        "Go to %@": "Browse %@",
+        "%d of %d": "Page %d of %d"
+    ]
+])
+```
+
+```objc
+PSPDFSetLocalizationDictionary(@{
+    @"en": @{
+        @"Go to %@": @"Browse %@",
+        @"%d of %d": @"Page %d of %d"
+    }
+});
+```
+
+==]
+
+You can also use `PSPDFSetLocalizationBlock(NSString *(^)(NSString *stringToLocalize))` to register a block that is called every time a string is translated. In this way, you can easily use your default bundle or a custom bundle with `NSLocalizedStringFromTableInBundle`:
+
+[==
+
+```swift
+PSPDFSetLocalizationBlock { stringToLocalize in
+    guard let stringToLocalize = stringToLocalize else { return nil }
+
+    // This will look up strings in `language/PSPDFKit.strings` inside your resource folder.
+    return NSLocalizedString(stringToLocalize, tableName: "PSPDFKit", comment: "")
+
+    // You can also route translation through your default localization:
+    return NSLocalizedString(stringToLocalize, comment: "")
+
+    // Or use a custom variant, for example, to test if everything is localized.
+    // Please keep in mind that several strings, like Edit, are provided by the system and automatically translated, so long as you have the correct localization resources set.
+    return String(format: "_____%@_____", arguments: [stringToLocalize])
+}
+```
+
+```objc
+PSPDFSetLocalizationBlock(^NSString *(NSString *stringToLocalize) {
+    // This will look up strings in `language/PSPDFKit.strings` inside your resource folder.
+    return NSLocalizedStringFromTable(stringToLocalize, @"PSPDFKit", nil);
+
+    // You can also route translation through your default localization:
+    return NSLocalizedString(stringToLocalize, nil);
+
+    // Or use a custom variant, for example, to test if everything is localized.
+    // Please keep in mind that several strings, like Edit, are provided by the system and automatically translated, so long as you have the correct localization resources set.
+    return [NSString stringWithFormat:@"_____%@_____", stringToLocalize];
+});
+```
+
+==]
+
+### Pluralization Considerations
+
+PSPDFKit uses both the `PSPDFKit.strings` file and the `PSPDFKit.stringsdict` file. A [stringsdict file][apple guide stringsdict] is used to define language pluralization rules, as some languages have more pluralization variants besides one and many; for example, see the pluralization rule for Croatian:
+
+```
+<key>%tu match(es) found</key>
+<dict>
+    <key>NSStringLocalizedFormatKey</key>
+    <string>%#@tu_matches_found@</string>
+    <key>tu_matches_found</key>
+    <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>tu</string>
+        <key>zero</key>
+        <string>Nema pronađenih rezultata</string>
+        <key>one</key>
+        <string>%tu pronađen rezultat</string>
+        <key>two</key>
+        <string>%tu pronađena rezultata</string>
+        <key>other</key>
+        <string>%tu pronađenih rezultata</string>
+    </dict>
+</dict>
+```
+
+`PSPDFLocalize()` automatically looks in both the `stringsdict` and the classical `strings` files to look up localized strings.
+
+### Manually Override Localization
+
+You can manually override the system defaults and force a specific language. We generally do not recommend this, as it’s against Apple HIG, and the platform handles this systemwide very well. In case you have a use case that requires this, recreate all UI elements manually after updating the setting or — ideally — simply restart the application to update the localization. You can achieve this by either setting [`PSPDFSetLocalizationBlock`][] and returning a custom language, or (better) changing this systemwide via setting the `AppleLanguages` in the user defaults. This needs to happen very early, before your app initializes. You can place this in the `main.m/Main.swift` file before `UIApplicationMain` or simply use a function with a constructor attribute in an Objective-C file. [See how this can be done in Swift here][stackoverflow override]:
+
+```objc
+__attribute__((constructor)) static void PSCForceCustomLanguage(void) {
+    [NSUserDefaults.standardUserDefaults setObject:@[@"de"] forKey:@"AppleLanguages"];
+}
+```
+
+You can learn more about `AppleLanguages` in [Apple’s QA1391 article][]. If your app requires updating localization at runtime without restarting the app, you can do more advanced tricks like [swizzling NSBundle’s `localizedStringForKey:value:table:`][].
+
+[including r2l interface support]: https://pspdfkit.com/blog/2017/pspdfkit-ios-6-4/
+[`pspdfsetlocalizationdictionary`]: https://pspdfkit.com/api/ios/Other%20Functions.html#/c:@F@PSPDFSetLocalizationDictionary
+[`pspdfsetlocalizationblock`]: https://pspdfkit.com/api/ios/Other%20Functions.html#/c:@F@PSPDFSetLocalizationBlock
+[xcode language codes]: http://kitefaster.com/2016/03/09/itunes-connect-api-app-store-and-corresponding-xcode-language-codes/
+[apple guide stringsdict]: https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html
+[stackoverflow override]: http://stackoverflow.com/a/38429383/83160
+[apple’s qa1391 article]: https://developer.apple.com/library/content/qa/qa1391/_index.html
+[swizzling nsbundle’s `localizedstringforkey:value:table:`]: https://www.factorialcomplexity.com/blog/how-to-change-localization-internally-in-your-ios-application

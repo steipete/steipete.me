@@ -1,0 +1,123 @@
+---
+title: Document Page Binding
+section: developers
+---
+
+PDF documents support a metaphorical page binding, which is used when pages are laid out horizontally. Many languages use a left-to-right script, which calls for a page binding on the left edge. However, binding on the right edge is preferable for right-to-left scripts such as Arabic and Hebrew and several East Asian scripts. The page binding is used with horizontal scrolling and in the thumbnails view. It has no effect when using vertical scrolling unless double-page mode is also enabled.
+
+The page binding ought to be specified by the author when a PDF is created. However, sometimes this is not done, in which case most PDF readers will default to a left-edge binding.
+
+## Updating the Page Binding Programmatically
+
+<% if ios? %>
+PSPDFKit for iOS uses the [`PSPDFDocument.pageBinding`][] property to infer how a document should be presented to the user. Possible values are:
+
+- `PSPDFPageBindingLeft` — the document flows from left to right
+- `PSPDFPageBindingRight` — the document flows from right to left
+- `PSPDFPageBindingUnknown` — the document does not explicitly define a page binding, so the behavior is the same as it is with `PSPDFPageBindingLeft`
+  <% end %>
+
+<% if android? %>
+PSPDFKit for Android uses the [`PageBinding`][] enum to define the possible values that can be used to configure a document’s page binding via the [`PdfDocument#setPageBinding()`][] method. Possible values are:
+
+- `LEFT_EDGE` — the document flows from left to right
+- `RIGHT_EDGE` — the document flows from right to left
+- `UNKNOWN` — the document does not explicitly define a page binding, so the behavior is the same as it is with `LEFT_EDGE`
+
+<% end %>
+
+The following snippet updates the page binding property of a document:
+
+<% if android? %>
+[==
+
+```kotlin
+val document: PdfDocument = ...
+// This document should be read from right to left.
+document.pageBinding = PageBinding.RIGHT_EDGE
+document.saveIfModified()
+```
+
+```java
+PdfDocument document = ...
+// This document should be read from right to left.
+document.setPageBinding(PageBinding.RIGHT_EDGE);
+document.saveIfModified();
+```
+
+==]
+<% end %>
+
+<% if ios? %>
+[==
+
+```swift
+let document = // ...
+document.pageBinding = .rightEdge
+try? document.save()
+```
+
+```objc
+PSPDFDocument *document = // ...
+document.pageBinding = PSPDFPageBindingRightEdge;
+[document saveWithOptions:nil error:nil];
+```
+
+==]
+<% end %>
+
+<% if ios? %>
+When the page binding of a document is updated, `-[PSPDFViewController reloadData]` needs to be called so that the user interface is updated to match the new value. Please note that new values set to the property will not be persisted until the document is saved — which can happen either through an explicit call to `-[PSPDFDocument saveWithOptions:error:]` or when a checkpoint trigger is fired — if [document checkpointing][] is enabled.
+<% end %>
+
+## Affected Components
+
+The following UI components will change their behavior based on the current document’s page binding. Keep in mind that all other UI components that aren’t mentioned here will follow the layout direction that is provided by the currently selected locale.
+
+<% if android? %>
+<img width="60%" src="/images/guides/shared/miscellaneous/page-bindings/rtl-document-android.png" title="Document with right edge binding">
+<% end %>
+
+<% if ios? %>
+<img width="60%" src="/images/guides/shared/miscellaneous/page-bindings/rtl-document-ios.png" title="Document with right edge binding">
+<% end %>
+
+### Document View
+
+- When in horizontal scrolling mode, documents with the <% if android? %>`RIGHT_EDGE`<%end%><% if ios? %>`PSPDFPageBindingRightEdge`<%end%> page binding will scroll from right to left instead of the default left to right.
+- When in vertical double-page mode, documents with the <% if android? %>`RIGHT_EDGE`<%end%><% if ios? %>`PSPDFPageBindingRightEdge`<%end%> page binding will have their displayed page order flipped pairwise. So the right page will be the first one, the left page will be the second one, and so on.
+
+### The Thumbnail Bar
+
+- In documents with the <% if android? %>`RIGHT_EDGE`<%end%><% if ios? %>`PSPDFPageBindingRightEdge`<%end%> page binding, the order of thumbnails will be flipped, so the first page will be on the right and the last page will be on the left.
+- This also applies when in double-page mode, where the order of the pages in the pairs is also flipped.
+
+### The Thumbnail Grid
+
+- In documents with the <% if android? %>`RIGHT_EDGE`<%end%><% if ios? %>`PSPDFPageBindingRightEdge`<%end%> page binding, the thumbnails will be laid out from right to left, so the first page will be on the top right.
+
+## Updating the Page Binding via the UI
+
+<% if ios? %>
+[PSPDFKit 8.5 for iOS][] introduced the ability to edit a document’s page binding directly from the [`PSPDFDocumentInfoViewController`][].
+
+![Editing the page binding](/images/guides/shared/miscellaneous/page-bindings/ios-demo.png)
+
+Since changing the page binding of a document requires it to be reloaded for the changes to be visible to the user, if you implement a [`PSPDFDocumentInfoViewController`][] instance manually (as in not being invoked by `PSPDFViewController` directly), make sure you also implement the relevant `PSPDFDocumentInfoViewControllerDelegate` methods to reload the document when appropriate.
+
+<% end %>
+<% if android? %>
+You can also edit a document’s page binding directly from the [`PdfOutlineView`][].
+
+![Editing the page binding](/images/guides/shared/miscellaneous/page-bindings/android-demo.png)
+
+Changing the page binding will automatically trigger a restart of the [`PdfActivity`][], since changing the page binding requires the [`PdfFragment`][] and the rest of the UI to be recreated.
+<% end %>
+
+[`pagebinding`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PageBinding.html
+[`pspdfdocument.pagebinding`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)pageBinding
+[document checkpointing]: https://pspdfkit.com/guides/ios/current/features/document-checkpointing/
+[`pspdfdocumentinfoviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentInfoViewController.html
+[pspdfkit 8.5 for ios]: https://pspdfkit.com/blog/2019/pspdfkit-ios-8-5/
+[`pdfdocument#setpagebinding()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#setPageBinding(boolean)
+[`pdfoutlineview`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfOutlineView.html

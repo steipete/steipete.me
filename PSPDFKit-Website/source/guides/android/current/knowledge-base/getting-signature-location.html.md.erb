@@ -1,0 +1,98 @@
+---
+title: How to get the location of an ink signature for digital signing?
+section: knowledge-base
+---
+
+## Q: How to get the location of an ink signature for digital signing?
+
+If you want to digitally sign a document that doesn't contain a [`SignatureFormField`][] yet, you can add one at the location of an ink signature. To get the location of an ink signature you have three options.
+
+### Finding an Already Added Ink Signature
+
+[== 
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    // This will return the first ink signature found in the document.
+    document.getAnnotationProvider().getAllAnnotationsOfType(EnumSet.of(AnnotationType.INK))
+        .cast(InkAnnotation.class)
+        .filter(InkAnnotation::isSignature)
+        .firstElement()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(inkAnnotation -> {
+            digitallySignAtLocation(inkAnnotation.getBoundingBox());
+        });
+}
+```
+
+==]
+
+### Finding an Ink Signature That Was Just Added
+
+[== 
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    super.onDocumentLoaded(document);
+    document.getAnnotationProvider().addOnAnnotationUpdatedListener(new AnnotationProvider.OnAnnotationUpdatedListener() {
+        @Override
+        public void onAnnotationCreated(@NonNull Annotation annotation) {
+            if (annotation instanceof InkAnnotation &&
+                ((InkAnnotation) annotation).isSignature()) {
+                // This will be called when the user adds a new ink signature.
+                digitallySignAtLocation(annotation.getBoundingBox());
+            }
+        }
+
+        @Override
+        public void onAnnotationUpdated(@NonNull Annotation annotation) {
+
+        }
+
+        @Override
+        public void onAnnotationRemoved(@NonNull Annotation annotation) {
+
+        }
+    });
+}                                                            
+```
+
+==]
+
+### Finding an Ink Signature That the User Selected
+
+[== 
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    super.onDocumentLoaded(document);
+    getPdfFragment().addOnAnnotationSelectedListener(new AnnotationManager.OnAnnotationSelectedListener() {
+        @Override
+        public boolean onPrepareAnnotationSelection(@NonNull AnnotationSelectionController controller,
+                                                    @NonNull Annotation annotation,
+                                                    boolean annotationCreated) {
+            // You can return false to prevent the default annotation selection to happen.
+            return true;
+        }
+
+        @Override
+        public void onAnnotationSelected(@NonNull Annotation annotation, boolean annotationCreated) {
+            if (annotation instanceof InkAnnotation &&
+                ((InkAnnotation) annotation).isSignature()) {
+                // This will be called when the user selects an ink signature.
+                digitallySignAtLocation(annotation.getBoundingBox());
+            }
+        }
+    });
+}
+```
+
+==]
+
+See [here][digital signing] on how to create digital signatures.
+
+[`SignatureFormField`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/SignatureFormField.html
+[digital signing]: ../../features/digital-signatures/#how-to-create-digital-signatures

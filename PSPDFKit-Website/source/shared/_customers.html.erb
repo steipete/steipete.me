@@ -1,0 +1,28 @@
+<%
+title ||= 'PSPDFKit is trusted by some of the world’s leading companies'
+classes ||= ''
+%>
+
+<section id="customers" class="section <%= classes %>">
+  <div class="container">
+    <header class="text-center">
+      <h5 class="text-muted">
+        <%= title %>
+      </h5>
+    </header>
+    <div class="row justify-content-center align-items-center">
+      <% %w(PlanGrid Disney DocuSign Dropbox Evernote IBM
+            Lufthansa Mercedes-Benz SAP Siemens United-Airlines).each do |c| %>
+        <div class="col-4 col-lg-2 text-center">
+          <img src="/images/shared/placeholder.gif"
+               data-src="/images/logos/<%= c.parameterize %>.svg"
+               alt="<%= c.humanize %>"
+               class="img-fluid lazyload op-5"
+               loading="lazy"
+               <%= 'style="max-height: 120px;"' if %w(SAP Mercedes-Benz IBM Disney).include?(c) %>
+               <%= 'style="max-width: 120px;"' if %w(Siemens).include?(c) %> />
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

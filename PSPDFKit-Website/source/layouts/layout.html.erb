@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= partial "shared/meta" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= partial "shared/google_analytics" %>
+  </head>
+  <body class="<%= page_classes %> preload">
+    <%= partial "shared/header" unless current_page.data.header == false %>
+    <div class="content">
+      <%= yield %>
+    </div>
+    <%= partial "shared/footer" unless current_page.data.footer == false %>
+    <%= partial "shared/intercom" %>
+    <%= partial "shared/other_analytics" %>
+    <%= javascript_include_tag "application", { async: true, defer: true } %>
+    <%= javascript_include_tag("guides", { async: true, defer: true }) if current_page.path.match(/guides/) %>
+  </body>
+</html>

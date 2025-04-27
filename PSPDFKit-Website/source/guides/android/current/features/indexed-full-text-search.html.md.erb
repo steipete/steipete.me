@@ -1,0 +1,122 @@
+---
+title: Indexed Full-Text Search (FTS)
+section: developers
+---
+
+PSPDFKit supports fast and efficient full-text search in PDF documents through [`PdfLibrary`][]. This document describes how to get started with [`PdfLibrary`][].
+
+## Getting Started
+
+Using [`PdfLibrary`][] is relatively straightforward. You begin by indexing documents:
+
+[==
+
+```kotlin
+// Assume that you have two valid `PdfDocument`s.
+val doc1 : PdfDocument = ...
+val doc2 : PdfDocument = ...
+
+// The library will be saved in your application's files directory.
+val library = PdfLibrary.get(File(context.filesDir, "library.db").absolutePath)
+library.enqueueDocuments(listOf(doc1, doc2))
+```
+
+```java
+// Assume that you have two valid `PdfDocument`s.
+PdfDocument doc1, doc2;
+
+// The library will be saved in your application's files directory.
+PdfLibrary library = PdfLibrary.get(new File(context.getFilesDir(), "library.db").getAbsolutePath());
+List<PdfDocument> documentList = new ArrayList<>();
+documentList.add(doc1);
+documentList.add(doc2);
+library.enqueueDocuments(documentList);
+```
+
+==]
+
+[`PdfLibrary`][] allows you to query for the current indexing state.
+
+You can decide to only query the library if all documents have been indexed by using [`isIndexing()`][]. You can also check the current status for individual documents by using [`getIndexStatusForUID()`][].
+
+The results are delivered to you with an `onSearchCompleted` callback in [`QueryResultListener`][]. The results themselves are delivered as a `Map` that maps the document’s UID `String` to a set of page numbers containing the result.
+
+If you wish to show preview snippets, you should enable the [`generateTextPreviews()`][] query option. Then the preview text snippets will be delivered to you in the `onSearchPreviewsGenerated` method of [`QueryResultListener`][] as a `Map` mapping the document’s UID `String` to a set of [`QueryPreviewResult`][] objects.
+
+Example:
+
+[==
+
+```kotlin
+// Set up search result options.
+val options = QueryOptions.Builder()
+    .generateTextPreviews(true)
+    .previewRange(20, 120)
+    .build()
+
+// Run the search. The search will run on a background thread and the callbacks will be called
+// from the background thread as well.
+library.search("looking for this text", options, object : QueryResultListener {
+    override fun onSearchCompleted(p0: String, p1: Map<String, Set<Int>>) {
+        // Results contain UID → set of pages mapping.
+    }
+
+    override fun onSearchPreviewsGenerated(p0: String, p1: Map<String, Set<QueryPreviewResult>>) {
+    	// Previews contain UID → set of `QueryPreviewResult` mappings.
+    }
+})
+```
+
+```java
+// Set up search result options.
+final QueryOptions options = new QueryOptions.Builder()
+    .generateTextPreviews(true)
+    .previewRange(20, 120)
+    .build();
+
+// Run the search. The search will run on a background thread and the callbacks will be called
+// from the background thread as well.
+library.search("looking for this text", options, new QueryResultListener() {
+    @Override
+    public void onSearchCompleted(@NonNull String searchString, @NonNull Map<String, Set<Integer>> results) {
+        // Results contain UID → set of pages mapping.
+    }
+
+    @Override
+    public void onSearchPreviewsGenerated(@NonNull String searchString, @NonNull Map<String, Set<QueryPreviewResult>> previews) {
+    	// Previews contain UID → set of `QueryPreviewResult` mappings.
+    }
+});
+```
+
+==]
+
+## Advanced Matching Options
+
+[`PdfLibrary`][] offers advanced matching options. You pass these options with a [`QueryOptions`][] object in the `search()` method.
+
+The following options are available:
+
+| Name                        | Type      | Description                                                                                                            |
+| --------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `generateTextPreviews`      | `Boolean` | Retrieves preview snippets of text when searching and delivers them in the [`onSearchPreviewsGenerated()`][] callback. |
+| `maximumResultsTotal`       | `int`     | The maximum amount of search results for the total of all documents.                                                   |
+| `maximumResultsPerDocument` | `int`     | The maximum amount of search results per page.                                                                         |
+| `matchExactWords`           | `Boolean` | Only matches exact words. For example, “something” would not match “some.”                                             |
+| `matchExactPhrases`         | `Boolean` | Only matches exact phrases. For example, “this is a test” would not match “this is a quick test.”                      |
+
+## Advanced Configuration
+
+You can configure [`PdfLibrary`][] to match your needs. The following properties on [`PdfLibrary`][] are available:
+
+| Property               | Type      | Default | Description                                                                                                                                                      |
+| ---------------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `saveReversedPageText` | `Boolean` | `true`  | Indicates if the reversed text of a PDF document should be saved. This increases the size of the cache by about two times, but it allows for ends-with searches. |
+
+[`isindexing()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/PdfLibrary.html#isIndexing()
+[`getindexstatusforuid()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/PdfLibrary.html#getIndexStatusForUID(String)
+[`generatetextpreviews()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/QueryOptions.Builder.html#generateTextPreviews(boolean)
+[`queryresultlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/QueryResultListener.html
+[`querypreviewresult`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/QueryPreviewResult.html
+[`queryoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/QueryOptions.html
+[`onsearchpreviewsgenerated()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/library/QueryOptions.Builder.html#generateTextPreviews(boolean)

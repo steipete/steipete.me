@@ -1,0 +1,104 @@
+---
+title: Logging
+section: developers
+---
+
+PSPDFKit for Android logs important debugging information via the [`PdfLog`][] API. [`PdfLog`][] allows you to log messages in your app and inject your own [loggers][`logger`] to implement a custom logging policy. The default logger logs messages with a priority of `INFO` and higher to the system Logcat.
+
+## Custom Loggers
+
+[`PdfLog`][] manages a list of [loggers][`logger`] that handle log filtering and log output. All logged messages are delegated to these loggers in the order of their registration.
+
+A list of loggers can be managed with the static methods defined in [`PdfLog`][]. You can add your own loggers with the [`addLogger()`][] method, remove existing loggers with [`removeLogger()`][], or replace existing loggers with [`setLoggers()`][]. Note that it’s best to add your custom loggers early on to catch all logs.
+
+### Filtering Logs
+
+Logs can be filtered based on their priority (`VERBOSE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, and `ASSERT`) and tag. To do this, override the default interface method, [`Logger#isLogged()`][], in your custom loggers:
+
+[==
+
+```kotlin
+class CustomLogger : PdfLog.Logger {
+
+    override fun isLogged(@PdfLog.LogPriority priority: Int, tag: String): Boolean {
+        // This method is called for each log message.
+        // Return `true` for logs that should be logged, and return `false` for logs that should be ignored.
+        // If you return `false`, the `log()` method below won't be called for this log message.
+        return priority >= Log.INFO;
+    }
+
+    override fun log(@PdfLog.LogPriority priority: Int, tag: String, message: String, throwable: Throwable?) {
+        // Implement your custom logging here.
+        ...
+    }
+}
+```
+
+```java
+public class CustomLogger implements PdfLog.Logger {
+
+    @Override
+    public boolean isLogged(int priority, @NonNull String tag) {
+        // This method is called for each log message.
+        // Return `true` for logs that should be logged, and return `false` for logs that should be ignored.
+        // If you return `false`, the `log()` method below won't be called for this log message.
+        return priority >= Log.INFO;
+    }
+
+    @Override
+    public void log(@PdfLog.LogPriority int priority, @NonNull String tag, @NonNull String message, @Nullable Throwable throwable) {
+        // Implement your custom logging here.
+        ...
+    }
+}
+```
+
+==]
+
+### Custom Logging
+
+Each [`Logger`][] must implement its [`log()`][] method to output log messages to the destination of their choice — for example, Logcat, a text file, a database, or a third-party logging library.
+
+## Disabling Logging
+
+Logging can be easily disabled by removing all registered loggers via [`PdfLog#removeAllLoggers()`][`removeallloggers()`]:
+
+[==
+
+```kotlin
+PdfLog.removeAllLoggers()
+```
+
+```java
+PdfLog.removeAllLoggers();
+```
+
+==]
+
+## ProGuard
+
+We strongly recommend stripping all log statements from your release application by using the following ProGuard rule:
+
+```proguard-rules.pro
+# Remove all Android logging calls that should be ignored in release builds to prevent logs in Logcat.
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+    public static int i(...);
+    public static int w(...);
+    public static int e(...);
+}
+```
+
+PSPDFKit logging calls ([`PdfLog`][]) should be kept, as they can be stored in a file or sent to a third-party crash reporting tool by configuring a custom [`Logger`][].
+
+[`pspdfkit.setloggingenabled()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/PSPDFKit.html#setLoggingEnabled(boolean)
+[`pdflog`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.html
+[`addlogger()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.html#addLogger(com.pspdfkit.utils.PdfLog.Logger)
+[`removelogger()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.html#removeLogger(com.pspdfkit.utils.PdfLog.Logger)
+[`removeallloggers()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.html#removeAllLoggers()
+[`setloggers()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.html#setLoggers(java.util.Collection<?%20extends%20com.pspdfkit.utils.PdfLog.Logger>)
+[`logcatlogger`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/LogCatLogger.html
+[`logger`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.Logger.html
+[`logger#islogged()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.Logger.html#isLogged(int,%20java.lang.String)
+[`log()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/utils/PdfLog.Logger.html#log(int,%20java.lang.String,%20java.lang.String,%20java.lang.Throwable)

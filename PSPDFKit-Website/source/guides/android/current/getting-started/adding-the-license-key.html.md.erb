@@ -1,0 +1,67 @@
+---
+title: Adding the License Key
+section: developers
+
+order: 2
+---
+
+PSPDFKit is a commercial product and it uses a license key to verify your copy against the package name you have registered.
+
+## Generate the License Key
+
+To use a PSPDFKit license with your app, you have to generate a license key and bind it to the `applicationId` of your app.
+
+1. Log in to the [PSPDFKit Customer Portal][] using the credentials you received when purchasing PSPDFKit. You will see the list of all your purchased licenses.
+2. Locate your license (e.g. PSPDFKit for Android) and click the Assign license key button next to it. A dialog will open.
+3. Enter the `applicationId` of your production app. If you are unsure about this step, please read our [What Is a Bundle ID?][pspdfkit guide bundle id] guide first.
+4. Click next and confirm your selected `applicationId`. Please double-check that the chosen identifier matches the one configured in your app, as it can no longer be changed once it’s been set.
+
+## Download the License Key
+
+1. Log in to the [PSPDFKit Customer Portal][] using the credentials you received when purchasing PSPDFKit. You will see the list of all your purchased licenses.
+2. Locate your license (e.g. PSPDFKit for Android) and click the License Key button next to it. If there is no such button, you probably need to generate the license key first.
+3. A dialog will open showing you a code snippet with your license key.
+4. After copying the license key over to your project, the PSPDFKit SDK will be ready to use.
+
+## Using the License Key
+
+It is important that you set the license key before using any PSPDFKit classes.
+
+Add the license key in `AndroidManifest.xml` using the `<meta-data/>` tag:
+
+```xml
+<application..>
+
+    <meta-data
+        android:name="pspdfkit_license_key"
+        android:value="YOUR_LICENSE_KEY_GOES_HERE"/>
+
+</application>
+```
+
+By defining the license key in your manifest file, the framework will automatically be initialized via the content provider before any activity is displayed. If you’d like to initialize PSPDFKit programmatically, you can skip defining the license in your manifest and do it manually:
+
+[==
+
+```kotlin
+try {
+    PSPDFKit.initialize(context, "YOUR_LICENSE_KEY_GOES_HERE")
+} catch (e : PSPDFInitializationFailedException) {
+    Log.e(LOG_TAG, "Current device is not compatible with PSPDFKit!")
+}
+```
+
+```java
+try {
+    PSPDFKit.initialize(context, "YOUR_LICENSE_KEY_GOES_HERE");
+} catch (PSPDFInitializationFailedException e) {
+    Log.e(LOG_TAG, "Current device is not compatible with PSPDFKit!");
+}
+```
+
+==]
+
+You have to do this once throughout your application lifetime. An optimal place is in the `onCreate()` method of your `Application` or `Activity`.
+
+[pspdfkit customer portal]: https://customers.pspdfkit.com/
+[pspdfkit guide bundle id]: ../../faq/what-is-a-bundle-id/

@@ -1,0 +1,345 @@
+---
+title: Appearance Styling
+section: developers
+---
+
+In order to seamlessly integrate PSPDFKit into your application, you will likely want to adjust some of the appearance settings of the framework UI elements. PSPDFKit was designed to be very flexible in this regard and offers a wide variety of appearance-centric properties and customization hooks.
+
+## Tint Color
+
+PSPDFKit conforms to the standard `UIView` `tintColor` inheritance scheme and will automatically adopt your application’s global tint color. You can set the desired PSPDFKit `tintColor` by setting the `tintColor` property on your current window or on any other common superview of PSPDFKit view components. You are also free to set the `tintColor` property on any of the PSPDFKit `UIView` subclasses, either by setting the instance property directly or by using the `UIAppearance` protocol.
+
+## Status Bar
+
+PSPDFKit was designed with a view controller-based status bar appearance in mind. In order to get the correct status bar appearance and behaviors for PSPDFKit view controllers, ensure the [`UIViewControllerBasedStatusBarAppearance`][] flag in your app’s `Info.plist` is set. (This is the default behavior, but some old products might have set this to `NO`. In that case, you first need to update your application.)
+
+**ℹ️ Note:** When the application root view controller is a `UINavigationController` instance, the status bar appearance is deferred by the [`barStyle`][] property of the navigation controller’s `navigationBar`. Therefore, if you show [`PSPDFViewController`][] in a `UINavigationController`, be sure to correctly set the navigation bar [`barStyle`][] in order to get the desired status bar style.
+
+## UIAppearance
+
+The recommended and easiest way to style PSPDFKit to your liking is using the [`UIAppearance`][] protocol. PSPDFKit instance properties that were designed to be used with `UIAppearance` are marked with the standard `UI_APPEARANCE_SELECTOR` qualifier.
+
+**ℹ️ Note:** It is important that you apply `UIAppearance` settings early in your application (or view controller) lifecycle. The appearance settings should be in place before `viewDidLoad:` is called. This is especially true for iOS 8.1 and later.
+
+### UINavigationBar and UIToolbar Styling
+
+Two of the most likely candidates for appearance customization are `UINavigationBar` and `UIToolbar`. If you are already setting the appearance of either one using `UIAppearance` selectors in your app, PSPDFKit will inherit these settings.
+
+However, applying default styles to `UINavigationBar` and `UIToolbar` directly will have no effect on instances created by the PSPDFKit framework and might have the unwanted side effect of also leaking certain appearance styles to system-provided view controllers (like `MFMailComposeViewController`). Thus we recommended that you instead limit the `UINavigationBar` and `UIToolbar` customization to your application only. In order to achieve this with PSPDFKit as well, you can limit the appearance customization to instances inside [`PSPDFNavigationController`][]. [`PSPDFNavigationController`][] is a simple `UINavigationController` subclass that adds some additional features and is used throughout PSPDFKit. If you’re presenting `PSPDFViewController` inside a `UINavigationController` (the most common case), you might want to use [`PSPDFNavigationController`][] to ease styling. If you’re using your own `UINavigationController` or embedding [`PSPDFViewController`][] in another view controller, it will be your responsibility to style the container controller and use the correct appearance bounding for `UINavigationBar` and `UIToolbar`.
+
+On iOS 13, the bar appearance (including the background color) can be set using the `UIBarAppearance` API. This applies to navigation bars, toolbars, the annotation toolbar, and the scrubber bar (both floating and docked). You can set the bar appearance using the `standardAppearance` and `compactAppearance` properties on `PSPDFScrubberBar` and `PSPDFToolbar` (the superclass of `PSPDFAnnotationToolbar`, `PSPDFDocumentEditorToolbar`, and `PSPDFFreeTextAccessoryView`).
+
+### UINavigationBar and UIToolbar in Popovers
+
+By default, the `UINavigationBar` and `UIToolbar` instances contained in a [`PSPDFNavigationController`][] presented as a popover are reset to their default iOS appearances by PSPDFKit. This ensures that the bars seamlessly blend with the default popover background view.
+
+If you want to override this behavior, you can do so in your initialization code using the following appearance proxies:
+
+[==
+
+```swift
+let navBarPopoverProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [PSPDFNavigationController.self, UIPopoverPresentationController.self])
+let toolbarPopoverProxy = UIToolbar.appearance(whenContainedInInstancesOf: [PSPDFNavigationController.self, UIPopoverPresentationController.self])
+
+let barColor = UIColor.systemOrange
+
+// e.g.
+// On iOS 13 and later.
+if #available(iOS 13, *) {
+    // For `UINavigationBar`.
+    let navigationBarAppearance = UINavigationBarAppearance()
+    navigationBarAppearance.backgroundColor = barColor
+
+    // Use the same appearance for all navigation bar modes.
+    navBarPopoverProxy.standardAppearance = navigationBarAppearance
+    navBarPopoverProxy.compactAppearance = navigationBarAppearance
+    navBarPopoverProxy.scrollEdgeAppearance = navigationBarAppearance
+
+    // For `UIToolbar`.
+    let toolbarAppearance = UIToolbarAppearance()
+    toolbarAppearance.backgroundColor = barColor
+
+    // Apply the same appearance styling to all sizes of `UIToolbar`.
+    toolbarPopoverProxy.standardAppearance = toolbarAppearance
+    toolbarPopoverProxy.compactAppearance = toolbarAppearance
+} else {
+    // On iOS 12 and earlier.
+    navBarPopoverProxy.barTintColor = barColor
+    toolbarPopoverProxy.barTintColor = barColor
+}
+
+navBarPopoverProxy.tintColor = .white
+toolbarPopoverProxy.tintColor = .white
+```
+
+```objc
+UINavigationBar *navBarPopoverProxy = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[PSPDFNavigationController.class, UIPopoverPresentationController.class]];
+UIToolbar *toolbarPopoverProxy = [UIToolbar appearanceWhenContainedInInstancesOfClasses:@[PSPDFNavigationController.class, UIPopoverPresentationController.class]];
+
+UIColor *barColor = UIColor.systemOrangeColor;
+
+// e.g.
+// On iOS 13 and later.
+if (@available(iOS 13, *)) {
+    // For `UINavigationBar`.
+    UINavigationBarAppearance *navigationBarAppearance = [[UINavigationBarAppearance alloc] init];
+    navigationBarAppearance.backgroundColor = barColor;
+
+    // Use the same appearance for all navigation bar modes.
+    navBarPopoverProxy.standardAppearance = navigationBarAppearance;
+    navBarPopoverProxy.compactAppearance = navigationBarAppearance;
+    navBarPopoverProxy.scrollEdgeAppearance = navigationBarAppearance;
+
+    // For `UIToolbar`.
+    UIToolbarAppearance *toolbarAppearance = [[UIToolbarAppearance alloc] init];
+    toolbarAppearance.backgroundColor = barColor;
+
+    // Apply the same appearance styling to all sizes of `UIToolbar`.
+    toolbarPopoverProxy.standardAppearance = toolbarAppearance;
+    toolbarPopoverProxy.compactAppearance = toolbarAppearance;
+} else {
+    // On iOS 12 and earlier.
+    navBarPopoverProxy.barTintColor = barColor;
+    toolbarPopoverProxy.barTintColor = barColor;
+}
+
+navBarPopoverProxy.tintColor = UIColor.whiteColor;
+toolbarPopoverProxy.tintColor = UIColor.whiteColor;
+```
+
+==]
+
+<img src="/images/guides/ios/customizing-the-interface/appearance-styling/popovers.png" srcset="/images/guides/ios/customizing-the-interface/appearance-styling/popovers@2x.png 2x">
+
+### Basic Appearance Customization Example
+
+[==
+
+```swift
+let mainColor: UIColor = UIColor(white: 0.2, alpha: 1)
+let secondaryColor = UIColor.systemOrange
+
+// Update the window's `tintColor` as soon as a new window is created.
+currentWindow.tintColor = mainColor;
+
+// Navigation bar and toolbar customization. We're limiting appearance customization to instances that are
+// inside `PSPDFNavigationController` so that we don't affect the appearance of certain system controllers.
+let navBarProxy = UINavigationBar.appearance(whenContainedInInstancesOf: [PSPDFNavigationController.self])
+let toolbarProxy = UIToolbar.appearance(whenContainedInInstancesOf: [PSPDFNavigationController.self])
+
+// On iOS 13 and later.
+if #available(iOS 13, *) {
+    // `UINavigationBar` styling.
+    let navigationBarAppearance = UINavigationBarAppearance()
+    navigationBarAppearance.backgroundColor = mainColor
+
+    navBarProxy.standardAppearance = navigationBarAppearance
+    navBarProxy.compactAppearance = navigationBarAppearance
+    navBarProxy.scrollEdgeAppearance = navigationBarAppearance
+
+    // `UIToolbar` styling.
+    let toolbarAppearance = UIToolbarAppearance()
+    toolbarAppearance.backgroundColor = mainColor
+
+    toolbarProxy.standardAppearance = toolbarAppearance
+    toolbarProxy.compactAppearance = toolbarAppearance
+
+    // Make sure we're getting a light title and status bar.
+    navBarProxy.overrideUserInterfaceStyle = .dark
+} else {
+    navBarProxy.barTintColor = mainColor
+    toolbarProxy.barTintColor = mainColor
+
+    // Make sure we're getting a light title and status bar.
+    navBarProxy.barStyle = .black
+}
+
+
+navBarProxy.tintColor = secondaryColor
+toolbarProxy.tintColor = secondaryColor
+```
+
+```objc
+UIColor *mainColor = [UIColor colorWithWhite:0.2f alpha:1.f];
+UIColor *secondaryColor = [UIColor systemOrangeColor];
+
+// Update the window's `tintColor` as soon as a new window is created.
+currentWindow.tintColor = mainColor;
+
+// Navigation bar and toolbar customization. We're limiting appearance customization to instances that are
+// inside `PSPDFNavigationController` so that we don't affect the appearance of certain system controllers.
+UINavigationBar *navBarProxy = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[PSPDFNavigationController.class]];
+UIToolbar *toolbarProxy = [UIToolbar appearanceWhenContainedInInstancesOfClasses:@[PSPDFNavigationController.class]];
+
+// On iOS 13 and later.
+if (@available(iOS 13, *)) {
+    // `UINavigationBar` styling.
+    UINavigationBarAppearance *navigationBarAppearance = [[UINavigationBarAppearance alloc] init];
+    navigationBarAppearance.backgroundColor = mainColor;
+
+    navBarProxy.standardAppearance = navigationBarAppearance;
+    navBarProxy.compactAppearance = navigationBarAppearance;
+    navBarProxy.scrollEdgeAppearance = navigationBarAppearance;
+
+    // `UIToolbar` styling.
+    UIToolbarAppearance *toolbarAppearance = [[UIToolbarAppearance alloc] init];
+    toolbarAppearance.backgroundColor = mainColor;
+
+    // Apply the same appearance styling to all sizes of `UIToolbar`.
+    toolbarProxy.standardAppearance = toolbarAppearance;
+    toolbarProxy.compactAppearance = toolbarAppearance;
+
+    // Make sure we're getting a light title and status bar.
+    navBarProxy.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+} else {
+    // On iOS 12 and earlier.
+    navBarProxy.barTintColor = mainColor;
+    toolbarProxy.barTintColor = mainColor;
+
+    // Make sure we're getting a light title and status bar.
+    navBarProxy.barStyle = UIBarStyleBlack;
+}
+
+navBarProxy.tintColor = secondaryColor;
+toolbarProxy.tintColor = secondaryColor;
+```
+
+==]
+
+<img src="/images/guides/ios/customizing-the-interface/appearance-styling/custom.png" srcset="/images/guides/ios/customizing-the-interface/appearance-styling/custom@2x.png 2x">
+
+For a live example, please take a look at `-[PSCAppDelegate customizeAppearanceOfNavigationBar]` and `-[PSCAppDelegate customizeAppearanceOfToolbar]` in the PSPDFKit Catalog.
+
+### Annotation Toolbar
+
+[`PSPDFAnnotationToolbar`][] (and its superclass, [`PSPDFFlexibleToolbar`][]) will attempt to automatically set its appearance parameters to match those of the overlaid (main) `UINavigationBar`. In case they are not appropriate, or if further customization is required, you can use the appearance properties defined in [`PSPDFFlexibleToolbar`][] to adjust the toolbar styling (using the `UIAppearance` protocol or setting the property values directly).
+
+The following is an example illustrating how to customize just the annotation toolbar appearance (changing it from the default inferred appearance). You can customize the scrubber bar exactly the same way by changing `PSPDFAnnotationToolbar` to `PSPDFScrubberBar` on the first line:
+
+[==
+
+```swift
+let annotationToolbarProxy = PSPDFAnnotationToolbar.appearance()
+let barColor = UIColor.systemOrange
+
+if #available(iOS 13, *) {
+    let appearance = UIToolbarAppearance()
+    appearance.backgroundColor = barColor
+
+    annotationToolbarProxy.standardAppearance = appearance
+    annotationToolbarProxy.compactAppearance = appearance
+} else {
+    annotationToolbarProxy.barTintColor = barColor
+}
+annotationToolbarProxy.tintColor = UIColor(white: 0.2, alpha: 1)
+```
+
+```objc
+PSPDFAnnotationToolbar *annotationToolbarProxy = [PSPDFAnnotationToolbar appearance];
+UIColor *barColor = UIColor.systemOrangeColor;
+
+if (@available(iOS 13, *)) {
+    UIToolbarAppearance *appearance = [[UIToolbarAppearance alloc] init];
+    appearance.backgroundColor = barColor;
+
+    annotationToolbarProxy.standardAppearance = appearance;
+    annotationToolbarProxy.compactAppearance = appearance;
+} else {
+    annotationToolbarProxy.barTintColor = barColor;
+}
+annotationToolbarProxy.tintColor = [UIColor colorWithWhite:0.2f alpha:1.f];
+```
+
+==]
+
+<img src="/images/guides/ios/customizing-the-interface/appearance-styling/annotation-toolbar.png" srcset="/images/guides/ios/customizing-the-interface/appearance-styling/annotation-toolbar@2x.png 2x">
+
+You can also adjust the selected style by adding the following:
+
+[==
+
+```swift
+annotationToolbarProxy.selectedBackgroundColor = UIColor(white: 0.8, alpha: 1)
+annotationToolbarProxy.selectedTintColor = UIColor(white: 0.2, alpha: 1)
+```
+
+```objc
+[annotationToolbarProxy setSelectedBackgroundColor:[UIColor colorWithWhite:0.8f alpha:1.f]];
+[annotationToolbarProxy setSelectedTintColor:[UIColor colorWithWhite:0.2f alpha:1.f]];
+```
+
+==]
+
+### Changing the Scrubber Bar Background Color without UIAppearance
+
+An alternative to using the `UIAppearance` proxy is to set the properties on the object directly:
+
+[==
+
+```swift
+let scrubberBar = pdfViewController.userInterfaceView.scrubberBar
+let barColor = .systemOrange
+
+if #available(iOS 13, *) {
+    let appearance = UIToolbarAppearance()
+    appearance.backgroundColor = barColor
+
+    scrubberBar.standardAppearance = appearance
+    scrubberBar.compactAppearance = appearance
+} else {
+    scrubberBar.barTintColor = barColor
+}
+```
+
+```objc
+PSPDFScrubberBar *scrubberBar = pdfViewController.userInterfaceView.scrubberBar;
+UIColor *barColor = UIColor.systemOrangeColor;
+
+if (@available(iOS 13, *)) {
+    UIToolbarAppearance *appearance = [[UIToolbarAppearance alloc] init];
+    appearance.backgroundColor = barColor;
+
+    scrubberBar.standardAppearance = appearance;
+    scrubberBar.compactAppearance = appearance
+} else {
+    scrubberBar.barTintColor = barColor;
+}
+```
+
+==]
+
+### Font Customization
+
+You can change the font of a view when it’s contained in a specific view controller class. For example, you can change the font of a `UITextView` when it’s contained in a [`PSPDFNoteAnnotationViewController`][]:
+
+[==
+
+```swift
+let textView = UITextView.appearance(whenContainedInInstancesOf: [PSPDFNoteAnnotationViewController.self])
+textView.font = UIFont(name: "Courier", size: 14)
+```
+
+```objc
+UITextView *textView = [UITextView appearanceWhenContainedInInstancesOfClasses:@[[PSPDFNoteAnnotationViewController class]]];
+textView.font = [UIFont fontWithName:@"Courier" size:14.f];
+```
+
+==]
+
+### Further Reading
+
+- [Apple’s `UIAppearance` Documentation][]
+- [NSHipster on `UIAppearance`][]
+
+[`barstyle`]: https://pspdfkit.com/api/ios/Protocols/PSPDFStyleable.html#/c:objc(pl)PSPDFStyleable(py)barStyle
+[`bartintcolor`]: https://pspdfkit.com/api/ios/Classes/PSPDFToolbar.html#/c:objc(cs)PSPDFToolbar(py)barTintColor
+[`backgroundeffect`]: https://developer.apple.com/documentation/uikit/uibarappearance/3197994-backgroundeffect
+[`uinavigationcontroller.standardappearance`]: https://developer.apple.com/documentation/uikit/uinavigationbar/3198028-standardappearance
+[`uiviewcontrollerbasedstatusbarappearance`]: https://developer.apple.com/library/mac/documentation/general/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW29
+[`uiappearance`]: https://developer.apple.com/library/ios/Documentation/UIKit/Reference/UIAppearance_Protocol/index.html
+[`pspdfnavigationcontroller`]: https://pspdfkit.com/api/Classes/PSPDFNavigationController.html
+[`pspdfannotationtoolbar`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationToolbar.html
+[`pspdfflexibletoolbar`]: https://pspdfkit.com/api/Classes/PSPDFFlexibleToolbar.html
+[`pspdfnoteannotationviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFNoteAnnotationViewController.html
+[apple’s `uiappearance` documentation]: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAppearance_Protocol/index.html
+[nshipster on `uiappearance`]: http://nshipster.com/uiappearance/

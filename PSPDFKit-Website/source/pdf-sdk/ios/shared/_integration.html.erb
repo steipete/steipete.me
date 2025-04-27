@@ -1,0 +1,140 @@
+<section id="integration" class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-9">
+
+        <!-- Header -->
+        <header class="text-center mb-5">
+          <h6 class="text-brand"><%= subtitle %></h6>
+          <h2><%= title %></h2>
+          <p><%= body %></p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="nav-btn-group justify-content-center mb-5">
+          <nav class="nav justify-content-center mb-4">
+            <button type="button" class="nav-item nav-link active" data-toggle="tab" href="#tab-basic">Basic Example</button>
+            <button type="button" class="nav-item nav-link" data-toggle="tab" href="#tab-configuration">Configuration Options</button>
+            <button type="button" class="nav-item nav-link" data-toggle="tab" href="#tab-annotation">Create Annotation</button>
+          </nav>
+        </div>
+
+        <!-- Code -->
+        <div class="card card-lg mb-4">
+          <div class="card-body bg-light p-0">
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-basic">
+                <%= partial 'pdf-sdk/ios/shared/example_basic.md' %>
+              </div>
+              <div class="tab-pane" id="tab-configuration">
+                <%= partial 'pdf-sdk/ios/shared/example_configuration.md' %>
+              </div>
+              <div class="tab-pane" id="tab-annotation">
+                <%= partial 'pdf-sdk/ios/shared/example_annotation.md' %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guides / API -->
+        <p class="text-muted text-center mb-5">
+          Check out our <a href="/guides/ios" class="link-brand">guides</a> and
+          <a href="/api/ios" class="link-brand">API docs</a> for more examples.
+        </p>
+
+        <!-- Compatibility -->
+        <div class="row">
+
+          <div class="col-12 text-center mb-3">
+            <h3>Compatibility</h3>
+            <p class="medium">
+              <strong>PSPDFKit</strong> offers a rich set of Objective-C APIs and is optimized so
+              that calls map well to Swift.<br>
+              We also support a variety of cross-platform technologies:
+            </p>
+          </div>
+
+          <!-- Column A -->
+          <div class="col-md-6 justify-content-center">
+
+            <!-- PDFXKit -->
+            <a href="/guides/ios/current/migration-guides/migrating-from-apple-pdfkit/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/pdfxkit.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">PDFXKit</h4>
+                <p class="small mb-0">
+                  Drop-in replacement for Apple PDFKit
+                </p>
+              </div>
+            </a>
+
+            <!-- React Native -->
+            <a href="/guides/ios/current/other-languages/react-native/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/react.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">React Native</h4>
+                <p class="small mb-0">
+                  Official React Native wrapper
+                </p>
+              </div>
+            </a>
+
+            <!-- Microsoft Xamarin -->
+            <a href="/guides/ios/current/other-languages/xamarin/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/xamarin.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Microsoft Xamarin</h4>
+                <p class="small mb-0">
+                  Official Xamarin wrapper
+                </p>
+              </div>
+            </a>
+          </div>
+
+          <!-- Column B -->
+          <div class="col-md-6">
+
+            <!-- PSPDFKitSwift -->
+            <a href="/guides/ios/current/getting-started/pspdfkitswift/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/pspdfkit-swift.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">PSPDFKitSwift</h4>
+                <p class="small mb-0">
+                  Official Swift wrappers and extensions
+                </p>
+              </div>
+            </a>
+
+            <!-- Cordova -->
+            <a href="/guides/ios/current/other-languages/apache-cordova-phonegap/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/cordova.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Apache Cordova/PhoneGap</h4>
+                <p class="small mb-0">
+                  Official Cordova wrapper
+                </p>
+              </div>
+            </a>
+
+            <!-- Appcelerator -->
+            <a href="/guides/ios/current/other-languages/appcelerator-titanium/"
+               class="link-img d-flex align-items-center mb-4">
+              <img src="/images/shared/placeholder.gif" data-src="/images/icons/appcelerator.svg" width="60" class="lazyload" loading="lazy">
+              <div class="ml-3">
+                <h4 class="h5 mb-0 link-img-title">Axway Appcelerator Titanium</h4>
+                <p class="small mb-0">
+                  Official Appcelerator wrapper
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

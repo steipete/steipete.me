@@ -1,0 +1,587 @@
+---
+title: XFDF Support
+section: developers
+---
+
+XFDF is an XML-like standard from Adobe [XFDF (ISO 19444-1:2016)][iso xfdf reference] for encoding annotations and forms (see this [XFDF overview][salesforce xfdf article]). It is compatible with Adobe Acrobat and several other third-party frameworks.
+
+**ℹ️ Note:** XFDF has various limitations. In most cases, using [PSPDFKit Instant][] will result in a smaller file and better synchronization.
+
+<% if android? %>
+PSPDFKit for Android supports both reading and writing XFDF files. The [`XfdfFormatter`][] class contains [`parseXfdf()`][] and [`writeXfdf()`][] methods you can use to perform these operations. It also contains their asynchronous counterparts, [`parseXfdfAsync()`][] and [`writeXfdfAsync()`][] (recommended so you can easily offload parsing from the UI thread).
+<% end %>
+<% if ios? %>
+PSPDFKit for iOS supports both reading and writing XFDF. It also offers an annotation provider subclass — [`PSPDFXFDFAnnotationProvider`][] — that will save/load annotations to/from XFDF automatically.
+<% end %>
+<% if server? %>
+PSPDFKit Server supports importing XFDF files on document upload and exporting XFDF from an existing PDF. Our `POST /documents` endpoint for uploading documents now supports the import of an XFDF file, and we also offer a `GET /document.xfdf` endpoint to export the current state of a document into an XFDF file.
+<% end %>
+<% if windows? %>
+PSPDFKit for Windows supports both reading and writing XFDF files. The [`Document`][] class contains [`ImportXfdfAsync()`][], [`ImportXfdfFileAsync()`][], [`ExportXfdfToDataWriterAsync()`][], and [`ExportXfdfToDataSinkAsync()`][] methods you can use to perform these operations.
+<% end %>
+<% if java? %>
+The PSPDFKit Java Library supports both reading and writing XFDF files. The [`PdfDocument`][] class contains [`importXfdf`][`pdfdocument#importxfdf`] and [`exportXfdf`][`pdfdocument#exportxfdf`] methods you can use to perform these operations.
+<% end %>
+<% if dotnet? %>
+The PSPDFKit .NET Library supports both reading and writing XFDF files. The [`Document`][] class contains [`ImportXfdf`][`document#importxfdf`] and [`ExportXfdf`][`document#exportxfdf`] methods you can use to perform these operations.
+<% end %>
+
+## Importing XFDF
+
+<% if android? %>
+To read from an XFDF file:
+
+[==
+
+```kotlin
+// Your data provider, serving the XFDF file which we'll parse.
+var yourDataProvider = SomeDataProvider()
+
+// The async parse method is recommended (so you can easily offload parsing from the UI thread).
+XfdfFormatter.parseXfdfAsync(pdfDocument, yourDataProvider)
+    .subscribeOn(Schedulers.io()) // Specify thread on which to parse XFDF.
+    .subscribe { annotations ->
+        // Handle the list of annotations here.
+    }
+```
+
+```java
+// Your data provider, serving the XFDF file which we'll parse.
+DataProvider yourDataProvider = new SomeDataProvider();
+
+// The async parse method is recommended (so you can easily offload parsing from the UI thread).
+XfdfFormatter.parseXfdfAsync(pdfDocument, yourDataProvider)
+    .subscribeOn(Schedulers.io()) // Specify thread on which to parse XFDF.
+    .subscribe(annotations -> {
+        // Handle the list of annotations here.
+    });
+```
+
+==]
+
+The list of annotations you get in the callback will not be added to the document automatically. This allows you to have better control over which of these annotations you want to add. To add annotations to a document, use `document.getAnnotationProvider().addAnnotationToPage()` on the annotations you want to add.
+<% end %>
+<% if ios? %>
+You can import annotations and form fields from an XFDF file to a document like so:
+
+[==
+
+```swift
+// Load from an example XFDF file.
+let externalAnnotationsFile = URL(fileURLWithPath: "path/to/XFDF.xfdf")
+
+let documentProvider = (document.documentProviders.first)!
+let dataProvider = PSPDFFileDataProvider(fileURL: externalAnnotationsFile)
+
+// Create the XFDF parser and parse all annotations.
+let parser = PSPDFXFDFParser(dataProvider: dataProvider, documentProvider: documentProvider)
+let annotations = try! parser.parse()
+
+// Add the parsed annotations to the document.
+document.add(annotations)
+```
+
+```objc
+// Load from an example XFDF file.
+NSURL *externalAnnotationsFile = [NSURL fileURLWithPath:@"path/to/XFDF.xfdf"];
+
+PSPDFDocumentProvider *documentProvider = document.documentProviders.firstObject;
+PSPDFFileDataProvider *dataProvider = [[PSPDFFileDataProvider alloc] initWithFileURL:externalAnnotationsFile];
+
+// Create the XFDF parser and parse all annotations.
+PSPDFXFDFParser *parser = [[PSPDFXFDFParser alloc] initWithDataProvider:dataProvider documentProvider:documentProvider];
+NSArray<PSPDFAnnotation *> *annotations = [parser parseWithError:NULL];
+
+// Add the parsed annotations to the document.
+[document addAnnotations:annotations options:nil];
+```
+
+==]
+<% end %>
+<% if server? %>
+
+PSPDFKit Server supports importing annotations from an XFDF file when uploading a document via the `/api/documents` endpoint. Send a `multipart/form-data` `POST` request including the PDF and the XFDF file to import the annotations in the given PDF file. This will replace all existing annotations in the uploaded PDF with the annotations from the uploaded Instant JSON file. If you want to add annotations to already existing ones instead of replacing them, you can set `keep_current_annotations` to `true`:
+
+**Request**
+
+```
+POST /api/documents
+Content-Type: multipart/form-data; boundary=customboundary
+Authorization: Token token="<secret token>"
+
+--customboundary
+Content-Disposition: form-data; name="file"; filename="Example Document.pdf"
+Content-Type: application/pdf
+
+<PDF data>
+--customboundary
+Content-Disposition: form-data; name="attachment"; filename="attachment.xfdf"
+Content-Type: application/vnd.adobe.xfdf
+
+<annotations data>
+--customboundary
+Content-Disposition: form-data; name="keep_current_annotations"
+
+true
+--customboundary--
+```
+
+<% end %>
+<% if web? %>
+
+### Standalone Importing
+
+To import XFDF when using standalone deployment, you can use the [`Configuration#XFDF`][] option.
+
+In addition to the [`Configuration#XFDF`][] option, you can also set the [`Configuration#XFDFKeepCurrentAnnotations`][] flag. This flag will make sure annotations that are already in the source PDF are kept and not replaced with those defined in the XFDF:
+
+[==
+
+```es
+PSPDFKit.load({
+  pdf: "https://your-server.com/some/document.pdf",
+  XFDF:
+    '<?xml version="1.0" encoding="UTF-8"?><xfdf xml:space="preserve" xmlns="http://ns.adobe.com/xfdf/"> ..'
+});
+```
+
+```js
+PSPDFKit.load({
+  pdf: "https://your-server.com/some/document.pdf",
+  XFDF:
+    '<?xml version="1.0" encoding="UTF-8"?><xfdf xml:space="preserve" xmlns="http://ns.adobe.com/xfdf/"> ..'
+});
+```
+
+==]
+
+### Server Importing
+
+When you upload a new document to PSPDFKit Server, you can include an XFDF document as a second file in the upload. Follow the [Server guides][] for an in-depth example.
+
+<% end %>
+<% if windows? %>
+
+### Read XFDF from a File
+
+```csharp
+// Get the XFDF `StorageFile`.
+var xfdfFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/annotation.xfdf"));
+await PdfView.Document.ImportXfdfFileAsync(xfdfFile);
+```
+
+This will parse the XFDF file, create any annotations that are required, and reload the document.
+
+### Import XFDF from a [`DataProvider`][]
+
+It is also possible to import from a custom `DataProvider`, thereby allowing for streams from different mediums:
+
+```csharp
+using (var stream = Encoding.UTF8.GetBytes(xfdfString ?? "").AsBuffer().AsStream())
+{
+    var xfdfProvider = new RandomAccessStreamDataProvider(stream.AsRandomAccessStream());
+    await PdfView.Document.ImportXfdfAsync(xfdfProvider);
+}
+```
+
+The above is a simple example showing how to import XFDF from a string. However, the `DataProvider` can be expanded to, for example, implement custom readers for encryption.
+
+<% end %>
+<% if java? %>
+
+Below is a simple example showing how to import XFDF from a file. However, the `DataProvider` can be inherited from in order to implement custom readers for encryption:
+
+```java
+File fileXfdf = new File("Assets/importXfdf.xfdf");
+document.importXfdf(new FileDataProvider(fileXfdf));
+```
+
+<% end %>
+<% if dotnet? %>
+
+Below is a simple example showing how to import XFDF from a file. However, the `IDataProvider` can be inherited from in order to implement custom readers for encryption:
+
+```csharp
+document.ImportXfdf(new FileDataProvider("Assets/importXfdf.xfdf"));
+```
+
+<% end %>
+
+## Exporting to XFDF
+
+<% if android? %>
+
+You can export annotations and form fields from a document to an XFDF file like so:
+
+[==
+
+```kotlin
+// List of annotations from the document to be exported.
+val listOfAnnotationsToExport = ...
+
+// List of form fields from the document to be exported.
+val listOfFormFieldsToExport = ...
+
+// Output stream pointing to the XFDF file into which to write the data.
+val outputStream = ...
+
+// The async write method is recommended (so you can easily offload writing from the UI thread).
+XfdfFormatter.writeXfdfAsync(pdfDocument, listOfAnnotationsToExport, listOfFormFieldsToExport, outputStream)
+        .subscribeOn(Schedulers.io()) // Specify thread on which to write XFDF.
+        .subscribe(..)
+```
+
+```java
+// List of annotations from the document to be exported.
+List<Annotation> listOfAnnotationsToExport = ... ;
+
+// List of form fields from the document to be exported.
+List<FormField> listOfFormFieldsToExport = ... ;
+
+// Output stream pointing to the XFDF file into which to write the data.
+OutputStream outputStream = ... ;
+
+// The async write method is recommended (so you can easily offload writing from the UI thread).
+XfdfFormatter.writeXfdfAsync(pdfDocument, listOfAnnotationsToExport, listOfFormFieldsToExport, outputStream)
+        .subscribeOn(Schedulers.io()) // Specify thread on which to write XFDF.
+        .subscribe(..);
+```
+
+==]
+
+<% end %>
+<% if ios? %>
+
+You can export annotations and form fields from a document to an XFDF file like so:
+
+[==
+
+```swift
+// Collect all existing annotations from the document.
+let annotations = document.allAnnotations(of: .all).values.flatMap { $0 }
+
+// Write the file.
+let dataSink = try! PSPDFFileDataSink(fileURL: externalAnnotationsFile)
+do {
+	try PSPDFXFDFWriter().write(annotations, to: dataSink, documentProvider: document.documentProviders.first!)
+} catch {
+	print("Failed to write XFDF file: \(error.localizedDescription))")
+}
+```
+
+```objc
+// Collect all existing annotations from the document.
+NSMutableArray<PSPDFAnnotation *> *annotations = [NSMutableArray<PSPDFAnnotation *> array];
+for (NSArray<PSPDFAnnotation *> *pageAnnotations in [document allAnnotationsOfType:PSPDFAnnotationTypeAll].allValues) {
+	[annotations addObjectsFromArray:pageAnnotations];
+}
+
+// Write the file.
+NSError *error;
+PSPDFFileDataSink *dataSink = [[PSPDFFileDataSink alloc] initWithFileURL:externalAnnotationsFile options:PSPDFDataSinkOptionNone error:&error];
+NSAssert(dataSink != nil, @"%@", error);
+if (![[PSPDFXFDFWriter new] writeAnnotations:annotations toDataSink:dataSink documentProvider:tempDocument.documentProviders[0] error:&error]) {
+	NSLog(@"Failed to write XFDF file: %@", error.localizedDescription);
+}
+```
+
+==]
+
+<% end %>
+<% if server? %>
+
+You can export the current annotations of a document as an XFDF file via a `GET` request to `/api/documents/:document_id/document.xfdf`. To get the current annotation of a document’s layer, send a `GET` request to `/api/documents/:document_id/layers/:layer_name/document.xfdf`:
+
+**Request**
+
+```
+GET /api/documents/:document_id/document.xfdf
+Authorization: Token token="<secret token>"
+```
+
+```curl
+$ curl "http://localhost:5000/api/documents/abc/document.xfdf" \
+   -H "Authorization: Token token=<secret token>"
+```
+
+**Response**
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/vnd.adobe.xfdf
+
+<XFDF data>
+```
+
+<% end %>
+<% if web? %>
+
+[==
+
+```es
+instance.exportXFDF().then(xfdf => {
+  console.log(xfdf); // => <?xml version="1.0" encoding="UTF-8"?><xfdf xml:space="preserve" xmlns="http://ns.adobe.com/xfdf/"> ...
+});
+```
+
+```js
+instance.exportXFDF().then(function(xfdf) {
+  console.log(xfdf); // => <?xml version="1.0" encoding="UTF-8"?><xfdf xml:space="preserve" xmlns="http://ns.adobe.com/xfdf/"> ...
+});
+```
+
+==]
+
+XFDF works seamlessly with the [annotation API][]. If you want to persist annotations whenever changes are made, we recommend you use the [`annotations.didSave`][] event. This event will be triggered automatically and can be configured via [`Configuration#autoSaveMode`][].
+
+**Note for standalone users:** Instead of saving annotations to the backend, a save operation will persist the annotations in memory until they are either exported via [`Instance#exportXFDF`][] or written to the PDF document when you export it using [`Instance#exportPDF`][]. Unsaved annotations will not be exported, in order to reflect the server behavior:
+
+[==
+
+```es
+instance.addEventListener("annotations.didSave", async () => {
+  const xfdf = await instance.exportXFDF();
+  await fetch("https://your-server.com/xfdf", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/vnd.adobe.xfdf"
+    },
+    body: xfdf
+  });
+});
+```
+
+```js
+instance.addEventListener('annotations.didSave', function () {
+  instance.exportXFDF().then(function (xfdf) {
+      var req = new XMLHttpRequest();
+      req.open("GET", "https://your-server.com/xfdf");
+      req.setRequestHeader("Content-Type", "application/vnd.adobe.xfdf");
+      req.send(xfdf);
+      req.send();
+    });
+  });
+});
+```
+
+==]
+
+<% end %>
+<% if windows? %>
+
+You can export annotations and form fields from a document to an XFDF file like so:
+
+```csharp
+using (var dataWriter = new DataWriter(new InMemoryRandomAccessStream()))
+{
+    await PdfView.Controller.GetPdfDocument().ExportXfdfToDataWriterAsync(dataWriter);
+
+    var buffer = dataWriter.DetachBuffer();
+    xfdfString = Encoding.UTF8.GetString(buffer.ToArray());
+}
+```
+
+This example shows how the XFDF data can be exported to a string by simply calling [`ExportXfdfToDataWriterAsync()`][] on the `Document`.
+
+To write to a file, just replace the stream with a file stream:
+
+```csharp
+var xfdfFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/annotation.xfdf"));
+using (var fileStream = await xfdfFile.OpenAsync(FileAccessMode.ReadWrite))
+using (var dataWriter = new DataWriter(fileStream))
+{
+    await PdfView.Controller.GetPdfDocument().ExportXfdfToDataWriterAsync(dataWriter);
+}
+```
+
+<% end %>
+<% if java? %>
+You can export annotations and form fields from a document to an XFDF file like so:
+
+```java
+File file = File.createTempFile("outputXfdf", ".xfdf");
+document.exportXfdf(new FileDataProvider(file), new HashSet<>(), new HashSet<>());
+```
+
+The second two parameters take in `Set`s. The first states which annotations to export, and the second states which form field to export. By passing an empty `Set`, or `null`, PSPDFKit assumes that all annotations or form fields should be exported.
+
+Much like the import XFDF, with export XFDF it is also possible to inherit from [`WritableDataProvider`][] to implement custom writers for encryption.
+<% end %>
+<% if dotnet? %>
+You can export annotations and form fields from a document to an XFDF file like so:
+
+```csharp
+const string filename = "xfdfOutput.xfdf";
+File.Create(filename);
+document.ExportXfdf(new FileDataProvider(filename), new List<int>(), new List<string>());
+```
+
+The second two parameters take in `List`s. The first states which annotations to export, and the second states which form field to export. By passing an empty `List`, PSPDFKit assumes that all annotations or form fields should be exported.
+
+Much like the import XFDF, with export XFDF it is also possible to inherit from [`IWritableDataProvider`][] to implement custom writers for encryption.
+<% end %>
+<% if ios? %>
+
+## Using an XFDF Annotation Provider
+
+PSPDFKit offers an annotation provider subclass — [`PSPDFXFDFAnnotationProvider`][] — which uses [`PSPDFXFDFParser`][] and [`PSPDFXFDFWriter`][] internally and ensures the best performance.
+
+You can use a [`PSPDFXFDFAnnotationProvider`][] to set up an XFDF annotation provider for a document, which will ensure that all annotation changes will be saved into the XFDF file. This can be done like so:
+
+[==
+
+```swift
+// Load from an example XFDF file.
+let externalAnnotationsFile = URL(fileURLWithPath: "path/to/XFDF.xfdf")
+
+// Create `document` and set up the XFDF provider.
+let document = PSPDFDocument()
+document.annotationSaveMode = .externalFile
+document.didCreateDocumentProviderBlock = {(_ documentProvider: PSPDFDocumentProvider) -> Void in
+	let XFDFProvider = PSPDFXFDFAnnotationProvider(documentProvider: documentProvider, fileURL: externalAnnotationsFile)
+	documentProvider.annotationManager.annotationProviders = [XFDFProvider]
+}
+```
+
+```objc
+// Load from an example XFDF file.
+NSURL *externalAnnotationsFile = [NSURL fileURLWithPath:@"path/to/XFDF.xfdf"];
+
+// Create `document` and set up the XFDF provider.
+PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+document.annotationSaveMode = PSPDFAnnotationSaveModeExternalFile;
+document.didCreateDocumentProviderBlock = ^(PSPDFDocumentProvider *documentProvider) {
+	PSPDFXFDFAnnotationProvider *XFDFProvider = [[PSPDFXFDFAnnotationProvider alloc] initWithDocumentProvider:documentProvider fileURL:externalAnnotationsFile];
+	documentProvider.annotationManager.annotationProviders = @[XFDFProvider];
+};
+```
+
+==]
+
+Please take a look at `PSCXFDFAnnotationProviderExample` in the [Catalog app][pspdfcatalog] for a runnable sample project.
+
+PSPDFKit also allows you to use an encrypted XFDF file in your XFDF annotation provider. For sample code, please refer to `PSCEncryptedXFDFAnnotationProviderExample` from the [Catalog app][pspdfcatalog].
+
+## Handling External Changes
+
+If the XFDF file used to store annotations for a document is changed outside of PSPDFKit, the cache for that document needs to be manually cleared. For performance reasons, [`PSPDFCache`][] does _not_ take the annotations on a given page into account. As such, when a previously used document is loaded in a [`PSPDFViewController`][] with an XFDF file that was changed externally, the cache will return stale images.
+
+To counter this, you can clear the cache like so:
+
+[==
+
+```swift
+// Where `document` is a `PSPDFDocument` instance.
+PSPDFKitGlobal.sharedInstance.cache.remove(for: document)
+```
+
+```objc
+// Where `document` is a `PSPDFDocument` instance.
+[PSPDFKitGlobal.sharedInstance.cache removeCacheForDocument:document];
+```
+
+==]
+
+<% end %>
+
+## Exporting Annotations to XFDF via Adobe Acrobat
+
+Adobe Acrobat can export annotations into XFDF. The export menu is part of the Comments tool and is accessed by opening the tool in the sidebar.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-export-1.png)
+
+You can access the export function by clicking on the three dots and then choosing Export All To Data File.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-export-2.png)
+
+1.  At the bottom of the page, choose Acrobat XFDF Files.
+2.  Select the directory you wish to save the XFDF file to and name the file.
+3.  Click save.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-export-3.png)
+
+A successful export will result in a file with an `.xfdf` extension.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-export-4.png)
+
+## Importing Annotations to XFDF via Adobe Acrobat
+
+The export function is part of the Comments tool and is accessed by clicking on its icon.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-import-1.png)
+
+Click on the three dots to open the import menu, and then click on Import Data File.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-import-2.png)
+
+Highlight the `.xfdf` file you wish to import and click Select.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-import-3.png)
+
+The import function completes with the annotations being placed on the document.
+
+![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-xfdf-import-4.png)
+
+## Adobe Acrobat Error Conditions
+
+| Error Description               | Screenshot                                                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Damaged/missing document body   | ![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-error-damaged-tag.png)        |
+| Damaged/missing description tag | ![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-error-missing-tag.png)        |
+| Missing document flag           | ![](/images/guides/shared/importing-exporting/xfdf-import-export/acrobat-error-damaged-popup-flag.png) |
+
+[salesforce xfdf article]: https://developer.salesforce.com/page/Adobe_XFDF
+[iso xfdf reference]: https://www.iso.org/obp/ui/#iso:std:iso:19444:-1:ed-1:v1:en
+
+<% if android? %>
+[pspdfkit instant]: ../../instant/overview/
+[`xfdfformatter`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/formatters/XfdfFormatter.html
+[`parsexfdf()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/formatters/XfdfFormatter.html#parseXfdf(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.providers.DataProvider)
+[`writexfdf()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/formatters/XfdfFormatter.html#writeXfdf(com.pspdfkit.document.PdfDocument,%20java.util.List%3Ccom.pspdfkit.annotations.Annotation%3E,%20java.util.List%3Ccom.pspdfkit.forms.FormField%3E,%20java.io.OutputStream)
+[`parsexfdfasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/formatters/XfdfFormatter.html#parseXfdfAsync(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.providers.DataProvider)
+[`writexfdfasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/formatters/XfdfFormatter.html#writeXfdfAsync(com.pspdfkit.document.PdfDocument,%20java.util.List%3Ccom.pspdfkit.annotations.Annotation%3E,%20java.util.List%3Ccom.pspdfkit.forms.FormField%3E,%20java.io.OutputStream)
+<% end %>
+<% if ios? %>
+[pspdfkit instant]: ../../instant/overview/
+[`pspdfxfdfannotationprovider`]: https://pspdfkit.com/api/Classes/PSPDFXFDFAnnotationProvider.html
+[`pspdfxfdfparser`]: https://pspdfkit.com/api/ios/Classes/PSPDFXFDFParser.html
+[`pspdfxfdfwriter`]: https://pspdfkit.com/api/ios/Classes/PSPDFXFDFWriter.html
+[`pspdfcache`]: https://pspdfkit.com/api/ios/Classes/PSPDFCache.html
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[pspdfcatalog]: /guides/ios/current/getting-started/example-projects/#pspdfcatalog
+<% end %>
+<% if web? %>
+[pspdfkit instant]: ../../instant/overview/
+[`instance#exportxfdf`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#exportXFDF
+[`instance#exportpdf`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#exportPDF
+[`configuration#xfdf`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#XFDF
+[`configuration#xfdfkeepcurrentannotations`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#XFDFKeepCurrentAnnotations
+[annotation api]: ../../annotations/introduction-to-annotations/
+[`annotations.didsave`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsDidSaveEvent
+[`configuration#autosavemode`]: ../../annotations/annotation-saving-mechanism/
+[server guides]: /guides/server/current/importing-exporting/xfdf-support/#importing-xfdf
+<% end %>
+<% if server? %>
+[pspdfkit instant]: https://pspdfkit.com/guides/web/current/pspdfkit-instant/overview/
+<% end %>
+<% if windows? %>
+[pspdfkit instant]: ../../importing-exporting/instant-json/
+[`document`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html
+[`importxfdfasync()`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_ImportXfdfAsync_PSPDFKitFoundation_Data_IDataProvider_
+[`importxfdffileasync()`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_ImportXfdfFileAsync_Windows_Storage_StorageFile_
+[`exportxfdftodatawriterasync()`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_ExportXfdfToDataWriterAsync_Windows_Storage_Streams_DataWriter_
+[`exportxfdftodatasinkasync()`]: https://pspdfkit.com/api/windows/PSPDFKit/PSPDFKit.Pdf.Document.html#PSPDFKit_Pdf_Document_ExportXfdfToDataSinkAsync_PSPDFKitFoundation_Data_IDataSink_
+[`dataprovider`]: https://pspdfkit.com/api/windows/PSPDFKitFoundation/PSPDFKitFoundation.Data.IDataProvider.html
+<% end %>
+<% if java? %>
+[`pdfdocument`]: /api/java/reference/com/pspdfkit/api/PdfDocument.html
+[`pdfdocument#importXfdf`]: /api/java/reference/com/pspdfkit/api/PdfDocument.html#importXfdf(com.pspdfkit.api.providers.DataProvider)
+[`pdfdocument#exportXfdf`]: /api/java/reference/com/pspdfkit/api/PdfDocument.html#exportXfdf(com.pspdfkit.api.providers.WritableDataProvider,%20java.util.Set<java.lang.Integer>,%20java.util.Set<java.lang.String>)
+[`writableDataProvider`]: /api/java/reference/com/pspdfkit/api/providers/WritableDataProvider.html
+<% end %>
+<% if dotnet? %>
+[`document`]: /api/dotnet/PSPDFKit/PSPDFKit.Document.html
+[`document#importXfdf`]: /api/dotnet/PSPDFKit/PSPDFKit.Document.html#PSPDFKit*Document_ImportXfdf_PSPDFKit_Providers_IDataProvider*
+[`document#exportXfdf`]: /api/dotnet/PSPDFKit/PSPDFKit.Document.html#PSPDFKit_Document_ExportXfdf_PSPDFKit_Providers_IWritableDataProvider_System_Collections_Generic_IEnumerable_System_Int32**System_Collections_Generic_IEnumerable_System_String**
+[`iwritabledataprovider`]: /api/dotnet/PSPDFKit/PSPDFKit.Providers.IWritableDataProvider.html
+<% end %>

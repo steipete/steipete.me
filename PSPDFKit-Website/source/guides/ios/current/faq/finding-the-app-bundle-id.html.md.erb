@@ -1,0 +1,42 @@
+---
+title: Finding the App Bundle ID
+section: developers
+---
+
+There is no way to look up [bundle IDs][pspdfkit guides bundle id] in the Apple iOS App Store directly. To find the identifier, you will need to look at a file inside the app.
+
+## If Your App Is in the App Store
+
+1. Find the app online (google for the iTunes link). For this example, we use [Apple Pages][].
+2. Copy the number after the ID in the URL (here it’s 361309726).
+3. Open https://itunes.apple.com/lookup?id=361309726, replacing the ID with the one you looked up.
+4. Search the output for bundleID. In this example, it looks like this (next to a bunch of other data): `"bundleId":"com.apple.Pages"`. So for Apple, the bundle ID is `com.apple.Pages`.
+
+## If You Have the IPA File Directly
+
+1. Copy the `.ipa` file and rename the extension to `.zip`. (So, for example, `Pages.ipa` will become `Pages.zip`.)
+2. Unzip the ZIP file. You will get a new folder named the same way as the original ZIP file.
+3. Search for the `iTunesMetadata.plist` file in that new folder.
+4. Open the file with a text editor and search for `softwareVersionBundleId`. For example, for the Pages app, the bundle ID is `com.apple.Pages`.
+
+![iTunes Metadata Plist][itunes metadata image]
+
+You can also use iTunes to download the app `.ipa` file directly and then find the bundle ID, like shown below.
+
+![iTunes App File Download][itunes app api image]
+
+## If You Only Have the App on Your Phone
+
+1. Use a tool like [iExplorer][], which allows you to browse your device storage directly.
+2. Connect your iPhone/iPad to your Mac via USB and open iExplorer or a similar utility.
+3. Open the Apps folder on your device and locate the app you’re interested in.
+4. Locate the `iTunesMetadata.plist` file and follow the steps above that you used to unpack the `.ipa` file.
+
+As of PSPDFKit 5 for iOS, [you can use this technique to identify the SDK version as well][pspdfkit guides current version].
+
+[pspdfkit guides bundle id]: ../../faq/what-is-a-bundle-id
+[apple pages]: https://itunes.apple.com/app/pages/id361309726?mt=8
+[itunes metadata image]: /images/guides/ios/faq/itunesMetadata-plist.png
+[itunes app api image]: /images/guides/ios/faq/itunes-app-ipa.png
+[iexplorer]: https://www.macroplant.com/iexplorer/
+[pspdfkit guides current version]: ../../license-issues/how-do-i-see-the-currently-used-version

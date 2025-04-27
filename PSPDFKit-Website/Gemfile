@@ -1,0 +1,50 @@
+source 'https://rubygems.org'
+
+# Middleman core
+gem 'middleman', '~> 4.3.4'
+
+# Blog extension
+gem 'middleman-blog', '~> 4.0.1'
+
+# Reload the browser automatically whenever files change
+gem 'middleman-livereload'
+
+# Blog summaries
+gem 'nokogiri', '~> 1.10.4'
+
+# Sitemap.xml generation
+gem 'middleman-search_engine_sitemap', '~> 1.4.0'
+
+# Support REDIRECTS in development
+gem 'middleman-redirects', '~> 0.3.0'
+
+# Markdown rendering
+gem 'commonmarker', '~> 0.17.9'
+
+# Syntax highlighting
+gem 'rouge', '~> 3.3.0'
+
+# Task runner
+gem 'rake', '~> 12.3.2'
+
+# Debugging
+gem 'rb-readline'
+gem 'middleman-pry', '~> 1.0.2'
+
+# Debugging
+group :development, :test do
+  gem 'byebug', '~> 10.0.2'
+end
+
+gem 'danger'
+
+# Testing
+group :test do
+  gem 'minitest', '~> 5.11.3'
+  gem 'minitest-hooks', '~> 1.5.0'
+  gem 'rspec', '~> 3.7.0'
+  gem 'capybara', '~> 3.24.0'
+  gem 'webdrivers', '~> 4.0'
+  gem 'sinatra', '~> 1.4.8'
+  gem 'launchy', '~> 2.4.3'
+end

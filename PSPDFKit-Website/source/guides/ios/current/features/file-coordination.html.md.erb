@@ -1,0 +1,105 @@
+---
+title: File Coordination
+section: developers
+
+---
+
+File coordination encompasses a set of system APIs and callbacks that allow you to coordinate file access safely between different processes or different threads.
+
+It consists of two main system APIs:
+
+- [`NSFileCoordinator`][], which coordinates the reading and writing of files and directories among multiple processes and objects in the same process.
+- [`NSFilePresenter`][], a protocol that should be implemented by objects that allow the user to view or edit the content of files or directories.
+
+[`NSFileCoordinator`][] essentially represents a cross-process file-locking mechanism, while [`NSFilePresenter`][] offers callbacks that can be used to refresh your application state due to external file changes.
+
+## File Coordination and PSPDFKit
+
+PSPDFKit for iOS has supported file coordination out of the box since version 6.7.0. Coordinated file access is handled at the [data provider][data providers] level using [`PSPDFCoordinatedFileDataProvider`][]. [`PSPDFCoordinatedFileDataProvider`][] is a subclass of our standard [`PSPDFFileDataProvider`][], which is designed to read and write data from/to a PDF file on disk. The coordinated subclass adds coordinated file access using [`NSFileCoordinator`][] and implements [`NSFilePresenter`][] callbacks that act on external file modifications.
+
+## Using File Coordination in PSPDFKit
+
+If you are creating a [`PSPDFDocument`][] using [`initWithURL:`][], then there is nothing you need to do, because you are already using file coordination. [`PSPDFDocument`][] will automatically create a [`PSPDFCoordinatedFileDataProvider`][] behind the scenes when it receives a file URL during initialization.
+
+If you are initializing the document using an explicit [`PSPDFFileDataProvider`][] (using [`initWithDataProviders:`][]), then we recommend switching to [`PSPDFCoordinatedFileDataProvider`][] as soon as your application is dealing with PDF files that could be accessed by other processes or by code in your own application that lies outside of PSPDFKit.
+
+### Disable File Coordination
+
+In most cases, it is recommended to use the default behavior and keep file coordination turned on for all files. File coordination is important whenever there is a chance that multiple processes (or threads inside your app) could be accessing the same file on disk at the same time. This might happen if you are providing extensions, using iCloud, using our FTS library indexing, or simply executing multithreaded code. However, if you are sure that this is not something that affects you, or if you are experiencing problems related to file coordination, you can opt to not use file coordination inside your app.
+
+You can disable file coordination in two ways:
+
+1.  On a case by case basis, using [`PSPDFDocument`][] via its [`initWithDataProviders:`][] initializer, passing a regular [`PSPDFFileDataProvider`][] instance instead of a [`PSPDFCoordinatedFileDataProvider`][].
+2.  By changing the default framework behavior during PSPDFKit initialization (`PSPDFFileCoordinationEnabledKey`), as shown below.
+
+[==
+
+```swift
+PSPDFKitGlobal.setLicenseKey(yourLicenseKey, options: [PSPDFFileCoordinationEnabledKey: false])
+```
+
+```objc
+[PSPDFKitGlobal setLicenseKey:yourLicenseKey options:@{PSPDFFileCoordinationEnabledKey: false});
+```
+
+==]
+
+### `PSPDFFileCoordinationDelegate`
+
+[`PSPDFFileCoordinationDelegate`][] is a replacement for [`NSFilePresenter`][]-like callbacks on the [`PSPDFDocument`][] level. Since a [`PSPDFDocument`][] can be composed out of several [data providers][] (and hence several [`PSPDFCoordinatedFileDataProvider`]s), it doesn’t implement [`NSFilePresenter`][] directly. Instead, the coordinated providers forward the file presenter calls to the document using [`PSPDFFileCoordinationDelegate`][] callbacks. You can override those callbacks in your subclasses if you need to perform custom behaviors in response to document updates. If you do so, be sure to call `super` to ensure appropriate default behaviors are also invoked by [`PSPDFDocument`][]. The default implementation of [`PSPDFFileCoordinationDelegate`][] in [`PSPDFDocument`][] asynchronously dispatches [`PSPDFDocumentUnderlyingFileChangedNotification`][] during both file changes and deletion.
+
+### Registering for File Presenter Callbacks
+
+File presenters need to be enabled from UI classes when they become active, and they need to be deactivated when UI presentation ends. [`NSFileCoordinator`][] defines `addFilePresenter:` and `removeFilePresenter:` for doing this. In addition, PSPDFKit adds [`PSPDFFilePresenterCoordinator`][], which defines helpers for registering multiple file presenters at the same time and takes care of automatically temporarily unregistering file presenters while the application is in the background. Failing to do so risks, according to Apple documentation, systemwide deadlocks.
+
+If you are using [`PSPDFDocument`][]s in your custom view controllers, you should use [`PSPDFFilePresenterCoordinator`][] to initiate file observation when presenting a [`PSPDFDocument`][]:
+
+[==
+
+```swift
+PSPDFFilePresenterCoordinator.shared.observe(document.filePresenters)
+```
+
+```objc
+[PSPDFFilePresenterCoordinator.sharedCoordinator observeFilePresenters:self.document.filePresenters];
+```
+
+==]
+
+You should also do this when ending document presentation:
+
+[==
+
+```swift
+PSPDFFilePresenterCoordinator.shared.unobserve(document.filePresenters)
+```
+
+```objc
+[PSPDFFilePresenterCoordinator.sharedCoordinator unobserveFilePresenters:self.document.filePresenters];
+```
+
+==]
+
+Be sure to also implement [`PSPDFDocumentUnderlyingFileChangedNotification`][] to receive file coordination changes from the presented document(s).
+
+Built-in PSPDFKit controllers ([`PSPDFViewController`][], [`PSPDFMultiDocumentViewController`][], and [`PSPDFTabbedViewController`][]) already implement [`PSPDFFilePresenterCoordinator`][] methods when setting and changing documents, so if you are using or subclassing them, there is nothing you need to do in this regard.
+
+### Responding to File Presentation Callbacks
+
+PSPDFKit controllers, including [`PSPDFViewController`][], [`PSPDFMultiDocumentViewController`][], and [`PSPDFTabbedViewController`][], are set up to listen to [`PSPDFDocumentUnderlyingFileChangedNotification`][]. Depending on the notification parameters, document state, and system capabilities, the controllers will either trigger appropriate actions to automatically respond to a file change or present a conflict resolution UI. Please consult the [Conflict Resolution guide article][conflict resolution] for more information.
+
+[`nsfilecoordinator`]: https://developer.apple.com/reference/foundation/nsfilecoordinator
+[`nsfilepresenter`]: https://developer.apple.com/reference/foundation/nsfilepresenter
+[`pspdfcoordinatedfiledataprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFCoordinatedFileDataProvider.html
+[`pspdffiledataprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFFileDataProvider.html
+[`pspdfdocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html
+[`initwithurl:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)initWithURL:
+[`initwithdataproviders:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)initWithDataProviders:
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[`pspdfmultidocumentviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFMultiDocumentViewController.html
+[`pspdftabbedviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFTabbedViewController.html
+[`pspdfdocumentunderlyingfilechangednotification`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentUnderlyingFileChangedNotification
+[`pspdffilepresentercoordinator`]: https://pspdfkit.com/api/ios/Classes/PSPDFFilePresenterCoordinator.html
+[`pspdffilecoordinationdelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFFileCoordinationDelegate.html
+[conflict resolution]: ../../features/conflict-resolution
+[data providers]: ../../features/data-providers

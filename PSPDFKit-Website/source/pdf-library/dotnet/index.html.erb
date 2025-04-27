@@ -1,0 +1,61 @@
+---
+title: PSPDFKit for .NET
+title_suffix: false
+description: A powerful solution for batch processing, manipulating, and editing PDF documents.
+platform: dotnet
+section: libraries
+---
+
+<!-- Sub Nav -->
+<%= partial 'shared/nav_sub', locals: {
+      items: [
+        { title: "Redaction", url: '#redaction' },
+        { title: "Document Editor", url: '#document-editor' },
+        { title: "Annotation Editing", url: '#annotation-editing' },
+        { title: "PDF Rendering", url: '#pdf-rendering' }
+      ],
+      classes: 'text-light text-sticky-alt'
+} %>
+
+<!-- Hero -->
+<%= partial 'pdf-library/shared/hero', locals: {
+  title: "A Reliable PDF Processing Library<br> for .NET",
+  icon: 'fa-dotnet'
+} %>
+
+<!-- Logos -->
+<%= partial 'pdf-library/shared/logos' %>
+
+<!-- Redaction -->
+<%= partial 'pdf-library/shared/redaction' %>
+
+<!-- Document Editor -->
+<%= partial 'pdf-library/shared/document_editor' %>
+
+<!-- Annotation Editing -->
+<%= partial 'pdf-library/shared/annotation_editing' %>
+
+<!-- PDF Rendering -->
+<%= partial 'pdf-library/shared/pdf_rendering' %>
+
+<!-- Integration -->
+<%= partial 'pdf-library/shared/integration', locals: {
+  title: 'Using PSPDFKit for .NET',
+  example: 'pdf-library/dotnet/example_basic.md'
+} %>
+
+<!-- Blog Posts -->
+<%= partial 'shared/blog_posts', locals: { title: 'Latest Updates', posts: tagged_articles('.NET') } %>
+
+<!-- Trial CTA -->
+<%= partial 'pdf-library/shared/cta_trial' %>
+
+<!-- Java -->
+<div class="bg-alt-dark p-4 text-center">
+  <div class="container">
+    <p class="mb-0 text-white">
+      <i class="fa fa-lg fa-java mr-2"></i>
+      Looking for <a href="/java/"> PSPDFKit Libraries for Java instead?</a>
+    </p>
+  </div>
+</div>

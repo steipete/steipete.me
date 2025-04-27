@@ -1,0 +1,16 @@
+---
+title: PSPDFKit Doesn’t Compile or Link
+section: developers
+---
+
+The most common problem with linking PSPDFKit is that of missing frameworks. Make sure to either use the provided configuration files or to add all the frameworks listed in the [Integrating PSPDFKit Manually][] guide.
+
+If you see an error like the following, it means `libxml2` is missing.
+
+<img src="/images/guides/ios/configuration-issues/pspdfkit-doesnt-compile-or-link/error-log.png">
+
+Other similar-looking linker errors will indicate other missing frameworks.
+
+If there are syntax errors or compiler errors in the header, this is usually an indication that either Xcode is too old or you are using an unsupported/old SDK (e.g. by copying SDK 7 into Xcode 6, which somewhat works but is supported by neither Apple nor us).
+
+[integrating pspdfkit manually]: ../../getting-started/integrating-pspdfkit

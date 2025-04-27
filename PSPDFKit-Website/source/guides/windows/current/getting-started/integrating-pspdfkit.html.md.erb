@@ -1,0 +1,173 @@
+---
+title: Integrating PSPDFKit Manually
+section: developers
+
+order: 1
+alternate_platform_links:
+  web: pspdfkit-for-web/getting-started
+---
+
+To include PSPDFKit in your app, you can use either the NuGet package or install the `PSPDFKit for Windows.vsix` Visual Studio Extension — installation steps are outlined below. Learn more about PSPDFKit for Windows in our [announcement blog post][windows announcement post] and on our [SDK product page][windows product page].
+
+## Requirements
+
+- Windows 10
+- Visual Studio 2017
+- A UWP-based application
+- The `PSPDFKit NuGet Package` or `PSPDFKit for Windows.vsix` Visual Studio Extension <span class="hidden show-in-trial force-replace-tokens"><a href="https://customers.pspdfkit.com/download/YOUR_WINDOWS_KEY_GOES_HERE" class="link-brand">(download here)</a></span>
+
+If you encounter any problems during the integration, [please let us know][pspdfkit support].
+
+## Catalog App
+
+![](/images/guides/windows/catalog.png)
+
+The SDK comes with an example application called the Catalog app. It contains many useful examples for exploring the different features of PSPDFKit and getting started quickly. You can find the app in the `Example` folder of the SDK ZIP file. The SDK ZIP file can be downloaded from [the customer portal][customer portal] or you can [request an evaluation license][pspdfkit trial] of PSPDFKit.
+
+### Building the Catalog App
+
+To build the Catalog app, simply open the solution in Visual Studio, choose the solution platform `x86` or `x64`, build, and run. Note that building and running for ARM requires an ARM-based device.
+
+## Basic Integration with Your Own App
+
+Download the SDK ZIP file and unpack it wherever appropriate.
+
+<span class="hidden show-in-trial force-replace-tokens">
+<a href="https://customers.pspdfkit.com/download/YOUR_WINDOWS_KEY_GOES_HERE" class="link-brand">Download the SDK ZIP file here.</a>.
+</span>
+
+Open Visual Studio and create a new blank UWP app in, for example, C#, with the Project Wizard.
+
+![](/images/guides/windows/new-app-project.png)
+
+Open `package.appxmanifest`, which you will see near the bottom of your Solution Explorer.
+
+The rightmost tab, Packaging, has a field called Package name.
+
+It is essential that your package name matches the [bundle ID][] of your license.
+
+![](/images/guides/windows/package-name.png)
+
+To add PSPDFKit to your application, you can use the NuGet package provided in the SDK ZIP file under the `nuget` folder, or you can install the SDK as a Visual Studio Extension.
+
+We recommend using the NuGet package, as this does not require a systemwide install of the extension, makes version tracking easier, and simplifies server-based build processes.
+
+<div class="alert alert-warning">
+
+To reference the SDK from a NuGet package, please [follow this guide][nuget-guide].
+
+To reference the SDK from a VSIX, please [follow this guide][vsix-guide].
+
+</div>
+
+In the Solution Explorer, open the file `App.xaml`.
+
+Add your license key as a `String` value in the application’s resources:
+
+```diff
+<Application
+    x:Class="MyApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+
++   <Application.Resources>
++       <ResourceDictionary>
++           <ResourceDictionary.MergedDictionaries>
++               <ResourceDictionary>
++                   <x:String x:Key="PSPDFKitLicense">YOUR_LICENSE_KEY_GOES_HERE</x:String>
++               </ResourceDictionary>
++           </ResourceDictionary.MergedDictionaries>
++       </ResourceDictionary>
++   </Application.Resources>
+
+</Application>
+```
+
+Open the main page XAML and paste the following XML as a child of the `<Grid>` element:
+
+```xml
+<Grid.RowDefinitions>
+    <RowDefinition Height="*"/>
+    <RowDefinition Height="52"/>
+</Grid.RowDefinitions>
+<ui:PdfView Grid.Row="0" Name="PdfView" License="{StaticResource PSPDFKitLicense}" />
+<Button IsEnabled="False" Content="Open PDF" HorizontalAlignment="Left" Margin="10" Grid.Row="1" Name="Button_OpenPDF" Click="Button_OpenPDF_Click"/>
+```
+
+You’ll see a green line under `ui:PdfView`. If you hover over it, you will be given the option for potential fixes. Click on this, and Visual Studio will suggest that you include the missing namespace, which you should do. It will then add the following namespace to `<Page>`:
+
+```xml
+<Page
+    xmlns:ui="using:PSPDFKit.UI"
+/>
+```
+
+Open the `MainPage.xaml.cs` file, add a delegate handler to `PdfView.InitializationCompletedHandler` in the constructor, and add the button’s click handler function:
+
+```csharp
+
+public MainPage()
+{
+    InitializeComponent();
+
+    // This handler is invoked once the `PdfView` has been initialized, and then the `PdfView.Controller` can be used.
+    PdfView.InitializationCompletedHandler += delegate(PdfView sender, Document args)
+    {
+        // Now that the `PdfView` is ready, enable the button for opening a file.
+        Button_OpenPDF.IsEnabled = true;
+    };
+}
+
+private async void Button_OpenPDF_Click(object sender, RoutedEventArgs e)
+{
+    var picker = new Windows.Storage.Pickers.FileOpenPicker();
+    picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+    picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+    picker.FileTypeFilter.Add(".pdf");
+
+    var file = await picker.PickSingleFileAsync();
+    if (file != null)
+    {
+      var document = DocumentSource.CreateFromStorageFile(file);
+      await PdfView.Controller.ShowDocumentAsync(document);
+    }
+}
+```
+
+Note that you must wait for initialization of the `PdfView` to be complete before using `PdfView.Controller`.
+
+In the Build toolbar, choose Debug and `x86` or `x64` — whichever you prefer.
+
+Then in the menu, select Build > Build Solution.
+
+The solution should build without complaint.
+
+Start the application, and you should be able to open a PDF by clicking on the Open button.
+
+### React Native for Windows UWP Support
+
+PSPDFKit for Windows UWP comes with optional support for React Native. This makes it very easy to add PDF support to your React Native Windows app. See [our open source GitHub repository][] for details on how to integrate.
+
+## Support for .NET, WPF (Windows Presentation Foundation), and Xamarin
+
+There’s [ongoing work by Microsoft to allow integrating UWP controls in WPF apps][uwp controls in wpf apps]. We also have a Xamarin wrapper for UWP, and you can check out our [Xamarin guide][] for more information.
+
+## Support for Windows 7/Windows 8.1
+
+For companies that still need to support legacy Windows, we offer [CEF as a replacement][cef]. This has a slightly higher performance impact (around 20–30 percent slower), but otherwise, it is functionally equivalent; it just needs more direct interaction with JavaScript.
+
+Mainstream support for Windows 7 ended on 13 January 2015, and mainstream support for Windows 8.1 ended on 9 January 2018. However, [Microsoft will still offer paid extended support until January 2020/2023, respectively][windows lifecycle].
+
+[customer portal]: https://customers.pspdfkit.com
+[pspdfkit try now]: https://pspdfkit.com/try/
+[windows product page]: https://pspdfkit.com/windows
+[windows announcement post]: https://pspdfkit.com/blog/2018/introducing-pspdfkit-windows/
+[our open source github repository]: https://github.com/PSPDFKit/react-native#windows-uwp
+[uwp controls in wpf apps]: https://docs.microsoft.com/en-us/windows/uwp/xaml-platform/xaml-host-controls
+[cef]: ../../other-languages/cef-chromiumembeddedframework/
+[windows lifecycle]: https://support.microsoft.com/en-us/help/13853/windows-lifecycle-fact-sheet
+[nuget-guide]: /guides/windows/current/features/nuget-package/
+[vsix-guide]: /guides/windows/current/features/vsix-extension/
+[bundle id]: https://pspdfkit.com/guides/windows/current/faq/what-is-a-bundle-id/
+[xamarin guide]: https://pspdfkit.com/guides/windows/current/other-languages/xamarin/

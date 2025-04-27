@@ -1,0 +1,58 @@
+---
+title: Introduction to Forms
+section: developers
+
+order: 1
+---
+
+### Form support of PSPDFKit
+
+PSPDFKit supports all form types specified by the PDF specification. We have to differentiate between the field objects and the annotation objects.
+
+| Type                          | Field Object               | Annotation Object               |
+|-------------------------------|----------------------------|---------------------------------|
+| Check, Radio and Pushbuttons  | [`PSPDFButtonFormField`][] | [`PSPDFButtonFormElement`][]    |
+| List and Comboboxes           | [`PSPDFChoiceFormField`][] | [`PSPDFChoiceFormElement`][]    |
+| Text                          | [`PSPDFTextFormField`][]   | [`PSPDFTextFieldFormElement`][] |
+| Digital Signatures            | [`PSPDFSignatureFormField`][] | [`PSPDFSignatureFormElement`][] |
+
+#### Retrieving Field and Annotation objects
+
+Using the [`PSPDFFormParser`][] (which can be retrieved from a [`PSPDFDocument`][] or a [`PSPDFDocumentProvider`][]) you can fetch either the field objects or annotation objects using the [formFields](https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html#/c:objc(cs)PSPDFFormParser(py)formFields) or [forms](https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html#/c:objc(cs)PSPDFFormParser(py)forms) property.
+
+If you need to retrieve a specific field or annotation object, you can use the methods [findAnnotationWithFieldName:](https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html#/c:objc(cs)PSPDFFormParser(im)findAnnotationWithFieldName:) and [findFieldWithFullFieldName:](https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html#/c:objc(cs)PSPDFFormParser(im)findFieldWithFullFieldName:).
+
+#### Field objects
+
+The field objects handle the state of the form field and offer appropriate methods to modify the form field. Each form field has a [`fullyQualifiedName`](https://pspdfkit.com/api/ios/Classes/PSPDFFormField.html#/c:objc(cs)PSPDFFormField(py)fullyQualifiedName) that can be used to identify and retrieve a specific field object.
+
+You can query the [`type`](https://pspdfkit.com/api/ios/Classes/PSPDFFormField.html#/c:objc(cs)PSPDFFormField(py)type) property to find out which kind of field object it is. This allows you to easily cast the [`PSPDFFormField`]() to the right type.
+
+#### Annotation objects
+
+Each field object has one or more annotations linked to it. The main purpose of the annotation object is to offer a graphical element on top of the PDF (see [Introduction to Annotations](../../annotations/introduction-to-annotations)).
+
+### JavaScript support
+
+PSPDFKit has limited support for executing JavaScript attached to the document, annotations and especially forms. Most validation rules should work out-of-the-box, and we're constantly working on improving the engine and increasing our coverage of the specifications.
+
+### Renaming form field names
+
+Form field names can't be renamed using a [`PSPDFFormField`][] or [`PSPDFFormElement`][] instance, due to internal constraints. It is, however, possible to rename them using the [`PSPDFProcessor`][]. See [`formFieldNameMappings`](https://pspdfkit.com/api/ios/Classes/PSPDFFormParser.html#/c:objc(cs)PSPDFProcessorConfiguration(py)formFieldNameMappings). You can simply pass in a dictionary containing your source form field name and the new form field name.
+
+As an example, this can be useful if you have a template PDF with form fields that needs to be appended to a different PDF file. Form field names must be unique and it would not be possible to append the same template multiple times without changing the names.
+
+Please note, this requires the Document Editor component to be enabled for your license.
+
+[`PSPDFButtonFormField`]: https://pspdfkit.com/api/Classes/PSPDFButtonFormField.html
+[`PSPDFButtonFormElement`]: https://pspdfkit.com/api/Classes/PSPDFButtonFormElement.html
+[`PSPDFChoiceFormField`]: https://pspdfkit.com/api/Classes/PSPDFChoiceFormField.html
+[`PSPDFChoiceFormElement`]: https://pspdfkit.com/api/Classes/PSPDFChoiceFormField.html
+[`PSPDFTextFormField`]: https://pspdfkit.com/api/Classes/PSPDFTextFormField.html
+[`PSPDFTextFieldFormElement`]: https://pspdfkit.com/api/Classes/PSPDFTextFieldFormElement.html
+[`PSPDFSignatureFormField`]: https://pspdfkit.com/api/Classes/PSPDFSignatureFormField.html
+[`PSPDFSignatureFormElement`]: https://pspdfkit.com/api/Classes/PSPDFSignatureFormElement.html
+[`PSPDFFormParser`]: https://pspdfkit.com/api/Classes/PSPDFFormParser.html
+[`PSPDFFormField`]: https://pspdfkit.com/api/Classes/PSPDFFormField.html
+[`PSPDFFormElement`]: https://pspdfkit.com/api/Classes/PSPDFFormElement.html
+[`PSPDFProcessor`]: https://pspdfkit.com/api/Classes/PSPDFProcessor.html

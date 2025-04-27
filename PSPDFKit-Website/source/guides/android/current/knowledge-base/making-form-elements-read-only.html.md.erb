@@ -1,0 +1,18 @@
+---
+title: How to make form elements read only?
+section: knowledge-base
+---
+
+If you want to make certain form elements in your document read only you can set the [`AnnotationFlags.LOCKEDCONTENTS`][] flag on the associated [`WidgetAnnotation`][]. While the form elements will still be displayed in the document clicking on them won't start the form editing view making them read only.
+
+```java
+List<FormElement> formElements = document.getFormProvider().getFormElements();
+for (FormElement formElement : formElements) {
+    // This will prevent the user from making changes to this form element.
+    formElement.getAnnotation()
+        .setFlags(EnumSet.of(AnnotationFlags.LOCKEDCONTENTS));
+}
+```
+
+[`AnnotationFlags.LOCKEDCONTENTS`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationFlags.html#LOCKEDCONTENTS
+[`WidgetAnnotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/WidgetAnnotation.html

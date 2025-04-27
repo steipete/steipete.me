@@ -1,0 +1,32 @@
+---
+title: Disable Rendered Annotation Types
+section: developers
+---
+
+The [`renderAnnotationTypes`][] property in [`PSPDFDocument`][] controls which annotations should be visible.
+
+This is a bitmask of the [`PSPDFAnnotationType`][] type.
+
+To enable all annotations except audio, image, and video annotations, you can set the following:
+
+[==
+
+```swift
+var annotationTypes = PSPDFAnnotationType.all
+annotationTypes.remove(.screen)
+annotationTypes.remove(.richMedia)
+annotationTypes.remove(.sound)
+document.renderAnnotationTypes = annotationTypes
+```
+
+```objc
+document.renderAnnotationTypes = PSPDFAnnotationTypeAll & ~(PSPDFAnnotationTypeScreen|PSPDFAnnotationTypeRichMedia|PSPDFAnnotationTypeSound|PSPDFAnnotationTypeStamp);
+```
+
+==]
+
+**ℹ️ Note:** Images are rendered as stamps, but there is no simple way to differentiate between a text stamp (e.g. Approved) and an image stamp.
+
+[`renderannotationtypes`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)renderAnnotationTypes
+[`pspdfdocument`]: https://pspdfkit.com/api/Classes/PSPDFDocument.html
+[`pspdfannotationtype`]: https://pspdfkit.com/api/ios/Other%20Enums.html#/c:@E@PSPDFAnnotationType

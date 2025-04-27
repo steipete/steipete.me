@@ -1,0 +1,75 @@
+---
+title: Annotation Replies and Reviews
+section: developers
+---
+
+With annotation replies, users are able to have written discussions directly inside a document. [As of PSPDFKit 4.5 for Android, PSPDFKit provides convenient APIs for accessing replies in a document][annotation replies and reviews], as well as user interface components for viewing and editing replies.
+
+Annotations may also have author-specific states associated with them. This allows users to review a proposed change to, for example, say whether they agree or disagree with the change.
+
+PSPDFKit has built-in support to let users view, search, and add replies and reviews. There is also a model-level API for programmatic access so that you can build custom features. PSPDFKit implements annotation replies and state conforming to the PDF specification and is fully compatible with the same features in Adobe Acrobat Reader.
+
+## Terminology
+
+This is the terminology we use:
+
+- **Reply** — an annotation with an in-reply-to annotation set.
+- **Text reply** — a reply where the author-specific state is unspecified.
+- **State reply** or **state annotation** — a reply where the author-specific state is specified.
+- **Review** — a state reply where the author-specific state is in the review state model (category).
+- **Comments** — the list containing an annotation and all of its text replies. This means the first comment displays the [`contents`][] of the parent annotation. This is mostly a user-facing term.
+
+## Licensing
+
+Annotation replies is a separate component in your PSPDFKit license. Without this feature, your app will not be able to view, search, or add annotation replies. Please [contact our sales team][sales] to add this feature to your license.
+
+## Third-Party Compatibility
+
+Replies were introduced in the PDF 1.6 specification and are fully compatible with [Adobe Acrobat][adobe acrobat comments]. Other PDF viewers might not be able to show all replies or may simply fail to display status information.
+
+<img src="/images/guides/ios/annotations/replies/replies-acrobat.png" alt="Screenshot of comments in Adobe Acrobat">
+
+## User Interface
+
+Users can tap on an annotation and then tap the comments toolbar button. This will present the note editor, which shows all the comments on the annotation, along with any reviews on those comments. Users can both add and edit the comments and add reviews.
+
+Just like with other annotations, users can edit comments even if they did not create them.
+
+If there are replies to replies, PSPDFKit will flatten the nested conversation into a single list sorted by date.
+
+### Disabling the Replies and Reviews UI
+
+If your license includes annotation replies but you want to disable letting the user view and add replies and reviews, you can define a [`PdfConfiguration`][] with the `annotationReplyFeatureEnabled(false)` method in the builder:
+
+[==
+
+```kotlin
+val configuration = PdfConfiguration.Builder().annotationReplyFeatureEnabled(false).build()
+```
+
+```java
+PdfConfiguration configuration = new PdfConfiguration.Builder().annotationReplyFeatureEnabled(false).build();
+```
+
+==]
+
+Then just pass it when starting your [`PdfFragment`][] or [`PdfActivity`][].
+
+## Model API
+
+Replies to an annotation are themselves annotations. An annotation is a reply if it is pointing to a parent by means of the [`Annotation#getInReplyTo()`][] property. In the PDF, this is modeled with the `IRT` entry in the annotation dictionary. There is no direct connection in the reverse direction, i.e. between an annotation and its replies. Instead, all the annotations on the same page must be searched. However, if you use the user interface provided by PSPDFKit, this is all taken care of.
+
+The author-specific state associated with an annotation is not specified in the annotation itself, but rather in a separate text annotation that refers to the original annotation by means of `Annotation#getInReplyTo()`. Each time a user changes the state, a new note annotation is created and appended to the linked list of state changes. To find the complete set of states associated with an annotation, it is necessary to repeatedly search all the annotations on the same page in order to follow the reverse of `Annotation#getInReplyTo()`. Again, this is already handled in PSPDFKit’s user interface.
+
+Since replies are annotations, they are included when querying the annotations on a page. You can check if an annotation is a reply using `Annotation#isReply()`. Doing this does not require you to have the Replies feature in your license.
+
+If the license feature is enabled, you can both read and set the annotation a reply replies to using `Annotation#getInReplyTo()` and `Annotation#setInReplyTo(Annotation annotation)`.
+
+[annotation replies and reviews]: /blog/2018/annotation-replies-and-reviews/
+[sales]: /sales
+[adobe acrobat comments]: https://helpx.adobe.com/acrobat/using/comments.html
+[`pdfconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.html
+[`pdffragment`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html
+[`pdfactivity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html
+[`annotation#getinreplyto()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getInReplyTo()
+[`contents`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getContents()

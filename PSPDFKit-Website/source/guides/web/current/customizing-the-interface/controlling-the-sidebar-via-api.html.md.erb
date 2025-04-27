@@ -1,0 +1,61 @@
+---
+title: Controlling the Sidebar via API
+section: developers
+
+---
+
+PSPDFKit for Web comes with contextual sidebars for page thumbnails, document outlines, bookmarks, and annotations. Each sidebar is available via its corresponding toolbar button:
+
+```
+sidebar-thumbnails
+sidebar-document-outline
+sidebar-annotations
+sidebar-bookmarks
+```
+
+These are built-in toolbar items that are grouped in a `dropdownGroup` called `sidebar`. You can read more about built-in items and how to customize the toolbar in the [Customizing the Toolbar][] guide.
+
+## Sidebar Mode
+
+The sidebar can also be controlled by setting [`ViewState#sidebarMode`][] with the [`Instance#setViewState`] API. For a list of all available modes, please refer to [`PSPDFKit.SidebarMode`][].
+
+We can, for example, activate the annotations sidebar in the following way:
+
+[==
+
+```es
+instance.setViewState(viewState =>
+  viewState.set("sidebarMode", PSPDFKit.SidebarMode.ANNOTATIONS)
+);
+```
+
+```js
+instance.setViewState(function(viewState) {
+  return viewState.set("sidebarMode", PSPDFKit.SidebarMode.ANNOTATIONS);
+});
+```
+
+==]
+
+To reset the `sidebarMode` and hide the sidebar, we can simply set its value to `null`:
+
+[==
+
+```es
+instance.setViewState(viewState => (
+  viewState.set("sidebarMode", null);
+));
+```
+
+```js
+instance.setViewState(function(viewState) {
+  return viewState.set("sidebarMode", null);
+});
+```
+
+==]
+
+[customizing the toolbar]: ../../customizing-the-interface/customizing-the-toolbar/
+[`viewstate#sidebarmode`]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#sidebarMode
+[`pspdfkit.sidebarmode`]: https://pspdfkit.com/api/web/PSPDFKit.html#.SidebarMode
+[`instance#setviewstate`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setViewState

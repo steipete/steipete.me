@@ -1,0 +1,67 @@
+---
+title: Data Protection
+section: developers
+
+---
+
+PSPDFKit Instant works with [iOS data protection][]. If you set a default data protection level using an entitlement, Instant will use this and there’s nothing more to do.
+
+If you want a different level for documents and annotations stored by Instant, use the [`dataDirectory`][] class property on [`PSPDFInstantClient`][] to access the path where Instant stores data.
+
+If this is the first time Instant is running, create the directory and set the protection type:
+
+[==
+
+```swift
+try FileManager.default.createDirectory(at: PSPDFInstantClient.dataDirectory, withIntermediateDirectories: true, attributes: [.protectionKey: FileProtectionType.complete])
+```
+
+```objc
+[NSFileManager.defaultManager createDirectoryAtURL:PSPDFInstantClient.dataDirectory withIntermediateDirectories:YES attributes:@{NSFileProtectionKey: NSFileProtectionComplete} error:&error];
+```
+
+==]
+
+If you’re upgrading the protection type on an existing installation in an app where Instant has already run, use a directory enumerator. You should decide on an appropriate way to handle errors rather than just logging them.
+
+[==
+
+```swift
+guard let directoryEnumerator = FileManager.default.enumerator(at: PSPDFInstantClient.dataDirectory, includingPropertiesForKeys: [], options: [], errorHandler: { url, error -> Bool in
+    print(error)
+    return true
+}) else {
+    print("Could not create enumerator for Instant data directory.")
+    return
+}
+
+// NSEnumerator is not generic in Swift so we have to deal with Any.
+while let file = directoryEnumerator.nextObject() as? NSURL {
+    try! file.setResourceValue(URLFileProtection.complete, forKey: .fileProtectionKey)
+}
+```
+
+```objc
+NSDirectoryEnumerator<NSURL *> *enumerator = [NSFileManager.defaultManager enumeratorAtURL:PSPDFInstantClient.dataDirectory includingPropertiesForKeys:@[] options:0 errorHandler:^BOOL(NSURL *url, NSError *error) {
+    NSLog(@"%@", error);
+    return YES;
+}];
+
+if (enumerator == nil) {
+    NSLog(@"Could not create enumerator for Instant data directory.");
+}
+
+for (NSURL *url in enumerator) {
+    NSError *error;
+
+    if (![url setResourceValue:NSURLFileProtectionComplete forKey:NSURLFileProtectionKey error:&error]) {
+        NSLog(@"%@", error);
+    }
+}
+```
+
+==]
+
+[iOS data protection]: https://pspdfkit.com/blog/2017/how-to-use-ios-data-protection/
+[`PSPDFInstantClient`]: https://pspdfkit.com/api/ios/Classes/PSPDFInstantClient.html
+[`dataDirectory`]: https://pspdfkit.com/api/ios/Classes/PSPDFInstantClient.html#/c:objc(cs)PSPDFInstantClient(cpy)dataDirectory

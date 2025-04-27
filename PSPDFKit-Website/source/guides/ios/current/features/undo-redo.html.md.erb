@@ -1,0 +1,93 @@
+---
+title: Undo and Redo
+section: developers
+
+---
+
+PSPDFKit for iOS supports undo and redo for creating and editing annotations, including form filling. Users can undo and redo changes using the buttons in [`PSPDFAnnotationToolbar`][].
+
+To achieve this, the SDK uses a standard component named `NSUndoManager`. If you have never used it before, we recommend studying both the [Apple Documentation][Apple API NSUndoManager] and the [NSHipster article][NSHipster NSUndoManager] about this topic to understand the principles of how this class works.
+
+PSPDFKit uses a [`PSPDFUndoController`][] object that wraps and manages the undo manager and allows more convenient access to properties such as [`canUndo`][].
+
+The undo controller also extends Apple’s concept by adding a coalescing mode, which merges changes happening in quick succession into a single undo event. This is used in various places — for example, when a color is chosen from the color picker, we don’t save every single change. Rather we commit the change after a short period of time to provide a better undo experience for the user. This implies that whenever the `PSPDFUndoController` object exposes properties, you should use them, and only in cases where there’s no other way to go down to the wrapped undo manager instance.
+
+The `PSPDFUndoController` instance is exposed via the [`undoController`][] property on [`PSPDFDocument`][]. Undo can also be disabled on a per-document level via the [`undoEnabled`][] property.
+
+### Listening for Undo and Redo Changes
+
+If you’re implementing your own undo and redo buttons and are trying to update the enabled state, you need to listen for the following notifications:
+
+*  `NSUndoManagerDidUndoChangeNotification`
+*  `NSUndoManagerDidRedoChangeNotification`
+*  `PSPDFUndoControllerAddedUndoActionNotification`
+*  `PSPDFUndoControllerRemovedUndoActionNotification`
+
+For convenience reasons, we also expose a [`delegate`][] method on [`PSPDFAnnotationStateManager`][] that listens to the set above and calls back with the undo- and redo-enabled states:
+
+[==
+
+```swift
+optional public func annotationStateManager(_ manager: PSPDFAnnotationStateManager, didChangeUndoState undoEnabled: Bool, redoState redoEnabled: Bool)
+```
+
+```objc
+- (void)annotationStateManager:(PSPDFAnnotationStateManager *)manager didChangeUndoState:(BOOL)undoEnabled redoState:(BOOL)redoEnabled;
+```
+
+==]
+
+Note that this class supports multiple delegates. Use [`addDelegate:`][] and [`removeDelegate:`][] to register them.
+
+See `PSCVerticalAnnotationToolbarExample.m` for a sample implementation of custom undo and redo buttons.
+
+### Shake to Undo
+
+PSPDFKit is a good iOS citizen and supports the native ways of undoing, which on the iPhone is Shake to Undo — [see the Undo and Redo section in the iOS Human Interface Guidelines][Apple Guide UndoRedo] for more on this. Shake to Undo can be deactivated by the user in the phone [Accessibility settings][IGeeksBlog Turn Off Undo] or via the [`applicationSupportsShakeToEdit`][] property on `UIApplication`.
+
+### Implementation Notes
+
+Saving annotations will clear the undo and redo stacks. As a result, writing objects into the PDF changes various details, so providing a reliable undo is difficult. [Saving happens at various points][PSPDFKit Guide Save Annotations], including when the application enters the background.
+
+On a technical level, our undo works via KVO and registering each annotation object and tracking changes on a property basis.
+
+### Undo/Redo Grouping
+
+By default each annotation change is recorded as a single undo action. If you're doing multiple things but you want them to be undone by a single undo action, you can group those changes. This can be done with [`PSPDFPerformBlockAsGroup`][], which let's you decide what to include in a single undo action. You can group any changes to annotations, like changing their size and color in a single action.
+
+[==
+
+```swift
+PSPDFPerformBlockAsGroup(document.undoController, {
+  // This is an example on how to group actions for an ink annotation
+  annotation.color = .red
+  annotation.lineWidth = 5
+}, nil)
+```
+
+```objc
+PSPDFPerformBlockAsGroup(document.undoController, ^{
+  // This is an example on how to group actions for an ink annotation
+  annotation.color = UIColor.redColor;
+  annotation.lineWidth = 5.0;
+}, nil);
+```
+
+==]
+
+[`PSPDFAnnotationToolbar`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationToolbar.html
+[Apple API NSUndoManager]: https://developer.apple.com/documentation/foundation/undomanager
+[NSHipster NSUndoManager]: http://nshipster.com/nsundomanager/
+[`PSPDFUndoController`]: https://pspdfkit.com/api/ios/Classes/PSPDFUndoController.html
+[`canUndo`]: https://pspdfkit.com/api/ios/Classes/PSPDFUndoController.html#/c:objc(cs)PSPDFUndoController(py)canUndo
+[`undoController`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)undoController
+[`undoEnabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)undoEnabled
+[`delegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFAnnotationStateManagerDelegate.html#/c:objc(pl)PSPDFAnnotationStateManagerDelegate(im)annotationStateManager:didChangeUndoState:redoState:
+[`PSPDFAnnotationStateManager`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationStateManager.html
+[`addDelegate:`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationStateManager.html#/c:objc(cs)PSPDFAnnotationStateManager(im)addDelegate:
+[`removeDelegate:`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationStateManager.html#/c:objc(cs)PSPDFAnnotationStateManager(im)removeDelegate:
+[Apple Guide UndoRedo]: https://developer.apple.com/ios/human-interface-guidelines/user-interaction/undo-and-redo/
+[IGeeksBlog Turn Off Undo]: http://www.igeeksblog.com/how-to-turn-off-shake-to-undo-on-iphone/
+[`applicationSupportsShakeToEdit`]: https://developer.apple.com/documentation/uikit/uiapplication/1623127-applicationsupportsshaketoedit
+[PSPDFKit Guide Save Annotations]: ../../annotations/annotation-and-bookmark-saving-triggers
+[`PSPDFPerformBlockAsGroup`]: https://pspdfkit.com/api/ios/Other%20Functions.html#/c:@F@PSPDFPerformBlockAsGroup

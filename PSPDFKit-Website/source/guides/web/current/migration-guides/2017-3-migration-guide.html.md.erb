@@ -1,0 +1,90 @@
+---
+title: 2017.3 Migration Guide
+section: developers
+
+order: 509
+---
+
+## Users
+
+[PSPDFKit for Web 2017.3][] deprecated the concept of user management via the PSPDFKit Server. The initial idea was that you should maintain an access list for all of your application’s users on the PSPDFKit server.
+
+However, we noticed an issue that would come up repeatedly in support requests: Customers don’t want to have to mirror their access control to PSPDFKit Server, preferring to rely on signed JSON Web Tokens (JWTs) instead. That’s why we’re officially deprecating this functionality.
+
+To do this, we updated the JWT payload format and removed the option to authenticate using a `"user_id"`. The related backend APIs for assigning users to documents have been removed as well — namely `/api/change_users` and `/api/set_users`.
+
+If you were relying on user IDs to authenticate your documents, you will need to update the JWT payload to a finer-grained `"permissions"` list. For example, this:
+
+```json
+{
+  "document_id": "abc",
+  "user_id": "test_user"
+}
+```
+
+becomes this:
+
+```json
+{
+  "document_id": "abc",
+  "permissions": ["read-document", "edit-annotations"]
+}
+```
+
+Read on to find out more about the newly introduced concept of permissions.
+
+## JWT Authentication
+
+We’ve also revamped our authentication payload in the JWT. Previously, it was necessary to use the `"context"` key in the JWT to get access to the cover image of a document, and it was only possible to make the JWT read-only by setting the `"access"` field to `"read-only"`.
+
+Starting with this release, a JWT has to include the `"permissions"` claim instead and specify a list of features that will be accessible to the holder of the token. Please refer to our [Authentication guide][] for more details and to see the full list of available permissions.
+
+The two permissions you’ll likely want to enable when migrating from 2017.2 are: `"read-document"`, to allow reading the document and its annotations; and `"edit-annotations"`, to allow creating, updating, and deleting annotations.
+
+A read-only JWT which looked like this in 2017.2:
+
+```json
+{
+  "document_id": "abc",
+  "access": "read-only"
+}
+```
+
+becomes this:
+
+```json
+{
+  "document_id": "abc",
+  "permissions": ["read-document"]
+}
+```
+
+This change also affects the token required by the `/documents/cover` endpoint. It now has to include the `"cover-image"` permission instead of the `"context"` key. So this:
+
+```json
+{
+  "document_id": "abc",
+  "context": "cover"
+}
+```
+
+becomes this:
+
+```json
+{
+  "document_id": "abc",
+  "permissions": ["cover-image"]
+}
+```
+
+As you can see, the new format is simpler and is more amenable to adding new features and more granular access controls in future releases.
+
+Keep in mind that we’re deprecating the old JWT format softly. This means that production activations will still accept the previous format after upgrading to 2017.3. However, development installations will produce errors on the previous format as soon as you update. Support for the old format will be removed completely in the 2017.4 release, so please plan for future upgrades accordingly.
+
+If you need additional help while making your setup ready for PSPDFKit for Web 2017.3, please [contact our support team][pspdfkit support].
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2017.3]: https://pspdfkit.com/blog/2017/pspdfkit-web-2017-3/
+[authentication guide]: https://pspdfkit.com/guides/web/current/server-backed/client-authentication/
+[changelog]: https://pspdfkit.com/changelog/web/#2017.3

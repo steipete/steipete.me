@@ -1,0 +1,80 @@
+---
+title: Video Annotations
+section: developers
+---
+
+This section is about embedded video annotations. For adding multimedia elements on demand, see our [Multimedia Annotations][] guide instead.
+
+## Rich Media/Video Annotations
+
+The default way to embed video into a PDF is by using [rich media annotations][]. This annotation type can store and embed videos directly into the PDF and is supported on both iOS and Android. Rich media annotations can be created with Adobe Acrobat and other similar tools.
+
+PSPDFKit currently does not support creating rich media annotations. If you are interested in this feature, please contact us on [support][].
+
+Download a sample file with a rich media video [here][rich media video sample] and try it with our [free PDF Viewer apps][].
+
+![](/images/guides/ios/annotations/video-annotations/video-annotation.jpg)
+
+Various customizations and rich media control actions, such as show/hide controls, are supported.
+
+**⚠️ Warning:** Ensure the codec used is either a standard MPG/H264 or a similar type that is universally supported. Acrobat, in most cases, uses Flash for playing videos, as it supports some less common outdated formats as well.
+
+### Showing/Hiding Video Controls
+
+By default, video controls are always shown. There might be documents with a flag set on the video annotation, in order to explicitly hide video controls. If you still want to show controls, this can be altered in the document itself by setting the Playback Control Skin to All Controls in Adobe Acrobat.
+
+![](/images/guides/shared/annotations/video-annotations/video-annotation-controls.png)
+
+You can also edit the [`PSPDFLinkAnnotation`][] object of the video and set the [`controlsEnabled`][] property. This property will be enabled or disabled, depending on the set control style of the annotation in the document.
+
+You can use the following code snippet after creating the [`PSPDFDocument`][] instance to enable controls for all rich media annotations in the document:
+
+[==
+
+```swift
+let allAnnotationsDictionary = document.allAnnotations(of: .richMedia)
+let allAnnotations = allAnnotationsDictionary.flatMap { _, value in
+    return value
+}
+
+allAnnotations.forEach { annotation in
+    (annotation as? PSPDFRichMediaAnnotation)?.controlsEnabled = true
+}
+```
+
+```objc
+NSDictionary *allAnnotationsDictionary = [document allAnnotationsOfType:PSPDFAnnotationTypeRichMedia];
+NSMutableArray *allAnnotations = [NSMutableArray array];
+[allAnnotationsDictionary enumerateKeysAndObjectsUsingBlock: ^(NSNumber *key, NSArray *value, BOOL *stop) {
+    [allAnnotations addObjectsFromArray:value];
+}];
+
+for (PSPDFRichMediaAnnotation *annotation in allAnnotations) {
+    annotation.controlsEnabled = YES;
+}
+```
+
+==]
+
+### Autoplay
+
+The PDF format defines autoplay in the `RichMediaSettings` dictionary as `RichMediaActivation`. Both `PO` and `PV` are supported activation conditions, but PSPDFKit treats them the same and will trigger a start once the page has appeared. (`XA` is another possible video activation condition, and it is used if the value is omitted.)
+
+PSPDFKit exposes autoplay as a flag on the annotation object.
+
+### Supported Audio/Video Formats
+
+PSPDFKit passes the extracted audio or video material to the system player. The supported context, bitrates, etc. depend on your target platform and OS version. Both iOS and Android support most variations of MP3 audio and MP4 video formats. However, please test content on an actual device, as support in simulator/emulator environments can be different.
+
+### Content Appearance
+
+Rich media (video/audio) annotations are usually displayed via embedded Flash controls, which are not supported on mobile. PSPDFKit will extract the content and has logic to interpret common parameters such as showing/hiding controls. There is a variety of Flash players used, so it’s not always possible to map all variables. Please ping [support][] if you have a document that is not correctly interpreted.
+
+Rich media annotations are defined in [Adobe® Supplement to the ISO 32000 Specification, BaseVersion: 1.7 ExtensionLevel: 3][rich media annotation definition].
+
+[multimedia annotations]: ../../annotations/multimedia-annotations/
+[rich media annotations]: ../../annotations/introduction-to-annotations/
+[rich media video sample]: https://cl.ly/3I3v1E1m2K1f
+[free pdf viewer apps]: https://pdfviewer.io/
+[`controlsenabled`]: https://pspdfkit.com/api/ios/Classes/PSPDFLinkAnnotation.html#/c:objc(cs)PSPDFLinkAnnotation(py)controlsEnabled
+[rich media annotation definition]: http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/adobe_supplement_iso32000.pdf

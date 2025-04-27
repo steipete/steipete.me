@@ -1,0 +1,66 @@
+---
+title: Configuring the SignaturePickerFragment
+section: developers
+---
+
+The [`SignaturePickerFragment`][] is shown when the user uses the ink signature tool or clicks on a signature form field. There are a couple of configuration options that affect how it behaves:
+
+- [`SignatureCertificateSelectionMode`][] — Controls whether or not the dialog for selecting saved signatures is shown.
+- [`SignaturePickerOrientation`][] — Controls the screen orientation while the user is drawing the signature.
+- [`SignatureSavingStrategy`][] — Controls if the signature drawn by the user will be saved. When set to `ALWAYS_SAVE` or `NEVER_SAVE`, the Store Signature button will be hidden.
+
+## When Displayed by User Interaction
+
+To configure the [`SignaturePickerFragment`][], you have to pass the configuration options into the [`PdfConfiguration`][]:
+
+[==
+
+```kotlin
+val configuration = PdfActivityConfiguration.Builder(context)
+    .signatureCertificateSelectionMode(SignatureCertificateSelectionMode.IF_AVAILABLE)
+    .setSignaturePickerOrientation(SignaturePickerOrientation.AUTOMATIC)
+    .signatureSavingStrategy(SignatureSavingStrategy.SAVE_IF_SELECTED)
+    .build()
+```
+
+```java
+PdfActivityConfiguration configuration = new PdfActivityConfiguration.Builder(context)
+    .signatureCertificateSelectionMode(SignatureCertificateSelectionMode.IF_AVAILABLE)
+    .setSignaturePickerOrientation(SignaturePickerOrientation.AUTOMATIC)
+    .signatureSavingStrategy(SignatureSavingStrategy.SAVE_IF_SELECTED)
+    .build();
+```
+
+==]
+
+## When Displayed Programmatically
+
+Applying your configuration when showing the [`SignaturePickerFragment`][] requires you to construct a [`SignatureOptions`][] object:
+
+[==
+
+```kotlin
+val options = SignatureOptions.Builder()
+    .signatureCertificateSelectionMode(SignatureCertificateSelectionMode.IF_AVAILABLE)
+    .signaturePickerOrientation(SignaturePickerOrientation.AUTOMATIC)
+    .signatureSavingStrategy(SignatureSavingStrategy.SAVE_IF_SELECTED)
+    .build()
+SignaturePickerFragment.show(supportFragmentManager, this, options)
+```
+
+```java
+SignatureOptions options = new SignatureOptions.Builder()
+    .signatureCertificateSelectionMode(SignatureCertificateSelectionMode.IF_AVAILABLE)
+    .signaturePickerOrientation(SignaturePickerOrientation.AUTOMATIC)
+    .signatureSavingStrategy(SignatureSavingStrategy.SAVE_IF_SELECTED)
+    .build()
+SignaturePickerFragment.show(getSupportFragmentManager(), this, options);
+```
+
+==]
+
+[`signaturepickerfragment`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/signatures/SignaturePickerFragment.html
+[`signaturecertificateselectionmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/signatures/SignatureCertificateSelectionMode.html
+[`signaturepickerorientation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/forms/SignaturePickerOrientation.html
+[`signaturesavingstrategy`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/signatures/SignatureSavingStrategy.html
+[`signatureoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/signatures/SignatureOptions.html

@@ -1,0 +1,46 @@
+---
+title: Customizing Color Presets
+section: developers
+---
+
+In some cases, you might want to customize the default set of color presets shown in the annotation style inspector ([`PSPDFAnnotationStyleViewController`][]).
+
+<img width="50%" src="/images/guides/ios/annotations/customizing-presets/annotation-inspector.png">
+
+The color presets are managed by the global [`PSPDFAnnotationStyleManager`][] object (found under `PSPDFKitGlobal.sharedInstance.styleManager`).
+
+The easiest way to customize the default presets while leaving other annotation style-related functionality intact is to set the new presets using [`PSPDFAnnotationStyleManager`][].
+
+Here is an example implementation that customizes the default colors for line annotations. All we have to do is set our own array of [`PSPDFColorPreset`][] objects:
+
+[==
+
+```swift
+let presets = [
+    PSPDFColorPreset(color: UIColor.black),
+    PSPDFColorPreset(color: UIColor.red),
+    PSPDFColorPreset(color: UIColor.green),
+    PSPDFColorPreset(color: UIColor.blue)
+]
+let styleManager = PSPDFKitGlobal.sharedInstance.styleManager
+let key = PSPDFAnnotationStateVariantIDMake(.line, nil)
+styleManager.setPresets(presets, forKey: key, type: .colorPreset)
+```
+
+```objc
+NSArray<PSPDFColorPreset *> *presets = @[[PSPDFColorPreset presetWithColor:UIColor.blackColor],
+                                         [PSPDFColorPreset presetWithColor:UIColor.redColor],
+                                         [PSPDFColorPreset presetWithColor:UIColor.greenColor],
+                                         [PSPDFColorPreset presetWithColor:UIColor.blueColor]];
+PSPDFAnnotationStyleManager *styleManager = PSPDFKitGlobal.sharedInstance.styleManager;
+PSPDFAnnotationStateVariantID key = PSPDFAnnotationStateVariantIDMake(PSPDFAnnotationStringLine, nil);
+[styleManager setPresets:presets forKey:key type:PSPDFAnnotationStyleTypeColorPreset];
+```
+
+==]
+
+Take a look at `PresetCustomizationExample.swift` in the PSPDFKit Catalog for a complete example.
+
+[`pspdfannotationstyleviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationStyleViewController.html
+[`pspdfannotationstylemanager`]: https://pspdfkit.com/api/ios/Protocols/PSPDFAnnotationStyleManager.html
+[`pspdfcolorpreset`]: https://pspdfkit.com/api/ios/Classes/PSPDFColorPreset.html

@@ -15,6 +15,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[div.post-content > img:first-child { display:none; } Pretty much all Mac apps have a semi-hidden Debug menu that can be triggered via a user defaults entry or via settings.]
+
+
 <style type="text/css">
 div.post-content > img:first-child { display:none; }
 </style>

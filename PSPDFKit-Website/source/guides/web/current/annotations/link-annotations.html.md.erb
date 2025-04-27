@@ -1,0 +1,57 @@
+---
+title: Link Annotations
+section: developers
+
+---
+
+PSPDFKit for Web supports common types of link annotations, including page, web, and email links. Tapping on such a link will automatically invoke the saved action (see [PDF Actions][]) as well as the correct event, such as changing the page or opening a URL.
+
+Link annotations are always read only to the user; the position and action can only be changed programmatically using the regular annotations API.
+
+For more information on links, please refer to the [API documentation][].
+
+## Customizing Link Behavior
+
+It’s possible to execute custom application code and even prevent the default click behavior for links by registering an event handler for the `annotations.onPress` event on the PSPDFKit instance:
+
+[==
+
+```es
+PSPDFKit.load(...).then(instance => {
+  instance.addEventListener("annotations.press", event => {
+    if (event.annotation instanceof PSPDFKit.Annotations.LinkAnnotation) {
+      event.preventDefault();
+      console.log(event);
+    }
+  });
+});
+```
+
+```js
+PSPDFKit.load(...).then(function (instance) {
+  instance.addEventListener("annotations.press", function (event) {
+    if (event.annotation instanceof PSPDFKit.Annotations.LinkAnnotation) {
+      event.preventDefault();
+      console.log(event);
+    }
+  });
+});
+```
+
+==]
+
+Read more about the [`AnnotationsPressEvent`][].
+
+## Autodetecting Links
+
+PSPDFKit can optionally analyze the page contents and automatically add links to URLs.
+This is slightly expensive since text needs to be parsed and analyzed, but it’s done in a background process, so in most cases it’s not noticeably slower. This feature is turned off by default.
+
+You can use [`Configuration#enableAutomaticLinkExtraction`][] to enable autodetection on
+Standalone-based deployments or use the [`AUTOMATIC_LINK_EXTRACTION`][] environment variable to enable it on Server-backed deployments.
+
+[pdf actions]: ../../annotations/pdf-actions/
+[api documentation]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.LinkAnnotation.html
+[`annotationspressevent`]: https://pspdfkit.com/api/web/PSPDFKit.AnnotationsPressEvent.html
+[`configuration#enableautomaticlinkextraction`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#enableAutomaticLinkExtraction
+[`automatic_link_extraction`]: https://pspdfkit.com/guides/server/current/configuration/overview/

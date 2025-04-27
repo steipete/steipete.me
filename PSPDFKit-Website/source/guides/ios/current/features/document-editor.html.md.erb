@@ -1,0 +1,314 @@
+---
+title: Document Editing
+section: developers
+
+---
+
+The Document Editor is a PSPDFKit feature comprised of a set of MVC classes. It provides you and your users with a whole host of page editing features, including: new page creation, page duplication, copying and pasting, reordering, rotation, deletion, and the creation of new documents from a subset of selected pages.
+
+This guide describes how you can use the document editing API in your application. To learn about the UI, see the [Document Editing UI][document editor ui guide] article.
+
+## Presentation
+
+The Document Editor’s UI is integrated into [`PSPDFViewController`][] as a separate view mode. To switch to the document editing view, you can simply change the view mode to `PSPDFViewModeDocumentEditor`:
+
+[==
+
+```swift
+controller.setViewMode(.documentEditor, animated: true)
+```
+
+```objc
+[controller setViewMode:PSPDFViewModeDocumentEditor animated:YES];
+```
+
+==]
+
+[`PSPDFViewController`][] has a preset [`documentEditorButtonItem`][], which can be used to facilitate switching to document editing mode via the user interface. This button is added to the navigation bar’s right bar button items by default in `PSPDFViewModeThumbnails`. If document editing is an important aspect of your app, you can also choose to add [`documentEditorButtonItem`][] to the main bar button items:
+
+[==
+
+```swift
+var items: [UIBarButtonItem] = controller.navigationItem.rightBarButtonItems(for: .document) ?? []
+// Always check, since adding items multiple times produces bad results.
+if !items.contains(controller.documentEditorButtonItem) {
+    items.append(controller.documentEditorButtonItem)
+}
+controller.navigationItem.setRightBarButtonItems(items, for: .document, animated: false)
+```
+
+```objc
+NSMutableArray<UIBarButtonItem *> *items = [[controller.navigationItem rightBarButtonItemsForViewMode:PSPDFViewModeDocument] mutableCopy];
+// Always check, since adding items multiple times produces bad results.
+if (![items containsObject:controller.documentEditorButtonItem]) {
+    [items addObject:controller.documentEditorButtonItem];
+}
+[controller.navigationItem setRightBarButtonItems:items forViewMode:PSPDFViewModeDocument animated:NO];
+```
+
+==]
+
+The [`documentEditorButtonItem`][] acts as a toggle. If pressed a second time while already selected, it will return the view mode to the state before invoking the document editor button.
+
+> **ℹ️ Note:** The [`documentEditorButtonItem`][] will automatically be hidden if document editing isn’t enabled in your license.
+
+## User Interface
+
+This section describes user interface classes and programming interfaces participating in document editing. If you want to learn more about how to use the built-in document editing UI, check out the [Document Editor UI guide][document editor ui guide].
+
+### Main Controllers
+
+Document Editor’s user interface is driven by the following main controller classes:
+
+| Class                                      | Description                                                                                                                                                   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`PSPDFDocumentEditorViewController`][]    | The main view controller for document editing. Shows a collection view with page thumbnails that reflect the Document Editor changes.                         |
+| [`PSPDFDocumentEditorToolbarController`][] | Manages the Document Editor toolbar state and presents various document editing controllers.                                                                  |
+| [`PSPDFNewPageViewController`][]           | Manages new selection of various configuration options for new PDF pages. Builds the UI based on the passed in [`PSPDFDocumentEditorConfiguration`][] object. |
+| [`PSPDFSaveViewController`][]              | Manages a UI for saving documents. Allows file naming and directory selection based on the passed-in [`PSPDFDirectory`][] entries.                            |
+
+When switching the view mode to `PSPDFViewModeDocumentEditor`, [`PSPDFDocumentEditorViewController`][] is added as a child view controller of the [`PSPDFViewController`][]. At the same time, the [`PSPDFDocumentEditorToolbarController`][] associated with the Document Editor view controller is asked to present its toolbar. When exiting document editing mode, the Document Editor view controller view is removed and the toolbar controller gets asked to dismiss the toolbar.
+
+The Document Editor controller can be accessed via [`PSPDFViewController.documentEditorController`][]. This property is lazy loaded, so accessing it might trigger Document Editor initialization. However, property access will not automatically add it to the PDF controller. This only happens when the view mode is changed.
+
+A toolbar controller gets automatically associated with the Document Editor view controller. It is accessible via the [`PSPDFDocumentEditorViewController.toolbarController`][] property. The toolbar view controller is lazy loaded, just like the Document Editor view controller.
+
+The Document Editor controller also exposes its [`PSPDFDocumentEditor`][] via [`PSPDFDocumentEditorViewController.documentEditor`][]. You can use this object to perform additional operations in code, which are automatically reflected on the Document Editor UI. See [programmatic access](#programmatic-access) for more information.
+
+The remaining view controllers are presented from [`PSPDFDocumentEditorToolbarController`][]. You can customize them by overriding the various presentation methods defined in [`PSPDFDocumentEditorToolbarController`][].
+
+### Views
+
+If you need detailed customization of the Document Editor UI, you might also want to take a look at the following view classes:
+
+| Class                            | Description                                                                                                       |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [`PSPDFDocumentEditorCell`][]    | The thumbnail cell class used for the Document Editor.                                                            |
+| [`PSPDFDocumentEditorToolbar`][] | A flexible toolbar with various document editing functions. Can be subclassed to customize the displayed buttons. |
+
+[`PSPDFDocumentEditorCell`][]
+
+<img width="30%" src="/images/guides/ios/features/document-editor/document-editor-cell.png">
+
+[`PSPDFDocumentEditorToolbar`][]
+
+<img width="60%" src="/images/guides/ios/features/document-editor/document-editor-toolbar.png">
+
+### UI Configuration
+
+In addition to being able to subclass the various Document Editor classes, you can also customize the user interface by changing the [`PSPDFDocumentEditorConfiguration`][] object. The configuration holds presets and the current selection state for various options that the Document Editor controllers present. This includes the page pattern, background color, and size for new pages, as well as the save directories shown in the save dialog. You can access the configuration objects associated with the Document Editor toolbar controller using its [`documentEditorConfiguration`][] property.
+
+Similar to all other PSPDFKit UI classes, Document Editor honors the set `tintColor` and `UIAppearance` settings. See the [Appearance Styling][] guide for details.
+
+### Save UI
+
+Since dismissing the document editing UI while Document Editor has unsaved changes can lead to data loss, we take certain precautions to minimize the chance of this ever happening. This includes disabling the navigation controller back button item (as well as the associated interactive pop gesture) if present and adding extra checks when invoking the various built-in view mode button items (i.e. to [`documentEditorButtonItem`][] and [`thumbnailsButtonItem`][]).
+
+Your app might need to take extra steps to ensure that users can’t exit document editing mode unexpectedly and that they are always asked to save changes when document editing ends:
+
+[==
+
+```swift
+// You can use canUndo to check if the Document Editor has any unsaved changes.
+if pdfController.viewMode == .documentEditor && pdfController.documentEditorController.documentEditor?.canUndo ?? false {
+    // The sender can be the UIBarButtonItem or UIView that triggered the action.
+    pdfController.documentEditorController.toolbarController.toggleSaveActionSheet(sender, presentationOptions: nil) { cancelled in
+        if cancelled == false {
+            // Safe to change view mode.
+        }
+    }
+} else {
+    // Safe to change view mode.
+}
+```
+
+```objc
+// You can use canUndo to check if the Document Editor has any unsaved changes.
+if (pdfController.viewMode == PSPDFViewModeDocumentEditor && pdfController.documentEditorController.documentEditor.canUndo) {
+    // The sender can be the UIBarButtonItem or UIView that triggered the action.
+    [pdfController.documentEditorController.toolbarController toggleSaveActionSheet:sender presentationOptions:nil completionHandler:^(BOOL cancelled) {
+        if (cancelled == NO) {
+            // Safe to change view mode.
+        }
+    }];
+} else {
+    // Safe to change view mode.
+}
+```
+
+==]
+
+## Programmatic Access
+
+In addition to a comprehensive UI, Document Editor also comes with under-the-hood access to Document Editor model classes, which you can use to perform document editing in code, extend the built-in document editing UI, or build an entirely custom document editing user interface.
+
+Here is an overview of classes you might need to access to perform document editing operations:
+
+| Class                           | Description                                                          |
+| ------------------------------- | -------------------------------------------------------------------- |
+| [`PSPDFDocumentEditor`][]       | Main class for performing all supported document editing operations. |
+| [`PSPDFEditingChange`][]        | Represents a change that was performed by [`PSPDFDocumentEditor`][]. |
+| [`PSPDFNewPageConfiguration`][] | Represents configuration options for newly created pages.            |
+
+### Editing
+
+To begin document editing on a [`PSPDFDocument`][], you first need to create a [`PSPDFDocumentEditor`][]. This is easily done using the `[PSPDFDocumentEditor initWithDocument:]` initializer. You can then perform document editing operations on the resulting Document Editor by invoking its various instance methods. Each document-mutating method returns an array of [`PSPDFEditingChange`][] objects, which you can use to update your user interface (if relevant). The change objects are also sent to all configured Document Editor delegates. In case you are inserting a new page, you will also have to create a [`PSPDFNewPageConfiguration`][] object that you then pass to the [`-[PSPDFDocumentEditor addPagesInRange:withConfiguration:]`][`addpagesinrange:withconfiguration:`] method.
+
+Document Editor keeps track of the performed operations and offers built-in undo/redo support. Checking the [`canUndo`][] property is also a good way to determine if the Document Editor requires saving.
+
+### Saving
+
+When you are done with the performed changes, you need to call one of the save methods to preserve your changes. You have two options available:
+
+- [`saveWithCompletionBlock:`][] — This method writes the updated PDF document to the same file path used by the source document, overwriting the source document in the process. Usage of this method has some restrictions. The document needs to be in a writable directory and needs to be comprised of a single document provider. You can use the [`canSave`][] property to determine if a save is possible. The method performs the save operation asynchronously and provides a reference to the updated document in its completion block. A save will clear all caches related to the previous document state to avoid any inconsistencies.
+- [`saveToPath:withCompletionBlock:`][] — This save method can be used to perform a Save As operation. In this case, the changed PDF document is written to the provided path (you need to make sure it is writable by the application). This method is also performed asynchronously. The completion block in this case returns a newly created document. This method is always available, regardless of the [`canSave`][] state. Note, however, that if you use the [`saveToPath:withCompletionBlock:`][] method to overwrite a document that is currently loaded, you’ll need to explicitly handle unloading (or reloading) of that document, including clearing all caches. Failing to do so might result in caching issues and/or exceptions.
+
+> **ℹ️ Note:** The changes performed on the Document Editor object are not reflected in the associated [`PSPDFDocument`][] until the changes get saved. Choosing to not save a Document Editor object is thus equivalent to discarding the performed changes.
+
+### Usage Example
+
+Here is an example that rotates the first two pages and inserts a new page at the front of the currently loaded document of a [`PSPDFViewController`][]:
+
+[==
+
+```swift
+let document = self.document
+let editor = PSPDFDocumentEditor(document: document)!
+
+// Rotate the first two pages 90 degrees.
+editor.rotatePages([0, 1], rotation: 90)
+
+// Add a new page as the first page.
+let newPageConfiguration = PSPDFNewPageConfiguration(tiledPattern: PSPDFNewPagePatternDot5mm, builderBlock: {(_ builder: PSPDFNewPageConfigurationBuilder) -> Void in
+    builder.pageSize = document.pageInfoForPage(at: 0)!.size
+    builder.backgroundColor = UIColor(white: 0.95, alpha: 1)
+})
+editor.addPages(in: NSRange(location: 0, length: 1), with: newPageConfiguration)
+
+// Save and overwrite the document.
+editor.save(completionBlock: { document, error in
+    if let error = error {
+        print("Document editing failed: \(error)")
+        return
+    }
+    // Access the UI on the main thread.
+    DispatchQueue.main.async {
+        self.pdfController.reloadData()
+    }
+})
+```
+
+```objc
+PSPDFDocument *document = self.document;
+if (!document) return;
+PSPDFDocumentEditor *editor = [[PSPDFDocumentEditor alloc] initWithDocument:document];
+if (!editor) return;
+
+// Rotate the first two pages 90 degrees.
+[editor rotatePages:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] rotation:90];
+
+// Add a new page as the first page.
+PSPDFNewPageConfiguration *newPageConfiguration = [PSPDFNewPageConfiguration newPageConfigurationWithTiledPattern:PSPDFNewPagePatternDot5mm builderBlock:^(PSPDFNewPageConfigurationBuilder *builder) {
+    builder.pageSize = [document pageInfoForPageAtIndex:0].size;
+    builder.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.f];
+}];
+[editor addPagesInRange:NSMakeRange(0, 1) withConfiguration:newPageConfiguration];
+
+// Save and overwrite the document.
+[editor saveWithCompletionBlock:^(PSPDFDocument *savedDocument, NSError *error) {
+    if (error) {
+        NSLog(@"Document editing failed: %@", error);
+        return;
+    }
+    // Access the UI on the main thread.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.pdfController reloadData];
+    });
+}];
+```
+
+==]
+
+### New Document Creation
+
+The Document Editor API can also be used to create new PDF documents from scratch. To do so, initialize [`PSPDFDocumentEditor`][] without a [`PSPDFViewController`][]. You can then use the regular [`PSPDFDocumentEditor`][] API to add and modify pages. When done, simply save the new document to a location on the file system:
+
+[==
+
+```swift
+let documentEditor = PSPDFDocumentEditor(document: nil)!
+// Add the first page. At least one is needed to be able to save the document.
+documentEditor.addPages(in: NSRange(location: 0, length: 1), with: PSPDFNewPageConfiguration(emptyPageBuilder: { builder in
+    builder.pageSize = CGSize(width: 595, height: 842); // A4 in points
+}))
+// Save to a new PDF file.
+documentEditor.save(toPath: saveToPath, withCompletionBlock: { document, error in
+    if let error = error {
+        print("Error saving document. Error: \(error)")
+    }
+})
+```
+
+```objc
+PSPDFDocumentEditor *documentEditor = [[PSPDFDocumentEditor alloc] init];
+if (!documentEditor) return;
+// Add the first page. At least one is needed to be able to save the document.
+[documentEditor addPagesInRange:NSMakeRange(0, 1) withConfiguration:[PSPDFNewPageConfiguration newPageConfigurationWithEmptyPageBuilder:^(PSPDFNewPageConfigurationBuilder *builder) {
+    builder.pageSize = CGSizeMake(595, 842); // A4 in points
+}]];
+// Save to a new PDF file.
+[documentEditor saveToPath:saveToPath withCompletionBlock:^(PSPDFDocument * document, NSError *error) {
+    if (error) {
+        NSLog(@"Error saving document. Error: %@", error);
+    }
+}];
+```
+
+==]
+
+### Import and Export
+
+The [`PSPDFDocumentEditor`][] API can also be used either to create a new document from a subset of the current document’s pages or to import pages from an outside document.
+
+To export a set of pages, use [`-[PSPDFDocumentEditor exportPages:toPath:withCompletionBlock:]`][pspdfdocumenteditor exportpages:topath:withcompletionblock:] and provide a destination path for the generated PDF. The method will write out a new PDF file and call the completion block when the operation finishes.
+
+To import pages, call [`-[PSPDFDocumentEditor importPagesTo:fromDocument:withCompletionBlock:queue:]`][pspdfdocumenteditor importpagesto:fromdocument:withcompletionblock:queue:]. This method takes a [PSPDFDocument][], which needs to be a `fileURL`-based document, and inserts all of its pages at the provided page index in the currently edited document. Just like any other Document Editor operation, importing new pages does not actually modify the edited document until saving. The Document Editor simply records a reference to the other document and its pages. In order to reliably save the imported pages, the imported document PDF data needs to be preserved until the editing session is saved. [`-[PSPDFDocumentEditor importPagesTo:fromDocument:withCompletionBlock:queue:]`][pspdfdocumenteditor importpagesto:fromdocument:withcompletionblock:queue:] handles this for you automatically.
+
+The import and export methods are also used to implement [`PSPDFDocumentEditorToolbarController`][]-level copy and paste operations.
+
+### Availability
+
+Currently, not all [`PSPDFDocument`][]s can be edited using Document Editor. At the moment, document editing is limited to PDFs that store all their annotations inside the PDF file. In practice, this means that document editing is limited to [`PSPDFDocument`][]s that only use [`PSPDFFileAnnotationProvider`][]s without external storage. [`PSPDFFileAnnotationProvider`][] stores annotations externally if the document’s [`annotationSaveMode`][] is set to `PSPDFAnnotationSaveModeExternalFile` or if it is set to `PSPDFAnnotationSaveModeEmbeddedWithExternalFileAsFallback` (the default) in combination with a PDF located at a file path to which your application can’t write.
+
+If you want to guarantee that document editing and annotating will always be possible for your documents, it is recommended to always ensure that the documents you are working with are located in a directory your app can write to (for instance, the app `Documents` directory) before loading them.
+
+If you initialize Document Editor with an unsupported document, initialization fails and the initializer returns `nil`.
+
+[document editor ui guide]: https://pspdfkit.com/guides/ios/current/features/document-editor-ui/
+[`documenteditorbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)documentEditorButtonItem
+[`pspdfdocumenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorConfiguration.html
+[`pspdfviewcontroller.documenteditorcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)documentEditorController
+[`pspdfdocumenteditorviewcontroller.toolbarcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorViewController.html#/c:objc(cs)PSPDFDocumentEditorViewController(py)toolbarController
+[`pspdfdocumenteditorviewcontroller.documenteditor`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorViewController.html#/c:objc(cs)PSPDFDocumentEditorViewController(py)documentEditor
+[`documenteditorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorToolbarController.html#/c:objc(cs)PSPDFDocumentEditorToolbarController(py)documentEditorConfiguration
+[`addpagesinrange:withconfiguration:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)addPagesInRange:withConfiguration:
+[`initwithdocument:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)initWithDocument:
+[`savewithcompletionblock:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)saveWithCompletionBlock:
+[`savetopath:withcompletionblock:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)saveToPath:withCompletionBlock:
+[`cansave`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(py)canSave
+[`canundo`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(py)canUndo
+[`thumbnailsbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)thumbnailsButtonItem
+[`pspdfdocumenteditorcell`]: https://pspdfkit.com/api/ios/Document%20editor.html#/c:objc(cs)PSPDFDocumentEditorCell
+[`pspdfdocumenteditortoolbar`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorToolbar.html
+[`pspdfeditingchange`]: https://pspdfkit.com/api/ios/Classes/PSPDFEditingChange.html
+[`pspdfnewpageconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFNewPageConfiguration.html
+[`pspdffileannotationprovider`]: https://pspdfkit.com/api/ios/Classes/PSPDFFileAnnotationProvider.html
+[`annotationsavemode`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)annotationSaveMode
+[`pspdfdocumenteditorviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorViewController.html
+[`pspdfdocumenteditortoolbarcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditorToolbarController.html
+[`pspdfnewpageviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFNewPageViewController.html
+[`pspdfsaveviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFSaveViewController.html
+[`pspdfdirectory`]: https://pspdfkit.com/api/ios/Classes/PSPDFDirectory.html
+[appearance styling]: ../../customizing-the-interface/appearance-styling/
+[pspdfdocumenteditor exportpages:topath:withcompletionblock:]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)exportPages:toPath:withCompletionBlock:
+[pspdfdocumenteditor importpagesto:fromdocument:withcompletionblock:queue:]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentEditor.html#/c:objc(cs)PSPDFDocumentEditor(im)importPagesTo:fromDocument:withCompletionBlock:queue:

@@ -1,0 +1,33 @@
+---
+title: 2019.1 Migration Guide
+section: developers
+
+order: 497
+---
+
+⚠️ PSPDFKit Server now uses randomized unique IDs (ULIDs) for documents instead of numeric IDs. This improves scalability for users with a large number of documents.
+
+[As part of 2019.1][blog post], we require the explicit setting of the `GENERATE_ULID_DOCUMENT_IDS` environment variable ([introduced in 2018.7][2018.7 blog post]) for all installations from before 31 January 2019. The variable determines whether new documents are assigned a (deprecated) numeric ID or a ULID.
+
+Please be aware that when uploading a document, you [can also supply your own document ID][own document id] that will be used by PSPDFKit Server.
+
+While the automatically assigned document ID has always been a string, up until now, it could be converted to an integer.
+
+We highly recommend you either migrate to ULIDs by setting `GENERATE_ULID_DOCUMENT_IDS` to `true` or [supply your own document ID][own document id] when creating documents.
+
+### Migration Instructions
+
+- When [configuring PSPDFKit Server][], set `GENERATE_ULID_DOCUMENT_IDS=true`.
+
+#### Migrate PSPDFKit for Web
+
+For more information, please take a look at the [PSPDFKit for Web 2019.1 Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[own document id]: https://pspdfkit.com/guides/server/current/server-api/documents/#providing-your-own-id-for-documents
+[configuring pspdfkit server]: https://pspdfkit.com/guides/server/current/configuration/overview/
+[blog post]: https://pspdfkit.com/blog/2019/pspdfkit-web-2019-1/
+[2018.7 blog post]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-7/
+[pspdfkit for web 2019.1 migration guide]: https://pspdfkit.com/guides/web/current/migration-guides/2019-1-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/server/#2019.1

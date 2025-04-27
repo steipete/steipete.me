@@ -1,0 +1,69 @@
+---
+title: 2018.2 Migration Guide
+section: developers
+
+order: 503
+---
+
+[PSPDFKit for Web 2018.2][] adds support for Electron, improved APIs, localization for 27 languages, and much more.
+
+If you’re maintaining a Server installation, make sure to check out the [2018.2 Server Migration Guide][].
+
+### Render Bitmaps
+
+This version deprecates the [`Instance#renderCover`][] API method in favor of [`Instance#renderPageAsArrayBuffer`][], which now works on server deployments too.
+
+In contrast to [`renderCover`][`instance#rendercover`], the new method expects a mandatory `pageIndex` as its second argument.
+
+To migrate, please replace any occurrence of [`renderCover`][`instance#rendercover`] with [`Instance#renderPageAsArrayBuffer`][], and make sure to pass `0` as the `pageIndex` in the place where you were previously omitting the second argument:
+
+[==
+
+```es
+const buffer = await instance.renderCover({ width: 400 });
+// becomes
+const buffer = await instance.renderPageAsArrayBuffer({ width: 400 }, 0);
+```
+
+```js
+instance.renderCover({ width: 400 }).then(function(buffer) {
+  console.log(buffer);
+});
+// becomes
+instance.renderPageAsArrayBuffer({ width: 400 }, 0).then(function(buffer) {
+  console.log(buffer);
+});
+```
+
+==]
+
+[==
+
+```es
+const buffer = await instance.renderCover({ width: 400 }, 2);
+// becomes
+const buffer = await instance.renderPageAsArrayBuffer({ width: 400 }, 2);
+```
+
+```js
+instance.renderCover({ width: 400 }, 2).then(function(buffer) {
+  console.log(buffer);
+});
+// becomes
+instance.renderPageAsArrayBuffer({ width: 400 }, 2).then(function(buffer) {
+  console.log(buffer);
+});
+```
+
+==]
+
+[PSPDFKit for Web 2018.2][] also introduces [`Instance#renderPageAsImageURL`][], which renders a page and returns a URL to the generated image. This method works on standalone and server-based deployments.
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2018.2]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-2/
+[`instance#rendercover`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#renderCover
+[`instance#renderpageasarraybuffer`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#renderPageAsArrayBuffer
+[`instance#renderpageasimageurl`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#renderPageAsImageURL
+[2018.2 server migration guide]: https://pspdfkit.com/guides/server/current/migration-guides/2018-2-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/web/#2018.2

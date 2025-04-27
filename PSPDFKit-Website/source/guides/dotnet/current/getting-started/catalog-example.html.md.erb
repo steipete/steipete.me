@@ -1,0 +1,58 @@
+---
+title: Catalog Example
+section: developers
+---
+
+The PSPDFKit .NET Library comes with an example application called the Catalog app, which contains many useful examples for exploring the different features of PSPDFKit and getting started quickly. You can find the app in the `Example` folder of the SDK zip file. The SDK zip file can be downloaded from [the customer portal][customer portal] or by [requesting an evaluation license][pspdfkit trial] of PSPDFKit.
+
+## Windows
+
+#### Requirements
+
+- Windows 10
+- [Visual Studio 2019][vs-2019]
+- [.NET Core 3.1][dotnet-core-3-1]
+
+### Running the Catalog App
+
+To build the Catalog app:
+
+- Extract `PSPDFKit.NET-{version}.zip` to your desired location.
+- From the extracted files, open the `Example/Catalog.sln` solution in Visual Studio (or an equivalent IDE supporting the .NET Framework).
+- Replace the `YOUR_LICENSE_KEY_GOES_HERE` string in `app.config` with the trial or development activation key you have been issued.
+- Choose the solution platform `x86` or `x64`.
+- Build and run the project.
+
+## Linux
+
+#### Requirements
+
+- Ubuntu 18.04 (other flavors will work, see the [compatibility page][compatibility-page])
+- [.NET Core 3.1][dotnet-core-3-1]
+
+### Running the Catalog App
+
+To build the Catalog app:
+
+- Extract `PSPDFKit.NET-{version}.zip` to your desired location and `cd` into `Example/catalog`.
+- Replace the `YOUR_LICENSE_KEY_GOES_HERE` string in `Catalog/app.config` with the trial or development activation key you have been issued.
+- Run the Catalog example (`dotnet run --project Catalog`).
+
+## Mac
+
+#### Requirements
+
+- macOS 10.15.\* Catalina.
+- [.NET Core 3.1][dotnet-core-3-1] (`brew cask install dotnet-sdk`)
+
+### Running the Catalog App
+
+To build the Catalog app:
+
+- Extract `PSPDFKit.NET-{version}.zip` to your desired location and `cd` into `Example/catalog`.
+- Replace the `YOUR_LICENSE_KEY_GOES_HERE` string in `Catalog/app.config` with the trial or development activation key you have been issued.
+- Run the Catalog example (`dotnet run --project Catalog`).
+
+[vs-2019]: https://visualstudio.microsoft.com/vs/
+[compatibility-page]: ../../announcements/version-support/
+[dotnet-core-3-1]: https://dotnet.microsoft.com/download/dotnet-core

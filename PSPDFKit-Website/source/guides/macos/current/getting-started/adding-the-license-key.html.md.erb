@@ -1,0 +1,83 @@
+---
+title: Adding the License Key
+section: developers
+
+order: 6
+---
+
+PSPDFKit is a commercial product and uses a license key to verify your copy against the package name you have registered.
+
+## Generate the License Key
+
+To use a PSPDFKit license with your app, you have to generate a license key and bind it to the bundle ID of your app.
+
+1.  Log in to the [PSPDFKit Customer Portal][] using the credentials you received when purchasing PSPDFKit. You will see the list of all your purchased licenses.
+2.  Locate your license (e.g. PSPDFKit for macOS) and click the Assign license key button next to it. A dialog will open.
+3.  Enter the bundle ID of your production app. If you are unsure about this step, please read our [What Is a Bundle ID?][pspdfkit guide bundle id] guide first.
+4.  Click next and confirm your selected bundle ID. Please double-check that the chosen identifier matches the one configured in your app, as it can no longer be changed once it’s been set.
+
+## Download the License Key:
+
+1.  Log in to the [PSPDFKit Customer Portal][] using the credentials you received when purchasing PSPDFKit. You will see the list of all your purchased licenses.
+2.  Locate the appropriate license (e.g. PSPDFKit for macOS) and click the License Key button next to it. If there is no such button, you probably need to generate the license key first.
+3.  A dialog will open showing you a code snippet with your license key.
+4.  After copying the license key over to your project, the PSPDFKit SDK is ready to use.
+
+## Using the License Key
+
+It is important that you set the license key before using any PSPDFKit classes.
+
+The `applicationWillFinishLaunching:` app delegate method is usually a good
+place for it:
+
+[==
+
+```swift
+func applicationWillFinishLaunching(_ notification: Notification) {
+    PSPDFKitGlobal.setLicenseKey("YOUR_LICENSE_KEY_GOES_HERE")
+}
+```
+
+```objc
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    [PSPDFKitGlobal setLicenseKey:@"YOUR_LICENSE_KEY_GOES_HERE"];
+}
+```
+
+==]
+
+PSPDFKit should now be properly integrated into your project. For a quick test,
+create a document instance and print its description to the console:
+
+[==
+
+```swift
+import PSPDFKit
+
+func applicationWillFinishLaunching(_ notification: Notification) {
+    PSPDFKitGlobal.setLicenseKey()"YOUR_LICENSE_KEY_GOES_HERE")
+
+    // Quick Test:
+    let documentURL = Bundle.main.url(forResource: nameOfAPDFResource, withExtension: "pdf")!
+    let document = PSPDFDocument(url: documentURL)
+    print("Loaded PDF document: \(document)")
+}
+```
+
+```objc
+@import PSPDFKit;
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    [PSPDFKitGlobal setLicenseKey:@"YOUR_LICENSE_KEY_GOES_HERE"];
+
+    // Quick Test:
+    NSURL *documentURL = [NSBundle.mainBundle URLForResource:nameOfAPDFResource withExtension:@"pdf"];
+    PSPDFDocument *document = [[PSPDFDocument alloc] initWithURL:documentURL];
+    NSLog(@"Loaded PDF document: %@", document);
+}
+```
+
+==]
+
+[pspdfkit customer portal]: https://customers.pspdfkit.com/
+[pspdfkit guide bundle id]: https://pspdfkit.com/guides/ios/current/faq/what-is-a-bundle-id/

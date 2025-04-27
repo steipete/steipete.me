@@ -1,0 +1,30 @@
+---
+title: Security
+section: developers
+
+---
+
+We deliver PSPDFKit for Web as a Docker container deployed on-premises or in the cloud (AWS, Azure, Google Cloud, and others) by you.
+
+We have no access to a deployed instance, including documents or annotation data. PSPDFKit Server does perform regular license checks and sends very limited and anonymized analytics data (number of users, documents, web browser usage share).
+
+## Data Access
+
+There are two ways PSPDFKit Server can be accessed:
+
+1.  Your backend uses the [HTTP API][] to get full access to all documents, annotations, and other data stored on the server. This API is protected by a [configurable API access token][].
+2.  Your backend signs [JSON Web Tokens][] (JWTs) asserting that the holder of such a token is allowed to access a given document. It then passes them to your client apps using PSPDFKit for Android, iOS, and Web. Your apps then pass it to PSPDFKit Server to prove they have access to the claimed document.
+
+## Data Encryption
+
+PSPDFKit Server fully supports encryption in transit and at rest, depending on your underlying platform.
+
+When hosting PSPDFKit Server in the cloud, we recommend you rely on your cloud provider’s HTTPS termination (e.g. [AWS Application Load Balancer][]). If this is not an option, because, for example, you are deploying on dedicated machines in your internal network, we recommend setting up TLS using [NGINX][].
+
+PSPDFKit Server delegates encryption at rest to the underlying platform: If you implement encryption at rest for your Docker and PostgreSQL hosts, PSPDFKit Server’s data will be encrypted at rest as well.
+
+[http api]: ../../api/overview/
+[configurable api access token]: ../../configuration/overview/
+[json web tokens]: ../../pspdfkit-server/client-authentication/
+[aws application load balancer]: https://aws.amazon.com/elasticloadbalancing/applicationloadbalancer/
+[nginx]: https://nginx.org

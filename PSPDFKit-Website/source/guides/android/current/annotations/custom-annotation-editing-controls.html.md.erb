@@ -1,0 +1,180 @@
+---
+title: Custom Annotation Editing Controls
+section: developers
+---
+
+You can build your own custom views and user interfaces for creating and editing annotations. This guide describes the existing PSPDFKit APIs for doing that.
+
+## Starting Annotation Creation
+
+The default [`PdfActivity`][] comes with an [`AnnotationCreationToolbar`][] that hosts all the available annotation tools. When a user taps an icon from the toolbar, the activity will enter the annotation creation mode of the tapped tool.
+
+In your code, you can enter annotation creation modes by calling [`PdfFragment#enterAnnotationCreationMode`][] with the desired [`AnnotationTool`][] value as the argument:
+
+[==
+
+```kotlin
+// Enters the signature annotation creation mode. After tapping the document, the user will be asked to enter a signature.
+val tool = AnnotationTool.SIGNATURE
+pdfFragment.enterAnnotationCreationMode(tool)
+```
+
+```java
+// Enters the signature annotation creation mode. After tapping the document, the user will be asked to enter a signature.
+final AnnotationTool tool = AnnotationTool.SIGNATURE;
+getPdfFragment().enterAnnotationCreationMode(tool);
+```
+
+==]
+
+> **ℹ️ Note:** Browse the available [`AnnotationTool`][] values to see which tools you can use. For example, to select the ink eraser, you can use [`AnnotationTool.ERASER`][].
+
+To leave the annotation creation mode (switching back to the normal viewing mode), you can call [`PdfFragment#exitCurrentlyActiveMode`][]:
+
+[==
+
+```kotlin
+// Leaves a previously launched creation mode.
+PdfFragment.exitCurrentlyActiveMode()
+```
+
+```java
+// Leaves a previously launched creation mode.
+getPdfFragment().exitCurrentlyActiveMode();
+```
+
+==]
+
+> **💡 Tip**: [`PdfFragment#exitCurrentlyActiveMode`][] can also be used to leave other special modes — for example, annotation editing or text selection.
+
+### Annotation Tool Variants
+
+Annotation tools can also have specified variants, and this allows you to have the same annotation tools with different presets. Annotation tool variants are defined by the [`AnnotationToolVariant`][] class. This class serves as a wrapper around the string that specifies the name of the variant. Keep in mind that the same variant can be bound to multiple annotation tools. So for example, you can have an ink, line, and highlight tool, all in a “yellow” variant.
+
+To initialize the [`AnnotationToolVariant`][] object, you can use one of the three static contructors (which one you use depends upon your use case):
+
+- `AnnotationToolVariant.defaultVariant()` will create the default variant used by the framework for most of the tools.
+- `AnnotationToolVariant.fromPreset()` allows you to create the variant from the [`AnnotationToolVariant.Preset`][] enum, which specifies variants used by our framework.
+- `AnnotationToolVariant.fromName()` creates your custom variant with the specified name.
+
+To start the annotation creation mode with the specified annotation tool variant, use the version of `PdfFragment#enterAnnotationCreationMode()` that has both the annotation tool and annotation tool variant as parameters, like so:
+
+[==
+
+```kotlin
+val tool = AnnotationTool.INK
+pdfFragment.enterAnnotationCreationMode(tool, AnnotationToolVariant.fromName("my_red_thin_ink_variant"))
+```
+
+```java
+final AnnotationTool tool = AnnotationTool.INK;
+getPdfFragment().enterAnnotationCreationMode(tool, AnnotationToolVariant.fromName("my_red_thin_ink_variant"));
+```
+
+==]
+
+> **ℹ️ Note:** To synchronize annotation tool variants with the iOS version, there are two exemptions where we start annotation creation mode with specific variants. One is the Magic Ink tool, which uses `AnnotationTool.MAGIC_INK` with the variant you can get via `AnnotationToolVariant.fromPresets(Preset.MAGIC)`. The other one is the free text callout tool, which uses `AnnotationTool.FREETEXT_CALLOUT` with the variant you can get via `AnnotationToolVariant.fromPresets(Preset.CALLOUT)`.
+
+Our framework comes with the following predefined annotation tool variant presets (specified in the [`AnnotationToolVariant.Preset`][] enum class):
+
+- `PEN` — Preset for the pen variant of the ink, used with `AnnotationTool.INK` in the framework.
+- `HIGHLIGHTER` — Preset for the highlighter variant of the ink, used with `AnnotationTool.INK` in the framework.
+- `MAGIC`— Preset for the magic variant, used with `AnnotationTool.MAGIC_INK` in the framework.
+- `CALLOUT` — Preset for the callout variant, used with `AnnotationTool.FREETEXT_CALLOUT` in the framework.
+- `ARROW` — Preset for the arrow variant, used with `AnnotationTool.LINE` in the framework.
+- `DEFAULT` — Preset for all other tools that have no variant specified.
+
+In order to start one of our tools programmatically, you would use the `AnnotationToolVariant.fromPreset()` creator — for example:
+
+[==
+
+```kotlin
+// Start the pen tool.
+val tool = AnnotationTool.INK
+val toolVariant = AnnotationToolVariant.fromPreset(AnnotationTool.Preset.PEN)
+pdfFragment.enterAnnotationCreationMode(tool, variant)
+```
+
+```java
+final AnnotationTool tool = AnnotationTool.INK;
+final AnnotationToolVariant toolVariant = AnnotationToolVariant.fromPreset(AnnotationTool.Preset.PEN);
+getPdfFragment().enterAnnotationCreationMode(tool, toolVariant);
+```
+
+==]
+
+### Mode Listeners
+
+If you need more control of the annotation creation mode, you can register an [`OnAnnotationCreationModeChangeListener`][] on the fragment. Once the creation mode is entered, the listener will be called, giving you access to the [`AnnotationCreationController`][]. The controller object gives you access to all properties of the currently created annotation (color, size, style, etc.):
+
+[==
+
+```kotlin
+class ExampleActivity : PdfActivity(), AnnotationManager.OnAnnotationCreationModeChangeListener {
+
+    // ...
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        PdfFragment.addOnAnnotationCreationModeChangeListener(this)
+    }
+
+    override fun onEnterAnnotationCreationMode(controller: AnnotationCreationController) {
+        controller.color = Color.RED
+        controller.thickness = 10
+    }
+
+    /**
+     * This method is called whenever the current annotation creation mode is replaced by another one —
+     * for example, when subsequently calling `enterAnnotationCreationMode(...)`.
+     */
+    override fun onChangeAnnotationCreationMode(controller: AnnotationCreationController) = Unit
+
+    /**
+     * This is called when the current annotation creation mode is left —
+     * for example, when calling `fragment.exitCurrentlyActiveMode()` or by entering a different mode (i.e. editing).
+     */
+    override fun onExitAnnotationCreationMode(controller: AnnotationCreationController) = Unit
+}
+```
+
+```java
+public class ExampleActivity extends PdfActivity implements AnnotationManager.OnAnnotationCreationModeChangeListener {
+
+    // ...
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getPdfFragment().addOnAnnotationCreationModeChangeListener(this);
+    }
+
+    @Override public void onEnterAnnotationCreationMode(@NonNull AnnotationCreationController controller) {
+        controller.setColor(Color.RED);
+        controller.setThickness(10);
+    }
+
+    /**
+     * This method is called whenever the current annotation creation mode is replaced by another one —
+     * for example, when subsequently calling `enterAnnotationCreationMode(...)`.
+     */
+    @Override public void onChangeAnnotationCreationMode(@NonNull AnnotationCreationController controller) {}
+
+    /**
+     * This is called when the current annotation creation mode is left —
+     * for example, when calling `fragment.exitCurrentlyActiveMode()` or by entering a different mode (i.e. editing).
+     */
+    @Override public void onExitAnnotationCreationMode(@NonNull AnnotationCreationController controller) {}
+}
+```
+
+==]
+
+[`annotationcreationtoolbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/AnnotationCreationToolbar.html
+[`pdffragment#enterannotationcreationmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#enterAnnotationCreationMode(com.pspdfkit.ui.special_mode.controller.AnnotationTool)
+[`pdffragment#exitcurrentlyactivemode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#exitCurrentlyActiveMode()
+[`annotationtool`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationTool.html
+[`annotationtoolvariant`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationToolVariant.html
+[`annotationtoolvariant.preset`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationToolVariant.Preset.html
+[`annotationtool.eraser`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationTool.html#ERASER
+[`onannotationcreationmodechangelistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/AnnotationManager.OnAnnotationCreationModeChangeListener.html
+[`annotationcreationcontroller`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/controller/AnnotationCreationController.html

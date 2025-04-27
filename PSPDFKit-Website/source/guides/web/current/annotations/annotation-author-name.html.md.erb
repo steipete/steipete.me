@@ -1,0 +1,15 @@
+---
+title: Annotation Author Name
+section: developers
+
+---
+
+Starting with PSPDFKit for Web 2018.2, the author of an annotation will be saved under the `creatorName` property of an annotation. By default, the `creatorName` for all newly created annotations is set to `null`.
+
+The `creatorName` can be set by the [`Instance#setAnnotationCreatorName`] function:
+
+```js
+instance.setAnnotationCreatorName("Alice");
+```
+
+[`instance#setannotationcreatorname`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setAnnotationCreatorName

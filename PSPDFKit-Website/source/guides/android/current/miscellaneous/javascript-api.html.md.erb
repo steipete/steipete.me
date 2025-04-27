@@ -1,0 +1,130 @@
+---
+title: JavaScript API
+section: developers
+---
+
+We added JavaScript support in PSPDFKit 4.7 for Android. JavaScript can be attached to any interactive element in a PDF document. PSPDFKit currently supports setting [`JavaScriptAction`][] on [annotations][] and [form elements][].
+
+PSPDFKit has basic support for the most common JavaScript features. This article provides documentation for the supported JavaScript API.
+
+**ℹ️ Note:** Take a look at the [JavaScript feature introduction][] for general information about JavaScript support for documents.
+
+## Working with Documents
+
+A document object (`doc`) provides the interface between a PDF document open in the viewer and the JavaScript interpreter.
+
+### Page Number
+
+The current page of the document can be retrieved or set via the `doc.pageNum` property:
+
+```js
+// Go to the first page of the document.
+doc.pageNum = 0;
+// Advance to the next page in the document.
+doc.pageNum++;
+```
+
+### Printing Documents
+
+Documents can be printed with the `doc.print()` method. It accepts the following optional parameters:
+
+- `showUI` — If `true` (the default), this will cause a UI to be presented to the user to obtain printing information and confirm the action.
+- `startPage` — A zero-based index that defines the start of an inclusive range of pages. If `startPage` and `endPage` are not specified, all pages in the document are printed. If only `startPage` is specified, the range is the single page specified by `startPage`. If `startPage` and `endPage` parameters are used, `showUI` must be `false`.
+- `endPage` — A zero-based index that defines the end of an inclusive page range. If `startPage` and `endPage` are not specified, all pages in the document are printed. If only `endPage` is specified, the range is `0` to `endPage`. If `startPage` and `endPage` parameters are used, `showUI` must be `false`.
+
+```js
+// Show print options dialog before printing.
+doc.print();
+
+// Print pages 0 and 1 without any UI.
+doc.print(false, 0, 1);
+```
+
+### Mailing Documents
+
+The current document can be prepared for sharing via email with the `doc.mail()` method. It accepts the following optional parameters:
+
+- `showUI` — `true` to show mail UI before sending the mail, and `false` to send the mail immediately (not supported)
+- `to` — the semicolon-delimited list of recipients for the message
+- `cc` — the semicolon-delimited list of CC recipients for the message
+- `bcc` — the semicolon-delimited list of BCC recipients for the message
+- `subject` — the subject of the message
+- `message` — the content of the message
+
+```js
+doc.mailDoc(
+  true,
+  "john@pspdfkit.com",
+  "cc@pspdfkit.com;cc2@pspdfkit.com",
+  "bcc@pspdfkit.com",
+  "subject",
+  "This is a message"
+);
+```
+
+### Working with Form Fields
+
+All form fields in a document can be enumerated by calling `doc.getNthFieldName(index)`, where `index` is a zero-based index into the document’s fields array, and `doc.getNumFields()` returns the total number of fields in the document. A single form field can be accessed by its name via the `doc.getField(fieldName)` method.
+
+For example, here we’ll iterate through all form fields in the document:
+
+```js
+for (var i = 0; i < doc.numFields; i++) {
+    var fieldName = doc.getNthFieldName(i);
+    var field = doc.getField(fieldName;
+    // Execute required actions on the field.
+    ...
+}
+```
+
+#### Form Field Object
+
+A form field object returned via `doc.getField()` provides methods and properties for working with form fields in the document. Some of the most useful methods and properties for filling form fields are:
+
+- `value` — The value of the field. Use this to set or get a field’s value.
+- `type` — The type of the field as a string. Valid types are `button`, `checkbox`, `combobox`, `listbox`, `radiobutton`, `signature`, and `text`.
+- `checkThisBox(index, isChecked)` — Checks/unchecks a radio button or checkbox. The index is a zero-based index in the current radio/checkbox group.
+- `isBoxChecked(index)` — Checks whether a radio button or checkbox is currently checked. The index is a zero-based index in the current radio/checkbox group.
+- `buttonImportIcon()` — Executes an import icon action. Use this action to allow the attaching of custom images to push buttons.
+
+For example, here we’ll fill some form fields in the document via JavaScript:
+
+```js
+var checkbox = doc.getField("Checkbox_field");
+// Checks the first checkbox in a group.
+checkbox.checkThisBox(0, true);
+
+var text = doc.getField("Text_field");
+// Sets the fields value.
+text.value = "Text field value";
+```
+
+## JavaScript Utilities
+
+### Application Object
+
+An application object (`app`) contains various utility methods and properties that aren’t tied to a specific document:
+
+- `app.alert(message)` — Displays an alert dialog with a custom message.
+- `app.launchURL(url)` — Launches a URL in a browser window.
+- `app.viewerVersion` — Returns a PSPDFKit version as a string.
+
+```js
+// Shows a dialog with a custom message.
+app.alert("Alert message");
+
+// Launches a URL in a browser window.
+app.launchURL("https://pspdfkit.com");
+
+// Shows an alert with a PSPDFKit version.
+app.alert("PSPDFKit version: " + app.viewerVersion);
+```
+
+### Console
+
+Messages written to the JavaScript console via `console.println()` will be written to Android’s logcat. Currently supported types that can be printed to the JavaScript console are strings, numbers, and Booleans.
+
+[`javascriptaction`]: ../../annotations/pdf-actions/
+[annotations]: ../../annotations/introduction-to-annotations/
+[form elements]: ../../forms/form-creation
+[javascript feature introduction]: ../../features/javascript/

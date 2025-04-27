@@ -1,0 +1,60 @@
+---
+title: Overview
+section: developers
+
+order: 1
+alternate_platform_links:
+  ios: getting-started/integrating-pspdfkit
+  android: getting-started/integrating-pspdfkit
+  macos: getting-started/using-cocoapods
+---
+
+![Electron PDF SDK](/images/guides/shared/other-languages/electron/electron.svg)
+
+[Electron][] is an open source framework that allows development of cross-platform desktop GUI applications with JavaScript, HTML, and CSS. It is developed by GitHub and was formerly known as Atom Shell.
+
+![](/images/guides/shared/other-languages/electron/pdfviewer-electron.png)
+
+## PSPDFKit as an Electron PDF SDK
+
+PSPDFKit for Electron uses the [standalone deployment of PSPDFKit for Web][standalone deployment] under the hood and works with Electron applications on all platforms (Windows, macOS, and Linux). [We use WebAssembly to deliver fast rendering performance with low memory overhead][wasm blog post].
+
+<center>
+  <img
+    alt="WebAssembly logo"
+    src="/images/guides/web/web-assembly-logo-256px.png"
+    width="128">
+</center>
+
+## Application Architecture
+
+We designed PSPDFKit for Electron to run in your [renderer process][]. This allows you to be in full control of your `BrowserWindow` while only requiring a simple HTML element as the mount target for PSPDFKit.
+
+Using PSPDFKit for Electron in the main process will _not_ work.
+
+## Security
+
+PSPDFKit for Electron will automatically load all required artifacts for you. In order for this to be possible, we require (at least) `fetch` access for the `file` [URL scheme](https://github.com/electron/electron/blob/master/docs/api/web-frame.md#webframeregisterurlschemeasprivilegedscheme-options). This can be activated via JavaScript inside your renderer process:
+
+[==
+
+```es
+const webFrame = require("electron").webFrame;
+webFrame.registerURLSchemeAsPrivileged("file");
+```
+
+```js
+var webFrame = require("electron").webFrame;
+webFrame.registerURLSchemeAsPrivileged("file");
+```
+
+==]
+
+If you want to further restrict the privileges for the `file` URL scheme, please keep in mind that we only require the `supportFetchAPI` option to be set to `true`. Additionally, we recommend you set up a custom [Content Security Policy](https://github.com/electron/electron/blob/master/docs/tutorial/security.md#6-define-a-content-security-policy), as noted in the Electron documentation.
+
+PSPDFKit for Electron will parse the PDF file locally using our WebAssembly renderer. No PDF file will ever be sent via the network.
+
+[electron]: https://electronjs.org/
+[standalone deployment]: ../../standalone/overview/
+[wasm blog post]: https://pspdfkit.com/blog/2017/webassembly-a-new-hope/
+[renderer process]: https://electronjs.org/docs/tutorial/application-architecture#main-and-renderer-processes

@@ -1,0 +1,1075 @@
+---
+title: Digital Signatures
+section: developers
+---
+
+A digital signature is an electronic fingerprint uniquely identifying the signing person. A digital signature on a PDF document is both reliable proof of the document’s origin and protection against modification by third parties. Be sure to check out our blog post about [electronic signatures in a PDF][], which explains how digital signatures work and when they are needed.
+
+> **ℹ️ Note:** For more information on digital signatures, please look at the [Digital Signatures in a PDF][] guide by Adobe. You should also take a look at the _12.8 Digital Signatures_ section of Adobe’s [PDF 1.7 specification][]. For general information on how digital signatures work, please read the [digital signature entry on Wikipedia][wikipedia digital signature].
+
+---
+
+## Considerations
+
+PSPDFKit allows signing both existing signature form elements and documents without a signature form element.
+
+The supported signing method is:
+
+- `CMS` (adobe.pkcs7.detached)
+
+Supported signing algorithms are:
+
+- `RSA`
+- `ECDSA`
+
+Supported hashing algorithms include:
+
+- `MD4`
+- `MD5`
+- `SHA-2 (SHA-224, SHA-256, SHA-384, SHA-512, SHA-512-256)`
+
+A hashing algorithm is an algorithm that converts a large amount of data (your PDF document) to a fixed-length string. If someone changes one bit of data in your PDF document, the hashing algorithm produces a different string, so if you store that hash inside the PDF document, you could potentially know when it has been changed by a third party. However, as easy as it sounds, this approach is insecure. If someone knows the hashing algorithm that was used to sign the PDF, they could replace the hash inside the PDF so that it validates as authentic. To avoid this, PSPDFKit works with encryption algorithms.
+
+More specifically, PSPDFKit supports `RSA`, one of the most popular public key encryption algorithms. `ECDSA`, an algorithm based on elliptic curve cryptography, is also supported. Cryptographic systems based on `ECDSA` are becoming the de facto standard for messaging and systems security.<% if ios? %> For example, in the [iOS Security Guide][], Apple explains how it uses `ECDSA` extensively in its mobile operating system, along with detailing its benefits when compared to other algorithms.<% end %> You can use OpenSSL to generate a self-signed `RSA` certificate using this OpenSSL command:
+
+```shell
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem
+```
+
+`ECDSA` certificates can be created using the `openssl ecparam` command.
+
+You can use a _self-signed_ certificate for testing purposes, but you will need to make sure the certificate is trusted by all the devices the PDF is opened on (including PCs/Macs with Acrobat). A self-signed certificate will probably also generate warnings about its `keyUsage` extension (the self-signed certificate must permit certificate signing — keyCertSign, see [RFC 5280][]).
+
+> **⚠️ Important:** In production, always use a certificate from a valid [certificate authority][]. Make sure the certificate’s `keyUsage` has the `digitalSignature` permission set (see [RFC 5280][]).
+
+## How to Create Digital Signatures
+
+To create a digital signature, you need two things.
+
+- First, you need an **X509** certificate that contains your **public key** and your **signer information**. PSPDFKit supports PEM-encoded and DER-encoded X509 certificates, as well as DER-encoded PKCS#7 certificates. You can check the encoding of a certificate file by using the OpenSSL command line tool as follows:
+
+```shell
+  openssl pkcs7 -noout -text -print_certs -in example.p7b
+```
+
+The above command will print an error message if “example.p7b” is not a PEM-encoded PKCS#7 certificate or certificate chain.
+
+```shell
+  openssl pkcs7 -inform der -noout -text -print_certs -in example.p7b
+```
+
+The above command will print an error message if “example.p7b” is not a DER-encoded PKCS#7 certificate or certificate chain.
+
+- Second, you need your **private key**.
+
+<% if android? %>
+The signing process produces the signature by encrypting the message digest from the PDF file with a private key. The certificate with its public key is added to the signature and saved in the PDF file. The [`Signer`][] class allows signing of documents by adding a digital signature to a [`SignatureFormField`][]. Its methods, [`signFormField()`][] and [`signFormFieldAsync()`][], allow both computation and saving of digital signatures to a definable output file.
+
+PSPDFKit ships two default implementations of the [`Signer`][] class, but you can always create a custom signer if your use case requires it. The two signers are:
+
+- [`MemorySigner`][], which takes a [`KeyStore.PrivateKeyEntry`][] that was loaded by your app and uses it to sign the document directly.
+- [`Pkcs12Signer`][], which loads the signing certificate from a PKCS#12 file (usually having the `.p12` file extension) to sign the document. If necessary, the signer will request a password for unlocking the PKCS#12 file, in order to load the required keys from it:
+
+[==
+
+```kotlin
+// Create a signer loading the signing certificate from a PKCS#12 file.
+// The provided `displayName` can be used by PSPDFKit in various views.
+val signer: Signer = Pkcs12Signer(
+	"John Appleseed",
+	Uri.parse("file:///android_asset/JohnAppleseed.p12")
+)
+
+// Sign the form field, writing the signed document to a destination.
+// You can optionally provide additional biometric signature data.
+signer.signFormField(
+	formField,
+	biometricSignatureData,
+	destination,
+	object : Signer.OnSigningCompleteCallback() {
+		override fun onSigningFailed(ex: Exception) {
+			// Handle signing errors here...
+		}
+
+		override fun onSigningCompleted() {
+			// The document was successfully signed!
+		}
+	}
+);
+```
+
+```java
+// Create a signer loading the signing certificate from a PKCS#12 file.
+// The provided `displayName` can be used by PSPDFKit in various views.
+final Signer signer = new Pkcs12Signer(
+	"John Appleseed",
+	Uri.parse("file:///android_asset/JohnAppleseed.p12")
+);
+
+// Sign the form field, writing the signed document to a destination.
+// You can optionally provide additional biometric signature data.
+signer.signFormField(
+	formField,
+	biometricSignatureData,
+	destination,
+	new Signer.OnSigningCompleteCallback() {
+		@Override
+		public void onSigningFailed(Exception ex) {
+			if (!e.isDisposed()) e.onError(ex);
+		}
+
+		@Override
+		public void onSigningCompleted() {
+			if (!e.isDisposed()) e.onComplete();
+		}
+	}
+);
+```
+
+==]
+
+> **💡 Tip:** For an interactive example of digital signatures, check out `DigitalSignatureExample` in the Catalog app.
+
+### Implementing the Custom Signature Provider
+
+The [`SignatureProvider`][] interface defines entities capable of signing data of a PDF. A custom signature provider has to implement two methods:
+
+- [`getEncryptionAlgorithm()`][] has to return the encryption algorithm that will be applied to sign the PDF. The signature provider can return any of the available [`EncryptionAlgorithm`][] values. Usually this is dependent on the private key used (i.e. whether you use an RSA or DSA key).
+- [`signData()`][] has to perform the actual signing operation. This involves digesting the given PDF `data` using the requested [`HashAlgorithm`][] and then encrypting it using the signer’s private key (using the selected encryption algorithm).
+
+[==
+
+```kotlin
+class CustomSignatureProvider: SignatureProvider {
+	/**
+	 * For example, this uses Java's crypto APIs for signing a PDF.
+	 * The `getSignatureAlgorithm()` method will find the appropriate
+	 * signing algorithm. You can see this example in our Catalog app.
+	 */
+	override fun signData(data: ByteArray, hashAlgorithm: HashAlgorithm): ByteArray
+		= Signature.getInstance(getSignatureAlgorithm(hashAlgorithm)).run {
+			initSign(signingKey.privateKey)
+			update(data)
+			sign()
+		}
+
+	override fun getEncryptionAlgorithm() = EncryptionAlgorithm.RSA
+}
+```
+
+```java
+public class CustomSignatureProvider implements SignatureProvider {
+	/**
+	 * For example, this uses Java's crypto APIs for signing a PDF.
+	 * The `getSignatureAlgorithm()` method will find the appropriate
+	 * signing algorithm. You can see this example in our Catalog app.
+	 */
+	@NonNull
+	@Override
+	public byte[] signData(@NonNull byte[] data, @NonNull HashAlgorithm hashAlgorithm) {
+		try {
+			final Signature rsa = Signature.getInstance(getSignatureAlgorithm(hashAlgorithm));
+			rsa.initSign(signingKey.getPrivateKey());
+			rsa.update(data);
+			return rsa.sign();
+		} catch (Exception e) {
+			...
+		}
+	}
+
+	@NonNull
+	@Override
+	public EncryptionAlgorithm getEncryptionAlgorithm() {
+		return EncryptionAlgorithm.RSA;
+	}
+}
+```
+
+==]
+<% end %>
+<% if ios? %>
+The signing process produces the signature by encrypting the message digest from the PDF file with a private key. The certificate with its public key is added to the signature and saved in the PDF file. For your convenience, PSPDFKit provides a [`PSPDFPKCS12Signer`][] that loads a certificate with the public and private key from a `p12` archive. If you want to customize the signing process, you need to subclass [`PSPDFSigner`][]. Keep in mind that certificates installed by a user via opening the `.p12` container with built-in apps (via Install Profile) will go to the Apple access group and will only be available to Apple-provided apps such as Safari or Mail. See the [Apple Technical Q&A][technical q&a qa1745] for more details and a suggested workaround.
+
+Here is an example of how to register a [`PSPDFPKCS12Signer`][]:
+
+[==
+
+```swift
+// `p12Data` is a `p12` archive` NSData` object.
+let p12 = PSPDFPKCS12(data: p12Data)
+
+// Create a signer with a display name. The display name will show up in the list of identities when you tap on a signature form field.
+let p12Signer = PSPDFPKCS12Signer(displayName: "John Appleseed", pkcs12: p12)
+
+// Register your signer with the signature manager.
+let signatureManager = PSPDFKitGlobal.sharedInstance.signatureManager
+signatureManager.register(p12Signer)
+```
+
+```objc
+// `p12Data` is a `p12` archive `NSData` object.
+PSPDFPKCS12 *p12 = [[PSPDFPKCS12 alloc] initWithData:p12Data];
+
+// Create a signer with a display name. The display name will show up in the list of identities when you tap on a signature form field.
+PSPDFPKCS12Signer *p12Signer = [[PSPDFPKCS12Signer alloc] initWithDisplayName:@"John Appleseed" PKCS12:p12];
+
+// Register your signer with the signature manager.
+PSPDFSignatureManager *signatureManager = PSPDFKitGlobal.sharedInstance.signatureManager;
+[signatureManager registerSigner:p12Signer];
+```
+
+==]
+<% end %>
+
+## How to Use the Digital Signatures UI
+
+PSPDFKit comes with a ready-to-use user interface collection that allows you to provide digital signing capabilities inside your apps with minimal effort. When creating a signature in the user interface, you need to provide a certificate or draw an ink signature, or both. The document is only digitally signed if a certificate has been provided. Otherwise, only the ink signature is added to the document.
+<% if android? %>
+All you need to do is register all [`Signer`][] instances you would like to provide your users with by using the [`addSigner()`][] from the [`SignatureManager`][] class. PSPDFKit will then pick up these signers to use them in the signature dialog:
+
+[==
+
+```kotlin
+val johnAppleseed: Signer = Pkcs12Signer("John Appleseed", Uri.parse("file:///android_asset/JohnAppleseed.p12"))
+SignatureManager.addSigner("john-appleseed", johnAppleseed)
+```
+
+```java
+final Signer johnAppleseed = new Pkcs12Signer("John Appleseed", Uri.parse("file:///android_asset/JohnAppleseed.p12"));
+SignatureManager.addSigner("john-appleseed", johnAppleseed);
+```
+
+==]
+
+After registering the signer, PSPDFKit will automatically show it inside the [`SignaturePickerFragment`][] as an available signer (using its display name).
+
+> **💡 Tip:** To see an example of this, check out `DocumentSigningExample` in the Catalog app.
+> <% end %>
+> <% if ios? %>
+> By default, the user is able to select a certificate if there are [`registeredSigners`][] available. This behavior can be customized via [`PSPDFConfiguration.signatureCertificateSelectionMode`][].
+> <% end %>
+
+### Signing with a Form Element
+
+<% if android? %>
+If there are no stored signatures in the shared [`SignatureStorage`][signature storage interface], then tapping an empty signature form element will show the signature dialog presented by [`SignaturePickerFragment`][], which is where you can both sign a document with an ink signature and assign a certificate to your signature.
+
+<img title="Signature Creation" width="60%" src="/images/guides/shared/features/digital-signatures/signature-dialog.png">
+
+If there are already stored signatures, the [`SignaturePickerFragment`][] will show a picker instead, allowing you to either choose an existing signature or create a new one.
+
+<img title="Signature Creation" width="60%" src="/images/guides/shared/features/digital-signatures/signature-picker-fragment.png">
+<% end %>
+<% if ios? %>
+If there are no stored signatures in the shared [`PSPDFSignatureStore`][], then tapping an empty signature form element shows a [`PSPDFSignatureViewController`][], which is where you can both sign a document with an ink signature and assign a certificate to your signature.
+
+<img title="Signature Creation" width="80%" src="/images/guides/shared/features/digital-signatures/signature-creation.png">
+
+If there are already stored signatures, a [`PSPDFSignatureSelectorViewController`][] is shown instead, allowing you to either choose an existing signature or create a new one.
+
+<img title="Signature Picker" width="70%" src="/images/guides/shared/features/digital-signatures/signature-picker.png">
+<% end %>
+
+### Signing without a Form Element
+
+If a document doesn’t have a signature form element, you can still digitally sign it. The way to initiate this flow is to tap on the signature toolbar button and then select or create a signature as shown above. If you added a certificate to the signature, you will be asked to select the signature placement on the page; otherwise, the signature is placed into the document and you can move and resize it to your liking. After making the selection, you will be asked for the password of the certificate. Finally, after entering the password, the document will be signed.
+
+<% if android? %>
+
+### Retrieving a Signed Document After a User Signs It
+
+When a user signs a document by clicking on a [`SignatureFormField`][] and choosing a signature to sign the document with, PSPDFKit will write the signed document to a temporary location. To get access to the signed document, you need to register a [`DocumentSigningListener`][] on the [`PdfFragment`][]:
+
+[==
+
+```kotlin
+pdfFragment.setDocumentSigningListener(object : DocumentSigningListener {
+    override fun onDocumentSigned(signedDocumentUri: Uri) {
+        // Move the signed document to its permanent location.
+        // Then reopen it.
+    }
+
+    override fun onDocumentSigningError(error: Throwable?) {
+        // An error occurred during signing.
+    }
+
+    override fun onSigningCancelled() {
+        // The signing process was canceled.
+    }
+})
+```
+
+```java
+getPdfFragment().setDocumentSigningListener(new DocumentSigningListener() {
+    @Override
+    public void onDocumentSigned(@NonNull Uri signedDocumentUri) {
+        // Move the signed document to its permanent location.
+        // Then reopen it.
+    }
+
+    @Override
+    public void onDocumentSigningError(@Nullable Throwable error) {
+        // An error occurred during signing.
+    }
+
+    @Override
+    public void onSigningCancelled() {
+        // The signing process was canceled.
+    }
+});
+```
+
+==]
+
+### Using the Signature Picker Fragment
+
+The [`SignaturePickerFragment`][] is fully integrated into the [`PdfActivity`][] and the [`PdfFragment`][]. However, it can also be used independently, which allows you to create and collect [`Signature`][] instances outside of the context of a document:
+
+[==
+
+```kotlin
+SignaturePickerFragment.show(
+	fragmentManager,
+	object : SignaturePickerFragment.OnSignaturePickedListener {
+		override fun onSignaturePicked(signature: Signature) {
+			// The user selected a signature.
+		}
+
+		override fun onDismiss() {
+			// The user dismissed the dialog without selecting a signature.
+		}
+	}
+)
+```
+
+```java
+SignaturePickerFragment.show(
+	fragmentManager,
+	new OnSignaturePickedListener() {
+		@Override
+		public void onSignaturePicked(@NonNull final Signature signature) {
+			// The user selected a signature.
+		}
+
+		@Override
+		public void onDismiss() {
+			// The user dismissed the dialog without selecting a signature.
+		}
+	}
+);
+```
+
+==]
+
+The [`Signature`][] is a container for the following properties of the created signature:
+
+- The ink annotation data, which is the handwritten signature of the user.
+- An optional unique `identifier` of a registered [`Signer`][]. This is the same `identifier` used to register the signer using [`SignatureManager.addSigner()`][].
+- An optional [`BiometricSignatureData`][] holding additional information about the signature (see section below).
+  <% end %>
+  <% if ios? %>
+
+### Only Allow Digital Signing
+
+By default, users can create both an ink signature without a signer and a digital signature by selecting a signer in [`PSPDFSignatureViewController`][]. There might be use cases where you don’t want users to create an ink signature at all and only allow digitally signing via a predefined signer, without users being able to change it. You can see how this can be configured in the `OnlyAllowDigitalSigningExample.swift` example in our [Catalog example project][example projects]. This can be done by subclassing [`PSPDFSignatureViewController`][] and overriding the [`signer`][] property to return the predefined signer that needs to be used. Additionally, you should set [`certificateSelectionMode`][] to [`PSPDFSignatureCertificateSelectionModeNever`][] — either on the signature view controller directly, or on [`PSPDFConfiguration.signatureCertificateSelectionMode`][] — to disable the user choosing another signer.
+
+To allow the user to select a different certificate but still prevent the creation of a normal ink signature, you can subclass [`PSPDFCertificatePickerViewController`][] and only show the signers you want to allow the user to select by overriding the default [`PSPDFCertificatePickerViewController`][] via [`overrideClass:withClass:`][].
+<% end %>
+
+## How to Validate a Digital Signature
+
+<% if android? %>
+The [`DigitalSignatureValidator`][] extracts the [`DigitalSignatureInfo`][] from a signed [`SignatureFormField`][] and will perform a validation check on the signature. Validation can be performed using [`validateSignature()`][] and [`validateSignatureAsync()`][] and will return a [`DigitalSignatureValidationResult`][] once complete. The result will hold information about both the validity of the digital signature and a variety of possible validation warnings and errors:
+
+[==
+
+```kotlin
+val result = DigitalSignatureValidator.validate(signatureFormField)
+if (result.validationStatus == ValidationStatus.SUCCESS) {
+	onSignatureValidated()
+} else {
+	showValidationProblems(result.problems)
+}
+```
+
+```java
+final DigitalSignatureValidationResult result = DigitalSignatureValidator.validate(signatureFormField);
+if (result.getValidationStatus() == ValidationStatus.SUCCESS) {
+	onSignatureValidated();
+} else {
+	showValidationProblems(result.getProblems());
+}
+```
+
+==]
+<% end %>
+<% if ios? %>
+
+PSPDFKit also needs to be able to validate signatures. The validation process consists of two steps.
+
+- In the first step, we check if the signature certificate embedded during signing can be trusted. In order to do this, we need to obtain the trusted certificate from the authority that issued it, a root CA certificate, or an intermediate CA certificate. For your convenience, PSPDFKit already provides the Adobe Root CA. This CA is also typically loaded by third-party readers.
+
+- In the second step, we verify the signature. This process essentially decrypts the signature with a public key from the certificate embedded in the PDF file on signing and compares it with the message digest built from the PDF file, excluding the signature itself.
+
+Here is an example of how to provide the trusted certificate:
+
+[==
+
+```swift
+do {
+    // Load a certificate (with a public key) from a `p7` archive.
+    let certificateData = try Data(contentsOf: p7URL)
+    let certificates = try PSPDFX509.certificatesFromPKCS7Data(certificateData)
+
+    for certificate in certificates {
+        signatureManager.addTrustedCertificate(certificate)
+    }
+} catch {
+    // Don't forget to check for errors here.
+}
+```
+
+```objc
+// Load a certificate (with a public key) from a `p7` archive.
+NSData *certificateData = [NSData dataWithContentsOfURL:p7URL];
+
+NSError *error = nil;
+NSArray *certificates = [PSPDFX509 certificatesFromPKCS7Data:certData error:&err];
+
+// Don't forget to check for errors here.
+
+for (PSPDFX509 *certificate in certificates) {
+	[signatureManager addTrustedCertificate:certificate];
+}
+```
+
+==]
+
+The [`PSPDFSignatureValidator`][] can then validate the signature in the [`PSPDFSignatureFormElement`] with [`-verifySignatureWithTrustedCertificates:error:`][].
+
+Here’s an example on how to validate a signature and get its status:
+
+[==
+
+```swift
+// Validate the signed document.
+let validator = PSPDFSignatureValidator.init(signatureFormElement: signatureFormElement)
+do {
+		let status = try validator.verifySignature(withTrustedCertificates: certificates)
+		// Decide what to do with the status.
+} catch {
+		// Handle errors.
+}
+```
+
+```objc
+// Validate the signed document.
+PSPDFSignatureValidator *validator = [[PSPDFSignatureValidator alloc] initWithSignatureFormElement:signatureFormElement];
+PSPDFSignatureStatus *status = [validator verifySignatureWithTrustedCertificates:certificates error:error];
+```
+
+==]
+
+This can be very useful for the topic that comes next.
+<% end %>
+
+### What Are the Different Signature Validation Statuses?
+
+<% if android? %>
+If you validate a digital signature with PSPDFKit, either programmatically or using our UI, there can be several possible statuses for the signature. Programmatically, the [`DigitalSignatureValidationResult`][] class contains an enum, [`DigitalSignatureValidationResult.DocumentIntegrityStatus`][], that can be queried to determine if the document was altered in some way after it was digitally signed.
+<% end %>
+<% if ios? %>
+If you validate a digital signature with PSPDFKit, either programmatically or using our UI, there can be several possible statuses for the signature. Programmatically, the [`PSPDFSignatureStatus`][] class contains a property, [`signatureIntegrityStatus`][], that can be queried to determine if the document was altered in some way after it was digitally signed. Additionally, the [`coversEntireDocument`][] Boolean property is useful if the document has many digital signatures. If [`coversEntireDocument`][] returns `false`, it means the digital signature only covers a particular _revision_ of the document — that is, there may be subsequent revisions covered by digital signatures that were applied later on.
+<% end %>
+
+Let’s take a look at our validation UI when the document is signed with a self-signed certificate:
+
+<img width="50%" src="/images/guides/shared/features/digital-signatures/SelfSignedSignature.png">
+
+In this sample case, the first paragraph informs us of the general status of the digital signature. Next, the signer name and signing date is shown. This information always comes from the certificate itself, so you don’t have programmatic access to modify it. Following that paragraph, the integrity status of the document is displayed. In this case, the document has not been modified since it was signed, which is a good sign. Finally, the UI lets us know that the certificate used for signing was a self-signed certificate. This is not necessarily bad, but we find out about this situation with a severity level of “warning.”
+
+Let’s see what happens if we try to validate a signature with an expired certificate:
+
+<img width="50%" src="/images/guides/shared/features/digital-signatures/InvalidSignature.png">
+
+In this case, we are informed that the certificate is not valid because it has expired. To prevent confusing our users, our default UI does not show the integrity status of a document if the certificate validation failed (that is, if the general signature status is “error”).
+
+This is the validation UI that is shown when the certificate is not self-signed or hasn’t expired but is not yet trusted by PSPDFKit:
+
+<img width="50%" src="/images/guides/shared/features/digital-signatures/NotTrustedSignature.png">
+
+<% if android? %>
+
+## How to Remove a Digital Signature
+
+If you want to remove a signature again, you just need to access the signed [`SignatureFormField`][] and call [`removeSignature()`][] or [`removeSignatureAsync()`][]. This will remove the [`DigitalSignatureInfo`][] from the given [`SignatureFormField`][].
+<% end %>
+
+## Biometric Signatures
+
+<% if android? %>[`BiometricSignatureData`][] is “real-world information” that can be attached to a digital signature.<% end %><% if ios? %>Beginning with PSPDFKit 7 for iOS, we automatically store biometric properties encrypted in a digital signature. These biometric properties are stored via [`PSPDFSignatureBiometricProperties`][].<% end %> This information includes things like whether or not the signature was created with a stylus, the size of the signee’s finger, and the timing and pressure information that was collected while writing the signature. Ultimately, this data can be used to create solutions that provide a higher grade of security than traditional digital signatures do. A digital signature can only contain biometric data if an ink signature was used to create it.
+
+<% if android? %>
+
+### Creating Biometric Data
+
+You can create a [`BiometricSignatureData`][] instance using its [`Builder`][`biometricsignaturedata.builder`]. All values of the biometric data are optional and can be left out. Once created, the [`BiometricSignatureData`][] is immutable:
+
+[==
+
+```kotlin
+val biometricData = BiometricSignatureData.Builder()
+	.setInputMethod(BiometricSignatureData.InputMethod.FINGER)
+	.setPressurePoints(listOf(0.4f, 0.1f, 0.94f, 0.6f))
+	.build()
+```
+
+```java
+final BiometricSignatureData biometricData = new BiometricSignatureData.Builder()
+	.setInputMethod(BiometricSignatureData.InputMethod.FINGER)
+	.setPressurePoints(Arrays.asList(new Float[]{ 0.4f, 0.1f, 0.94f, 0.6f }))
+	.build();
+```
+
+==]
+
+> **💡 Tip:** [`BiometricSignatureData`][] is a [`Parcelable`][]; this allows it to be passed around activities or saved to your instance state.
+> <% end %>
+> <% if ios? %>
+> By default, all available properties on [`PSPDFSignatureBiometricProperties`][] are populated and stored. These properties can be customized to restrict storing specific properties via [`PSPDFConfiguration.signatureBiometricPropertiesOptions`][]. When signing a document, only the specified values are stored in the digital signature.
+
+For example, to only store the touch radius and the input method biometric properties of the ink signature, you can use the following code:
+
+[==
+
+```swift
+let controller = PSPDFViewController(document: document, configuration: PSPDFConfiguration { builder in
+    builder.signatureBiometricPropertiesOptions = [.touchRadius, .inputMethod]
+})
+```
+
+```objc
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:document configuration:[PSPDFConfiguration configurationWithBuilder:^(PSPDFConfigurationBuilder *builder) {
+    builder.signatureBiometricPropertiesOptions = PSPDFSignatureBiometricPropertiesOptionTouchRadius | PSPDFSignatureBiometricPropertiesOptionInputMethod;
+}]];
+```
+
+==]
+
+You can customize the properties that are stored by overriding [`-[PSPDFSignatureContainer initWithAnnotation:signer:biometricProperties:]`][`initwithannotation:signer:biometricproperties:`] and modifying the [`biometricProperties`][] object to fit your needs.
+
+The following biometric properties and data points are captured and stored in the digital signature when using the default document signing UI flow.
+
+- [`pressureList`][]:
+
+  Set to the first, the middle, and the last floating-point intensity values of the created ink signature.
+
+  - If [`inputMethod`][] is set to [`PSPDFDrawInputMethodFinger`][], it is calculated based on the velocity of the drawing.
+  - If [`inputMethod`][] is set to [`PSPDFDrawInputMethodApplePencil`][], it is calculated based on the Apple Pencil’s azimuth and altitude toward the display.
+  - If [`inputMethod`][] is set to [`PSPDFDrawInputMethodThirdPartyStylus`][], it is calculated using the corresponding stylus driver.
+
+- [`timePointsList`][]:
+
+  Set to an array of the first, the middle, and the last timestamps during the creation of the ink signature. The timestamps correspond to the values in [`pressureList`][] and were taken at the same point in time. They are saved as boxed `NSTimeInterval` values and set to `-[NSDate timeIntervalSince1970]` at the time of the drawing.
+
+- [`touchRadius`][]:
+
+  - If [`inputMethod`][] is set to [`PSPDFDrawInputMethodFinger`][] or [`PSPDFDrawInputMethodThirdPartyStylus`][], the touch radius is set to the average radius of all touches of the created ink signature.
+  - If [`inputMethod`][] is set to [`PSPDFDrawInputMethodApplePencil`][], the altitude angle of the Apple Pencil is used instead.
+
+- [`inputMethod`][]:
+
+  Set to the most recently used input method of the created ink signature.
+
+If you are creating digital signatures manually, you can provide a custom [`PSPDFSignatureBiometricProperties`][] object by implementing the [`- (PSPDFSignatureAppearance)documentSigner:signatureBiometricProperties:`][] method of the [`dataSource`][] set on [`PSPDFSigner`][], which is then saved alongside the digital signature — encrypted with the signing certificate — in the document.
+<% end %>
+
+### Collecting Biometric Data
+
+<% if android? %>
+When a user creates a [`Signature`][] using the [`SignaturePickerFragment`][], the signature will also hold [`BiometricSignatureData`][] that was collected during the creation of the signature. You can retrieve this data using [`signature.getBiometricData()`][`signature#getbiometricdata()`]:
+
+[==
+
+```kotlin
+// Retrieve the biometric data that was collected during signature creation.
+val biometricData = signature.biometricData
+```
+
+```java
+// Retrieve the biometric data that was collected during signature creation.
+final BiometricSignatureData biometricData = signature.getBiometricData();
+```
+
+==]
+
+### Digitally Signing with Biometric Data
+
+To add biometric data to a digital signature, pass it to your [`Signer`][] during the signing process. The [`Signer`][] will automatically verify the biometric data and attach it to the signature:
+
+[==
+
+```kotlin
+val biometricData = signature.biometricData
+// Simply pass in `BiometricSignatureData` as an extra argument.
+signer.signFormField(
+	formField,
+	biometricData,
+	outputFile,
+	object : Signer.OnSigningCompleteCallback() {
+		override fun onSigningFailed(ex: Exception) {
+			// Handle signing errors here...
+		}
+
+		override fun onSigningCompleted() {
+			// The document was successfully signed!
+		}
+	})
+})
+```
+
+```java
+final BiometricSignatureData biometricData = signature.getBiometricData();
+// Simply pass in `BiometricSignatureData as` an extra argument.
+signer.signFormField(
+	formField,
+	biometricData,
+	destination,
+	new Signer.OnSigningCompleteCallback() {
+		@Override
+		public void onSigningFailed(Exception ex) {
+			// Handle signing errors here...
+		}
+
+		@Override
+		public void onSigningCompleted() {
+			// The document was successfully signed!
+		}
+	}
+);
+```
+
+==]
+
+## External Signature Providers
+
+PSPDFKit supports external signature providers such as hardware security modules (HSMs) and other signing entities. The [`SignatureProvider`][] interface defines classes capable of signing PDF blob data, which is required as part of the digital signing process of a PDF.
+
+The default implementation used by PSPDFKit, aka the `PrivateKeySignatureProvider`, signs PDF data using a `java.security.KeyStore.PrivateKeyEntry`. Both `Pkcs12Signer` and `MemorySigner` derive from `PrivateKeySignatureProvider` and can be used if your app stores the private key of the user directly on the device. If you are using an external signing service (such as an HSM), implement a custom `Signer` as shown in `CustomSignatureProviderExample`.
+
+## Custom Signature Storage
+
+By default, PSPDFKit will store any signature for which your users have selected the Store Signature option in the primary PSPDFKit SQLite database of your app. If you would like to use a different signature storage method, you can provide it using the [`setSignatureStorage()`][signature storage option] method of your [`PdfFragment`][] before the signature dialog is shown (for example, inside the `onCreate()` method of your activity):
+
+[==
+
+```CustomPdfActivity.kt
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    // You can create any number of signature storage databases.
+    val storage: SignatureStorage = DatabaseSignatureStorage
+        .withName("custom-storage")
+
+    // Configure your custom storage method in the fragment.
+    pdfFragment.setSignatureStorage(storage)
+}
+```
+
+```CustomPdfActivity.java
+ @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // You can create any number of signature storage databases.
+    final SignatureStorage storage = DatabaseSignatureStorage
+        .withName("custom-storage");
+
+    // Configure your custom storage method in the fragment.
+    getPdfFragment().setSignatureStorage(storage);
+}
+```
+
+==]
+
+**💡 Tip:** If you’d like to implement custom signature storage — for example, writing to an encrypted database — you can write your own custom implementation of the [`SignatureStorage`][signature storage interface] interface and provide instances of it to PSPDFKit using the [`setSignatureStorage(SignatureStorage)`][signature storage option] method.
+<% end %>
+<% if ios? %>
+You can access biometric properties from a [`PSPDFSignatureFormElement`][] object after the signing process is complete by using [`-[PSPDFSignatureFormElement signatureBiometricProperties:]`][`signaturebiometricproperties:`], like so:
+
+[==
+
+```swift
+let signedSignatureFormElement: PSPDFSignatureFormElement = ...
+var privateKey: PSPDFPrivateKey = ...
+let pkcs12: PSPDFPKCS12 = ...
+pkcs12.unlock(withPassword: password) { _, key, _ in
+    privateKey = key
+}
+let biometricProperties = signedSignatureFormElement.signatureBiometricProperties(privateKey)
+```
+
+```objc
+PSPDFSignatureFormElement *signedSignatureFormElement = ...
+PSPDFPrivateKey *privateKey = ...
+PSPDFPKCS12 *pkcs12 = ...
+[pkcs12 unlockWithPassword:password done:^(PSPDFX509 *x509, PSPDFPrivateKey *pkey, NSError *err) {
+    privateKey = pkey;
+}];
+
+PSPDFSignatureBiometricProperties *biometricProperties = [signedSignatureFormElement signatureBiometricProperties:privateKey];
+```
+
+==]
+<% end %>
+
+## Customizing Digital Signing
+
+<% if ios? %>
+PSPDFKit offers various options for customizing the digital signing experience, primarily via [`PSPDFDigitalSignatureCoordinator`][] subclassing hooks and [`PSPDFSignatureViewController`][].
+
+### Customizing the File Path for Digitally Signed Documents
+
+A document that is digitally signed will be copied, signed, and saved to a new path to keep the (unsigned) original document intact. You can customize the path where the digitally signed document should be saved by subclassing [`PSPDFDigitalSignatureCoordinator`][] and overriding [`pathForDigitallySignedDocumentFromOriginalDocument:suggestedFileName:`][] to return a custom path. The suggested file name parameter is based on the title of the original document, if available, or the file name as a fallback. It can be used as the last path component in the path where the digitally signed document should be stored. The returned path will be sanitized, and we will append the `.pdf` path extension.
+
+### Customizing the Presentation for Digitally Signed Documents
+
+You can also customize how the signed document should be presented. By default, this is done by pushing a new [`PSPDFViewController`][] instance on the navigation controller with the digitally signed document shown. This can be customized by overriding [`presentSignedDocument:showingPageIndex:`][] in your [`PSPDFDigitalSignatureCoordinator`][] subclass. By overriding this method, you are responsible for presenting/pushing the document that should be part of your digital signing experience. The `pageIndex` parameter is the page index of the signature form field of the document, which you have the option of scrolling to.
+
+## Customizing Signature Appearances
+
+During the signing process, you can customize how the final signature will be shown in the document.
+
+[`PSPDFDigitalSignatureCoordinator`][] provides [`configureSignatureAppearanceWithBuilder:document:signature:`][], which you can override to customize the signature appearance.
+
+[`PSPDFSignatureAppearance`][] has some Boolean properties to decide whether the signer’s name, date of signing, signature location, or signature reason should be shown after the document is signed.
+
+The [`appearanceMode`][] property enables further configuration of the visual appearance, with two supported modes: [`PSPDFSignatureAppearanceModeSignatureAndDescription`][] and [`PSPDFSignatureAppearanceModeDescriptionOnly`][]. If your signature field has some appearance you want to keep after it’s signed (for example, a border or watermark logo), set the [`reuseExistingAppearance`][] property.
+
+You can provide your own artwork (for example, a handwritten signature) that will be displayed on the left part of a signature field when its appearance mode is [`PSPDFSignatureAppearanceModeSignatureAndDescription`][]. Set the [`signatureGraphic`][] property to type [`PSPDFAnnotationAppearanceStream`][] to accomplish this. You can create a [`PSPDFAnnotationAppearanceStream`][] with either a JPEG image or a PDF document. The signature watermark that will be drawn in the center of the signature can also be configured. Set the [`signatureWatermark`][] property to accomplish this. If you don’t configure this property, the PSPDFKit logo will be shown. If you don’t want to show a signature watermark at all, set the [`showWatermark`][] property to `false`.
+
+If you are signing a document programmatically, you can pass the [`PSPDFSignatureAppearance`][] class by configuring the [`dataSource`][] property of the [`PSPDFSigner`][] instance, like this:
+
+[==
+
+```swift
+// A custom document signer data source that will provide the custom signature appearance.
+class MyCustomDataSource: NSObject, PSPDFDocumentSignerDataSource {
+    func documentSigner(_ signer: PSPDFSigner, signatureAppearance formFieldFqn: String) -> PSPDFSignatureAppearance {
+         let image = ...
+         let signatureAppearance = PSPDFSignatureAppearance { builder in
+             builder.appearanceMode = .signatureAndDescription
+             builder.reuseExistingAppearance = true
+             builder.signatureGraphic = PSPDFAnnotationAppearanceStream(image: image!)
+         }
+         return signatureAppearance
+    }
+}
+
+// Set the custom signer's data source.
+let customDataSource = MyCustomDataSource()
+signer.dataSource = customDataSource
+
+// Sign the document.
+var signedDocument: PSPDFDocument?
+signer.sign(signatureFormElement, usingPassword: "test", writeTo: path) {(_ success: Bool, _ document: PSPDFDocument, _ err: Error?) -> Void in
+    signedDocument = document
+}
+```
+
+```objc
+// A custom document signer data source that will provide the custom signature appearance.
+@interface MyCustomDataSource: NSObject<PSPDFDocumentSignerDataSource>
+
+@end
+
+@implementation MyCustomDataSource
+
+- (PSPDFSignatureAppearance *)documentSigner:(PSPDFSigner *)signer signatureAppearance:(NSString *)formFieldFqn {
+    PSPDFSignatureAppearance *signatureAppearance = [PSPDFSignatureAppearance configurationWithBuilder:^(PSPDFSignatureAppearanceBuilder *builder) {
+       builder.appearanceMode = PSPDFSignatureAppearanceModeSignatureAndDescription;
+       builder.reuseExistingAppearance = YES;
+       builder.signatureGraphic = [PSPDFAnnotationAppearanceStream appearanceStreamWithImage:image];
+    }];
+    return signatureAppearance;
+}
+
+@end
+
+// Set the custom signer's data source.
+let customDataSource = [[MyCustomDataSource alloc] init];
+signer.dataSource = customDataSource;
+
+// Sign the document.
+__block PSPDFDocument *signedDocument;
+[signer signFormElement:signatureFormElement usingPassword:@"test" writeTo:path completion:^(BOOL success, PSPDFDocument *document, NSError *err) {
+    signedDocument = document;
+}];
+```
+
+==]
+
+When providing an ink signature, the default signature appearance looks like the following image.
+
+<img title="Default Signature Appearance" width="50%" src="/images/guides/shared/features/digital-signatures/default-signature-appearance.png">
+<% end %>
+
+## Custom Signers
+
+There are various use cases in which PSPDFKit’s default signing implementation can’t be used.<% if android? %> In such cases, developers can create custom [`Signer`][] implementations.<% end %> Some example use cases are when:
+
+- You are required to use a specific crypto library <% if android? %>(for example, Bouncy Castle)<% end %>.
+- You aren’t in direct possession of a signing key (for example, when using an HSM or a signing service).
+- You have a specific multi-step signing flow that is not supported by PSPDFKit’s default implementation (for example, with multiple passwords).
+
+<% if ios? %>
+In order to customize the signing process, you can subclass [`PSPDFSigner`][]. Then register the signer with the signature manager, as described above. Please have a look at the documentation in the [`PSPDFSigner`][] header file for more information on what methods you need to override.
+<% end %>
+
+<% if android? %>
+
+### Implementing a Custom Signer
+
+To build a custom signer, create a class that derives from [`Signer`][] and implement the abstract [`prepareSigningParameters()`][`signer#preparesigningparameters()`] method. The method needs to load all parameters required for a successful signing operation. These parameters are:
+
+- The [`X509Certificate`][] that is going to be embedded into the signed PDF document.
+- A [`SignatureProvider`][] that will perform the actual signing operation of the PDF data. Implement this to support virtually any entity capable of signing data in a document.
+
+Whenever PSPDFKit tries to digitally sign a PDF using your custom signer, its [`prepareSigningParameters()`][`signer#preparesigningparameters()`] method will be called. It is the responsibility of the signer to retrieve all signing parameters and return them using the provided callback. For example:
+
+[==
+
+```kotlin
+override fun prepareSigningParameters(callback: OnSigningParametersReadyCallback) {
+	// Load all parameters.
+	loadSigningParameters()
+	// Call this whenever your signer is ready. This will finish the signing process.
+	callback.onSigningParametersReady(signatureProvider, certificate)
+}
+```
+
+```java
+@Override
+protected void prepareSigningParameters(@NonNull OnSigningParametersReadyCallback callback) {
+	// Load all parameters.
+	loadSigningParameters();
+	// Call this whenever your signer is ready. This will finish the signing process.
+	callback.onSigningParametersReady(signatureProvider, certificate);
+}
+```
+
+==]
+<% end %>
+<% if ios? %>
+
+## Signing a Document Using Your Own Encryption
+
+Sometimes it’s not feasible to have access to a private key and load it on an iOS device to sign a document. Or, you may want more control over the signing process than what the [`PSPDFSigner`][] class provides by default — for example, to sign information using a web service. For such situations, the [`delegate`][] property of [`PSPDFSigner`][] may be useful. Another alternative is to use the contained digital signatures workflow explained later in this guide.
+
+First create a class that implements the [`PSPDFDocumentSignerDelegate`][] protocol, and set it as the [`delegate`][] property of [`PSPDFSigner`][] or one of its subclasses. Then you must implement the following method:
+
+- [`- (void)documentSigner:signData:hashAlgorithm:completion:`][] will be called during the signing process with two important pieces of information. The data parameter is the hashed document information that must be signed. PSPDFKit follows the security recommendations of the PDF standard and always hashes the entire PDF document, except for a space reserved for the signature itself. [`hashAlgorithm`][] is the hash function that was used to convert the raw bytes in the PDF document into the `NSData` that was provided to this method. You must return the signed data using the private key associated with the certificate’s public key you passed to the sign methods in [`PSPDFSigner`][].
+
+You can customize the hash and encryption algorithms used to sign the document by implementing a few optional methods of the [`PSPDFDocumentSignerDataSource`][] protocol:
+
+- [`- (PSPDFSignatureHashAlgorithm)documentSigner:signatureHashAlgorithm:`][] for returning any value of the [`hashAlgorithm`][] enumeration
+- [`- (PSPDFSignatureEncryptionAlgorithm)documentSigner:signatureEncryptionAlgorithm:`][] for returning any value of the [`PSPDFSignatureEncryptionAlgorithm`][] enumeration
+  <% end %>
+
+## Contained Digital Signatures
+
+PSPDFKit also supports a workflow where the creation of a digital signature is split in two phases:
+
+- First, you can “prepare” a document with a signature form field by stamping a custom signature appearance and reserving space in the PDF for the digital signature.
+- Second, you can “embed” a custom [PKCS#7][] signature container in a document that was already “prepared” in the first step. The end result is a digitally signed document.
+
+This workflow, which we call contained digital signatures, is especially useful when the cryptographic material to sign a document (keys, certificates) is not available on the platform that executes PSPDFKit.
+
+<% if ios? %>
+For the first part, preparing a document, you may call [`- (void)prepareFormElement:toBeSignedWithAppearance:contents:writingToDataSink:completion:`][] on the [`PSPDFSigner`][] class. This preparation step allows customization for the raw content that will fill the digital signature contents before a real digital signature is applied: The [`PSPDFSignatureContents`][] protocol is an abstraction for that. If you want to fill the digital signature contents with binary zeroes, pass an instance of the [`PSPDFBlankSignatureContents`][] class to [`- (void)prepareFormElement:toBeSignedWithAppearance:contents:writingToDataSink:completion:`][].
+
+Note that the document generated by the [`- (void)prepareFormElement:toBeSignedWithAppearance:contents:writingToDataSink:completion:`][] API has two important properties: First, it’s not a valid digitally signed document yet, so it may show errors if you try to validate it with PSPDFKit or any other third-party tool. Second, this document must not be modified in any way, in order to prevent corrupting the digital signature that will be embedded in the final document. The process of embedding the real digital signature is explained next.
+
+For embedding a real digital signature in a document generated by [`- (void)prepareFormElement:toBeSignedWithAppearance:contents:writingToDataSink:completion:`][], you can call [`- (void)embedSignatureInFormElement:withContents:writingToDataSink:completion:`][] on the [`PSPDFSigner`][] class. You are responsible for generating a valid digital signature in the cryptographic [PKCS#7][] format for the prepared document. In order to do that, pass a custom implementation of [`PSPDFSignatureContents`][] to the previously cited method. In your [`- (NSData *)signData:`][] implementation, you will receive the part of the document that you need to hash, encrypt, and package into a digital signature. You can call [`- (NSData*)hashDocumentProviderRange:hashAlgorithm:error`][] on a [`PSPDFDocumentProvider`][] instance to help you calculate the hash value of some parts of a PDF document. You can generate the PKCS7 signature container with the help of our [`PSPDFPKCS7`][] class.
+
+You will find examples of this API in the Catalog file `ContainedDigitalSignaturesExample.swift`.
+<% end %>
+
+<% if android? %>
+
+For the first part, preparing a document, you may call [`prepareFormFieldForSigningAsync()`][] on the [`Signer`][] class. This preparation step allows customization for the raw content that will fill the digital signature contents before a real digital signature is applied: The [`SignatureContents`][] interface is an abstraction for that. If you want to fill the digital signature contents with binary zeroes, pass an instance of the [`BlankSignatureContents`][] class to [`signatureContents()`][] when building [`SignerOptions`][] used in [`prepareFormFieldForSigningAsync()`][].
+
+Note that the document generated by the [`prepareFormFieldForSigningAsync()`][] API has two important properties: First, it’s not a valid digitally signed document yet, so it may show errors if you try to validate it with PSPDFKit or any other third-party tool. Second, this document must not be modified in any way, in order to prevent corrupting the digital signature that will be embedded in the final document. The process of embedding the real digital signature is explained next.
+
+For embedding a real digital signature in a document generated by [`prepareFormFieldForSigningAsync()`][], you can call [`embedSignatureInFormFieldAsync()`][] on the [`Signer`][] class. You are responsible for generating a valid digital signature in the cryptographic [PKCS#7][] format for the prepared document. In order to do that, pass a custom implementation of [`SignatureContents`][] to the previously cited method. In your [`SignatureContents#signData()`][] implementation, you will receive the part of the document that you need to hash, encrypt, and package into a digital signature. You can call [`getHashForDocumentRange()`][] on a [`PdfDocument`][] instance to help you calculate the hash value of some parts of a PDF document. You can generate the PKCS7 signature container with the help of our [`PKCS7`][] class or use [`PKCS7SignatureContents`][] directly.
+
+PSPDFKit also ships with the ready-to-use [`ContainedSignaturesSigner`][], which encapsulates the contained signatures flow. You can start using it by implementing its abstract method, [`prepareSignatureContents()`][`containedsignaturessigner#preparesignaturecontents()`]. This method receives the document prepared for signing with the [`prepareFormFieldForSigningAsync()`][]. You should return your custom implementation of [`SignatureContents`][] from this method to embed it as a digital signature in the prepared document.
+
+For a complete example, refer to `ContainedSignaturesExample` in the Catalog app.
+<% end %>
+
+## How Does Adobe Acrobat Validate a Document Signed by PSPDFKit?
+
+Once you have signed a PDF document using PSPDFKit, you’ll notice that after opening it in Adobe Acrobat, you might get the following validation status.
+
+<img src="/images/guides/shared/features/digital-signatures/UnknownSignatureStatus.png">
+
+This warning is informing you that the reader application has verified that the document has not been modified since the last time it was signed, but that the certificate is not yet trusted. You can configure the certificate as a trusted anchor in Adobe Acrobat by [following the instructions provided by Adobe][get certificates from other users].
+
+Alternatively, if the PDF is opened in a Windows environment, you can configure Adobe Acrobat to automatically trust every certificate in the Windows Certificate Store by clicking Edit > Preferences > Security > Advanced Preferences, and then checking Enable searching the Windows Certificate Store for the following operations. Use this option with caution, as it might pose a security risk.
+
+Adobe Acrobat 9 introduced a new program to make the validation process more user-friendly: the [Adobe Approved Trust List (AATL)][adobe approved trust list]. Businesses that provide certificates to their users can apply to this program by submitting application materials and their root certificates. Once approved, Adobe Acrobat will automatically download and trust every certificate that is part of this program.
+
+## Troubleshooting
+
+#### I Have a Chain of Certificates That I Used for Signing but When I Validate the Digital Signature in PSPDFKit It Shows as “Not Trusted”
+
+When you have a chain of certificates comprising a leaf certificate and some intermediate certificate authorities, we require that you explicitly trust every intermediate certificate authority in the chain. If any certificate in the path is not trusted, we can’t perform proper path validation, and as a result, we will show two possible error messages:
+
+- If there is not any expired certificate in the chain, we show a warning explaining that we couldn’t verify the chain of certificates.
+- If there is an expired certificate in the chain, we show an error because we consider an expired certificate to be a very important issue during digital signature validation.
+
+<% if android? %>
+In order to trust certificates, you can use the [`addTrustedCertificates()`][] method. Note that, by default, our SDK will automatically add and trust those CAs already included in the Android device, but you will need to manually trust any other CA that issued your certificate.
+
+#### I Am Signing a Document with Multiple Signatures and Previous Signatures Show as “Not Valid”
+
+When digitally signing documents with multiple signature fields, you need to make sure that the document can be saved incrementally. When incremental saving is disabled or not supported, PSPDFKit rewrites already signed document data, which could result in the invalidation of existing signatures.
+
+Incremental saving is enabled only for documents that are not password protected with document sources that support appending. Appendable sources include local files and [`WritableDataProvider`][] instances that return `true` inside [`WritableDataProvider#supportsAppending()`][].
+<% end %>
+<% if ios? %>
+In order to trust certificates, read the Signature Validation section of this guide to learn how to use the [`PSPDFSignatureManager`][] API to do exactly that.
+<% end %>
+
+[electronic signatures in a pdf]: https://pspdfkit.com/blog/2019/electronic-signatures-on-pdf/
+[pkcs#7]: https://tools.ietf.org/html/rfc2315
+
+<% if android? %>
+[digital signatures in a pdf]: https://www.adobe.com/devnet-docs/etk_deprecated/tools/DigSig/Acrobat_DigitalSignatures_in_PDF.pdf
+[pdf 1.7 specification]: http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+[wikipedia digital signature]: http://en.wikipedia.org/wiki/Digital_signature
+[rfc 5280]: http://tools.ietf.org/html/rfc5280#page-29
+[certificate authority]: http://en.wikipedia.org/wiki/Certificate_authority
+[technical q&a qa1745]: https://developer.apple.com/library/ios/qa/qa1745/_index.html
+[get certificates from other users]: https://helpx.adobe.com/acrobat/using/securing-pdfs-certificates.html
+[adobe approved trust list]: https://helpx.adobe.com/acrobat/kb/approved-trust-list2.html
+[`signer`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html
+[`signatureformfield`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/SignatureFormField.html
+[`removesignature()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/SignatureFormField.html#removeSignature()
+[`removesignatureasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/forms/SignatureFormField.html#removeSignatureAsync()
+[`signformfield()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html#signFormField(com.pspdfkit.forms.SignatureFormField,%20com.pspdfkit.signatures.BiometricSignatureData,%20java.io.OutputStream,%20com.pspdfkit.signatures.signers.Signer.OnSigningCompleteCallback)
+[`signformfieldasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html#signFormFieldAsync(com.pspdfkit.forms.SignatureFormField,%20java.security.KeyStore.PrivateKeyEntry,%20java.io.OutputStream)
+[`signatureprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/provider/SignatureProvider.html
+[`memorysigner`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/MemorySigner.html
+[`pkcs12signer`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Pkcs12Signer.html
+[`keystore.privatekeyentry`]: https://developer.android.com/reference/java/security/KeyStore.PrivateKeyEntry.html
+[`signaturemanager`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/SignatureManager.html
+[`addsigner()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/SignatureManager.html#addSigner(java.lang.String,%20com.pspdfkit.signatures.signers.Signer)
+[`digitalsignaturevalidator`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureValidator.html
+[`digitalsignatureinfo`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureInfo.html
+[`validatesignature()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureValidator.html#validateSignature(com.pspdfkit.signatures.DigitalSignatureInfo)
+[`validatesignatureasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureValidator.html#validateSignatureAsync(com.pspdfkit.signatures.DigitalSignatureInfo)
+[`digitalsignaturevalidationresult`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureValidationResult.html
+[`documentsigninglistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentSigningListener.html
+[`signatureprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/provider/SignatureProvider.html
+[`encryptionalgorithm`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/EncryptionAlgorithm.html
+[`hashalgorithm`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/HashAlgorithm.html
+[`signer#preparesigningparameters()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html#prepareSigningParameters(com.pspdfkit.signatures.signers.Signer.OnSigningParametersReadyCallback)
+[`x509certificate`]: https://developer.android.com/reference/javax/security/cert/X509Certificate.html
+[`hashalgorithm.sha256`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/HashAlgorithm.html#SHA256
+[`getencryptionalgorithm()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/provider/SignatureProvider.html#getEncryptionAlgorithm()
+[`signdata()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/provider/SignatureProvider.html#signData(byte[],%20com.pspdfkit.signatures.HashAlgorithm)
+[`addtrustedcertificates()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/SignatureManager.html#addTrustedCertificate(java.security.cert.X509Certificate)
+[`writabledataprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/WritableDataProvider.html
+[`writabledataprovider#supportsappending()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/providers/WritableDataProvider.html#supportsAppending()
+[signature storage interface]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/storage/SignatureStorage.html
+[signature storage option]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setSignatureStorage(com.pspdfkit.signatures.storage.SignatureStorage)
+[`DigitalSignatureValidationResult.DocumentIntegrityStatus`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/DigitalSignatureValidationResult.DocumentIntegrityStatus.html
+[`prepareformfieldforsigningasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html#prepareFormFieldForSigningAsync(com.pspdfkit.signatures.signers.SignerOptions)
+[`embedsignatureinformfieldasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/Signer.html#embedSignatureInFormFieldAsync(com.pspdfkit.forms.SignatureFormField,%20com.pspdfkit.signatures.contents.SignatureContents,%20java.io.OutputStream)
+[`signaturecontents`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/contents/SignatureContents.html
+[`blanksignaturecontents`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/contents/BlankSignatureContents.html
+[`pkcs7signaturecontents`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/contents/PKCS7SignatureContents.html
+[`signeroptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/SignerOptions.html
+[`signaturecontents()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/SignerOptions.Builder.html#signatureContents(com.pspdfkit.signatures.contents.SignatureContents)
+[`signaturecontents#signdata()`]:https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/contents/SignatureContents.html#signData(byte[])
+[`gethashfordocumentrange()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getHashForDocumentRange(java.util.List%3Cjava.lang.Long%3E,%20com.pspdfkit.signatures.HashAlgorithm)
+[`pkcs7`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/contents/PKCS7.html
+[`containedsignaturessigner`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/ContainedSignaturesSigner.html
+[`containedsignaturessigner#preparesignaturecontents()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/signatures/signers/ContainedSignaturesSigner.html#prepareSignatureContents(com.pspdfkit.signatures.signers.SignerOptions,%20java.io.File,%20com.pspdfkit.document.PdfDocument,%20com.pspdfkit.forms.SignatureFormField)
+
+<% end %>
+<% if ios? %>
+[`pspdfpkcs12signer`]: https://pspdfkit.com/api/ios/Classes/PSPDFPKCS12Signer.html
+[`pspdfsigner`]: https://pspdfkit.com/api/Classes/PSPDFSigner.html
+[digital signatures in a pdf]: https://www.adobe.com/devnet-docs/etk_deprecated/tools/DigSig/Acrobat_DigitalSignatures_in_PDF.pdf
+[pdf 1.7 specification]: http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+[wikipedia digital signature]: http://en.wikipedia.org/wiki/Digital_signature
+[rfc 5280]: http://tools.ietf.org/html/rfc5280#page-29
+[certificate authority]: http://en.wikipedia.org/wiki/Certificate_authority
+[technical q&a qa1745]: https://developer.apple.com/library/ios/qa/qa1745/_index.html
+[get certificates from other users]: https://helpx.adobe.com/acrobat/using/securing-pdfs-certificates.html
+[adobe approved trust list]: https://helpx.adobe.com/acrobat/kb/approved-trust-list2.html
+[ios security guide]: https://www.apple.com/business/docs/iOS_Security_Guide.pdf
+[`pspdfsignatureselectorviewcontroller`]: https://pspdfkit.com/api/Classes/PSPDFSignatureSelectorViewController.html
+[`pspdfsignatureviewcontroller`]: https://pspdfkit.com/api/Classes/PSPDFSignatureViewController.html
+[`pspdfsignaturemanager`]: https://pspdfkit.com/api/Classes/PSPDFSignatureManager.html
+[`pspdfsignatureformelement`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureFormElement.html
+[`signaturebiometricproperties:`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureFormElement.html#/c:objc(cs)PSPDFSignatureFormElement(im)signatureBiometricProperties:
+[`pspdfdigitalsignaturecoordinator`]: https://pspdfkit.com/api/Classes/PSPDFDigitalSignatureCoordinator.html
+[`pathfordigitallysigneddocumentfromoriginaldocument:suggestedfilename:`]: https://pspdfkit.com/api/Classes/PSPDFDigitalSignatureCoordinator.html#/c:objc(cs)PSPDFDigitalSignatureCoordinator(im)pathForDigitallySignedDocumentFromOriginalDocument:suggestedFileName:
+[`presentsigneddocument:showingpageindex:`]: https://pspdfkit.com/api/Classes/PSPDFDigitalSignatureCoordinator.html#/c:objc(cs)PSPDFDigitalSignatureCoordinator(im)presentSignedDocument:showingPageIndex:
+[`configuresignatureappearancewithbuilder:document:signature:`]: https://pspdfkit.com/api/Classes/PSPDFDigitalSignatureCoordinator.html#/c:objc(cs)PSPDFDigitalSignatureCoordinator(im)configureSignatureAppearanceWithBuilder:document:signature:
+[`pspdfsignatureappearance`]: https://pspdfkit.com/api/Classes/PSPDFSignatureAppearance.html
+[`appearancemode`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureAppearance.html#/c:objc(cs)PSPDFSignatureAppearance(py)appearanceMode
+[`pspdfsignatureappearancemodesignatureanddescription`]: https://pspdfkit.com/api/ios/Enums/PSPDFSignatureAppearanceMode.html#/c:@E@PSPDFSignatureAppearanceMode@PSPDFSignatureAppearanceModeSignatureAndDescription
+[`pspdfsignatureappearancemodedescriptiononly`]: https://pspdfkit.com/api/ios/Enums/PSPDFSignatureAppearanceMode.html#/c:@E@PSPDFSignatureAppearanceMode@PSPDFSignatureAppearanceModeDescriptionOnly
+[`reuseexistingappearance`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureAppearance.html#/c:objc(cs)PSPDFSignatureAppearance(py)reuseExistingAppearance
+[`pspdfannotationappearancestream`]: https://pspdfkit.com/api/Classes/PSPDFAnnotationAppearanceStream.html
+[`signaturegraphic`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureAppearance.html#/c:objc(cs)PSPDFSignatureAppearance(py)signatureGraphic
+[`signaturewatermark`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureAppearance.html#/c:objc(cs)PSPDFSignatureAppearance(py)signatureWatermark
+[`showwatermark`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureAppearance.html#/c:objc(cs)PSPDFSignatureAppearance(py)showWatermark
+[example projects]: https://pspdfkit.com/guides/ios/current/getting-started/example-projects
+[`pspdfsignaturestore`]: https://pspdfkit.com/api/ios/Protocols/PSPDFSignatureStore.html
+[`pspdfsignaturebiometricproperties`]: https://pspdfkit.com/api/Classes/PSPDFSignatureBiometricProperties.html
+[`biometricproperties`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureContainer.html#/c:objc(cs)PSPDFSignatureContainer(py)biometricProperties
+[`pressurelist`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureBiometricProperties.html#/c:objc(cs)PSPDFSignatureBiometricProperties(py)pressureList
+[`timepointslist`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureBiometricProperties.html#/c:objc(cs)PSPDFSignatureBiometricProperties(py)timePointsList
+[`touchradius`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureBiometricProperties.html#/c:objc(cs)PSPDFSignatureBiometricProperties(py)touchRadius
+[`inputmethod`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureBiometricProperties.html#/c:objc(cs)PSPDFSignatureBiometricProperties(py)inputMethod
+[`PSPDFDrawInputMethodFinger`]: https://pspdfkit.com/api/ios/Enums/PSPDFDrawInputMethod.html#/c:@E@PSPDFDrawInputMethod@PSPDFDrawInputMethodFinger
+[`PSPDFDrawInputMethodApplePencil`]: https://pspdfkit.com/api/ios/Enums/PSPDFDrawInputMethod.html#/c:@E@PSPDFDrawInputMethod@PSPDFDrawInputMethodApplePencil
+[`PSPDFDrawInputMethodThirdPartyStylus`]: https://pspdfkit.com/api/ios/Enums/PSPDFDrawInputMethod.html#/c:@E@PSPDFDrawInputMethod@PSPDFDrawInputMethodThirdPartyStylus
+[`initwithannotation:signer:biometricproperties:`]: https://pspdfkit.com/api/Classes/PSPDFSignatureContainer.html#/c:objc(cs)PSPDFSignatureContainer(im)initWithAnnotation:signer:biometricProperties:
+[`pspdfconfiguration.signaturecertificateselectionmode`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)signatureCertificateSelectionMode
+[`registeredsigners`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureManager.html#/c:objc(cs)PSPDFSignatureManager(py)registeredSigners
+[`pspdfconfiguration.signaturebiometricpropertiesoptions`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)signatureBiometricPropertiesOptions
+[`hashalgorithm`]: https://pspdfkit.com/api/ios/Enums/PSPDFSignatureHashAlgorithm.html
+[`pspdfsignatureencryptionalgorithm`]: https://pspdfkit.com/api/ios/Enums/PSPDFSignatureEncryptionAlgorithm.html
+[`signer`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureViewController.html#/c:objc(cs)PSPDFSignatureViewController(py)signer
+[`certificateselectionmode`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureViewController.html#/c:objc(cs)PSPDFSignatureViewController(py)certificateSelectionMode
+[`pspdfsignaturecertificateselectionmodenever`]: https://pspdfkit.com/api/ios/Enums/PSPDFSignatureCertificateSelectionMode.html#/c:@E@PSPDFSignatureCertificateSelectionMode@PSPDFSignatureCertificateSelectionModeNever
+[`pspdfcertificatepickerviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFCertificatePickerViewController.html
+[`overrideclass:withclass:`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfigurationBuilder.html#/c:objc(cs)PSPDFConfigurationBuilder(im)overrideClass:withClass:
+[`pspdfdocumentsignerdelegate`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDelegate.html
+[`pspdfdocumentsignerdatasource`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDataSource.html
+[`pspdfsignaturestatus`]: https://pspdfkit.com/api/Classes/PSPDFSignatureStatus.html
+[`signatureintegritystatus`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureStatus.html#/c:objc(cs)PSPDFSignatureStatus(py)signatureIntegrityStatus
+[`coversentiredocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureStatus.html#/c:objc(cs)PSPDFSignatureStatus(py)coversEntireDocument
+[`- (void)documentsigner:signdata:hashalgorithm:completion:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDelegate.html#/c:objc(pl)PSPDFDocumentSignerDelegate(im)documentSigner:signData:hashAlgorithm:completion:
+[`- (pspdfsignaturehashalgorithm)documentsigner:signaturehashalgorithm:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDataSource.html#/c:objc(pl)PSPDFDocumentSignerDataSource(im)documentSigner:signatureHashAlgorithm:
+[`- (pspdfsignatureencryptionalgorithm)documentsigner:signatureencryptionalgorithm:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDataSource.html#/c:objc(pl)PSPDFDocumentSignerDataSource(im)documentSigner:signatureEncryptionAlgorithm:
+[`- (pspdfsignatureappearance)documentsigner:signaturebiometricproperties:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFDocumentSignerDataSource.html#/c:objc(pl)PSPDFDocumentSignerDataSource(im)documentSigner:signatureBiometricProperties:
+[`delegate`]: https://pspdfkit.com/api/ios/Classes/PSPDFSigner.html#/c:objc(cs)PSPDFSigner(py)delegate
+[`datasource`]: https://pspdfkit.com/api/ios/Classes/PSPDFSigner.html#/c:objc(cs)PSPDFSigner(py)dataSource
+[`- (void)prepareformelement:tobesignedwithappearance:contents:writingtodatasink:completion:`]: https://pspdfkit.com/api/Classes/PSPDFSigner.html#/c:objc(cs)PSPDFSigner(im)prepareFormElement:toBeSignedWithAppearance:contents:writingToDataSink:completion:
+[`- (void)embedsignatureinformelement:withcontents:writingtodatasink:completion:`]: https://pspdfkit.com/api/Classes/PSPDFSigner.html#/c:objc(cs)PSPDFSigner(im)embedSignatureInFormElement:withContents:writingToDataSink:completion:
+[`- (nsdata*)hashdocumentproviderrange:hashalgorithm:error`]: https://pspdfkit.com/api/Classes/PSPDFDocumentProvider.html#/c:objc(cs)PSPDFDocumentProvider(im)hashDocumentProviderRange:hashAlgorithm:error:
+[`pspdfdocumentprovider`]: https://pspdfkit.com/api/Classes/PSPDFDocumentProvider.html
+[`- (nsdata *)signdata:`]: https://pspdfkit.com/api/ios/Protocols/PSPDFSignatureContents.html#/c:objc(pl)PSPDFSignatureContents(im)signData:
+[`pspdfsignaturecontents`]: https://pspdfkit.com/api/ios/Protocols/PSPDFSignatureContents.html
+[`pspdfblanksignaturecontents`]: https://pspdfkit.com/api/Classes/PSPDFBlankSignatureContents.html
+[`pspdfpkcs7`]: https://pspdfkit.com/api/Classes/PSPDFPKCS7.html
+[`PSPDFSignatureValidator`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureValidator.html
+[`-verifySignatureWithTrustedCertificates:error:`]: https://pspdfkit.com/api/ios/Classes/PSPDFSignatureValidator.html#/c:objc(cs)PSPDFSignatureValidator(im)verifySignatureWithTrustedCertificates:error:
+<% end %>

@@ -1,31 +1,31 @@
 ---
 title: zld — A Faster Version of Apple's Linker
 pubDate: 2020-06-05T08:00:00.000Z
-description: "Accelerate your iOS build times by up to 40% with zld, a drop-in replacement for Apple's standard linker. I explain how to integrate this optimized linker into your project workflow, including strategies for monorepos and compatibility with Mac Catalyst. My practical guide covers installation via Homebrew, creating a conditional wrapper script that gracefully falls back to Apple's linker when needed, and configuring your Xcode project with the proper build settings. Learn how this simple change can save precious development time by significantly reducing linking duration."
+description: >-
+  zld is [a dop-i eplacemet of Apple’s
+  like](https://github.com/michaeleisel/zld) that uses optimized data stuctues
+  ad paallelizig to speed thigs up.
 heroImage: /assets/img/2020/zld/benchmarks.png
 tags:
-  - Build-Performance
-  - iOS-Development
-  - Linker
-  - Xcode
-  - Optimization
-  - Monorepo
-  - Mac-Catalyst
-  - Developer-Tools
+  - iOS
+  - development
 source: steipete.com
-AIDescription: true
+description: 'zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to spee...'
 ---
 
-zld is [a drop-in replacement of Apple's linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  
+::ai[zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to spee...]
 
-> "Feel free to file an issue if you find it's not at least 40% faster for your case" — [Michael Eisel, Maintainer](https://github.com/michaeleisel)
+
+zld is [a drop-in replacement of Apple’s linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  
+
+> “Feel free to file an issue if you find it’s not at least 40% faster for your case” — [Michael Eisel, Maintainer](https://github.com/michaeleisel)
 
 In our setup, zld indeed improves overall build time by approximately 25 percent, measured from a clean build to the running application. Building [PSPDFCatalog](https://pspdfkit.com/guides/ios/current/getting-started/example-projects/) in debug mode with [ccache](https://pspdfkit.com/blog/2015/ccache-for-fun-and-profit/) enabled and everything precached takes roughly:
 
 - ld — 4:40min
 - zld — 3:30min
 
-If you're asking yourself, is this safe? Well, [Instagram uses it too](https://twitter.com/alanzeino/status/1268230184215252992?s=21).
+If you’re asking yourself, is this safe? Well, [Instagram uses it too](https://twitter.com/alanzeino/status/1268230184215252992?s=21).
 
 Heads up: `zld` seems to [cause issues when using the Swift trunk toolchain](/posts/building-with-swift-trunk/).
 
@@ -36,12 +36,12 @@ zld is easy to enable for your project:
 1. `brew install michaeleisel/zld/zld`
 2. `OTHER_LDFLAGS = -fuse-ld=/usr/local/bin/zld`
 
-In our setup, things aren't quite so easy, as we have a few additional requirements:
+In our setup, things aren’t quite so easy, as we have a few additional requirements:
 
-- The build should work independently of `zld` installed, so people can opt in on their own and don't have a surprising build failure after pulling master. This is even truer for CI.
+- The build should work independently of `zld` installed, so people can opt in on their own and don’t have a surprising build failure after pulling master. This is even truer for CI.
 - We have a large [monorepo](https://pspdfkit.com/blog/2019/benefits-of-a-monorepo/) with different projects in different folders, which is managed by shared `xcconfig` files.
 
-I wrote a `zld-detect` wrapper that conditionally forwards to `zld` if found. Otherwise, it uses Apple's default linker:
+I wrote a `zld-detect` wrapper that conditionally forwards to `zld` if found. Otherwise, it uses Apple’s default linker:
 
 ```
 #!/bin/sh
@@ -71,11 +71,11 @@ After implementing the above, our Mac Catalyst builds started failing:
 Building for Mac Catalyst, but linking in .tbd built for , file '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks//CoreImage.framework/CoreImage.tbd' for architecture x86_64
 ```
 
-It seems there's some special code in the linker that helps with linking the correct framework for Mac Catalyst, which isn't yet part of the v510 release. Apple released [v520 and v530 of the ld64 project](https://opensource.apple.com/source/ld64/), so there's a good chance this will be fixed once `zld` merges with upstream ([Issue #43](https://github.com/michaeleisel/zld/issues/43)).
+It seems there’s some special code in the linker that helps with linking the correct framework for Mac Catalyst, which isn’t yet part of the v510 release. Apple released [v520 and v530 of the ld64 project](https://opensource.apple.com/source/ld64/), so there’s a good chance this will be fixed once `zld` merges with upstream ([Issue #43](https://github.com/michaeleisel/zld/issues/43)).
 
-Writing this conditionally in `xcconfig` is tricky, as there's no support for a separate architecture like `[sdk=maccatalyst]` (Apple folks: FB6822740).
+Writing this conditionally in `xcconfig` is tricky, as there’s no support for a separate architecture like `[sdk=maccatalyst]` (Apple folks: FB6822740).
 
-Here's how things look if we put everything together:
+Here’s how things look if we put everything together:
 
 ```
 // Settings to improve link time performance for debug/test builds
@@ -99,4 +99,4 @@ OTHER_LDFLAGS = $(inherited) $(PSPDF_NORELEASE_LDFLAGS)
 
 Update: Xcode also supports the [`LD`](https://twitter.com/thi_dt/status/1268848373953474560) `xcconfig` key to make this even easier to configure.
 
-That's it! [Let me know on Twitter](https://twitter.com/steipete) if this was helpful.
+That’s it! [Let me know on Twitter](https://twitter.com/steipete) if this was helpful.

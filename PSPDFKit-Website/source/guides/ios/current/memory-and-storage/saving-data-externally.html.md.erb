@@ -1,0 +1,15 @@
+---
+title: Saving Data Externally
+section: developers
+
+---
+
+PSPDFKit by default tries to save annotations into the PDF. If this fails (e.g. the file is in a non-writable location, it will use the fallback store. This store is located at `/Library/PrivateDocuments/PSPDFKit`.
+
+Each document is referenced by it's unique `UID`. Annotations are saved as binary objects.
+
+Next, there's the image cache at `/Library/Caches/PSPDFKit`. You can control if and how much is saved via customizing the global [`PSPDFCache`][] object. This folder is also cleared when the device is running low on memory.
+
+Lastly, some external data is saved in `/tmp/PSPDFKit`. This mostly are video files that need to be unpacked before they can be displayed. This filter will be cleaned up by the OS on every cold boot of the device or on low memory situations.
+
+[`PSPDFCache`]: https://pspdfkit.com/api/Classes/PSPDFCache.html

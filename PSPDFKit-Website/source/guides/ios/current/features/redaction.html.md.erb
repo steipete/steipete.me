@@ -1,0 +1,229 @@
+---
+title: Redaction
+section: developers
+
+---
+
+## What Is Redaction?
+
+Redaction is the process of removing content from a PDF page. This not only involves obscuring the content, but also removing the data in the document within the specified region.
+
+Redaction is a two-step process.
+
+- First, redaction annotations have to be created in the areas that should be redacted. This step won’t remove any content from the document yet; it just marks regions for redaction.
+- Second, to actually remove the content, the redaction annotations need to be applied. In this step, the page content within the region of the redaction annotations is irreversibly removed.
+
+For further in-depth information, check out the official [PDF Redaction addendum for the PDF Reference][redaction pdf spec] by Adobe.
+
+PSPDFKit 8 for iOS added a redaction feature with support for redacting text. PSPDFKit 8.1 for iOS extended support for elements that can be redacted to images, annotations, form fields, and paths/vector drawings.
+
+## Creating Redactions
+
+### Programmatically
+
+You can create redactions programmatically via [`PSPDFRedactionAnnotation`][]. Use the [`rects`][] property to set the regions that should be covered by the redaction annotation. Additionally, the [`boundingBox`][] needs to be set to a frame containing all the specified [`rects`][].
+
+You also have a few customization options for how a redaction should look, both while in its marked state, which is when the redaction has been created but not yet applied, and in its redacted state, which is when the redaction has been applied. It is not possible to change the appearance once a redaction has been applied, since the redaction annotation will be removed from the document in the process of applying the redactions.
+
+- [`overlayText`][] can be used to set the text that should be displayed at the specified region when a redaction has been applied.
+- [`repeatOverlayText`][] defines whether the overlay text should be drawn only once or repeated to fill the entire redaction area. This defaults to disabled, which means the overlay text is only drawn once. It has no effect if there is no overlay text specified.
+- [`color`][] can be used to change the color of the overlay text. It has no effect if there is no overlay text specified. This defaults to a red color.
+- [`fillColor`][] specifies the background color of the redaction area after it has been applied. The color is drawn on all the specified [`rects`][]. This defaults to black.
+- [`outlineColor`][] specifies the color used for the redaction’s border in its marked state. This defaults to a red color.
+- [`lineWidth`][] can be set to change the border width of the redaction in its marked state. This defaults to 5.
+
+This is how a redaction annotation covering the first occurrence of the text "Annual" on the first page of a document is created:
+
+[==
+
+```swift
+let words = document.textParserForPage(at: 0)!.words
+let wordToRedact = words.first(where: { $0.stringValue == "Annual" })!
+let redaction = PSPDFRedactionAnnotation()
+redaction.boundingBox = wordToRedact.frame
+redaction.rectsTyped = [wordToRedact.frame]
+redaction.color = .orange
+redaction.fillColor = .black
+redaction.outlineColor = .yellow
+redaction.overlayText = "REDACTED"
+
+document.add([redaction])
+```
+
+```objc
+NSArray<PSPDFWord *> *words = [document textParserForPageAtIndex:0].words;
+NSUInteger index = [words indexOfObjectPassingTest:^BOOL(PSPDFWord *word, NSUInteger idx, BOOL *stop) {
+    return [word.stringValue isEqualToString:@"Annual"];
+}];
+if (index == NSNotFound) { return; }
+PSPDFWord *wordToRedact = words[index];
+
+PSPDFRedactionAnnotation *redaction = [PSPDFRedactionAnnotation new];
+redaction.boundingBox = wordToRedact.frame;
+redaction.rects = @[@(wordToRedact.frame)];
+redaction.color = UIColor.orangeColor;
+redaction.fillColor = UIColor.blackColor;
+redaction.outlineColor = UIColor.yellowColor;
+redaction.overlayText = @"REDACTED";
+
+[document addAnnotations:@[redaction] options:nil];
+```
+
+==]
+
+The redaction annotation created with the above code snippet would look like this:
+
+|                        <center>Marked State</center>                        |                         <center>Redacted State</center>                         |
+| :-------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
+| <img title="Marked" src="/images/guides/ios/features/redaction/marked.png"> | <img title="Redacted" src="/images/guides/ios/features/redaction/redacted.png"> |
+
+### User Interface
+
+In addition to being able to create redactions programmatically, you can create and customize redactions via the UI PSPDFKit provides.
+
+Adding a redaction to a document can be done by selecting the redaction tool on the annotation toolbar. This will enable the redaction mode and allow you to select the redaction area by either tapping on a word, dragging over some text, or dragging to create a rectangle over an arbitrary area. Depending on where the drag gesture started, either text selection or free-form selection is used until the gesture is completed. A redaction annotation will be created once you lift your finger.
+
+<video src="/images/guides/ios/features/redaction/redaction-tool.mp4" loop muted playsinline data-controller="video" data-video-autoplay="true"></video>
+
+Another way of creating a text redaction is by first selecting text and then tapping the redaction item on the menu. Note that when using the standard configurations, the redaction tool in the text selection menu is, by default, only shown in regular horizontal size class environments.
+
+<img width="80%" title="Text Selection Menu" src="/images/guides/ios/features/redaction/text-selection-menu.png">
+
+Once a redaction is added to the document, its properties and appearance can be customized via the annotation inspector.
+
+<img title="Inspector" src="/images/guides/ios/features/redaction/redacted-inspector.png">
+
+## Applying Redactions
+
+### Programmatically
+
+There are two separate options for applying redactions programmatically.
+
+- Use [`PSPDFProcessor`][]. This creates a new document and will leave the original document with the redaction annotations untouched:
+
+[==
+
+```swift
+let document: PSPDFDocument = // Document containing redaction annotations.
+let processorConfiguration = PSPDFProcessorConfiguration(document: document)!
+processorConfiguration.applyRedactions()
+
+let redactedDocumentURL: URL = // URL to save the redacted document to.
+let processor = PSPDFProcessor(configuration: processorConfiguration, securityOptions: nil)
+try? processor.write(toFileURL: redactedDocumentURL)
+
+redactedDocument = PSPDFDocument(url: redactedDocumentURL)
+```
+
+```objc
+PSPDFDocument *document = // Document containing redaction annotations.
+PSPDFProcessorConfiguration *processorConfiguration = [[PSPDFProcessorConfiguration alloc] initWithDocument:document];
+[processorConfiguration applyRedactions];
+
+NSURL *redactedDocumentURL = // NSURL to save the redacted document to.
+PSPDFProcessor *processor = [[PSPDFProcessor alloc] initWithConfiguration:processorConfiguration securityOptions:nil];
+[processor writeToFileURL:redactedDocumentURL];
+
+redactedDocument = [[PSPDFDocument alloc] initWithURL:redactedDocumentURL];
+```
+
+==]
+
+- Use the [`PSPDFDocumentSaveOptionApplyRedactions`][] option when saving the document via any of the save methods on [`PSPDFDocument`][], like [`saveWithOptions:error:`][]. This will overwrite the existing document, removing content irreversibly:
+
+[==
+
+```swift
+try document.save(options: [.applyRedactions])
+```
+
+```objc
+[document saveWithOptions:@{PSPDFDocumentSaveOptionApplyRedactions: @YES} error:&error];
+```
+
+==]
+
+Both options will remove the redaction annotations in the process of redacting the content.
+
+### User Interface
+
+Once there are redactions in the document, a floating redaction info button is shown in the user interface view. Tapping this button reveals a UI for applying redactions in the document. Tapping the Redact Current Document button will overwrite the current document and remove the content in the area of the redaction annotations irreversibly. In the process of redacting the content, all redaction annotations are removed from the document. Additionally, any cached page images and Indexed Full-Text Search content will be removed so that none of the redacted content is referenced in any stale cache. The Redact Current Document button will only be visible if the current document is writable and not stored at a read-only location.
+
+In case you want to keep the current document as is and only redact content in a new document, you can choose the Save Redacted Document As… option, which will allow you to pick a location where the new redacted document should be stored.
+
+<img width="80%" title="Floating Redaction Info Button" src="/images/guides/ios/features/redaction/floating-ui.png">
+
+Note that there may be cases where this floating button is not always shown when opening a document with existing redactions, since this would require parsing the entire document upfront. We try to avoid this, since it can have some serious performance implications, especially with larger documents. You can manually trigger parsing the entire document by tapping the redaction tool in the annotation toolbar.
+
+## Previewing Redactions
+
+### Programmatically
+
+To preview redactions and see how they would look when applied, without removing any document content, you can use the new render option, [`PSPDFRenderOptionDrawRedactionsAsRedacted`][]. To set this render option, use [`updateRenderOptions:type:`][] on the document where you want to render redactions as redacted:
+
+[==
+
+```swift
+document.updateRenderOptions([.drawRedactionsAsRedacted(true)], type: .all)
+```
+
+```objc
+[document updateRenderOptions:@{ PSPDFRenderOptionDrawRedactionsAsRedacted: @(YES) } type:PSPDFRenderTypeAll];
+```
+
+==]
+
+When updating the render options while a document is currently being displayed in a [`PSPDFViewController`][], a rerender of the currently displayed pages will need to be triggered. This is so the redaction preview rendering can immediately be applied. There are various ways this can be done. The suggested option is to call [`updateAnnotations:animated:`][] and pass all the document’s redaction annotations. In this way, only the affected areas are rerendered, and not the whole document:
+
+[==
+
+```swift
+let redactions = document.allAnnotations(of: .redaction).values.flatMap { $0 }
+document.documentProviders.first?.annotationManager.update(redactions, animated: true)
+```
+
+```objc
+NSArray<PSPDFAnnotation *> *redactions = [[document allAnnotationsOfType:PSPDFAnnotationTypeRedaction].allValues valueForKeyPath:@"@unionOfArrays.self"];
+[document.documentProviders.firstObject.annotationManager updateAnnotations:redactions animated:YES];
+```
+
+==]
+
+Alternatively, this can also be done by invalidating the cache or reloading data in [`PSPDFViewController`][].
+
+### User Interface
+
+Redactions can be previewed by tapping on the floating redaction info button. When flipping the Preview switch, all redaction annotations in a document will be rendered in their redacted state appearance (as opposed to the marked state that is otherwise always shown by default). This can be done without having any content removed from the document. It is just for previewing purposes, and the actual removal of the document content will only happen when using one of the redaction buttons.
+
+<img width="80%" title="Floating Redaction Info Button With Preview" src="/images/guides/ios/features/redaction/floating-ui-preview.png">
+
+## Custom Redaction UI
+
+If you want to customize the UI to preview and apply redactions, you can disable the floating redaction info button in the user interface view via [`shouldShowRedactionInfoButton`][]. Then you can roll your own UI to indicate uncommitted redactions and handle previewing and applying redactions in your own way instead.
+
+## Licensing
+
+Redaction is a feature that has to be licensed. If this feature is not licensed, some model-level APIs and the UI will change to not function the way they are described in this article. The following list describes the expected behavior if Redaction is not part of your license:
+
+- The redaction annotation toolbar button and text selection menu item will be hidden.
+- The floating redaction info button won’t be shown.
+- The annotation inspector for existing redaction annotations can’t be shown.
+- [`PSPDFRedactionAnnotation`][] can’t be created.
+- [`PSPDFRenderOptionDrawRedactionsAsRedacted`][], [`applyRedactions`][], and similar APIs will not work or assert when used.
+
+[redaction pdf spec]: https://wwwimages2.adobe.com/content/dam/acom/en/devnet/pdf/pdf_reference_archive/pdf_reference_addendum_redaction.pdf
+[`rects`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)rects
+[`boundingbox`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)boundingBox
+[`color`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)color
+[`fillcolor`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)fillColor
+[`linewidth`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)lineWidth
+[`overlaytext`]: https://pspdfkit.com/api/ios/Classes/PSPDFRedactionAnnotation.html#/c:objc(cs)PSPDFRedactionAnnotation(py)overlayText
+[`repeatoverlaytext`]: https://pspdfkit.com/api/ios/Classes/PSPDFRedactionAnnotation.html#/c:objc(cs)PSPDFRedactionAnnotation(py)repeatOverlayText
+[`outlinecolor`]: https://pspdfkit.com/api/ios/Classes/PSPDFRedactionAnnotation.html#/c:objc(cs)PSPDFRedactionAnnotation(py)outlineColor
+[`applyredactions`]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessorConfiguration.html#/c:objc(cs)PSPDFProcessorConfiguration(im)applyRedactions
+[`pspdfrenderoptiondrawredactionsasredacted`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFRenderOptionDrawRedactionsAsRedacted
+[`updaterenderoptions:type:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)updateRenderOptions:type:
+[`shouldshowredactioninfobutton`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(py)shouldShowRedactionInfoButton
+[`pspdfdocumentsaveoptionapplyredactions`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFDocumentSaveOptionApplyRedactions
+[`savewithoptions:error:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)saveWithOptions:error:
+[`updateannotations:animated:`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotationManager.html#/c:objc(cs)PSPDFAnnotationManager(im)updateAnnotations:animated

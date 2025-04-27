@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/steipete
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://pspdfkit.com
+  * I am steipete (https://keybase.io/steipete) on keybase.
+  * I have a public key with fingerprint 9876 AB22 6B7E 965A 8343  18AC 91F6 4410 6993 72A4
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01011fdde3600ad15ec4eeaab95eccce1f14af9ff01c62749d0fcec0a7f77ba95ad20a",
+            "fingerprint": "9876ab226b7e965a834318ac91f64410699372a4",
+            "host": "keybase.io",
+            "key_id": "91f64410699372a4",
+            "kid": "01011fdde3600ad15ec4eeaab95eccce1f14af9ff01c62749d0fcec0a7f77ba95ad20a",
+            "uid": "fd2f0ebe6601d57a36ec809ed770ce00",
+            "username": "steipete"
+        },
+        "service": {
+            "hostname": "pspdfkit.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1476732319,
+    "expire_in": 157680000,
+    "prev": "0d1d11b28af845403bdd08d477d39c453cac939dac6b4b03343699e86c0e45a7",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.58
+Comment: https://keybase.io/crypto
+
+yMIqAnicrVJbbAxRGN7qLTYRBNGyDzLRhzaNnDMzO5e1iYcqEQkeGqlErDPn/LMd
+bXdmd2aXqkt4cI1rCE2KpqlL0UQa4qloqxURlCgi0gsp9YCkRFVInGl48+i8nHP+
+833/+b/v/+9Oyw4Es86WvGusb1gWzHrQeSodqMwtOlcvGDarEyL1QjVMblDDwPVi
+1RYTIgLCCGOTMZAUhAjDYaAyACGGzk+UAjaxTEzdNBGmiqjKOkMmBYqIaqqqQfQw
+YSIiQqlgWok4pJyUlfB4Wl1TFWKIomKooCthokmyhDVCdWwqsoyRouuSKhKZE6ts
+12fw4gziwiLL5jF+iU2W9w/8f647PZnOZKKJwABFQZiFVSIpQDWkA1NVRAEhH+hC
+KkFqgaNdDywHPBC2lwo8mrEo+Mb6Sv4gHNdhZrXlLaJ2Lec6KduzqV3DX6o8z3Ej
+PtOrc3zoZjBif5LEDCvBuI+ckYGUa9kJIYI5knqWnxXLqqJKooT1UgG2OFYKYpaP
+CKuKhvjy/4GMbw7DDGND1IipyWEZSQZjSGOyqjJJp3JYorwTks4IVQzZQBJvDjcY
+NIUikMNEFXxZyYQtRCReJon7kq14gnjpFNfcdWd9TiArGMjLneLPVyA4dcbfqTt+
+O/9XqOjmjPt9V342rySR7uvl+1rAqigdbix8tPjG2m791OfQrD175w/PmfZq0+MX
+6GT7cSk7Oi8WP3O58GhOsqB3YmiiS7s6lllhvku/ze0Zy7ihp5dmhtZs3P6zON5g
+F9e8b33Y1j80mMyD4Inlo1cqOmflzz6cjG56c9X9tLpdvPi9f+uPb+T+sdC29lUj
+C3qHvvasayvccW/thUwqPdHVdKhnp/z8a9tN6IhuWPFsvOBIsVtW9KVzcEl7076D
+zfvtisresYnpr2vPPwk0F5cv3P/rwED38MiulsaZHR9OjjZcc8p2DDSW6XPN6I+6
+j3Nujecu7Xh0uuSg27d79ryXF65/aB38DZHmS3w=
+=DH5c
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/steipete
+
+==================================================================

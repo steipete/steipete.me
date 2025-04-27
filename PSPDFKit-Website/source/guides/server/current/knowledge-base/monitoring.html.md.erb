@@ -1,0 +1,14 @@
+---
+title: Monitoring PSPDFKit Server
+section: knowledge-base
+---
+
+Question: How should I monitor the PSPDFKit application?
+
+Answer:
+
+PSPDFKit Server behaves like a normal Docker container, so depending on the deployment infrastructure it can be monitored with the https://docs.docker.com/engine/reference/commandline/stats and https://docs.docker.com/engine/reference/commandline/ps tooling for memory, cpu and disk usage. The image definition also includes a HEALTHCHECK parameter (see https://docs.docker.com/engine/reference/builder/#healthcheck), so that it's automatically monitored by Docker itself.
+
+API endpoints are described in the documentation https://pspdfkit.com/guides/server/current/server-api/overview and https://pspdfkit.com/guides/server/current/client-api/overview. In general it's important to keep an eye on the number of http responses in the 500 and 4xx ranges (which can be done from the application that interacts with PSPDFKit Server).
+
+Please feel free to reach out with specific information if you need anything else.

@@ -1,0 +1,98 @@
+require 'json'
+
+def check_lockfile
+  package_changed = git.modified_files.include?('package.json')
+  lockfile_changed = git.modified_files.include?('yarn.lock')
+
+  if package_changed && !lockfile_changed
+    message = 'Changes were made to package.json, but not to yarn.lock'
+    idea = 'Perhaps you need to run `yarn install`?'
+    warn "#{message} - <i>#{idea}</i>"
+  end
+end
+
+def check_broken_links
+  cmd = `bin/check-broken-links`.split("\n\n").last
+  broken_links = JSON.parse(cmd)
+  base_url = 'https://pspdfkit.com'
+
+  if broken_links.count > 0
+    last_url = ""
+    message = "Broken links found:\n\n"
+    message <<
+      broken_links.map do |broken_link_info|
+        link_entry = ""
+        if last_url != broken_link_info[0]
+          link_entry += "URL: #{broken_link_info[0]}\n"
+          last_url = broken_link_info[0]
+        end
+        link_entry += "- [#{base_url}#{broken_link_info[1]}](#{base_url}#{broken_link_info[1]})"
+
+        return link_entry
+      end.compact
+        .join("\n")
+    warn message
+  end
+end
+
+def validate_search_index
+  files = Dir.glob('build/**/search-*.json')
+  begin
+    files.each do |file|
+      content = File.read(file)
+      json = JSON.parse(content)
+      raise unless json.length > 0
+      raise if json.first['title'].nil? || json.first['id'].nil?
+    end
+  rescue StandardError
+    message = 'Search index is invalid, check the contents of:'
+    message << files.join("\n")
+    warn message
+  end
+end
+
+def check_for_typos
+  validate_string('PSPS', 'PSPDF')
+  validate_string('PSDPF', 'PSPDF')
+  validate_string('PSPFD', 'PSPDF')
+  validate_string('PSPDKit', 'PSPDFKit')
+  validate_string('performace', 'performance')
+  validate_string('dependant', 'dependent')
+  validate_string('convervative', 'conservative')
+  validate_string('compatibile', 'compatible')
+  validate_string('speach', 'speech')
+  validate_string('allows to', 'maybe "can", "enables", or "allows you to"')
+  validate_string('Andriod', 'Android')
+  validate_string('tool bar', 'toolbar')
+  validate_string('toobar', 'toolbar')
+  validate_string('familar', 'familiar')
+  validate_string('espcially', 'especially')
+  validate_string('transparancy', 'transparency')
+  validate_string('covert', 'convert')
+  validate_string('aticle', 'article')
+  validate_string('wether', 'whether')
+  # Add more common typos here as we find them.
+end
+
+def validate_string(invalid, valid)
+  files =
+    Dir.glob('**/*.md').reject do |f|
+      f['node_modules'] || f['vendor'] || f['bundle']
+    end
+  begin
+    invalid_files = []
+    files.each do |file|
+      invalid_files.push(file) if File.readlines(file).grep(/#{invalid}/).any?
+    end
+    raise if invalid_files.length > 0
+  rescue StandardError
+    message = "#{invalid} is invalid. It should be replaced with #{valid}, check the contents of:"
+    message << invalid_files.join("\n")
+    warn message
+  end
+end
+
+check_lockfile
+check_broken_links
+validate_search_index
+check_for_typos

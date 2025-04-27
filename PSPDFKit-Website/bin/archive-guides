@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <platform> <version>"
+  exit
+fi
+echo "Archiving $1/current to $1/$2"
+
+export PSPDFKIT_ENV=production
+export NO_CONTRACTS=true
+export ASSET_HOST=/guides/$1/$2
+export GUIDES_PLATFORM=$1
+export GUIDES_VERSION=$2
+
+# TODO: Passing multiple globs should work, find out why it doesn't
+# e.g. --glob {guides/ios/current/**,images/guides/**}
+# See: https://git.io/fNw13
+
+# Copy the current version into place for building
+cp -R source/guides/$1/current source/guides/$1/$2
+
+# Build just the necessary parts
+bundle exec middleman build --glob guides/$1/$2/** --no-clean
+bundle exec middleman build --glob images/guides/$1/** --no-clean
+bundle exec middleman build --glob images/guides/shared/** --no-clean
+bundle exec middleman build --glob images/shared/** --no-clean
+
+# Copy the files over to pre-built
+cp -R build/guides/$1/$2 pre-built/guides/$1/$2
+cp -R build/assets pre-built/guides/$1/$2
+mkdir -p pre-built/guides/$1/$2/images/guides
+cp -R build/images/guides/$1 pre-built/guides/$1/$2/images/guides/$1
+cp -R build/images/guides/shared pre-built/guides/$1/$2/images/guides/shared
+cp -R build/images/shared pre-built/guides/$1/$2/images
+
+# Remove the temporary copy we created
+rm -R source/guides/$1/$2

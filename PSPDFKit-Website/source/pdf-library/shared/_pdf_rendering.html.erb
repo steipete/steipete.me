@@ -1,0 +1,90 @@
+<style>
+  #pdf-rendering {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 60px;
+    padding-top: 60px;
+  }
+  #pdf-rendering-illustration-mobile {
+    flex-shrink: 0;
+    margin-left: -440px;
+    margin-bottom: -160px;
+  }
+  #pdf-rendering-illustration-desktop {
+    flex-shrink: 0;
+    display: none;
+  }
+  @media (min-width: 768px) {
+    #pdf-rendering-illustration-mobile {
+      display: none;
+    }
+    #pdf-rendering-illustration-desktop {
+      display: block;
+      margin-top: -310px;
+      margin-left: -190px;
+    }
+    #pdf-rendering-bullets {
+      margin-top: -150px;
+    }
+  }
+  @media (min-width: 992px) {
+    #pdf-rendering {
+      position: relative;
+      margin-bottom: 60px;
+    }
+    #pdf-rendering-illustration-desktop {
+      margin-top: -280px;
+      margin-left: -40px;
+    }
+    #pdf-rendering-bullets {
+      margin-top: -290px;
+    }
+  }
+</style>
+<section id="pdf-rendering">
+  <div class="container">
+    <div class="row">
+      <img src="/images/pdf-library/pdf-rendering-mobile.png" id="pdf-rendering-illustration-mobile" width="974" height="809">
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-lg-5">
+        <h2 class="h6 text-alt mt-0 mb-2">
+          PDF Rendering
+        </h2>
+        <h3 class="h2 text-alt-dark mt-0 mb-4">
+          High-Fidelity Rendering of PDF Documents
+        </h3>
+        <p class="text-alt-dark mb-5">
+          Access the same powerful rasterizing engine that annually processes billions of documents for our customers worldwide. Easily integrate accurate document and page rendering into your existing workflows.  Render large batches of PDFs to commonly used image file types.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <img src="/images/pdf-library/pdf-rendering-desktop.png" id="pdf-rendering-illustration-desktop" width="1134" height="893">
+    </div>
+    <div class="row" id="pdf-rendering-bullets">
+      <div class="col-md-7 col-lg-4 ml-auto">
+        <ul class="list-unstyled text-alt-dark">
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-convert.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Render and save PDF documents as JPG, PNG, or WEBP
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-fast.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Rapidly convert PDF documents or individual pages to high-fidelity bitmaps of any size
+            </p>
+          </li>
+          <li class="d-flex align-items-start mb-4">
+            <img src="/images/pdf-library/icon-precise.svg" alt="" class="mr-4" width="45" height="45">
+            <p class="mb-0">
+              Ensure precise file structure retention, with text layout and tables appearing exactly as shown in the original PDF
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

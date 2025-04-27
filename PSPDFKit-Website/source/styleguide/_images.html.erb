@@ -1,0 +1,28 @@
+<div class="container" id="images">
+  <h2 class="mb-5">Images</h2>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Figure</label>
+    </div>
+    <div class="col-9">
+      <figure class="figure">
+        <img src="<%= lorem.image('900x400') %>" srcset="<%= lorem.image('1800x800') %> 2x" class="figure-img img-fluid" />
+        <figcaption class="figure-caption">Figure with full width responsive image and caption.</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-3">
+      <label class="text-muted">Videos</label>
+    </div>
+    <div class="col-3 text-center">
+      <video src="/images/blog/2017/50-shaders-of-android-drawing-on-canvas/scrollable-thumbnail-bar.mp4" width="100%" playsinline loop muted data-controller="video" data-video-autoplay="true"></video>
+      <label class="small text-muted">Autoplay</label>
+    </div>
+    <div class="col-3 text-center">
+      <video src="/images/blog/2017/50-shaders-of-android-drawing-on-canvas/scrollable-thumbnail-bar.mp4" width="100%" controls></video>
+      <label class="small text-muted">Controls</label>
+    </div>
+  </div>
+</div>
+<hr/>

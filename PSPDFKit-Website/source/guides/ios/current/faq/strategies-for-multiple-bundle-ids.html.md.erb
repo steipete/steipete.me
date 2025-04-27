@@ -1,0 +1,53 @@
+---
+title: Strategies for Multiple Bundle IDs
+section: developers
+---
+
+PSPDFKit licenses are based on a [bundle ID][pspdfkit guide bundle id]. For projects that require many different bundle IDs, there are a few strategies we recommend in order to simplify dealing with more than one bundle ID:
+
+1. Your app can connect to a server and fetch a license on the fly. This will increase your control and the security of the project you release and completely solve the need to recompile. The request might contain the bundle ID. It also checks with a database to see if a PSPDFKit license exists for the bundle ID and returns it if found. This result can also be cached, so internet access is only required on the first start. Since most applications also require some sort of server/backend/login access, this can be transferred as part of the initial login.
+
+2. The project can be set up to read the license from the `Info.plist` file, and every app variant is set up to have a separate `Info.plist`. In this way, no code will need to be recompiled; all that will be required is building a new IPA with the updated data. Editing the `Info.plist` file can be automated so that the entire workflow doesn’t need manual work.
+
+3. Simply check for the bundle ID at runtime and set the correct license for the bundle ID, or else exit the application. This is the most straightforward way to do this, and you’ll immediately notice when a license is missing.
+
+We strongly recommend having one central place in your application that handles licensing, ideally very early in the application start lifecycle. `applicationWillFinishLaunching:` is the spot we recommend, so as to not risk calling the license key too late:
+
+[==
+
+```swift
+switch Bundle.main.bundleIdentifier {
+case "com.mycompany.myapp":
+    PSPDFKitGlobal.setLicenseKey("LICENSE_FOR_MYAPP")
+case "com.othercompany.whitelabelapp":
+    PSPDFKitGlobal.setLicenseKey("LICENSE_FOR_WHITELABEL1")
+case "com.othercompany.whitelabelapp2":
+    PSPDFKitGlobal.setLicenseKey("LICENSE_FOR_WHITELABEL2")
+default:
+    fatalError("Missing PSPDFKit license for \(Bundle.main.bundleIdentifier)")
+}
+```
+
+```objc
+NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+if ([bundleID isEqualToString:@"com.mycompany.myapp"]) {
+     [PSPDFKitGlobal setLicenseKey:@"LICENSE_FOR_MYAPP"];
+} else if ([bundleID isEqualToString:@"com.othercompany.whitelabelapp"]) {
+     [PSPDFKitGlobal setLicenseKey:@"LICENSE_FOR_WHITELABEL1"];
+} else if ([bundleID isEqualToString:@"com.othercompany.whitelabelapp2"]) {
+     [PSPDFKitGlobal setLicenseKey:@"LICENSE_FOR_WHITELABEL2"];
+} else {
+    NSLog(@"Missing PSPDFKit license for %@", bundleID);
+    abort();
+}
+```
+
+==]
+
+**💡 Tip:** While each bundle ID requires a different license, the Cocoapods key is always the same for your account, so similar logic is not required in the Podfile.
+
+## Embedding PSPDFKit without a License
+
+You can embed `PSPDFKit.xcframework` and `PSPDFKitUI.xcframework` without a license as well. As long as no PSPDF\* classes are called, this is something we tolerate as part of mixed projects where some customers have a PSPDFKit license and some don’t. You need to set the license before accessing any of our classes or functions; otherwise, PSPDFKit will complain in the log and your program will exit.
+
+[pspdfkit guide bundle id]: ../../faq/what-is-a-bundle-id/

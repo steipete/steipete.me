@@ -1,0 +1,72 @@
+---
+title: Annotation Flags
+section: developers
+---
+
+Every [`PSPDFAnnotation`][] in a document can specify flags that further define its behavior and capabilities. With PSPDFKit, you can access these flags directly on your annotation objects using the [`flags`][] property.
+
+## Capabilities of Flags
+
+Annotation flags are part of the PDF specification and define an annotation’s behavior, its presentation onscreen and on paper, and the available editing features given to your users. Here are a few examples of things you can do with flags:
+
+- An annotation with a [`PSPDFAnnotationFlagInvisible`][] flag will ignore annotation appearance streams.
+- An annotation with a flag set to [`PSPDFAnnotationFlagHidden`][] won’t be displayed or printed.
+- An annotation with a [`PSPDFAnnotationFlagPrint`][] flag will be printed. [`PSPDFAnnotationFlagPrint`][] is the default flag.
+- An annotation with a flag set to [`PSPDFAnnotationFlagNoView`][] will not be displayed onscreen, but printing might be allowed.
+- Annotations with a [`PSPDFAnnotationFlagReadOnly`][] flag don’t allow user interactions. The flag is ignored for [widget annotations][`pspdfwidgetannotation`].
+- If you want to prevent your users from editing an annotation, you can set the [`PSPDFAnnotationFlagLocked`][] and [`PSPDFAnnotationFlagLockedContents`][] flags.
+
+> **💡 Tip:** Check out the [`PSPDFAnnotationFlags`][] API reference for a complete list of available flags.
+
+## Usage Example
+
+Here’s an example of how to create a locked annotation, i.e. an annotation that can’t be modified by your users:
+
+[==
+
+```swift
+// Create a new annotation.
+let annotation = PSPDFStampAnnotation(stampType: .confidential)
+
+// Update the annotation flags.
+annotation.flags.update(with: [.locked, .lockedContents])
+
+// Add the newly created annotation to the document.
+document.add([annotation])
+
+// To add an additional flag, use `update`.
+annotation.flags.update(.hidden)
+
+// To remove a flag, use `remove`.
+annotation.flags.remove(.hidden)
+```
+
+```objc
+// Create a new annotation.
+PSPDFAnnotation *annotation = [[PSPDFStampAnnotation alloc] initWithStampType:PSPDFStampTypeConfidential];
+
+// Update the annotation flags.
+annotation.flags |= PSPDFAnnotationFlagLocked | PSPDFAnnotationFlagLockedContents;
+
+// Add the newly created annotation to the document.
+[document addAnnotations:@[annotation] options:nil];
+
+// To add an additional flag, use bitwise OR with the flag value.
+self.flags |= PSPDFAnnotationFlagHidden;
+
+// To remove a flag, use bitwise AND with the reverse flag value.
+self.flags &= ~PSPDFAnnotationFlagHidden;
+```
+
+==]
+
+[`flags`]: https://pspdfkit.com/api/ios/Classes/PSPDFAnnotation.html#/c:objc(cs)PSPDFAnnotation(py)flags
+[`pspdfannotationflags`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html
+[`pspdfannotationflaginvisible`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagInvisible
+[`pspdfannotationflaghidden`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagHidden
+[`pspdfannotationflagprint`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagPrint
+[`pspdfannotationflagnoview`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagNoView
+[`pspdfannotationflagreadonly`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagReadOnly
+[`pspdfannotationflaglocked`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagLocked
+[`pspdfannotationflaglockedcontents`]: https://pspdfkit.com/api/ios/Enums/PSPDFAnnotationFlags.html#/c:@E@PSPDFAnnotationFlags@PSPDFAnnotationFlagLockedContents
+[`pspdfwidgetannotation`]: https://pspdfkit.com/api/ios/Classes/PSPDFWidgetAnnotation.html

@@ -1,0 +1,14 @@
+---
+title: General Layout Problems
+section: developers
+---
+
+One of the most common sources of layout problems with PSPDFKit is the use of the `android:configChanges` option on the activity declaration inside your app’s `AndroidManifest.xml`.
+
+Here are some of the layout problems you might experience:
+
+- Displaced pages in the document
+- Wrong action bar size, or visual glitches in the action bar
+- Other layout problems occurring after changing the device orientation
+
+If you experience these layout problems, try removing an `android:ConfigChanges` option from your `<activity />` declaration.

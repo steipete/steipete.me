@@ -1,0 +1,47 @@
+---
+title: Programmatic Form Filling
+section: developers
+---
+
+PSPDFKit for Web supports the AcroForm standard and can view and fill forms inside the [`Instance`][].
+
+Forms are an optional component that can be licensed. If not licensed, forms will simply be invisible. Forms can be manually disabled by setting [`Configuration#disableForms`] to `true` as part of the [`load()`][] call.
+
+You can also modify and query forms in code — for example, filling out forms programmatically:
+
+[==
+
+```es
+const formFields = await instance.getFormFields();
+
+// Update the value of all text form fields.
+const updatedFormFieldValues = formFields
+  .filter(formField => formField instanceof PSPDFKit.FormFields.TextFormField)
+  .reduce((o, formField) => (o[formField.name] = "New Value"), {});
+
+instance.setFormFieldValues(updatedFormFieldValues);
+```
+
+```js
+instance.getFormFields().then(function(formFields) {
+  // Update the value of all text form fields.
+  var updatedFormFieldValues = {};
+  formFields.forEach(function(formField) {
+    if (formField instanceof PSPDFKit.FormFields.TextFormField) {
+      updatedFormFieldValues[formField.name] = "New Value";
+    }
+  });
+  instance.setFormFieldValues(updatedFormFieldValues);
+});
+```
+
+==]
+
+The argument for [`Instance#setFormFieldValues`][] must be a simple JavaScript object, where the keys refer to the [`FormField#name`][] of the form field that you want to update, and the value is either `null`, `string`, or `Array<string>`, depending upon the type of the [`FormField`][].
+
+[`instance`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html
+[`load()`]: https://pspdfkit.com/api/web/PSPDFKit.html#.load
+[`configuration#disableforms`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#disableForms
+[`instance#setformfieldvalues`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setFormFieldValues
+[`formfield`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.FormField.html
+[`formfield#name`]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.FormField.html#name

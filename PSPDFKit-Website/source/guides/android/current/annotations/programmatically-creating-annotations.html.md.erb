@@ -1,0 +1,277 @@
+---
+title: Programmatically Creating Annotations
+section: developers
+theme: android
+---
+
+You can programmatically create link, highlight, free text, ink, or note annotations just like you can any other types of supported annotations, but it’s easy to get this wrong.
+
+To create annotations programmatically, roughly follow these steps:
+
+1. Create the annotation by initializing it.
+2. Update any properties you desire.
+3. Add the annotation to the document with [`PdfFragment#addAnnotationToPage()`][].
+
+For a list of supported annotations, please see [Introduction to Annotations][].
+
+## Examples for Creating Some Annotation Types
+
+The Catalog app contains many examples for programmatically adding annotations. Take a look at `AnnotationCreationExample` for more details. All of the following examples assume that you run them from inside a [`PdfActivity`][].
+
+**ℹ️ Note:** If you are not using a [`PdfActivity`][], just replace [`getPdfFragment()`][] with a reference to your [`PdfFragment`][] in the following examples.
+
+### Link Annotations
+
+[`LinkAnnotation` API][]
+
+[==
+
+```kotlin
+// Create the link on the first page.
+val linkAnnotation = LinkAnnotation(0)
+// Set the position.
+linkAnnotation.boundingBox = RectF(100f, 100f, 300f, 140f)
+// Set where the link points to — in this case, the fifth page.
+linkAnnotation.action = GoToAction(4)
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(linkAnnotation, false)
+```
+
+```java
+// Create the link on the first page.
+final LinkAnnotation linkAnnotation = new LinkAnnotation(0);
+// Set the position.
+linkAnnotation.setBoundingBox(new RectF(100, 100, 300, 140));
+// Set where the link points to — in this case, the fifth page.
+linkAnnotation.setAction(new GoToAction(4));
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(linkAnnotation, false);
+```
+
+==]
+
+### Highlight Annotations
+
+[`HighlightAnnotation` API][]
+
+[==
+
+```kotlin
+// Define the places you want to highlight.
+val textRects = listOf(RectF(100f, 100f, 300f, 140f))
+// Create the highlight on the first page.
+val highlightAnnotation = HighlightAnnotation(0, textRects)
+// Set the color.
+highlightAnnotation.color = Color.RED
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(highlightAnnotation, false)
+```
+
+```java
+// Define the places you want to highlight.
+final List<RectF> textRects = Collections.singletonList(new RectF(100, 100, 300, 140));
+// Create the highlight on the first page.
+final HighlightAnnotation highlightAnnotation = new HighlightAnnotation(0, textRects);
+// Set the color.
+highlightAnnotation.setColor(Color.RED);
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(highlightAnnotation, false);
+```
+
+==]
+
+### Free Text Annotations
+
+[`FreeTextAnnotation` API][]
+
+[==
+
+```kotlin
+// Create the text on the first page.
+val freeTextAnnotation = FreeTextAnnotation(0, RectF(100f, 100f, 300f, 140f), "My Annotation")
+// Set the text color.
+freeTextAnnotation.color = Color.RED
+// Set the text size.
+freeTextAnnotation.textSize = 20f
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(freeTextAnnotation, false)
+```
+
+```java
+// Create the text on the first page.
+final FreeTextAnnotation freeTextAnnotation = new FreeTextAnnotation(0, new RectF(100, 100, 300, 140), "My Annotation");
+// Set the text color.
+freeTextAnnotation.setColor(Color.RED);
+// Set the text size.
+freeTextAnnotation.setTextSize(20f);
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(freeTextAnnotation, false);
+```
+
+==]
+
+### Ink Annotations
+
+[`InkAnnotation` API][]
+
+[==
+
+```kotlin
+// Create the ink annotation on the first page.
+val inkAnnotation = InkAnnotation(0)
+// Set the line color.
+inkAnnotation.color = Color.RED
+// Set the line width.
+inkAnnotation.lineWidth = 10f
+// Create a line from a list of points.
+val line = listOf(
+    PointF(100f, 100f),
+    PointF(150f, 150f),
+    PointF(200f, 100f),
+    PointF(250f, 150f),
+    PointF(200f, 200f)
+)
+// Ink annotations can hold multiple lines. We only use one here.
+inkAnnotation.lines = listOf(line)
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(inkAnnotation, false)
+```
+
+```java
+// Create the ink annotation on the first page.
+final InkAnnotation inkAnnotation = new InkAnnotation(0);
+// Set the line color.
+inkAnnotation.setColor(Color.RED);
+// Set the line width.
+inkAnnotation.setLineWidth(10f);
+// Create a line from a list of points.
+final List<PointF> line = Arrays.asList(
+    new PointF(100, 100),
+    new PointF(150, 150),
+    new PointF(200, 100),
+    new PointF(250, 150),
+    new PointF(200, 200)
+);
+// Ink annotations can hold multiple lines. We only use one here.
+inkAnnotation.setLines(Collections.singletonList(line));
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(inkAnnotation, false);
+```
+
+==]
+
+### Note Annotations
+
+[`NoteAnnotation` API][]
+
+[==
+
+```kotlin
+// Create the note on the first page.
+// The note annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render note annotations at a fixed size of 32x32pt. We recommend that you set the `boundingBox` to the same value.
+val noteAnnotation = NoteAnnotation(0,
+    RectF(100f, 100f, 132f, 132f),
+    "This is my note",
+    NoteAnnotation.NOTE)
+// Change the icon.
+noteAnnotation.setIconName(NoteAnnotation.NEW_PARAGRAPH)
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(noteAnnotation, false)
+```
+
+```java
+// Create the note on the first page.
+// The note annotation is rendered as a fixed size, much like how Adobe Acrobat renders it.
+// PSPDFKit will always render note annotations at a fixed size of 32x32pt. We recommend that you set the `boundingBox` to the same value.
+final NoteAnnotation noteAnnotation = new NoteAnnotation(0,
+    new RectF(100, 100, 132, 132),
+    "This is my note",
+    NoteAnnotation.NOTE);
+// Change the icon.
+noteAnnotation.setIconName(NoteAnnotation.NEW_PARAGRAPH);
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(noteAnnotation, false);
+```
+
+==]
+
+### Stamp Annotations
+
+[`StampAnnotation` API][]
+
+[==
+
+```kotlin
+// Create the stamp on the first page.
+val stampAnnotation = StampAnnotation(0,
+    RectF(100f, 100f, 300f, 140f),
+    StampType.CONFIDENTIAL)
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(stampAnnotation, false)
+```
+
+```java
+// Create the stamp on the first page.
+final StampAnnotation stampAnnotation = new StampAnnotation(0,
+    new RectF(100, 100, 300, 140),
+    StampType.CONFIDENTIAL);
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(stampAnnotation, false);
+```
+
+==]
+
+### File Annotations with Embedded Files
+
+[`FileAnnotation` API][] and [`EmbeddedFileSource` API][]
+
+[==
+
+```kotlin
+// Create the file source with the file you want to embed.
+val embeddedFileSource = EmbeddedFileSource(AssetDataProvider("Guide-v5.pdf"),
+    "Guide-v5.pdf",
+    "A guide.")
+// Create the file annotation on the first page.
+val fileAnnotation = FileAnnotation(0,
+    RectF(100f, 100f, 132f, 132f),
+    embeddedFileSource)
+// Change the icon.
+fileAnnotation.setIconName(FileAnnotation.PAPERCLIP)
+// Change the color.
+fileAnnotation.color = Color.RED
+// Add it to the page.
+pdfFragment?.addAnnotationToPage(fileAnnotation, false)
+```
+
+```java
+// Create the file source with the file you want to embed.
+EmbeddedFileSource embeddedFileSource = new EmbeddedFileSource(new AssetDataProvider("Guide-v5.pdf"),
+    "Guide-v5.pdf",
+    "A guide.");
+// Create the file annotation on the first page.
+final FileAnnotation fileAnnotation = new FileAnnotation(0,
+    new RectF(100, 100, 132, 132),
+    embeddedFileSource);
+// Change the icon.
+fileAnnotation.setIconName(FileAnnotation.PAPERCLIP);
+// Change the color.
+fileAnnotation.setColor(Color.RED);
+// Add it to the page.
+getPdfFragment().addAnnotationToPage(fileAnnotation, false);
+```
+
+==]
+
+[introduction to annotations]: ../introduction-to-annotations/
+[`pdffragment#addannotationtopage()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#addAnnotationToPage(com.pspdfkit.annotations.Annotation,%20boolean)
+[`linkannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LinkAnnotation.html
+[`highlightannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/HighlightAnnotation.html
+[`freetextannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/FreeTextAnnotation.html
+[`inkannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/InkAnnotation.html
+[`noteannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/NoteAnnotation.html
+[`stampannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/StampAnnotation.html
+[`fileannotation` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/FileAnnotation.html
+[`embeddedfilesource` api]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/files/EmbeddedFileSource.html
+[`getpdffragment()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#getPdfFragment()

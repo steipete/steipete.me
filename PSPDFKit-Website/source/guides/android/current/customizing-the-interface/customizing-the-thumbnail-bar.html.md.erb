@@ -1,0 +1,53 @@
+---
+title: Customizing the Thumbnail Bar
+section: developers
+---
+
+The thumbnail bar is the component found on the bottom of our [`PdfActivity`][] by default, or as a standalone view named [`PdfThumbnailBar`][].
+
+To set the style of your thumbnail bar inside the [`PdfActivity`][], you can use [`PdfActivityConfiguration.Builder#setThumbnailBarMode`][] (for custom layout implementation, see the `CustomFragmentActivity` in our Catalog app), which takes the [`ThumbnailBarMode`][] enum as a parameter. These are the possible values:
+
+- [`THUMBNAIL_BAR_MODE_NONE`][] — hides the thumbnail bar
+
+![](/images/guides/android/customizing-the-interface/customizing-the-thumbnail-bar/tb_mode_none.jpg)
+
+- [`THUMBNAIL_BAR_MODE_FLOATING`][] — shows the floating thumbnail bar
+
+![](/images/guides/android/customizing-the-interface/customizing-the-thumbnail-bar/tb_mode_floating.jpg)
+
+- [`THUMBNAIL_BAR_MODE_PINNED`][] — shows the thumbnail bar pinned to the bottom of the screen
+
+![](/images/guides/android/customizing-the-interface/customizing-the-thumbnail-bar/tb_mode_pinned.jpg)
+
+- [`THUMBNAIL_BAR_MODE_SCROLLABLE`][] — shows the scrollable thumbnail bar with larger thumbnails and without the border
+
+![](/images/guides/android/customizing-the-interface/customizing-the-thumbnail-bar/tb_mode_scrollable.jpg)
+
+To customize the look of your thumbnail bar (color, thumbnail width, thumbnail height, etc.) see the corresponding section in the [Appearance Styling][] guide.
+
+## Gestural Navigation Support (Android Q+)
+
+Google has announced [gestural navigation][] as part of the Android Q navigation system. This change requires apps to update their bottom views so as not to interfere with the area reserved for gesture detection. Our floating thumbnail bar is designed with this in mind, and it will keep the necessary distance from the bottom of the screen.
+
+The other two thumbnail bars (pinned and scrollable) were originally designed to be displayed at the bottom of the screen. They have also been redesigned to work with gestural navigation in fullscreen (immersive) mode by adding the padding on the bottom, so as not to obstruct gestural navigation touches.
+
+Android Q introduces an option for fully gestural system navigation. There are two things that app developers should do to prepare for this feature:
+
+- Extend app content from edge to edge.
+- Handle conflicting app gestures.
+
+> **⚠️ Warning:** In order for pinned and scrollable thumbnail bars to work with gestural navigation, you **must use the fullscreen mode** in your activity. Otherwise, the bars will interfere with the gestural navigation area on the bottom.
+
+**ℹ️ Note:** You can set the [`PdfActivity`][] to fullscreen/immersive mode via [`PdfActivityConfiguration.Builder#useImmersiveMode(true)`][].
+
+[`pdfactivity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html
+[`pdfthumbnailbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailBar.html
+[`pdfactivityconfiguration.builder#setthumbnailbarmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#setThumbnailBarMode(com.pspdfkit.configuration.activity.ThumbnailBarMode)
+[`thumbnailbarmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/ThumbnailBarMode.html
+[`thumbnail_bar_mode_none`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/ThumbnailBarMode.html#THUMBNAIL_BAR_MODE_NONE
+[`thumbnail_bar_mode_floating`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/ThumbnailBarMode.html#THUMBNAIL_BAR_MODE_FLOATING
+[`thumbnail_bar_mode_pinned`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/ThumbnailBarMode.html#THUMBNAIL_BAR_MODE_PINNED
+[`thumbnail_bar_mode_scrollable`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/ThumbnailBarMode.html#THUMBNAIL_BAR_MODE_SCROLLABLE
+[appearance styling]: /guides/android/current/customizing-the-interface/appearance-styling/#thumbnail-bar
+[gestural navigation]: https://developer.android.com/preview/features/gesturalnav
+[`pdfactivityconfiguration.builder#useimmersivemode(true)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#useImmersiveMode(boolean)

@@ -1,0 +1,22 @@
+---
+title: Handle Displaying Documents in UISplitViewController
+section: developers
+
+---
+
+A split view controller often seems like the ideal solution for displaying a list of documents (for example, for using the [`PSPDFDocumentPickerController`][]) in one view controller and displaying a [`PSPDFViewController`][] in another view controller. But beware, as there is a lot going on behind the scenes of [`UISplitViewController`][] that will mess with your expected behavior. To get more insight on how the split view controller works, have a look at the [WWDC video on “View Controller Advancements in iOS 8”][] and the [NSHipster article on `UISplitViewController`][].
+
+<img src="/images/guides/ios/troubleshooting/split-view-controller/split-view-controller-example.png" srcset="/images/guides/ios/troubleshooting/split-view-controller/split-view-controller-example@2x.png 2x">
+
+The most common issue is that [`PSPDFViewController`][] is not pushed to the correct navigation controller by default, thereby causing problems with the user interface or the bar button items. Please make sure to not only correctly manage collapsing and expanding of the split view controller, but to also handle showing [`PSPDFViewController`][] on the currently visible and correct navigation controller, which is not as straightforward as you might think it is.
+
+For further information, have a look at the `PSCSplitViewController` class inside the `PSPDFCatalog` example project. You can see how to configure a split view controller containing a list of documents on one side and a document view on the other side. Additionally, managing of collapsed and expanded view controllers is specifically handled and it’s quite tricky. Here are some of the most noteworthy methods:
+
+- `splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:`
+- `splitViewController:separateSecondaryViewControllerFromPrimaryViewController`
+- `documentPickerController:didSelectDocument:pageIndex:searchString:`
+
+[`UISplitViewController`]: https://developer.apple.com/reference/uikit/uisplitviewcontroller
+[`PSPDFDocumentPickerController`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentPickerController.html
+[WWDC video on “View Controller Advancements in iOS 8”]: https://developer.apple.com/videos/play/wwdc2014/214/
+[NSHipster article on `UISplitViewController`]: http://nshipster.com/uisplitviewcontroller/

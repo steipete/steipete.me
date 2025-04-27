@@ -1,0 +1,166 @@
+---
+title: Extending the PdfActivity
+section: developers
+---
+
+Displaying documents using the [`PdfActivity`][] is sufficient in most cases. Nonetheless, there are situations where customizations beyond pure styling are necessary. For more flexibility, you can extend the [`PdfActivity`][] and implement your own custom activities.
+
+Since a `PdfActivity` and any activities deriving from it need special intent data (document sources, passwords, configuration, etc.) you need to create a special launch `Intent` using the [`PdfActivityIntentBuilder`][] that will carry all of this information. The builder allows you to set your activity class using its [`#activity`][`pdfactivityintentbuilder#activity`] method. For a comprehensive example of what is possible with customization, take a look at the `CustomLayoutExample` or the `CustomActionsExample` inside the Catalog app.
+
+## Creating Your Activity
+
+The first step for implementing a custom activity is to subclass the [`PdfActivity`][]. Please note that your custom activity does not need to override `#onCreate`, and it does not need to define or inflate a layout. The layout will be set up by the [`PdfActivity`][] parent class and can be using the [`PdfActivityConfiguration.Builder#layout`][] when launching the activity:
+
+[==
+
+```MyCustomActivity.kt
+class MyCustomActivity : PdfActivity() {
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        var handled = super.onPrepareOptionsMenu(menu)
+
+        // Custom action bar menu creation.
+
+        return handled
+    }
+
+    override fun onDocumentLoaded(document: PdfDocument) {
+        // Document is ready to use.
+    }
+
+    override fun onDocumentLoadFailed(exception: Throwable) {
+        // Add your fancy error handling here.
+    }
+}
+```
+
+```MyCustomActivity.java
+public class MyCustomActivity extends PdfActivity {
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean handled = super.onPrepareOptionsMenu(menu);
+
+        // Custom action bar menu creation.
+
+        return handled;
+    }
+
+    @Override public void onDocumentLoaded(PdfDocument document) {
+        // Document is ready to use.
+    }
+
+    @Override public void onDocumentLoadFailed(Throwable exception) {
+        // Add your fancy error handling here.
+    }
+}
+```
+
+==]
+
+Next, you need to add this activity to your `AndroidManifest.xml` so you can launch it. You can also define the `android:theme` property to set a custom theme:
+
+```AndroidManifest.xml
+<activity
+    android:name="com.pspdfkit.example.MyCustomActivity"
+    android:label="@string/title_activity_custom"
+    android:theme="@style/MyApp.Theme" />
+```
+
+To launch `MyCustomActivity`, first create a [`PdfActivityConfiguration`][], then create a launching intent using the [`PdfActivityIntentBuilder`][], and finally call [`Activity#startActivity`][] with the intent you created:
+
+[==
+
+```kotlin
+val config = PdfActivityConfiguration.Builder(context).build()
+val intent = PdfActivityIntentBuilder.fromUri(context, uri)
+    .configuration(config)
+    .activity(MyCustomActivity::class.java)
+    .build()
+
+// Start the `MyCustomActivity` like any other activity.
+context.startActivity(intent)
+```
+
+```java
+final PdfActivityConfiguration config = new PdfActivityConfiguration.Builder(context).build();
+final Intent intent = PdfActivityIntentBuilder.fromUri(context, uri)
+    .configuration(config)
+    .activity(MyCustomActivity.class)
+    .build();
+
+// Start the `MyCustomActivity` like any other activity.
+context.startActivity(intent);
+```
+
+==]
+
+## Custom Activity Layouts
+
+By default, [`PdfActivity`][] uses the `R.layout.pspdf__pdf_activity` as its layout file. Have a look at that file to see all the views PSPDFKit uses. You can use the file as a template for your custom layout. To specify the layout, provide its ID to the [`PdfActivityConfiguration.Builder#layout`][] method. Usually, it also makes sense to subclass the [`PdfActivity`][] so it can make use of the custom layout and the views you may add:
+
+[==
+
+```kotlin
+val config = PdfActivityConfiguration.Builder(context)
+    .layout(R.layout.my_custom_layout)
+    .build()
+```
+
+```java
+final PdfActivityConfiguration config =
+    new PdfActivityConfiguration.Builder(context)
+        .layout(R.layout.my_custom_layout)
+        .build();
+```
+
+==]
+
+### Required Views
+
+The [`PdfActivity`][] expects several views to be present in the selected layout file. If any of the following views is missing, PSPDFKit will throw an [`InvalidLayoutException`][]:
+
+| View ID                                  | Description                                                                                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `@id/pspdf__toolbar_coordinator`         | A [`ToolbarCoordinatorLayout`][] for managing and laying out the main toolbar (action bar) and contextual toolbars.                      |
+| `@id/pspdf__toolbar_main`                | [`androidx.appcompat.widget.Toolbar`][] serves as the activity’s action bar. This has to be wrapped inside the toolbar coordinator view. |
+| `@id/pspdf__inspector_coordinator`       | [`PropertyInspectorCoordinatorLayout`][] for managing and laying out the [`PropertyInspector`][] views.                                  |
+| `@id/pspdf__activity_fragment_container` | [`ViewGroup`] or any subclass. The activity will use this to inject the [`PdfFragment`][].                                               |
+| `@id/pspdf__activity_form_editing_bar`   | [`FormEditingBar`] serves as the helper toolbar for filling out interactive forms. This is not required when form editing is disabled.   |
+
+### Optional Views
+
+In addition to the mandatory views, the layout may define several optional views. These views may be removed from the original layout. However, if this is done, they need to be deactivated explicitly using the [`PdfActivityConfiguration.Builder`][]:
+
+| View ID                                                      | Description                                                                                                                      |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `@id/pspdf__activity_thumbnail_bar`                          | The [`PdfThumbnailBar`][] for displaying a horizontal list of thumbnails that show the current page.                             |
+| `@id/pspdf__activity_page_overlay`                           | A [`TextView`][] for displaying the current page and total page count (e.g. Page 4 of 22).                                       |
+| `@id/pspdf__activity_thumbnail_grid`                         | The [`PdfThumbnailGrid`][] is a scrollable fullscreen grid of all the pages.                                                     |
+| `@id/pspdf__activity_search_view_modular`                    | A [`PdfSearchViewModular`][] for displaying a search box and a list of search results.                                           |
+|  `@id/pspdf__activity_outline_view`                          | The [`PdfOutlineView`][], which displays the document outline (table of contents) and a list of all annotations on the document. |
+| `@id/pspdf__navigate_back` and `@id/pspdf__navigate_forward` | [`CardView`][]s that display the buttons for navigating back and forward.                                                        |
+| `@id/pspdf__activity_title_overlay`                          | A [`TextView`][] for displaying the current document’s title.                                                                    |
+| `@id/pspdf__activity_tab_bar`                                | The [`PdfTabBar`][] for displaying a horizontal list of document tabs.                                                           |
+
+[`pdfactivityintentbuilder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html
+[`pdfactivityintentbuilder#activity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html#activity(java.lang.Class<?%20extends%20com.pspdfkit.ui.PdfActivity>)
+[`activity#startactivity`]: https://developer.android.com/reference/android/app/Activity.html#startActivity(android.content.Intent)
+[`pdfactivity#showdocument`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#showDocument(android.content.Context,%20android.net.Uri,%20com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`pdfactivityconfiguration`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.html
+[`pdfactivityconfiguration.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[`pdfactivityconfiguration.builder#layout`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#layout(int)
+[`pdfactivityconfiguration.builder#activity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#activity(java.lang.Class<?%20extends%20android.app.Activity>,%20android.os.Bundle)
+[`pdfthumbnailbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailBar.html
+[`pdfthumbnailgrid`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html
+[`pdfsearchviewmodular`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/search/PdfSearchViewModular.html
+[`pdfoutlineview`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfOutlineView.html
+[`invalidlayoutexception`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/exceptions/InvalidLayoutException.html
+[`toolbarcoordinatorlayout`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/ToolbarCoordinatorLayout.html
+[`propertyinspectorcoordinatorlayout`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspectorCoordinatorLayout.html
+[`propertyinspector`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspector.html
+[`formeditingbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/forms/FormEditingBar.html
+[`pdftabbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/tabs/PdfTabBar.html
+[`textview`]: https://developer.android.com/reference/android/widget/TextView.html
+[`cardview`]: https://developer.android.com/reference/android/support/v7/widget/CardView
+[`viewgroup`]: https://developer.android.com/reference/android/view/ViewGroup.html
+[`androidx.appcompat.widget.toolbar`]: https://developer.android.com/reference/androidx/appcompat/widget/Toolbar

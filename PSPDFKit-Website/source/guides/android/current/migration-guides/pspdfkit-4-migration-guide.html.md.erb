@@ -1,0 +1,224 @@
+---
+title: PSPDFKit 4 Migration Guide
+section: developers
+
+order: 59
+---
+
+PSPDFKit 4 for Android is a major new release and includes many new features and a few breaking changes.
+
+## Removed Optionals
+
+We’ve removed our `com.pspdfkit.utilities.Optional` class that was used when returning objects that may or may not have a value. It has been replaced with the RxJava 2 [`Maybe`][] class, which is a reactive type that either returns a value in `onSuccess()`, simply completes in `onComplete()`, or throws an error in `onError()`. This is much more convenient to use.
+
+For example, this:
+
+```AnnotationProvider.java
+@NonNull
+public Optional<Annotation> getAnnotation(int pageIndex, int objectNumber)
+
+@NonNull
+public Observable<Optional<Annotation>> getAnnotationAsync(int pageIndex, int objectNumber)
+```
+
+becomes this:
+
+```AnnotationProvider.java
+@Nullable
+public Annotation getAnnotation(int pageIndex, int objectNumber)
+
+@NonNull
+public Maybe<Annotation> getAnnotationAsync(int pageIndex, int objectNumber)
+```
+
+Here is the full list of modified methods:
+
+- `AnnotationProvider#getAnnotationAsync(int, int)` from `Observable<Optional<Annotation>>` to `Maybe<Annotation>`.
+- `AnnotationProvider#getAnnotation(int, int)` from `Optional<Annotation>` to `@Nullable Annotation`.
+- `FormProvider#getFormElementForAnnotationAsync()` from `Observable<Optional<FormElement>>` to `Maybe<FormElement>`.
+- `FormProvider#getFormElementForAnnotation()` from `Optional<FormElement>` to `@Nullable FormElement`.
+- `FormProvider#getFormFieldWithFullyQualifiedNameAsync()` from `Observable<Optional<FormElement>>` to `Maybe<FormElement>`.
+- `FormProvider#getFormFieldWithFullyQualifiedName()` from `Optional<FormElement>` to `@Nullable FormElement`.
+- `FormProvider#getFormElementWithNameAsync()` from `Observable<Optional<FormElement>>` to `Maybe<FormElement>`.
+- `FormProvider#getFormElementWithName()` from `Optional<FormElement>` to `@Nullable FormElement`.
+- `WidgetAnnotation#getFormElementAsync()` from `Observable<Optional<FormElement>>` to `Maybe<FormElement>`.
+- `WidgetAnnotation#getFormElement()` from `Optional<FormElement>` to `@Nullable FormElement`.
+
+## New Android SDK Version
+
+We’ve updated our SDK to fully support Android 8.0 Oreo. In order to ensure that everything works as expected, it is required that you update the `compileSdkVersion` in the `build.gradle` of your application to `26`. We also increased the minimum required version to Android 4.4 KitKat (API Level 19), so you also need to update your `minSdkVersion` to `19`.
+If you are using Kotlin in your application, this change will require that you update all your `findViewById` calls.
+
+For example, this:
+
+```kotlin
+val textView = findViewById(R.id.textview) as TextView
+```
+
+becomes this:
+
+```kotlin
+val textView: TextView = findViewById(R.id.textview)
+```
+
+If you are still using Java, Android Studio will remind you to remove the cast.
+
+For example, this:
+
+```java
+TextView textView = (TextView) findViewById(R.id.textview);
+```
+
+becomes this:
+
+```java
+TextView textView = findViewById(R.id.textview);
+```
+
+## Updated Dependencies
+
+We’ve updated RxJava to `2.1.3`. If you’re using the recommended Maven repository approach to add PSPDFKit to your project, you don’t have to do anything; the dependency will be updated automatically.
+
+If you’re not using our Maven repository, make sure to update dependencies to the new version:
+
+```groovy
+implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
+```
+
+## ProGuard Rules
+
+There is no longer a need to specify additional ProGuard rules since PSPDFKit uses `consumersProguardFiles` to keep ProGuard from obfuscating the required symbols. For more information, please check our [ProGuard section][] in the guides.
+
+## Unified Naming for Listeners
+
+We’ve cleaned up all inconsistent names of callbacks and their management methods in order to unify our APIs and be consistent with Android framework styles.
+
+Here is the full list of changes:
+
+- Renamed `DownloadDocumentTask.DownloadedFileCallback` to `DownloadDocumentTask.OnFileDownloadedListener`.
+- Renamed `ExtractAssetTask.OnDocumentExtractedCallback` to `ExtractAssetTask.OnDocumentExtractedListener`.
+- Renamed `InstantPdfDocument#registerInstantDocumentListener` to `InstantPdfDocument#addInstantDocumentListener`.
+- Renamed `InstantPdfDocument#unregisterInstantDocumentListener` to `InstantPdfDocument#removeInstantDocumentListener`.
+- Renamed `InstantPdfFragment#registerInstantDocumentListener` to `InstantPdfFragment#addInstantDocumentListener`.
+- Renamed `InstantPdfFragment#unregisterInstantDocumentListener` to `InstantPdfFragment#removeInstantDocumentListener`.
+- Renamed `OnAnnotationProviderUpdatedListener#onAnnotationDeleted` to `OnAnnotationProviderUpdatedListener#onAnnotationRemoved`.
+- Renamed `AnnotationProvider.OnAnnotationProviderUpdatedListener` to `AnnotationProvider.OnAnnotationUpdatedListener`.
+- Renamed `AnnotationProvider#registerOnAnnotationProviderUpdatedListener` to `AnnotationProvider#addOnAnnotationUpdatedListener`.
+- Renamed `AnnotationProvider#unregisterOnAnnotationProviderUpdatedListener` to `AnnotationProvider#removeOnAnnotationUpdatedListener`.
+- Renamed `ActionResolver#registerDocumentActionListener` to `ActionResolver#addDocumentActionListener`.
+- Renamed `ActionResolver#unregisterDocumentActionListener` to `ActionResolver#removeDocumentActionListener`.
+- Renamed `NewPageFactory.OnNewPageReadyCallback` to `NewPageFactory.OnNewPageReadyListener`.
+- Renamed `PdfLibrary#registerLibraryIndexingListener` to `PdfLibrary#addLibraryIndexingListener`.
+- Renamed `PdfLibrary#unregisterLibraryIndexingListener` to `PdfLibrary#removeLibraryIndexingListener`.
+- Renamed `FormProvider#registerOnFormFieldUpdatedListener` to `FormProvider#addOnFormFieldUpdatedListener`.
+- Renamed `FormProvider#unregisterOnFormFieldUpdatedListener` to `FormProvider#removeOnFormFieldUpdatedListener`.
+- Renamed `FormProvider#registerOnFormTabOrderUpdatedListener` to `FormProvider#addOnFormTabOrderUpdatedListener`.
+- Renamed `FormProvider#unregisterOnFormTabOrderUpdatedListener` to `FormProvider#removeOnFormTabOrderUpdatedListener`.
+- Renamed `FormProvider#registerOnTextFormFieldUpdatedListener` to `FormProvider#addOnTextFormFieldUpdatedListener`.
+- Renamed `FormProvider#unregisterOnTextFormFieldUpdatedListener` to `FormProvider#removeOnTextFormFieldUpdatedListener`.
+- Renamed `FormProvider#registerOnButtonFormFieldUpdatedListener` to `FormProvider#addOnButtonFormFieldUpdatedListener`.
+- Renamed `FormProvider#unregisterOnButtonFormFieldUpdatedListener` to `FormProvider#removeOnButtonFormFieldUpdatedListener`.
+- Renamed `FormProvider#registerOnChoiceFormFieldUpdatedListener` to `FormProvider#addOnChoiceFormFieldUpdatedListener`.
+- Renamed `FormProvider#unregisterOnChoiceFormFieldUpdatedListener` to `FormProvider#removeOnChoiceFormFieldUpdatedListener`.
+- Renamed `DefaultDocumentEditorListener.UriValidationCallback` to `DefaultDocumentEditorListener.UriValidationListener`.
+- Renamed `PdfDocumentEditorListenerCallback` to `OnFileWriteCompleteListener`.
+- Renamed `PSPDFKitViews#setDocumentEditorListener` to `PSPDFKitViews#setPdfDocumentEditorListener`.
+- Renamed `PdfFragment#registerDocumentListener` to `PdfFragment#addDocumentListener`.
+- Renamed `PdfFragment#unregisterDocumentListener` to `PdfFragment#removeDocumentListener`.
+- Renamed `PdfFragment#registerDocumentScrollListener` to `PdfFragment#addDocumentScrollListener`.
+- Renamed `PdfFragment#unregisterDocumentScrollListener` to `PdfFragment#removeDocumentScrollListener`.
+- Renamed `PdfOutlineView.OnAnnotationTappedListener` to `PdfOutlineView.OnAnnotationTapListener` and its `onAnnotationTapped` method to `onAnnotationTap`.
+- Renamed `PdfOutlineView.OnOutlineElementTappedListener` to `PdfOutlineView.OnOutlineElementTapListener` and its `onOutlineElementTapped` method to `onOutlineElementTap`.
+- Renamed `PdfOutlineView#setOnAnnotationTappedListener` to `PdfOutlineView#setOnAnnotationTapListener`.
+- Renamed `PdfOutlineView#setOnOutlineElementTappedListener` to `PdfOutlineView#setOnOutlineElementTapListener`.
+- Renamed `PdfThumbnailGrid#setDocumentEditorListener` to `PdfThumbnailGrid#setPdfDocumentEditorListener`.
+- Renamed `PdfThumbnailGrid#registerDocumentEditingModeChangeListener` to `PdfThumbnailGrid#addOnDocumentEditingModeChangeListener`.
+- Renamed `PdfThumbnailGrid#unregisterDocumentEditingModeChangeListener` to `PdfThumbnailGrid#removeOnDocumentEditingModeChangeListener`.
+- Renamed `PdfThumbnailGrid#registerDocumentEditingPageSelectionChangeListener` to `PdfThumbnailGrid#addOnDocumentEditingPageSelectionChangeListener`.
+- Renamed `PdfThumbnailGrid#unregisterDocumentEditingPageSelectionChangeListener` to `PdfThumbnailGrid#removeOnDocumentEditingPageSelectionChangeListener`.
+- Renamed `ActionMenu#registerActionMenuListener` to `ActionMenu#addActionMenuListener`.
+- Renamed `ActionMenu#unregisterActionMenuListener` to `ActionMenu#removeActionMenuListener`.
+- Renamed `FormEditingBar#registerFormEditingBarLifecycleListener` to `FormEditingBar#addOnFormEditingBarLifecycleListener`.
+- Renamed `FormEditingBar#unregisterFormEditingBarLifecycleListener` to `FormEditingBar#removeOnFormEditingBarLifecycleListener`.
+- Renamed `PropertyInspectorCoordinatorLayoutController#registerPropertyInspectorLifecycleListener` to `PropertyInspectorCoordinatorLayoutController#addPropertyInspectorLifecycleListener`.
+- Renamed `PropertyInspectorCoordinatorLayoutController#unregisterPropertyInspectorLifecycleListener` to `PropertyInspectorCoordinatorLayoutController#removePropertyInspectorLifecycleListener`.
+- Renamed `BookmarkViewAdapter#registerBookmarkChangeListener` to `BookmarkViewAdapter#addBookmarkListener`.
+- Renamed `BookmarkViewAdapter#unregisterBookmarkChangeLister` to `BookmarkViewAdapter#removeBookmarkListener`.
+- Renamed `OnModeChangedListener#OnPageTransitionChanged` to `OnModeChangedListener#OnScrollModeChange`.
+- Renamed `OnModeChangedListener#OnScrollDirectionChanged` to `OnModeChangedListener#OnScrollDirectionChange`.
+- Renamed `OnModeChangedListener#OnPageLayoutChanged` to `OnModeChangedListener#OnPageLayoutChange`.
+- Renamed `OnModeChangedListener#OnThemeChanged` to `OnModeChangedListener#OnThemeChange`.
+- Renamed `OnModeChangedListener#OnScreenTimeoutChanged` to `OnModeChangedListener#OnScreenTimeoutChange`.
+- Renamed `AnnotationManager#registerAnnotationSelectedListener` to `AnnotationManager#addOnAnnotationSelectedListener`.
+- Renamed `AnnotationManager#unregisterAnnotationSelectedListener` to `AnnotationManager#removeOnAnnotationSelectedListener`.
+- Renamed `AnnotationManager#registerAnnotationDeselectedListener` to `AnnotationManager#addOnAnnotationDeselectedListener`.
+- Renamed `AnnotationManager#unregisterAnnotationDeselectedListener` to `AnnotationManager#removeOnAnnotationDeselectedListener`.
+- Renamed `AnnotationManager#registerAnnotationUpdatedListener` to `AnnotationManager#addOnAnnotationUpdatedListener`.
+- Renamed `AnnotationManager#unregisterAnnotationUpdatedListener` to `AnnotationManager#removeOnAnnotationUpdatedListener`.
+- Renamed `AnnotationManager#registerAnnotationCreationModeChangeListener` to `AnnotationManager#addOnAnnotationCreationModeChangeListener`.
+- Renamed `AnnotationManager#unregisterAnnotationCreationModeChangeListener` to `AnnotationManager#removeOnAnnotationCreationModeChangeListener`.
+- Renamed `AnnotationManager#registerAnnotationCreationModeSettingsChangeListener` to `AnnotationManager#addOnAnnotationCreationModeSettingsChangeListener`.
+- Renamed `AnnotationManager#unregisterAnnotationCreationModeSettingsChangeListener` to `AnnotationManager#removeOnAnnotationCreationModeSettingsChangeListener`.
+- Renamed `AnnotationManager#registerAnnotationEditingModeChangeListener` to `AnnotationManager#addOnAnnotationEditingModeChangeListener`.
+- Renamed `AnnotationManager#unregisterAnnotationEditingModeChangeListener` to `AnnotationManager#removeOnAnnotationEditingModeChangeListener`.
+- Renamed `DocumentEditingManager#registerDocumentEditingModeChangeListener` to `DocumentEditingManager#addOnDocumentEditingModeChangeListener`.
+- Renamed `DocumentEditingManager#unregisterDocumentEditingModeChangeListener` to `DocumentEditingManager#removeOnDocumentEditingModeChangeListener`.
+- Renamed `DocumentEditingManager#registerDocumentEditingPageSelectionChangeListener` to `DocumentEditingManager#addOnDocumentEditingPageSelectionChangeListener`.
+- Renamed `DocumentEditingManager#unregisterDocumentEditingPageSelectionChangeListener` to `DocumentEditingManager#removeOnDocumentEditingPageSelectionChangeListener`.
+- Renamed `FormManager#registerFormElementSelectedListener` to `FormManager#addOnFormElementSelectedListener`.
+- Renamed `FormManager#unregisterFormElementSelectedListener` to `FormManager#removeOnFormElementSelectedListener`.
+- Renamed `FormManager#registerFormElementDeselectedListener` to `FormManager#addOnFormElementDeselectedListener`.
+- Renamed `FormManager#unregisterFormElementDeselectedListener` to `FormManager#removeOnFormElementDeselectedListener`.
+- Renamed `FormManager#registerFormElementUpdatedListener` to `FormManager#addOnFormElementUpdatedListener`.
+- Renamed `FormManager#unregisterFormElementUpdatedListener` to `FormManager#removeOnFormElementUpdatedListener`.
+- Renamed `FormManager#registerFormElementEditingModeChangeListener` to `FormManager#addOnFormElementEditingModeChangeListener`.
+- Renamed `FormManager#unregisterFormElementEditingModeChangeListener` to `FormManager#removeOnFormElementEditingModeChangeListener`.
+- Renamed `FormManager#registerFormElementClickedListener` to `FormManager#addOnFormElementClickedListener`.
+- Renamed `FormManager#unregisterFormElementClickedListener` to `FormManager#removeOnFormElementClickedListener`.
+- Renamed `TextSelectionManager#registerTextSelectionModeChangeListener` to `TextSelectionManager#addOnTextSelectionModeChangeListener`.
+- Renamed `TextSelectionManager#unregisterTextSelectionModeChangeListener` to `TextSelectionManager#removeOnTextSelectionModeChangeListener`.
+- Renamed `TextSelectionManager#registerTextSelectionChangeListener` to `TextSelectionManager#addOnTextSelectionChangeListener`.
+- Renamed `TextSelectionManager#unregisterTextSelectionChangeListener` to `TextSelectionManager#removeOnTextSelectionChangeListener`.
+- Changed `ContextualToolbar#setToolbarCoordinatorController` to accept `@Nullable ToolbarCoordinatorLayoutController` so that you can clear it by passing `null`.
+- Removed `ContextualToolbar#removeToolbarCoordinatorController`; use `ContextualToolbar#setToolbarCoordinatorController(null)` instead.
+- Changed `ContextualToolbar#setOnMenuItemClickListener` to accept `@Nullable OnMenuItemClickListener` so that you can clear it by passing `null`.
+- Removed `ContextualToolbar#removeOnMenuItemClickListener`; use `ContextualToolbar#setOnMenuItemClickListener(null)` instead.
+- Changed `ContextualToolbar#setOnMenuItemLongClickListener` to accept `@Nullable OnMenuItemLongClickListener` so that you can clear it by passing `null`.
+- Removed `ContextualToolbar#removeOnMenuItemClickListener`; use `ContextualToolbar#setOnMenuItemLongClickListener(null)` instead.
+- Deprecated `AnnotationManager.OnAnnotationUpdatedListener`, use `AnnotationProvider.OnAnnotationUpdatedListener` instead.
+
+## Dropped Deprecated Fields and Methods
+
+Here is the full list of what we’ve dropped:
+
+- Removed `PdfActivityConfiguration.Builder#diskCacheSize()`, `PdfConfiguration.Builder#diskCacheSize()` — disk cache is not supported.
+- Removed `PdfDocument#getUri()` and `PdfDocument#getUriList()`.
+- Removed `PdfYouTubeActivity#ARG_YOUTUBE_URL`; use `#ARG_MEDIA_URI` for passing `MediaUri` objects through intent.
+- Removed `PdfMediaDialog#ARG_URI`; use `#ARG_MEDIA_URI` for passing `MediaUri` objects through intent.
+- Removed `PrintOptions(PdfProcessorTask.AnnotationProcessingMode, ..)` constructors; use `PrintOptions(boolean, ..)` instead.
+- Removed `PdfFragment#enterAnnotationCreationMode(AnnotationType)`; use `enterAnnotationCreationMode(AnnotationTool)` instead.
+- Removed `PdfFragment#clearTextSelection()`; use `exitCurrentlyActiveMode()` instead.
+- Removed `PdfFragment#setTextSelection()`; use `enterTextSelectionMode()` instead.
+- Removed `DocumentSharingManager#generateDocumentName()`; use `getTitle()` instead.
+
+## Renamed HUD Terminology to User Interface
+
+We’ve replaced the term HUD in our codebase with “user interface” and applied proper camel casing on symbol names:
+
+- Renamed `HudViewMode` enum to `UserInterfaceViewMode`, and all its values begin with `USER_INTERFACE` now.
+- Renamed `getHudViewMode()` to `getUserInterfaceViewMode()` on `PdfActivityConfiguration`, `PdfActivity`, and `PdfActivityApi`. Its new return type is now `UserInterfaceViewMode`.
+- Renamed `setHudViewMode(HudViewMode)` to `setUserInterfaceViewMode(UserInterfaceViewMode)` on `PdfActivityConfiguration`, `PdfActivity`, and `PdfActivityApi`.
+- Renamed `HudViewMode` to `UserInterfaceViewMode` on `PdfActivityConfiguration.Builder`.
+
+## Supplementary Changes
+
+This last section is for changes that don’t apply to a specific section:
+
+- Replaced `AnnotationType` with `AnnotationTool` in `AnnotationPreferencesManager` methods.
+- Changed the thickness property type of `AnnotationCreationController` from `int` to `float`.
+
+You can see the full list of changes in the Android [changelog][].
+
+[`maybe`]: http://reactivex.io/RxJava/javadoc/io/reactivex/Maybe.html
+[proguard section]: ../../getting-started/integrating-pspdfkit/#proguard
+[changelog]: https://pspdfkit.com/changelog/android/

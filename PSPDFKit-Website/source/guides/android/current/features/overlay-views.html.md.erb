@@ -1,0 +1,99 @@
+---
+title: Overlay Views
+section: developers
+---
+
+> **⚠️ Warning:** This feature is still considered experimental and might be removed or changed in a future minor release.
+
+With [PSPDFKit 6.1 for Android][], we introduced a new feature, overlay views, which allows you to attach Android views to pages of a document using PDF coordinates. The main component is the [`OverlayViewProvider`][] that provides the [`PdfFragment`][] with views that will be added to document pages.
+
+In order to get started, you have to first create your [`OverlayViewProvider`][], which only has a single method that you need to implement, `getViewsForPage()`:
+
+[==
+
+```kotlin
+class CustomOverlayViewProvider : OverlayViewProvider() {
+
+    override fun getViewsForPage(context: Context, document: PdfDocument, pageIndex: Int): List<View> {
+        // Create views for every page you care about here.
+        return emptyList()
+    }
+}
+```
+
+```java
+public class CustomOverlayViewProvider extends OverlayViewProvider {
+
+    @Nullable
+    @Override
+    public List<View> getViewsForPage(@NonNull Context context,
+                                      @NonNull PdfDocument document,
+                                      int pageIndex) {
+        // Create views for every page you care about here.
+        return Collections.emptyList();
+    }
+}
+```
+
+==]
+
+When creating views, there are no limitations on what kind of views can be added; even scrolling views are supported. However, consider that these views will consume all touch events, so changing the page will only work using the thumbnail bar or by scrolling outside the overlaid view.
+
+In order to position the views on the page, you need to use the special [`OverlayLayoutParams`][], which allows you to position your views using PDF coordinates. Doing so will let you move and scale the views with the page as the user scrolls and zooms. Make sure to set these on all views before returning them in `getViewsForPage()`, otherwise an exception is thrown.
+
+Finally let’s have a look at everything put together:
+
+[==
+
+```kotlin
+
+class CustomOverlayViewProvider : OverlayViewProvider() {
+
+    override fun getViewsForPage(context: Context, document: PdfDocument, pageIndex: Int): List<View> {
+        // Create a regular Android view.
+        val overlayView = TextView(context)
+        overlayView.text = "I'm an overlay view!"
+        overlayView.layoutParams = OverlayLayoutParams(
+            // This is the position on the page in PDF coordinates. The same coordinate space is used for annotations.
+            RectF(50f, 400f, 200f, 500f),
+            // By using `SCALING`, the text size will increase as the page is zoomed in.
+            OverlayLayoutParams.SizingMode.SCALING
+        )
+
+        // Return our overlay view.
+        return listOf(overlayView)
+    }
+}
+```
+
+```java
+public class CustomOverlayViewProvider extends OverlayViewProvider {
+
+    @Nullable
+    @Override
+    public List<View> getViewsForPage(@NonNull Context context,
+                                      @NonNull PdfDocument document,
+                                      int pageIndex) {
+        // Create a regular Android view.
+        TextView overlayView = new TextView(context);
+        overlayView.setText("I'm an overlay view!");
+        overlayView.setLayoutParams(new OverlayLayoutParams(
+            // This is the position on the page in PDF coordinates. The same coordinate space is used for annotations.
+            new RectF(50f, 400f, 200f, 500f),
+            // By using `SCALING`, the text size will increase as the page is zoomed in.
+            OverlayLayoutParams.SizingMode.SCALING
+        ));
+
+        // Return our overlay view.
+        return Collections.singletonList(overlayView);
+    }
+}
+```
+
+==]
+
+For a comprehensive usage example, take a look at `OverlayViewsExample` and `OverlayViewsActivity` inside the Catalog app.
+
+[pspdfkit 6.1 for android]: https://pspdfkit.com/blog/2019/pspdfkit-android-6-1/
+[`overlayviewprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/overlay/OverlayViewProvider.html
+[`overlaylayoutparams`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/overlay/OverlayLayoutParams.html

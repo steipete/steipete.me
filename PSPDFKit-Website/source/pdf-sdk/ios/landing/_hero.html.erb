@@ -1,0 +1,29 @@
+<% title_class ||= 'h2' %>
+
+<section id="overview" class="pt-3 pt-md-5 mb-5">
+  <div class="container">
+    <div class="row flex-md-row-reverse justify-content-center align-items-center">
+      <div class="col-lg-7 mb-4 mb-lg-0">
+        <a href="https://web-examples.pspdfkit.com/" class="link-img">
+          <img src="/images/shared/placeholder.gif" data-src="/images/pdf-sdk/ios/hero-promo-device.png" width="635" class="img-fluid lazyload svg-sh-2" loading="lazy">
+        </a>
+      </div>
+      <div class="col-lg-5">
+        <header>
+          <h6 class="text-brand"><%= subtitle %></h6>
+          <h1 class="<%= title_class %>"><%= title %></h1>
+        </header>
+        <div class="mb-4">
+          <%= markdown(body) %>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 mb-3 mb-sm-0">
+            <a href="https://pspdfkit.com/try/" class="btn btn-lg btn-block btn-brand" target="_blank" rel="noopener">
+              Download Trial
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

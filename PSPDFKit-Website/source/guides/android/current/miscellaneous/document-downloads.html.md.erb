@@ -1,0 +1,389 @@
+---
+title: Document Downloads
+section: developers
+---
+
+PSPDFKit usually works best with PDF documents on the local file system of your device. While you can also open documents from practically any remote source [using a custom data provider][], there are several reasons to use local file system documents (like performance, cache control, battery impact). If you have a PDF document that is not on the local file system, you can use the document download API to store it on your device before opening it.
+
+> **💡 Tip:** You can find additional example code inside `DocumentDownloadExample` in the Catalog app.
+
+## Creating a Download Request
+
+Before initiating a download, you need to create a [`DownloadRequest`][] object that defines all information required to perform the download. Using the [`DownloadRequest.Builder`][], you can set the download source, the output file or folder, whether existing files should be overwritten, etc. A call to [`Builder#build`][] will then output the immutable [`DownloadRequest`][] object:
+
+[==
+
+```kotlin
+val request: DownloadRequest = DownloadRequest.Builder(context)
+    .uri("content://com.example.app/documents/example.pdf")
+    .build()
+```
+
+```java
+final DownloadRequest request = new DownloadRequest.Builder(context)
+    .uri("content://com.example.app/documents/example.pdf")
+    .build();
+```
+
+==]
+
+The [`DownloadRequest.Builder#uri`][] method can handle URIs pointing to content providers or to a file in the app’s assets (i.e. URIs starting with `file:///android_asset/`).
+
+## Starting the Download
+
+Once you have created a [`DownloadRequest`][], you can start the download by passing it to [`DownloadJob#startDownload`][]:
+
+[==
+
+```kotlin
+val job: DownloadJob = DownloadJob.startDownload(request)
+```
+
+```java
+final DownloadJob job = DownloadJob.startDownload(request);
+```
+
+==]
+
+The [`DownloadJob`][] object has three responsibilities:
+
+- It holds a task that will handle downloading the PDF file from the source defined in the request to the file system.
+- It provides methods for observing and controlling the download progress.
+- By retaining the [`DownloadJob`][] instance across configuration changes, you can keep the download job alive and prevent it from being interrupted.
+
+## Observing the Download Progress
+
+The download job will continuously report the download progress using [`Progress`][] instances. You can set a [`ProgressListener`][] via [`DownloadJob#setProgressListener`][], which will observe progress, completion, and download errors. All methods of the listener are called on the main thread. This means you can update your UI directly from these methods. Just be aware that you should not invoke longer-running operations or access the network without switching to the background thread.
+
+> **ℹ️ Note:** While there can only be a single [`ProgressListener`][] per job, you can register as many observers to the [`Observable<Progress>`][`observable`] as you’d like.
+
+[==
+
+```kotlin
+job.setProgressListener(object : DownloadJob.ProgressListenerAdapter() {
+    override fun onProgress(progress: Progress) {
+        progressBar.setProgress((100f * progress.bytesReceived / progress.totalBytes).toInt())
+    }
+
+    override fun onComplete(output: File) {
+        PdfActivity.showDocument(context, Uri.fromFile(output), configuration.build())
+    }
+
+    override fun onError(exception: Throwable) {
+        handleDownloadError(exception)
+    }
+})
+```
+
+```java
+job.setProgressListener(new DownloadJob.ProgressListenerAdapter() {
+    @Override public void onProgress(@NonNull Progress progress) {
+        progressBar.setProgress((int) (100 * progress.bytesReceived / (float) progress.totalBytes));
+    }
+
+    @Override public void onComplete(@NonNull File output) {
+        PdfActivity.showDocument(context, Uri.fromFile(output), configuration.build());
+    }
+
+    @Override public void onError(@NonNull Throwable exception) {
+        handleDownloadError(exception);
+    }
+});
+```
+
+==]
+
+### Using a Progress Observable
+
+If you prefer more control over how to receive [`Progress`][] events, you can retrieve an RxJava [`Observable<Progress>`][`observable`]. Similar to the [`ProgressListener`][], the observable will emit [`Progress`][] events, as well as completion and error events. Events are received on a background thread by default, so your code needs to handle switching to the main thread on its own:
+
+[==
+
+```kotlin
+job.progress
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(object : Subscriber<Progress>() {
+        override fun onCompleted() {
+            PdfActivity.showDocument(context, Uri.fromFile(output), configuration.build())
+        }
+
+        override fun onError(e: Throwable) {
+            handleDownloadError(e)
+        }
+
+        override fun onNext(progress: Progress) {
+            progressBar.setProgress((100f * progress.bytesReceived / progress.totalBytes).toInt())
+        }
+    })
+```
+
+```java
+job.getProgress()
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(new Subscriber<Progress>() {
+        @Override public void onCompleted() {
+            PdfActivity.showDocument(context, Uri.fromFile(output), configuration.build());
+        }
+
+        @Override public void onError(Throwable e) {
+            handleDownloadError(exception);
+        }
+
+        @Override public void onNext(Progress progress) {
+            progressBar.setProgress((int) (100 * progress.bytesReceived / (float) progress.totalBytes));
+        }
+    });
+```
+
+==]
+
+> **ℹ️ Note:** Since progress events are non-critical, the progress observable will automatically handle back pressure by dropping excessive events.
+
+## Implementing a Custom Download Source
+
+If you want to download a PDF from a custom source, e.g. the web, you can use your own [`DownloadSource`][] implementation. The `open()`] method has to return an [`InputStream`][] instance that will return the complete content of the PDF file. The `getLength()` method has to return either the download size in bytes or [`DownloadSource#UNKNOWN_DOWNLOAD_SIZE`][] if the size is not known. The returned size is optional, since it only used for creating higher quality [`Progress`][] events.
+
+Here’s an example of a [`DownloadSource`][] that can download a PDF file from the web:
+
+[==
+
+```kotlin
+class WebDownloadSource (private val documentURL: URL) : DownloadSource {
+    override fun open(): InputStream {
+        val connection = documentURL.openConnection() as HttpURLConnection
+        connection.connect()
+        return connection.inputStream
+    }
+
+    override fun getLength(): Long {
+        var length = DownloadSource.UNKNOWN_DOWNLOAD_SIZE
+
+        try {
+            val contentLength = documentURL.openConnection().contentLength
+            if (contentLength != -1) {
+                length = contentLength.toLong()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return length
+    }
+}
+```
+
+```java
+private static class WebDownloadSource implements DownloadSource {
+    @NonNull private final URL documentURL;
+
+    private WebDownloadSource(@NonNull URL documentURL) {
+        this.documentURL = documentURL;
+    }
+
+    @Override public InputStream open() throws IOException {
+        final HttpURLConnection connection = (HttpURLConnection) documentURL.openConnection();
+        connection.connect();
+        return connection.getInputStream();
+    }
+
+    @Override public long getLength() {
+        long length = DownloadSource.UNKNOWN_DOWNLOAD_SIZE;
+
+        try {
+            final int contentLength = documentURL.openConnection().getContentLength();
+            if (contentLength != -1) {
+                length = contentLength;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return length;
+    }
+}
+```
+
+==]
+
+## Retaining the Download
+
+To keep downloads running uninterrupted when your activity is recreated during a configuration change, you need to retain the [`DownloadJob`][] instance of your download. The simplest way to do this is to store the instance inside a retained [`Fragment`][] and retrieve it after the activity has been recreated:
+
+[==
+
+```MyActivity.kt
+class MyActivity : AppCompatActivity(), DownloadJob.ProgressListener {
+
+    /**
+     * A non-UI fragment for retaining the download job.
+     */
+    class DownloadFragment : Fragment() {
+        var job: DownloadJob? = null
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            // Retaining this fragment allows it to carry the attached download job across configuration changes.
+            retainInstance = true
+        }
+    }
+
+    /**
+     * Fragment for holding and retaining the current download job.
+     */
+    private var downloadFragment: DownloadFragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // This will return an existing fragment if the activity was recreated while a download was running.
+        downloadFragment = supportFragmentManager.findFragmentByTag(DOWNLOAD_FRAGMENT) as DownloadFragment
+        downloadFragment?.job?.setProgressListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Clear the listener to prevent activity leaks.
+        downloadFragment?.job?.setProgressListener(null)
+    }
+
+    /**
+     * This method will initiate the download.
+     */
+    private fun startDownload() {
+        if (downloadFragment == null) {
+            downloadFragment = DownloadFragment()
+
+            // Once the fragment is added, the download is safely retained.
+            supportFragmentManager.beginTransaction().add(downloadFragment, DOWNLOAD_FRAGMENT).commit()
+        }
+
+        val request = DownloadRequest.Builder(this).uri("content://com.example.app/documents/example.pdf").build()
+
+        val job = DownloadJob.startDownload(request)
+        job.setProgressListener(this)
+        downloadFragment?.job = job
+    }
+
+    override fun onProgress(progress: Progress) {
+        // Update your UI.
+    }
+
+    override fun onComplete(output: File) {
+        supportFragmentManager.beginTransaction().remove(downloadFragment).commit()
+
+        // Handle the finished download.
+    }
+
+    override fun onError(exception: Throwable) {
+        // Report and handle download errors.
+    }
+
+    companion object {
+        /**
+         * Tag of the retained fragment.
+         */
+        internal val DOWNLOAD_FRAGMENT = "download_fragment"
+    }
+}
+```
+
+```MyActivity.java
+public class MyActivity extends AppCompatActivity implements DownloadJob.ProgressListener {
+
+    /**
+     * A non-UI fragment for retaining the download job.
+     */
+    public final static class DownloadFragment extends Fragment {
+        public DownloadJob job;
+
+        @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // Retaining this fragment allows it to carry the attached download job across configuration changes.
+            setRetainInstance(true);
+        }
+    }
+
+    /**
+     * Tag of the retained fragment.
+     */
+    final static String DOWNLOAD_FRAGMENT = "download_fragment";
+
+    /**
+     * Fragment for holding and retaining the current download job.
+     */
+    private DownloadFragment downloadFragment;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This will return an existing fragment if the activity was recreated while a download was running.
+        downloadFragment = (DownloadFragment) getSupportFragmentManager().findFragmentByTag(DOWNLOAD_FRAGMENT);
+        if (downloadFragment != null) {
+            downloadFragment.job.setProgressListener(this);
+        }
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+
+        // Clear the listener to prevent activity leaks.
+        if (downloadFragment != null) {
+            downloadFragment.job.setProgressListener(null);
+        }
+    }
+
+    /**
+     * This method will initiate the download.
+     */
+    private void startDownload() {
+        if (downloadFragment == null) {
+            downloadFragment = new DownloadFragment();
+
+            // Once the fragment is added, the download is safely retained.
+            getSupportFragmentManager().beginTransaction().add(downloadFragment, DOWNLOAD_FRAGMENT).commit();
+        }
+
+        final DownloadRequest request = new DownloadRequest.Builder(this)
+            .uri("content://com.example.app/documents/example.pdf")
+            .build();
+
+        downloadFragment.job = DownloadJob.startDownload(request);
+        downloadFragment.job.setProgressListener(this);
+    }
+
+    @Override public void onProgress(@NonNull Progress progress) {
+        // Update your UI.
+    }
+
+    @Override public void onComplete(@NonNull File output) {
+        getSupportFragmentManager().beginTransaction().remove(downloadFragment).commit();
+
+        // Handle the finished download.
+    }
+
+    @Override public void onError(@NonNull Throwable exception) {
+        // Report and handle download errors.
+    }
+}
+```
+
+==]
+
+[using a custom data provider]: ../../features/data-providers
+[`downloadrequest`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadRequest.html
+[`downloadrequest.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadRequest.Builder.html
+[`builder#build`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadRequest.Builder.html#build()
+[`downloadrequest.builder#uri`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadRequest.Builder.html#uri(android.net.Uri)
+[`downloadjob#startdownload`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadJob.html#startDownload(com.pspdfkit.document.download.DownloadRequest)
+[`downloadjob`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadJob.html
+[`progresslistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadJob.ProgressListener.html
+[`downloadjob#setprogresslistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/DownloadJob.html#setProgressListener(com.pspdfkit.document.download.DownloadJob.ProgressListener)
+[`observable`]: http://reactivex.io/RxJava/javadoc/rx/Observable.html
+[`downloadsource`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/source/DownloadSource.html
+[`downloadsource#unknown_download_size`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/source/DownloadSource.html#UNKNOWN_DOWNLOAD_SIZE
+[`inputstream`]: https://developer.android.com/reference/java/io/InputStream.html
+[`progress`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/download/Progress.html
+[`fragment`]: https://developer.android.com/reference/android/support/v4/app/Fragment.html

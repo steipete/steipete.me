@@ -1,0 +1,66 @@
+---
+title: 2018.3 Migration Guide
+section: developers
+
+order: 502
+---
+
+[PSPDFKit for Web 2018.3][] adds support for ink signatures, password-protected documents, and much more.
+
+If you’re maintaining a Server installation, make sure to check out the [2018.3 Server Migration Guide][].
+
+### Updated Package Structure
+
+In this release, we introduce a new and simpler package structure. This might require changes on your end if you’re using our standalone deployment option.
+
+With the exception of the main `pspdfkit.js` bundle, all of the library files are now located in the `pspdfkit-lib` subfolder. This new structure makes it easier to copy PSPDFKit’s artifacts and allows us to introduce new ones over time without requiring you to update your setup.
+
+Before, it was necessary to copy the individual files like so:
+
+```
+cp ./node_modules/pspdfkit/dist/pspdfkit.css \
+  ./node_modules/pspdfkit/dist/pspdfkit.wasm \
+  ./node_modules/pspdfkit/dist/pspdfkit.wasm.js \
+  ./node_modules/pspdfkit/dist/pspdfkit.asm.js \
+  ./node_modules/pspdfkit/dist/pspdfkit.asm.js.mem \
+  ./dist
+```
+
+You could also have done this via a build tool.
+
+Beginning with PSPDFKit for Web 2018.3, all you need to do is copy a single folder:
+
+```
+cp -R ./node_modules/pspdfkit/dist/pspdfkit-lib dist
+```
+
+Our guides and example applications were updated to reflect this change.
+
+### Annotation Events
+
+One important bug fix of this release changes the `annotations.create` event. This event previously fired when loading annotations in _some_ cases. These cases are:
+
+- When using a server-backed deployment with `instant` set to `false`.
+- When using a standalone deployment.
+
+If your code was relying on this behavior, you will need to listen for the newly added [`annotations.load`][] event. This will now fire in any case where annotations are loaded from the document. This might happen once for all annotations, or it might be scoped to the pages in the viewport.
+
+### Connecting Self-Hosted Assets with PSPDFKit Server
+
+If you previously used the server-backed flavor of PSPDFKit and hosted the JavaScript files on your own server, you had to use the [`baseUrl`][] option to tell PSPDFKit to connect to the correct server. Since this option was also used as the load path for other JavaScript resources, we’ve created a dedicated option to connect PSPDFKit Server — the [`serverUrl`][]:
+
+```diff
+PSPDFKit.load({
+-  baseUrl: "https://example.com",
++  serverUrl: "https://example.com",
+});
+```
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2018.3]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-3/
+[changelog]: https://pspdfkit.com/changelog/web/#2018.3
+[`annotations.load`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#~AnnotationsLoadEvent
+[2018.3 server migration guide]: https://pspdfkit.com/guides/server/current/migration-guides/2018-3-migration-guide/
+[`baseurl`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#baseUrl
+[`serverurl`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#serverUrl

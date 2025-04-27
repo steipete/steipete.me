@@ -1,0 +1,23 @@
+---
+title: 2018.7 Migration Guide
+section: developers
+
+order: 498
+---
+
+[PSPDFKit for Web 2018.7][] adds support for custom DOM nodes in the main toolbar and introduces actionable and customizable annotation tooltips and ink line smoothing. Please refer to the [changelog][] for detailed information.
+
+If you’re maintaining a Server installation, be sure to check out the [2018.7 Server Migration Guide][].
+
+### Notable Changes
+
+- We upgraded some icons for the color picker part of the annotation toolbar. If you have been relying on element IDs of icons, please verify that these IDs still work for you. What we changed:
+  - `#ToolbarButton-color` is now `#ToolbarButton-stroke-color`, `#ToolbarButton-fill-color`, or `#ToolbarButton-font-color`, depending on the annotation type
+- Toolbar buttons in dropdown items need to be styled with `.PSPDFKit-Input-Dropdown-Item[-state] > .PSPDFKit-Toolbar-Button`.
+- We added a `rotation` property to annotations. This change shouldn’t affect current annotations. However, when using Server deployment, some documents might need to be uploaded again if the rotation is off.
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit for web 2018.7]: https://pspdfkit.com/blog/2018/pspdfkit-web-2018-7/
+[changelog]: https://pspdfkit.com/changelog/web/#2018.7
+[2018.7 server migration guide]: https://pspdfkit.com/guides/server/current/migration-guides/2018-7-migration-guide/

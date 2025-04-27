@@ -1,0 +1,194 @@
+---
+title: Generating PDF Files from HTML
+section: generating-pdfs
+alternate_platform_links:
+  ios: "knowledge-base/generating-pdf-from-complex-html"
+---
+
+You can use [`HtmlToPdfConverter`][] to generate PDFs from an HTML file or HTML string. PSPDFKit utilizes full power of the system [`WebView`][] when generating PDF files from HTML, allowing you to use CSS, embed images, use JavaScript, or take advantage of a variety of modern HTML features.
+
+> **ℹ️ Note:** Using these APIs requires HTML to PDF Conversion feature in your license.
+
+## Performing the Conversion
+
+Let’s look at an example that shows how to convert a simple HTML string to PDF:
+
+[==
+
+```kotlin
+val html = """
+<html>
+    <head>
+        <style type="text/css">
+            h1 {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello, world!</h1>
+    </body>
+</html>
+"""
+
+val outputFile: File = // Output file for the converted PDF.
+
+HtmlToPdfConverter.fromHTMLString(context, html)
+    // Configure title for the created document.
+    .title("Converted document")
+    // Perform the conversion.
+    .convertToPdfAsync(outputFile)
+    // Subscribe to the conversion result.
+    .subscribe({
+        // Open and process the converted document.
+        val document = PdfDocumentLoader.openDocument(context, Uri.fromFile(outputFile))
+    }, {
+        // Handle the error.
+    })
+```
+
+```java
+final String html =
+"<html>\n" +
+"    <head>\n" +
+"        <style type=\"text/css\">\n" +
+"            h1 {\n" +
+"                color: red;\n" +
+"            }\n" +
+"        </style>\n" +
+"    </head>\n" +
+"    <body>\n" +
+"        <h1>Hello, world!</h1>\n" +
+"    </body>\n" +
+"</html>";
+
+final File outputFile = // Output file for the converted PDF.
+
+// Perform the conversion.
+HtmlToPdfConverter.fromHTMLString(context, html)
+    // Configure title for the created document.
+    .title("Converted document")
+    // Perform the conversion.
+    .convertToPdfAsync(outputFile)
+    // Subscribe to the conversion result.
+    .subscribe(() -> {
+        // Open and process the converted document.
+        PdfDocument document = PdfDocumentLoader.openDocument(context, Uri.fromFile(outputFile));
+    }, throwable -> {
+        // Handle the error.
+    });
+```
+
+==]
+
+![](/images/guides/android/generating-pdfs/generating-pdf-from-html/result.png)
+
+In addition to providing source HTML from a string, you can also load your data from URIs by creating a converter via the factory method [`HtmlToPdfConverter#fromUri()`][]. Both local and remote URIs are supported:
+
+- Local URIs with the `file` scheme for local files and `content` scheme for data are provided by the [content provider][]. Note that the file scheme can also refer to the Android resources (`file:///android_res/`) and assets (`file:///android_asset`) that are also supported.
+- Remote URIs with the schemes `http` and `https`.
+
+For more details about how to generate PDF files from HTML strings and URLs, take a look at [`HtmlToPdfConverter` documentation][`htmltopdfconverter`] and `ConvertHtmlToPdfExample` from our [Catalog app][catalog].
+
+## Controlling the Conversion
+
+[`HtmlToPdfConverter`][] provides basic control over the generated PDF. This includes:
+
+- [`pageSize()`][] to configure the page size of the created PDF. Defaults to A4 page size.
+- [`density()`][] to control density used when converting HTML images to PDF. Defaults to 300dpi.
+- [`title()`][] to configure the [document title][] of the created PDF. Defaults to `null` title.
+
+There are also multiple methods for controlling the conversion itself:
+
+- [`timeout()`][] configures a timeout for loading the HTML page before conversion. Once this timeout is reached, the conversion fails with an error. Defaults to 30,000&nbsp;ms (or 30 seconds).
+- [`setJavaScriptEnabled()`][] controls whether or not JavaScript execution should be enabled while converting. Defaults to enabled. Note that the JavaScript execution could cause security and performance issues. Please review your JavaScript carefully or consider disabling this property.
+
+## Observing the Conversion Progress
+
+If you wish to observe the HTML page loading progress (for example, when loaded from the network), use [`setPageLoadingProgressListener()`][] to register the page loading progress listener:
+
+[==
+
+```kotlin
+HtmlToPdfConverter.fromUri(context, sourceUri)
+    .setPageLoadingProgressListener { progress ->
+        // Use the page loading progress to update your UI.
+    }
+     .convertToPdfAsync()
+    .subscribe(...)
+```
+
+```java
+HtmlToPdfConverter.fromUri(context, sourceUri)
+    .setPageLoadingProgressListener((progress) -> {
+        // Use the page loading progress to update your UI.
+    })
+    .convertToPdfAsync()
+    .subscribe(...);
+```
+
+==]
+
+## Intercepting Loaded Resources
+
+`HtmlToPdfConverter` will try to resolve and load all resources referenced by the source HTML document. This includes but is not limited to images, stylesheets, and JavaScript (if enabled).
+
+You can provide otherwise inaccessible resources or override default resource loading by registering [`ResourceInterceptor`][] via [`setResourceInterceptor()`][]:
+
+[==
+
+```kotlin
+ HtmlToPdfConverter.fromUri(context, sourceUri)
+    .setResourceInterceptor { request ->
+        if (request.url.lastPathSegment == "image.jpg") {
+            // You can override the page resource with a different resource.
+            ResourceResponse(FileDataProvider(customImage), "image/jpeg")
+        } else if (request.url.lastPathSegment == "other-image.jpg") {
+            // You can skip loading the resource by returning an empty resource.
+            ResourceResponse.skipResource()
+        } else {
+            // Or you can return `null` to proceed with default resource loading.
+            null
+        }
+    }
+    .convertToPdfAsync()
+    .subscribe(...)
+```
+
+```java
+HtmlToPdfConverter.fromUri(context, sourceUri)
+    .setResourceInterceptor((request) -> {
+        if ("image.jpg".equals(request.getUrl().getLastPathSegment())) {
+            // You can override the page resource with a different resource.
+            return new ResourceResponse(new FileDataProvider(customImage), "image/jpeg");
+        } else if ("other-image.jpg".equals(request.getUrl().getLastPathSegment())) {
+            // You can skip loading the resource by returning an empty resource.
+            return ResourceResponse.skipResource();
+        } else {
+            // Or you can return `null` to proceed with default resource loading.
+            return null;
+        }
+    })
+    .convertToPdfAsync()
+    .subscribe(...);
+```
+
+==]
+
+**ℹ️ Note:** The resource interceptor’s method [`shouldInterceptRequest()`][] is invoked for most supported URI schemes (`http(s)`, `file`, etc.) and is not limited to requests made over the network. This is not called for `javascript`, `data`, and `blob` schemes or for Android assets (`file:///android_asset/`) or Android resources (`file:///android_res/`).
+
+[`htmltopdfconverter`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html
+[`webview`]: https://developer.android.com/reference/android/webkit/WebView
+[`htmltopdfconverter#fromuri()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#fromUri(android.content.Context,android.net.Uri)
+[content provider]: https://developer.android.com/guide/topics/providers/content-providers
+[`pagesize()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#pageSize(com.pspdfkit.utils.Size)
+[`density()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#density(int)
+[`timeout()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#timeout(long)
+[`setjavascriptenabled()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#setJavaScriptEnabled(boolean)
+[`title()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#title(java.lang.String)
+[document title]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getTitle()
+[`setpageloadingprogresslistener()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#setPageLoadingProgressListener(com.pspdfkit.document.html.HtmlToPdfConverter.PageLoadingProgressListener)
+[`resourceinterceptor`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/ResourceInterceptor.html
+[`setresourceinterceptor()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/HtmlToPdfConverter.html#setResourceInterceptor(com.pspdfkit.document.html.ResourceInterceptor)
+[`shouldinterceptrequest()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/html/ResourceInterceptor.html#shouldInterceptRequest(com.pspdfkit.document.html.ResourceRequest)
+[catalog]: https://pspdfkit.com/guides/android/current/getting-started/example-projects/#catalog-app

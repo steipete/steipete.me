@@ -1,0 +1,23 @@
+---
+title: How to disable annotation rotation?
+section: knowledge-base
+---
+
+## Q: How to disable annotation rotation?
+
+If you wish to disable annotation rotation UI, call [`disableAnnotationRotation()`][] in [`PdfActivityConfiguration.Builder`][] or [`PdfConfiguration.Builder`][]:
+
+```kotlin
+val configuration = PdfActivityConfiguration.Builder(context)
+    .disableAnnotationRotation()
+    .build()
+
+// You can set the configuration when building PdfActivity Intent.
+val intent = PdfActivityIntentBuilder.fromUri(context, documentUri)
+    .configuration(configuration)
+    .build()
+
+context.startActivity(intent)
+```
+
+[`disableannotationrotation()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#disableAnnotationRotation()

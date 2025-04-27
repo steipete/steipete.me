@@ -1,0 +1,41 @@
+---
+title: Persist currently edited note annotation text
+section: knowledge-base
+---
+
+## Q: How can I save the current text of a note annotation while it's being edited?
+
+A: When the text of a note annotation is modified, the modification is not applied to the note until the note is closed. This complies with the expected behavior of note annotations, which work a bit as a draft notepad where changes are not committed until we close it.
+
+However, there may be scenarios where the desired outcome is that the text is automatically saved to the note on each keystroke; for example, when you cannot ensure that the note annotation component will receive the signal to update the annotation in the global state.
+
+You can achieve this by listening to the native `keydown` event:
+
+```js
+PSPDFKit.load(defaultConfiguration).then(instance => {
+  instance.contentDocument.addEventListener(
+    "keydown",
+    function(event) {
+      if (
+        event.target === instance.contentDocument.activeElement &&
+        event.target.closest(".PSPDFKit-Note-Annotation-Content")
+      ) {
+        const element = event.target;
+        // Let the event pass by so the character is added to the note
+        setTimeout(() =>
+          instance.updateAnnotation(
+            instance.getSelectedAnnotation().set("text", element.innerText)
+          )
+        );
+      }
+    },
+    { capture: true }
+  );
+
+  instance.addEventListener("annotations.update", annotations => {
+    console.log(annotations.first().text);
+  });
+});
+```
+
+This has been tested with PSPDFKit for Web 2019.5.3

@@ -1,0 +1,38 @@
+---
+title: Contact Sales
+description: Tell us about your project and our sales team will be in touch
+section: sales
+priority: 1.0
+footer: mini
+---
+
+<div class="bg-white pb-5">
+  <div class="container">
+    <div class="row pt-lg-4 pb-5">
+
+      <!-- Form -->
+      <div class="col-lg-8 mb-5 mb-lg-0">
+        <div class="row justify-content-center pb-4">
+          <div class="col-lg-10">
+            <header class="text-center my-5">
+              <h1>
+                Speak with Our Sales Team
+              </h1>
+              <p class="lead mb-2">
+                Tell us about your project so that our PSPDFKit specialist can prepare a customized solution for you.
+              </p>
+              <p>
+                If you prefer to talk to us, please <a href="https://calendly.com/pspdfkit/sales" class="link-brand">select a time</a> and we'll call you back.
+              </p>
+            </header>
+            <%= partial 'form' %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <%= partial 'sidebar', locals: { include_additional_logos: true } %>
+
+    </div>
+  </div>
+</div>

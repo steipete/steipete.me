@@ -1,0 +1,58 @@
+---
+title: Keyboard Shortcuts
+section: developers
+
+---
+
+PSPDFKit offers various keyboard shortcuts that improve the user experience for those using an external keyboard. You can see the available keyboard shortcuts by pressing and holding the Command (⌘) key.
+
+<img src="/images/guides/ios/features/keyboard-shortcuts/keyboard-shortcuts.png" alt="Keyboard Shortcuts Support">
+
+### Bar Button Item Shortcuts
+
+Bar button items displayed in `PSPDFViewController` have shortcuts associated with them, and each shortcut simply executes the corresponding item’s `action`.
+
+| Action                          | Shortcut          | Bar Button Item                   |
+| ------------------------------- | ----------------- | --------------------------------- |
+| Toggle Annotation Toolbar       | ⌘ ⇧ A             | [`annotationButtonItem`][]        |
+| Outline                         | ⌘ I               | [`outlineButtonItem`][]           |
+| Search                          | ⌘ F               | [`searchButtonItem`][]            |
+| Go Back (Navigation Controller) | ⌘ ← (⌘ → for RTL) | Pops the current navigation item. |
+| Share                           | ⌘ S               | [`activityButtonItem`][]          |
+| Email                           | ⌘ M               | [`emailButtonItem`][]             |
+| Open In                         | ⌘ O               | [`openInButtonItem`][]            |
+| Print                           | ⌘ P               | [`printButtonItem`][]             |
+| Cancel                          | esc               | [`UIBarButtonSystemItemCancel`][] |
+
+### Table Navigation
+
+PSPDFKit also supports using the keyboard to navigate a table view.
+
+| Action                | Shortcut   |
+| --------------------- | ---------- |
+| Change Selected Row   | Arrow keys |
+| Activate Selected Row | return     |
+| Clear Selection       | esc        |
+
+Note that on the Smart Keyboard Folio for iPad, there is no escape key. Instead, escape is mapped to ⌘.
+
+### Tabbed Bar
+
+When viewing documents in the tabbed view, `PSPDFTabbedViewController`, the following shortcuts can be used:
+
+| Action               | Shortcut       |
+| -------------------- | -------------- |
+| Show Next Tab        | ⌃ tab or ⌘ ]   |
+| Show Previous Tab    | ⌃ ⇧ tab or ⌘ [ |
+| Close Current Tab    | ⌘ W            |
+| Close All Tabs       | ⌘ ⇧ W          |
+| Close All Other Tabs | ⌘ ⌥ W          |
+
+[`annotationbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)annotationButtonItem
+[`outlinebuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)outlineButtonItem
+[`searchbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)searchButtonItem
+[`activitybuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)activityButtonItem
+[`emailbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)emailButtonItem
+[`openinbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)openInButtonItem
+[`printbuttonitem`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html#/c:objc(cs)PSPDFViewController(py)printButtonItem
+[`uibarbuttonsystemitemcancel`]: https://developer.apple.com/documentation/uikit/uibarbuttonsystemitem/uibarbuttonsystemitemcancel?language=objc

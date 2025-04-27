@@ -1,0 +1,32 @@
+---
+title: Customize Document Rendering
+section: developers
+---
+
+There are various rendering options to customize how a document is rendered and displayed onscreen. Take a look at all the different [`PSPDFRenderOptions`][] you can customize. To apply custom rendering options to your document, you can use the  [`-updateRenderOptionsForType:withBlock:`][] method on `PSPDFDocument`.
+
+## Customize the Appearance of Forms
+
+To customize the appearance of form elements in a document and style them in a different color, you can set [`PSPDFRenderOptions.interactiveFormFillColor`][] on the relevant render options object.
+
+To make form elements invisible but still editable, you can use something like this:
+
+[==
+
+```swift
+document.updateRenderOptions(for: .all) { options in
+	options.interactiveFormFillColor = .clear
+}
+```
+
+```objc
+[document updateRenderOptionsForType:PSPDFRenderTypeAll withBlock:^(PSPDFRenderOptions * _Nonnull options) {
+    options.interactiveFormFillColor = UIColor.clearColor;
+}];
+```
+
+==]
+
+[`PSPDFRenderOptions`]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderOptions.html
+[`-updateRenderOptionsForType:withBlock:`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(im)updateRenderOptionsForType:withBlock:
+[`PSPDFRenderOptions.interactiveFormFillColor`]: https://pspdfkit.com/api/ios/Classes/PSPDFRenderOptions.html#/c:objc(cs)PSPDFRenderOptions(py)interactiveFormFillColor

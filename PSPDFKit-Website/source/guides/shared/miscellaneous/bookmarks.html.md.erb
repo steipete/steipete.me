@@ -1,0 +1,101 @@
+---
+title: Bookmarks
+section: developers
+---
+
+Bookmarks provide a convenient way of marking where you last stopped in your PDF documents. The PDF spec does not contain a standardized way to store bookmarks in PDF documents, so for this reason, PSPDFKit will store bookmarks as part of the XMP metadata in a way that is compatible with PSPDFKit on all platforms, as well as with Apple Preview.
+
+## Working with Bookmarks
+
+For most use cases, you do not need to interact with the bookmarks model yourself, as PSPDFKit provides a UI for users to add, remove, and sort bookmarks depending on the configuration in use. It then automatically [stores them in the PDF document][] they belong to. However, when you want to provide either your own UI or your own bookmarks store, you need to access the model that PSPDFKit provides for you.
+
+The bookmarks model essentially consists of two classes: <% if ios? %>`PSPDFBookmark`<% end %><% if android? %>[`Bookmark`][]<% end %>, which is the bookmark itself and contains information about its name and what to do if a user selects a bookmark; and <% if ios? %>`PSPDFBookmarkManager`<% end %><% if android? %>[`BookmarkProvider`][]<% end %>, which is the container that keeps track of all the bookmarks of a document. You can access the bookmark <% if ios? %>manager<% end %><% if android? %>provider<% end %> through <% if ios? %>`-[PSPDFDocument bookmarkManager]`<% end %><% if android? %>[`PdfDocument#getBookmarkProvider()`][]<% end %>. This can then be used to retrieve, sort, add, and remove bookmarks.
+
+### Accessing Bookmarks
+
+<% if ios? %>
+To access bookmarks, there are two methods available. You can just call `bookmarks` on a bookmark manager to get a list of bookmarks. These bookmarks are unsorted, and the order of the list can change at any point. This can be used if you want to know how many bookmarks there are or whether a particular bookmark is part of the bookmark manager. The other method is `bookmarksWithSortOrder:`, which gets the sort order passed in and then returns a sorted array of bookmarks. This method is unrelated to the `bookmarks` method. The returned array will be sorted according to the specified sort order, but it doesn’t alter the state of the bookmark manager.
+
+The available sort orders are `PSPDFBookmarkManagerSortOrderCustom` and `PSPDFBookmarkManagerSortOrderPageBased`. The sort order used by PSPDFKit when showing bookmarks to the user is set in `-[PSPDFConfiguration bookmarkSortOrder]`. If you want to use the UI from PSPDFKit alongside your own logic, make sure to use the same sort order. Otherwise, you may get unexpected results.
+
+The custom sort order is managed by PSPDFKit internally. Adding bookmarks adds them to the end of the list and the user can manually sort them. The UI for sorting bookmarks is automatically provided by the bookmarks view controller when this is the sort option set in the configuration.
+
+The page-based sort order simply sorts bookmarks based on the page they are referring to. This only works for bookmarks that use a `PSPDFGoToAction` as their associated action. Convenience methods to access the page are available through a category defined by the go-to action. Bookmarks that do not refer to a page will be sorted at the end of the list and the bookmark manager will make sure the sorting is always stable.
+<% end %>
+<% if android? %>
+To access bookmarks, you can use [`getBookmarks()`][] or [`getBookmarksAsync()`][]. This will give you a list of all bookmarks sorted correctly.
+<% end %>
+
+### Adding and Removing Bookmarks
+
+<% if ios? %>
+To add bookmarks, simply call `addBookmark:` on the bookmark manager, passing in the bookmark that you want to add to the bookmark manager. If you instead want to remove a bookmark, call `removeBookmark:`. If you want these changes to be stored, you need to save the associated document, which in turn will make sure the bookmark manager saves its content. By default, PSPDFKit automatically saves changes to a document at specific points.
+<% end %>
+<% if android? %>
+To add bookmarks, simply call [`addBookmark()`][] or [`addBookmarkAsync()`][] on the bookmark provider, passing in the bookmark that you want to add to the bookmark provider. If you instead want to remove a bookmark, call [`removeBookmark()`][] or [`removeBookmarkAsync()`][]. If you want these changes to be stored, you need to save the associated document, which in turn will make sure the bookmark provider saves its content. By default, PSPDFKit automatically saves changes to a document at specific points.
+<% end %>
+
+### Updating Bookmarks
+
+<% if ios? %>
+`PSPDFBookmark` is an immutable object. If you want to make changes on a bookmark, you can create a mutable copy of this bookmark, change the part that you want to change, and then simply add the bookmark again by calling `addBookmark:`. In this case, the bookmark manager will replace the old bookmark with the new one. For this to work, it is important that you actually modify an existing bookmark. Do not create a new bookmark e.g. on the same page but with a different name. Doing so will result in two bookmarks pointing to the same page but with different names:
+
+[==
+
+```swift
+let bookmarks = bookmarkManager.bookmarks(with: .pageBased)
+if let first = bookmarks.first?.mutableCopy() as? PSPDFMutableBookmark {
+    first.name = "First Bookmark"
+    bookmarkManager.addBookmark(first)
+}
+```
+
+```objc
+NSArray<PSPDFBookmark *> *bookmarks = [bookmarkManager bookmarksWithSortOrder:PSPDFBookmarkManagerSortOrderPageBased];
+PSPDFMutableBookmark *first = bookmarks.firstObject.mutableCopy;
+if (first) {
+	first.name = @"First Bookmark";
+	[bookmarkManager addBookmark:first];
+}
+```
+
+==]
+<% end %>
+<% if android? %>
+If you want to make changes to a bookmark, you can just modify the object you received by calling [`getBookmarks()`][]. Any changes you make will automatically be synced to the bookmark provider.
+<% end %>
+
+<% if ios? %>
+
+## Implementing Your Own Custom Bookmark Provider
+
+### Handling Bookmarks
+
+If you want to use your own store to save bookmarks, this can be done by implementing your own `PSPDFBookmarkProvider`. Each bookmark manager has an array of bookmark providers, and each bookmark provider participates in providing, adding, and removing bookmarks. You can create your own bookmark provider and include it in the `provider` array on `PSPDFBookmarkManager` by simply setting the array.
+
+The bookmark manager will then start calling out to your bookmark provider depending on its position on the list. The topmost bookmark provider will get priority over the next one and so on. This is important for actions that manipulate the bookmark provider. Whenever the bookmark manager receives a call to `addBookmark:` or `removeBookmark:`, it reaches out to its providers, starting with the first one in the array. The provider that feels responsible for consuming this call should return `YES`. At this point, further providers will not be called. For `addBookmark:`, a bookmark provider could, for example, only take bookmarks with a certain type of action and return `NO` for others, so that these are then forwarded to the next bookmark provider in the list. When `removeBookmark:` is called, the provider should simply check if it owns this bookmark. If it does, it should remove it from its list and return `YES`. If it does not, it should return `NO` and give the next bookmark provider a chance to make the same check.
+
+### Persisting Bookmarks
+
+A bookmark provider is responsible for loading and saving bookmarks. The bookmark manager will call `save` on a provider whenever a provider should persist its current state. Loading should be done by the provider during initialization or whenever any of the methods from `PSPDFBookmarkProvider` are called for the first time.
+
+To properly persist a bookmark, it is important that all of its properties are persisted. The preferred way to do this is to use `PSPDFBookmark`’s support for `NSCoding`, as this will also ensure that migration is done correctly in case new properties are introduced in the future. This can easily be achieved by using `NSKeyedArchiver` and `NSKeyedUnarchiver`.
+
+If this is not suitable for your needs, you need to store the `name` and the `action` property, as well as the `identifier` and `sortKey` properties. The latter are available only for this purpose, and their values should never be altered or interpreted in any way. Make sure to check the changelog for changes in `PSPDFBookmark` to make sure that you also store new properties that may be needed in the future.
+
+If you only want to store go-to-based bookmarks, you can also — instead of storing the complete action — just store the page index of that action and recreate the action when loading the bookmarks. In this case, make sure to keep the default provider in the list of providers in order to hand other bookmarks off to it if you still want to support them.
+
+For more information, check out [`PSCCustomBookmarkProviderExample` in the Catalog][], which implements this case and stores the bookmarks in a CSV file.
+<% end %>
+
+[stores them in the pdf document]: https://pspdfkit.com/blog/2016/just-a-simple-bookmark/
+[`bookmark`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/Bookmark.html
+[`bookmarkprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html
+[`pdfdocument#getbookmarkprovider()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getBookmarkProvider()
+[`getbookmarks()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#getBookmarks()
+[`getbookmarksasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#getBookmarksAsync()
+[`addbookmark()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#addBookmark(com.pspdfkit.bookmarks.Bookmark)
+[`addbookmarkasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#addBookmarkAsync(com.pspdfkit.bookmarks.Bookmark)
+[`removebookmark()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#removeBookmark(com.pspdfkit.bookmarks.Bookmark)
+[`removebookmarkasync()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/bookmarks/BookmarkProvider.html#removeBookmarkAsync(com.pspdfkit.bookmarks.Bookmark)
+[`psccustombookmarkproviderexample` in the catalog]: https://pspdfkit.com/guides/ios/current/getting-started/example-projects/

@@ -1,0 +1,33 @@
+---
+title: User Interface Visibility
+section: developers
+---
+
+When using [`PdfActivity`][], you might want to tweak how PSPDFKit handles its user interface visibility (e.g. toolbars, thumbnail bar). This can be easily configured by setting [`setUserInterfaceViewMode`][] in [`PdfActivityConfiguration.Builder`][].
+
+PSPDFKit supports the following user interface view modes:
+
+- `USER_INTERFACE_VIEW_MODE_AUTOMATIC` toggles the UI when clicking on the empty page and hides the UI when changing pages. This is the default.
+- `USER_INTERFACE_VIEW_MODE_AUTOMATIC_BORDER_PAGES` works the same as the above, but it automatically shows the UI when scrolling to the first and the last page of the document.
+- `USER_INTERFACE_VIEW_MODE_VISIBLE` makes the UI always visible.
+- `USER_INTERFACE_VIEW_MODE_HIDDEN` makes the UI always invisible.
+- `USER_INTERFACE_VIEW_MODE_MANUAL` disables any automatic UI controls.
+
+**ℹ️ Note:** User interface view mode can also be changed while [`PdfActivity`][] is active by calling [`PdfActivity#setUserInterfaceViewMode`][].
+
+## Manual User Interface View Mode
+
+If no user interface view mode matches your desired use case, you can control UI visibility manually by using `USER_INTERFACE_VIEW_MODE_MANUAL` and calling [`setUserInterfaceVisible`][] to show/hide the UI when required.
+
+For more details, take a look at `UserInterfaceViewModesExample` in the Catalog app.
+
+## Reacting to User Interface Visibility Changes
+
+If you are providing custom user interface components, you’ll probably want to coordinate visibility of these components with the [`PdfActivity`][] user interface visibility. You can easily achieve this by overriding [`onUserInterfaceVisibilityChanged`][], which is called when the UI visibility changes through either [`setUserInterfaceVisible`][] or user interaction.
+
+[`userinterfaceviewmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/UserInterfaceViewMode.html
+[`setuserinterfaceviewmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#setUserInterfaceViewMode(com.pspdfkit.configuration.activity.UserInterfaceViewMode)
+[`pdfactivity#setuserinterfaceviewmode`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setUserInterfaceViewMode(com.pspdfkit.configuration.activity.UserInterfaceViewMode)
+[`setuserinterfacevisible`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#setUserInterfaceVisible(boolean,%20boolean)
+[`pdfactivityconfiguration.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[`onuserinterfacevisibilitychanged`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivity.html#onUserInterfaceVisibilityChanged(boolean)

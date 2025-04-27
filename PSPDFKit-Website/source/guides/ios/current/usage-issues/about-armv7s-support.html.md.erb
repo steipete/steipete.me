@@ -1,0 +1,18 @@
+---
+title: About armv7s Support
+section: developers
+
+---
+
+Beginning with PSPDFKit 4, we no longer include an armv7s binary slice. This is because Apple no longer requires or encourages armv7s, which has been the default since Xcode 6.
+
+The use of armv7s only slightly improves performance on the iPhone 5/5c, and only for floating-point-heavy applications; additionally, its inclusion increases download sizes and makes compilation times longer.
+
+[Here’s the related thread from the Apple Developer Forums][Apple Developer Forums]:
+
+> The reason for including armv7s would be marginal backward compatibility. But the general differences between armv7 and armv7s instruction sets are minor. So if you choose not to include armv7s, the targeted armv7 machine code still runs fine on 32 bit A6 devices, and hardly one will notice performance gap.
+
+[Here’s the iOS Support Matrix explaining the short lifetime of armv7s][iOS Support Matrix].
+
+[Apple Developer Forums]: https://devforums.apple.com/thread/244407?tstart=0
+[iOS Support Matrix]: http://iossupportmatrix.com

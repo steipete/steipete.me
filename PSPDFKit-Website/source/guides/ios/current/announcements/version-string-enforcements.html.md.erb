@@ -1,0 +1,18 @@
+---
+title: Version String Enforcements
+section: developers
+---
+
+In late October of 2015, Apple unexpectedly changed how bundle version strings (`CFBundleShortVersionString`) appear when uploading apps to iTunes Connect. Now, versions must contain no more than three dot-separated numbers.
+
+When uploading an app with an incorrect version string, the following error might pop up.
+
+<img src="/images/guides/ios/announcements/apple-version-string-enforcements/version-error-upload.png" srcset="/images/guides/ios/announcements/apple-version-string-enforcements/version-error-upload@2x.png 2x">
+
+We shipped PSPDFKit 5 using the version string `ios-5.0.0`, but it’s no longer a valid version. Starting with PSPDFKit 5.0.1 (28 October 2015), we changed the version string to `5.0.1`.
+
+If you need to ship an older version, you can edit `Info.plist` in PSPDFKit to only include dot-separated numbers (e.g. deleting the `ios-` part).
+
+<img src="/images/guides/ios/announcements/apple-version-string-enforcements/info-plist-finder.png" srcset="/images/guides/ios/announcements/apple-version-string-enforcements/info-plist-finder@2x.png 2x">
+
+<img src="/images/guides/ios/announcements/apple-version-string-enforcements/plist-editing.png" srcset="/images/guides/ios/announcements/apple-version-string-enforcements/plist-editing@2x.png 2x">

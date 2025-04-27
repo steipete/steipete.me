@@ -1,0 +1,48 @@
+---
+title: PSPDFKit 5.1 Migration Guide
+section: developers
+
+order: 56
+---
+
+This article provides a set of guidelines for migrating from version 5.0 to version 5.1 of PSPDFKit for Android. If you’re upgrading from a version earlier than 5.0, please review the [Android 5 Migration Guide][] first.
+
+## AndroidX
+
+PSPDFKit for Android now uses AndroidX instead of the support library, which means you’ll have to migrate your applications in order to continue using PSPDFKit. The complete migration instructions can be found [here][migration instructions]. You can let Android Studio automatically migrate your project.
+
+<img align="middle" src="/images/guides/android/migration-guides/migration-5-1/android-x-refactor.png">
+
+However, you might still need to manually update a few things afterward before everything is working properly.
+
+## Notable Changes and Deprecations
+
+- `XfdfFormatter#writeXfdf[Async]()` now throws an exception when an annotation that isn’t attached to the document is passed in.
+- Deprecates `TextSearch` constructors taking `Context`. Use other overloads instead.
+- Deprecates the `SearchOptions.Builder()` constructor taking `Context`. Use the default constructor instead.
+- Deprecates `isShareEnabled()` in `PdfActivityConfiguration`. Use `PdfConfiguration#getEnabledShareFeatures()` instead.
+- Deprecates `enableShare()` and `disableShare()` in `PdfActivityConfiguration.Builder`. Use `PdfActivityConfiguration.Builder#setEnabledShareFeatures()` instead.
+- Deprecates `isTextSharingEnabled()`, `isEmbeddedFilesSharingEnabled`, and `isSharingNoteEditorContentEnabled()` in `PdfConfiguration`. Use `PdfConfiguration#getEnabledShareFeatures()` instead.
+- Deprecates `textSharingEnabled()`, `embeddedFileSharingEnabled()`, and `sharingNoteEditorContentEnabled` in `PdfConfiguration.Builder`. Use `PdfConfiguration.Builder#setEnabledShareFeatures()` instead.
+
+## Java 8 Support
+
+Since PSPDFKit 5 for Android, apps including PSPDFKit need to enable Java 8 support. In order to enable Java 8 support, follow the instructions below.
+
+1.  Make sure you’re using version `3.2.1` or higher of the Android Gradle plugin. In your top-level `build.gradle` file, add:
+
+```
+classpath 'com.android.tools.build:gradle:3.2.1'
+```
+
+2.  In your app-level `build.gradle` file, enable Java 8 support:
+
+```
+compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+```
+
+[android 5 migration guide]: ../../migration-guides/pspdfkit-5-migration-guide/
+[migration instructions]: https://developer.android.com/jetpack/androidx/migrate

@@ -1,0 +1,60 @@
+---
+title: How to delete pages from a PDF document?
+section: knowledge-base
+---
+
+## Q: How to delete pages from a PDF document?
+
+Deletion of pages of a PDF document can be done using the `PdfProcessor` in three steps:
+
+1. Load the `PdfDocument` you want to modify.
+1. Create a `PdfProcessorTask` that removes the desired pages.
+1. Process the document, saving it to a new location.
+
+Here's how to do this in your `PdfActivity`:
+
+[==
+
+```kotlin
+override fun onDocumentLoaded(document: PdfDocument) {
+    // Remove pages with index 0 and 4.
+    val task = PdfProcessorTask.fromDocument(document)
+        .removePages(setOf(0, 4))
+
+    // The output file must be different to the original document file.
+    val outputFile = filesDir.resolve("${document.uid}-processed.pdf")
+
+    // Process the document on a background thread. The newly created
+    // document, will have the pages removed.
+    PdfProcessor.processDocumentAsync(task, outputFile)
+        .ignoreElements()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe { Log.i(TAG, "Document successfully saved.") }
+}
+```
+
+```java
+@Override
+public void onDocumentLoaded(@NonNull PdfDocument document) {
+    // Remove pages with index 0 and 4.
+    final PdfProcessorTask task = PdfProcessorTask.fromDocument(document)
+        .removePages(new HashSet<>(Arrays.asList(0, 4)));
+
+    // The output file must be different to the original document file.
+    final File outputFile =
+        new File(getFilesDir(), document.getUid() + "-processed.pdf");
+
+    // Process the document on a background thread. The newly created
+    // document, will have the pages removed.
+    PdfProcessor.processDocumentAsync(task, outputFile)
+        .ignoreElements()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(() -> Log.i("TAG", "Document successfully saved."));
+}
+```
+
+==]
+
+> **⚠️ Important:** When saving the processed document to an `outputFile`, the output file must be different than the input file. Writing directly back to the original document is not supported.

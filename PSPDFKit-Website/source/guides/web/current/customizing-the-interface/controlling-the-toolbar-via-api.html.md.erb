@@ -1,0 +1,113 @@
+---
+title: Controlling the Toolbar via API
+section: developers
+
+---
+
+Thanks to the PSPDFKit for Web [API][api docs], it’s possible to control the main toolbar to programmatically activate or deactivate specific items or behaviors.
+
+Currently, our default toolbar buttons allow you to control:
+
+- The [`InteractionMode`][interactionmode], which is the current interaction mode in the viewer.
+- The [`SidebarMode`][sidebarmode], which determines which sidebar to show.
+- One-off actions that don’t need a permanent (visual) activation state.
+
+In addition to these, the main toolbar is completely customizable and can host custom toolbar items. Please refer to the [customization guide][] for more details.
+
+## Interaction Mode
+
+The interaction mode is part of the [`PSPDFKit.ViewState`][viewstate] API, and it controls the current interaction mode of the viewer. For example, you can use it to activate or deactivate a tool like the text annotation one.
+
+We can change this mode using the instance method [`setViewState`][setviewstate]:
+
+[==
+
+```es
+instance.setViewState(viewState =>
+  viewState.set("interactionMode", PSPDFKit.InteractionMode.TEXT)
+);
+```
+
+```js
+instance.setViewState(function(viewState) {
+  return viewState.set("interactionMode", PSPDFKit.InteractionMode.TEXT);
+});
+```
+
+==]
+
+As a result of activating the interaction mode, PSPDFKit for Web will also enable the free text annotation button in the toolbar and the corresponding annotation type toolbar.
+
+To reset the interaction mode and deactivate the button, we can then set its value to `null`:
+
+[==
+
+```es
+instance.setViewState(viewState => (
+  viewState.set("interactionMode", null);
+));
+```
+
+```js
+instance.setViewState(function(viewState) {
+  return viewState.set("interactionMode", null);
+});
+```
+
+==]
+
+Please refer to the API docs for a comprehensive list of the supported [interaction modes][interactionmode].
+
+## Sidebar Mode
+
+It’s possible to control the viewer sidebar by changing the [`ViewState#sidebarMode`][sidebarmode].
+
+## One-Off Actions
+
+A few items in the toolbar don’t activate a particular state, but instead trigger one-off actions like zooming or paginating.
+
+Please use our [API docs][] to discover how each of these can be controlled programmatically.
+
+## Custom Toolbar Items
+
+As mentioned above, it’s possible to customize the main toolbar to rearrange the default toolbar items or to add new custom ones.
+
+Custom items can even be grouped to create a dropdown menu. Please refer to our [Customizing the Toolbar][customization guide] guide for further details.
+
+To activate a custom item, we need to mark an item as `selected` and update the toolbar items:
+
+[==
+
+```es
+instance.setToolbarItems(items => {
+  return items.map(item => {
+    if (item.id === "my-item") {
+      item.selected = true;
+    }
+    return item;
+  });
+});
+```
+
+```js
+instance.setToolbarItems(function(items) {
+  return items.map(function(item) {
+    if (item.id === "my-item") {
+      item.selected = true;
+    }
+    return item;
+  });
+});
+```
+
+==]
+
+Note that, if your items define an `onPress` callback, activating an item won’t automatically invoke this function.
+
+[interactionmode]: https://pspdfkit.com/api/web/PSPDFKit.html#.InteractionMode
+[sidebarmode]: https://pspdfkit.com/api/web/PSPDFKit.html#.SidebarMode
+[customization guide]: ../../customizing-the-interface/customizing-the-toolbar/
+[setviewstate]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setViewState
+[viewstate]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html
+[viewestate sidebarmode]: https://pspdfkit.com/api/web/PSPDFKit.ViewState.html#sidebarMode
+[api docs]: https://pspdfkit.com/api/web/

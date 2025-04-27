@@ -1,0 +1,102 @@
+---
+title: Viewer
+title_suffix: PSPDFKit for iOS
+platform: ios
+section: sdk
+---
+
+<%= partial 'shared/nav_sub' %>
+
+<!-- Videos -->
+<%= partial 'shared/product_videos', locals: {
+  title: "Core Viewer",
+  subtitle: "PSPDFKit for iOS",
+  body: "As the most advanced PDF viewer on the market, Core Viewer serves as the foundation of our framework. It delivers exceptional rendering performance with a beautifully designed UI that can be customized to fit your exact use case.",
+  items: [
+    {
+      title: 'Viewing',
+      url: '/images/pdf-sdk/ios/viewer/pdf-viewing.mp4'
+    },
+    {
+      title: 'Thumbnails',
+      url: '/images/pdf-sdk/ios/viewer/thumbnails.mp4'
+    },
+    {
+      title: 'Smart Zoom',
+      url: '/images/pdf-sdk/ios/viewer/smart-zoom.mp4'
+    },
+    {
+      title: 'Outline',
+      url: '/images/pdf-sdk/ios/viewer/outline.mp4'
+    },
+    {
+      title: 'Bookmarks',
+      url: '/images/pdf-sdk/ios/viewer/bookmarks.mp4'
+    },
+    {
+      title: 'Dark Mode',
+      url: '/images/pdf-sdk/ios/viewer/dark-mode.mp4'
+    },
+    {
+      title: 'Multiple Windows',
+      url: '/images/pdf-sdk/ios/viewer/multiple-windows.mp4'
+    },
+  ]
+} %>
+
+<!-- Details -->
+<%= partial 'shared/product_details', locals: {
+  items: [
+    {
+      title: "PDF Viewing",
+      body: "PSPDFKit supports multiple ways to view and navigate PDF documents – show single or double pages in side scrolling, continuous scrolling, or page-curl views. You can also set whether a PDF page should be fully displayed or fit to width.",
+      image: "/images/pdf-sdk/ios/viewer/pdf-viewing-feature.png"
+    },
+    {
+      title: "Thumbnails",
+      body: "The thumbnail view is fully customizable. You can increase the thumbnail size, change how pages are numbered, or disable thumbnail mode if you prefer a scrolling thumbnail bar instead.",
+      image: "/images/pdf-sdk/ios/viewer/thumbnails-feature.png"
+    },
+    {
+      title: "Smart Zoom",
+      body: "Double tap on a block of text to perform a smart page content analysis and zoom instantly to the selected region. Double tap again to zoom back out.",
+      image: "/images/pdf-sdk/ios/viewer/smart-zoom-feature.png"
+    },
+    {
+      title: "Outline",
+      body: "PSPDFKit features a fast and accurate outline (table of contents) parser that deals with all custom variants and PDF action types. Long outlines are wrapped into multiple lines, and actions can be fully customized or replaced.",
+      image: "/images/pdf-sdk/ios/viewer/outline-feature.png"
+    },
+    {
+      title: "Bookmarks",
+      body: "PSPDFKit provides a rich bookmark UI that enables your users to add, remove, and sort bookmarks. Bookmarks made in a PDF document show a thumbnail and an excerpt of the bookmarked page for easy reference. The bookmark API also allows you to substitute your own UI or use your own bookmark provider.",
+      image: "/images/pdf-sdk/ios/viewer/bookmarks-feature.png"
+    },
+    {
+      title: "Dark Mode",
+      body: "PSPDFKit for iOS honors the systemwide Dark Mode setting, enabling your users to more conveniently work with documents in dark environments. You can separately switch the page rendering style with ease — either programmatically or through the built-in settings UI — to fit your app’s requirements.",
+      image: "/images/pdf-sdk/ios/viewer/dark-mode-feature.png"
+    },
+    {
+      title: "Multiple Windows",
+      body: "Enhance your app's productivity by integrating our tabbed view controller, which uses system drag-and-drop gestures. This enables your users to drag tabs out into a new adjacent window to facilitate multitasking and boost their productivity.",
+      image: "/images/pdf-sdk/ios/viewer/multiple-windows-feature.png"
+    }
+  ]
+} %>
+
+<!-- Documentation -->
+<%= partial 'shared/product_documentation', locals: {
+  title: 'Getting Started',
+  url: '/guides/ios/current/getting-started/integrating-pspdfkit/'
+} %>
+
+<!-- Try PDF Viewer -->
+<%= partial 'shared/product_try_viewer', locals: {
+  title: 'Core Viewer',
+  image: '/images/pdf-sdk/ios/viewer/try.png',
+  device: 'phone_ios'
+} %>
+
+<!-- Sales CTA -->
+<%= partial 'shared/cta_sales', locals: { title: 'PSPDFKit for iOS' } %>

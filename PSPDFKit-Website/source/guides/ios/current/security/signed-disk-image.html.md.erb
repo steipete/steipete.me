@@ -1,0 +1,52 @@
+---
+title: Signed Disk Image
+section: developers
+
+---
+
+Since PSPDFKit v5.4.0 we're using a Developer ID signed disk image to distribute our framework.  
+Signing disk images is only possible since OS X 10.11.5.  
+It allows the entire disk image to be validated by Gatekeeper the first time it's mounted.  
+For more information see [TN2206 "Signing Disk Images"][Apple Guide Signing Disk Images].
+
+You can verify that the PSPDFKit disk image was indeed created by us by displaying information about it with `codesign`:
+
+```
+$ codesign -dvvv PSPDFKit.dmg
+```
+
+The output should look like the following:
+
+```
+Executable=/Users/pspdfkit/PSPDFKit.dmg
+Identifier=PSPDFKit
+Format=disk image
+CodeDirectory v=20200 size=296 flags=0x0(none) hashes=1+6 location=embedded
+Hash type=sha256 size=32
+CandidateCDHash sha256=46765a2ed05a004cbf4b885d0920162c66595134
+Hash choices=sha256
+CDHash=46765a2ed05a004cbf4b885d0920162c66595134
+Signature size=8863
+Authority=Developer ID Application: PSPDFKit GmbH (4YCRL5LW7Q)
+Authority=Developer ID Certification Authority
+Authority=Apple Root CA
+Timestamp=01 Jul 2016 15:26:16
+Info.plist=not bound
+TeamIdentifier=4YCRL5LW7Q
+Sealed Resources=none
+Internal requirements count=1 size=168
+```
+
+Look out for
+
+```
+Authority=Developer ID Application: PSPDFKit GmbH (4YCRL5LW7Q)
+```
+
+and
+
+```
+TeamIdentifier=4YCRL5LW7Q
+```
+
+[Apple Guide Signing Disk Images]: https://developer.apple.com/library/prerelease/content/technotes/tn2206/_index.html#//apple_ref/doc/uid/DTS40007919-CH1-TNTAG18

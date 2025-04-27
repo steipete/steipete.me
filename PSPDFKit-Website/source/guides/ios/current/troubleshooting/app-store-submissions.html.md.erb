@@ -1,0 +1,27 @@
+---
+title: App Store Submissions
+section: developers
+---
+
+This article covers possible App Store Connect submission errors and warnings you may encounter when submitting an app with PSPDFKit integrated. It assumes both that you confirmed that your app and other third-party libraries your app uses are in compliance with the [App Store Review Guidelines][app-store-review-guidelines] and that you read Apple’s [Avoiding Common App Rejections][app-store-common-rejections] support articles.
+
+PSPDFKit makes sure to fully comply with all App Store submission requirements and review guidelines. Below, we’ve outlined known examples of error messages you may receive. If you encounter a rejection that you believe is related to PSPDFKit but isn’t covered by this article, [please report it to us][support].
+
+## Purpose Strings
+
+> **Example** — ITMS-90683: Missing Purpose String in Info.plist - Your app's code references one or more APIs that access sensitive user data. The app's Info.plist file should contain a NSMicrophoneUsageDescription key with a user-facing purpose string explaining clearly and completely why your app needs the data. Starting Spring 2019, all apps submitted to the App Store that access user data are required to include a purpose string. If you're using external libraries or SDKs, they may reference APIs that require a purpose string. While your app might not use these APIs, a purpose string is still required. You can contact the developer of the library or SDK and request they release a version of their code that doesn't contain the APIs.
+
+Certain features in PSPDFKit need additional permissions, which will require modifications in your `Info.plist` file. Please refer to our [Permissions][] guide for more information.
+
+## UIWebView Usage
+
+> **Example** — ITMS-90809: Deprecated API Usage - Apple will stop accepting submissions of apps that use UIWebView APIs.
+
+We [removed transitional support for `UIWebView`][v9-migration-uiwebview-removal] with the release of PSPDFKit 9. [Upgrade][upgrading] your PSPDFKit installation to the latest version and try again. If the warning doesn’t go away, it means other code or third-party libraries still reference `UIWebView` somewhere.
+
+[app-store-common-rejections]: https://developer.apple.com/app-store/review/#common-app-rejections
+[app-store-review-guidelines]: https://developer.apple.com/app-store/review/guidelines/
+[permissions]: https://pspdfkit.com/guides/ios/current/getting-started/permissions/
+[support]: https://pspdfkit.com/support/request
+[upgrading]: https://pspdfkit.com/guides/ios/current/getting-started/upgrading/
+[v9-migration-uiwebview-removal]: https://pspdfkit.com/guides/ios/current/migration-guides/pspdfkit-9-migration-guide/#uiwebview-removal

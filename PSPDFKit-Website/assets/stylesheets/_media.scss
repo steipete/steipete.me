@@ -1,0 +1,50 @@
+.media-log {
+  font-size: $font-size-sm;
+  margin: ($spacer / 2) 0 ($spacer / 2) -1rem;
+  padding-top: $spacer;
+  border-top: 1px solid $gray-200;
+  flex-direction: column;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+
+  .media-object {
+    width: 80px;
+    margin-right: 30px;
+    margin-bottom: 0.5rem;
+
+    .badge {
+      display: block;
+      transform: translate(0, 4px);
+    }
+  }
+
+  .media-body {
+    width: 100%;
+  }
+
+  .media-log {
+    padding-left: 10px;
+    border-left: 5px solid $neutral-dark;
+
+    @include media-breakpoint-up(md) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+}
+
+.media-link-block {
+  .media-title {
+    text-decoration: underline;
+
+    .badge {
+      transform: translateY(-2px);
+    }
+  }
+
+  @include hover-focus {
+    text-decoration: none;
+  }
+}

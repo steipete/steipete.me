@@ -1,0 +1,73 @@
+---
+title: PSPDFKit 6.2 Migration Guide
+section: developers
+
+order: 50
+---
+
+This article provides a set of guidelines for migrating from PSPDFKit 6.1 for Android to PSPDFKit 6.2 for Android.
+
+## Updated Build Versions
+
+With PSPDFKit 6.2, we updated various build properties and versions.
+
+- **Build System Dependencies**
+
+  - The Android Gradle plugin used to build PSPDFKit was updated to version 3.5.3. In addition, all sample applications now use Android Gradle plugin 3.5.3 as well.
+
+## Deprecations
+
+Here’s a list of fields and methods that have been deprecated:
+
+- `PSPDFKitViews#getFragment()` was deprecated. Use [`getPdfFragment()`][] or [`requirePdfFragment()`][] instead.
+- `setPdfView()`, `performApplyConfiguration()`, `getPdfParameters()`, and `getHostingActivity()` in [`PdfActivity`][] and [`PdfUiFragment`][] were deprecated. These symbols will be removed with the next major version. Please [contact support][] if you are using any of them.
+
+## Renaming of Private API Packages
+
+With PSPDFKit 6.2 for Android, we refactored our framework’s private APIs and moved them to different packages. This change was done to improve the naming of private APIs and to lower the chance of accidental misuse. The following packages have been renamed:
+
+- `com.pspdfkit.framework` was renamed to `com.pspdfkit.internal`.
+- `com.pspdfkit.instant.framework` was renamed to `com.pspdfkit.instant.internal`.
+
+The use of classes inside these packages is not supported and will lead to breaking code changes or unexpected behavior. For more information on private API usage, see our guide about [unsupported private symbols][private symbols guide].
+
+## Hiding Private Symbols
+
+`PdfUiImpl` was incorrectly exposed in the public package. With PSPDFKit 6.2 for Android, we made this class internal. If you were using it, please [contact support][].
+
+In addition to this change, we also removed the following methods from [`PdfFragment`][], as they are not meant for public use:
+
+- `getPasteManager()`
+- `getViewCoordinator()` (protected method)
+- `setDocument()` (protected method)
+- `onPageRotationOffsetChanged()`
+- `onInternalDocumentSaved()`
+- `onInternalDocumentSaveFailed()`
+- `onPageBindingChanged()`
+
+## Changed Annotation Defaults
+
+We changed multiple defaults for annotation properties to make them consistent with PSPDFKit for iOS and Web:
+
+- Changed the default free text annotation size from 16pt to 18pt
+- Changed the default line/border thickness of all shape annotations (i.e. ink, line, square, circle, polygon, and polyline) from 10pt to 5pt
+- Changed the default eraser thickness from 20pt to 13pt
+- Changed the eraser thickness range from 10–50pt to 1–40pt
+- Changed the default cloudy effect intensity from 5 to 2 (this property has no unit)
+
+## Updated Property Inspector
+
+We replaced our custom bottom sheet implementation used by the [`PropertyInspectorCoordinatorLayout`][] with the [implementation][bottom sheets docs] from the Material Components library. In addition, we optimized inspector behavior to make it more predictable. This includes the following changes:
+
+- Inspector is now always resized to its content’s size (capped by the available screen space).
+- [`PropertyInspector`][] no longer supports resizing, so its [`setResizable()`][] and [`isResizable()`][] methods have been deprecated.
+
+[private symbols guide]: /guides/android/current/announcements/unsupported-internal-symbols
+[`getpdffragment()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfUi.html#getPdfFragment()
+[`requirepdffragment()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfUi.html#requirePdfFragment()
+[contact support]: https://support.pspdfkit.com/hc/en-us/requests/new
+[`propertyinspector`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspector.html
+[`propertyinspectorcoordinatorlayout`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspectorCoordinatorLayout.html
+[bottom sheets docs]: https://material.io/develop/android/components/bottom-sheet-behavior/
+[`setresizable()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspector.html#setResizable(boolean)
+[`isresizable()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/inspector/PropertyInspector.html#isResizable()

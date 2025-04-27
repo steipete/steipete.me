@@ -1,0 +1,52 @@
+---
+title: Find ink annotation for signature form field
+section: knowledge-base
+---
+
+## Q: How can I find the ink annotation that is being used as signature for a signature form field?
+
+A: As signature form fields do not have a value, it may be tricky to find out what ink annotation, if any, is being used as signature for a given signature form field.
+
+The following helper function will retrieve the first ink annotation found with a bounding box that overlaps the provided form field's associated widget annotation's bounding box:
+
+```js
+async function getInkSignatureForField(instance, formField) {
+  const pagesAnnotations = await Promise.all(
+    Array.from({ length: instance.totalPageCount }).map((_, pageIndex) =>
+      instance.getAnnotations(pageIndex)
+    )
+  );
+  let signatureBoundingBox;
+  const signaturePageAnnotations = pagesAnnotations.filter(pageAnnotations => {
+    const signatureWidget = pageAnnotations.find(
+      annotation => annotation.id === formField.annotationIds.first()
+    );
+    if (signatureWidget) {
+      signatureBoundingBox = signatureWidget.boundingBox;
+      return true;
+    }
+    return false;
+  });
+  return signaturePageAnnotations[0] && signaturePageAnnotations[0].find(annotation => {
+    if (annotation instanceof PSPDFKit.Annotations.InkAnnotation) {
+      if (annotation.boundingBox.isRectOverlapping(signatureBoundingBox)) {
+        return true;
+      }
+    }
+  });
+}
+```
+
+You can use it so:
+
+```js
+PSPDFKit.load(defaultConfiguration).then(async instance => {
+  const formFields = await instance.getFormFields()
+  const signatureFormField = formFields.find(formField => formField instanceof PSPDFKit.FormFields.SignatureFormField)
+  const signatureInkAnnotation = signatureFormField
+    && await getInkSignatureForField(instance, signatureFormField)
+  console.log(signatureInkAnnotation && signatureInkAnnotation.toJS())
+});
+```
+
+This has been tested with PSPDFKit for Web 2019.4.1

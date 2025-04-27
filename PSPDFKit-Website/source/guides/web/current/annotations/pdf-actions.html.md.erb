@@ -1,0 +1,84 @@
+---
+title: PDF Actions
+section: developers
+---
+
+A PDF action is similar to a web hyperlink, but it’s much more flexible. PSPDFKit for Web implements common actions as defined in Adobe’s PDF Reference (page 417ff).
+
+| Action     | PSPDFKit&nbsp;Class    | Use Case                                            |
+| ---------- | ---------------------- | --------------------------------------------------- |
+| GoTo       | [`GoToAction`][]       | Go to a destination (page) in the current document. |
+| URI        | [`URIAction`][]        | Resolve a Uniform Resource Identifier (web link).   |
+| SubmitForm | [`SubmitFormAction`][] | Send data to a Uniform Resource Locator.            |
+| ResetForm  | [`ResetFormAction`][]  | Set fields to their default values.                 |
+| JavaScript | [`JavaScriptAction`][] | Execute a script.                                   |
+
+## GoToAction
+
+A GoTo action can define a different `pageIndex` in the same document. Clicking on it updates the scroll position to make the page visible, but it doesn’t update the zoom level.
+
+## URIAction
+
+A URI action contains a URI. When executing this annotation, PSPDFKit uses `window.open` to create a new browser tab, which also clears the opener as a security measurement to avoid allowing the target page to have access to your PDF state:
+
+[==
+
+```es
+let newWindow = window.open(action.uri, "_blank");
+newWindow.opener = null;
+```
+
+```js
+var newWindow = window.open(action.uri, "_blank");
+newWindow.opener = null;
+```
+
+==]
+
+## JavaScriptAction
+
+This is a PDF action for running arbitrary JavaScript. Actions are executed on a click. `WidgetAnnotation` and form fields can also define an `additionalActions` field, which is a dictionary of event name and action pairs. For more information about the additional actions of [`WidgetAnnotation`][widgetannotationadditionalactions]s and [`FormField`][formfieldadditionalactions]s, refer to the API documentation.
+
+You can learn more about the security problems when using `_blank` in [this article from JitBit][].
+
+Please refer to an individual browser’s documentation for a list of supported URI protocols. The most used protocols (`http`, `https`, and `mailto`) are supported in all [major browsers][].
+
+Here is an example showing how to run JavaScript code when a `WidgetAnnotation` is focused. This is done using the `additionalActions` field:
+
+```js
+const widget = new PSPDFKit.Annotations.WidgetAnnotation({
+  pageIndex: 0,
+  formFieldName: "MyFormField",
+  boundingBox: new PSPDFKit.Geometry.Rect({
+    left: 100,
+    top: 75,
+    width: 200,
+    height: 80
+  }),
+  additionalActions: {
+    onFocus: new PSPDFKit.Actions.JavaScriptAction({
+      script: "alert('onFocus')"
+    })
+  }
+});
+
+instance.createAnnotation(widget).then(annotation => {
+  instance.createFormField(
+    new PSPDFKit.FormFields.TextFormField({
+      name: "MyFormField",
+      annotationIds: new PSPDFKit.Immutable.List([annotation.id]),
+      value: "Text shown in the form field"
+    })
+  );
+});
+```
+
+[`gotoaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.GoToAction.html
+[`uriaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.URIAction.html
+[`submitformaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.SubmitFormAction.html
+[`resetformaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.ResetFormAction.html
+[`javascriptaction`]: https://pspdfkit.com/api/web/PSPDFKit.Actions.JavaScriptAction.html
+[widgetannotationadditionalactions]: https://pspdfkit.com/api/web/PSPDFKit.Annotations.WidgetAnnotation.html#additionalActions
+[formfieldadditionalactions]: https://pspdfkit.com/api/web/PSPDFKit.FormFields.FormField.html#additionalActions
+[this article from jitbit]: https://www.jitbit.com/alexblog/256-targetblank---the-most-underestimated-vulnerability-ever/
+[major browsers]: ../../pspdfkit-for-web/browser-support

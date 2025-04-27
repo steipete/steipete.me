@@ -1,0 +1,320 @@
+---
+title: Annotate Images (Image Documents)
+section: developers
+---
+
+![Image Documents](/images/guides/shared/image-documents/image-documents-header.png)
+
+While it has always been possible to annotate images in PSPDFKit, doing so previously required some extra code. You had to convert an image to PDF, be sure to update the annotation tools and UI to only show relevant options, and extract the image data back when a save occurred.
+
+<% if ios? %>
+In [PSPDFKit 7.3 for iOS][], we introduced a new class, [`PSPDFImageDocument`][], to make this process much simpler. All you need to do is pass your image to [`PSPDFImageDocument`][], and we handle the rest. We even simplified the PDF controller configuration by providing a pre-built configuration that adjusts the UI so that it works great for images. And to make editing these images more powerful, we introduced a system in [PSPDFKit 7.6 for iOS][] where the changes made to an image document by [`PSPDFViewController`][] (or by directly using the document object) remain editable even after saving. Take a look at `AnnotateImagesExample` in the Catalog app or read our [announcement blog post][image documents blog post] to learn how you can annotate PNG and JPEG just like PDF with Image Documents.
+<% end %>
+
+<% if android? %>
+In [PSPDFKit 4.6 for Android][android 4.6 blog], we introduced a new class, [`ImageDocument`][], to make this process much simpler. All you need to do is pass your image source to the [`ImageDocumentLoader`][] or [`PdfActivity`][], and we handle the rest. To make usage inside [`PdfActivity`][] even simpler, we provide a pre-built configuration that adjusts the UI so that it works great for images. Furthermore, image documents remain fully editable, even after saving them back to the original image file. Take a look at `ImageDocumentExample` in the Catalog app or read our [announcement blog post][image documents blog post] to learn how you can annotate PNG and JPEG just like PDF with Image Documents.
+<% end %>
+
+**ℹ️ Note:** This feature requires the [Image Documents][sdk page] component to be enabled in your license.
+
+<% if ios? %>
+[`PSPDFImageDocument`][] is a subclass of [`PSPDFDocument`][] that can be initialized with an image file. Although it has capabilities similar to its parent class, you should keep the following conditions in mind.
+<% end %>
+
+<% if android? %>
+
+## Loading Image Documents
+
+[`ImageDocumentLoader`][] provides several static methods that can be used to load [`ImageDocument`][] instances from either a [`Uri`][] or a [`DocumentSource`][]. Supported image document formats are JPEG and PNG. Just like with PDF documents, image documents can be loaded from [various sources][launching pdf from uri], including the local file system, Android content providers, or the app’s assets.
+
+Here’s how to load an image document from the app’s assets directory:
+
+[==
+
+```kotlin
+val uri = Uri.parse("file:///android_asset/image.png")
+val imageDocument: ImageDocument = ImageDocumentLoader
+    .openDocument(context, uri)
+```
+
+```java
+final Uri uri = Uri.parse("file:///android_asset/image.png");
+final ImageDocument imageDocument = ImageDocumentLoader
+    .openDocument(context, uri);
+```
+
+==]
+
+### Loading into an Activity
+
+Image documents can be shown and used inside a [`PdfActivity`][], just like normal [`PdfDocument`]s. To launch [`PdfActivity`][] with an image document, you can use the static [`showImage()`][`pdfactivity.showimage()`] method of [`PdfActivity`][], which will load the image document for display inside the activity.
+
+To simplify creation of a suitable [`PdfActivityConfiguration`][] when displaying image documents, you can use [`getDefaultImageDocumentActivityConfiguration()`][] on [`ImageDocumentLoader`][], which will provide the recommended settings:
+
+[==
+
+```kotlin
+val config: PdfActivityConfiguration = ImageDocumentLoader
+    .getDefaultImageDocumentActivityConfiguration(context)
+
+PdfActivity.showImage(context, Uri.fromFile(image), config)
+```
+
+```java
+final PdfActivityConfiguration config = ImageDocumentLoader
+    .getDefaultImageDocumentActivityConfiguration(context);
+
+PdfActivity.showImage(context, Uri.fromFile(image), config);
+```
+
+==]
+
+**ℹ️ Note:** If you want to launch a custom subclass of [`PdfActivity`][] or need to specify additional [`Intent`][] options, you can create an [`Intent`][] for image document viewing using static methods on [`PdfActivityIntentBuilder`][] — for example, [`fromImageUri()`][].
+
+### Loading into a Fragment
+
+#### PdfFragment
+
+You can also load image documents into a [`PdfFragment`][] instance using the static [`newImageInstance()`][] methods on [`PdfFragment`][]:
+
+[==
+
+```kotlin
+val uri = Uri.parse("file:///android_asset/image.png")
+val config = ImageDocumentLoader.getDefaultImageDocumentConfiguration()
+val fragment = PdfFragment.newImageInstance(uri, config)
+
+supportFragmentManager
+    .beginTransaction()
+    .replace(R.id.container, fragment)
+    .commit()
+```
+
+```java
+final Uri uri = Uri.parse("file:///android_asset/image.png");
+final PdfConfiguration config = ImageDocumentLoader
+    .getDefaultImageDocumentConfiguration();
+final PdfFragment fragment = PdfFragment.newImageInstance(uri, config);
+
+getSupportFragmentManager()
+    .beginTransaction()
+    .replace(R.id.container, fragment)
+    .commit();
+```
+
+==]
+
+**ℹ️ Note:** Like with the activity, you can create a recommended [`PdfConfiguration`][] instance for displaying image documents inside [`PdfFragment`][] using the static helper methods on [`ImageDocumentLoader`][].
+
+#### PdfUiFragment
+
+When loading an image in a [`PdfUiFragment`][], you need to use [`PdfUiFragmentBuilder#fromImageUri()`][] to create the [`PdfUiFragment`][]:
+
+[==
+
+```kotlin
+val uri = Uri.parse("file:///android_asset/image.png")
+val config: PdfActivityConfiguration = ImageDocumentLoader
+    .getDefaultImageDocumentActivityConfiguration(context)
+val fragment = PdfUiFragmentBuilder.fromImageUri(this, uri)
+    .configuration(config)
+    .build();
+
+supportFragmentManager
+    .beginTransaction()
+    .replace(R.id.container, fragment)
+    .commit()
+```
+
+```java
+final Uri uri = Uri.parse("file:///android_asset/image.png");
+final PdfActivityConfiguration config = ImageDocumentLoader
+    .getDefaultImageDocumentActivityConfiguration(context);
+final PdfUiFragment fragment = PdfUiFragmentBuilder.fromImageUri(this, uri)
+    .configuration(config)
+    .build();
+
+getSupportFragmentManager()
+    .beginTransaction()
+    .replace(R.id.container, fragment)
+    .commit();
+```
+
+==]
+
+## Coordinate System
+
+The coordinate system of image documents is very similar to the one used for PDF documents. The zero point is at the bottom left, and it is sized to match the image that was opened.
+
+![Annotation creator dialog](/images/guides/android/annotations/image-coordinates.png)
+
+<% end %>
+
+<% if ios? %>
+
+## Image Formats and Size
+
+You can initialize a [`PSPDFImageDocument`][] using a local image file URL. [`PSPDFImageDocument`][] supports the JPEG and PNG file formats. The compression quality when encoding to JPEG can be controlled using [`PSPDFImageDocument.compressionQuality`][].
+
+We also enforce a maximum size of image that can be opened by [`PSPDFImageDocument`][]. If an image’s area is larger than the area defined by [`PSPDFRenderSizeLimit`][], the image is not opened, as converting it to a bitmap would consume too much RAM.
+<% end %>
+
+## Annotation Types
+
+Although you can technically use any annotation type with <% if ios? %>[`PSPDFImageDocument`][]<% end %><% if android? %>[`ImageDocument`][]<% end %>, we recommend disabling certain annotation tools when working with image documents. For example, text selection- or text extraction-based annotations, such as highlight and underline annotations, do not make sense for <% if ios? %>a [`PSPDFImageDocument`][]<% end %><% if android? %>an [`ImageDocument`][]<% end %> because there will be no selectable text in the document.
+
+<% if android? %>
+When using the preconfigured configuration instances returned by [`ImageDocumentLoader`][], these impractical annotation tools will be automatically disabled.
+<% end %>
+
+<% if ios? %>
+We recommend initializing your [`PSPDFViewController`][] with the [`PSPDFConfiguration.imageConfiguration`] preset. This will automatically disable annotation types that are not relevant for image files:
+
+[==
+
+```swift
+let controller = PSPDFViewController(document: imageDocument, configuration: PSPDFConfiguration.image)
+```
+
+```objc
+PSPDFViewController *controller = [[PSPDFViewController alloc] initWithDocument:imageDocument configuration:PSPDFConfiguration.imageConfiguration];
+```
+
+==]
+
+## Customizing the UI
+
+We also recommend only exposing relevant UI elements to your users. For example, you can disable the [document editing][] feature to disallow adding new pages to an image document. Here’s a basic UI customization for a [`PSPDFViewController`][] presenting a [`PSPDFImageDocument`]:
+
+[==
+
+```swift
+let rightItems = [controller.annotationButtonItem, controller.activityButtonItem, controller.searchButtonItem]
+let leftItems = [controller.outlineButtonItem, controller.brightnessButtonItem]
+controller.navigationItem.setRightBarButtonItems(rightItems, for: .document, animated: false)
+controller.navigationItem.setLeftBarButtonItems(leftItems, for: .document, animated: false)
+
+controller.navigationItem.leftItemsSupplementBackButton = true
+```
+
+```objc
+NSArray<UIBarButtonItem *> *rightItems = @[controller.annotationButtonItem, controller.activityButtonItem, controller.searchButtonItem];
+NSArray<UIBarButtonItem *> *leftItems = @[controller.outlineButtonItem, controller.brightnessButtonItem];
+[controller.navigationItem setLeftBarButtonItems:rightItems forViewMode:PSPDFViewModeDocument animated:NO];
+[controller.navigationItem setLeftBarButtonItems:leftItems forViewMode:PSPDFViewModeDocument animated:NO];
+
+controller.navigationItem.leftItemsSupplementBackButton = YES;
+```
+
+==]
+
+See `AnnotateImagesExample` from PSPDFCatalog for more details.
+
+<% end %>
+
+## Saving
+
+<% if android? %>
+Saving has been designed to be transparent, i.e. to make [`ImageDocument`][] instances behave just like [`PdfDocument`][] instances. You can use any of the save methods on [`ImageDocument`][], which will handle saving all changes back to the original image file. By default, image documents will stay editable after saving. If you don’t need to retain editability, you can strip all document metadata in the saved image file, which will also reduce the final file size. To control how the backing image is saved, the [`ImageDocument#saveIfModified(metadata)`][] method provides a parameter.
+
+- `metadata: false` — When saving, all the (visible) changes are saved back to the original image as is, and reopening this image will show these changes, but they will not be editable. When saving with this mode, any previously saved metadata in the document is removed as well.
+- `metadata: true` — This saves all changes to the original image as described above, but it also saves all the modifications as part of the image’s metadata. When an image saved using this mode is opened with a regular image viewer, all the changes made will be displayed on the original image. However, when an image is opened with [`ImageDocument`][], the saved changes will then be editable. Please be aware that using this option to save will increase the size of the images:
+
+[==
+
+```kotlin
+val imageDocument: ImageDocument
+
+// By default, the image document is saved so that it stays editable.
+imageDocument.saveIfModified()
+
+// You can also strip all metadata, saving the image as non-editable.
+val saveMetadata = false
+imageDocument.saveIfModified(saveMetadata)
+```
+
+```java
+final ImageDocument imageDocument;
+
+// By default, the image document is saved so that it stays editable.
+imageDocument.saveIfModified();
+
+// You can also strip all metadata, saving the image as non-editable.
+final boolean saveMetadata = false;
+imageDocument.saveIfModified(saveMetadata);
+```
+
+==]
+
+### Saving inside an Activity
+
+By default, PSPDFKit will auto-save image documents whenever the activity is closed or put into the background. You can find out more about auto-saving in our [Annotation-Saving Mechanism][saving guide] guide.
+
+If you want to manually save the image document, you can directly call the [`save()`][`pdffragment#save()`] method on the used [`PdfFragment`][] instance:
+
+[==
+
+```MyActivity.kt
+// This will forward the save operation to the `ImageDocument` instance.
+pdfFragment.save()
+```
+
+```MyActivity.java
+// This will forward the save operation to the `ImageDocument` instance.
+getPdfFragment.save();
+```
+
+==]
+
+**ℹ️ Note:** If you want to receive save completion callbacks of image document-saving operations, you can register a [`DocumentListener`][] instance using [`addDocumentListener()`][] on [`PdfFragment`][].
+
+<% end %>
+<% if ios? %>
+To control how the backing image is saved by [`PSPDFImageDocument`][], use the [`imageSaveMode`][] property. This property has two valid values: `PSPDFImageSaveModeFlatten` and `PSPDFImageSaveModeFlattenAndEmbed`.
+
+- `PSPDFImageSaveModeFlatten` — When a [`PSPDFImageDocument`][] is saved, all the (visible) changes are saved back to the original image as is, and reopening this image will show these changes, but they will not be editable. When saving with this mode, any previously saved metadata in the document is removed as well.
+
+- `PSPDFImageSaveModeFlattenAndEmbed` — This performs everything `PSPDFImageSaveModeFlatten` does, but it also saves all the modifications as part of the image’s metadata. When an image saved using this mode is opened with a regular image viewer, all the changes made will be displayed on the original image. However, when an image is opened with [`PSPDFImageDocument`][], the saved changes will then be editable. Please be aware that using this option to save will increase the size of the images.
+
+[`PSPDFImageDocument`][] also supports serialization and deserialization via the `NSSecureCoding` protocol. If you need to preserve editing abilities for an image document between application launches, you can simply archive and unarchive it using the standard iOS serialization APIs.
+
+**ℹ️ Note:** For the save mode to take effect, it must be changed before a save is performed.
+
+[pspdfkit 7.3 for ios]: /blog/2018/pspdfkit-ios-7-3/
+[`pspdfimagedocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFImageDocument.html
+[pspdfkit 7.6 for ios]: /blog/2018/pspdfkit-ios-7-6/
+[`pspdfimagedocument.compressionquality`]: https://pspdfkit.com/api/ios/Classes/PSPDFImageDocument.html#/c:objc(cs)PSPDFImageDocument(py)compressionQuality
+[`pspdfrendersizelimit`]: https://pspdfkit.com/api/ios/Other%20Constants.html#/c:@PSPDFRenderSizeLimit
+[`imagesavemode`]: https://pspdfkit.com/api/ios/Classes/PSPDFImageDocument.html#/c:objc(cs)PSPDFImageDocument(py)imageSaveMode
+[`pspdfviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFViewController.html
+[sdk page]: https://pspdfkit.com/pdf-sdk/ios/image-documents/
+[`pspdfdocument`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html
+[`pspdfconfiguration.imageconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFConfiguration.html#/c:objc(cs)PSPDFConfiguration(cpy)imageConfiguration
+[document editing]: ../../features/document-editor
+[annotation-saving mechanism]: ../../annotations/annotation-saving-mechanism
+[annotation- and bookmark-saving triggers]: ../../annotations/annotation-and-bookmark-saving-triggers
+
+<% end %>
+
+<% if android? %>
+[android 4.6 blog]: /blog/2018/pspdfkit-android-4-6/
+[sdk page]: https://pspdfkit.com/pdf-sdk/android/image-documents/
+[launching pdf from uri]: /guides/android/current/getting-started/using-activity/#launching-from-uri-using-the-static-methods
+[saving guide]: /guides/android/current/annotations/annotation-saving-mechanism/
+
+[`pdfactivity.showimage()`]: /api/android/reference/com/pspdfkit/ui/PdfActivity.html#showImage(android.content.Context,%20android.net.Uri,%20com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`imagedocument`]: /api/android/reference/com/pspdfkit/document/ImageDocument.html
+[`imagedocumentloader`]: /api/android/reference/com/pspdfkit/document/ImageDocumentLoader.html
+[`getdefaultimagedocumentactivityconfiguration()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/ImageDocumentLoader.html#getDefaultImageDocumentActivityConfiguration(com.pspdfkit.configuration.activity.PdfActivityConfiguration)
+[`pdfactivityintentbuilder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html
+[`fromimageuri()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfActivityIntentBuilder.html#fromImageUri(android.content.Context,%20android.net.Uri)
+[`newimageinstance()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#newImageInstance(android.net.Uri,%20com.pspdfkit.configuration.PdfConfiguration)
+[`pdffragment#save()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#save()
+[`documentlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html
+[`adddocumentlistener()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#addDocumentListener(com.pspdfkit.listeners.DocumentListener)
+[`imagedocument#saveifmodified(metadata)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/ImageDocument.html#saveIfModified(boolean)
+[`pdfuifragmentbuilder#fromimageuri()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfUiFragmentBuilder.html#fromImageUri(android.content.Context,%20android.net.Uri)
+
+<% end %>
+
+[image documents blog post]: /blog/2018/image-documents/

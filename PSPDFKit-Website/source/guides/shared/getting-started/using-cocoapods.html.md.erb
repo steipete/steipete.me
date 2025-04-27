@@ -1,0 +1,163 @@
+---
+title: Integrating PSPDFKit Using CocoaPods
+section: developers
+order: 2
+---
+
+<% if ios? %>
+
+<div class="alert alert-warning">
+<p><b>ℹ️ Note:</b> PSPDFKit 9 for iOS migrated to XCFrameworks to offer better cross-platform support. <a href="https://github.com/CocoaPods/CocoaPods/issues/9148">CocoaPods does not yet support XCFrameworks</a>. If you need Mac Catalyst support, use the <a href="../../getting-started/integrating-pspdfkit/">manual integration</a>.</p>
+</div>
+<% end %>
+
+PSPDFKit is available via CocoaPods. We provide a private URL for the Podspec so that you can integrate PSPDFKit with minimum effort, either pinning to a specific version or always getting the latest stable release. If you’re new to CocoaPods, [our Getting Started guide will help you][cocoapods getting started].
+
+**ℹ️ Note:** Please don’t follow our [manual integration guide][] if you’re using CocoaPods. Using `strip-framework.sh` together with CocoaPods won’t work.
+
+**Important:** Please make sure that you have a CocoaPods version >= 1.4.0 installed. You can check your version of CocoaPods with `pod --version`.
+
+Read on to see what you have to add to your [`Podfile`][].
+
+<% if ios? %>
+
+### Always Use the Latest Release:
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/pspdfkit/latest.podspec'
+end
+```
+
+### Pinning to a Specific Version (e.g. 9.0.0):
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/pspdfkit/9.0.0.podspec'
+end
+```
+
+<% end %>
+
+<% if macos? %>
+
+### Always Use the Latest Release:
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/latest.podspec'
+  platform :osx, '10.12'
+end
+```
+
+### Pinning to a Specific Version (e.g. 1.0.2):
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/1.0.2.podspec'
+  platform :osx, '10.12'
+end
+```
+
+<% end %>
+
+Once you’ve completed the steps above, run `pod install`. [Try the demo][] to get started on the integration.
+
+## Where Do I Find the Podspec URL Key?
+
+If you are a customer, you can find your custom URL in your [customer portal][] by choosing the Use CocoaPods tab when downloading PSPDFKit. If you are a new customer, you can get a demo Podspec URL by clicking on the [trial button on our website][pspdfkit trial]. If you would like to purchase a license, please contact [our sales team][pspdfkit contact sales] with your use case and the features you would like.
+
+To manually integrate PSPDFKit, see [Integrating PSPDFKit Manually][manual integration guide].
+
+## Use Nightly Test Builds
+
+If you have an active license subscription, we can enable access to nightlies on CocoaPods. Once that is done, replace `latest.podspec` with `nightly.podspec` to point to the latest nightly build.
+
+## Use a JSON Podspec
+
+CocoaPods makes a checksum of the JSON representation of your Podspec and keeps it in your `Podfile.lock` file. If your development environment requires you to use a JSON Podspec, you can append `.json` to your CocoaPods URL, like so:
+
+<% if ios? %>
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/pspdfkit/latest.podspec.json'
+end
+```
+
+<% end %>
+
+<% if macos? %>
+
+```ruby
+use_frameworks!
+
+target :YourTargetName do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/latest.podspec.json'
+  platform :osx, '10.12'
+end
+```
+
+<% end %>
+
+To learn more about Podspec checksums, please take a look at the [Why does my team's Podfile.lock Podspec checksums change?][podspec-checksums artsy blog post] blog post.
+
+<% if ios? %>
+
+## dSYM Support
+
+In [PSPDFKit for iOS 7.0.3][7.0.3 changelog], we added dSYM support for CocoaPods for all frameworks. CocoaPods will automatically pick up the dSYMs for improved symbolication. CocoaPods 1.3.0 or later is required.
+
+## Test Targets
+
+You can add PSPDFKit to your test targets like this:
+
+```ruby
+target :YourTargetNameTests do
+  pod 'PSPDFKit',
+      podspec:
+        'https://customers.pspdfkit.com/cocoapods/YOUR_COCOAPODS_KEY_GOES_HERE/pspdfkit/latest.podspec'
+end
+```
+
+You can also use [CocoaPods Inheritance Mode][] to inherit all of your main target’s dependencies by using `inherit! :complete`, like so:
+
+```ruby
+target :YourTargetNameTests do
+  inherit! :complete
+end
+```
+
+<% end %>
+
+[cocoapods getting started]: https://guides.cocoapods.org/using/getting-started.html
+[manual integration guide]: ../../getting-started/integrating-pspdfkit/
+[`podfile`]: https://guides.cocoapods.org/using/the-podfile.html
+[try the demo]: ../../getting-started/try-the-demo/
+[pspdfkit contact sales]: https://pspdfkit.com/sales/
+[podspec-checksums artsy blog post]: https://artsy.github.io/blog/2016/05/03/podspec-checksums/
+[integrating pspdfkit]: ../../getting-started/integrating-pspdfkit/
+[7.0.3 changelog]: https://pspdfkit.com/changelog/ios/#7.0.3
+[cocoapods inheritance mode]: https://guides.cocoapods.org/syntax/podfile.html#inherit_bang

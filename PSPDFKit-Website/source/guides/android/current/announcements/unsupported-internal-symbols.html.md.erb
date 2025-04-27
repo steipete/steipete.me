@@ -1,0 +1,29 @@
+---
+title: Unsupported Private APIs
+section: developers
+---
+
+PSPDFKit for Android ships with a stable and well-documented [public API][api docs], which provides access to all the features PSPDFKit supports. Our framework’s private APIs sit behind these public APIs. Private APIs are not designed for public use and should not be directly accessed by your application code. This article explains what private APIs are and how you can prevent issues that might arise from using them.
+
+## What Are Private APIs?
+
+Private APIs are classes, methods, and fields that are not intended to be accessed directly by framework customers. Private APIs can be easily identified, since their classes are located inside the `com.pspdfkit.framework` Java package.
+
+Furthermore, most private APIs are minified using Android’s R8. Minified classes and methods are smaller and faster than non-optimized classes, and they have intentionally obscured names like `a`, `ab`, and so on, which should signal that that they are not meant for public use. However, some meant-to-be-private classes can’t be obfuscated for technical reasons (e.g. PSPDFKit’s `View` subclasses, which are referenced inside layout files using their names) and are therefore visible inside Android Studio.
+
+Use of private APIs is not prevented by the compiler or IDE but will quickly lead to problems in your app because:
+
+- We don’t provide any guarantees about API stability for non-documented, private APIs. These methods might break without notice, both in structure and behavior.
+- We don’t provide binary compatibility of minified classes. Our build process will yield different symbol names with every version.
+- There is no public documentation for private APIs.
+- We are considering preventing the use of private APIs altogether with future versions of PSPDFKit (similar to Android’s restrictions on private APIs).
+
+> **ℹ Info:** Please note that we can’t give technical support for issues that might arise due to the use of private APIs. If you are using private APIs in your code, you should migrate to a suitable public API replacement. If you have troubles with migrating to public APIs, please [reach out to us on support][support] with your specific use case and problem.
+
+## Migration to Public APIs
+
+If you are using private APIs in your app, you should start your migration to public API counterparts by first searching our [online guides][] and [API reference documentation][api docs] for public APIs that accommodate your use case. Should you not be able to find a suitable public API replacement, please contact our [customer support][support] with your specific use case and problem. We will then advise you on suitable public API replacements and migration strategies.
+
+[online guides]: https://pspdfkit.com/guides/android/current/
+[api docs]: https://pspdfkit.com/api/android/reference/packages.html
+[support]: https://pspdfkit.com/support/request

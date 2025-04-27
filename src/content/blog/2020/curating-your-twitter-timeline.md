@@ -1,17 +1,19 @@
 ---
 title: 'Gardening Your Twitter: Curating Your Timeline'
 pubDate: 2020-10-21T14:00:00.000Z
-description: "Transform your Twitter experience by thoughtfully curating your timeline. I share practical strategies for managing who you follow, how to use Twitter's powerful muting features for both accounts and keywords, and when to consider blocking. Learn why I recommend avoiding hashtags, how to disable retweets selectively, and the advantages of using Twitter's official client over third-party apps. This guide provides actionable advice for creating a Twitter feed that's informative and enjoyable rather than overwhelming, helping you focus on content that matters to you while filtering out noise and negativity."
+description: >-
+  Your timeline defines your Twitter experience. Learn strategies how to pick
+  your followers, how to hide what's not interesting and how to mute negative
+  people and keep Twitter fun for you.
 heroImage: /assets/img/2020/make-twitter-work/gardening-curating.jpg
 tags:
-  - Social Media
-  - Twitter
-  - Productivity
-  - Digital Wellbeing
-  - Content Curation
+  - social
 source: steipete.com
-AIDescription: true
+description: 'Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute nega...'
 ---
+
+::ai[Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute nega...]
+
 
 Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter. 
 

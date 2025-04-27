@@ -1,0 +1,23 @@
+---
+title: Annotation-Saving Mechanism
+section: developers
+---
+
+By default, the [`annotationSaveMode`][] of [`PSPDFDocument`][] is set to `PSPDFAnnotationSaveModeEmbeddedWithExternalFileAsFallback`. This means PSPDFKit will analyze a PDF and see if it can write annotations into it, and if that fails, an external file format will be used to save annotations.
+
+PSPDFKit can write annotations into a PDF under the following conditions:
+
+- The PDF is not password protected. (Note: Some PDFs are protected with an empty password, just to make sure they can’t be modified. PSPDFKit will auto-unlock them but can’t add annotations in such a case.)
+- The PDF must be in a writable location. This is pretty much every folder except the application bundle folder, since that one is signed. If you pre-populate PDFs with your app, they will be in the app bundle and thus not writable. Copy them to the documents folder to make them writable.
+- The PDF must be valid according to the Adobe PDF specification. Some PDFs are broken but still work somewhat, so PSPDFKit can render the content. If PSPDFKit detects a mismatch in the object tree or is unable to find objects, annotation saving will be stopped, since there would be a risk of damaging the document.
+
+If annotations can’t be saved, PSPDFKit uses an internal file format with the default location in `/Library/PrivateDocuments/annotations.pspdfkit`. This file is only intended for internal use. Don’t upload this to your web server, as the file format is subject to change.
+
+PSPDFKit will save “dirty” (changed/created/deleted) annotations on several occasions. Learn more about these triggers [here][saving triggers].
+
+Read more about annotation providers [here][annotation providers].
+
+[`annotationsavemode`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)annotationSaveMode
+[`pspdfdocument`]: https://pspdfkit.com/api/Classes/PSPDFDocument.html
+[saving triggers]: ../../annotations/annotation-and-bookmark-saving-triggers/
+[annotation providers]: ../../importing-exporting/annotation-providers/

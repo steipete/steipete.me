@@ -19,6 +19,9 @@ source: steipete.com
 AIDescription: true
 ---
 
+::ai[div.post-content > img:first-child { width:50% !important; } Jailbreaking is something that’s rarely discussed in the iOS developer community — which is unfortunate, because it’s amazing.]
+
+
 <style type="text/css">
 div.post-content > img:first-child { width:50% !important; }
 </style>

@@ -1,0 +1,88 @@
+---
+title: Document Editor
+section: developers
+---
+
+With PSPDFKit Libraries, the [Document Editor][] allows you to perform various operations on one or more documents in order to produce a new document. The following sections describe the main editing operations available.
+
+## Manipulation of Pages
+
+The following example shows how to use the [Document Editor][] to produce a new document that keeps only pages 0 and 2 from a source document:
+
+```csharp
+var filepath = "documentEditorOutput.pdf";
+var documentEditor = documentToEdit.GetDocumentEditor();
+documentEditor.KeepPages(new List<int> {0, 2});
+documentEditor.SaveDocument(new FileDataProvider(filepath));
+```
+
+This example demonstrates how to remove a set of pages:
+
+```csharp
+var filepath = "documentEditorOutput.pdf";
+var documentEditor = documentToEdit.GetDocumentEditor();
+documentEditor.RemovePages(new List<int> {1, 4});
+documentEditor.SaveDocument(new FileDataProvider(filepath));
+```
+
+Pages can be moved to a new location in the document. To do this, specify the pages you wish to move and the index they should be moved to:
+
+```csharp
+// Move page 1 after index 5.
+documentEditor.MovePages(new List<int> {1}, 5, DocumentEditor.IndexPosition.AfterIndex);
+```
+
+New pages can be added to a document. They can be made with different sizing, rotation, insets, and background colors:
+
+```csharp
+// Add a new page before index 0 with a size of 200x200 and a background of black.
+documentEditor.AddPage(0, DocumentEditor.IndexPosition.BeforeIndex, 200, 200, Rotation._0, Color.Black, new Insets());
+```
+
+All of the events above can be chained to perform multiple synchronous operations to create a single document:
+
+```csharp
+var filepath = "documentEditorOutput.pdf";
+var documentEditor = documentToEdit.GetDocumentEditor();
+documentEditor.RemovePages(new List<int> {1, 4});
+documentEditor.MovePages(new List<int> {1}, 5, DocumentEditor.IndexPosition.AfterIndex);
+documentEditor.SaveDocument(new FileDataProvider(filepath));
+```
+
+## Merging Documents
+
+It’s possible to merge multiple documents together to create one large document.
+
+To do this, we can take one of the documents as a base for the Document Editor and insert the second:
+
+```csharp
+// Insert the second document before the original and export to the temporary file.
+var filepath = "documentEditorOutput.pdf";
+var documentEditor = documentToEdit.GetDocumentEditor();
+documentEditor.importDocument(0, DocumentEditor.IndexPosition.BeforeIndex, new FileDataProvider("secondDocument.pdf"));
+documentEditor.SaveDocument(new FileDataProvider(filepath));
+```
+
+## Changing Page Labels
+
+By default, a PDF’s pages are numbered from 1 to the number of pages contained within it. PDFs often have the page number substituted — or labeled — with some alternative text. For example, the first few pages of a document could be labeled with Roman numerals instead of the usual Western Arabic numerals — e.g. instead of 1, 2, 3, 4, 5, the pages could be labeled I, II, III, IV, V, and then continue on as 6, 7, 8, etc.
+
+After producing a new document by shuffling around, adding, removing, or inserting new pages, it may be necessary to clear the page labels and set new ones.
+
+This example demonstrates how to clear any existing page labels and add custom labels to the first page of the new document:
+
+```csharp
+// Create a Document Editor from a source document.
+var documentEditor = documentToEdit.GetDocumentEditor();
+
+// Clear any existing page labels.
+documentEditor.ClearPageLabels();
+
+// Set custom labels for the first page.
+documentEditor.SetPageLabel(new List<int> {0}, "Test");
+
+// Generate a new document.
+documentEditor.SaveDocument(new FileDataProvider("documentEditorOutput.pdf"));
+```
+
+[document editor]: /api/dotnet/PSPDFKit/PSPDFKit.DocumentEditor.html

@@ -1,0 +1,190 @@
+---
+title: Comparison
+section: developers
+---
+
+Comparison is a feature for visually comparing pages of different documents. It is helpful for various kinds of documents: constructions plans, detailed drawings, or other content that requires precise placement.
+
+All of this can be done with PSPDFKit using the APIs on <% if ios? %>[`PSPDFProcessorConfiguration`][]<% end %><% if android? %>[`PdfProcessorTask`][]<% end %>. The process of preparing documents and comparing them involves a few steps to specify how the comparison should happen. First of all, you create a new <% if ios? %>[`PSPDFProcessorConfiguration`][]<% end%><% if android? %>[`PdfProcessorTask`][]<% end %> from an existing document. Then apply the changes needed to compare documents, which are explained in the sections below. And finally, a document where all the changes and comparisons are visible will be created and saved to any specified location.
+
+**ℹ️ Note:** Using these APIs will require the Comparison component to be enabled in your license.
+
+## Change the Stroke Color of Pages
+
+One of the more helpful parts of Comparison is the ability to change the stroke color of pages, making it easier to see differences on pages when you have multiple documents that mostly look the same. Setting a different stroke color for documents is usually the first step when trying to compare documents, as this will enable you to make any differences between the pages more obvious.
+
+This will only affect stroke objects in the PDF, and it will leave the color of other elements, such as text or images, unchanged.
+
+<% if ios? %>
+
+The stroke color of a page can be changed via [`changeStrokeColorOnPageAtIndex:toColor:`][]:
+
+[==
+
+```swift
+let document: PSPDFDocument = // Document whose stroke color should be changed.
+let configuration = PSPDFProcessorConfiguration(document: document)!
+configuration.changeStrokeColorOnPage(at: 0, to: .orange)
+
+let processor = PSPDFProcessor(configuration: configuration, securityOptions: nil)
+let destinationURL: URL = // URL for the new document with the changed stroke color.
+try! processor.write(toFileURL: destinationURL)
+```
+
+```objc
+PSPDFDocument *document = // Document whose stroke color should be changed.
+PSPDFProcessorConfiguration *configuration = [[PSPDFProcessorConfiguration alloc] initWithDocument:document];
+[configuration changeStrokeColorOnPageAtIndex:0 toColor:UIColor.orangeColor];
+
+PSPDFProcessor *processor = [[PSPDFProcessor alloc] initWithConfiguration:configuration securityOptions:nil];
+NSURL *destinationURL = // URL for the new document with the changed stroke color.
+[processor writeToFileURL:destinationURL];
+```
+
+==]
+
+<% end %>
+
+<% if android? %>
+
+The stroke color of a page can be changed via [`changeStrokeColorOnPage()`][]:
+
+[==
+
+```kotlin
+val pageIndex = 0
+val orange = 0xffa500
+val task = PdfProcessorTask.fromDocument(document)
+task.changeStrokeColorOnPage(pageIndex, orange)
+
+PdfProcessor.processDocument(task, outputFile)
+```
+
+```java
+int pageIndex = 0;
+int orange = 0xffa500;
+PdfProcessorTask task = PdfProcessorTask.fromDocument(document);
+task.changeStrokeColorOnPage(pageIndex, orange);
+
+PdfProcessor.processDocument(task, outputFile);
+```
+
+==]
+
+<% end %>
+
+The outcome of changing the stroke color of a PDF page to a specific color will look something like the images below.
+
+|                     |                                                                                                 |     |
+| ------------------- | ----------------------------------------------------------------------------------------------- | --- |
+| Original Document   | <img title="Original Document" src="/images/guides/ios/features/comparison/first_original.png"> |
+| Orange Stroke Color | <img title="Orange Stroke Color" src="/images/guides/ios/features/comparison/first_orange.png"> |
+|                     |                                                                                                 |     |
+
+## Merge Pages of Documents
+
+The essential part of Comparison is merging the pages of two (or more) documents.
+
+Be sure to configure the document pages by changing the stroke color and setting a blend mode accordingly. This way, it’s easier to make out differences on the pages. For example, comparing one document with a green stroke color and another one with a red stroke color and using a darkening blend mode works pretty well. Additionally, all the changes can easily be seen at a glance.
+
+Trying out various stroke colors and blend modes will result in different looking comparisons, and you can make sure the final result fits your needs.
+
+<% if ios? %>
+
+You can use [`mergePageFromDocument:password:sourcePageIndex:destinationPageIndex:transform:blendMode:`][] for merging. This method will merge the specified page at `sourcePageIndex` from the passed document and into the `destinationPageIndex` of the current document of `PSPDFProcessorConfiguration`. Additionally, you can specify the transform that should be applied when merging and choose how the pages should be merged via a blend mode. If the passed document is encrypted, you can also specify the `password` to make sure it will be unlocked:
+
+[==
+
+```swift
+let greenDocument: PSPDFDocument = // First document for comparison.
+let redDocument: PSPDFDocument = // Second document for comparison.
+
+let configuration = PSPDFProcessorConfiguration(document: greenDocument)!
+configuration.mergePage(from: redDocument, password: nil, sourcePageIndex: 0, destinationPageIndex: 0, transform: .identity, blendMode: .darken)
+
+let processor = PSPDFProcessor(configuration: configuration, securityOptions: nil)
+let mergedDocumentURL: URL = // URL for the document with merged pages.
+try! processor.write(toFileURL: mergedDocumentURL)
+```
+
+```objc
+PSPDFDocument *greenDocument =  // First document for comparison.
+PSPDFDocument *redDocument = // Second document for comparison.
+
+PSPDFProcessorConfiguration *configuration = [[PSPDFProcessorConfiguration alloc] initWithDocument:greenDocument];
+[configuration mergePageFromDocument:redDocument password:nil sourcePageIndex:0 destinationPageIndex:0 transform:CGAffineTransformIdentity blendMode:kCGBlendModeDarken];
+
+PSPDFProcessor *processor = [[PSPDFProcessor alloc] initWithConfiguration:configuration securityOptions:nil];
+NSURL *mergedDocumentURL = // URL for the document with merged pages.
+[processor writeToFileURL:mergedDocumentURL];
+```
+
+==]
+
+<% end %>
+
+<% if android? %>
+
+You can use [`mergePage(PagePdf, int, BlendMode)`][] for merging. This method will merge the given page object onto the specified destination page of the currently processed document. Additionally, you can specify a transformation that should be applied before merging and choose the desired blend mode that should be used:
+
+[==
+
+```kotlin
+// First document for comparison with strokes colored to green.
+val greenDocument: PdfDocument = ...
+// Second document for comparison with strokes colored to red.
+val redDocument: PdfDocument = ...
+
+val destinationPageIndex = 0
+val task = PdfProcessorTask.fromDocument(greenDocument)
+task.mergePage(PagePdf(context, redDocument), destinationPageIndex, BlendMode.DARKEN)
+
+PdfProcessor.processDocument(task, outputFile)
+```
+
+```java
+// First document for comparison with green strokes.
+PdfDocument greenDocument = ...;
+// Second document for comparison with red strokes.
+PdfDocument redDocument = ...;
+
+int destinationPageIndex = 0;
+PdfProcessorTask task = PdfProcessorTask.fromDocument(greenDocument);
+task.mergePage(new PagePdf(context, redDocument), destinationPageIndex, BlendMode.DARKEN);
+
+PdfProcessor.processDocument(task, outputFile);
+```
+
+==]
+
+<% end %>
+
+This is the result of the above logic comparing two different but similar looking document pages that had their stroke colors previously changed:
+
+|                                                                                                         |                                                                                                      |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| <center>Page with green stroke color</center>                                                           | <center>Page with red stroke color</center>                                                          |
+| <img title="Page with green stroke color" src="/images/guides/ios/features/comparison/first_green.png"> | <img title="Page with red stroke color" src="/images/guides/ios/features/comparison/second_red.png"> |
+
+|                                                                                    |
+| ---------------------------------------------------------------------------------- |
+| <center>Merged Pages</center>                                                      |
+| <img title="Merged Pages" src="/images/guides/ios/features/comparison/merged.png"> |
+|                                                                                    |
+
+Comparison currently only allows merging single pages, and it requires both pages to have the same dimensions.
+
+## Examples
+
+There are also a few runnable examples in our [example projects][example projects] that show the available Comparison API in action. <% if ios? %>These examples can be found in [PSPDFCatalog][] at `ComparisonExample.swift` and `PSCComparisonExample.m`, and they provide code for Swift and Objective-C example use cases, respectively.<% end %><% if android? %>These examples can be found in `DocumentComparisonExample.kt` in the Catalog app.<% end %>
+
+[`pspdfprocessorconfiguration`]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessorConfiguration.html
+[`changestrokecoloronpageatindex:tocolor:`]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessorConfiguration.html#/c:objc(cs)PSPDFProcessorConfiguration(im)changeStrokeColorOnPageAtIndex:toColor:
+[`mergepagefromdocument:password:sourcepageindex:destinationpageindex:transform:blendmode:`]: https://pspdfkit.com/api/ios/Classes/PSPDFProcessorConfiguration.html#/c:objc(cs)PSPDFProcessorConfiguration(im)mergePageFromDocument:password:sourcePageIndex:destinationPageIndex:transform:blendMode:
+
+[example projects]: /guides/<%= current_platform %>/current/getting-started/example-projects/
+[pspdfcatalog]: /guides/ios/current/getting-started/example-projects/#pspdfcatalog
+
+[`pdfprocessortask`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/processor/PdfProcessorTask.html
+[`changestrokecoloronpage()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/processor/PdfProcessorTask.html#changeStrokeColorOnPage(int,%20int)
+[`mergepage(pagepdf, int, blendmode)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/processor/PdfProcessorTask.html#mergePage(com.pspdfkit.document.processor.PagePdf,%20int,%20com.pspdfkit.annotations.BlendMode)

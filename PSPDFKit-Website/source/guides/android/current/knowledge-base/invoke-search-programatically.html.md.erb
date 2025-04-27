@@ -1,0 +1,34 @@
+---
+title: How to invoke search UI in the PdfActivity programatically
+section: knowledge-base
+---
+
+If you want to show search view and/or start search in the search view you can use the following method in [`PdfActivity`][].
+
+You'll need to register PSPDFKit views visibility change listener in order to start search immediately after search view is shown:
+
+```CustomActivity.kt
+pspdfKitViews.addOnVisibilityChangedListener(object : OnVisibilityChangedListener {
+    override fun onShow(view: View) {
+        if (view is PdfSearchViewInline) {
+            view.setInputFieldText("query", true)
+        } else if (view is PdfSearchViewModular) {
+            view.setInputFieldText("query", true)
+        }
+        pspdfKitViews.removeOnVisibilityChangedListener(this)
+    }
+
+    override fun onHide(view: View) {
+    }
+})
+```
+
+You can then show the search view via:
+
+```CustomActivity.kt
+pspdfKitViews.showView(PSPDFKitViews.Type.VIEW_SEARCH)
+```
+
+If you want to invoke search programatically or if you want to build custom search UI take a look at our [text search guide][] that explains all aspects of search and its integration in your UI.
+
+[text search guide]: ../../features/text-search/

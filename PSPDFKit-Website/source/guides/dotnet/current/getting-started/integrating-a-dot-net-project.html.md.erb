@@ -1,0 +1,146 @@
+---
+title: Integrate PSPDFKit Libraries into a .NET Framework/Mono Project
+section: developers
+---
+
+The PSPDFKit .NET Library was built to work with a wide variety of .NET frameworks. In this guide, we’ll show you how to integrate PSPDFKit Libraries for .NET into a .NET/Mono project.
+
+## Requirements
+
+#### macOS
+
+- Mono (`brew install mono`)
+- GDI Plus (`brew install mono-libgdiplus`, for rendering only)
+
+#### Linux
+
+- Mono (`sudo apt install mono-devel`)
+- msbuild (`sudo apt install msbuild`)
+- GDI Plus (`sudo apt install libgdiplus`, for rendering only)
+
+#### Windows
+
+- [.NET Framework][dot-net-framework-windows]
+
+### Create a New .NET Project
+
+There are many ways to create a project using the .NET framework. For Windows, [Visual Studio][vs-2019] is a good option, and on macOS, [Visual Studio for Mac][vs-2019-mac] is an option. On Linux, you may want to opt for [MonoDevelop][]. For a cross-platform solution, [JetBrains Rider][jetbrains-rider] is an option. The decision mainly comes down to your project’s supported operating systems and business considerations.
+
+### Create the PSPDFKit NuGet Source
+
+Rather than targeting a package held at nuget.org, you will have to set up a configuration to point to a local package.
+
+The local configuration is described by a file named `nuget.config`, which is placed next to the solution file (e.g `Test.sln`).
+
+The contents of the file should contain an XML element, `packageSources`, which describes where to find NuGet packages — as a child of a root node named `configuration`.
+
+#### If nuget.config Already Exists
+
+If `nuget.config` already exists, add the extra `packageSources` entry shown below:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+   <packageSources>
+       ...
+       <add key="PSPDFKitSource" value="path/to/directoryContainingNupkg" />
+       ...
+   </packageSources>
+</configuration>
+```
+
+#### If There Is No nuget.config File Present
+
+If there is no `nuget.config` file present, create the `nuget.config` file and copy and paste the following source into the newly created file:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+   <packageSources>
+       <add key="PSPDFKitSource" value="path/to/directoryContainingNupkg" />
+   </packageSources>
+</configuration>
+```
+
+Edit the value of the contents to correctly refer to the location of the directory containing the `PSPDFKit.NET-*.*.*.nupkg package` — for example, `/Users/me/nugetPackages`.
+
+### Add the PSPDFKit NuGet Package
+
+Now that you have defined your NuGet source, it’s possible to add the PSPDFKit.NET package.
+
+To do this, you can add a [`PackageReference`][package-reference] to the project file, or if a package already exists, add a reference in the `packages.config`. The recommended process is to use a [`PackageReference`][package-reference], which is the process that will be explained here. (If you would like to migrate from a `packages.config`, please refer to the [Microsoft documentation][packages-config-migration], or if you would like to continue using the `packages.config` file, a guide on how to add references can be found at [packages.config reference][packages-reference-config].)
+
+- With a text editor, open the project file you would like to add the PSPDFKit Libraries package to (e.g `Test.csproj`).
+- Add a `PackageReference` to this file and replace the version number with the PSPDFKit Libraries version you require. You may use `*` in the version to support [floating versions][floating-versions]:
+
+```
+<ItemGroup>
+    <!-- ... -->
+    <PackageReference Include="PSPDFKit.NET" Version="*.*.*" />
+    <!-- ... -->
+</ItemGroup>
+```
+
+- Install the package from the directory holding the solution file (`Test.sln`).
+  - Mac: `/Library/Frameworks/Mono.framework/Versions/Current/bin/msbuild restore`
+  - Linux: `msbuild restore`
+  - Windows: `msbuild.exe restore`
+
+You now have your project set up to use the PSPDFKit .NET package. You will need an internet connection to retrieve the dependency projects.
+
+### Package Installation Options
+
+It should be noted that there are a variety of ways to add a package to a project:
+
+- [Visual Studio][vs-install-packages]
+- [Visual Studio on Mac][vs-install-packages-mac]
+- [dotnet CLI][dot-net-cli-tool]
+- [JetBrains Rider][jetbrains-rider-packages]
+
+Please refer to each link for more specific information.
+
+## Use PSPDFKit Libraries for .NET
+
+Now that PSPDFKit .NET is added, you can use the SDK in your application. You will have to call the [`Initialize`][] method prior to calling any other SDK method.
+
+Here’s a small example showing how to import Instant JSON and save the document:
+
+```csharp
+using System;
+using PSPDFKit;
+
+namespace Test
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            Sdk.Initialize("YOUR_LICENSE_KEY_GOES_HERE");
+            var document = new Document(new FileDataProvider("myDocument.pdf"));
+            document.ImportJson(new FileDataProvider("myJson.json"));
+            document.Save(new DocumentSaveOptions
+            {
+                incremental = true
+            });
+        }
+    }
+}
+```
+
+For more examples on how to use the SDK, please refer to both the Catalog example in `PSPDFKit.NET-{version}.zip` and the [API documentation][api-documentation].
+
+[vs-2019]: https://docs.microsoft.com/en-us/visualstudio/ide/creating-solutions-and-projects
+[vs-2019-mac]: https://docs.microsoft.com/en-us/visualstudio/mac/create-new-projects?view=vsmac-2019
+[monodevelop]: https://www.monodevelop.com/
+[jetbrains-rider]: https://www.jetbrains.com/rider/
+[dot-net-framework-windows]: https://docs.microsoft.com/en-us/dotnet/framework/install/on-windows-10
+[package-reference]: https://docs.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files
+[packages-config-migration]: https://docs.microsoft.com/en-us/nuget/consume-packages/migrate-packages-config-to-package-reference
+[packages-reference-config]: https://docs.microsoft.com/en-us/nuget/reference/packages-config
+[floating-versions]: https://docs.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#floating-versions
+[vs-install-packages]: https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio
+[vs-install-packages-mac]: https://docs.microsoft.com/en-us/visualstudio/mac/nuget-walkthrough?toc=%2Fnuget%2Ftoc.json&view=vsmac-2019
+[dot-net-cli-tool]: https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli
+[jetbrains-rider-packages]: https://www.jetbrains.com/help/rider/Using_NuGet.html
+[api-documentation]: /api/dotnet/
+[`initialize`]: /api/dotnet/PSPDFKit/PSPDFKit.Sdk.html#PSPDFKit_Sdk_Initialize_System_String_

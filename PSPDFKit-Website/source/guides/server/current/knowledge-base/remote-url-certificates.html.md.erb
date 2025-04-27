@@ -1,0 +1,16 @@
+---
+title: "'Unknown CA' and other SSL certificate issues when adding document from a URL"
+section: knowledge-base
+---
+
+Question: What to do when I can't upload document from a URL because of the 'Unknown CA' error or other issues related to SSL certificates?
+
+Answer:
+
+In order to upload a document from a URL, PSPDFKit Server needs to make an HTTP request to fetch it from the given server. It's unable to complete this request due to invalid, expired, or malformed SSL certificates.
+
+The most common issues related to the certificates are:
+- certificate is expired
+- certificates in a chain are not ordered correctly
+
+If you encounter issues related to SSL certificates, we recommend checking your certificates with SSL Labs online tool: https://www.ssllabs.com/ssltest/. Also, you can read about best practices when it comes to deploying and managing SSL certificates in this guide: https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices.

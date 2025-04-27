@@ -1,0 +1,102 @@
+---
+title: Document Interactions
+section: developers
+---
+
+After loading a PDF document, you can programmatically interact with it, which allows you to scroll to different pages or zoom in and out. All of the interaction APIs are available on the [`PdfFragment`][], which is the core PDF viewer. Furthermore, most methods are also available on the [`PdfActivity`][].
+
+## Changing the Current Page
+
+While the user can manually change the current page by doing a swipe gesture on the device, you can also programmatically change pages using [`setPageIndex(int)`][] and [`setPageIndex(int, boolean)`][]. You can fetch the current page using [`getPageIndex()`][]:
+
+[==
+
+```kotlin
+val startPage = fragment.getPageIndex()
+
+// Change to page 13 (zero-based page numbers).
+fragment.pageIndex = 12
+
+// Go to the last page using a transitioning animation.
+val lastPage = document.pageCount - 1
+fragment.setPageIndex(lastPage, true)
+
+// Go back to the page where you started off.
+fragment.setPageIndex(startPage)
+```
+
+```java
+final int startPage = fragment.getPageIndex();
+
+// Change to page 13 (zero-based page numbers).
+fragment.setPageIndex(12);
+
+// Go to the last page using a transitioning animation.
+int lastPage = document.getPageCount() - 1;
+fragment.setPageIndex(lastPage, true);
+
+// Go back to the page where you started off.
+fragment.setPageIndex(startPage);
+```
+
+==]
+
+**💡 Tip:** While [`setPageIndex(int, boolean)`][] gives you complete control of choosing whether or not a page transitioning animation should be performed, [`setPageIndex(int)`][] will intelligently decide whether or not an animation is suitable for the current situation.
+
+### Restore the Last Viewed Page
+
+By default, [`PdfFragment`][] will remember the last viewed page of a document and will restore it when loading the document at a later point. This usually provides a better experience when using a document across several sessions. If you would like to disable this mechanism, you can set [`PdfConfiguration#restoreLastViewedPage`][] to `false`:
+
+[==
+
+```kotlin
+val config = PdfConfiguration.Builder()
+    .restoreLastViewedPage(false)
+    .build()
+```
+
+```java
+final PdfConfiguration config = new PdfConfiguration.Builder()
+    .restoreLastViewedPage(false)
+    .build();
+```
+
+==]
+
+## Zooming In to the Page
+
+You can programmatically zoom in to the current page using [`zoomTo`][], which zooms to a specific scale. If you would like to apply a scale factor to the current scale (e.g. increase page scale by 2), you can use [`zoomBy`][]. Furthermore, you can use [`zoomTo(RectF, ...)`][] to zoom in to a [`RectF`][] of any page (e.g. zoom in to a sentence or annotation).
+
+For more information on zooming, have a look at our [Zooming][pspdfkit guide zooming] guide. You can also try out the `ZoomExample` inside our Catalog app:
+
+[==
+
+```kotlin
+// Zoom to the annotation.
+val duration = 250L
+fragment.zoomTo(annotation.boundingBox, annotation.pageIndex, duration)
+```
+
+```java
+RectF annotationPosition = annotation.getBoundingBox();
+int page = annotation.getPageIndex();
+long duration = 250;
+
+// Zoom to the annotation.
+fragment.zoomTo(annotationPosition, page, duration);
+```
+
+==]
+
+**💡 Tip:** [`zoomTo(RectF, ...)`][] will automatically go to the given page if some other page is currently being viewed. There is no need to switch the page manually!
+
+[`pdfconfiguration#restorelastviewedpage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#restoreLastViewedPage(boolean)
+[`pspdfappcompatactivity`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PSPDFAppCompatActivity.html
+[`getpageindex()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#getPageIndex()
+[`setpageindex(int)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setPageIndex(int)
+[`setpageindex(int, boolean)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#setPageIndex(int,%20boolean)
+[`zoomto`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#zoomTo(int,%20int,%20int,%20float,%20long)
+[`zoomby`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#zoomBy(int,%20int,%20int,%20float,%20long)
+[`zoomto(rectf, ...)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#zoomTo(android.graphics.RectF,%20int,%20long)
+[`rectf`]: https://developer.android.com/reference/android/graphics/RectF.html
+[pspdfkit guide zooming]: ../../miscellaneous/zooming

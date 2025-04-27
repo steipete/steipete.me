@@ -1,0 +1,117 @@
+---
+title: Try the Demo
+section: developers
+
+order: 100
+alternate_platform_links:
+  web: pspdfkit-for-web/try-the-demo
+---
+
+<div class="alert alert-warning hide-in-trial">
+<p><strong>ℹ️ Note:</strong> This article is about trying PSPDFKit for evaluation purposes. If you don’t yet have a trial license, fill out the <a href="https://pspdfkit.com/try">trial form</a> to get one.</p>
+</div>
+
+You can try PSPDFKit in a few simple steps and get the library up and running in your app with little to no effort.
+
+## Integrate the PSPDFKit Library
+
+Inside your app’s `build.gradle` file, add the following configuration:
+
+```app/build.gradle
+repositories {
+    jcenter()
+    // Add your additional Maven repos here.
+
+    maven {
+        url 'https://customers.pspdfkit.com/maven/'
+
+        credentials {
+            username 'pspdfkit'
+            password 'YOUR_MAVEN_KEY_GOES_HERE'
+        }
+    }
+}
+
+dependencies {
+    ...
+    implementation 'com.pspdfkit:pspdfkit:<%= latest_version(:android) %>'
+}
+```
+
+<p class="force-replace-tokens">
+If you prefer, you can instead <a href="https://customers.pspdfkit.com/download/YOUR_MAVEN_KEY_GOES_HERE">download the framework</a> directly and then follow the <a href="../../getting-started/integrating-pspdfkit/#manual-library-file-integration">Manual Library File Integration</a> guide.
+</p>
+
+Next, add the trial license key to `AndroidManifest.xml` inside the `<application/>` tag:
+
+```AndroidManifest.xml
+<meta-data
+    android:name="pspdfkit_license_key"
+    android:value="YOUR_LICENSE_KEY_GOES_HERE"/>
+```
+
+Build your project by running `./gradlew compileDebugSources` from the command line, or by selecting Build > Make Project within Android Studio.
+
+## Open a PDF Document
+
+The easiest way to display a PDF document is by viewing it with [`PdfActivity`][]. Here’s how you can do this.
+
+1.  Copy a PDF document into the `src/main/assets/` directory of your Android project — for example, `src/main/assets/my-document.pdf`.
+
+2.  Add [`PdfActivity`][] to `AndroidManifest.xml` right below your own `MainActivity` (or below any other launcher activity your app defines):
+
+    ```AndroidManifest.xml
+    <application>
+        <activity
+            android:name="com.pspdfkit.ui.PdfActivity"
+            android:windowSoftInputMode="adjustNothing" />
+    </application>
+    ```
+
+3.  Within `MainActivity`, create the required `config` and launch [`PdfActivity`][]:
+
+    [==
+
+    ```MainActivity.kt
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            // Using the configuration builder, you can define options for the activity.
+            val config = PdfActivityConfiguration.Builder(this).build()
+
+            // Launch the activity, viewing the PDF document directly from the assets.
+            PdfActivity.showDocument(this, Uri.parse("file:///android_asset/my-document.pdf"), config)
+        }
+    }
+    ```
+
+    ```MainActivity.java
+    public class MainActivity extends AppCompatActivity {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            // Using the configuration builder, you can define options for the activity.
+            final PdfActivityConfiguration config = new PdfActivityConfiguration.Builder(this).build();
+
+            // Launch the activity, viewing the PDF document directly from the assets.
+            PdfActivity.showDocument(this, Uri.parse("file:///android_asset/my-document.pdf"), config);
+        }
+    }
+    ```
+
+    ==]
+
+> **💡 Tip**: If you’d like, you can use [`PdfActivityConfiguration.Builder`][] to tweak features of the launched activity.
+
+### Using PSPDFKit Examples
+
+<p class="force-replace-tokens">
+<a href="https://customers.pspdfkit.com/download/YOUR_MAVEN_KEY_GOES_HERE">The framework download</a> includes examples that will help you start developing with PSPDFKit faster. It includes:</p>
+
+- `examples/catalog` — The PSPDFKit Catalog with a comprehensive set of examples, ranging from API usage examples to complex UI customization examples.
+- `examples/instant` — The PSPDFKit Instant example showing simple integration of PSPDFKit Instant with our Web example server. Read the [PSPDFKit Instant Getting Started guide][] for more information.
+- `examples/simple` — A simple PSPDFKit integration example. You can use this example as scaffolding for your new apps that are built around PSPDFKit.
+
+[pspdfkit instant getting started guide]: ../../pspdfkit-instant/getting-started/

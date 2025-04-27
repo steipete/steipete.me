@@ -1,0 +1,200 @@
+---
+title: Document Editing
+section: developers
+---
+
+Document Editor offers you and your users a whole host of document editing features, including creation of new pages, page duplication, reordering, rotation or deletion, and the ability to create a new document from selected pages.
+
+The editor is integrated with the [`PdfActivity`][] as a drop-in replacement for the original `PdfThumbnailGrid`. To switch into document editing mode, simply press the thumbnail grid menu option and the document page grid will be displayed. You can begin editing by pressing the floating action button, or alternatively, by long pressing any page.
+
+<figure>
+  <video src="/images/guides/android/document-editor/enter-document-editor.android.mp4" class="no-mejs" width="65%" autoplay playsinline loop muted></video>
+</figure>
+
+> **ℹ️ Note:** If document editing isn’t enabled in your license, the standard [`PdfThumbnailGrid`][] will be used.
+
+## Document Editing Features
+
+Once in editing mode, the toolbar will show all editing options available. Furthermore, the floating action button will allow the creation of new pages.
+
+<img src="/images/guides/android/document-editor/toolbar-document-editor-android.png" srcset="/images/guides/android/document-editor/toolbar-document-editor-android@2x.png 2x">
+
+The following is a list of currently supported editing actions:
+
+- Reordering pages via drag and drop
+- Page rotation 90 degrees clockwise
+- Duplication of pages
+- Deletion of existing pages
+- Multi-selection of pages
+- Full undo/redo support and discarding of all changes
+- Saving changes back to the original document
+- Saving changes to a given destination
+- Exporting selected pages into a new document
+- Importing a new document selected from the device storage
+
+When saving changes to a given destination or exporting selected pages into a new document, Document Editor will open the Storage Access Framework file picker by default in order to select a destination file. To modify the default behavior with a custom file picker, use [`com.pspdfkit.ui.PdfThumbnailGrid#setFilePicker(FilePicker)`][].
+
+> **ℹ️ Note:** Page rotation, duplication, and deletion are also possible when selecting multiple pages.
+
+<figure>
+  <video src="/images/guides/android/document-editor/drag-document-editor.android.mp4" class="no-mejs" width="65%" autoplay playsinline loop muted></video>
+</figure>
+
+[`PdfDocumentEditor`][] can be retrieved via [`PdfDocumentEditorFactory`][]:
+
+[==
+
+```kotlin
+val documentEditor = PdfDocumentEditorFactory.createForDocument(document)
+```
+
+```java
+PdfDocumentEditor documentEditor = PdfDocumentEditorFactory.createForDocument(document)
+```
+
+==]
+
+### Transactions
+
+Transactions allow for managing batches of operations as single units. A transaction is a change that occurred because of an operation performed by the Document Editor that can be undone/redone. The kind of operation performed is specified in [`EditingOperation`][] and may be one of the following: `REMOVE`, `MOVE`, `INSERT`, or `ROTATE`.
+
+- [`PdfDocumentEditor#beginTransactions()`][] begins a transaction.
+- [`PdfDocumentEditor#isTransactionActive()`][] checks if there is currently an active transaction.
+- [`PdfDocumentEditor#discardTransaction()`][] discards the current batch of document operations.
+- [`PdfDocumentEditor#commitTransaction()`][] ends a batch of Document Editor operations and commits them immediately.
+
+### Creating New Pages
+
+While in editing mode, you can press the floating action button to add a new page. By default, tapping this will display the [`NewPageDialog`][], allowing you to configure the new page (various page patterns, background colors, page sizes, and landscape or portrait orientation).
+
+#### New Page Factories
+
+Document Editor will add [`NewPage`][] instances it receives from the set [`NewPageFactory`][]. You can set a factory by calling [`PdfThumbnailGrid#setNewPageFactory`][]. Here are the existing factories:
+
+- [`DialogNewPageFactory`][] — This is the default factory. It uses the [`NewPageDialog`][] to configure and create a [`NewPage`][] that will be added to the document.
+- [`ValueNewPageFactory`][] — This factory will immediately return a [`NewPage`][] instance that is set via the factory’s constructor method.
+
+[==
+
+```kotlin
+val factory = ValueNewPageFactory(NewPage.emptyPage(NewPage.PAGE_SIZE_A4).build())
+thumbnailGrid.setNewPageFactory(factory)
+```
+
+```java
+final NewPageFactory factory = new ValueNewPageFactory(NewPage.emptyPage(NewPage.PAGE_SIZE_A4).build());
+thumbnailGrid.setNewPageFactory(factory);
+```
+
+==]
+
+#### Custom Page Templates
+
+To define the list of page templates that should be offered in the [`NewPageDialog`][], pass over a list of [`PageTemplate`][] instances when calling [`NewPageDialog.show()`][]. Inside Document Editor (i.e. when using the [`PdfThumbnailGrid`][]), you can pass over the list of page templates to the used [`DialogNewPageFactory`][]:
+
+[==
+
+```kotlin
+// Load a page template from a PDF file.
+val pageIndex = 8
+val template = PageTemplate(
+    PdfDocumentLoader.openDocument(this, DocumentSource(AssetDataProvider("Guide-v4.pdf"))),
+    pageIndex,
+    getString(R.string.page_template_title),
+    ContextCompat.getDrawable(this, R.drawable.page_template_preview)
+))
+// Set up the Document Editor to show the desired list of page templates.
+thumbnailGrid.setNewPageFactory(DialogNewPageFactory(
+    supportFragmentManager,
+    null,
+    listOf(template)
+))
+```
+
+```java
+// Load a page template from a PDF file.
+final int pageIndex = 8;
+final PageTemplate template = new PageTemplate(
+    PdfDocumentLoader.openDocument(this, new DocumentSource(new AssetDataProvider("Guide-v4.pdf"))),
+    pageIndex,
+    getString(R.string.page_template_title),
+    ContextCompat.getDrawable(this, R.drawable.page_template_preview)
+));
+// Set up the Document Editor to show the desired list of page templates.
+thumbnailGrid.setNewPageFactory(new DialogNewPageFactory(
+    getSupportFragmentManager(),
+    null,
+    pageTemplates
+));
+```
+
+==]
+
+> **💡 Tip:** If you want to see a runnable example for custom page templates, check out `CustomPageTemplatesExample` in our Catalog app.
+
+### Document Editor Toolbar
+
+By default, Document Editor uses the [`DocumentEditingToolbar`][] to provide the primary editing actions. You can replace this toolbar with your own UI implementation by registering an [`OnEditingModeChangeListener`][] using [`addOnDocumentEditingModeChangeListener()`][] on your thumbnail grid, like so:
+
+[==
+
+```kotlin
+thumbnailGrid.addOnDocumentEditingModeChangeListener(myListener)
+```
+
+```java
+thumbnailGrid.addOnDocumentEditingModeChangeListener(myListener);
+```
+
+==]
+
+Whenever your listener’s [`onEnterDocumentEditingMode()`][] is called, your listener is expected to show the custom UI (or the default toolbar). In the following example, the listener will create the default [`DocumentEditingToolbar`][] and bind it to the Document Editor controller:
+
+[==
+
+```kotlin
+override fun onEnterDocumentEditingMode(controller: DocumentEditingController) {
+    val documentEditingToolbar = DocumentEditingToolbar(context)
+    documentEditingToolbar.bindController(controller)
+
+    // This is used to display the toolbar within a `ToolbarCoordinatorLayout`.
+    toolbarCoordinatorLayout.displayContextualToolbar(documentEditingToolbar, true)
+}
+```
+
+```java
+@Override
+public void onEnterDocumentEditingMode(@NonNull DocumentEditingController controller) {
+    final DocumentEditingToolbar documentEditingToolbar = new DocumentEditingToolbar(context);
+    documentEditingToolbar.bindController(controller);
+
+    // This is used to display the toolbar within a `ToolbarCoordinatorLayout`.
+    toolbarCoordinatorLayout.displayContextualToolbar(documentEditingToolbar, true);
+}
+```
+
+==]
+
+[`onenterdocumenteditingmode()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/DocumentEditingManager.OnDocumentEditingModeChangeListener.html#onEnterDocumentEditingMode(com.pspdfkit.ui.special_mode.controller.DocumentEditingController)
+[`documenteditingtoolbar`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/toolbar/DocumentEditingToolbar.html
+[`oneditingmodechangelistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/DocumentEditingManager.OnDocumentEditingModeChangeListener.html
+[`addondocumenteditingmodechangelistener()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html#addOnDocumentEditingModeChangeListener(com.pspdfkit.ui.special_mode.manager.DocumentEditingManager.OnDocumentEditingModeChangeListener)
+[`newpage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/processor/NewPage.html
+[`pdfthumbnailgrid#setnewpagefactory`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html#setNewPageFactory(com.pspdfkit.document.editor.page.NewPageFactory)
+[`newpagefactory`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/NewPageFactory.html
+[`newpagefactory.onnewpagereadylistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/NewPageFactory.OnNewPageReadyListener.html
+[`dialognewpagefactory`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/DialogNewPageFactory.html
+[`valuenewpagefactory`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/DialogNewPageFactory.html
+[`newpagedialog`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/NewPageDialog.html
+[`newpagedialog.show()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/NewPageDialog.html#show(androidx.fragment.app.FragmentManager,%20com.pspdfkit.utils.Size,%20com.pspdfkit.document.editor.page.NewPageDialog.Callback)
+[`pagetemplate`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/page/PageTemplate.html
+[`pdfthumbnailgrid`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html
+[`com.pspdfkit.ui.pdfthumbnailgrid#setfilepicker(filepicker)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfThumbnailGrid.html#setFilePicker(com.pspdfkit.document.editor.FilePicker)
+[`pdfdocumenteditor`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditor.html
+[`pdfdocumenteditorfactory`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditorFactory.html
+[page creator]: /images/guides/android/document-editor/page-creator-document-editor.android.gif
+[`pdfdocumenteditor#begintransactions()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditor.html#beginTransactions()
+[`pdfdocumenteditor#istransactionactive()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditor.html#isTransactionActive()
+[`pdfdocumenteditor#discardtransaction()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditor.html#discardTransaction()
+[`pdfdocumenteditor#committransaction()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/editor/PdfDocumentEditor.html#commitTransaction()
+[`editingoperation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/undo/EditingOperation.html

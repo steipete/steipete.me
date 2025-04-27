@@ -1,0 +1,108 @@
+---
+title: Overview
+section: developers
+
+order: 1
+alternate_platform_links:
+  ios: getting-started/integrating-pspdfkit
+  android: getting-started/integrating-pspdfkit
+---
+
+PSPDFKit for Web is a drop-in solution for web apps that enables your users to view, edit, and collaborate on PDF documents. Web comes with the same usability, performance, and support you’ve come to expect from our industry-leading mobile PDF frameworks.
+
+Our PDF Web Viewer is highly configurable and comes with a rich [API][api web] to customize appearance, behavior, and content. The product is fully responsive and provides all features on desktop as well as tablet or mobile views.
+
+All modules can be used independent of your current backend and frontend languages. We provide [example projects][example projects web] for server-backed installations on Node.js and Ruby on Rails, as well as a client-only webpack installation. We also have a [hosted example app][] in case you want to quickly inspect features.
+
+We regularly release new updates, which are announced via [Twitter][], our [blog][], and a [newsletter you can subscribe to][].
+
+If you experience any problems with PSPDFKit for Web or PSPDFKit Server, please look at our [Troubleshooting][troubleshooting web] section.
+
+PSPDFKit for Web comes with two deployment options out of the box: server-backed and standalone.
+
+## Server-Backed Deployment
+
+<center>
+  <img
+    alt="A high-level overview showing PSPDFKit for Web and PSPDFKit Server using the server-backed deployment option."
+    src="/images/guides/web/high-level-server.png"
+    width="640">
+</center>
+
+<b>More information about PSPDFKit Server can be found in the [PSPDFKit Server documentation][].</b>
+
+Server-backed deployment requires the installation of our PSPDFKit Server component. This component needs to be integrated with your existing backend and enables preprocessing of your PDF documents on our dedicated server.
+
+With rendering taking place on the server, the experience is smooth, no matter the device. The client intelligently downloads pages on demand, so even large documents can be browsed quickly. Your users’ data remains safe with you, where it belongs, through fine-grained access control using JSON Web Token (JWT).
+
+With this deployment option, you receive access to a Docker container that can be deployed on-premises or in the cloud (AWS, Azure, Google Cloud, and others). It requires a PostgreSQL database and can work with a dedicated storage server or Amazon S3 cloud storage.
+
+To successfully use PSPDFKit for Web with the server-backed option, you must first upload a document to the server using the [backend API][backend api web]. This endpoint will return a unique document identifier, which will be used to load the document with PSPDFKit for Web.
+
+**Unique Features:**
+
+- Enables collaboration in your browser with [PSPDFKit Instant][]
+- Opens large PDF documents in milliseconds
+- Only downloads requested pages
+- Includes built-in document and annotation management and archiving on S3 or a dedicated file server
+- Fine-grained authentication control lets you choose who has access to the original PDF document
+
+<center>
+  <img
+    alt="We deliver PSPDFKit for Web as a Docker container that can be deployed on-premises or in the cloud (AWS, Azure, Google Cloud, and others)."
+    src="/images/guides/web/clouds.png"
+    width="338">
+</center>
+
+## Standalone Deployment
+
+<center>
+  <img
+    alt="A high-level overview showing that PSPDFKit for Web doesn’t require PSPDFKit Server."
+    src="/images/guides/web/high-level-standalone.png"
+    width="640">
+</center>
+
+Deploying and maintaining a dedicated server component is not always feasible. To ensure a consistent PSPDFKit for Web experience no matter the chosen deployment method, we also offer standalone deployment using state-of-the-art [WebAssembly][] technology (with [asm.js][] fallback for older browsers). This deployment method requires [nothing but the JavaScript files and essential assets][webassembly blog post].
+
+When using the standalone deployment, opening documents requires additional loading time (necessary for the browser to download and compile the WebAssembly or asm.js code). The absence of a server component makes it easier to integrate PSPDFKit for Web and allows you to rapidly deploy it to your existing website. PDF documents and annotations need to be persisted on your server. To help with this process, we developed Instant JSON, a small layer that includes only the changes to a PDF file, thereby removing the need to transfer the entire PDF file whenever your users make changes.
+
+With this deployment option, you receive access to the required JavaScript files and assets.
+
+**Unique Features:**
+
+- Workload is offloaded to clients
+- Runs in contexts where no server is available
+
+<center>
+  <img
+    alt="WebAssembly logo"
+    src="/images/guides/web/web-assembly-logo-256px.png"
+    width="128">
+</center>
+
+## Quick Start
+
+- [Server-Backed Deployment][]
+- [Standalone Deployment][]
+- [Troubleshooting][troubleshooting web]
+- [API Reference][api web]
+- [Changelog][changelog web]
+- [Support][pspdfkit support]
+
+<!-- Links can not be relative since the same template is used as `pspdfkit-for-web/getting-started` as well -->
+
+[integrating pspdfkit for web]: https://pspdfkit.com/guides/server/current/getting-started/integrating-pspdfkit/
+[docker compose]: https://docs.docker.com/compose/
+[backend api web]: https://pspdfkit.com/guides/server/current/api/overview/
+[pspdfkit instant]: https://pspdfkit.com/instant
+[webassembly blog post]: https://pspdfkit.com/blog/2017/webassembly-a-new-hope/
+[example projects web]: https://pspdfkit.com/guides/web/current/pspdfkit-for-web/example-projects/
+[hosted example app]: https://web-preview.pspdfkit.com/
+[troubleshooting web]: https://pspdfkit.com/guides/web/current/pspdfkit-for-web/troubleshooting/
+[changelog web]: https://pspdfkit.com/changelog/web/
+[server-backed deployment]: https://pspdfkit.com/guides/web/current/server-backed/overview/
+[standalone deployment]: https://pspdfkit.com/guides/web/current/standalone/overview/
+[newsletter you can subscribe to]: https://pspdfkit.com/newsletter/
+[pspdfkit server documentation]: http://pspdfkit.com/guides/server/current/
+[api web]: https://pspdfkit.com/api/web/

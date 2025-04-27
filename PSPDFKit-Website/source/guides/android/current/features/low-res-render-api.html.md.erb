@@ -1,0 +1,42 @@
+---
+title: Low-Resolution Render API
+section: developers
+---
+
+In order to achieve quick and fluid page browsing in a document, `PdfFragment` will first render and draw low-resolution images for each page that is about to be displayed before switching to a high-resolution rendering for visible pages. The render settings (i.e. the resolution of low-resolution images) are chosen using a smart low-resolution strategy based on [Device Year Class][], balancing page render times, quality, and memory performance.
+
+The default behavior relies on optimized resolutions to allow a better match with a device’s specifications, but if your use case requires a specific low resolution, you can override our automatic low-resolution strategy.
+
+## Optimized Resolution
+
+With PSPDFKit 4.3 for Android, we introduced the optimized resolution strategy by default. For further information, please see our [Device Year Class guide][].
+
+## Fixed Resolution
+
+To exclude our optimized resolution algorithm,
+[`PdfConfiguration.Builder#setFixedLowResRenderPixelCount()`][] and [`PdfConfiguration#getFixedLowResRenderPixelCount()`][] can be used to set and retrieve a fixed low-resolution render pixel count:
+
+[==
+
+```kotlin
+val configuration = PdfConfiguration.Builder()
+    .setFixedLowResRenderPixelCount(1280 * 1280)
+    .build()
+```
+
+```java
+final PdfConfiguration configuration = new PdfConfiguration.Builder()
+    .setFixedLowResRenderPixelCount(1280 * 1280)
+    .build();
+```
+
+==]
+
+In this way, the same value (`1280 * 1280`) will be used for all devices.
+
+**⚠️ Important:** Misuse of the low-resolution render pixel count may lead to poor performance and/or out-of-memory exceptions on older devices. Make sure to test the new value on a wide range of devices.
+
+[device year class]: https://github.com/facebook/device-year-class
+[device year class guide]: ../../miscellaneous/device-year-class
+[`pdfconfiguration.builder#setfixedlowresrenderpixelcount()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#setFixedLowResRenderPixelCount(java.lang.Integer)
+[`pdfconfiguration#getfixedlowresrenderpixelcount()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.html#getFixedLowResRenderPixelCount()

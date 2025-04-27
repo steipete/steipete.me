@@ -1,0 +1,347 @@
+---
+title: Introduction to Annotations
+section: developers
+
+order: 1
+---
+
+![Annotations](/images/guides/shared/annotations/annotations-header.png)
+
+PSPDFKit supports most common annotation types:
+
+- [Link][]
+- [Highlight][], [Underline][], [Strikeout][], [Squiggly][]
+- [Free Text][]
+- [Ink][]
+- [Note][]
+- [Square][], [Circle][], [Line][], [Polyline][], [Polygon][]
+- [Widget][]
+- [Image/Stamp][]
+- [Rich Media/Video][], [Sound][]
+- [Redaction][]
+- [File][]
+
+These are standard annotations (as defined in the PDF Reference) that can be read and written by many apps, like Adobe Acrobat and Apple’s `Preview.app`.
+
+## Working with Annotations in Code
+
+After loading a document, you can access its annotations via the [`AnnotationProvider`][] returned by [`PdfDocument#getAnnotationProvider`][]. The annotation provider supports reading, adding, and removing annotations to and from the document:
+
+[==
+
+```kotlin
+val pageIndex = 0
+val annotations: List<Annotation> = document.annotationsProvider.getAnnotations(pageIndex)
+```
+
+```java
+final int pageIndex = 0;
+final List<Annotation> annotations = document.getAnnotationsProvider().getAnnotations(pageIndex);
+```
+
+==]
+
+Here is another example of how to read all [`NoteAnnotation`][] objects from a document. It uses the async [`AnnotationProvider#getAllAnnotationsOfType`][] method:
+
+[==
+
+```kotlin
+// Get the observable emitting all annotations of type `NOTE`.
+val annotationObservable = document.annotationProvider
+    .getAllAnnotationsOfType(EnumSet.of(AnnotationType.NOTE))
+
+// This will asynchronously read all annotations, cast them, and return them as a `List`.
+annotationObservable
+    .cast(NoteAnnotation::class.java)
+    .toList() // Collect all annotations into a `List`.
+    .observeOn(AndroidSchedulers.mainThread()) // Receive all annotations on the main thread.
+    .subscribe { noteAnnotations ->
+        // This is called on the main thread.
+        doSomething(noteAnnotations)
+    }
+```
+
+```java
+// Get the observable emitting all annotations of type `NOTE`.
+final Observable<Annotation> annotationObservable = document
+    .getAnnotationProvider()
+    .getAllAnnotationsOfType(EnumSet.of(AnnotationType.NOTE));
+
+// This will asynchronously read all annotations, cast them, and return them as a `List`.
+annotationObservable
+    .cast(NoteAnnotation.class)
+    .toList() // Collect all annotations into a `List`.
+    .observeOn(AndroidSchedulers.mainThread()) // Receive all annotations on the main thread.
+    .subscribe(noteAnnotations -> {
+        // This is called on the main thread.
+        doSomething(noteAnnotations);
+    });
+```
+
+==]
+
+### Creating Annotations
+
+You can create new annotations using a public constructor that passes in required annotation properties:
+
+[==
+
+```kotlin
+// Create a `FreeTextAnnotation`.
+val contents = "Add text to pages using FreeTextAnnotations"
+val pageIndex = 0
+val pageRect = RectF(500f, 830f, 720f, 780f)
+val freeTextAnnotation = FreeTextAnnotation(pageIndex, pageRect, contents)
+```
+
+```java
+// Create a `FreeTextAnnotation`.
+final String contents = "Add text to pages using FreeTextAnnotations";
+final int pageIndex = 0;
+final RectF pageRect = new RectF(500f, 830f, 720f, 780f);
+final FreeTextAnnotation freeTextAnnotation = new FreeTextAnnotation(pageIndex, pageRect, contents);
+```
+
+==]
+
+Each annotation subtype derives from [`Annotation`][], which provides the basic set of properties common to all annotations, like [`Annotation#getBoundingBox`][]. For a list of properties that are specific to a particular annotation subtype, consult the [annotation API reference][pspdfkit api annotation summary] of the annotation class in question.
+
+For a more detailed guide, please refer to [Programmatically Creating Annotations][pspdfkit guide programmatically creating annotations].
+
+### Adding and Removing Annotations
+
+After creating an instance of an annotation, it is not attached to any document. To add an annotation to the page of a document, you can call [`AnnotationProvider#addAnnotationToPage`][] on the annotation provider of the specific document. If you are displaying the modified document using the [`PdfActivity`][] or [`PdfFragment`][], you need to notify those components to update the UI by calling [`PdfFragment#notifyAnnotationHasChanged`] after any modification to the annotations:
+
+[==
+
+```kotlin
+// Add the annotation to the document (document is a `PdfDocument`).
+document.annotationProvider.addAnnotationToPage(freeTextAnnotation)
+// Tell PSPDFKit to update the annotation visually (fragment is a `PdfFragment`).
+// You can get the fragment by accessing `PdfFragment` on the `PdfActivity`.
+fragment.notifyAnnotationHasChanged(freeTextAnnotation)
+
+// Use this to remove an annotation.
+document.annotationProvider.removeAnnotationFromPage(someOtherAnnotation)
+fragment.notifyAnnotationHasChanged(someOtherAnnotation)
+```
+
+```java
+// Add the annotation to the document (document is a `PdfDocument`).
+document.getAnnotationProvider().addAnnotationToPage(freeTextAnnotation);
+// Tell PSPDFKit to update the annotation visually (fragment is a `PdfFragment`).
+// You can get the fragment by calling `getPdfFragment()` on `PdfActivity`.
+fragment.notifyAnnotationHasChanged(freeTextAnnotation);
+
+// Use this to remove an annotation.
+document.getAnnotationProvider().removeAnnotationFromPage(someOtherAnnotation);
+fragment.notifyAnnotationHasChanged(someOtherAnnotation);
+```
+
+==]
+
+**Example:** Take a look at the `AnnotationCreationExample` inside the Catalog app, which shows how to create annotations for various other annotation types as well.
+
+### Annotation Callbacks
+
+The [`PdfFragment`][] implements the [`AnnotationManager`][] interface, allowing you to register listeners that are notified whenever an annotation is selected, modified, or deselected:
+
+[==
+
+```MyActivity.kt
+override fun onCreate(savedInstanceState : Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    pdfFragment.addOnAnnotationSelectedListener(object :AnnotationManager.OnAnnotationSelectedListener {
+        override fun onPrepareAnnotationSelection(controller: AnnotationSelectionController, annotation: Annotation, annotationCreated: Boolean): Boolean {
+            // Returning `false` here would prevent the annotation from being selected.
+            return true
+        }
+
+        override fun onAnnotationSelected(annotation: Annotation, annotationCreated: Boolean) {
+            Log.i(TAG, "The annotation was selected.")
+        }
+    })
+
+    pdfFragment.addOnAnnotationDeselectedListener { annotation, reselected ->
+        Log.i(TAG, "The annotation was deselected.")
+    }
+
+    pdfFragment.addOnAnnotationUpdatedListener(object: OnAnnotationUpdatedListener {
+        override fun onAnnotationCreated(annotation: Annotation) {
+            Log.i(TAG, "The annotation was created.")
+        }
+
+        override fun onAnnotationUpdated(annotation: Annotation) {
+            Log.i(TAG, "The annotation was updated.")
+        }
+
+        override fun onAnnotationRemoved(annotation: Annotation) {
+            Log.i(TAG, "The annotation was removed.")
+        }
+    })
+
+    // This will remove all previously registered listeners. Instead, you could unregister them selectively.
+    pdfFragment.clearAnnotationListeners()
+}
+```
+
+```MyActivity.java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    getPdfFragment().addOnAnnotationSelectedListener(new AnnotationManager.OnAnnotationSelectedListener() {
+        @Override
+        public boolean onPrepareAnnotationSelection(@NonNull AnnotationSelectionController controller, @NonNull Annotation annotation, boolean annotationCreated) {
+            // Returning `false` here would prevent the annotation from being selected.
+            return true;
+        }
+
+        @Override public void onAnnotationSelected(@NonNull Annotation annotation, boolean annotationCreated) {
+            Log.i(TAG, "The annotation was selected");
+        }
+    });
+
+    getPdfFragment().addOnAnnotationDeselectedListener(new AnnotationManager.OnAnnotationDeselectedListener() {
+        @Override public void onAnnotationDeselected(@NonNull Annotation annotation, boolean reselected) {
+            Log.i(TAG, "The annotation was deselected");
+        }
+    });
+
+    getPdfFragment().addOnAnnotationUpdatedListener(new AnnotationProvider.OnAnnotationUpdatedListener() {
+        @Override
+        public void onAnnotationCreated(@NonNull Annotation annotation) {
+            Log.i(TAG, "The annotation was created.");
+        }
+
+        @Override
+        public void onAnnotationUpdated(@NonNull Annotation annotation) {
+            Log.i(TAG, "The annotation was updated.");
+        }
+
+        @Override
+        public void onAnnotationRemoved(@NonNull Annotation annotation) {
+            Log.i(TAG, "The annotation was removed.");
+        }
+    });
+
+    // This will remove all previously registered listeners. Instead, you could unregister them selectively.
+    getPdfFragment().clearAnnotationListeners();
+}
+```
+
+==]
+
+### Annotation Saving
+
+By default, PSPDFKit auto-saves changes to a document and to annotations inside `PdfFragment#onStop` — effectively, this means every time the fragment is sent to the background, e.g. when switching to another application or leaving the viewer activity. You can disable auto-saving via the [`#autosaveEnabled`][`pdfconfiguration.builder#autosaveenabled`] setter on the [`PdfConfiguration.Builder`][]:
+
+[==
+
+```kotlin
+// By default, auto-save is enabled.
+val config = PdfConfiguration.Builder()
+    .autosaveEnabled(false)
+    .build()
+
+val fragment = PdfFragment.newInstance(documentUri, config)
+...
+```
+
+```java
+// By default, auto-save is enabled.
+final PdfConfiguration config = new PdfConfiguration.Builder()
+    .autosaveEnabled(false)
+    .build();
+
+final PdfFragment fragment = PdfFragment.newInstance(documentUri, config);
+...
+```
+
+==]
+
+If you are using the [`PdfActivity`][], you can also deactivate auto-save via the [`#autosaveEnabled`][`pdfactivityconfiguration.builder#autosaveenabled`] setter of the [`PdfActivityConfiguration.Builder`][]:
+
+[==
+
+```kotlin
+// By default, auto-save is enabled.
+val config = PdfActivityConfiguration.Builder(context)
+    .autosaveEnabled(false)
+    .build()
+
+PdfActivity.showDocument(context, documentUri, config)
+...
+```
+
+```java
+// By default, auto-save is enabled.
+final PdfActivityConfiguration config =
+    new PdfActivityConfiguration.Builder(context)
+        .autosaveEnabled(false)
+        .build();
+
+PdfActivity.showDocument(context, documentUri, config);
+...
+```
+
+==]
+
+If you’re interested in manually saving annotations, check out our [annotation-saving guide][pspdfkit guide modifying and saving annotations].
+
+### Storing Custom Data in Annotations
+
+You can persistently store custom data on a per-annotation basis using an [`Annotation`][]’s custom data property.
+
+To set custom data on an [`Annotation`][] instance, use its [`setCustomData()`][] method. You can retrieve previously configured custom data via [`getCustomData()`][].
+
+More information is available [in the corresponding guide][pspdfkit guide annotation custom data].
+
+[`annotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html
+[`noteannotation`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/NoteAnnotation.html
+[`annotation#getboundingbox`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getBoundingBox()
+[`annotationprovider#addannotationtopage`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html#addAnnotationToPage(com.pspdfkit.annotations.Annotation)
+[`annotationprovider#getallannotationsoftype`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html#getAllAnnotationsOfType(java.util.EnumSet<com.pspdfkit.annotations.AnnotationType>)
+[`pdffragment#notifyannotationhaschanged`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/PdfFragment.html#notifyAnnotationHasChanged(com.pspdfkit.annotations.Annotation)
+[`annotationmanager`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/ui/special_mode/manager/AnnotationManager.html
+[`#ondocumentsavefailed(throwable)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSaveFailed(java.lang.Throwable)
+[`documentlistener#ondocumentsaved(pdfdocument)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSaved(com.pspdfkit.document.PdfDocument)
+[`documentsaveoptions`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentSaveOptions.html
+[`documentlistener`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html
+[`#ondocumentsave`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/listeners/DocumentListener.html#onDocumentSave(com.pspdfkit.document.PdfDocument,%20com.pspdfkit.document.DocumentSaveOptions)
+[`pdfactivityconfiguration.builder`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html
+[`pdfactivityconfiguration.builder#autosaveenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/activity/PdfActivityConfiguration.Builder.html#autosaveEnabled(boolean)
+[`pdfconfiguration.builder#autosaveenabled`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/configuration/PdfConfiguration.Builder.html#autosaveEnabled(boolean)
+[`annotationprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/AnnotationProvider.html
+[`pdfdocument`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html
+[`pdfdocument#getannotationprovider`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getAnnotationProvider()
+[`pdfdocument#wasmodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#wasModified()
+[`annotation#ismodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#isModified()
+[`pdfdocument#saveifmodified`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#saveIfModified()
+[link]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LinkAnnotation.html
+[polyline]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/PolylineAnnotation.html
+[polygon]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/PolygonAnnotation.html
+[widget]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/WidgetAnnotation.html
+[highlight]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/HighlightAnnotation.html
+[underline]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/UnderlineAnnotation.html
+[strikeout]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/StrikeOutAnnotation.html
+[squiggly]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/SquigglyAnnotation.html
+[free text]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/FreeTextAnnotation.html
+[ink]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/InkAnnotation.html
+[note]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/NoteAnnotation.html
+[square]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/SquareAnnotation.html
+[circle]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/CircleAnnotation.html
+[line]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/LineAnnotation.html
+[image/stamp]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/StampAnnotation.html
+[rich media/video]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/RichMediaAnnotation.html
+[redaction]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/RedactionAnnotation.html
+[file]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/FileAnnotation.html
+[sound]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/SoundAnnotation.html
+[pspdfkit api annotation summary]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/package-summary.html
+[pspdfkit guide modifying and saving annotations]: ../../annotations/annotation-saving-mechanism/#modifying-and-saving-annotations
+[pspdfkit guide annotation custom data]: ../../annotations/custom-data-in-annotations
+[`jsonobject`]: https://developer.android.com/reference/org/json/JSONObject
+[`setcustomdata()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#setCustomData(org.json.JSONObject)
+[`getcustomdata()`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/annotations/Annotation.html#getCustomData()
+[pspdfkit guide programmatically creating annotations]: ../programmatically-creating-annotations/

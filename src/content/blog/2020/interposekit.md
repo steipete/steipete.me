@@ -1,23 +1,17 @@
 ---
 title: InterposeKit — Elegant Swizzling in Swift
 pubDate: 2020-05-31T10:00:00.000Z
-description: "Introducing InterposeKit, my weekend project for elegant method swizzling in Swift. This modern library leverages Swift 5.2's callAsFunction and makes it easy to hook into Objective-C methods with clean, type-safe code. I explore the challenges and solutions encountered while building it, from dealing with dynamic class loading to crafting a Swift-friendly API for method interception. Learn how InterposeKit improves upon traditional Objective-C swizzling techniques while maintaining compatibility with Swift's strong type system, and see how it can be used to fix real-world bugs like the Mac Catalyst text input crash."
+description: I built a thing!
 heroImage: /assets/img/2020/interposekit/logo.png
 tags:
-  - Swift
-  - Method-Swizzling
-  - Open-Source
-  - Runtime
-  - Method-Interception
-  - GitHub-Actions
-  - Swift-Package-Manager
-  - Mac-Catalyst
-  - Swift-5.2
-  - Library
-  - Objective-C-Runtime
+  - iOS
+  - development
 source: steipete.com
-AIDescription: true
+description: 'I built a thing! [InterposeKit](https://github.com/steipete/InterposeKit) is a modern library for elegantly swizzling in Swift. It’s on GitHub, ful...'
 ---
+
+::ai[I built a thing! [InterposeKit](https://github.com/steipete/InterposeKit) is a modern library for elegantly swizzling in Swift. It’s on GitHub, ful...]
+
 
 I built a thing! [InterposeKit](https://github.com/steipete/InterposeKit) is a modern library for elegantly swizzling in Swift. It’s on GitHub, fully written in Swift 5.2+, and works on `@objc dynamic` Swift functions or Objective-C instance methods.
 

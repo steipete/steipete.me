@@ -1,0 +1,225 @@
+---
+title: Document Permissions
+section: developers
+---
+
+The PDF specification defines a series of flags that can be set on a document to determine what a user can do with a document. These permissions are represented as a bitmask at the PDF level. When a permission bit is not present at its defined position, the permission is considered not granted.
+
+PSPDFKit honors the permissions set on a document and enables or disables certain platform features based on the permission configuration. For instance, if a PDF that does not explicitly define the printing permission as loaded, PSPDFKit won’t enable the printing option in the UI.
+
+PDF permissions are defined below. By default, most documents will have all features enabled.
+
+- Printing: Print the document.
+- High-Quality Printing: Print the document in high fidelity.
+- Copying Content: Copy or otherwise extract text and graphics from the document.
+- Document Assembling: Insert, rotate, or delete pages and create document outline items or thumbnail images.
+- Editing Annotations and Forms: Add or modify text annotations and fill in interactive form fields.
+- Filling Forms: Fill in existing interactive form fields (including signature fields).
+- Modifying Content: Any other modifications not covered by previous permission flags.
+
+<img src="/images/guides/shared/document-permissions/acrobat_permissions_panel.png" width=80% />
+
+PSPDFKit has support for the above permissions on a per-platform basis. This is ongoing work, and support for more permissions is being worked on to reach feature parity across platforms. PDFs have distinct user and owner passwords, and document permissions are only enforced when the PDF is unlocked with the _user_ password. For this reason, we recommend separate passwords for both types of passwords.
+
+<% if android? %>
+On Android, the document permissions are defined in the [`DocumentPermissions` enumeration][].
+<% end %>
+
+<% if ios? %>
+On iOS, the document permissions are defined in the [`PSPDFDocumentPermissions` enumeration][].
+<% end %>
+
+<% if web? %>
+If you use the Server-backed version of PSPDFKit for Web, you can restrict the permissions of a document in the JSON Web Token ([JWT][jwt permissions]) used for authentication.
+
+Be aware that restricted document permissions set in a PDF itself or in the [JWT][jwt permissions] cannot be overwritten.
+<% end %>
+
+Below you can find a detailed breakdown of the permissions that can be set in a document.
+
+## Printing and High-Quality Printing
+
+<% if ios? %>
+These permissions are defined by the `PSPDFDocumentPermissionsPrinting` and `PSPDFDocumentPermissionsPrintHighQuality` flags. Currently, PSPDFKit for iOS only honors the `PSPDFDocumentPermissionsPrinting` permission, since iOS only offers a single printing pipeline.
+<% end %>
+
+<% if android? %>
+These permissions are defined by the `PRINTING` and `PRINT_HIGH_QUALITY` flags, respectively.
+<% end %>
+
+<% if web? %>
+These permissions can be edited via the [JavaScript API][printing api], and high-quality printing is enabled by default. When high-quality printing is enabled, a document will print with a resolution of 300 DPI; otherwise, 150 DPI will be used.
+
+Be aware that high-quality printing uses more resources than low-quality printing, and this might affect the performance while printing.
+
+Setting the high-quality printing permission will only have an effect if the print mode is set to [`PSPDFKit.PrintMode.DOM`][print mode]. If you want to print a document in lower quality, you can set the [`Configuration.disableHighQualityPrinting`][] configuration value to `true`.
+<% end %>
+
+## Text Extraction
+
+<% if ios? %>
+When this permission is not given, users are not allowed to select text in a document. This permission is defined by the `PSPDFDocumentPermissionsExtract` flag. `PSPDFDocumentPermissionsExtractAccessibility` is currently not supported.
+<% end %>
+
+<% if android? %>
+When this permission is not given, users are not allowed to copy text out of the document, and the related UI elements will be disabled. However, text selection will still be available. This permission is defined by the `EXTRACT` flag.
+<% end %>
+
+<% if web? %>
+When this permission is not given, users are not allowed to select text in a document. This permission is granted by default, but it can be disabled by setting the [`Configuration.disableTextSelection`][] configuration value to `true`.
+<% end %>
+
+## Document Assembling
+
+<% if ios? %>
+This permission is defined by the `PSPDFDocumentPermissionsAssemble` flag, but currently it is not honored by PSPDFKit for iOS.
+<% end %>
+
+<% if android? %>
+This permission is defined by the `ASSEMBLE` flag, but currently it is not honored by PSPDFKit for Android.
+<% end %>
+
+<% if web? %>
+The Document Editor for PSPDFKit for Web is coming soon.
+<% end %>
+
+## Forms and Annotations
+
+<% if ios? %>
+This permission is defined by the `PSPDFDocumentPermissionsAnnotationsAndForms` flag, but currently it is not honored by PSPDFKit for iOS.
+<% end %>
+
+<% if android? %>
+PSPDFKit for Android will allow users to fill in forms whenever the `ANNOTATIONS_AND_FORMS` or the `FILL_FORM` flag is set.
+
+When this permission is not given, users are not allowed to fill forms, and the related UI elements will be disabled.
+<% end %>
+
+<% if web? %>
+When this permission is disabled, users are not allowed to fill out forms. This permission is granted by default, but it can be disabled by setting the [`Configuration.disableForms`][] configuration value to `true`. Disabling the default permission does not affect the original file; instead, it affects how the final user can interact with the document.
+<% end %>
+
+## Content Modification
+
+<% if ios? %>
+This is defined by the `PSPDFDocumentPermissionsModification` flag. If it’s not granted, bookmarks are not able to be saved into a document, and a document cannot be redacted.
+<% end %>
+
+<% if android? %>
+This is defined by the `MODIFICATION` flag. This flag is currently not honored by PSPDFKit for Android.
+<% end %>
+
+<% if web? %>
+This permission specifies whether or not modifying a document is allowed. Modification is allowed by default, but it can be disabled using the [`Instance#setViewState`][] function:
+
+[==
+
+```es
+instance.setViewState(v => v.set("readOnly", true));
+```
+
+```js
+instance.setViewState(function(v) {
+  return v.set("readOnly", true);
+});
+```
+
+==]
+
+Disabling the default permission does not affect the original file; instead, it affects how the final user can interact with the document.
+
+<% end %>
+
+# Getting and Setting Permissions
+
+<% if ios? or android? %>
+Modifying a document’s permissions requires PSPDFKit to be instantiated with a license that includes the Document Editor component.
+<% end %>
+
+<% if android? or ios? %>
+It’s worth noting that if you wish to modify the default document permissions with PSPDFKit, you’ll be required to protect the document with a password.
+<% elsif web? %>
+Modifying document permissions using PSPDFKit for Web is not possible at this moment, but you can configure your instance to ignore all the permissions set on the document by setting the [`IGNORE_DOCUMENT_PERMISSIONS` flag][]. This setting only affects the PSPDFKit instance, and the document won’t be modified in any way.
+<% end %>
+
+<% if ios? %>
+
+You can retrieve the current permissions of a document via the [`PSPDFDocument.permissions`][] property. This property is read-only and will only return the permissions out of the first file when the document is comprised of multiple underlying files.
+
+Document Permissions can be set using the [`PSPDFDocumentSecurityOptions`][] class when interacting with the document processor. After you define your desired security options, you instantiate a `PSPDFProcessor` object with it:
+
+[==
+
+```objc
+PSPDFDocumentSecurityOptions *securityOptions = [[PSPDFDocumentSecurityOptions alloc] initWithOwnerPassword:password userPassword:password keyLength:PSPDFDocumentSecurityOptionsKeyLengthAutomatic permissions:PSPDFDocumentPermissionsAnnotationsAndForms error:&error];
+PSPDFProcessorConfiguration *processorConfiguration = [[PSPDFProcessorConfiguration alloc] initWithDocument:document];
+
+// Create a processor and write the file with the permissions applied.
+PSPDFProcessor *processor = [[PSPDFProcessor alloc] initWithConfiguration:processorConfiguration securityOptions:securityOptions];
+[processor writeToFileURL:outputFileURL error:&error];
+```
+
+```swift
+let securityOptions = try? PSPDFDocumentSecurityOptions(ownerPassword: password, userPassword: password, keyLength: PSPDFDocumentSecurityOptionsKeyLengthAutomatic, permissions: [.annotationsAndForms])
+
+guard let processorConfiguration = PSPDFProcessorConfiguration(document: document) else {
+  return
+}
+
+// Create a processor and write the file with the permissions applied.
+let processor = PSPDFProcessor(configuration: processorConfiguration, securityOptions: securityOptions)
+try? processor.write(toFileURL: outputFileURL)
+```
+
+==]
+
+Users can also customize the permissions directly from the UI via [`PSPDFDocumentSecurityViewController`][].
+
+<% end %>
+
+<% if android? %>
+
+You can retrieve the current permissions of a document via the [`getPermissions()` method defined in the `PdfDocument` class][]. This class also defines a method, [`hasPermission(DocumentPermission)`][], which validates if the document has a specific permission set.
+
+Document permissions can be set by defining the appropriate flags on the `DocumentSaveOptions` object used to save an existing document:
+
+[==
+
+```kotlin
+val saveOptions = document.getDefaultDocumentSaveOptions()
+saveOptions.setPermissions(EnumSet.of(DocumentPermissions.ANNOTATIONS_AND_FORMS))
+
+document.save(documentPath, saveOptions)
+```
+
+```java
+DocumentSaveOptions saveOptions = document.getDefaultDocumentSaveOptions();
+saveOptions.setPermissions(EnumSet.of(DocumentPermissions.ANNOTATIONS_AND_FORMS))
+
+document.save(documentPath, saveOptions)
+```
+
+==]
+
+Currently, PSPDFKit for Android does not offer a UI from which a user can modify the document permissions.
+
+<% end %>
+
+[`documentpermissions` enumeration]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/DocumentPermissions.html
+[`pspdfdocumentpermissions` enumeration]: https://pspdfkit.com/api/ios/Enums/PSPDFDocumentPermissions.html
+[jwt permissions]: https://pspdfkit.com/guides/server/current/pspdfkit-server/client-authentication/#permission
+[`configuration.disabletextselection`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#disableTextselection
+[`configuration.disableforms`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#disableForms
+[`configuration.disablehighqualityprinting`]: https://pspdfkit.com/api/web/PSPDFKit.Configuration.html#disableHighQualityPrinting
+[print mode]: ../../features/printing/#choosing-a-print-mode
+[printing api]: ../../features/printing/#enabling-and-disabling-printing-via-the-javascript-api
+[`instance#setviewstate`]: https://pspdfkit.com/api/web/PSPDFKit.Instance.html#setViewState
+[`pspdfkit.defaulteditableannotationtypes`]: https://pspdfkit.com/api/web/PSPDFKit.html#defaultEditableAnnotationTypes
+[`pspdfkit.setiseditableannotation`]: https://pspdfkit.com/api/web/PSPDFKit.html#setIsEditableAnnotation
+[customize the toolbar]: https://pspdfkit.com/guides/web/current/customizing-the-interface/customizing-the-toolbar
+[`ignore_document_permissions` flag]: https://pspdfkit.com/api/web/PSPDFKit.Options.html#IGNORE_DOCUMENT_PERMISSIONS
+[`pspdfdocumentsecurityoptions`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSecurityOptions.html
+[`pspdfdocumentsecurityviewcontroller`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocumentSecurityViewController.html
+[`getpermissions()` method defined in the `pdfdocument` class]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#getPermissions()
+[`haspermission(documentpermission)`]: https://pspdfkit.com/api/android/reference/com/pspdfkit/document/PdfDocument.html#hasPermission(com.pspdfkit.document.DocumentPermissions)
+[`pspdfdocument.permissions`]: https://pspdfkit.com/api/ios/Classes/PSPDFDocument.html#/c:objc(cs)PSPDFDocument(py)permissions

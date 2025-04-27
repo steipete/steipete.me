@@ -1,0 +1,30 @@
+---
+title: 2017.9 Migration Guide
+section: developers
+
+order: 505
+---
+
+[PSPDFKit Server 2017.9][] introduces [Instant layers][] and the synchronization of Forms via Instant, in addition to changing our JSON Web Token (JWT) permissions naming.
+
+[Instant layers][] allow the management of multiple versions of a document without copying or uploading the document multiple times. To use layers, you have to opt in — our API maintains full backward compatibility, so there is no need for change if you don’t want to use them. For more details on how to use Instant layers, have a look at our [Instant Layers guide][].
+
+PSPDFKit Server 2017.9 adds support for Forms via Instant, meaning all changes made to forms can now be persisted in PSPDFKit Server and synchronized across clients. Please note that this feature will only work for documents uploaded after updating PSPDFKit Server to `2017.9`.
+
+Since editing a document’s content now not only includes changing annotations, but may also include filling out form fields, we decided to rename the `edit-annotations` permission to `write`. This allows for filling out form fields in addition to adding, changing, and deleting annotations.
+
+Your backend that signs JWT tokens will need to be changed to supply the `write` permission instead of the `edit-annotations` permission.
+
+Clients using a JWT with the `edit-annotations` permission will still be able to connect until support for the permission is removed with version `2018.1`.
+
+### Migrate PSPDFKit for Web
+
+For more information, please take a look at the [PSPDFKit for Web 2017.9 Migration Guide][].
+
+For a full list of changes, check out the [changelog][].
+
+[pspdfkit server 2017.9]: https://pspdfkit.com/blog/2017/pspdfkit-web-2017-9/
+[instant layers]: ../../api/instant-layers/
+[instant layers guide]: ../../api/instant-layers/
+[pspdfkit for web 2017.9 migration guide]: https://pspdfkit.com/guides/web/current/migration-guides/2017-9-migration-guide/
+[changelog]: https://pspdfkit.com/changelog/server/#2017.9

@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.75 11L17.25 7.5L13.75 4" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"/>
+<path d="M16.5 7.5H10.5C8.9087 7.5 7.38258 8.13214 6.25736 9.25736C5.13214 10.3826 4.5 11.9087 4.5 13.5C4.5 15.0913 5.13214 16.6174 6.25736 17.7426C7.38258 18.8679 8.9087 19.5 10.5 19.5" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="square"/>
+<rect width="1" height="1" transform="matrix(-1 0 0 1 12 19)" fill="currentColor"/>
+<rect opacity="0.9" width="1" height="1" transform="matrix(-1 0 0 1 13 19)" fill="currentColor"/>
+<rect opacity="0.8" width="1" height="1" transform="matrix(-1 0 0 1 14 19)" fill="currentColor"/>
+<rect opacity="0.7" width="1" height="1" transform="matrix(-1 0 0 1 15 19)" fill="currentColor"/>
+<rect opacity="0.6" width="1" height="1" transform="matrix(-1 0 0 1 16 19)" fill="currentColor"/>
+<rect opacity="0.5" width="1" height="1" transform="matrix(-1 0 0 1 17 19)" fill="currentColor"/>
+<rect opacity="0.4" width="1" height="1" transform="matrix(-1 0 0 1 18 19)" fill="currentColor"/>
+<rect opacity="0.3" width="1" height="1" transform="matrix(-1 0 0 1 19 19)" fill="currentColor"/>
+<rect opacity="0.2" width="1" height="1" transform="matrix(-1 0 0 1 20 19)" fill="currentColor"/>
+<rect opacity="0.1" width="1" height="1" transform="matrix(-1 0 0 1 21 19)" fill="currentColor"/>
+</svg>

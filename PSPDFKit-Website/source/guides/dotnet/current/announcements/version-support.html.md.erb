@@ -1,0 +1,30 @@
+---
+title: Version Support
+section: developers
+---
+
+The PSPDFKit .NET Library is built to support [.NET Standard][dot-net-standard] 2.0. Building the library against .NET standard allows support for many .NET variants (.NET Core, .NET Framework, Mono, and more). For a support list and versions, please see Microsoft’s [.NET implementation support][dot-net-implementation-support].
+
+#### Brief Supported List
+
+- .NET Core 2.0
+- .NET Framework 4.6.1
+- Mono 5.4
+
+In order to take advantage of the already proven C++ PSPDFKit Core, the library has a native element to it. Because there is a native element, there are strict operating system support requirements.
+
+## Windows
+
+The native library has been compiled under Windows 10 and will support all Microsoft supported versions of Windows 10 (version 1703+). Currently, the architectures supported are `i386` and `x64`. For more information on Windows release support, please consult the [Windows lifecycle fact sheet][windows-lifecycle-fact-sheet].
+
+## Linux
+
+We have compiled the native library to support most major Linux distributions. There is a requirement of at least Glibc 2.19, which ensures compatibility with most major long-term support and other newer distributions. Currently, the architecture supported is `x64`.
+
+## macOS
+
+The macOS native binary has been compiled with and will only support Catalina 10.15+.
+
+[dot-net-standard]: https://docs.microsoft.com/en-us/dotnet/standard/net-standard
+[dot-net-implementation-support]: https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support
+[windows-lifecycle-fact-sheet]: https://support.microsoft.com/en-us/help/13853/windows-lifecycle-fact-sheet
