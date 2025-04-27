@@ -1,10 +1,7 @@
 ---
 title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
 pubDate: 2020-09-22T18:00:00.000Z
-description: >-
-  The new optimized for Mac idiom in Catalyst uses various AppKit controls under
-  the hood to make apps look more at home on macOS. It also disallows various
-  controls, resulting in exceptions at runtime.
+description: 'div.post-content > img:first-child { display:none; } While working on our PDF Viewer update for Big Sur and switching to the new Catalyst Mac Interface Idiom, I was greeted with a new exception coming directly fro...'
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
   - iOS

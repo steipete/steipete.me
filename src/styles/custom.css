@@ -219,10 +219,19 @@ main {
     background-color: #1a1d20; /* Darker background for better contrast */
   }
   
-  /* Make headings pure white for maximum visibility */
+  /* Make headings pure white with high contrast for maximum visibility */
   h1, h2, h3, h4, h5, h6 {
     color: #ffffff !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  /* Special styling for post titles to ensure visibility */
+  .post-title, h1.page-title, article h1, .prose h1 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4) !important;
   }
   
   /* Make normal text bright as well */

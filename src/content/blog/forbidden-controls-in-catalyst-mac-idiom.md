@@ -1,7 +1,7 @@
 ---
 title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
 pubDate: 2020-09-22T18:00:00.000Z
-description: '[Geeal] UISteppe is ot suppoted whe uig Catalyst apps i the Mac idiom.'
+description: 'div.post-content > img:first-child { display:none; } While working on our PDF Viewer update for Big Sur and switching to the new Catalyst Mac Interface Idiom, I was greeted with a new exception coming directly fro...'
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
   - iOS
