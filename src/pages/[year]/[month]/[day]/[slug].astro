@@ -4,24 +4,61 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
-  return posts.map(post => {
-    // Extract date components from filename if it's in date format (YYYY-MM-DD-slug.md)
-    const dateMatch = post.id.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md/);
+  return posts.flatMap(post => {
+    // Try to extract date components from slug if it follows the pattern YYYY-MM-DD-slug
+    const slugMatch = post.slug.match(/^(\d{4})-(\d{2})-(\d{2})-(.*)/);
 
-    if (dateMatch) {
-      const [/* full match */, year, month, day, slug] = dateMatch;
+    if (slugMatch) {
+      const year = slugMatch[1];
+      const month = slugMatch[2];
+      const day = slugMatch[3];
+      const slug = slugMatch[4];
+      // Return a path for the old WordPress-style URL
       return {
-        params: { year, month, day, slug },
-        props: { post }
+        params: {
+          year,
+          month,
+          day,
+          slug
+        },
+        props: {
+          post,
+          targetYear: year,
+          targetSlug: slug
+        }
       };
     }
-
-    return null;
-  }).filter(Boolean);
+    
+    // If it doesn't follow the pattern, look at the pubDate
+    const pubDate = post.data.pubDate || post.data.date;
+    if (pubDate) {
+      const year = pubDate.getFullYear().toString();
+      const month = (pubDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = pubDate.getDate().toString().padStart(2, '0');
+      const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+      
+      return {
+        params: {
+          year,
+          month,
+          day,
+          slug
+        },
+        props: {
+          post,
+          targetYear: year,
+          targetSlug: slug
+        }
+      };
+    }
+    
+    // If no date info available, return empty array (flatMap will flatten this)
+    return [];
+  });
 }
 
-const { slug } = Astro.params;
+const { targetYear, targetSlug } = Astro.props;
 
-// Server-side redirect to the canonical URL
-return Astro.redirect(`/blog/${slug}/`, 301);
+// Redirect to the new URL format with year
+return Astro.redirect(`/posts/${targetYear}/${targetSlug}/`, 301);
 ---
