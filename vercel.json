@@ -13,6 +13,7 @@
     { "source": "/blog/:slug", "destination": "/blog/:slug/", "permanent": true },
     { "source": "/categories/:category(.*)", "destination": "/tags/:category", "permanent": true },
     { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
+    { "source": "/20:year/:month/:day/:slug(.*)", "destination": "/blog/:slug", "permanent": true },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "(?!steipete\\.me).*" }],
