@@ -7,10 +7,14 @@ type Props = CollectionEntry<'blog'>['data'] & {
   slug: string
 }
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props
+
+// Enforce canonical URL to always be /blog/ path
+const canonicalPath = `/blog/${slug}/`;
+const canonicalURL = new URL(canonicalPath, Astro.site);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} canonicalURL={canonicalURL}>
   <article class="prose max-w-none">
     <div class="not-prose mb-8">
       <h1 class="text-4xl font-bold tracking-tight mb-2">
