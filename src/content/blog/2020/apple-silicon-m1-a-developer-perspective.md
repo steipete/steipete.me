@@ -13,62 +13,85 @@ tags:
   - Xcode
   - AppKit
   - Catalyst
+  - Apple Silicon
+  - Hacking
+source: steipete.com
 ---
 
-The excitement around Apple's new M1 chip is everywhere. I bought a MacBook Air 16 GB M1 to see how viable it is as a main development machine — here's an early report after using it in production for a few days.
+The excitement around Apple's new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here's an early report after a week of testing.
 
-[![](/assets/img/2020/m1/m1.jpg)](https://unsplash.com/photos/vJqGI6-diO8)
+## Xcode
 
-Let me first start with the things everybody already talks about: Yes, this machine is blazingly fast. Safari is the snappiest it's ever been; the fans never turn on (there are none in the Air); the battery lasts for a very long time; and most apps just work, even though the architecture is completely different. The exceptions to "it just works" are anything that uses virtualization (because the hypervisor framework is limited), kernel extensions, or low-level tools.
+Xcode runs FAST on the M1. Compiling the [PSPDFKit PDF SDK](https://pspdfkit.com/) (debug, arm64) can almost compete with the fastest Intel-based MacBook Pro Apple offers (to date), with [8:49 minutes vs. 7:31 minutes](https://twitter.com/steipete/status/1332052251712614405?s=21). For comparison, my Hackintosh builds the same in less than 5 minutes. 
 
-What can we learn about the M1 chip that directly impacts performance? At the center is a completely custom design, with 16 billion transistors, built using a 5-nanometer process. The CPU cores are split: four are optimized for performance, and four are optimized for efficiency. Apple calls this arrangement a [unified memory architecture](https://en.m.wikipedia.org/wiki/Unified_Memory_Architecture), where the components have access to the same data without having to copy memory between different pools. There's also a built-in neural engine, which is becoming increasingly important for machine learning applications and some built-in features.
+One can't overstate how impressive this is for a fanless machine. Apple's last experiment with fanless MacBooks was the 12-inch version from 2017, which builds the same project in 41 minutes.
 
-Apple doesn't share as many technical details as we'd like, especially around the GPU. However, I found a great source on Medium, [Arun Maini](https://medium.com/swlh/apples-m1-secret-coprocessor-6599492fc1e1), who took a closer look at the hardware:
+Our tests mostly ran just fine, although I found [a bug specific to arm64](https://github.com/Aloshi/dukglue/pull/27), which we missed before, as [we don't run our tests on actual hardware](https://pspdfkit.com/blog/2020/managing-macos-hardware-virtualization-or-bare-metal/) [on CI](https://pspdfkit.com/blog/2020/continuous-integration-for-small-ios-macos-teams/). Moving the simulator to the same architecture as shipping devices will be beneficial and will help find more bugs.
 
-> *"The firestorm cores within the M1 chip are the biggest, most powerful CPU cores ever made... The individual cores can go toe-to-toe with any x86 CPU in single-threaded performance (and I mean any, including both Intel's and AMD's recent 5950x). That's impressive enough and makes it the new fastest CPU core ever made. But the reason why Apple's SOC can beat most of Intel's high-end desktop parts in **multi-**core tasks is because of its incredible energy efficiency."*
+Testing iOS below 14 is problematic. It seems [WebKit crashes in a memory allocator](https://twitter.com/steipete/status/1332654247809257473?s=21), throwing `EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)` (Apple folks: FB8920323). Performance also seems really bad, with Xcode periodically [freezing](https://twitter.com/steipete/status/1332348616145563653?s=21), and the whole system becoming so [slow](https://twitter.com/steipete/status/1332648748158246922?s=21) that the mouse cursor gets choppy. Some simulators even make problems on iOS 14; an example of this is [iPad Air (4th generation), which still emulates Intel](https://twitter.com/steipete/status/1331628274783543297?s=21), so try to avoid that one.
 
-When we talk about performance efficiency (the amount of power needed for a certain result), the M1 chip is a completely different world. The improved battery life is fantastic, but the far more interesting factor is that, since the chip draws less power, it also has more performance reserves, which Apple can use to drive boost frequencies that exceed the base frequency rate. The boost frequency is a factor of silicon lottery, cooling, and power.
+We were extremely excited to be moving our CI to Mac minis with the M1 chip and are [waiting on MacStadium to release devices](https://www.macstadium.com/m1-mini). However, it seems we'll have to restrict tests to iOS 14 for that to work. With our current schedule, we plan to drop iOS 12 in Q3 2021 and iOS 13 in Q3 2022, so it'll be a while before we can fully move to Apple Silicon.
 
-If you're a mobile app developer, don't forget to check the battery usage monitor in Instruments. You'll see a nice breakdown of CPU, GPU, display power usage, and more. This feature has been around [since iOS 9](https://9to5mac.com/2015/09/15/ios-9-feature-spotlight-new-battery-usage-data-in-settings-including-battery-hogs-battery-stats/).
+There is a chance that Apple fixes these issues, but it's not something to count on — given that this only affects older versions of iOS, the problem will at some point just "go away."
 
-## Initial Setup After the Holidays
+**Update:** We're working around the WebKit crashes for now via detecting Rosetta 2 translation at runtime and simply skipping the tests where WebKit is used. This isn't great, but luckily we're not using WebKit a lot in our current project. [See my gist for details](https://gist.github.com/steipete/e15b1fabffc7da7d49c92e3fbd06971a). Performance seems acceptable if you restrict parallel testing to, at most, two instances — otherwise, the system simply runs out of RAM and swapping is really slow.
 
-I ordered the MacBook Air 16 GB minutes after the presentation. It shipped from China and arrived after Thanksgiving. I set it up on Black Friday, so I definitely couldn't count on important issues being fixed over the weekend. As I already have a Mac mini (Intel) configured as a build server, I was interested only in using the M1 machine for compilation, running the main apps, and testing on Intel via CI.
+**Update 2:** I've heard that the choppy mouse cursor is an Xcode/Simulator bug, and it's currently being worked on. As a workaround, ensure at least one Simulator window is onscreen and visible.
 
-I had to recreate my local environment. One extremely positive M1-related surprise is how fast it extracts large archives. For example, our toolchain bundle is a 2 GB download that expands into hundreds of thousands of small files, totaling more than 8 GB. This usually takes four to five minutes on my i9 Hackintosh, and much longer on my 13-inch 2019 MacBook Pro. On the MacBook Air, this took only one minute. This is an excellent example of how important memory bandwidth is:
+**Update 3:** Great news! The WebKit crash when running on Rosetta 2 will be resolved with a future update in Big Sur.
+
+**Update 4 (May 2021):** This is now fixed with Xcode 12.5 and macOS 11.3.
+
+## Docker
+
+We use Docker to automate our website and load environments for our [Web and Server PDF SDKs](https://pspdfkit.com/pdf-sdk/web/). Docker posted a [status update blog post](https://www.docker.com/blog/apple-silicon-m1-chips-and-docker/) admitting that its client currently won't work with Apple Silicon, but that the company is [working on it](https://github.com/docker/roadmap/issues/142). There are more [hacky ways to use Apple's Hypervisor to run Docker containers manually](https://finestructure.co/blog/2020/11/27/running-docker-on-apple-silicon-m1-follow-up), but they need ARM-based containers.
+
+I expect a solution that runs ARM-based containers in Q1 2021. We at PSPDFKit will have some work to do to add ARM support (something already on the roadmap), so this is only a transitional issue.
+
+## Virtualization and Windows
+
+To test our [Windows PDF SDK](https://pspdfkit.com/pdf-sdk/windows/), most folks are using a VMware virtual machine with Windows 10 and Visual Studio. Currently, none of the Mac virtualization solutions support Apple Silicon. However, both [VMware and Parallels](https://appleinsider.com/articles/20/11/11/parallels-confirms-apple-m1-support-amid-silence-from-other-virtualization-companies) are working on it. I don't expect VirtualBox to be updated [anytime soon](https://forums.virtualbox.org/viewtopic.php?f=8&t=98742).
+
+I expect that, eventually, we'll be able to run ARM-based Windows with commercial tooling. Various [proofs of concept](https://9to5mac.com/2020/11/27/arm-windows-virtualization-m1-mac/) already exist, and performance seems [extremely promising](https://twitter.com/imbushuo/status/1332772957609922561?s=21). Microsoft currently doesn't sell ARM-based Windows, so getting a license will be interesting.
+
+Windows 10 on ARM can emulate x86 applications, and Microsoft is working on [x64 emulation](https://www.neowin.net/news/it039s-official-x64-emulation-is-coming-to-windows-on-arm), which is already rolling out in Insider builds. In a few months, it should be possible to develop and test our Windows SDK with Visual Studio on M1 with reasonable performance results.
+
+Running older versions of macOS might be more problematic. We currently support macOS 10.14 with our [AppKit PDF SDK](https://pspdfkit.com/blog/2017/pspdfkit-for-macos/), and macOS 10.15 with the [Catalyst PDF SDK](https://pspdfkit.com/blog/2019/pspdfkit-for-mac-catalyst/), both of which are OS releases that require testing. It remains to be seen if VMware or Parallels include a complete x64 emulation layer. This would likely be really slow, so I wouldn't count on it.
 
 ![](/assets/img/2020/m1/memory.png)
 
-While the M1 CPU has a theoretical maximum of 68 GB/s of memory bandwidth, Intel's i9 10900K is technically capable of 46 GB/s but scores far behind on benchmarks, for both memory read and copy. It seems like single-core performance is not enough if the memory connection is too restrictive. This makes me wonder if future chips for the 16-inch MacBook Pro might have even higher memory bandwidth, or if this is a limitation of how fast you can transfer to LPDDR4 memory today.
+Lastly, 16&nbsp;GB RAM just isn't a lot. When running parallel tests, the machine starts to heavily swap, and performance really goes down the drain. This will be even more problematic with virtual machines running. Future machines will offer 32&nbsp;GB options to alleviate this issue.
 
-Note that Apple also uses clever caching and compression; [macOS 10.13+ uses the Compression Framework to cache the disk using a compressed in-memory cache](https://arstechnica.com/gadgets/2016/06/a-tour-of-macos-sierra-apples-macos-10-12-brings-siri-to-the-desktop/3/), and while there haven't been announcements to improve that for Big Sur, I wouldn't rule out changes.
+**Update:** Check out [How to run Windows 10 on ARM in QEMU with Hypervisor.framework patches on Apple Silicon Mac](https://gist.github.com/niw/e4313b9c14e968764a52375da41b4278#file-readme-md).
 
-## Installation of the Developer Toolchain
+## Android Studio
 
-Since macOS 11 has been out for a while, most of the required tools already ran on Big Sur. Let's go through my most common development tools.
+IntelliJ is working on porting the [JetBrains Runtime](https://youtrack.jetbrains.com/issue/JBR-2526) to Apple Silicon. JetBrains apps currently work through Rosetta 2; however, building via Gradle is [extremely slow](https://www.reddit.com/r/androiddev/comments/jx4ntt/apple_macbook_air_m1_is_very_slow_in_gradle_builds/). Gradle creates code at runtime, which seems like a particularly bad combination with the Rosetta 2 ahead-of-time translation logic. 
 
-### Xcode
+I expect most issues will be solved by Q1 2021, but it'll likely be some more time until all Java versions run great on ARM. A lot of effort has been put into [loop unrolling and vectorization](https://bell-sw.com/java/arm/performance/2019/01/15/the-status-of-java-on-arm/); not everything there is available on ARM just yet.
 
-Xcode is one of the largest macOS applications, with hundreds of tools. Version 12.2 is the first one that's "Apple Silicon ready," and it's a universal binary.
+**Update:** [Azul offers macOS JDKs for arm64](https://www.azul.com/press_release/azul-announces-support-of-java-builds-of-openjdk-for-apple-silicon/) — also for [Java 8](https://www.azul.com/downloads/zulu-community/?os=macos&architecture=arm-64-bit&package=jdk).
 
-One of the first things I did was run a quick performance test using [XcodeBenchmark](https://github.com/devMEremenko/XcodeBenchmark). This is a synthetic test simulating a large Xcode project, with mixed Swift and Objective-C code. The repository already has a list of Macs and results. I ran various other tests, and while they don't translate 1:1, they're close enough of a real-world scenario. The numbers tell the story:
+## Homebrew
 
-* MacBook Air M1: 128s
-* MacBook Pro 13-inch, 4 TB ports, 2020, i5: 221s
-* MacBook Pro 16-inch, 2019, i9 9980HK: 139s
-* Mac mini M1: 122s
-* Mac Pro, Xeon W 10-core, 2019: 133s
-* Hackintosh, i9 10900K 10-core, 2020: 103s
+[Homebrew](https://brew.sh/) currently works via Rosetta 2. Prefix everything with `arch -x86_64` and it'll just work. It's possible to install an additional (ARM-based) version of Homebrew [under `/opt/homebrew`](https://soffes.blog/homebrew-on-apple-silicon) and mix the setup, as [more and more software](https://github.com/Homebrew/brew/issues/7857) is adding support for ARM.
 
-Only a 10-core high-end desktop CPU with unlimited power draw and tweaked frequencies beats the M1 MacBook Air, and not by a lot. When you compare laptops to laptops, there's just no comparison.
+This isn't currently a problem (performance is good) and will eventually just work natively.
 
-Xcode has far more to offer than just compilation. Here's a short list of observations about various Xcode features:
+## Applications
 
-* The iOS simulator runs natively on the M1, and also supports x86_64 apps, which means it's running some form of Rosetta 2 on the iOS simulator. 
-* The Mac Catalyst simulator runs both natively and under Intel mode, depending on the app.
-* Interface Builder works, and while parts of it are slow as usual, I didn't experience any M1-specific slowdowns.
-* Other tools, like Instruments, work — but with the constraint that, just like on earlier iOS devices, you can't profile an Intel process with an ARM device. So this works only for ARM-native apps.
-* LLDB is complicated. Running an Intel process requires the Intel LLDB; running an ARM process requires the ARM LLDB. Xcode handles this automatically, but if you try this from the console, you need to run the correct architecture first (more on that later).
-* The iOS, iPadOS, tvOS, and watchOS simulators all work.
+Most applications just work; Rosetta is barely noticeable. Larger apps take a longer initial performance hit (e.g. Microsoft Word takes [around 20 seconds](https://www.zdnet.com/article/microsoft-office-will-be-about-20-second-slower-initially-on-apple-silicon-rosetta-2/) until everything is translated), but then the binaries are cached and subsequent runs are fast.
 
-Overall, Xcode is a pleasant experience on the M1, and it just works. There are some edge cases where you need to understand what's happening behind the scenes, as there are additional layers now. For example, if you're debugging a macOS app in Rosetta and have a native helper tool, they can't communicate because they're running in different CPU architectures. We have to rebuild our PSPDFKit for macOS tools as universal binary to resolve this.
+There's the occasional app that can't be translated and fails on startup (e.g. [Beamer](https://beamer-app.com/download) and the [Google Drive Backup and Sync client](https://www.google.com/intl/en_gh/drive/download/)), but this is rare. Some apps are confused about their place on disk and ask to be moved to the Applications directory, when really it's just the translated binary that runs somewhere else. Most of these dialogs can be ignored. Some apps (e.g. Visual Studio Code) [block auto updating](https://twitter.com/steipete/status/1331884524934995968?s=21), as the translated app location is read-only. However, in the case of VS Code, the Insider build is already updated to ARM and just works.
+
+Electron-based apps are slow if they run on Rosetta. It seems the highly optimized V8 JavaScript compiler blocks ahead-of-time translation. The latest stable version of Electron (version 11) already [fully supports Apple Silicon](https://www.electronjs.org/blog/apple-silicon), and some companies — including Slack and 1Password — have updated their beta versions to run natively.
+
+Google just shipped [Chrome that runs on ARM](https://www.macworld.com/article/3597749/google-releases-chrome-87-with-support-for-apple-silicon-macs.html), but there's still quite a big performance gap between it and Apple Safari, which just *flies* on Apple Silicon.
+
+## Conclusion
+
+The new M1 MacBooks are fast, beautiful, and silent, and the hype is absolutely justified. There's still a lot to do on the software front to catch up, and the bugs around older iOS simulators are especially problematic.
+
+All of that can be fixed in software, and the entire industry is currently working on making the experience better, so by next year — when Apple updates the 16-inch MacBook Pro and releases the next generation of its M chip line — it should be absolutely possible to use an M1 Mac as the main dev machine.
+
+For the time being, the M1 will be my <del>travel</del> secondary laptop, and I'll keep working on the 2,4&nbsp;GHz 16-inch MacBook Pro with 32&nbsp;GB RAM, which is just the faster machine. It'll be much harder to accept the loud, always-on fans though, now that I know what soon will be possible.
