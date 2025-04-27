@@ -123,3 +123,4 @@ We have to to go down to NSInvocation, which is a bit slower, but again, you won
 [All code (including test cases) is on GitHub.](https://github.com/steipete/PSTDelegateProxy)
 
 I've already implemented this almost everywhere in my [iOS PDF Framework](http://pspdfkit.com) and was able to delete *a lot* of boilerplate code. I'm [@steipete](http://twitter.com/steipete) on Twitter. Looking forward to your feedback.
+
