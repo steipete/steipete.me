@@ -4,11 +4,15 @@ pubDate: 2020-05-25T22:00:00.000Z
 description: "Discover the valuable world of iOS jailbreaking from a developer's perspective. I explore the wide range of capabilities unlocked by jailbreaking, from security research and debugging tools like FLEX to enhancing accessibility and examining how apps work internally. This guide covers the legality of jailbreaking, current jailbreak options like checkra1n and unc0ver, and practical applications beyond just pirating apps. Learn how to use tools like SSL Kill Switch to inspect network traffic, examine view hierarchies of third-party apps, and access powerful development capabilities that make jailbreaking a uniquely valuable tool for iOS developers."
 heroImage: /assets/img/2020/jailbreaking/header.jpg
 tags:
-  - iOS
+  - iOS-Development
   - Jailbreaking
   - Debugging
   - Security
-  - Development
+  - Reverse-Engineering
+  - FLEX
+  - Tweaks
+  - SSL-Kill-Switch
+  - Cydia
 source: steipete.com
 AIDescription: true
 ---

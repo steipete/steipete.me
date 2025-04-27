@@ -3,12 +3,14 @@ title: "UITableViewController designated initializer woes"
 pubDate: 2015-04-15T09:15:00.000Z
 description: "Explore a subtle but frustrating change in iOS 8.3 where Apple designated three initializers in UITableViewController, creating complications for proper subclassing. I examine how Apple's inconsistent implementation breaks the initializer chain when trying to follow best practices by marking superclass initializers as unavailable. This technical deep dive explains the conflict between UITableViewController's internal call order and Objective-C's designated initializer pattern, resulting in unexpected behavior. I present practical workarounds using compiler directives, with insights into how this issue originated from Swift's stricter initialization requirements."
 tags:
-  - iOS
+  - iOS-Development
   - UIKit
   - Objective-C
   - Swift
   - Initialization
   - UITableViewController
+  - NS_DESIGNATED_INITIALIZER
+  - iOS-8
 source: petersteinberger.com
 AIDescription: true
 ---

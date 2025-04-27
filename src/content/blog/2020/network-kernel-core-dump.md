@@ -7,8 +7,12 @@ tags:
   - macOS
   - Debugging
   - Kernel
-  - Core Dump
+  - Core-Dump
   - Networking
+  - Kernel-Panic
+  - Boot-Args
+  - LaunchDaemon
+  - Ethernet
 source: steipete.com
 AIDescription: true
 ---

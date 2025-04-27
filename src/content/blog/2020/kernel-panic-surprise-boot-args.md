@@ -7,8 +7,12 @@ tags:
   - macOS
   - Kernel
   - Security
-  - Boot Arguments
+  - Boot-Args
   - Debugging
+  - Kernel-Panic
+  - SIP
+  - Intel-Graphics
+  - MacBook-Pro
 source: steipete.com
 AIDescription: true
 ---

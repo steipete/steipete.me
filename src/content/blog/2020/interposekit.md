@@ -5,10 +5,14 @@ description: "Introducing InterposeKit, my weekend project for elegant method sw
 heroImage: /assets/img/2020/interposekit/logo.png
 tags:
   - Swift
-  - Swizzling
-  - Open Source
+  - Method-Swizzling
+  - Open-Source
   - Runtime
-  - Method Interception
+  - Method-Interception
+  - GitHub-Actions
+  - Swift-Package-Manager
+  - Mac-Catalyst
+  - Swift-5.2
 source: steipete.com
 AIDescription: true
 ---

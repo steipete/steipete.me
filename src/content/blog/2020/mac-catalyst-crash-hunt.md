@@ -5,11 +5,14 @@ description: "Investigate a persistent crash in Mac Catalyst apps' text input sy
 heroImage: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
 tags:
   - macOS
-  - Mac Catalyst
+  - Mac-Catalyst
   - Debugging
   - Threading
-  - SwizzlingAIDescription
-  - Crash Fix
+  - Method-Swizzling
+  - Crash-Fix
+  - Race-Condition
+  - XPC
+  - Hopper
 source: steipete.com
 AIDescription: true
 ---

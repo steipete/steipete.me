@@ -7,8 +7,12 @@ tags:
   - macOS
   - Debugging
   - Kernel
-  - Core Dump
+  - Core-Dump
   - Apple
+  - Kernel-Panic
+  - Boot-Args
+  - XNU
+  - Technical-Note
 source: steipete.com
 AIDescription: true
 ---
