@@ -68,7 +68,7 @@
     }
     
     pre code {
-      @apply !bg-transparent !p-0 !text-gray-800 dark:!text-gray-200 !block;
+      @apply !bg-transparent !p-0 !text-gray-800 dark:!text-gray-50 !block;
     }
 
     blockquote {
