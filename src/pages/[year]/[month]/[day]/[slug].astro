@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  
+  // Create redirect mapping for each post
+  return posts.map((post) => {
+    // Extract date components if the post has a date-style filename
+    const dateMatch = post.slug.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/);
+    
+    if (dateMatch) {
+      const [, year, month, day, slug] = dateMatch;
+      
+      return {
+        params: { year, month, day, slug },
+        props: { newSlug: post.slug }
+      };
+    }
+    
+    // For posts without date format in filename, we don't create redirect paths
+    return null;
+  }).filter(Boolean); // Remove null entries
+}
+
+const { newSlug } = Astro.props;
+
+// Perform redirect
+---
+
+<meta http-equiv="refresh" content={`0;url=/blog/${newSlug}`} />
+<script>
+  window.location.href = `/blog/${newSlug}`;
+</script>
+
+<!-- Fallback content for browsers with JavaScript disabled -->
+<h1>Redirecting...</h1>
+<p>
+  If you are not redirected automatically, 
+  <a href={`/blog/${newSlug}`}>click here</a>
+</p>
