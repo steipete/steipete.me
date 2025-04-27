@@ -209,14 +209,25 @@ main {
 @media (prefers-color-scheme: dark) {
   :root {
     --sidebar-bg: #212529;
-    --text-color: #e9ecef;
+    --text-color: #ffffff; /* Much brighter white text */
     --link-color: #6ea8fe;
     --hover-color: #9ec5fe;
     --light-gray: #ced4da;
   }
   
   body {
-    background-color: #343a40;
+    background-color: #1a1d20; /* Darker background for better contrast */
+  }
+  
+  /* Make headings pure white for maximum visibility */
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Make normal text bright as well */
+  p, li, span, div {
+    color: #f0f0f0 !important;
   }
 }
 
