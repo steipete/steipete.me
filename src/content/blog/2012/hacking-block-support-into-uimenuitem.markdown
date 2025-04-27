@@ -1,9 +1,14 @@
 ---
-layout: post
 title: "Hacking Block Support Into UIMenuItem"
-date: 2012-07-17 16:22
-comments: true
-categories:
+pubDate: 2012-07-17T16:22:00.000Z
+description: "Dive into the inner workings of iOS's responder chain as I implement block support for UIMenuItem. I explore how UIMenuController targets actions through the responder chain, analyze Apple's design choice of omitting the target parameter, and create a cleaner API with blocks. This technical deep-dive includes implementation details for a swizzling-based solution, handling memory management challenges, and ensuring backward compatibility while maintaining app store safety."
+tags:
+  - iOS
+  - Objective-C
+  - UIKit
+  - Blocks
+source: petersteinberger.com
+AIDescription: true
 ---
 
 tl;dr: UIMenuItem! Blocks! [Get the code on GitHub.](https://github.com/steipete/PSMenuItem)
@@ -18,124 +23,421 @@ This is actually pretty genius, in part. iOS checks if the @selector can be invo
 
 A typical responder chain looks like this: UIView -> UIViewController -> UINavigationController -> UIApplication -> AppDelegate.
 
-Now this is great in theory. For example, if you implement`copy:` on your viewController, the firstResponder can be any subview and it still works. In practice, however, I found this more limiting and annoying. And [I'm not the only one](https://twitter.com/hatfinch/statuses/224925043556225024).
+This works very, very well most of the time, but there's one problem: if you need to have different items with the same title, all you can do is check the UIMenuController.menuItems to get the selected menu item. This is not very elegant. Especially now that we have [blocks](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html) since iOS 4.0, I kept thinking if there's a better way to do this. I googled around, and most people solve this by subclassing ```UIMenuItem``` and adding some category. This works, but not for ```performAction:withSender:``` since that's not implemented on ```UIMenuItem``` but somewhere in the UIEvent family, and there's no trace of what UIMenuItem is currently invoked.
 
-Especially if your menus get more complex, your code is littered with selectors. So let's write a block-based subclass. Enter PSMenuItem:
+So first, let's revisit how we usually show a menu:
 
+1. Register to be able to become first responder
 ``` objective-c
-    PSMenuItem *actionItem = [[PSMenuItem alloc] initWithTitle:@"Action 1" block:^{
-        NSLog(@"Hello, from a block!");
-    }];
+// in the .h
+@interface MyView : UIView
+@end
+
+// in the .m
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
 ```
 
-My *naive* approach was to just use one common selector internally and execute the block that is saved in the PSMenuItem subclass. The only problem: `(id)sender` of the action gets called with the UIMenuController. This is **wrong** on so many levels, especially since UIMenuController is a singleton anyway. There's no easy way to know what UIMenuItem has been pressed.
-But since I was already committed to writing the subclass, that couldn't stop me. We just create a unique selector for each UIMenuItem, and catch execution at a lower level.
-
-### Enter Cocoa's Message Forwarding
-
-If the runtime can't find a selector on the current class, message forwarding is started. (That's the tech that allows classes like NSUndoManager or NSProxy.)
-
-1. **Lazy method resolution:** `resolveInstanceMethod:` is called. If this returns YES, message sending is restarted, as the system assumes that the method has been added at runtime. We could theoretically use this and add a method that calls the block at runtime. But this would pollute the object with many new methods -- not what we want.
-
-2. **Fast forwarding path:**  `-(id)forwardingTargetForSelector:(SEL)sel` has been added in Leopard as a faster approach to the NSInvocation-based message forwarding. We could use this to react to our custom selector, but we would have to return an object that implements our selector (or does not throw an exception with undefined methods.) Possible candidate, but there's something better.
-
-3. **Normal forwarding path:** This is the "classic" message forwarding that has existed since the old days. And actually, two methods are called here: `methodSignatureForSelector:`, followed by `forwardInvocation:`. (The method signature is needed to build the NSInvocation.) PSMenuItem hooks into both of those methods. But let's go step by step through PSMenuItem's `+ (void)installMenuHandlerForObject:(id)object`:
+2. Add the menu items when needed
 
 ``` objective-c
-+ (void)installMenuHandlerForObject:(id)object {
-    @autoreleasepool {
+- (void)showMenuAction:(id)sender {
+    UIMenuItem *testItem = [[UIMenuItem alloc] initWithTitle:@"Test" action:@selector(test:)];
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    [menuController setMenuItems:[NSArray arrayWithObject:testItem]];
+    [menuController setTargetRect:self.bounds inView:self];
+    [menuController update];
+    [menuController setMenuVisible:YES animated:YES];
+}
+```
+
+3. Implement ```canPerformAction:withSender``` to respond to actions
+
+```objective-c
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    // We return YES (or call super) for the actions we actually implement
+    if (action == @selector(test:)) {
+        return YES;
+    }
+    return NO; // NO for all actions that we don't implement
+}
+
+- (void)test:(id)sender {
+    NSLog(@"test");
+}
+```
+
+So we've got a working menu system, but what if we'd want another menu item "Test 2" to do something completely different? Or if we'd want to encapsulate menu creation in a separate file? Usually you would either create a category on UIResponder (which works, but it's a bit ugly to add 10 methods in a category) or use ```didHideMenuNotification``` and query what selection was last active.
+
+Some third-party controls solve this problem by subclassing UIMenuItem and adding an "id" property. But I'm quite sure this is against the iOS SDK Agreement, since you're not supposed to subclass UIKit controls that are not explicitly marked for subclassing. It's also a chore to manually check if your menu item is the one that is invoked.
+
+Another idea is to use the sender ID to figure out what menu is active. However, the sender passed to ```canPerformAction:withSender:``` is sometimes ```UIMenuController```, sometimes ```UICalloutBarButtonItem```; this isn't reliable. 
+
+What we really want is a ```UIMenuItem``` category that adds block support. Something like this:
+
+``` objective-c
+UIMenuItem *mailItem = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Mail", @"") block:^{
+    NSLog(@"Clicked on Mail");
+}];
+```
+
+I really really like blocks for their flexibility and encapsulation, and I saw this as the only solution that's "right". But, at first sight this solution isn't possible. We can't store the block in the UIMenuItem, and we can't use a simple NSDictionary for mapping, since there's simply no trace of the selected menu item when an action is triggered. If UIMenuItem would send the action to a view, we could swizzle ```performAction:```, hook into it, and check what action is triggered, but the code flow is exactly the opposite: the view calls the action. Calling the action will call the target, which is "missing" with ```UIMenuItem```. So the view that receives ```test:``` doesn't really know what ```UIMenuItem``` is calling it.
+
+(I *briefly* considered overriding ```test:``` to check what ```UIMenuItem``` is visible on each call, but this would be a multi-step approach, and I don't want to hook into the UIMenu system on a lower level from multiple sides. That feels really hacky, and I'm afraid that it might break more easily with future iOS versions.)
+
+After playing around with a few more solutions (and rejecting them), I looked around in a few popular iOS frameworks to see how they handle this. [MGTwitterEngine](https://github.com/mattgemmell/MGTwitterEngine) uses a delegate pattern to map asynchronous operations to completion delegates. [AFNetworking](https://github.com/AFNetworking/AFNetworking) uses blocks for completion handlers. Then it hit me: what if the action is just a placeholder, and we can replace it with something else? We could [swizzle](http://cocoadev.com/wiki/MethodSwizzling) canPerformAction: and check if we get our placeholder method. If yes, replace it with some other @selector.
+
+But, we face two problems here: first, we need to remember what @selector needs what block. And second - what @selector to use? The solution for the first is the classic Objective-C one: use a static dictionary to remember the mapping from action to block. For the second problem, we need to synthesize a method.
+
+There is a big drawback, however: this method MUST be implemented on the application! So what to pick? Apple has a little selection of *private* or undocumented methods, and looking at all selectors, I've found one that looked both unique and safe: ```_accessibilitySetFocusToLiveRegion:```. This is part of the accessibility framework, but there's no trace of it in normal AppKit code, and implementing it doesn't break anything.
+
+## Implementation
+
+Now that we have the general idea, let's implement UIMenuItem+PSMenuItem to capture initialization with a block:
+
+``` objective-c
+typedef void(^PSMenuItemBlock)(id sender);
+
+@interface UIMenuItem (PSMenuItem)
+// Static way, doesn't need custom view
+- (id)initWithTitle:(NSString *)title block:(PSMenuItemBlock)block;
+@end
+
+@implementation UIMenuItem (PSMenuItem)
+
+- (id)initWithTitle:(NSString *)title block:(PSMenuItemBlock)block {
+    if ((self = [self initWithTitle:title action:@selector(_accessibilitySetFocusToLiveRegion:)])) {
+        PSMenuItemWithBlockAction(self.action, block);
+    }
+    return self;
+}
+
+@end
+```
+
+That was simple. Now we need to implement the swizzling to capture `canPerformAction:withSender:` and replace it on the fly. The swizzling itself is done via a class that is automatically initialized via `dispatch_once` and in a "+load" method.
+
+``` objective-c
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+
+static NSString *PSMenuItemEnabledActions = @"PSMenuItemEnabledActions";
+static NSMutableDictionary *PSMenuItemActionBlocks = nil;
+
+// action helper. the real magic is done here.
+NS_INLINE void PSMenuItemWithBlockAction(SEL action, PSMenuItemBlock block) {
+    NSCParameterAssert(action);
+    NSCParameterAssert(block);
+
+    // use one dictionary per action for UX safety.
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        PSMenuItemActionBlocks = [[NSMutableDictionary alloc] init];
+    });
+    PSMenuItemActionBlocks[@(action)] = [block copy];
+
+    // register action
+    [PSMenuItem associateMenuItemAction:action];
+}
+
+@implementation PSMenuItem
+
+// will swizzle for great glory.
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+    });
+}
+
+// globally enable a custom SEL to be used as a menu item.
++ (void)associateMenuItemAction:(SEL)action {
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        NSDictionary *actions = [[NSUserDefaults standardUserDefaults] objectForKey:PSMenuItemEnabledActions];
+        if (actions) {
+            // we have a saved dictionary, try to convert to SEL
+            for (NSString *actionStr in actions) {
+                SEL selector = NSSelectorFromString(actionStr);
+                [self associateMenuItemAction:selector];
+            }
+        }
+    });
+
+    NSString *actionString = NSStringFromSelector(action);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *actions = [NSMutableArray arrayWithArray:[defaults objectForKey:PSMenuItemEnabledActions]];
+    if (![actions containsObject:actionString]) {
+        [actions addObject:actionString];
+        [defaults setObject:actions forKey:PSMenuItemEnabledActions];
+        [defaults synchronize];
+
+        // don't swizzle twice
+        static NSMutableSet *swizzledClasses = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            swizzledClasses = [[NSMutableSet alloc] init];
+        });
+
+        // now swizzle everything UIResponder for great victory
         @synchronized(self) {
-            // object can be both a class or an instance of a class.
-            Class objectClass = class_isMetaClass(object_getClass(object)) ? object : [object class];
-```
-
-Note the @synchronized; swizzling is not threadsafe. Also, we add an @autoreleasepool here, as this could be executed from +load or +initialize at a very early time when there's no default NSAutoreleasePool in place yet.
-
-`class_isMetaClass` checks if `object_getClass` returns a class or a metaclass. This is needed because "object" can both be an instance of a class or a class object itself, and you can't just invoke an isKindOfClass on a Class object. If you're wondering what a metaclass is, it's basically a class that defines methods available on the class. [CocoaWithLove has a great article on that.](http://cocoawithlove.com/2010/01/what-is-meta-class-in-objective-c.html)
-
-``` objective-c
-            // check if menu handler has been already installed.
-            SEL canPerformActionSEL = NSSelectorFromString(@"pspdf_canPerformAction:withSender:");
-            if (!class_getInstanceMethod(objectClass, canPerformActionSEL)) {
-
-                // add canBecomeFirstResponder if it is not returning YES. (or if we don't know)
-                if (object == objectClass || ![object canBecomeFirstResponder]) {
-                    SEL canBecomeFRSEL = NSSelectorFromString(@"pspdf_canBecomeFirstResponder");
-                    IMP canBecomeFRIMP = imp_implementationWithBlock(PSPDFBlockImplCast(^(id _self) {
-                        return YES;
-                    }));
-                    PSPDFReplaceMethod(objectClass, @selector(canBecomeFirstResponder), canBecomeFRSEL, canBecomeFRIMP);
-                }
-```
-
-Here we test if the class has already been swizzled by us with using `class_getInstanceMethod`. Again, because object might be a Class already, we can't just use `respondsToSelector:`. Next, we test if we should add a handler to `canBecomeFirstResponder`. This is needed to make the UIMenuController display in the first place.
-
-Note the `imp_implementationWithBlock`. This is a new method in iOS 4.3 upward, but has a much nicer syntax and is more compact than classic C functions. There's another small annoyance: `PSPDFBlockImplCast`. The syntax of `imp_implementationWithBlock` was slightly changed in yet-to-be released versions of Xcode. Older versions still need the `(__bridge void *)` cast; newer versions will complain and only work without.
-
-`PSPDFReplaceMethod` is a helper that first adds the new method via our pspdf_ selector name, then swizzles the original implementation with our custom implementation:
-
-``` objective-c
-                // swizzle canPerformAction:withSender: for our custom selectors.
-                // Queried before the UIMenuController is shown.
-                IMP canPerformActionIMP = imp_implementationWithBlock(PSPDFBlockImplCast(^(id _self, SEL action, id sender) {
-                    return PSIsMenuItemSelector(action) ? YES : ((BOOL (*)(id, SEL, SEL, id))objc_msgSend)(_self, canPerformActionSEL, action, sender);
-                }));
-                PSPDFReplaceMethod(objectClass, @selector(canPerformAction:withSender:), canPerformActionSEL, canPerformActionIMP);
-```
-
-Next up, we swizzle `canPerformAction:withSender:`. This is called before the UIMenuController is displayed. If we detect our custom selector (`PSIsMenuItemSelector`), we return YES, else we call the original implementation. Note the tricky casting on `objc_msgSend`. (We could also build an NSInvocation, but that would be much slower and needs much more code).
-
-`PSIsMenuItemSelector` is just shorthand for `return [NSStringFromSelector(selector) hasPrefix:kMenuItemTrailer];`:
-
-``` objective-c
-                // swizzle methodSignatureForSelector:.
-                SEL methodSignatureSEL = NSSelectorFromString(@"pspdf_methodSignatureForSelector:");
-                IMP methodSignatureIMP = imp_implementationWithBlock(PSPDFBlockImplCast(^(id _self, SEL selector) {
-                    if (PSIsMenuItemSelector(selector)) {
-                        return [NSMethodSignature signatureWithObjCTypes:"v@:@"]; // fake it.
-                    }else {
-                        return (NSMethodSignature *)objc_msgSend(_self, methodSignatureSEL, selector);
+            const char *className;
+            Class currentClass, superClass = [UIResponder class];
+            int numClasses, newNumClasses;
+            Class *classes = NULL, *newClasses;
+            
+            numClasses = objc_getClassList(NULL, 0);
+            
+            if (numClasses > 0) {
+                classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
+                numClasses = objc_getClassList(classes, numClasses);
+                
+                newClasses = NULL;
+                newNumClasses = numClasses;
+                
+                for (int classIndex = 0; classIndex < numClasses; ++classIndex) {
+                    currentClass = classes[classIndex];
+                    
+                    if (!class_getSuperclass(currentClass)) {
+                        continue;
                     }
-                }));
-                PSPDFReplaceMethod(objectClass, @selector(methodSignatureForSelector:), methodSignatureSEL, methodSignatureIMP);
-```
-
-Next, we arrive at the method that's called during message forwarding, when the user selects a UIMenuItem. We again check for the selector and return a faked `NSMethodSignature`. If we wouldn't return a signature here, we'd get a *selector not implemented* exception. `"v@:@"` is the selector encoding for `-(void)action:(id)sender`. v is the return type (void), the first @ is self, the : is the selector (_cmd), the @ finally is id sender. [You can learn more on Apple Developer about objc type encodings.](http://developer.apple.com/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html)
-
-``` objective-c
-                // swizzle forwardInvocation:
-                SEL forwardInvocationSEL = NSSelectorFromString(@"pspdf_forwardInvocation:");
-                IMP forwardInvocationIMP = imp_implementationWithBlock(PSPDFBlockImplCast(^(id _self, NSInvocation *invocation) {
-                    if (PSIsMenuItemSelector([invocation selector])) {
-                        for (PSMenuItem *menuItem in [UIMenuController sharedMenuController].menuItems) {
-                            if ([menuItem isKindOfClass:[PSMenuItem class]] && sel_isEqual([invocation selector], menuItem.customSelector)) {
-                                [menuItem performBlock]; break; // find corresponding MenuItem and forward
-                            }
+                    if ((int(*)(id, SEL, SEL, id))class_getMethodImplementation(currentClass, @selector(canPerformAction:withSender:)) == (int(*)(id, SEL, SEL, id))class_getMethodImplementation(superClass, @selector(canPerformAction:withSender:))) {
+                        continue;
+                    }
+                    
+                    className = class_getName(currentClass);
+                    if (strcmp(className, "UICalloutBarButton") == 0) {
+                        continue;
+                    }
+                    
+                    if ([currentClass isSubclassOfClass:superClass] && ![swizzledClasses containsObject:currentClass]) {
+                        SEL canPerformSelector = @selector(canPerformAction:withSender:);
+                        if (class_getInstanceMethod(currentClass, canPerformSelector)) {
+                            IMP origIMP = class_getMethodImplementation(currentClass, canPerformSelector);
+                            SEL origIMPSEL = NSSelectorFromString([@"_orig_canPerformAction_" stringByAppendingString:NSStringFromClass(currentClass)]);
+                            class_addMethod(currentClass, origIMPSEL, origIMP, method_getTypeEncoding(class_getInstanceMethod(currentClass, canPerformSelector)));
+                            
+                            // Add the new method and swizzle.
+                            IMP myIMP = imp_implementationWithBlock(PSCanPerformActionSwizzleBlock);
+                            method_setImplementation(class_getInstanceMethod(currentClass, canPerformSelector), myIMP);
+                            
+                            [swizzledClasses addObject:currentClass];
+                            
+                            NSString *className = NSStringFromClass(currentClass);
+                            NSLog(@"class %@ has canPerformAction swizzled.", className);
                         }
-                    }else {
-                        objc_msgSend(_self, forwardInvocationSEL, invocation);
                     }
-                }));
-                PSPDFReplaceMethod(objectClass, @selector(forwardInvocation:), forwardInvocationSEL, forwardInvocationIMP);
+                }
+                
+                free(classes);
+                if (newClasses) free(newClasses);
             }
         }
     }
 }
+
+// imp_implementationWithBlock doesn't work great on __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_4_0, where this is commonly defined to be __IPHONE_3_0.
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_4_0
+#import <objc/runtime.h>
+#import <objc/objc-runtime.h>
+#endif
+
+// we declare a helper to find out if custom menu actions are available. otherwise just returns YES if we're the accessibilityFocus selector
+static IMP PSReplaceCanPerformActionWithTarget(SEL origSEL, IMP replaceIMP, SEL replaceSEL, Class target, BOOL aggressive) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    // first check if the class actually has an IMP for the selector (not every UIResponder has)
+    IMP origIMP = class_getMethodImplementation(target, origSEL);
+    if (!origIMP) return NULL;
+    
+    // don't swizzle twice
+    NSString *replaceIMPStr = NSStringFromSelector(replaceSEL);
+    if ([replaceIMPStr hasPrefix:@"_orig_"]) {
+        return NULL;
+    }
+    
+    @try {
+        Method origMethod = class_getInstanceMethod(target, origSEL);
+        Method replaceMethod = class_getInstanceMethod(target, replaceSEL);
+        if(replaceMethod && origMethod) {
+            if(class_addMethod(target, origSEL, method_getImplementation(replaceMethod), method_getTypeEncoding(replaceMethod))) {
+                class_replaceMethod(target, replaceSEL, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+                return method_getImplementation(origMethod);
+            }else {
+                method_exchangeImplementations(origMethod, replaceMethod);
+                return method_getImplementation(replaceMethod);
+            }
+        }else if(aggressive) {
+            return method_setImplementation(origMethod, replaceIMP);
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Failed to swizzle: %@", exception);
+    }
+    return NULL;
+}
+
+static BOOL PSCanPerformActionSwizzleBlock(id self, SEL _cmd, SEL action, id sender) {
+    for (NSData *sel in PSMenuItemActionBlocks) {
+        SEL selector = nil;
+        [sel getBytes:&selector length:sizeof(selector)];
+        if (selector == action) {
+            return YES;
+        }
+    }
+    
+    // call original implementation if the selector doesn't match
+    SEL origSel = NSSelectorFromString([@"_orig_canPerformAction_" stringByAppendingString:NSStringFromClass([self class])]);
+    BOOL retVal = NO;
+    
+    // don't crash if the original Method doesn't exist anymore. Should never happen
+    if ([self respondsToSelector:origSel]) {
+        retVal = (BOOL)objc_msgSend(self, origSel, action, sender);
+    }
+    
+    return retVal;
+}
+
++ (BOOL)validateAction:(SEL)selector {
+    for (NSData *sel in PSMenuItemActionBlocks) {
+        SEL action = nil;
+        [sel getBytes:&action length:sizeof(action)];
+        if (action == selector) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (PSMenuItemBlock)blockForAction:(SEL)selector {
+    return PSMenuItemActionBlocks[@(selector)];
+}
+
++ (void)performAction:(SEL)selector withSender:(id)sender {
+    PSMenuItemBlock callBlock = PSMenuItemActionBlocks[@(selector)];
+    if (callBlock) {
+        callBlock(sender);
+    }
+}
+
++ (void)performAccessibilityActionWithSender:(id)sender {
+    [self performAction:@selector(_accessibilitySetFocusToLiveRegion:) withSender:sender];
+}
+
+@end
 ```
 
-Finally, the last piece. After `methodSignatureForSelector` returns a valid NSMethodSignature, the system builds an NSInvocation object that we can handle (or not). Here we load the selector, loop through all menuItems in the UIMenuController, and finally call the block on the PSMenuItem, if found. Note that we could also extract UIMenuController from the NSInvocation itself, but since it's a singleton, there's no need for that.
-
-One simple piece remains. We build up the custom selector in our `initWithTitle:block:`
+Now we hook into ```UIResponder``` (I've decided against subclassing), and we need to override the action response. This looks funky but actually works:
 
 ``` objective-c
-    // Create a unique, still debuggable selector unique per PSMenuItem.
-    NSString *strippedTitle = [[[title componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""] lowercaseString];
-    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *uuidString = CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uuid));
-    CFRelease(uuid);
-    SEL customSelector = NSSelectorFromString([NSString stringWithFormat:@"%@_%@_%@:", kMenuItemTrailer, strippedTitle, uuidString]);
+@implementation UIResponder (PSMenuItem)
+
+// Called instead of _accessibilitySetFocusToLiveRegion:sender.
+- (void)_accessibilitySetFocusToLiveRegion:(id)sender {
+    [PSMenuItem performAccessibilityActionWithSender:sender];
+}
+
+@end
 ```
 
-I've even used a UUID to allow menu items with the same title; they otherwise would generate the same selector and would potentially call the wrong block.
+## A Sample
 
-Also, thanks to Mike Ash for his great [Friday Q&A about Objective-C Message Forwarding.](http://www.mikeash.com/pyblog/friday-qa-2009-03-27-objective-c-message-forwarding.html)
+The usage is extremely similar to our initial example:
+
+``` objective-c
+- (void)showMenuAction:(id)sender {
+    UIMenuItem *testItem = [[UIMenuItem alloc] initWithTitle:@"Test" block:^(id sender) {
+        NSLog(@"test");
+    }];
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    [menuController setMenuItems:[NSArray arrayWithObject:testItem]];
+    [menuController setTargetRect:self.bounds inView:self];
+    [menuController update];
+    [menuController setMenuVisible:YES animated:YES];
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+// selectively decide what menu items to display
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    if (action == @selector(_accessibilitySetFocusToLiveRegion:)) {
+        return YES;
+    }
+    return NO;
+}
+```
+
+That's it! Using blocks has a few disadvantages, though. If we declare the block in the view scope, we automatically capture all variables on the stack and [retain them](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Blocks/Articles/bxVariables.html). That's not always a good idea. A good rule of thumb is to capture the variables you need, and use `[weakSelf self]` if you need to capture self. There's a [whole blog post](http://blog.parse.com/2012/04/12/building-for-ios-with-parse-blocks-and-categories/) on Parse's blog about using blocks with self. In a nutshell:
+
+``` objective-c
+__weak id weakSelf = self;
+void (^myCommonBlock)(UIMenuItem *, UIView *, CGRect) = ^(UIMenuItem *item, UIView *view, CGRect bounds) {
+    __strong id strongSelf = weakSelf;
+    if (strongSelf) {
+        // ... do your thing
+    }
+};
+```
+
+## Source
+
+The code is available on GitHub at [https://github.com/steipete/PSMenuItem](https://github.com/steipete/PSMenuItem).
+
+## Issues & Fixes
+
+**Update (2012/07/18)**: Apple internally calls ```canPerformAction:withSender:``` recursively. While searching for possible candidates for ```_accessibilitySetFocusToLiveRegion:```, I started to look at calling all of the undocumented/private methods to check if any of them would look good. However, all of them are actually called by AppKit code, including the accessibility one. I somehow missed that. When an accessibility client queries a responder for elements, this is ultimately called to check what elements are available. What happens then is interesting - our ```canPerformAction:withSender:``` swizzled one is called again, but we don't call the original if our action is not found. This resulted in a classic infinite recursion and a EXC_BAD_ACCESS crash.
+
+To fix this, we might need to restrict swizzling to specific classes, but that would be a lot more code, and we'd likely miss some. The much simpler solution is to use a flag. Before ```PSCanPerformActionSwizzleBlock``` executes, we set a thread-local variable to say that we're already checking, and in that case we always call the original. This way, all ```canPerformAction:withSender:``` calls work, but any recursive call will call the original.
+
+Here's the fix:
+
+``` objective-c
+static BOOL PSCanPerformActionSwizzleBlock(id self, SEL _cmd, SEL action, id sender) {
+    // check if we're already verifying. (The method is called recursively).
+    static NSString *PSCanPerformActionKey = @"PSCanPerformActionKey";
+    if ([[NSThread currentThread].threadDictionary objectForKey:PSCanPerformActionKey]) {
+        SEL origSel = NSSelectorFromString([@"_orig_canPerformAction_" stringByAppendingString:NSStringFromClass([self class])]);
+        BOOL retVal = NO;
+        
+        if ([self respondsToSelector:origSel]) {
+            retVal = (BOOL)objc_msgSend(self, origSel, action, sender);
+        }
+        
+        return retVal;
+    }
+    
+    [NSThread currentThread].threadDictionary[PSCanPerformActionKey] = @YES;
+    @try {
+        for (NSData *sel in PSMenuItemActionBlocks) {
+            SEL selector = nil;
+            [sel getBytes:&selector length:sizeof(selector)];
+            if (selector == action) {
+                return YES;
+            }
+        }
+        
+        // call original implementation if the selector doesn't match
+        SEL origSel = NSSelectorFromString([@"_orig_canPerformAction_" stringByAppendingString:NSStringFromClass([self class])]);
+        BOOL retVal = NO;
+        
+        // don't crash if the original Method doesn't exist anymore. Should never happen
+        if ([self respondsToSelector:origSel]) {
+            retVal = (BOOL)objc_msgSend(self, origSel, action, sender);
+        }
+        
+        return retVal;
+    }
+    @finally {
+        [[NSThread currentThread].threadDictionary removeObjectForKey:PSCanPerformActionKey];
+    }
+}
+```
+Using @try/@finally makes sure that we don't leak the thread-local variable.
+
+**Update**: Just realized that there's a ```__bridge_retained``` leak in the imp_implementationWithBlock call, since we never call imp_removeBlock. This is a one-time leak when the class loads, so this is acceptable, especially since we simply can never know when to remove the IMP.
+
+**Update (2012/07/18 v2)**: I uploaded a new version which is much simpler and doesn't depend on a special selector, but instead simply replaces the selector that is used. This works by intercepting the action in UIMenuItem's init function. A bit nasty, but it's much cleaner.
+
+**Update (2014/01)**: Completely rewrote the category to just use associated objects and method swizzling. Saved the code on [GitHub](https://github.com/steipete/PSMenuItem) and created a pod for it.

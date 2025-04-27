@@ -1,9 +1,13 @@
 ---
-layout: post
 title: "Don't Call willChangeValueForKey Unless It's Really Needed"
-date: 2012-04-05 15:27
-comments: true
-categories: 
+pubDate: 2012-04-05T15:27:00.000Z
+description: "Dive into the subtle details of Key-Value Observing (KVO) in Objective-C, where I clarify a common misconception about willChangeValueForKey and didChangeValueForKey. Learn why these manual notifications are unnecessary when using setter methods, how automatic change notifications actually work, and when manual KVO notifications are genuinely needed. This technical deep dive includes real-world examples from popular open-source projects that get this wrong."
+tags:
+  - iOS
+  - Objective-C
+  - KVO
+source: petersteinberger.com
+AIDescription: true
 ---
 
 You're using KVO, right? So you most likely have already written code like this:
@@ -19,14 +23,42 @@ There is a reason why you want to manually add willChangeValueForKey: most likel
 
 {% gist 2314833 %}
 
-Sometimes you might also want to optimize how often you're sending KVO notifications with overriding [automaticallyNotifiesObserversForKey:](http://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSKeyValueObserving_Protocol/Reference/Reference.html#//apple_ref/occ/clm/NSObject/automaticallyNotifiesObserversForKey:) to disable automatic change notifications for certain properties.
+First, it wonders why the heck NSOperation calls these methods, and second, it calls will/did on isExecuting, isFinished, and isReady. Not on isConcurrent.
 
-In [this example](https://github.com/keremk/CViPhoneLibrary/blob/a845c169916c0dea05680773b10e85f8020ae700/CVLibrary/CVImage.m#L27), there might be expensive KVO observations when the image changes, so we want to make damn sure that KVO is only fired if the image actually is a different one than the image that is already set:
+So let's try to figure out why. isConcurrent is defined like this:
 
-{% gist 2314760 %}
+{% gist 2324812 %}
 
-If you currently have such obsolete calls, they're not doing any harm. Incrementally called, willChangeValueForKey doesn't emit more notifications. Still, time to delete some code!
+It's a simple accessor, thus can't be overridden, and Apple has no reason to know when this changes; it's returning a constant value, after all. But why the will/did on the other accessor methods?
 
-**Update:** Don't forget that there are more ways that'll save you manual calls to will/did, like using the little-known addition [keyPathsForValuesAffecting(PropertyName)](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVODependentKeys.html#//apple_ref/doc/uid/20002179-BAJEAIEE), which utilizes some runtime magic to make KVO smarter. Here's a real-life example of how I used that on AFNetworking, so people can register a KVO notification on "isNetworkActivityIndicatorVisible" and it'll get sent every time activityCount is changed. (You'll also see that I do some [atomic updating](http://www.mikeash.com/pyblog/friday-qa-2011-03-04-a-tour-of-osatomic.html) that requires manual KVO.)
+Have a look at the implementation of the isReady method:
 
-{% gist 2322095 %}
+{% gist 2324831 %}
+
+Notice how this is also only a getter, but rather than returning an ivar, it checks all kinds of things. This is why, when any of the things being checked is changed, KVO must be manually called.
+
+So these will/did calls in each of the setters lets NSOperationQueue and other observers know that isReady has been updated, and they need to re-evaluate isReady's value. This is a nice approach to prevent implementing setters for every value that isReady checks.
+
+What Apple is doing here is combining keys for KVO on a higher level to reduce API clutter in the exposed class. Now we understand why it's so complicated. However, for the average "MyClass", this is usually overkill. Simple POCO objects (excuse me, switching from .NET-land ;) don't need this.
+
+If you own the whole accessor and thus control the setter as well, just implement that one and let KVO do the magic.
+
+{% gist 2324840 %}
+
+There's also a second valid reason for using will/did, as [Matt Gallagher explains here:](http://cocoawithlove.com/2008/12/ordereddictionary-subclassing-cocoa.html)
+
+> When you subclass an existing Cocoa class, its accessor methods may not automatically invoke KVO notifications even if they are not declared @dynamic. This is because existing accessor methods may directly access instance variables. (...) the solution is to add an appropriate set of -willChangeValueForKey: and -didChangeValueForKey: around the accessor method invocation.
+
+There was a similar discussion on [Cocoabuilder](http://www.cocoabuilder.com/archive/cocoa/203855-why-kvo-did-will-change-methods-in-nsoperation.html). Have fun learning!
+
+For the StackOverflow junkies: Here's [a similar discussion from SO](http://stackoverflow.com/questions/4346810/when-to-use-kvo-willchangevalueforkey-didchangevalueforkey). My favorite is Josh Caswell's answer, which neatly answers the original question: What is the purpose of will/didChangeValueForKey: When do I call these directly?
+
+> When you need to provide a KVO implementation in the absence of a property or accessor; when a change in one property affects another; when a single change affects many keys; when a change to a collection object happens without using the KVO methods.
+
+Just a tidbit from the memory management side: Manual KVO will retain both old and new values (if you supply them), if the affected type is an object.
+
+**Update**: There's also [Automatic Key-Value Observing for (Cocoa)](https://github.com/github/akvo), a drop-in for manual KVO, but I haven't tried it.
+
+**Update 2013**: New tools make working with KVO much easier. Personal favorites: [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa) and [THObserversAndBinders](https://github.com/th-in-gs/THObserversAndBinders).
+
+**Update 2014**: Also check out [KVOController](https://github.com/facebook/KVOController), a simpler wrapper from Facebook.
