@@ -9,6 +9,12 @@ tags:
   - Logging
   - Privacy
   - Debugging
+  - OSLog
+  - iOS-14
+  - iOS-15
+  - macOS
+  - Console
+  - System-APIs
 source: steipete.com
 AIDescription: true
 ---

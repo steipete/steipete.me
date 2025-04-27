@@ -14,6 +14,8 @@ tags:
   - iOS-Development
   - Dynamic-Programming
   - InterposeKit
+  - Registers
+  - Stack-Management
 source: steipete.com
 AIDescription: true
 ---

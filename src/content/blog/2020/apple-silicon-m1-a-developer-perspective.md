@@ -20,6 +20,10 @@ AIDescription: true
 
 The excitement around Apple's new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here's an early report after a week of testing.
 
+[![](/assets/img/2020/m1/m1.jpg)](https://unsplash.com/photos/vJqGI6-diO8)
+
+Let me first start with the things everybody already talks about: Yes, this machine is blazingly fast. Safari is the snappiest it's ever been; the fans never turn on (there are none in the Air); the battery lasts for a very long time; and most apps just work, even though the architecture is completely different. The exceptions to "it just works" are anything that uses virtualization (because the hypervisor framework is limited), kernel extensions, or low-level tools.
+
 ## Xcode
 
 Xcode runs FAST on the M1. Compiling the [PSPDFKit PDF SDK](https://pspdfkit.com/) (debug, arm64) can almost compete with the fastest Intel-based MacBook Pro Apple offers (to date), with [8:49 minutes vs. 7:31 minutes](https://twitter.com/steipete/status/1332052251712614405?s=21). For comparison, my Hackintosh builds the same in less than 5 minutes. 
@@ -57,8 +61,6 @@ I expect that, eventually, we'll be able to run ARM-based Windows with commercia
 Windows 10 on ARM can emulate x86 applications, and Microsoft is working on [x64 emulation](https://www.neowin.net/news/it039s-official-x64-emulation-is-coming-to-windows-on-arm), which is already rolling out in Insider builds. In a few months, it should be possible to develop and test our Windows SDK with Visual Studio on M1 with reasonable performance results.
 
 Running older versions of macOS might be more problematic. We currently support macOS 10.14 with our [AppKit PDF SDK](https://pspdfkit.com/blog/2017/pspdfkit-for-macos/), and macOS 10.15 with the [Catalyst PDF SDK](https://pspdfkit.com/blog/2019/pspdfkit-for-mac-catalyst/), both of which are OS releases that require testing. It remains to be seen if VMware or Parallels include a complete x64 emulation layer. This would likely be really slow, so I wouldn't count on it.
-
-![](/assets/img/2020/m1/memory.png)
 
 Lastly, 16&nbsp;GB RAM just isn't a lot. When running parallel tests, the machine starts to heavily swap, and performance really goes down the drain. This will be even more problematic with virtual machines running. Future machines will offer 32&nbsp;GB options to alleviate this issue.
 

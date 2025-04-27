@@ -8,7 +8,12 @@ tags:
   - Hackintosh
   - OpenCore
   - Hardware
-  - System Updates
+  - System-Updates
+  - Kexts
+  - Bootloader
+  - EFI
+  - Big-Sur
+  - Custom-PC
 source: steipete.com
 AIDescription: true
 ---
