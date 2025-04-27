@@ -9,9 +9,10 @@
     localStorage.setItem('theme', theme)
   }
 
-  // Set theme based on system preferences
+  // Check localStorage first, then fallback to system preferences
+  const storedTheme = localStorage.getItem('theme')
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const theme = prefersDark ? 'dark' : 'light'
+  const theme = storedTheme || (prefersDark ? 'dark' : 'light')
 
   if (theme === 'dark') {
     document.documentElement.classList.add('dark')

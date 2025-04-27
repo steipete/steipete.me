@@ -74,9 +74,10 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
 
 <!-- Dark Mode Detection -->
 <script is:inline>
-  // Set theme based on system preferences
+  // Check localStorage first, then fallback to system preferences
+  const storedTheme = localStorage.getItem('theme')
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const theme = prefersDark ? 'dark' : 'light'
+  const theme = storedTheme || (prefersDark ? 'dark' : 'light')
 
   if (theme === 'dark') {
     document.documentElement.classList.add('dark')
@@ -84,14 +85,16 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
     document.documentElement.classList.remove('dark')
   }
 
-  // Listen for changes in system preference
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (e.matches) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  })
+  // Listen for changes in system preference (only if no user preference is set)
+  if (!storedTheme) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (e.matches) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    })
+  }
 </script>
 
 <slot />
