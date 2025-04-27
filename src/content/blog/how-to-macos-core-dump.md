@@ -1,10 +1,7 @@
 ---
 title: How to macOS Core Dump
 pubDate: 2020-05-21T08:30:00.000Z
-description: >-
-  A few weeks afte keel paics stated showig up o my MacBook Po (ad afte may
-  commets wee left, i which I kept pigig Apple ad epotig o this issue, ad afte
-  tyig a...
+description: 'div.post-content > img:first-child { display:none; } A few weeks after kernel panics started showing up on my MacBook Pro (and after many comments were left, in which I kept pinging Apple and reporting on this issue, and after trying a S...'
 heroImage: /assets/img/2020/appleintelframebuffer/feedback.png
 tags:
   - iOS

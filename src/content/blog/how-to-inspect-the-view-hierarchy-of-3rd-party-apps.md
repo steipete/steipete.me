@@ -1,7 +1,7 @@
 ---
 title: How To Inspect The View Hierarchy Of Third-Party Apps
 pubDate: '2013-12-27 18:42'
-description: I'm generally not a big fan of jailbreaks, but they can be useful for inspecting view hierarchies in third-party apps.
+description: "I'm generally not a big fan of jailbreaks. Mostly this is because they're used for piracy and all the hacks result in weird crashes that generally are impossible to reproduce."
 tags:
   - iOS
   - Objective-C

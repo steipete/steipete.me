@@ -1,7 +1,7 @@
 ---
 title: Fixing UISearchDisplayController On iOS 7
 pubDate: '2013-10-04 19:00'
-description: 'iOS 7 is great, but it''s still very much a 1.0. Here''s how to fix UISearchDisplayController issues.'
+description: "iOS 7 is great, but it's still very much a 1.0. I've spent a lot of time working around iOS 7-specific bugs in PSPDFKit and will share some of my work here."
 tags:
   - iOS
   - UIKit

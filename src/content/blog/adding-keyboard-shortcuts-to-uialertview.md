@@ -1,10 +1,7 @@
 ---
 title: Adding Keyboard Shortcuts To UIAlertView
 pubDate: '2013-03-06 22:38'
-description: >-
-  I'm ot eve home fom the moe-tha-excellet [NSCofeece](http://scofeece.com) i
-  Leiceste, but had to hack o somethig supe awesome that [Eva Doll of
-  Flipboad](htt...
+description: "I'm not even home from the more-than-excellent NSConference in Leicester, but had to hack on something super awesome that Evan Doll of Flipboard presented earlier today. They adde..."
 tags:
   - iOS
   - Objective-C
