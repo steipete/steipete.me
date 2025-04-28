@@ -89,6 +89,11 @@ const { content } = Astro.props;
       script.async = true;
       document.head.appendChild(script);
     }
+
+    // Log information about embeds found (using the foundYoutubeEmbeds variable)
+    if (foundTwitterEmbeds || foundYoutubeEmbeds) {
+      console.debug(`Embeds found: ${foundTwitterEmbeds ? 'Twitter' : ''}${foundTwitterEmbeds && foundYoutubeEmbeds ? ' and ' : ''}${foundYoutubeEmbeds ? 'YouTube' : ''}`);
+    }
   });
 </script>
 
