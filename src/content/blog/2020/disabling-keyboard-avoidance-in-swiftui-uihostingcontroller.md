@@ -22,7 +22,7 @@ AIDescription: true
 div.post-content > img:first-child { display:none; }
 </style>
 
-While SwiftUI is still being [cooked hot](/posts/state-of-swiftui/), it’s already really useful and can replace many parts of your app. And with `UIHostingController`, it can easily be mixed with existing UIKit code. With iOS 14, the SwiftUI team at Apple added keyboard avoidance logic to the hosting controller, which can result in pretty ugly scrolling behavior.
+While SwiftUI is still being [cooked hot](/blog/2020/state-of-swiftui/), it’s already really useful and can replace many parts of your app. And with `UIHostingController`, it can easily be mixed with existing UIKit code. With iOS 14, the SwiftUI team at Apple added keyboard avoidance logic to the hosting controller, which can result in pretty ugly scrolling behavior.
 
 ## When Keyboard Avoidance Is Unwanted
 

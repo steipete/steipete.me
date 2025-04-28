@@ -25,7 +25,7 @@ Apple released SwiftUI last year, and it's been an exciting and wild ride. With 
 
 ## Fruta Sample App
 
-Let's look at [Apple's Fruta example](https://developer.apple.com/documentation/app_clips/fruta_building_a_feature-rich_app_with_swiftui), a cross-platform feature-rich app that's built completely in SwiftUI. It's great that Apple is finally releasing a more complex application for this year's cycle. 
+Let's look at [Apple's Fruta example](https://developer.apple.com/documentation/app_clips/fruta_building_a_feature-rich_app_with_swiftui), a cross-platform feature-rich app that's built completely in SwiftUI. It's great that Apple is finally releasing a more complex application for this year's cycle.
 
 I took a look when Big Sur beta 1 came out, and it was pretty unpolished:
 

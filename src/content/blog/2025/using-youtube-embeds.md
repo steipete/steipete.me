@@ -18,7 +18,7 @@ To embed a YouTube video, use the following syntax:
 {% youtube VIDEO_ID %}
 ```
 
-Where `VIDEO_ID` is either the YouTube video ID or the full URL to the video. 
+Where `VIDEO_ID` is either the YouTube video ID or the full URL to the video.
 
 ### Examples
 

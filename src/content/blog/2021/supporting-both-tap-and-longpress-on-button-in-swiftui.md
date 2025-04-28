@@ -79,7 +79,7 @@ Here we go again:
 
 ```swift
 Button(action: {
-	// ignore
+	// Action intentionally empty, handled by gestures instead
 }) {
     Image("pspdfkit-powered")
         .renderingMode(.template)
@@ -115,7 +115,7 @@ If we can ignore the long press on Catalyst, then this combination works at leas
             Image("pspdfkit-powered")
                 .renderingMode(.template)
         }
-        // None of this ever fires on Mac Catalyst :(
+        // None of these gestures ever fire on Mac Catalyst
         .simultaneousGesture(LongPressGesture().onEnded { _ in
             didLongPress = true
             print("Secret Long Press Action!")
@@ -184,11 +184,11 @@ private struct TappableView: UIViewRepresentable {
             let tapGestureRecognizer = UITapGestureRecognizer(target: context.coordinator,
                                                               action: #selector(Coordinator.handleTap(sender:)))
             $0.addGestureRecognizer(tapGestureRecognizer)
-            let doubleTapGestureRecognizer = UILongPressGestureRecognizer(target: context.coordinator,
+            let longPressGestureRecognizer = UILongPressGestureRecognizer(target: context.coordinator,
                                                                           action: #selector(Coordinator.handleLongPress(sender:)))
-            doubleTapGestureRecognizer.minimumPressDuration = 2
-            doubleTapGestureRecognizer.require(toFail: tapGestureRecognizer)
-            $0.addGestureRecognizer(doubleTapGestureRecognizer)
+            longPressGestureRecognizer.minimumPressDuration = 2
+            longPressGestureRecognizer.require(toFail: tapGestureRecognizer)
+            $0.addGestureRecognizer(longPressGestureRecognizer)
         }
     }
 
@@ -227,10 +227,10 @@ struct LongPressButton<Label>: View where Label: View {
     let longPressAction: () -> Void
     let longPressDelay: TimeInterval
 
-    init(action: @escaping () -> Void, onLongPress: @escaping () -> Void, longPressDelay: TimeInterval = 2, label: @escaping () -> Label) {
+    init(action: @escaping () -> Void, longPressAction: @escaping () -> Void, longPressDelay: TimeInterval = 2, label: @escaping () -> Label) {
         self.label = label
         self.action = action
-        self.longPressAction = onLongPress
+        self.longPressAction = longPressAction
         self.longPressDelay = longPressDelay
     }
 
@@ -245,13 +245,13 @@ struct LongPressButton<Label>: View where Label: View {
                         action()
                     }
                     $0.addGestureRecognizer(tapGestureRecognizer)
-                    let doubleTapGestureRecognizer = UILongPressGestureRecognizer(name: "Long Press") { sender in
+                    let longPressGestureRecognizer = UILongPressGestureRecognizer(name: "Long Press") { sender in
                         guard sender.state == .began else { return }
                         longPressAction()
                     }
-                    doubleTapGestureRecognizer.minimumPressDuration = longPressDelay
-                    doubleTapGestureRecognizer.require(toFail: tapGestureRecognizer)
-                    $0.addGestureRecognizer(doubleTapGestureRecognizer)
+                    longPressGestureRecognizer.minimumPressDuration = longPressDelay
+                    longPressGestureRecognizer.require(toFail: tapGestureRecognizer)
+                    $0.addGestureRecognizer(longPressGestureRecognizer)
                 })
             }
         })
@@ -267,7 +267,7 @@ Twitter folks have commented that this would all be much easier if I didn't use 
 - Automatically tinting the image when the window is active and using gray when the window is inactive again (especially noticeable on Catalyst)
 - Automatically adding some click padding around the content
 
-I've tried various variations, but it seems `longPress` is buggy on Catalyst. If you don't have to bother with Mac Catalyst, [try following sample code](https://gist.github.com/OskarGroth/d959d15ef96eff19ce433077237e37fb).
+I've tried various approaches, but it seems `longPress` is buggy on Catalyst. If you don't have to bother with Mac Catalyst, [try following sample code](https://gist.github.com/OskarGroth/d959d15ef96eff19ce433077237e37fb).
 
 ## Conclusion
 

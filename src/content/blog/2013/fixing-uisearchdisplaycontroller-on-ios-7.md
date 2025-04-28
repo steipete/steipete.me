@@ -36,4 +36,4 @@ Here's the code to fix it. It doesn't use private API (although there is some vi
 
 I imagine one could subclass UISearchDisplayController directly and internally forward the delegate to better package this fix, but I only need it in one place so the UIViewController was a good fit.
 
-Note that this uses some awful things like `dispatch_async(dispatch_get_main_queue()`, but it shouldn't do any harm even if Apple fixes its controller sometime in the future.
+Note that this uses some awful things like `dispatch_async(dispatch_get_main_queue())`, but it shouldn't do any harm even if Apple fixes its controller sometime in the future.

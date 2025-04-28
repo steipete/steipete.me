@@ -87,7 +87,7 @@ collectionView.performBatchUpdates({
 
 ==]
 
-This may not look like much, but it is very easy to mess up balancing calls to `beginUpdates` and `endUpdates` in more complex setups, whereas this is impossible with `UICollectionView`'s API. Since this class is so old, there's also a lot of deprecated API that still has to be supported. The Swift view doesn't show header entries that are long deprecated, but if you switch to Objective-C, you'll see the full extend of what's in this cell:
+This may not look like much, but it is very easy to mess up balancing calls to `beginUpdates` and `endUpdates` in more complex setups, whereas this is impossible with `UICollectionView`'s API. Since this class is so old, there's also a lot of deprecated API that still has to be supported. The Swift view doesn't show header entries that are long deprecated, but if you switch to Objective-C, you'll see the full extent of what's in this cell:
 
 ```objc
 @interface UITableViewCell (UIDeprecated)
@@ -188,7 +188,7 @@ While for some legacy features there is no default implementation, which require
 
 ## Conclusion
 
-There's no need to manically replace all your table views with collection views, but it's time for Apple to offer API to allow collection views to be used like table views, so we all can make better apps with less code that are more flexible in this multi-size screen world. At [PSPDFKit](https://pspdfkit.com) we try hard to structure our API just like Apple would, so we'll keep most of our table views for now, but we'd be the first to adopt the new layout once it becomes available. Please vote by [writing a Radar](https://pspdfkit.com/blog/2016/writing-good-bug-reports/)) if you feel that unifying this is a good idea. [Ping us on Twitter](https://twitter.com/steipete) if you have further ideas or want to start an open source project to build this yourself.
+There's no need to manically replace all your table views with collection views, but it's time for Apple to offer API to allow collection views to be used like table views, so we all can make better apps with less code that are more flexible in this multi-size screen world. At [PSPDFKit](https://pspdfkit.com) we try hard to structure our API just like Apple would, so we'll keep most of our table views for now, but we'd be the first to adopt the new layout once it becomes available. Please vote by [writing a Radar](https://pspdfkit.com/blog/2016/writing-good-bug-reports/) if you feel that unifying this is a good idea. [Ping us on Twitter](https://twitter.com/steipete) if you have further ideas or want to start an open source project to build this yourself.
 
 [`UITableView`]: https://developer.apple.com/reference/uikit/uitableview
 [`UITableViewCell`]: https://developer.apple.com/reference/uikit/uitableviewcell

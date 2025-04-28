@@ -83,7 +83,7 @@ Whenever Apple releases a new major version of its OS - test early! Chances that
 
 ![Timing is Key](/assets/img/2016/writing-good-bug-reports/timing-is-key.png)
 
-### Here’s an [incomplete list](http://openradar.appspot.com/search?query=PSPDFKit) of bugs the PSPDFKit team wrote this year (crossed out radars are fixed)
+### Here’s an [incomplete list](http://openradar.appspot.com/search?query=PSPDFKit) of bugs the PSPDFKit team has written this year (crossed out radars are fixed)
 
 <style>
 ul { font-size:14px; }

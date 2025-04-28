@@ -19,7 +19,7 @@ AIDescription: true
 div.post-content > img:first-child { display:none; }
 </style>
 
-Pretty much all Mac apps have a semi-hidden Debug menu that can be triggered via a user defaults entry or via settings. Naturally I wanted to add the same in my latest project. I'm building a new "universal" app (meaning iOS *and* macOS), supporting only the latest OSes, so I can using the new SwiftUI app lifecycle.
+Pretty much all Mac apps have a semi-hidden Debug menu that can be triggered via a user defaults entry or via settings. Naturally I wanted to add the same in my latest project. I'm building a new "universal" app (meaning iOS *and* macOS), supporting only the latest OSes, so I can use the new SwiftUI app lifecycle.
 
 SwiftUI is really a lot of fun to work with. Sure, [there are bugs, warts](/posts/state-of-swiftui/) and parts that simply aren't finished yet, especially on the Mac, but overall what Apple built here is really great, and it's so much faster to build apps with it. SwiftUI makes the hard things simple, and sometimes it makes the simple things hard. 
 
@@ -45,7 +45,7 @@ struct SampleApp: App {
 }
 ```
 
-There's a superb guide over at [TrozWare about SwifUI Mac Menus](https://troz.net/post/2021/swiftui_mac_menus/) that explains everything in detail - including a way how to move the menu logic into a separate file. Highly recommended. Let's move on to the interesting bits.
+There's a superb guide over at [TrozWare about SwiftUI Mac Menus](https://troz.net/post/2021/swiftui_mac_menus/) that explains everything in detail — including a way how to move the menu logic into a separate file. Highly recommended. Let's move on to the interesting bits.
 
 ## Showing Menus Conditionally
 
@@ -58,9 +58,10 @@ CommandMenu("Animals") {
     } else {
         Button("Show Dog Picture") { }        
     }
+}
 ```
 
-However if we try the same at the top level, we get an error: `"Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'"`gs. The SwiftUI-team didn't implement any branching logic into the `@CommandsBuilder`.
+However if we try the same at the top level, we get an error: `"Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'". The SwiftUI-team didn't implement any branching logic into the `@CommandsBuilder`.
 
 ![Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'](/assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png)
 
@@ -94,4 +95,4 @@ And that's it. Toggling the menu works just as expected. In our update method we
 
 ## Conclusion
 
-This is a good reminder that even when writing a "Pure SwiftUI" application, the underlying frameworks are there and can help you whenever you run into a limitation of SwiftUI. Since this feels like an omission, I've opened a radar (FB9074334) for the SwiftUI team.
+This is a good reminder that even when writing a "Pure SwiftUI" application, the underlying frameworks are there and can help you whenever you run into a limitation of SwiftUI. Since this feels like an omission, I've opened a radar ([FB9074334](https://openradar.appspot.com/FB9074334)) for the SwiftUI team.

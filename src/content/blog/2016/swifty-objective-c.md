@@ -20,7 +20,7 @@ Objective-C originates from the early 1980s, and while the language has evolved 
 
 ## Why not simply use Swift?
 
-Okay — let's talk about the elephant in the room. Swift is an amazing language and there are many reasons why you should use it. There are also many situations and requirements that make Objective-C the smarter choice. It really depends on the application, the use case you are addressing, your team and the scope and nature of the project. It's great that Apple gives us a choice here.
+Okay — let's talk about the elephant in the room. Swift is an amazing language and there are many reasons why you should use it. However, there are also many situations and requirements that make Objective-C the smarter choice. It really depends on the application, the use case you are addressing, your team and the scope and nature of the project. It's great that Apple gives us a choice here.
 
 *  Swift is evolving incredibly fast. Apple's open process is nothing short of amazing, especially considering the tight-lipped nature of the company. And while calling the initial release of Swift a 1.0 was quite bold, it quickly grew into a language that is fast, safe and allows you to write beautiful code. It's also a fast-moving target and there are still many, partly scary, bugs and issues that early adopters run into. For a smaller project or your typical app Swift might work well. Large projects might be put off by the compile time or optimization issues or just don't have the resources to stop development and spend weeks to update the codebase to Swift 3 (which can be quite a [disruptive][swift-3-migrate] [task][khan-swift-migration]).
 

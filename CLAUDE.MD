@@ -102,3 +102,25 @@ npm run preview
 - **TailwindCSS** - For styling
 - **React** - For interactive components (v18.2.0)
 - **MDX** - For enhanced markdown support
+
+## Social Media Embeds
+
+### Twitter Links vs. Embeds
+
+- **IMPORTANT: Do not convert Twitter links to embeds or vice versa**
+- Regular Twitter URL links: Use standard markdown syntax `[link text](https://twitter.com/...)`
+- Twitter embeds: Use the special syntax `{% twitter https://twitter.com/username/status/id %}`
+- Each serves a different purpose - links are text references while embeds display the full tweet
+- The blog has specific handling for both formats, so don't change the format unless explicitly requested
+
+### YouTube Embeds
+
+- YouTube embeds use similar syntax: `{% youtube VIDEO_ID %}` or `{% youtube https://www.youtube.com/watch?v=VIDEO_ID %}`
+- Documentation for YouTube embeds is available in `/docs/YOUTUBE.MD`
+- Don't convert regular YouTube links to embeds unless specifically requested
+
+### Internal Links
+
+- Internal blog post links should use the format `/blog/YEAR/post-slug/` 
+- Older links using `/posts/post-slug/` format should be updated to the new format
+- The site has redirect rules in place, but using the correct format is preferred
