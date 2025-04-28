@@ -8,9 +8,9 @@ tags:
 AIDescription: true
 ---
 
-This post demonstrates how to use YouTube embeds in blog posts using the new syntax.
+This post demonstrates how to use YouTube embeds in blog posts using the recommended syntax.
 
-## Using the YouTube Embed Tag
+## Using the YouTube Embed Tag (Recommended Method)
 
 To embed a YouTube video, use the following syntax:
 
@@ -34,12 +34,31 @@ Using a youtu.be short URL:
 
 {% youtube https://youtu.be/dQw4w9WgXcQ %}
 
+## Why Tag-Based Approach is Better
+
+The tag-based approach has several advantages:
+- Consistency with Twitter embeds syntax
+- No component imports required
+- Automatic processing by our content transformation pipeline
+- No linting warnings from unused variables
+- Better separation of content and presentation
+
 ## Twitter Embeds for Comparison
 
 For reference, here's how Twitter embeds work:
 
 {% twitter https://twitter.com/steipete/status/1134003594804547584 %}
 
+## Component-Based Approach (Not Recommended)
+
+There's also a direct component approach, but it's not recommended:
+
+```astro
+<YouTubeEmbed id="dQw4w9WgXcQ" title="Video Title" />
+```
+
+This approach creates linting warnings and is less consistent with our established patterns.
+
 ## Conclusion
 
-Now you can easily embed YouTube videos in your blog posts using the same pattern as Twitter embeds. The embed is responsive and will adjust to different screen sizes.
+Always use the `{% youtube %}` tag syntax for embedding YouTube videos in your blog posts. The embed is responsive and will adjust to different screen sizes, and you'll avoid the linting warnings associated with the component-based approach.
