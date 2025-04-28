@@ -96,4 +96,4 @@ The new M1 MacBooks are fast, beautiful, and silent, and the hype is absolutely 
 
 All of that can be fixed in software, and the entire industry is currently working on making the experience better, so by next year — when Apple updates the 16-inch MacBook Pro and releases the next generation of its M chip line — it should be absolutely possible to use an M1 Mac as the main dev machine.
 
-For the time being, the M1 will be my <del>travel</del> secondary laptop, and I'll keep working on the 2,4&nbsp;GHz 16-inch MacBook Pro with 32&nbsp;GB RAM, which is just the faster machine. It'll be much harder to accept the loud, always-on fans though, now that I know what soon will be possible.
+For the time being, the M1 will be my <del>travel</del> secondary laptop, and I'll keep working on the 2.4&nbsp;GHz 16-inch MacBook Pro with 32&nbsp;GB RAM, which is just the faster machine. It'll be much harder to accept the loud, always-on fans though, now that I know what soon will be possible.

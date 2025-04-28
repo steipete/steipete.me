@@ -149,7 +149,7 @@ Thanks to John Engelhart (Mr. [JSONKit](https://github.com/johnezang/JSONKit)) f
 
 ## ASan on Android
 
-It's possible to run your NDK compiled code with ASan as well, but it's not as straightforward. That is because ASan has to intercept the calls to `malloc`, `realloc` and `free` free to properly do memory accounting. That's not a problem in statically linked binaries, but, in Android apps, that means ASan runtime library needs to be preloaded into the zygote process that's actually running the app.
+It's possible to run your NDK compiled code with ASan as well, but it's not as straightforward. That is because ASan has to intercept the calls to `malloc`, `realloc` and `free` to properly do memory accounting. That's not a problem in statically linked binaries, but, in Android apps, that means ASan runtime library needs to be preloaded into the zygote process that's actually running the app.
 
 Android NDK includes the script that will modify the OS running on a device to preload ASan - it's called `asan_device_setup` inside the `toolchains/prebuilt/<arch>/bin` directory. Since it copies ASan libraries to the `system` partition, it'll only work on devices that allow root access. The script itself will enable ASan for ALL processes on the device, which turns out to be a serious problem. If a system service loads a library with memory leaks, ASan will trigger an exception and cause the device to boot loop. After bricking three separate devices, we found out that trying to run ASan on an actual device is **NOT** a good idea. Same issues were noticed when trying to use ASan with Genymotion emulator.
 

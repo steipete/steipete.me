@@ -15,7 +15,7 @@ source: petersteinberger.com
 AIDescription: true
 ---
 
-A while ago, I've [stumbled on a string called `UIPopoverControllerPaintsTargetRect`](https://twitter.com/steipete/status/546976070512435200) in some UIKit disassembly - definitely worth investigating! Now that I finally own [IDA](https://www.hex-rays.com/products/ida/), I did some research. Turns out there's a hidden preferences file under `/Library/Preferences/com.apple.UIKit` that UIKit queries for these settings.
+A while ago, I [stumbled on a string called `UIPopoverControllerPaintsTargetRect`](https://twitter.com/steipete/status/546976070512435200) in some UIKit disassembly - definitely worth investigating! Now that I finally own [IDA](https://www.hex-rays.com/products/ida/), I did some research. Turns out there's a hidden preferences file under `/Library/Preferences/com.apple.UIKit` that UIKit queries for these settings.
 
 I've used [Aspects](https://github.com/steipete/Aspects) to swizzle `NSUserDefaults` and enable this key when queried. This actually works, but only under iOS 7, since iOS 8 uses the newer `UIPopoverPresentationController` and that one doesn't fully support target rect drawing (or it's compiled out in our release version of UIKit.)
 

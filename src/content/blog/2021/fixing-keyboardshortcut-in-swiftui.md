@@ -33,7 +33,7 @@ struct ContentView: View {
 }
 ```
 
-Simple enough. However, when I tried, it didn't work in production. After simplifying my setup and eventually writing my own example project, I eventually realized my code is correct and this just doesn't work. 
+Simple enough. However, when I tried, it didn't work in production. After simplifying my setup and writing my own example project, I realized my code is correct and this just doesn't work. 
 
 But surely Apple tested this? Let's try a few combinations:
 
@@ -78,7 +78,7 @@ in _TtGC7SwiftUI19UIHostingControllerV15SwiftUIKeyboard11SwiftUIView_:
 	keyboardShortcutBridge (): Value not representable, 
 ```
 
-Good old `_ivarDescription` is still useful and shows Swift ivars as well; it can't show the real type, but it's good enough to confirm that there's indeed a `keyboardShortcutBridge`.
+Good old `_ivarDescription` is still useful and shows Swift ivars as well. It can't show the real type, but it's good enough to confirm that there's indeed a `keyboardShortcutBridge`.
 
 ## What Sets keyboardShortcutBridge?
 
@@ -128,7 +128,7 @@ Next, let's see if there are any other places that would call this setter. I lik
 - `int _$s7SwiftUI19UIHostingControllerC25didChangeAllowedBehaviors4from2toyAC0gH0Vyx_G_AItF(int arg0)`
 - `void _$s7SwiftUI19UIHostingControllerC25didChangeAllowedBehaviors4from2toyAC0gH0Vyx_G_AItFAA15ModifiedContentVyAA7AnyViewVAA12RootModifierVG_Tg5(int arg0)`
  
-This is mangled Swift, but it's not hard to see what the unmangled function name is called — it's our `didChangeAllowedBehaviors(from:to")` with a lambda inside it, and not anywhere else. 
+This is mangled Swift, but it's not hard to see what the unmangled function name is called — it's our `didChangeAllowedBehaviors(from:to:)` with a lambda inside it, and not anywhere else. 
  
 ## What Triggers didChangeAllowedBehaviors?
 
@@ -155,7 +155,7 @@ extension UIHostingController {
 
     /// Applies workaround so `keyboardShortcut` can be used via SwiftUI.
     ///
-    /// When `UIHostingController` is used as a non-root controller with the UIKit app lifecycle,
+    /// When `UIHostingController` is used as a non-root controller with the UIKit app lifecycle
     /// keyboard shortcuts created in SwiftUI don't work (as of iOS 14.4).
     /// This workaround is harmless and triggers an internal state change that enables keyboard shortcut bridging.
     /// See https://steipete.com/posts/fixing-keyboardshortcut-in-swiftui/
@@ -163,7 +163,7 @@ extension UIHostingController {
         #if !targetEnvironment(macCatalyst)
         let window = UIWindow()
         window.rootViewController = self
-        window.isHidden = false;
+        window.isHidden = false
         #endif
     }
 }

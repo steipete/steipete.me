@@ -76,9 +76,9 @@ In iOS 9.3, `traitCollectionWithDisplayScale:` simply calls through to `traitCol
 
 ## How do things look in iOS 10?
 
-The cache is gone - so things are more wasteful - BUT we no longer race since it seems the `UITraitCollection` objects do not share common data or access the main thread.
+The cache is gone—so things are more wasteful—but we no longer race since it seems the `UITraitCollection` objects do not share common data or access the main thread.
 
-We can assume that the issue here has indeed be fixed. Apple clearly does not delete a cache for fun, especially not when there's so much to do around UIKit. However since  we were all a bit lazy here, there is no radar filed where I could cross-check it and Apple's documentation seems inherently vague here.
+We can assume that the issue here has indeed be fixed. Apple clearly does not delete a cache for fun, especially not when there's so much to do around UIKit. However, since none of us filed a formal radar on this issue, there is no radar where I could cross-check it and Apple's documentation seems inherently vague here.
 
 A clear stand on `UIImage` creation thread safety would be great. I do believe that it's highly beneficial to keep this thread safe and it seems it is the case. However, we're a bit in the dark here and if it were to suddenly regress again, I'd love to know if this is, at least, a bug.
 

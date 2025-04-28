@@ -17,7 +17,7 @@ AIDescription: true
 
 I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspects - a delightful, simple library for aspect oriented programming.](https://github.com/steipete/Aspects)
 
-Now Aspects is a great new tool in your toolkit. It allows to call code before, instead or after the original implementation, and there's no need to manually call super, cast `objc_msgSend` or any of that other stuff you ~~have to~~ should do on swizzling. Use it with reason, it has a few great use cases, some are well-explaind on the GitHub page. 
+Now Aspects is a great new tool in your toolkit. It allows to call code before, instead or after the original implementation, and there's no need to manually call super, cast `objc_msgSend` or any of that other stuff you ~~have to~~ should do on swizzling. Use it with reason, it has a few great use cases, some are well-explained on the GitHub page. 
 
 It's also great for hacking and debugging. While testing the example on an iPad that still runs iOS 6, I found this exception:
 `// *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'On iPad, UIImagePickerController must be presented via UIPopoverController'`
@@ -40,11 +40,11 @@ Now, let's test if this disassembly is actually correct! First, we'll disable Ap
 
 <script src="https://gist.github.com/steipete/f69bf90e34a659351f6e.js"></script>
 
-That's all - this makes the controller work perfectly where it threw an exception before. The popover restriction ~~was a pure~~ could be a political one, or there are edge cases we don't know.
+That's all - this makes the controller work perfectly where it threw an exception before. The popover restriction could be a political one, or there are edge cases we don't know.
 
 ## Putting it all together
 
-Now, we want to implant our own check using Aspects. `PLLibraryView` is again private, so we'll use a runtime class lookup to hook it globally. I also commented out the property check since this would disable our own checking code.
+Now, we want to implant our own check using Aspects. `UIImagePickerController` is what we'll hook to modify its behavior. I also commented out the property check since this would disable our own checking code.
 
 <script src="https://gist.github.com/steipete/149586113c32e91b0c3c.js"></script>
 
