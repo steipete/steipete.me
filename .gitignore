@@ -24,6 +24,7 @@ pnpm-debug.log*
 
 # Temporary directories used for importing posts
 temp-*/
+src/content/temp/
 
 # Editor directories and files
 .idea/

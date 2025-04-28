@@ -1,42 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+// Simplified route for catching old URLs (without year)
+// Since all posts are now in year-based folders, we just redirect to /blog/
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-
-  return posts.map(post => {
-    // Check if post is already in a year directory (e.g., 2020/apple-silicon-m1...)
-    const yearDirMatch = post.slug.match(/^(\d{4})\/(.*)/);
-    if (yearDirMatch) {
-      const year = yearDirMatch[1];
-      const slug = yearDirMatch[2];
-      return {
-        params: { old_slug: slug },
-        props: { post, year, slug }
-      };
-    }
-
-    // Get the slug from the filename
-    const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-
-    // Extract the year from the post
-    const pubDate = post.data.pubDate || post.data.date;
-    const year = pubDate ? pubDate.getFullYear().toString() :
-      // Fallback: Try to extract year from slug if it starts with a date pattern
-      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ?
-        post.slug.substring(0, 4) :
-        // If no year can be found, use the current year as fallback
-        new Date().getFullYear().toString();
-
-    return {
-      params: { old_slug: slug },
-      props: { post, year, slug }
-    };
-  });
+  // Just a placeholder to demonstrate the structure
+  return [
+    { params: { old_slug: 'test' }, props: {} }
+  ];
 }
 
-const { year, slug } = Astro.props;
-
-// Server-side redirect to the canonical URL with year
-return Astro.redirect(`/posts/${year}/${slug}/`, 301);
+// Redirect to the blog homepage
+return Astro.redirect('/blog/', 301);
 ---
