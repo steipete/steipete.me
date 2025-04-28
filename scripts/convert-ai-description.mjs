@@ -2,11 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Function to find all Markdown files in a directory recursively
 function findMarkdownFiles(directory) {
@@ -47,8 +43,7 @@ function convertAIDescription(filePath) {
     const { data, content } = matter(fileContent);
     
     // Extract the AI description from the ::ai[...] syntax
-    // Updated regex to find ::ai[] anywhere in the content
-    const aiMatch = content.match(/::ai\[(.*?)\]/s);
+    const aiMatch = content.match(/^::ai\[(.*?)\]/s);
     if (!aiMatch) {
       return false;
     }
@@ -65,9 +60,7 @@ function convertAIDescription(filePath) {
     }
     
     // Remove the ::ai[...] line from content
-    // Create a new regex that will capture the whole line containing ::ai[...]
-    const lineRegex = new RegExp(`[^\\n]*::ai\\[${escapeRegExp(aiDescription)}\\][^\\n]*\\n?`, 'g');
-    const newContent = content.replace(lineRegex, '');
+    const newContent = content.replace(/^::ai\[.*?\]\s*/s, '');
     
     // Reconstruct the file with updated frontmatter
     const updatedFileContent = matter.stringify(newContent, data);
@@ -82,15 +75,9 @@ function convertAIDescription(filePath) {
   }
 }
 
-// Helper function to escape special characters in regex
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 // Main function
 function main() {
-  const rootDir = path.resolve(__dirname, '..');
-  const blogDir = path.join(rootDir, 'src', 'content', 'blog');
+  const blogDir = path.join(process.cwd(), 'src', 'content', 'blog');
   const markdownFiles = findMarkdownFiles(blogDir);
   
   let convertedCount = 0;
