@@ -78,11 +78,11 @@ Example: Removing a favorited item while it's selected crashes in the AppKit bin
 	21  SwiftUI                             0x00007fff4956b2ff $s7SwiftUI19ListCoreCoordinatorC29updateTableViewAndVisibleRows_4from2toySo07NSTableH0C_xxtF + 79
 ```
 
-It's likely there more bugs waiting to be discovered, but I only spent a few hours with Fruta and on writing up this article.
+It's likely there are more bugs waiting to be discovered, but I only spent a few hours with Fruta and on writing up this article.
 
 ## Performance
 
-On my 2,4 GHz 8-Core Intel Core i9 MacBook Pro, it takes longer than a second to update the main view when changing the selection. This feels sluggish, not to mention it's significantly longer than even most websites — that load data via the network — need. Fruta has everything local. What's so slow here? Let's look at Instruments!
+On my 2.4 GHz 8-Core Intel Core i9 MacBook Pro, it takes longer than a second to update the main view when changing the selection. This feels sluggish, not to mention it's significantly longer than even most websites — that load data via the network — need. Fruta has everything local. What's so slow here? Let's look at Instruments!
 
 ![](/assets/img/2020/fruta-swiftui/instruments.png)
 
