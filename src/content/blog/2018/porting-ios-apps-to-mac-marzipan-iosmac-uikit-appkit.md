@@ -18,7 +18,7 @@ With macOS Mojave, Apple is adding support to run UIKit apps on macOS without th
 
 This article is based on a talk (below) I presented at try! Swift New York called “Hacking Marzipan.” You can find [the slides on SpeakerDeck][].  
 
-<iframe width="700" height="392" src="https://www.youtube-nocookie.com/embed/2OuQarA0a7I?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+{% youtube https://www.youtube.com/watch?v=2OuQarA0a7I %}
 
 Be sure to also check out [other great videos on their YouTube channel][].
 
