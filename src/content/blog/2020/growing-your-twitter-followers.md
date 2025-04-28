@@ -98,4 +98,4 @@ Who you follow defines your Twitter experience. Learn how you can curate your Tw
 
 I gave a talk at UIKonf in Berlin in 2018 about Building Personal Brands for Introverts. This talk is still highly relevant and goes even deeper into defining your online identity. Check it out if you want to know more.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/0c6izSzP-KQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% youtube https://www.youtube.com/watch?v=0c6izSzP-KQ %}
