@@ -92,7 +92,7 @@ Aside from WWDC, there’s also [AltConf, Layers, and quite a few more events][m
 
 ## Parties, Drinks, and Sleep
 
-WWDC is all about the people. Get [Events near WWDC][] for a list of parties. [iMore][] also has a good article. Some parties will already be full, but don’t worry if you don’t get into an event every night. There are developers everywhere, and it’s easy to find folks to chat with. And remember folks, you don’t have to consume alcohol to have a good time. Drink responsibly; you don’t wanna feel like crap during the week. Here’s my Party Plan:
+WWDC is all about the people. Get [Events near WWDC][] for a list of parties. [iMore][] also has a good article. Some parties will already be full, but don’t worry if you don’t get into an event every night. There are developers everywhere, and it’s easy to find folks to chat with. And remember folks, you don’t have to consume alcohol to have a good time. Drink responsibly; you don’t want to feel like crap during the week. Here’s my Party Plan:
 
 Sunday
 
