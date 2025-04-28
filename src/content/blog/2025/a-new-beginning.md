@@ -16,7 +16,7 @@ AIDescription: true
 
 It's been three years since I sold PSPDFKit to Insight Partners and stepped away from the company I built from the ground up. That journey, which started with a simple PDF rendering component and grew into a global document solutions provider with customers like Dropbox, Box, and IBM, was an incredible chapter of my life.
 
-But after a decade of immersion in the world of iOS and native development, I decided to take a step back. To explore new interests, dive into new technologies, and recharge my creative energy. Some might call it a sabbatical; I've been calling it "vibe coding" - following my curiosity without the pressure of deadlines or market considerations.
+But after a decade of immersion in the world of iOS and native development, I decided to take a step back. To explore new interests, dive into new technologies, and recharge my creative energy. Some might call it a sabbatical; I've been calling it "vibe coding" — following my curiosity without the pressure of deadlines or market considerations.
 
 ## Changing Galaxies
 

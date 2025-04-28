@@ -15,7 +15,7 @@ AIDescription: true
 
 Communicating well is one of the [key attributes of highly effective teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40 people at PSPDFKit, and because we’re spread across many countries and time zones, it’s a challenge to keep everyone in the loop. For a long time, we were small enough that email worked well. As we grew, we progressed to a single room in [Campfire](https://basecamp.com/retired/campfire) (now retired). But eventually we moved — like so many other companies — to Slack.
 
-**This is the first part of a two-part series on communication at PSPDFKit. The second partis about [Effective Remote Communication](/blog/2018/effective-remote-communication/) and focuses on everything that’s not inside Slack.**
+**This is the first part of a two-part series on communication at PSPDFKit. The second part is about [Effective Remote Communication](/blog/2018/effective-remote-communication/) and focuses on everything that’s not inside Slack.**
 
 ## Slacklash
 
@@ -127,7 +127,7 @@ We encourage people to be mindful about notifications. No DM is so important tha
 
 ## Talk at NSSpain
 
-**This is the first part of a two-part series on communication at PSPDFKit. The second partis about [Effective Remote Communication](/blog/2018/effective-remote-communication/) and focuses on everything that’s not inside Slack.**
+**This is the first part of a two-part series on communication at PSPDFKit. The second part is about [Effective Remote Communication](/blog/2018/effective-remote-communication/) and focuses on everything that’s not inside Slack.**
 
 If you’d like to learn more, watch [my talk from NSSpain](https://github.com/steipete/speaking) where I talked about Effective Remote Communication and our experience here at this [PDF SDK product company](/pdf-sdk).
 

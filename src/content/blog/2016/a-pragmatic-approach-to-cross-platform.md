@@ -157,4 +157,4 @@ Pretty early on we tried to add **libdispatch** into our C++ core, with the rati
 
 ## What’s Next
 
-Over the last two years we have built a strong, well-tested and powerful C++ project that can render PDFs with annotations and extract data. This project compiles on many platforms, including iOS, OS X, Android and less obvious ones like Windows or even the web. This foundation allowed to to ship our latest feature, the [Document Editor](https://pspdfkit.com/blog/2016/the-document-editor/) to add, remove or rearrange pages on both iOS and Android at the same time.
+Over the last two years we have built a strong, well-tested and powerful C++ project that can render PDFs with annotations and extract data. This project compiles on many platforms, including iOS, OS X, Android and less obvious ones like Windows or even the web. This foundation allowed us to ship our latest feature, the [Document Editor](https://pspdfkit.com/blog/2016/the-document-editor/) to add, remove or rearrange pages on both iOS and Android at the same time.

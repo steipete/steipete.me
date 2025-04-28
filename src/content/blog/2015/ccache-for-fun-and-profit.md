@@ -43,9 +43,9 @@ else
 fi
 ```
 
-Depending on your setup you will also need a variant named `ccache-clang++` where you replaced `clang` with `clang++` for C++.
+Depending on your setup, you will also need a variant named `ccache-clang++` where you replace `clang` with `clang++` for C++.
 
-While this looks a bit complex, it does the right thing and falls back on the regular compiler if ccache is not installed so new developers can build the project instead of being greeted with “ccache not found” errors. (`type` is a shell builtin, so the check is fast.)
+While this looks a bit complex, it does the right thing and falls back on the regular compiler if ccache is not installed, so new developers can build the project instead of being greeted with “ccache not found” errors. (`type` is a shell builtin, so the check is fast.)
 
 Be sure to study the [configuration page](https://ccache.samba.org/manual.html#_configuration) as there are many options to try. We’re using quite aggressive caching and it’s working well. For your own project you might start out without `CCACHE_SLOPPINESS` and add that once everything is working.
 

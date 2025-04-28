@@ -79,7 +79,7 @@ Here we go again:
 
 ```swift
 Button(action: {
-	// Action intentionally empty, handled by gestures instead
+    // Action intentionally empty, handled by gestures instead
 }) {
     Image("pspdfkit-powered")
         .renderingMode(.template)
@@ -101,29 +101,29 @@ It… works! It does exactly what we expect, and it's nicely calling either tap 
 If we can ignore the long press on Catalyst, then this combination works at least for the regular action:
 
 ```swift
-    @State var didLongPress = false
+@State var didLongPress = false
 
-    var body: some View {
-        Button(action: {
-            if didLongPress {
-                didLongPress = false
-            } else {
-                print("Boring regular tap")
-                openWebsite(.pspdfkit)
-            }
-        }) {
-            Image("pspdfkit-powered")
-                .renderingMode(.template)
-        }
-        // None of these gestures ever fire on Mac Catalyst
-        .simultaneousGesture(LongPressGesture().onEnded { _ in
-            didLongPress = true
-            print("Secret Long Press Action!")
-        })
-        .simultaneousGesture(TapGesture().onEnded {
+var body: some View {
+    Button(action: {
+        if didLongPress {
             didLongPress = false
-        })
+        } else {
+            print("Boring regular tap")
+            openWebsite(.pspdfkit)
+        }
+    }) {
+        Image("pspdfkit-powered")
+            .renderingMode(.template)
     }
+    // None of these gestures ever fire on Mac Catalyst
+    .simultaneousGesture(LongPressGesture().onEnded { _ in
+        didLongPress = true
+        print("Secret Long Press Action!")
+    })
+    .simultaneousGesture(TapGesture().onEnded {
+        didLongPress = false
+    })
+}
 ```
 
 In our case, we really want the long press though, so what to do? I remembered a trick I used in my [Presenting Popovers from SwiftUI](https://pspdfkit.com/blog/2020/popovers-from-swiftui-uibarbutton/) article: We can use a `ZStack` and just use UIKit for what doesn't work in SwiftUI.
@@ -182,10 +182,10 @@ private struct TappableView: UIViewRepresentable {
     func makeUIView(context: Self.Context) -> UIView {
         UIView().then {
             let tapGestureRecognizer = UITapGestureRecognizer(target: context.coordinator,
-                                                              action: #selector(Coordinator.handleTap(sender:)))
+                                                             action: #selector(Coordinator.handleTap(sender:)))
             $0.addGestureRecognizer(tapGestureRecognizer)
             let longPressGestureRecognizer = UILongPressGestureRecognizer(target: context.coordinator,
-                                                                          action: #selector(Coordinator.handleLongPress(sender:)))
+                                                                         action: #selector(Coordinator.handleLongPress(sender:)))
             longPressGestureRecognizer.minimumPressDuration = 2
             longPressGestureRecognizer.require(toFail: tapGestureRecognizer)
             $0.addGestureRecognizer(longPressGestureRecognizer)

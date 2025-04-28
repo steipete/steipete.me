@@ -19,13 +19,13 @@ AIDescription: true
 div.post-content > img:first-child { display:none; }
 </style>
 
-Pretty much all Mac apps have a semi-hidden Debug menu that can be triggered via a user defaults entry or via settings. Naturally I wanted to add the same in my latest project. I'm building a new "universal" app (meaning iOS *and* macOS), supporting only the latest OSes, so I can use the new SwiftUI app lifecycle.
+Pretty much all Mac apps have a semi-hidden Debug menu that can be triggered via a user defaults entry or via settings. Naturally, I wanted to add the same in my latest project. I'm building a new "universal" app (meaning iOS *and* macOS), supporting only the latest OSes, so I can use the new SwiftUI app lifecycle.
 
 SwiftUI is really a lot of fun to work with. Sure, [there are bugs, warts](/posts/state-of-swiftui/) and parts that simply aren't finished yet, especially on the Mac, but overall what Apple built here is really great, and it's so much faster to build apps with it. SwiftUI makes the hard things simple, and sometimes it makes the simple things hard. 
 
 ## Menus in SwiftUI App Lifecycle
 
-Let's look at a typical menu definition in the new Big Sur/iOS 14 SwiftUI App Lifecycle. The syntax is straightforward and fits right into the concepts of SwiftUI. Bingings work as well and menus change on-demand as state changes.
+Let's look at a typical menu definition in the new Big Sur/iOS 14 SwiftUI App Lifecycle. The syntax is straightforward and fits right into the concepts of SwiftUI. Bindings work as well and menus change on-demand as state changes.
 
 ```swift
 @main
@@ -65,7 +65,7 @@ However if we try the same at the top level, we get an error: `"Closure containi
 
 ![Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'](/assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png)
 
-After [a discussion on Twitter](https://twitter.com/steipete/status/1380518850073092096?s=21), there really doesn't seem a SwiftUI-way to trigger the visibility of top-level menus. @LeoNatan suggested to [drop back into AppKit](https://twitter.com/leonatan/status/1380545179157925888?s=21), and that's what I ended up doing:
+After [a discussion on Twitter](https://twitter.com/steipete/status/1380518850073092096?s=21), there really doesn't seem to be a SwiftUI-way to trigger the visibility of top-level menus. @LeoNatan suggested to [drop back into AppKit](https://twitter.com/leonatan/status/1380545179157925888?s=21), and that's what I ended up doing:
 
 ```swift
 static func triggerDebugMenuVisibilityHack() {

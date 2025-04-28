@@ -25,7 +25,7 @@ Pain relievers are also a good idea, but you’ll be in the US, where you can bu
 
 If you work at a company that has some merch, bring swag! Wear it so folks can easily find out where you work, and feel free to pass some out to ensure your company is memorable. If your Twitter avatar is 10 years old and doesn’t look like you anymore, [it’s time for an update][update twitter avatar]. Make it easy for your peers to recognize you.
 
-Got a long flight ahead and have trouble sleeping? Get some sleeping pills for the flight, as some extra rest on the plane will help you survive the week. [Melatonin works really well][melatonin] for me, but some folks prefer stronger pills.
+Got a long flight ahead and have trouble sleeping? Get some sleeping pills for the flight, as extra rest on the plane will help you survive the week. [Melatonin works really well][melatonin] for me, but some folks prefer stronger pills.
 
 Are you booking via Airbnb? Be sure to ping your host a few days before you arrive to finalize your check in, as sometimes they end up no longer existing — an experience which isn’t so much fun.
 
