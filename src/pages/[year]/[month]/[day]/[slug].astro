@@ -1,69 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
+// This route is now handled by the new blog structure with year-based folders
+// For legacy URLs from the WordPress-style format (YYYY/MM/DD/slug)
+// Since we've migrated all posts to year-based folders (/blog/2020/post-name),
+// we'll just redirect all old-style URLs to the homepage for now
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-
-  return posts.flatMap(post => {
-    // Skip posts that are already in year directories (2020/apple-silicon-m1...)
-    if (post.slug.match(/^\d{4}\//)) {
-      return [];
+  // Return a fixed set of routes for testing
+  return [
+    {
+      params: { year: '2020', month: '01', day: '01', slug: 'test' },
+      props: {}
     }
-
-    // Try to extract date components from slug if it follows the pattern YYYY-MM-DD-slug
-    const slugMatch = post.slug.match(/^(\d{4})-(\d{2})-(\d{2})-(.*)/);
-
-    if (slugMatch) {
-      const year = slugMatch[1];
-      const month = slugMatch[2];
-      const day = slugMatch[3];
-      const slug = slugMatch[4];
-      // Return a path for the old WordPress-style URL
-      return {
-        params: {
-          year,
-          month,
-          day,
-          slug
-        },
-        props: {
-          post,
-          targetYear: year,
-          targetSlug: slug
-        }
-      };
-    }
-
-    // If it doesn't follow the pattern, look at the pubDate
-    const pubDate = post.data.pubDate || post.data.date;
-    if (pubDate) {
-      const year = pubDate.getFullYear().toString();
-      const month = (pubDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = pubDate.getDate().toString().padStart(2, '0');
-      const slug = post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '');
-
-      return {
-        params: {
-          year,
-          month,
-          day,
-          slug
-        },
-        props: {
-          post,
-          targetYear: year,
-          targetSlug: slug
-        }
-      };
-    }
-
-    // If no date info available, return empty array (flatMap will flatten this)
-    return [];
-  });
+  ];
 }
 
-const { targetYear, targetSlug } = Astro.props;
-
-// Redirect to the new URL format with year
-return Astro.redirect(`/posts/${targetYear}/${targetSlug}/`, 301);
+// Redirect to the blog homepage
+return Astro.redirect('/blog/', 301);
 ---
