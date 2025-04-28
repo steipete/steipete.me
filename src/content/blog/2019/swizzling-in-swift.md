@@ -239,7 +239,7 @@ As long as we continue to work with UIKit and AppKit, there will always be situa
 
 ## Learn More
 
-- [Yet another article about method swizzling][method swizzling]) (Samuel Défago, 2014)
+- [Yet another article about method swizzling][method swizzling] (Samuel Défago, 2014)
 - [The Right Way to Swizzle in Objective-C][] (New Relic)
 
 [jrswizzle]: https://github.com/rentzsch/jrswizzle/blob/semver-1.x/JRSwizzle.m

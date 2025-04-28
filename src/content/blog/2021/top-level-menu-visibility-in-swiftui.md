@@ -45,7 +45,7 @@ struct SampleApp: App {
 }
 ```
 
-There's a superb guide over at [TrozWare about SwiftUI Mac Menus](https://troz.net/post/2021/swiftui_mac_menus/) that explains everything in detail - including a way how to move the menu logic into a separate file. Highly recommended. Let's move on to the interesting bits.
+There's a superb guide over at [TrozWare about SwiftUI Mac Menus](https://troz.net/post/2021/swiftui_mac_menus/) that explains everything in detail — including a way how to move the menu logic into a separate file. Highly recommended. Let's move on to the interesting bits.
 
 ## Showing Menus Conditionally
 
@@ -95,4 +95,4 @@ And that's it. Toggling the menu works just as expected. In our update method we
 
 ## Conclusion
 
-This is a good reminder that even when writing a "Pure SwiftUI" application, the underlying frameworks are there and can help you whenever you run into a limitation of SwiftUI. Since this feels like an omission, I've opened a radar (FB9074334) for the SwiftUI team.
+This is a good reminder that even when writing a "Pure SwiftUI" application, the underlying frameworks are there and can help you whenever you run into a limitation of SwiftUI. Since this feels like an omission, I've opened a radar ([FB9074334](https://openradar.appspot.com/FB9074334)) for the SwiftUI team.
