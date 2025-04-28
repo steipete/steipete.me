@@ -1,10 +1,7 @@
 ---
-title: Efficient iOS Version Checking
+title: 'Efficient iOS Version Checking'
 pubDate: 2016-07-06T12:00:00.000Z
-description: >-
-  Few apps have the luxury to support only the most recent version of iOS. It's
-  often necessary to set a lower deployment target and branch in code based on
-  specific versions of iOS.
+description: 'Few apps have the luxury to support only the most recent version of iOS. It''s often necessary to set a lower deployment target and branch in code based on specific versions of iOS.'
 tags:
   - iOS
   - Development

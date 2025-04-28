@@ -43,7 +43,7 @@ weakify(self);
 }];
 ```
 
-I'm sorry for all the Objective-C here. Our framework is heavily build around C++ and Objective-C, as we cannot use Swift yet, as it's not yet binary compatible. (Blog Post)
+I'm sorry for all the Objective-C here. Our framework is heavily built around C++ and Objective-C, as we cannot use Swift yet, as it's not yet binary compatible. (Blog Post)
 Notice how this creates a one-time use queue to deallocate things in the background - this makes background tasks much simpler to follow, and debugging much easier.
 
 In addition to that, when our code is compiled in `DEBUG` mode, we track all created queues weakly, so we can break at any point and call `[PSPDFDispatchQueue _listAllQueues]` to get a list of all active queues.

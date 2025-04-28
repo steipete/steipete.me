@@ -105,7 +105,7 @@ The iOSMac platform requires GPU acceleration and simply exits when this is not 
 
 ## Step 1: Minimum Deployment Target = iOS 12
 
-You need to ensure the minimum deployment target of your project and all dependent frameworks is set to iOS 12. The linker emits an `LC_BUILD_VERSION` flag vs. the earlier `LC_BUILD_VERSION_MIN_MACOS` only if iOS 12 is set, and this is required for iOSMac to load the correct dependencies. marzipanify will try to work around this, but it’ll cause a lot of trouble and you might end up with a binary that doesn’t start. This is one of the moments where using one central `xcconfig` file really pays off:
+You need to ensure the minimum deployment target of your project and all dependent frameworks is set to iOS 12. The linker emits an `LC_BUILD_VERSION` flag vs. the earlier `LC_BUILD_VERSION_MIN_MACOS` only if iOS 12 is set, and this is required for iOSMac to load the correct dependencies. marzipanify will try to work around this, but it’ll cause a lot of trouble and you might end up with a binary that doesn’t start. This is one of the moments when using one central `xcconfig` file really pays off:
 
 ![](/assets/img/2018/porting-ios-apps-to-mac-marzipan-iosmac-uikit-appkit/deployment-targets.png)
 
