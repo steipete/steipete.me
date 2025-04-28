@@ -19,8 +19,6 @@ AIDescription: true
 
 Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbsp;TB SSD, 1&nbsp;GbE).
 
-<YouTubeEmbed id="4ZJH9ZV-xOY" title="M1 Mac mini and MacBook Air Unboxing & Review" />
-
 The Geekbench Score is 1705/7379 vs. 1100/5465, so the promise is more than 30 percent increased performance — even more so for single-threaded operations. Linking and code-signing are tasks Apple hasn't yet parallelized, so single-core performance is a significant factor for CI performance.
 
 A recap: We run a raw Mac mini setup (6-core 3.2&nbsp;GHz, 64&nbsp;GB RAM, 1&nbsp;TB SSD, 10Gbs). If you're interested, I explored [the tradeoffs between virtualization and bare metal on the PSPDFKit blog](https://pspdfkit.com/blog/2020/managing-macos-hardware-virtualization-or-bare-metal/). 
@@ -152,5 +150,3 @@ The new machines are marginally cheaper to host ($129/month vs. $159/month on Ma
 PS: The header graphic isn't broken; it's a random VNC corruption, and I [rolled with it](https://twitter.com/facethewolf/status/1337733279454294019?s=21).
 
 **Update:** We decided to keep the M1s after all, since we found two valid bugs in our codebase that only happen on arm64. This is a valid reason to deal with the current difficulties in setup.
-
-<YouTubeEmbed id="kOcZGZgP5-Y" title="M1 Mac Mini - Long-term Review (After 8 Months)" />
