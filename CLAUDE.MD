@@ -4,6 +4,12 @@ This document contains important instructions and notes for Claude when working 
 
 ## CRITICAL GUIDELINES
 
+### NEVER CREATE BLOG POSTS WITHOUT CONSENT
+
+- **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from steipete
+- Do not write or propose new blog content unless specifically requested
+- Only help with editing or fixing existing posts when asked
+
 ### NEVER MERGE PULL REQUESTS
 
 - **NEVER MERGE PULL REQUESTS** - Even if explicitly asked to do so
