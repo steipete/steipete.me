@@ -52,26 +52,30 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
   </article>
 
   <script>
-    // Find all Twitter embed placeholders and replace them with the actual component
+    // Find all Twitter and YouTube embed placeholders and replace them with the actual components
     document.addEventListener('DOMContentLoaded', () => {
       const mdxContent = document.querySelector('.mdx-content');
       if (!mdxContent) return;
 
       // Look for paragraphs with Twitter embeds
       const twitterEmbedRegex = /{% twitter (https:\/\/[^\s]+) %}/;
+      // Look for paragraphs with YouTube embeds
+      const youtubeEmbedRegex = /{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %}/;
 
-      // Find all paragraphs that might contain a Twitter embed
+      // Find all paragraphs that might contain embeds
       const paragraphs = mdxContent.querySelectorAll('p');
 
-      let foundEmbeds = false;
+      let foundTwitterEmbeds = false;
+      let foundYoutubeEmbeds = false;
 
       paragraphs.forEach(paragraph => {
         const content = paragraph.innerHTML;
-        const match = content.match(twitterEmbedRegex);
+        const twitterMatch = content.match(twitterEmbedRegex);
+        const youtubeMatch = content.match(youtubeEmbedRegex);
 
-        if (match && match[1]) {
-          foundEmbeds = true;
-          const tweetUrl = match[1];
+        if (twitterMatch && twitterMatch[1]) {
+          foundTwitterEmbeds = true;
+          const tweetUrl = twitterMatch[1];
 
           // Create a placeholder for the tweet
           const placeholder = document.createElement('div');
@@ -86,10 +90,44 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
           // Replace the paragraph with our placeholder
           paragraph.replaceWith(placeholder);
         }
+        else if (youtubeMatch && youtubeMatch[1]) {
+          foundYoutubeEmbeds = true;
+          let videoId = youtubeMatch[1];
+
+          // Extract video ID from URL if needed
+          if (videoId.includes('youtube.com/watch')) {
+            const url = new URL(videoId);
+            videoId = url.searchParams.get('v') || '';
+          }
+          else if (videoId.includes('youtu.be/')) {
+            videoId = videoId.split('youtu.be/')[1]?.split('?')[0] || '';
+          }
+          else if (videoId.includes('youtube.com/embed/')) {
+            videoId = videoId.split('youtube.com/embed/')[1]?.split('?')[0] || '';
+          }
+
+          // Create responsive container for the YouTube iframe
+          const container = document.createElement('div');
+          container.className = 'youtube-embed-container';
+          container.innerHTML = `
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/${videoId}"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          `;
+
+          // Replace the paragraph with our container
+          paragraph.replaceWith(container);
+        }
       });
 
-      // Only load the Twitter widgets script if we found embeds
-      if (foundEmbeds) {
+      // Only load the Twitter widgets script if we found Twitter embeds
+      if (foundTwitterEmbeds) {
         const script = document.createElement('script');
         script.src = 'https://platform.twitter.com/widgets.js';
         script.async = true;
@@ -103,6 +141,24 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       margin: 1.5rem 0;
       display: flex;
       justify-content: center;
+    }
+
+    .youtube-embed-container {
+      margin: 2rem 0;
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .youtube-embed-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
   </style>
 </Layout>

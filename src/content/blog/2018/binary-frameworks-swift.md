@@ -19,7 +19,7 @@ This article explores what ABI means and how it can be important for third-party
 
 TL;WR: ABI stability won’t change much for you, and it’s not enough to ship binary Swift frameworks. You can watch a shortened version of this article, which was presented at [dotSwift 2018](https://www.dotswift.io/) in Paris:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jWaO3rsNZU0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+{% youtube jWaO3rsNZU0 %}
 
 ## What’s ABI?
 
