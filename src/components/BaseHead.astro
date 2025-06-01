@@ -28,7 +28,16 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`;
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="manifest" href="/site.webmanifest" />
+<link rel="apple-touch-icon" href="/peter-avatar.jpg" />
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<!-- PWA Meta Tags -->
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="steipete" />
+<meta name="application-name" content="Peter Steinberger" />
+<meta name="msapplication-TileColor" content="#006cac" />
 
 <!-- Primary Meta Tags -->
 <title>{fullTitle}</title>
@@ -38,12 +47,12 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`;
 <!-- Theme Color -->
 <meta
   name="theme-color"
-  content="#ffffff"
+  content="#006cac"
   media="(prefers-color-scheme: light)"
 />
 <meta
   name="theme-color"
-  content="#1a1a1a"
+  content="#ff6b01"
   media="(prefers-color-scheme: dark)"
 />
 
