@@ -1,6 +1,6 @@
 ---
 title: "The Future of Vibe Coding: Building with AI, Live and Unfiltered"
-pubDatetime: 2025-01-06T10:00:00.000Z
+pubDatetime: 2025-06-01T15:17:25.000Z
 description: "Peter demonstrates 'vibe coding' - a new approach to software development with AI, building two apps from scratch in a 3-hour live workshop."
 tags:
   - AI
@@ -14,6 +14,10 @@ source: steipete.com
 ---
 
 <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1088443203?h=37824a9349&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The future of vibe-coding - Workshop Peter Steinberger - 2025_05_28 08_57 CEST"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+
+A friend asked me to show off my current workflow, so I did an imprompto workshop for him and his developers. This is a snapshot of how I approach vibe coding these days. Don't expect a professional workshop - I did this as a favor and for the fun of it. I let Gemini extract the key infos into a blog post, if you don't wanna watch all of the 3h video.
+
+## Transcript
 
 Alright, let's talk about how software development is changing, right now. For nearly 15 years, I was deep in the PDF world with PSPDFKit (now they rebranded as Nutrient). After selling the company, I took a much-needed breather. I was properly burned out. But a couple of months ago, that itch, that spark, came back. And what pulled me in? AI.
 
