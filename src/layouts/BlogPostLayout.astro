@@ -219,31 +219,31 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       }
     });
 
-    // Load Twitter widgets script if we found Twitter embeds
-    if (foundTwitterEmbeds) {
-      // Check if script is already loaded
-      if (!document.querySelector('script[src="https://platform.twitter.com/widgets.js"]')) {
-        const script = document.createElement("script");
-        script.src = "https://platform.twitter.com/widgets.js";
-        script.async = true;
-        document.body.appendChild(script);
-        
-        // Force re-render of tweets after script loads
-        script.onload = () => {
-          if (window.twttr && window.twttr.widgets) {
-            window.twttr.widgets.load();
-          }
-        };
-      } else if (window.twttr && window.twttr.widgets) {
-        // If script is already loaded, just reload widgets
-        window.twttr.widgets.load();
-      }
+    // Force Twitter widgets to load if we found Twitter embeds
+    if (foundTwitterEmbeds && window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load();
     }
   }
 
   // Run the embed processing
   document.addEventListener("DOMContentLoaded", processEmbeds);
   document.addEventListener("astro:page-load", processEmbeds);
+  
+  // Also try processing on window load as a fallback
+  window.addEventListener("load", () => {
+    // Check if there are unprocessed Twitter embeds
+    const unprocessedTweets = document.querySelectorAll('blockquote.twitter-tweet:not([data-twitter-extracted-i])');
+    if (unprocessedTweets.length > 0) {
+      processEmbeds();
+    }
+    
+    // Force Twitter widgets to load after a delay
+    setTimeout(() => {
+      if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load();
+      }
+    }, 1000);
+  });
 </script>
 
 <style>
@@ -271,4 +271,6 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     border: 0;
   }
 </style>
+  <!-- Twitter Widget Script -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </Layout>
