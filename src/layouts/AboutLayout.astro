@@ -2,7 +2,6 @@
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "./Layout.astro";
-import NewsletterForm from "@/components/NewsletterForm.astro";
 import { SITE } from "@/config";
 
 export interface Props {
@@ -22,11 +21,6 @@ const { frontmatter } = Astro.props;
       <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
       <slot />
     </section>
-    
-    <div class="mb-12">
-      <h2 class="text-xl font-semibold mb-4">Stay Connected</h2>
-      <NewsletterForm variant="compact" />
-    </div>
   </main>
   <Footer />
 </Layout>
