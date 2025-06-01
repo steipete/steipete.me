@@ -1,6 +1,6 @@
 ---
 title: "The Future of Vibe Coding: Building with AI, Live and Unfiltered"
-pubDatetime: 2025-01-06T10:00:00.000Z
+pubDatetime: 2025-06-01T15:17:25.000Z
 description: "Peter demonstrates 'vibe coding' - a new approach to software development with AI, building two apps from scratch in a 3-hour live workshop."
 tags:
   - AI
