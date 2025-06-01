@@ -1,5 +1,5 @@
 /* eslint-env browser */
-const primaryColorScheme = ""; // "light" | "dark"
+const primaryColorScheme = "light"; // Default theme: "light" | "dark"
 
 // Get theme data from local storage
 const currentTheme = localStorage.getItem("theme");
