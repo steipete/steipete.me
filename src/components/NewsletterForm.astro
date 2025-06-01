@@ -1,0 +1,61 @@
+---
+export interface Props {
+  variant?: 'default' | 'compact';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<div class={variant === 'default' ? 'newsletter-box bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-6 my-8' : 'newsletter-compact mt-6'}>
+  {variant === 'default' && (
+    <>
+      <h3 class="text-lg font-semibold mb-2">Stay Updated</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        Get notified about new posts and insights on AI, development, and building in public.
+      </p>
+    </>
+  )}
+  
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/steipete"
+    method="post"
+    target="_blank"
+    class={variant === 'default' ? 'flex flex-col sm:flex-row gap-3' : 'flex flex-col gap-2'}
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+    />
+    <input
+      type="text"
+      name="name"
+      placeholder="Your name (optional)"
+      class={variant === 'default' ? 'flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent' : 'px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'}
+    />
+    <button
+      type="submit"
+      class="px-6 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors font-medium whitespace-nowrap"
+    >
+      Subscribe
+    </button>
+  </form>
+  
+  {variant === 'default' && (
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
+      No spam, unsubscribe anytime. Powered by <a href="https://buttondown.email/refer/steipete" target="_blank" rel="noopener" class="underline">Buttondown</a>.
+    </p>
+  )}
+</div>
+
+<style>
+  @media (max-width: 640px) {
+    .newsletter-box {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      border-radius: 0;
+    }
+  }
+</style>

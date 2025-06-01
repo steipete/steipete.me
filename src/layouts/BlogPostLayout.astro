@@ -4,6 +4,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Layout from "./Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
 import { SITE } from "@/config";
 
 type Props = CollectionEntry<"blog">["data"] & {
@@ -124,6 +125,8 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
 
       <slot />
     </article>
+
+    <NewsletterForm />
   </main>
 
   <Footer />
