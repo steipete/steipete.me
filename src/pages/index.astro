@@ -61,7 +61,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
       {
         // only display if at least one social link is enabled
         SOCIALS.filter((social) => social.active).length > 0 && (
-          <div class="mt-2 flex flex-col sm:flex-row sm:items-center ml-44">
+          <div class="flex flex-col sm:flex-row sm:items-center ml-44">
             <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
             <Socials />
           </div>
