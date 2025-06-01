@@ -4,16 +4,17 @@ title: "About"
 ---
 
 <div class="flex flex-col md:flex-row gap-8 items-start">
-  <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[275px]">
+  <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[281px]">
     <img src="/peter-office.jpg" alt="Peter in his office setup" class="w-full h-auto rounded-lg" />
   </div>
   <div class="flex-1 min-w-0">
-    <p>Currently, I'm vibe coding my next project, exploring new technologies and opportunities in the web development ecosystem.</p>
+    <p>Currently, I'm vibe coding <a href="https://codelooper.app">my next project</a>, exploring new technologies and opportunities in the web development ecosystem.</p>
     <p>After years in the native iOS space, I'm excited to be learning and building with modern web technologies.</p>
     <p>I share my time between Vienna and London.</p>
-    <p>I have the luxury of deciding what to build, and I don't need to make money. So everything I'm making is gonna be open source. Read more about my journey in <a href="/posts/2025/finding-my-spark-again/">Finding My Spark Again</a>.</p>
   </div>
 </div>
+
+I have the luxury of deciding what to build, and I don't need to make money. So everything I'm making is gonna be open source. Read more about my journey in [Finding My Spark Again](/posts/2025/finding-my-spark-again/).
 
 I'm looking for new opportunities to share my learnings at conferences. [Check out my speaking history and topics](https://github.com/steipete/speaking).
 

@@ -9,9 +9,10 @@ import { SITE } from "@/config";
 
 type Props = CollectionEntry<"blog">["data"] & {
   slug: string;
+  readingTime?: string;
 };
 
-const { title, description, pubDatetime, modDatetime, heroImage, slug } =
+const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } =
   Astro.props;
 
 // Enforce canonical URL to always be /posts/ path
@@ -65,6 +66,13 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
       {title}
     </h1>
+    {
+      readingTime && (
+        <div class="text-sm text-foreground/60 mt-1">
+          {readingTime}
+        </div>
+      )
+    }
 
     <div class="flex items-center gap-4">
       <div class="flex items-end space-x-2 opacity-80 my-2">
@@ -119,6 +127,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
             src={heroImage}
             alt=""
             class="mb-8 aspect-video w-full rounded-md object-cover"
+            loading="lazy"
           />
         )
       }
@@ -126,7 +135,35 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       <slot />
     </article>
 
-    <NewsletterForm />
+    {
+      SITE.editPost.enabled && (
+        <div class="mt-8 pt-8 border-t border-border/50">
+          <a
+            href={`${SITE.editPost.url}src/content/blog/${slug}.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-foreground/60 hover:text-accent inline-flex items-center gap-1"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            {SITE.editPost.text}
+          </a>
+        </div>
+      )
+    }
+     <NewsletterForm />
   </main>
 
   <Footer />
