@@ -1,7 +1,7 @@
 ---
 title: The Great Mac Catalyst Text Input Crash Hunt
-pubDate: 2020-05-29T22:00:00.000Z
-description: "Investigate a persistent crash in Mac Catalyst apps' text input system affecting macOS 10.15.4. Through runtime inspection and disassembly, I identify a race condition in Apple's RemoteTextInput framework where the documentState property is accessed from both the main thread and XPC background threads without proper synchronization. My deep-dive analysis explains how to detect this threading issue using conditional breakpoints, examine the call stack with Hopper, and implement a clean solution with os_unfair_lock to make the property access thread-safe. This article offers both technical insights into UIKit/AppKit bridging and a practical fix for developers experiencing the same problem."
+pubDatetime: 2020-05-29T22:00:00.000Z
+description: "Deep-dive investigation and fix for a Mac Catalyst text input crash caused by a race condition in Apple's RemoteTextInput framework."
 heroImage: /assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png
 tags:
   - macOS
@@ -39,7 +39,7 @@ Termination Reason:    Namespace SIGNAL, Code 0xb
 Terminating Process:   exc handler [45863]
 
 VM Regions Near 0x18:
---> 
+-->
     __TEXT                 000000010b6ee000-000000010b6ef000 [    4K] r-x/r-x SM=COW  /Applications/Twitter.app/Contents/MacOS/Twitter
 
 Application Specific Information:
@@ -173,7 +173,7 @@ in NSObject:
 	isa (Class): __NSTextInputContextAuxiliaryStorage (isa, 0x1dffff8820fafd)
 ```
 
-The decompiled code calls `rdi = *([self auxiliary] + 0x58);` so we know it’s a direct ivar access; we can also access this code at runtime via KVC: 
+The decompiled code calls `rdi = *([self auxiliary] + 0x58);` so we know it’s a direct ivar access; we can also access this code at runtime via KVC:
 
 ```
 e -l objc -O -- [[[[[[NSApplication sharedApplication] mainWindow] firstResponder] inputContext] auxiliary] valueForKey:@"_rtiCurrentInputSystemServiceSession"]
@@ -190,7 +190,7 @@ This is the default implementation of a `nonatomic` property; there are no locki
 
 ![](/assets/img/2020/catalyst-crash-fix/documentstate-breakpoint.png)
 
-I’m using a [conditional breakpoint](https://pspdfkit.com/blog/2016/scripted-breakpoints/) that stops if non-main-thread access is detected. It also prints out the thread automatically.  Since we’re in AppKit, methods are usually called on the main thread (remove the condition to verify). However, sometimes this is called from an XPC thread:
+I’m using a [conditional breakpoint](https://pspdfkit.com/blog/2016/scripted-breakpoints/) that stops if non-main-thread access is detected. It also prints out the thread automatically. Since we’re in AppKit, methods are usually called on the main thread (remove the condition to verify). However, sometimes this is called from an XPC thread:
 
 ![](/assets/img/2020/catalyst-crash-fix/documentstate-callstack.png)
 
@@ -225,7 +225,7 @@ private var didInstallCrashFix = false
 private func fixMacCatalystInputSystemSessionRace() -> Bool {
     guard let klass = NSClassFromString("RTIInputSystemSession") else { return false }
     guard didInstallCrashFix == false else { return false }
-    
+
     var lockStore = os_unfair_lock()
     let sel = NSSelectorFromString("documentState")
     var origIMP : IMP? = nil
@@ -276,7 +276,7 @@ _dyld_register_func_for_add_image { _, _ in
 
 I’m dispatching to the main thread just to make sure this isn’t accidentally called on multiple threads, in order to not produce yet another race.
 
-The complete code is [in this Gist](https://gist.github.com/steipete/f955aaa0742021af15add0133d8482b9). MIT Licensed. Call `installMacCatalystAppKitTextCrashFix()` from your App Delegate, and don’t forget to check if Apple might have eventually fixed[^2] this issue. (Apple folks: [FB7593149](https://twitter.com/steipete/status/1266513539012927492?s=21).) 
+The complete code is [in this Gist](https://gist.github.com/steipete/f955aaa0742021af15add0133d8482b9). MIT Licensed. Call `installMacCatalystAppKitTextCrashFix()` from your App Delegate, and don’t forget to check if Apple might have eventually fixed[^2] this issue. (Apple folks: [FB7593149](https://twitter.com/steipete/status/1266513539012927492?s=21).)
 
 ## Update: InterposeKit
 
@@ -296,6 +296,5 @@ try Interpose.whenAvailable(["RTIInput", "SystemSession"]) {
         }} as @convention(block) (AnyObject, AnyObject) -> Void})
 }
 ```
-
 
 [^2]: To fix this, remove three characters from a property (the “non” in non-atomic).

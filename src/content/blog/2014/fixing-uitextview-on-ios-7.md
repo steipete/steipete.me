@@ -1,7 +1,7 @@
 ---
 title: "Fixing UITextView On iOS 7"
-pubDate: 2014-01-08T20:03:00.000Z
-description: "Discover how I tackled the notoriously buggy UITextView in iOS 7 which suffered from severe scrolling and content positioning issues when using contentInset. I walk through the creation of PSPDFTextView, a drop-in replacement that fixes multiple scrolling problems including caret position tracking, proper handling of new lines, and content inset awareness. This solution arose from community collaboration after Apple failed to address these critical bugs even in iOS 7.1 beta releases."
+pubDatetime: 2014-01-08T20:03:00.000Z
+description: "Fix the severe scrolling and content positioning bugs in iOS 7's UITextView with PSPDFTextView, a drop-in replacement."
 tags:
   - iOS-Development
   - UIKit
@@ -23,10 +23,10 @@ At first, my solution was based on a category, but after discovering more and mo
 
 So, what's fixed in `PSPDFTextView`?
 
-*  When adding a new line, `UITextView` will now properly scroll down. Previously, you needed to add at least one character for this to happen.
-*  Scrolling to the caret position now considers `contentInset`. `UITextView` completely ignored this.
-*  Typing will also consider `contentInset` and will update the scroll position accordingly.
-*  Pasted text will scroll to the caret position.
+- When adding a new line, `UITextView` will now properly scroll down. Previously, you needed to add at least one character for this to happen.
+- Scrolling to the caret position now considers `contentInset`. `UITextView` completely ignored this.
+- Typing will also consider `contentInset` and will update the scroll position accordingly.
+- Pasted text will scroll to the caret position.
 
 ![UITextView](https://github.com/steipete/PSPDFTextView/raw/master/Example/broken.gif)
 

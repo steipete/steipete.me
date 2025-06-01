@@ -1,7 +1,7 @@
 ---
-title: 'Gardening Your Twitter: Growing Your Followers'
-pubDate: 2020-10-21T13:00:00.000Z
-description: 'This article shares strategies for growing a Twitter following based on 12 years of experience. It covers developing an authentic online persona, maintaining a consistent avatar, engaging with your audience, and extending your reach through blog posts and conference talks. The post offers practical advice on tweet composition, using threads effectively, and tracking follower growth—all aimed at building a meaningful Twitter presence over time.'
+title: "Gardening Your Twitter: Growing Your Followers"
+pubDatetime: 2020-10-21T13:00:00.000Z
+description: "Strategies for growing a meaningful Twitter following through authentic persona development, consistent engagement, and effective content creation based on 12 years of experience."
 heroImage: /assets/img/2020/make-twitter-work/gardening-growing.jpg
 tags:
   - social
@@ -22,7 +22,7 @@ There are many strategies for online personas, but I can only share what works w
 
 I'm known for talking about iOS and bootstrapping a company, and I have a pretty sharp tongue on tech news. I used to keep politics out of my feed, but since 2016, I do sprinkle in topics that are important to me — from US politics to climate change and LGBTQIA rights.
 
-There will always be people who complain that XY topic shouldn't be on Twitter, but in the end, it's *your choice* what you talk about and it's their choice to follow you.
+There will always be people who complain that XY topic shouldn't be on Twitter, but in the end, it's _your choice_ what you talk about and it's their choice to follow you.
 
 I'm openly gay on Twitter, but only in the last few years have I also started talking about that. Being open does allow me to add a unique perspective to some content, and it adds more complexity to my persona. I almost never share pictures or private content though; [that stuff is for Instagram](https://www.instagram.com/sportg33k/).
 
@@ -56,7 +56,7 @@ Twitter is a great indicator for topics that people find interesting — [I ofte
 
 ### Conference Talks
 
-[Speaking at conferences](https://steipete.tv/) is a great way to meet new people and extend your social circle. I often meet folks at conferences, and either we connect on Twitter or we find out that we already know each other on there! Either way — this will increase the bond and will make it more likely that people reach out to you. **Conferences are work, but they are so worth it.** 
+[Speaking at conferences](https://steipete.tv/) is a great way to meet new people and extend your social circle. I often meet folks at conferences, and either we connect on Twitter or we find out that we already know each other on there! Either way — this will increase the bond and will make it more likely that people reach out to you. **Conferences are work, but they are so worth it.**
 
 Bonus: [Convert your conference talk to a blog post](https://pspdfkit.com/blog/2018/binary-frameworks-swift/). Very few people will actually watch a recording, so via recycling and reshaping content you already have, you can extend your reach again.
 

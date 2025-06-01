@@ -1,7 +1,7 @@
 ---
 title: Disabling Keyboard Avoidance in SwiftUI's UIHostingController
-pubDate: 2020-09-21T20:00:00.000Z
-description: "Fix an annoying iOS 14 behavior where UIHostingController automatically avoids the keyboard - even when it shouldn't. This tutorial shows how to identify and disable unwanted keyboard avoidance in SwiftUI by examining the UIHostingView class and using runtime tricks to modify its behavior. I demonstrate how to apply dynamic subclassing to override the keyboard notification handling methods, providing a clean solution that works for embedded SwiftUI views in table and collection cells. Learn how to implement this fix both with my InterposeKit library and using pure Objective-C runtime functions for a safer approach than traditional method swizzling."
+pubDatetime: 2020-09-21T20:00:00.000Z
+description: "Fixing unwanted keyboard avoidance behavior in UIHostingController using runtime dynamic subclassing to override keyboard notification handling methods."
 heroImage: /assets/img/2020/uihostingcontroller-keyboard/header.png
 tags:
   - iOS
@@ -38,7 +38,7 @@ While I’ve not been directly affected by this issue, I was curious and tried t
 
 When the official ways don’t work, there’s always the runtime, so I’ve been [inspecting the view controller’s methods](https://twitter.com/steipete/status/1306153060700426240?s=21) and looking for something to poke at. As the class is written in Swift, there’s very little that’s exposed to the Objective-C runtime — only methods that are overridden from `UIViewController` or exposed with `@objc` will show up here. I could potentially use a Swift mirror to see the remaining functions, but changing them is difficult. There was nothing interesting, so I reported a r̶a̶d̶a̶r̶ Feedback[^2] and that was it.
 
-A few days later, I was reading [Samuel Défago’s brilliant blog post about how he wrapped `UICollectionView` for Swift](https://defagos.github.io/swiftui_collection_intro/). In part 3, he presents a fix to an issue with `safeAreaInsets` in `UIHostingController`. This is done by [modifying the *view* class](https://defagos.github.io/swiftui_collection_part3/). It motivated me to take a closer look at the view — maybe Apple was hiding the keyboard avoidance logic there?
+A few days later, I was reading [Samuel Défago’s brilliant blog post about how he wrapped `UICollectionView` for Swift](https://defagos.github.io/swiftui_collection_intro/). In part 3, he presents a fix to an issue with `safeAreaInsets` in `UIHostingController`. This is done by [modifying the _view_ class](https://defagos.github.io/swiftui_collection_part3/). It motivated me to take a closer look at the view — maybe Apple was hiding the keyboard avoidance logic there?
 
 ```
 po SwiftUI._UIHostingView<KeyboardSwiftUIBug.ContentView>.self.perform("_shortMethodDescription")
@@ -85,7 +85,7 @@ Looking at the output, I see there are quite a few Swift methods that have been 
 
 ## Subclassing at Runtime
 
-We want to replace the implementation of `keyboardWillShowWithNotification:` with an empty one. The classic solution here would be [swizzling](https://pspdfkit.com/blog/2019/swizzling-in-swift/), but that would modify *all* instances of `UIHostingController`, and we don’t know if the view class is used somewhere else. It might work, but it seems risky.
+We want to replace the implementation of `keyboardWillShowWithNotification:` with an empty one. The classic solution here would be [swizzling](https://pspdfkit.com/blog/2019/swizzling-in-swift/), but that would modify _all_ instances of `UIHostingController`, and we don’t know if the view class is used somewhere else. It might work, but it seems risky.
 
 A better strategy is to modify only instances we control, and we can do that via dynamic subclassing. It’s my favorite way to modify behavior on a per-object basis. In fact, I wrote an entire Swift library called [InterposeKit](https://interposekit.com/) to make this easy:
 

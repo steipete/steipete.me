@@ -1,29 +1,31 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import { SITE } from '../../consts';
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { SITE } from "../../consts";
 
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection('blog');
+  const allPosts = await getCollection("blog");
 
   // Deduplicate posts by id if there are any duplicates
   const idMap = new Map();
-  allPosts.forEach(post => {
+  allPosts.forEach((post) => {
     // If we already have a post with this id, only keep the newer one
-    if (!idMap.has(post.id) || new Date(post.data.pubDate) > new Date(idMap.get(post.id).data.pubDate)) {
+    if (
+      !idMap.has(post.id) ||
+      new Date(post.data.pubDatetime) >
+        new Date(idMap.get(post.id).data.pubDatetime)
+    ) {
       idMap.set(post.id, post);
     }
   });
 
   // Convert back to array and sort
-  const sortedPosts = Array.from(idMap.values()).sort(
-    (a, b) => {
-      const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
-      const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
-      return dateB - dateA;
-    }
-  );
+  const sortedPosts = Array.from(idMap.values()).sort((a, b) => {
+    const dateA = new Date(a.data.pubDatetime || a.data.date || 0).valueOf();
+    const dateB = new Date(b.data.pubDatetime || b.data.date || 0).valueOf();
+    return dateB - dateA;
+  });
 
   return paginate(sortedPosts, { pageSize: 10 });
 }
@@ -32,65 +34,80 @@ const { page } = Astro.props;
 const { data: posts, currentPage, lastPage } = page;
 ---
 
-<Layout title={`Page ${currentPage} | ${SITE.title}`} description={SITE.description}>
+<Layout title={`Page ${currentPage} | ${SITE.title}`} description={SITE.desc}>
   <section class="py-8">
     <h1 class="text-4xl font-bold tracking-tight mb-10">Latest Posts</h1>
 
     <div class="space-y-12">
-      {posts.map((post) => (
-        <article class="border-b border-border pb-8 last:border-0">
-          <h2 class="text-2xl font-semibold leading-tight mb-2">
-            <a href={`/posts/${post.id}/`} class="hover:text-primary">
-              {post.data.title}
-            </a>
-          </h2>
+      {
+        posts.map((post) => (
+          <article class="border-b border-border pb-8 last:border-0">
+            <h2 class="text-2xl font-semibold leading-tight mb-2">
+              <a href={`/posts/${post.id}/`} class="hover:text-primary">
+                {post.data.title}
+              </a>
+            </h2>
 
-          <div class="flex items-center text-sm text-muted-foreground mb-4">
-            <FormattedDate date={new Date(post.data.pubDate || post.data.date)} />
-          </div>
+            <div class="flex items-center text-sm text-muted-foreground mb-4">
+              <FormattedDate
+                date={new Date(post.data.pubDatetime || post.data.date)}
+              />
+            </div>
 
-          {post.data.description && (
-            <p class="text-muted-foreground mb-4">{post.data.description}</p>
-          )}
+            {post.data.description && (
+              <p class="text-muted-foreground mb-4">{post.data.description}</p>
+            )}
 
-          <div>
-            <a href={`/posts/${post.id}/`} class="text-primary font-medium hover:underline">
-              Read more →
-            </a>
-          </div>
-        </article>
-      ))}
+            <div>
+              <a
+                href={`/posts/${post.id}/`}
+                class="text-primary font-medium hover:underline"
+              >
+                Read more →
+              </a>
+            </div>
+          </article>
+        ))
+      }
     </div>
 
     <div class="flex justify-center mt-10 gap-2">
-      {currentPage > 1 && (
-        <a
-          href={currentPage - 1 === 1 ? '/' : `/page/${currentPage - 1}`}
-          class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
-        >
-          ← Previous
-        </a>
-      )}
+      {
+        currentPage > 1 && (
+          <a
+            href={currentPage - 1 === 1 ? "/" : `/page/${currentPage - 1}`}
+            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
+          >
+            ← Previous
+          </a>
+        )
+      }
 
-      {Array.from({ length: lastPage }).map((_, i) => (
-        <a
-          href={i === 0 ? '/' : `/page/${i + 1}`}
-          class={`px-4 py-2 rounded-md ${currentPage === i + 1
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-secondary hover:bg-accent'}`}
-        >
-          {i + 1}
-        </a>
-      ))}
+      {
+        Array.from({ length: lastPage }).map((_, i) => (
+          <a
+            href={i === 0 ? "/" : `/page/${i + 1}`}
+            class={`px-4 py-2 rounded-md ${
+              currentPage === i + 1
+                ? "bg-primary text-primary-foreground"
+                : "bg-secondary hover:bg-accent"
+            }`}
+          >
+            {i + 1}
+          </a>
+        ))
+      }
 
-      {currentPage < lastPage && (
-        <a
-          href={`/page/${currentPage + 1}`}
-          class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
-        >
-          Next →
-        </a>
-      )}
+      {
+        currentPage < lastPage && (
+          <a
+            href={`/page/${currentPage + 1}`}
+            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
+          >
+            Next →
+          </a>
+        )
+      }
     </div>
   </section>
 </Layout>

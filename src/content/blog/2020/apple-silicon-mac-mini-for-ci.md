@@ -1,7 +1,7 @@
 ---
 title: On Using Apple Silicon Mac Mini for Continuous Integration
-pubDate: 2020-12-14T09:30:00.000Z
-description: 'This article documents my experience integrating Apple Silicon M1 Mac minis into our continuous integration system. It explores the promised performance benefits and actual benchmarks while detailing numerous technical challenges encountered during setup. I cover working around Rosetta 2 limitations, detecting Apple Silicon in scripts, handling APFS container differences, and addressing various Xcode, memory, and test issues specific to the M1. The article provides practical solutions and code snippets for teams transitioning CI infrastructure to Apple Silicon, along with performance comparisons showing where the M1 excels and where Intel Macs still have advantages, especially for older iOS simulator versions.'
+pubDatetime: 2020-12-14T09:30:00.000Z
+description: "Documenting the challenges and solutions for integrating Apple Silicon M1 Mac minis into a continuous integration system, including automation fixes and performance comparisons."
 heroImage: /assets/img/2020/apple-silicon-ci/trippin.png
 tags:
   - Apple-Silicon
@@ -21,7 +21,7 @@ Ever since the M1 was announced, I've been curious how well Apple's new Mac mini
 
 The Geekbench Score is 1705/7379 vs. 1100/5465, so the promise is more than 30 percent increased performance — even more so for single-threaded operations. Linking and code-signing are tasks Apple hasn't yet parallelized, so single-core performance is a significant factor for CI performance.
 
-A recap: We run a raw Mac mini setup (6-core 3.2&nbsp;GHz, 64&nbsp;GB RAM, 1&nbsp;TB SSD, 10Gbs). If you're interested, I explored [the tradeoffs between virtualization and bare metal on the PSPDFKit blog](https://pspdfkit.com/blog/2020/managing-macos-hardware-virtualization-or-bare-metal/). 
+A recap: We run a raw Mac mini setup (6-core 3.2&nbsp;GHz, 64&nbsp;GB RAM, 1&nbsp;TB SSD, 10Gbs). If you're interested, I explored [the tradeoffs between virtualization and bare metal on the PSPDFKit blog](https://pspdfkit.com/blog/2020/managing-macos-hardware-virtualization-or-bare-metal/).
 
 ## Automization Woes
 
@@ -55,7 +55,7 @@ On Apple Silicon, the main APFS container is `disk3` and not `disk1`. Currently,
 
 We use Buildkite as our CI agent, and it recently released [3.26.0 with an experimental native executable for Apple Silicon](https://github.com/buildkite/agent/releases/tag/v3.26.0). It's running on a prerelease version of Go, but so far, it's been stable.
 
-There is no universal build, so the download script needs adjustment. To not hardcode this, I've been using a trick to detect the *real* architecture at runtime, since the script runs in Rosetta emulation mode and the usual ways would all report Intel.
+There is no universal build, so the download script needs adjustment. To not hardcode this, I've been using a trick to detect the _real_ architecture at runtime, since the script runs in Rosetta emulation mode and the usual ways would all report Intel.
 
 Here's the full block for Ruby. The interesting part is `sysctl -in sysctl.proc_translated`. It returns `0` if you run on arm, `1` if you run on Rosetta 2, and NOTHING if you run on an Intel Mac. Everything else is a dance to get the shell output back into Chef-flavored Ruby:
 
@@ -63,7 +63,7 @@ Here's the full block for Ruby. The interesting part is `sysctl -in sysctl.proc_
 action_class do
   def download_url
     #tricky way to load this Chef::Mixin::ShellOut utilities
-    Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)      
+    Chef::Resource::RubyBlock.send(:include, Chef::Mixin::ShellOut)
     command = 'sysctl -in sysctl.proc_translated'
     command_out = shell_out(command)
     architecture = command_out.stdout == "" ? 'amd64' : 'arm64'
@@ -86,7 +86,7 @@ There's [a promising fix in Xcode 12.3](https://twitter.com/steipete/status/1336
 
 ## Test Troubles
 
-Some features in our [iOS PDF SDK](https://pspdfkit.com/pdf-sdk/ios/) use `WKWebView`, e.g. [Reader View, which reflows PDFs so they're easier to read on mobile devices](https://pspdfkit.com/pdf-sdk/reader-view/#ios). These tests [crash with a memory allocator error on Big Sur](https://steipete.com/posts/apple-silicon-m1-a-developer-perspective/). 
+Some features in our [iOS PDF SDK](https://pspdfkit.com/pdf-sdk/ios/) use `WKWebView`, e.g. [Reader View, which reflows PDFs so they're easier to read on mobile devices](https://pspdfkit.com/pdf-sdk/reader-view/#ios). These tests [crash with a memory allocator error on Big Sur](https://steipete.com/posts/apple-silicon-m1-a-developer-perspective/).
 
 If you see [`bmalloc::HeapConstants::HeapConstants`](https://gist.github.com/steipete/7181cf321d979d734c5acd2326f6c33f) in a crash stack trace, that's likely this bug. While my radar has no reply yet, I've heard this is a bug in Big Sur and requires an OS update to be fixed, so this will potentially be resolved in 10.2 some time in Q1 2021.
 
@@ -121,9 +121,9 @@ We've been running six parallel instances of our tests (one per core) on Intel v
 
 ## Breaking Out of Rosetta
 
-Even though our Buildkite agent runs natively, I missed that Cinc installs an Intel version of Ruby (via `asdf`), and we use Ruby to script CI and parse test results. The Intel Ruby kicks off `xcodebuild`, which then also runs in emulation mode because we're already in an emulation context. 
+Even though our Buildkite agent runs natively, I missed that Cinc installs an Intel version of Ruby (via `asdf`), and we use Ruby to script CI and parse test results. The Intel Ruby kicks off `xcodebuild`, which then also runs in emulation mode because we're already in an emulation context.
 
-I've tried switching to ARM-based Ruby. The latest version, 2.7.2, does support compiling to ARM, but there are still many gems that use native dependencies that haven't been updated yet. Realistically, it'll take a while before we can switch to native Ruby there. 
+I've tried switching to ARM-based Ruby. The latest version, 2.7.2, does support compiling to ARM, but there are still many gems that use native dependencies that haven't been updated yet. Realistically, it'll take a while before we can switch to native Ruby there.
 
 Luckily, there's a way to break out: I've been prefixing the `xcodebuild` command with `arch -arm64e` to enforce the native context. This is currently hardcoded in a branch, and I'll use a similar trick to detect the native architecture as in the Ruby script above. Sadly, there's no `arch -native` command that would do this for us.
 

@@ -1,7 +1,7 @@
 ---
 title: "Fixing UISearchDisplayController On iOS 7"
-pubDate: 2013-10-04T19:00:00.000Z
-description: "Tackle the frustrating visual glitches in UISearchDisplayController on iOS 7 with this comprehensive guide to fixing the broken animation, incorrect frame positioning, and status bar issues. I provide a detailed analysis of the underlying problems and share a complete, battle-tested solution implemented in PSPDFKit. Learn how to properly handle view hierarchy manipulations, status bar management, and frame calculations to create a polished search experience despite Apple's buggy implementation in the iOS 7.0 release."
+pubDatetime: 2013-10-04T19:00:00.000Z
+description: "Fix the broken animation, frame positioning, and status bar issues in UISearchDisplayController on iOS 7 with this comprehensive solution."
 tags:
   - iOS-Development
   - UIKit

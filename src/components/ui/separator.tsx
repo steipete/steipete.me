@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 
 function Separator({
   className,
@@ -6,8 +6,8 @@ function Separator({
   decorative = true,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
-  orientation?: "horizontal" | "vertical"
-  decorative?: boolean
+  orientation?: "horizontal" | "vertical";
+  decorative?: boolean;
 }) {
   return (
     <div
@@ -19,7 +19,7 @@ function Separator({
       } ${className || ""}`}
       {...props}
     />
-  )
+  );
 }
 
-export { Separator }
+export { Separator };

@@ -1,27 +1,28 @@
 ---
+
 ---
 
 <script>
   function toggleTheme() {
-    const html = document.documentElement
-    const theme = html.classList.contains('dark') ? 'light' : 'dark'
-    html.classList.toggle('dark')
-    localStorage.setItem('theme', theme)
+    const html = document.documentElement;
+    const theme = html.classList.contains("dark") ? "light" : "dark";
+    html.classList.toggle("dark");
+    localStorage.setItem("theme", theme);
   }
 
   // Check localStorage first, then fallback to system preferences
-  const storedTheme = localStorage.getItem('theme')
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const theme = storedTheme || (prefersDark ? 'dark' : 'light')
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = storedTheme || (prefersDark ? "dark" : "light");
 
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark')
+  if (theme === "dark") {
+    document.documentElement.classList.add("dark");
   } else {
-    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.remove("dark");
   }
 
-  const button = document.getElementById('theme-toggle')
-  button?.addEventListener('click', toggleTheme)
+  const button = document.getElementById("theme-toggle");
+  button?.addEventListener("click", toggleTheme);
 </script>
 
 <button

@@ -7,64 +7,92 @@ interface SocialLink {
 }
 
 interface Site {
-  title: string;
-  description: string;
-  href: string;
+  website: string;
   author: string;
-  locale: string;
-  postsPerPage: number;
+  profile: string;
+  desc: string;
+  title: string;
+  ogImage: string;
+  lightAndDarkMode: boolean;
+  postPerIndex: number;
+  postPerPage: number;
+  scheduledPostMargin: number;
+  showArchives: boolean;
+  showBackButton: boolean;
+  editPost: {
+    enabled: boolean;
+    text: string;
+    url: string;
+  };
+  dynamicOgImage: boolean;
+  lang: string;
+  timezone: string;
 }
 
 // Site configuration
 export const SITE: Site = {
-  title: 'Peter Steinberger',
-  description: 'iOS developer, entrepreneur, founder of PSPDFKit (acquired), vibe coding my next project',
-  href: 'https://steipete.me',
-  author: 'Peter Steinberger',
-  locale: 'en-US',
-  postsPerPage: 10,
+  website: "https://steipete.me/",
+  author: "Peter Steinberger",
+  profile: "https://steipete.me/about",
+  desc: "Recovering Entrepreneur vibe coding on his next thing. Everything I build is open source.",
+  title: "Peter Steinberger",
+  ogImage: "peter-og.jpg",
+  lightAndDarkMode: true,
+  postPerIndex: 10,
+  postPerPage: 10,
+  scheduledPostMargin: 15 * 60 * 1000,
+  showArchives: false,
+  showBackButton: false,
+  editPost: {
+    enabled: false,
+    text: "Suggest Changes",
+    url: "https://github.com/steipete/steipete.me/edit/main/",
+  },
+  dynamicOgImage: true,
+  lang: "en",
+  timezone: "America/Los_Angeles",
 };
 
 export const SITE_TITLE = SITE.title;
-export const SITE_DESCRIPTION = SITE.description;
+export const SITE_DESCRIPTION = SITE.desc;
 
 // Navigation links
 export const NAV_LINKS: SocialLink[] = [
   {
-    href: '/',
-    label: 'Blog',
+    href: "/",
+    label: "Blog",
   },
   {
-    href: '/about',
-    label: 'About',
+    href: "/about",
+    label: "About",
   },
 ];
 
 // Social media links
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: 'https://github.com/steipete',
-    label: 'GitHub',
+    href: "https://github.com/steipete",
+    label: "GitHub",
   },
   {
-    href: 'https://twitter.com/steipete',
-    label: 'Twitter',
+    href: "https://twitter.com/steipete",
+    label: "Twitter",
   },
   {
-    href: 'https://bsky.app/profile/steipete.me',
-    label: 'BlueSky',
+    href: "https://bsky.app/profile/steipete.me",
+    label: "BlueSky",
   },
   {
-    href: '/rss.xml',
-    label: 'RSS',
+    href: "/rss.xml",
+    label: "RSS",
   },
 ];
 
 // Icon map for social media
 export const ICON_MAP: Record<string, string> = {
-  GitHub: 'github',
-  Twitter: 'twitter',
-  BlueSky: 'bsky',
-  RSS: 'rss',
-  Email: 'mail',
+  GitHub: "github",
+  Twitter: "twitter",
+  BlueSky: "bsky",
+  RSS: "rss",
+  Email: "mail",
 };

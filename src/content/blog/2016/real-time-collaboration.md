@@ -1,17 +1,12 @@
 ---
-title: 'Real-time collaboration, Apple, and you'
-pubDate: 2016-09-08T12:00:00.000Z
-description: >-
-  Yesterday at the [Apple
-  Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7
-  and Apple Watch Series 2, Apple announced somet...
+title: "Real-time collaboration, Apple, and you"
+pubDatetime: 2016-09-08T12:00:00.000Z
+description: "Analysis of Apple's real-time collaboration features announced in 2016 and their implications for developers."
 tags:
   - Products
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web.
 
@@ -63,7 +58,7 @@ Alternatively, check out our [PSPDFKit for Web Showcase](https://web-preview.psp
 
 The possibilities appear to be endless with PSPDF Instant. We currently have our first app, PDF Viewer, in beta, and we’re already brainstorming ways we can incorporate PSPDF Instant into future versions of the app. Want to be part of our PDF Viewer beta team? [Let us know](https://pdfviewer.io).
 
-*Update:* Apple's Real-Time iWork extensions are still in beta and it seems they will need some more work to iron out the issues. Let's hope [our extensive use of tests](/blog/2016/e2e-testing/) will make the experience better for PSPDF Instant.
+_Update:_ Apple's Real-Time iWork extensions are still in beta and it seems they will need some more work to iron out the issues. Let's hope [our extensive use of tests](/blog/2016/e2e-testing/) will make the experience better for PSPDF Instant.
 
 <blockquote class="twitter-tweet" data-lang="de"><p lang="en" dir="ltr">I take back what I said. Someday, Apple will get iWork collaboration right. For now, back to Google Docs. (Yes, I&#39;m sure &quot;it works for you&quot;) <a href="https://t.co/l3NeJ7CG8t">pic.twitter.com/l3NeJ7CG8t</a></p>&mdash; Federico Viticci (@viticci) <a href="https://twitter.com/viticci/status/777997187393421313">19. September 2016</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>

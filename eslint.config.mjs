@@ -1,19 +1,19 @@
-import js from '@eslint/js';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import typescriptParser from '@typescript-eslint/parser';
-import astroPlugin from 'eslint-plugin-astro';
-import astroParser from 'astro-eslint-parser';
-import globals from 'globals';
+import js from "@eslint/js";
+import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
+import astroPlugin from "eslint-plugin-astro";
+import astroParser from "astro-eslint-parser";
+import globals from "globals";
 
 export default [
   js.configs.recommended,
   {
-    files: ['src/**/*.{js,ts,tsx}'],
+    files: ["src/**/*.{js,ts,tsx}"],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: "latest",
+        sourceType: "module",
       },
       globals: {
         ...globals.browser,
@@ -21,24 +21,24 @@ export default [
       },
     },
     plugins: {
-      '@typescript-eslint': typescriptEslint,
+      "@typescript-eslint": typescriptEslint,
     },
     rules: {
       ...typescriptEslint.configs.recommended.rules,
     },
   },
   {
-    files: ['src/**/*.astro'],
+    files: ["src/**/*.astro"],
     languageOptions: {
       parser: astroParser,
       parserOptions: {
         parser: typescriptParser,
-        extraFileExtensions: ['.astro'],
+        extraFileExtensions: [".astro"],
       },
       globals: {
         ...globals.browser,
         ...globals.node,
-        Astro: 'readonly',
+        Astro: "readonly",
       },
     },
     plugins: {
@@ -49,6 +49,6 @@ export default [
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', '.astro/'],
+    ignores: ["dist/", "node_modules/", ".astro/"],
   },
 ];

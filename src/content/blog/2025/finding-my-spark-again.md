@@ -1,7 +1,7 @@
 ---
 title: Finding My Spark Again
-pubDate: 2025-01-06T10:00:00.000Z
-description: "After selling my shares of PSPDFKit and stepping away from the company I built for 13 years, I fell into the typical founder's void. This post reflects on my journey through emptiness and hedonic pursuits to rediscovering my purpose. I share how I realized that happiness isn't found by moving countries—it's created by building. Now, as AI transforms software development and the world, I'm filled with excitement and ready to build again. The spark is back."
+pubDatetime: 2025-06-01T10:00:00.000Z
+description: "Peter reflects on his post-exit journey from emptiness to rediscovering his passion for building, sparked by AI's transformative potential."
 tags:
   - Career
   - Entrepreneurship
@@ -11,7 +11,11 @@ tags:
 source: steipete.com
 ---
 
-When I sold my shares of PSPDFKit after building the company and making it my identity for over 13 years, I was very broken. I've been pouring 200% of my time, energy, and heart's blood into this company, and towards the end, I just felt that I needed a break. We've been very lucky to have found an amazing company with Insight, that acquired the majority.
+<blockquote class="twitter-tweet" data-width="550" data-theme="light" data-dnt="true"><p lang="en" dir="ltr">We are so back 🚀</p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/status/1925983535958999393?ref_src=twsrc%5Etfw">November 20, 2024</a></blockquote>
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+When I sold my shares of [PSPDFKit](https://www.nutrient.io/) after building the company and making it my identity for over 13 years, I was very broken. I've been pouring 200% of my time, energy, and heart's blood into this company, and towards the end, I just felt that I needed a break. We've been very lucky to have found an amazing company with Insight, that acquired the majority.
 
 ## The Emptiness After
 

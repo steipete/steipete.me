@@ -1,9 +1,7 @@
 ---
 title: Even Swiftier Objective-C
-pubDate: 2017-06-14T12:00:00.000Z
-description: >-
-  Another fascinating WWDC is behind us. This year we again witnessed a whole
-  host of newly presented features and refinements to the Swift language,...
+pubDatetime: 2017-06-14T12:00:00.000Z
+description: "Explores new Objective-C features and improvements introduced at WWDC 2017 that make the language more Swift-like."
 tags:
   - iOS
   - Development
@@ -11,9 +9,7 @@ source: pspdfkit.com
 AIDescription: true
 ---
 
-
-
-Another fascinating WWDC is behind us. This year we again witnessed a whole host of newly presented features and refinements to the Swift language, now already in its fourth installment. It's great to see how the language has progressed over the last couple years. Unfortunately, since binary compatibility has been delayed further (at least there's a [Manifesto](https://github.com/apple/swift/blob/master/docs/ABIStabilityManifesto.md) now), and module stability is still even further away, we are unable to use Swift in our binary PSPDFKit SDK. However, we do use it for our tests and in [PDF Viewer](https://pdfviewer.io).  
+Another fascinating WWDC is behind us. This year we again witnessed a whole host of newly presented features and refinements to the Swift language, now already in its fourth installment. It's great to see how the language has progressed over the last couple years. Unfortunately, since binary compatibility has been delayed further (at least there's a [Manifesto](https://github.com/apple/swift/blob/master/docs/ABIStabilityManifesto.md) now), and module stability is still even further away, we are unable to use Swift in our binary PSPDFKit SDK. However, we do use it for our tests and in [PDF Viewer](https://pdfviewer.io).
 
 If you write a new app in 2017, you should use Swift. Though there may still be cases where you need to work with Objective-C. Perhaps you are dealing with a legacy application, or you might have other reasons why Swift cannot be used. For example, if your app heavily inter-ops with C++ (like ours does). In that case, you might have been disappointed on the relatively little attention that the other main Apple programming language received recently. But fear not, PSPDFKit is coming to the rescue. Here are some of our favorite tips on how to improve Objective-C on your own.
 
@@ -36,11 +32,12 @@ In our original ["Swifty Objective-C"](/blog/2016/swifty-objective-c/) blog post
 #define var __auto_type
 #endif
 ```
+
 Those even work if you mix Objective-C and C++ code.
 
 ## foreach
 
-Both Swift and Objective-C have a `for..in` syntax. The benefit of Swift is that the loop variable type is inferred from the collection. This wasn't possible for a long time in Objective-C as the language didn't have generics. Now, we finally have lightweight generics in Objective-C however the underlying code hasn't been fully updated. `NSFastEnumeration` has a specialization called `NSEnumerator` that has been *generic-ified*, but collection classes don't inherit from that yet.
+Both Swift and Objective-C have a `for..in` syntax. The benefit of Swift is that the loop variable type is inferred from the collection. This wasn't possible for a long time in Objective-C as the language didn't have generics. Now, we finally have lightweight generics in Objective-C however the underlying code hasn't been fully updated. `NSFastEnumeration` has a specialization called `NSEnumerator` that has been _generic-ified_, but collection classes don't inherit from that yet.
 
 We tried to come up with a trick to infer the object type from any collection, but not all of them have helpers like `firstObject` that can be used to infer the item type. However, this is where categories are super useful and allow us to add this ourselves! Shout-out to [Martin Kiss](https://github.com/Tricertops/Typed) who works on the amazing [PaintCode](https://www.paintcodeapp.com) for coming up with the idea and sharing it with the world.
 
@@ -64,6 +61,7 @@ We tried to come up with a trick to infer the object type from any collection, b
 - (KeyType)pspdf_enumeratedType;
 @end
 ```
+
 This is just a snippet. [Get the full code listing from our gist.](https://gist.github.com/steipete/7e3c69b985165dc23c5ec169b857ff42)
 
 Note: This is pure syntactic sugar - this category doesn't emit any code, yet it enables us to rewrite our for loops like this:
@@ -130,6 +128,7 @@ However, we can just add that ourselves! Again, a header-only declaration that s
 
 @end
 ```
+
 This is just a snippet. [Get the full code listing from our gist.](https://gist.github.com/steipete/d6ba2d5a5cb939a2675ee20216fb45c8)
 
 With that, we can rewrite our previous code example:
@@ -165,7 +164,7 @@ CFRelease(image);
 return YES;
 ```
 
-Notice the leak? If creating the image fails, we leak imageSource as we exit early. Of course, that’s fixable when we special-handle the first exit condition, but that’s hard and easy to get wrong. A better solution: Use defer to declare what needs to happen when things go out of scope. This is conceptually similar to  C++ RAII, and a similar solution can be achieved with custom smart pointers in that case, however `defer` is much more flexible and useful for many issues.
+Notice the leak? If creating the image fails, we leak imageSource as we exit early. Of course, that’s fixable when we special-handle the first exit condition, but that’s hard and easy to get wrong. A better solution: Use defer to declare what needs to happen when things go out of scope. This is conceptually similar to C++ RAII, and a similar solution can be achieved with custom smart pointers in that case, however `defer` is much more flexible and useful for many issues.
 
 Better:
 

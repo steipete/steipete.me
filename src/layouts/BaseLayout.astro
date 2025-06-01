@@ -1,9 +1,9 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Sidebar from '../components/Sidebar.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import Analytics from '@vercel/analytics/astro';
+import BaseHead from "../components/BaseHead.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import Analytics from "@vercel/analytics/astro";
 
 const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 ---
@@ -24,13 +24,13 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 
     <script>
       // Mobile sidebar toggle
-      const sidebarToggle = document.createElement('button');
-      sidebarToggle.classList.add('sidebar-toggle');
+      const sidebarToggle = document.createElement("button");
+      sidebarToggle.classList.add("sidebar-toggle");
       sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
       document.body.appendChild(sidebarToggle);
 
-      sidebarToggle.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('show');
+      sidebarToggle.addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("show");
       });
     </script>
   </body>

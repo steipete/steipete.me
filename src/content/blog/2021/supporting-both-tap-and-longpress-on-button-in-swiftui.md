@@ -1,7 +1,7 @@
 ---
 title: Supporting Both Tap and Long Press on a Button in SwiftUI
-pubDate: 2021-01-27T16:30:00.000Z
-description: "This article explores the challenges of implementing both tap and long-press functionality on a SwiftUI button. After testing several SwiftUI-native approaches that fail, particularly on Mac Catalyst, I demonstrate a robust solution using UIKit integration. The post walks through four different implementation attempts, explaining why each succeeds or fails, and culminates in a reusable LongPressButton component that works consistently across iOS, iPadOS, and Mac Catalyst. This practical guide highlights the current limitations of SwiftUI gestures and shows how to effectively bridge UIKit functionality when needed."
+pubDatetime: 2021-01-27T16:30:00.000Z
+description: "Creating a SwiftUI button that supports both tap and long-press gestures by bridging to UIKit when SwiftUI's gesture system fails on Catalyst."
 heroImage: /assets/img/2021/tap-longpress-button-swiftui/header.gif
 tags:
   - iOS

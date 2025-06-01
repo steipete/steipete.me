@@ -1,35 +1,40 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
-
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import remarkToc from "remark-toc";
+import remarkCollapse from "remark-collapse";
+import { SITE } from "./src/config";
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://steipete.me',
-	markdown: {
-		shikiConfig: {
-			theme: 'github-light',
-			// Add support for both light and dark modes
-			themes: {
-				light: 'github-light',
-				dark: 'github-dark'
-			},
-		},
-	},
-	integrations: [
-		mdx(), 
-		sitemap(), 
-		react()
-	],
-	vite: {
-		resolve: {
-			alias: {
-				'@': '/src'
-			}
-		},
-		plugins: [tailwindcss()]
-	}
+  site: SITE.website,
+  markdown: {
+    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    shikiConfig: {
+      // For more themes, visit https://shiki.style/themes
+      themes: { light: "min-light", dark: "night-owl" },
+      wrap: true,
+    },
+  },
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => SITE.showArchives || !page.endsWith("/archives"),
+    }),
+    react(),
+  ],
+  vite: {
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
+    },
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"],
+    },
+  },
 });

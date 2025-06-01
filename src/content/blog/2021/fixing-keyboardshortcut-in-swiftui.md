@@ -1,7 +1,7 @@
 ---
 title: Fixing keyboardShortcut in SwiftUI
-pubDate: 2021-01-31T11:30:00.000Z
-description: "This article investigates and resolves a specific bug with iOS 14's keyboardShortcut functionality in SwiftUI. Through careful debugging and reverse engineering, I identify why keyboard shortcuts work in SwiftUI app lifecycle but fail when integrating SwiftUI into UIKit apps. The investigation traces the issue to a missing internal state change in UIHostingController and provides a simple workaround that triggers the correct behavior. The post includes detailed debugging steps using LLDB and Hopper, explaining the internals of SwiftUI's keyboard shortcut handling mechanism."
+pubDatetime: 2021-01-31T11:30:00.000Z
+description: "Debugging and fixing a SwiftUI keyboardShortcut bug that fails when mixing SwiftUI with UIKit through reverse engineering and LLDB analysis."
 heroImage: /assets/img/2021/fixing-keyboardshortcut-in-swiftui/header.png
 tags:
   - iOS
@@ -33,7 +33,7 @@ struct ContentView: View {
 }
 ```
 
-Simple enough. However, when I tried, it didn't work in production. After simplifying my setup and eventually writing my own example project, I eventually realized my code is correct and this just doesn't work. 
+Simple enough. However, when I tried, it didn't work in production. After simplifying my setup and eventually writing my own example project, I eventually realized my code is correct and this just doesn't work.
 
 But surely Apple tested this? Let's try a few combinations:
 
@@ -69,13 +69,13 @@ Printing description of host:
 (lldb) expression -l objc -O -- [0x7fc4f4408360 _ivarDescription]
 <_TtGC7SwiftUI19UIHostingControllerV15SwiftUIKeyboard11SwiftUIView_: 0x7fc4f4408360>:
 in _TtGC7SwiftUI19UIHostingControllerV15SwiftUIKeyboard11SwiftUIView_:
-	allowedBehaviors (): Value not representable, 
-	host (): Value not representable, 
-	customTabItem (): Value not representable, 
-	toolbarCoordinator (): Value not representable, 
-	swiftUIToolbar (): Value not representable, 
-	toolbarBridge (): Value not representable, 
-	keyboardShortcutBridge (): Value not representable, 
+	allowedBehaviors (): Value not representable,
+	host (): Value not representable,
+	customTabItem (): Value not representable,
+	toolbarCoordinator (): Value not representable,
+	swiftUIToolbar (): Value not representable,
+	toolbarBridge (): Value not representable,
+	keyboardShortcutBridge (): Value not representable,
 ```
 
 Good old `_ivarDescription` is still useful and shows Swift ivars as well; it can't show the real type, but it's good enough to confirm that there's indeed a `keyboardShortcutBridge`.
@@ -107,19 +107,19 @@ Great! Now let's look at the three matches:
 Current breakpoints:
 1: file = '/Users/steipete/Projects/TempProjects/SwiftUIKeyboard/SwiftUIKeyboard/ViewController.swift', line = 22, exact_match = 0, locations = 1, resolved = 1, hit count = 1
 
-  1.1: where = SwiftUIKeyboard`SwiftUIKeyboard.ViewController.viewDidAppear(Swift.Bool) -> () + 164 at ViewController.swift:22:20, address = 0x000000010115b444, resolved, hit count = 1 
+  1.1: where = SwiftUIKeyboard`SwiftUIKeyboard.ViewController.viewDidAppear(Swift.Bool) -> () + 164 at ViewController.swift:22:20, address = 0x000000010115b444, resolved, hit count = 1
 
 2: regex = 'keyboardShortcutBridge', locations = 3, resolved = 3, hit count = 0
-  2.1: where = SwiftUI`generic specialization <SwiftUI.ModifiedContent<SwiftUI.AnyView, SwiftUI.RootModifier>> of SwiftUI.UIHostingController.keyboardShortcutBridge.setter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a376b0, resolved, hit count = 0 
-  2.2: where = SwiftUI`SwiftUI.UIHostingController.keyboardShortcutBridge.getter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a59960, resolved, hit count = 0 
-  2.3: where = SwiftUI`SwiftUI.UIHostingController.keyboardShortcutBridge.setter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a59990, resolved, hit count = 0 
+  2.1: where = SwiftUI`generic specialization <SwiftUI.ModifiedContent<SwiftUI.AnyView, SwiftUI.RootModifier>> of SwiftUI.UIHostingController.keyboardShortcutBridge.setter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a376b0, resolved, hit count = 0
+  2.2: where = SwiftUI`SwiftUI.UIHostingController.keyboardShortcutBridge.getter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a59960, resolved, hit count = 0
+  2.3: where = SwiftUI`SwiftUI.UIHostingController.keyboardShortcutBridge.setter : Swift.Optional<SwiftUI.KeyboardShortcutBridge>, address = 0x00007fff57a59990, resolved, hit count = 0
 ```
 
 That's good enough. And sure enough — in the non-working case, the setter is never hit. Once we apply the workaround, the method is hit:
 
 ![Xcode backtrace for keyboardShortcutBridge](/assets/img/2021/fixing-keyboardshortcut-in-swiftui/keyboardShortcutBridge-setter.png)
 
-We see that the code responsible for calling the setter is in `didChangeAllowedBehaviors`. 
+We see that the code responsible for calling the setter is in `didChangeAllowedBehaviors`.
 
 Next, let's see if there are any other places that would call this setter. I like to use a full pseudo-code export of SwiftUI. You can create this via Hopper > File > Produce Pseudo-Code File For All Procedures…. This will take many hours and produce a file named `SwiftUI.m` that's more than 100&nbsp;MB in size. Once this is done, use a text editor that can open large files,[^2] and search for `SwiftUI.UIHostingController.keyboardShortcutBridge.setter`. The only two code paths are these:
 
@@ -127,24 +127,24 @@ Next, let's see if there are any other places that would call this setter. I lik
 
 - `int _$s7SwiftUI19UIHostingControllerC25didChangeAllowedBehaviors4from2toyAC0gH0Vyx_G_AItF(int arg0)`
 - `void _$s7SwiftUI19UIHostingControllerC25didChangeAllowedBehaviors4from2toyAC0gH0Vyx_G_AItFAA15ModifiedContentVyAA7AnyViewVAA12RootModifierVG_Tg5(int arg0)`
- 
-This is mangled Swift, but it's not hard to see what the unmangled function name is called — it's our `didChangeAllowedBehaviors(from:to")` with a lambda inside it, and not anywhere else. 
- 
+
+This is mangled Swift, but it's not hard to see what the unmangled function name is called — it's our `didChangeAllowedBehaviors(from:to")` with a lambda inside it, and not anywhere else.
+
 ## What Triggers didChangeAllowedBehaviors?
 
 What triggers an allowed behavior change? We can search for `SwiftUI.UIHostingController.allowedBehaviors.setter`, since `didChangeAllowedBehaviors` is triggered when the setter is invoked:
-  
- - `_$s7SwiftUI16AppSceneDelegateC9sceneItemAA0D4ListV0G0VyF()`
- - `_$s7SwiftUI16RootViewDelegateC07hostingD0_9didMoveToyAA010_UIHostingD0CyxG_So8UIWindowCSgtAA0D0RzlF(int arg0, int arg1)`
+
+- `_$s7SwiftUI16AppSceneDelegateC9sceneItemAA0D4ListV0G0VyF()`
+- `_$s7SwiftUI16RootViewDelegateC07hostingD0_9didMoveToyAA010_UIHostingD0CyxG_So8UIWindowCSgtAA0D0RzlF(int arg0, int arg1)`
 
 So there are two mechanisms that trigger this:
 
 - The SwiftUI-based app lifecycle
 - A root view delegate
 
-This lines up with our previous tests. SwiftUI app lifecycle works, and if we add `UIHostingController` as a root view controller, the `RootViewDelegate` also triggers the change. We can check via a fuzzy breakpoint if a `RootViewDelegate` is created in the non-working variant via `breakpoint set --func-regex RootViewDelegate`, and sure enough, there are 13 matches, but not one fires. 
+This lines up with our previous tests. SwiftUI app lifecycle works, and if we add `UIHostingController` as a root view controller, the `RootViewDelegate` also triggers the change. We can check via a fuzzy breakpoint if a `RootViewDelegate` is created in the non-working variant via `breakpoint set --func-regex RootViewDelegate`, and sure enough, there are 13 matches, but not one fires.
 
-When searching for `RootViewDelegate(` in the full-text `SwiftUI.m` file, there's only one match, in `s7SwiftUI14_UIHostingViewC15didMoveToWindowyyF`. This further confirms our theory. It seems Apple simply forgot a code path to create the keyboard shortcut bridge for the most likely use case of using SwiftUI in existing UIKit apps, which is where it makes most sense. 
+When searching for `RootViewDelegate(` in the full-text `SwiftUI.m` file, there's only one match, in `s7SwiftUI14_UIHostingViewC15didMoveToWindowyyF`. This further confirms our theory. It seems Apple simply forgot a code path to create the keyboard shortcut bridge for the most likely use case of using SwiftUI in existing UIKit apps, which is where it makes most sense.
 
 ## Tweaking the Workaround
 
@@ -167,7 +167,7 @@ extension UIHostingController {
         #endif
     }
 }
-``` 
+```
 
 Because the window itself is shown and deallocated within the same run loop, it'll never be visible. This workaround is safe and only uses public APIs. I reported this issue to Apple via FB8984997. [You can read the full bug report and sample project here](https://github.com/PSPDFKit-labs/radar.apple.com/commit/8768d5c9fecd602625cc10b7a7c98f2bbc0cda4a).
 

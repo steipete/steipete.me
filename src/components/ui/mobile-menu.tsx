@@ -1,20 +1,20 @@
-import { NAV_LINKS } from "../../consts"
-import { useEffect, useState } from "react"
+import { NAV_LINKS } from "../../consts";
+import { useEffect, useState } from "react";
 
 export default function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const html = document.documentElement
+    const html = document.documentElement;
     if (isOpen) {
-      html.classList.add("overflow-hidden")
+      html.classList.add("overflow-hidden");
     } else {
-      html.classList.remove("overflow-hidden")
+      html.classList.remove("overflow-hidden");
     }
     return () => {
-      html.classList.remove("overflow-hidden")
-    }
-  }, [isOpen])
+      html.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -73,5 +73,5 @@ export default function MobileMenu() {
         </div>
       )}
     </>
-  )
+  );
 }

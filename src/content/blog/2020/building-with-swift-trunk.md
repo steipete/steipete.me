@@ -1,8 +1,7 @@
 ---
 title: Building with Swift Trunk Development Snapshots
-pubDate: 2020-06-12T15:00:00.000Z
-description: >-
-  Dive into my adventure of building PSPDFKit with the Swift trunk development snapshot. I document the various compilation errors, linker issues, and debugging challenges I encountered, sharing solutions for each roadblock. Whether you're preparing for a new Xcode release or just curious about bleeding-edge Swift, this troubleshooting guide will help you navigate the sometimes bumpy road of working with Swift's development branch.
+pubDatetime: 2020-06-12T15:00:00.000Z
+description: "A troubleshooting guide for building with Swift trunk development snapshots, documenting compilation errors, linker issues, and their solutions."
 heroImage: /assets/img/2020/swift-trunk/swift-trunk.png
 tags:
   - Swift
@@ -40,7 +39,7 @@ Then you might run into a variant of [SR-12001](https://bugs.swift.org/browse/SR
 sudo cp `xcode-select -p`/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a /Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2020-06-09-a.xctoolchain/usr/lib/clang/10.0.0/lib/darwin
 ```
 
-## Undefined Symbol: _isOSVersionAtLeast
+## Undefined Symbol: \_isOSVersionAtLeast
 
 ![](/assets/img/2020/swift-trunk/isOSVersion.png)
 

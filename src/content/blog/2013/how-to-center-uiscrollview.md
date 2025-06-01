@@ -1,7 +1,7 @@
 ---
 title: "How To Center Content Within UIScrollView"
-pubDate: 2013-02-21T12:07:00.000Z
-description: "Master the art of properly centering content in UIScrollView with this deep dive into implementation approaches. After exploring various methods like subclassing layoutSubviews and overriding setContentOffset, I reveal why using contentInset is the superior solution. Through real-world examples from developing PSPDFKit, I demonstrate how each approach affects zooming behavior, gesture recognition, and other scrollview interactions, helping you avoid subtle bugs that even Apple's documentation doesn't address."
+pubDatetime: 2013-02-21T12:07:00.000Z
+description: "Learn the best approach to center content in UIScrollView using contentInset instead of layoutSubviews or setContentOffset for better zooming behavior."
 tags:
   - iOS-Development
   - UIKit
@@ -23,7 +23,7 @@ I've asked around on Twitter (thanks, everyone!) and most recommendations were a
 
 The solution that works best by far is by [setting contentInset](https://github.com/steipete/PSTCenteredScrollView/blob/master/PSTCenteredScrollView/PSTContentInsetCenteredScrollView.m#L13). It allows you to pan around the view when zoomed out and doesn't expose the "lock" bug that overriding setContentOffset: had. It also works fine with using zoomToRect. There are a few gotchas when using edgeInsets as well -- for example, I have a mechanism that [preserves the current view state](http://pspdfkit.com/documentation/Classes/PSPDFViewState.html) (page, zoom, contentOffset) and restores that later on. If you set contentOffset to 0,0 this will decenter your image (in contrast to methods one and two). But you can trigger re-centering with following trick:
 
-``` objective-c
+```objective-c
             // Trigger a new centering (center will change the content offset)
             scrollView.contentInset = UIEdgeInsetsZero;
             [scrollView ensureContentIsCentered];

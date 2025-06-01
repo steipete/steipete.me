@@ -1,115 +1,192 @@
 ---
-import type { CollectionEntry } from 'astro:content'
-import FormattedDate from '../components/FormattedDate.astro'
-import Layout from './Layout.astro'
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+import Layout from "./Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE } from "@/config";
 
-type Props = CollectionEntry<'blog'>['data'] & {
-  slug: string
-}
+type Props = CollectionEntry<"blog">["data"] & {
+  slug: string;
+};
 
-const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props
+const { title, description, pubDatetime, modDatetime, heroImage, slug } =
+  Astro.props;
 
 // Enforce canonical URL to always be /posts/ path
 const canonicalPath = `/posts/${slug}/`;
 const canonicalURL = new URL(canonicalPath, Astro.site);
 ---
 
-<Layout title={title} description={description} canonicalURL={canonicalURL}>
-  <article class="prose max-w-none">
-    <div class="not-prose mb-8">
-      <h1 class="text-4xl font-bold tracking-tight mb-2">
-        {title}
-      </h1>
+<Layout
+  title={title}
+  description={description}
+  canonicalURL={canonicalURL}
+  scrollSmooth={true}
+>
+  <Header />
 
-      <div class="flex items-center gap-x-2 text-sm text-gray-600 dark:text-gray-300">
-        <FormattedDate date={pubDate} />
-        {
-          updatedDate && (
-            <>
-              <span>•</span>
-              <span>
-                Updated on <FormattedDate date={updatedDate} />
-              </span>
-            </>
-          )
-        }
+  <!-- Back Button -->
+  {
+    SITE.showBackButton && (
+      <div class="mx-auto flex w-full max-w-3xl items-center justify-start px-2">
+        <a
+          id="back-button"
+          href="/"
+          class="group inline-block hover:text-accent focus-outline mt-8 mb-2 flex hover:text-foreground/75"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="inline-block size-6"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 6l-6 6l6 6" />
+          </svg>
+          <span>Go back</span>
+        </a>
+      </div>
+    )
+  }
+
+  <!-- Main Content -->
+  <main
+    id="main-content"
+    class="mx-auto w-full max-w-3xl px-4 pb-12 mt-8"
+    data-pagefind-body
+  >
+    <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
+      {title}
+    </h1>
+
+    <div class="flex items-center gap-4">
+      <div class="flex items-end space-x-2 opacity-80 my-2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="inline-block size-6 min-w-[1.375rem]"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path
+            d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"
+          ></path>
+          <path d="M16 3v4"></path>
+          <path d="M8 3v4"></path>
+          <path d="M4 11h16"></path>
+          <path d="M7 14h.013"></path>
+          <path d="M10.01 14h.005"></path>
+          <path d="M13.01 14h.005"></path>
+          <path d="M16.015 14h.005"></path>
+          <path d="M13.015 17h.005"></path>
+          <path d="M7.01 17h.005"></path>
+          <path d="M10.01 17h.005"></path>
+        </svg>
+        <span class="sr-only">Published:</span>
+        <span class="text-sm italic sm:text-base">
+          <FormattedDate date={pubDatetime} />
+          {
+            modDatetime && (
+              <>
+                <span aria-hidden="true"> | </span>
+                <span class="sr-only">&nbsp;Updated:&nbsp;</span>
+                <span class="text-nowrap">
+                  Updated <FormattedDate date={modDatetime} />
+                </span>
+              </>
+            )
+          }
+        </span>
       </div>
     </div>
 
-    {
-      heroImage && (
-        <img
-          src={heroImage}
-          alt=""
-          class="mb-8 aspect-video w-full rounded-md object-cover"
-        />
-      )
+    <article id="article" class="mx-auto prose mt-8 max-w-3xl">
+      {
+        heroImage && (
+          <img
+            src={heroImage}
+            alt=""
+            class="mb-8 aspect-video w-full rounded-md object-cover"
+          />
+        )
+      }
+
+      <slot />
+    </article>
+  </main>
+
+  <Footer />
+
+<script>
+  function processEmbeds() {
+    const article = document.querySelector("#article");
+    if (!article) return;
+
+    // Look for Twitter embeds in the entire article content
+    const twitterEmbedRegex = /\{% twitter (https:\/\/[^\s]+) %\}/g;
+    // Look for YouTube embeds
+    const youtubeEmbedRegex =
+      /\{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %\}/g;
+
+    let foundTwitterEmbeds = false;
+    let foundYoutubeEmbeds = false;
+
+    // Process all text content in the article
+    const walker = document.createTreeWalker(
+      article,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false,
+    );
+
+    const textNodes = [];
+    let node;
+    while ((node = walker.nextNode())) {
+      textNodes.push(node);
     }
 
-    <div class="mdx-content">
-      <slot />
-    </div>
-  </article>
+    textNodes.forEach((textNode) => {
+      let content = textNode.textContent;
+      let hasChanges = false;
 
-  <script>
-    // Find all Twitter and YouTube embed placeholders and replace them with the actual components
-    document.addEventListener('DOMContentLoaded', () => {
-      const mdxContent = document.querySelector('.mdx-content');
-      if (!mdxContent) return;
-
-      // Look for paragraphs with Twitter embeds
-      const twitterEmbedRegex = /{% twitter (https:\/\/[^\s]+) %}/;
-      // Look for paragraphs with YouTube embeds
-      const youtubeEmbedRegex = /{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %}/;
-
-      // Find all paragraphs that might contain embeds
-      const paragraphs = mdxContent.querySelectorAll('p');
-
-      let foundTwitterEmbeds = false;
-      let foundYoutubeEmbeds = false;
-
-      paragraphs.forEach(paragraph => {
-        const content = paragraph.innerHTML;
-        const twitterMatch = content.match(twitterEmbedRegex);
-        const youtubeMatch = content.match(youtubeEmbedRegex);
-
-        if (twitterMatch && twitterMatch[1]) {
-          foundTwitterEmbeds = true;
-          const tweetUrl = twitterMatch[1];
-
-          // Create a placeholder for the tweet
-          const placeholder = document.createElement('div');
-          placeholder.className = 'twitter-tweet-placeholder';
-          placeholder.dataset.tweetUrl = tweetUrl;
-          placeholder.innerHTML = `
+      // Process Twitter embeds
+      content = content.replace(twitterEmbedRegex, (match, url) => {
+        foundTwitterEmbeds = true;
+        hasChanges = true;
+        return `<div class="twitter-tweet-placeholder" data-tweet-url="${url}">
             <blockquote class="twitter-tweet">
-              <a href="${tweetUrl}">Loading tweet...</a>
+              <a href="${url}">Loading tweet...</a>
             </blockquote>
-          `;
+          </div>`;
+      });
 
-          // Replace the paragraph with our placeholder
-          paragraph.replaceWith(placeholder);
+      // Process YouTube embeds
+      content = content.replace(youtubeEmbedRegex, (match, videoId) => {
+        foundYoutubeEmbeds = true;
+        hasChanges = true;
+
+        // Extract video ID from URL if needed
+        if (videoId.includes("youtube.com/watch")) {
+          const url = new URL(videoId);
+          videoId = url.searchParams.get("v") || "";
+        } else if (videoId.includes("youtu.be/")) {
+          videoId = videoId.split("youtu.be/")[1]?.split("?")[0] || "";
+        } else if (videoId.includes("youtube.com/embed/")) {
+          videoId = videoId.split("youtube.com/embed/")[1]?.split("?")[0] || "";
         }
-        else if (youtubeMatch && youtubeMatch[1]) {
-          foundYoutubeEmbeds = true;
-          let videoId = youtubeMatch[1];
 
-          // Extract video ID from URL if needed
-          if (videoId.includes('youtube.com/watch')) {
-            const url = new URL(videoId);
-            videoId = url.searchParams.get('v') || '';
-          }
-          else if (videoId.includes('youtu.be/')) {
-            videoId = videoId.split('youtu.be/')[1]?.split('?')[0] || '';
-          }
-          else if (videoId.includes('youtube.com/embed/')) {
-            videoId = videoId.split('youtube.com/embed/')[1]?.split('?')[0] || '';
-          }
-
-          // Create responsive container for the YouTube iframe
-          const container = document.createElement('div');
-          container.className = 'youtube-embed-container';
-          container.innerHTML = `
+        return `<div class="youtube-embed-container">
             <iframe
               width="560"
               height="315"
@@ -119,46 +196,60 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
-          `;
-
-          // Replace the paragraph with our container
-          paragraph.replaceWith(container);
-        }
+          </div>`;
       });
 
-      // Only load the Twitter widgets script if we found Twitter embeds
-      if (foundTwitterEmbeds) {
-        const script = document.createElement('script');
-        script.src = 'https://platform.twitter.com/widgets.js';
-        script.async = true;
-        document.head.appendChild(script);
+      if (hasChanges) {
+        // Replace the text node with HTML content
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = content;
+
+        // Replace the text node with the new HTML elements
+        const parent = textNode.parentNode;
+        while (tempDiv.firstChild) {
+          parent.insertBefore(tempDiv.firstChild, textNode);
+        }
+        parent.removeChild(textNode);
       }
     });
-  </script>
 
-  <style>
-    .twitter-tweet-placeholder {
-      margin: 1.5rem 0;
-      display: flex;
-      justify-content: center;
+    // Load Twitter widgets script if we found Twitter embeds
+    if (foundTwitterEmbeds) {
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.async = true;
+      document.head.appendChild(script);
     }
+  }
 
-    .youtube-embed-container {
-      margin: 2rem 0;
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      overflow: hidden;
-    }
+  // Run the embed processing
+  document.addEventListener("DOMContentLoaded", processEmbeds);
+  document.addEventListener("astro:page-load", processEmbeds);
+</script>
 
-    .youtube-embed-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  </style>
+<style>
+  .twitter-tweet-placeholder {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .youtube-embed-container {
+    margin: 2rem 0;
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+  }
+
+  .youtube-embed-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
 </Layout>

@@ -1,7 +1,7 @@
 ---
-title: 'Gardening Your Twitter: Curating Your Timeline'
-pubDate: 2020-10-21T14:00:00.000Z
-description: "Transform your Twitter experience by thoughtfully curating your timeline. I share practical strategies for managing who you follow, how to use Twitter's powerful muting features for both accounts and keywords, and when to consider blocking. Learn why I recommend avoiding hashtags, how to disable retweets selectively, and the advantages of using Twitter's official client over third-party apps. This guide provides actionable advice for creating a Twitter feed that's informative and enjoyable rather than overwhelming, helping you focus on content that matters to you while filtering out noise and negativity."
+title: "Gardening Your Twitter: Curating Your Timeline"
+pubDatetime: 2020-10-21T14:00:00.000Z
+description: "Practical strategies for curating your Twitter timeline through strategic following, muting, and filtering to create an informative and enjoyable social media experience."
 heroImage: /assets/img/2020/make-twitter-work/gardening-curating.jpg
 tags:
   - Social Media
@@ -13,13 +13,13 @@ source: steipete.com
 AIDescription: true
 ---
 
-Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter. 
+Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter.
 
 If you haven’t read part one yet, where I explain [how you can grow your followers](/posts/growing-your-twitter-followers).
 
 ## Who to Follow
 
-The beauty of Twitter is that it’s a unique experience for everyone — you can pick topics that interest you by choosing whom to follow. 
+The beauty of Twitter is that it’s a unique experience for everyone — you can pick topics that interest you by choosing whom to follow.
 
 Be picky whose comments you want to read and whose thoughts you want to consume daily. I try to avoid folks who are too negative or who try to impress with “inspirational quotes,” as well as people whose signal/noise ratio is too high.
 
@@ -35,7 +35,7 @@ Additionally, don’t worry about missing out — Twitter is a stream and it isn
 
 ## Mute Early, Mute Often
 
-Muting accounts is *beautiful* — people can still see your content, but you no longer see their replies. In the early days, it took a lot to make me mute someone, but now I approach this feature differently.
+Muting accounts is _beautiful_ — people can still see your content, but you no longer see their replies. In the early days, it took a lot to make me mute someone, but now I approach this feature differently.
 
 I mute pretty much any account I don’t find interesting. This includes basically all brands and almost all accounts that post ads or anything related to sport events. **There is no limit to how many accounts you can mute.**
 
@@ -58,7 +58,7 @@ You can **mute up to 200 keywords** or even partial sentences; it doesn’t need
 
 ## Blocking
 
-Blocking always feels weird. It’s something I rarely do. It’s more a *childish* act, since you can’t hide content that’s public — you’re just making it less convenient for the person to read your tweets.
+Blocking always feels weird. It’s something I rarely do. It’s more a _childish_ act, since you can’t hide content that’s public — you’re just making it less convenient for the person to read your tweets.
 
 There have been cases where someone replies to a RT of mine with mean comments, and since that shows me as connection to hateful or insulting comments, I quickly block those people. If it’s just a challenging reply, I usually don’t block — it’s fun to be challenged! (And there’s always mute if you stop enjoying it.)
 
@@ -83,6 +83,7 @@ Don’t be a noob: Don’t use hashtags. Exception are for fun hashtags or confe
 I used Tweetbot for quite a while but eventually settled on using Twitter for iOS and Mac. Twitter started with the concept of an open API, but it eventually added more and more features that haven’t been added to the API, so while third-party apps really try, they can’t replicate the Twitter experience you get with the native client.
 
 **Examples:**
+
 - The Activity screen contains data that isn’t accessible via the Twitter API, so you can’t really see which tweets resonate with your audience and which don’t.
 - Twitter Polls are not visible in third-party clients.
 - Threads can be somewhat reconstructed via searches, but that’s a slower process and it fails if the client runs out of API quota or the thread is too large.

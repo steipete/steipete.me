@@ -1,7 +1,7 @@
 ---
 title: Jailbreaking for iOS Developers
-pubDate: 2020-05-25T22:00:00.000Z
-description: "Discover the valuable world of iOS jailbreaking from a developer's perspective. I explore the wide range of capabilities unlocked by jailbreaking, from security research and debugging tools like FLEX to enhancing accessibility and examining how apps work internally. This guide covers the legality of jailbreaking, current jailbreak options like checkra1n and unc0ver, and practical applications beyond just pirating apps. Learn how to use tools like SSL Kill Switch to inspect network traffic, examine view hierarchies of third-party apps, and access powerful development capabilities that make jailbreaking a uniquely valuable tool for iOS developers."
+pubDatetime: 2020-05-25T22:00:00.000Z
+description: "A comprehensive guide to iOS jailbreaking for developers, covering legal security research tools, debugging capabilities, and practical applications beyond app piracy."
 heroImage: /assets/img/2020/jailbreaking/header.jpg
 tags:
   - iOS-Development
@@ -29,7 +29,7 @@ Update May 30: [The details of the 13.5 unc0ver exploit are now online](https://
 
 ## Definition & Legality
 
->iOS jailbreaking is a privilege escalation to remove software restrictions imposed by Apple on iOS, tvOS, and watchOS. This is done through a series of kernel patches. This jailbreaking allows root access to iOS, allowing the downloading and installing of additional applications and extensions which are unavailable through the official Apple App Store ([source](https://www.techacrobat.com/ios-12-4-unc0ver-jailbreak/)).
+> iOS jailbreaking is a privilege escalation to remove software restrictions imposed by Apple on iOS, tvOS, and watchOS. This is done through a series of kernel patches. This jailbreaking allows root access to iOS, allowing the downloading and installing of additional applications and extensions which are unavailable through the official Apple App Store ([source](https://www.techacrobat.com/ios-12-4-unc0ver-jailbreak/)).
 
 You might be wondering: [Is this legal](https://en.wikipedia.org/wiki/IOS_jailbreaking#Legality)? This depends on your country, but jailbreaking is legal in Austria, Germany, Canada, India, New Zealand, the United Kingdom, and the United States. With the exception of the latest iOS 13.5 jailbreak, all major jailbreaks since 10 have been based on publicly available exploits, which were [reported to Apple before](https://twitter.com/helthydriver/status/1265030817618767875?s=21).
 
@@ -92,7 +92,7 @@ If you're looking for a modern replacement for Cydia, there are quite a few alte
 
 A [SHSH blob](https://en.wikipedia.org/wiki/SHSH_blob) is a small piece of data that is part of Apple's digital signature protocol for iOS restores and updates.
 
-As of the time of writing this post, Apple signs iOS 13.4.1 and iOS 13.5, and you can expect 13.4.1 will be removed in a few days. With saving this blob, you can downgrade at any time without being dependent on Apple. 
+As of the time of writing this post, Apple signs iOS 13.4.1 and iOS 13.5, and you can expect 13.4.1 will be removed in a few days. With saving this blob, you can downgrade at any time without being dependent on Apple.
 
 ![](/assets/img/2020/jailbreaking/blobsaver.png)
 
@@ -135,7 +135,7 @@ Of course, you can also [inspect apps written in SwiftUI](/assets/img/2020/jailb
 - [Snapper 2](https://repo.packix.com/package/com.jontelang.snapper2.packix/) — crop screenshots before taking them
 - [Frida](https://frida.re/docs/ios/) — a dynamic instrumentation / code injection toolkit
 - [FrontCamUnmirror](http://cydia.saurik.com/package/com.sticktron.fcum/) — self explanatory
-- [CopyLog](https://repo.packix.com/package/me.tomt000.copylog/) — a powerful clipboard history manager 
+- [CopyLog](https://repo.packix.com/package/me.tomt000.copylog/) — a powerful clipboard history manager
 - [HomePlus](https://kubadownload.com/news/homeplus-tweak/) — a homescreen layout manager
 - [FiveIconDock13](https://www.reddit.com/r/jailbreak/comments/e3d3pc/release_fiveicondock13_five_icons_on_your_dock/) — self explanatory
 - [Springtomize 5](https://repo.packix.com/package/com.springtomize.st5/) — tweak the homescreen

@@ -1,23 +1,23 @@
 ---
-import { SITE } from '../consts'
+import { SITE } from "../consts";
 
 interface Props {
-  title?: string
-  description?: string
-  image?: string
-  type?: string
-  canonicalURL?: URL
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  canonicalURL?: URL;
 }
 
 const {
   title = SITE.title,
-  description = SITE.description,
-  image = '/images/og.png',
-  type = 'website',
+  description = SITE.desc,
+  image = "/images/og.png",
+  type = "website",
   canonicalURL = new URL(Astro.url.pathname, Astro.site),
-} = Astro.props
+} = Astro.props;
 
-const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
+const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`;
 ---
 
 <!-- Global Metadata -->
@@ -28,9 +28,6 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="manifest" href="/site.webmanifest" />
 
 <!-- Primary Meta Tags -->
@@ -39,8 +36,16 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
 <meta name="description" content={description} />
 
 <!-- Theme Color -->
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#1a1a1a"
+  media="(prefers-color-scheme: dark)"
+/>
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
@@ -75,25 +80,27 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`
 <!-- Dark Mode Detection -->
 <script is:inline>
   // Check localStorage first, then fallback to system preferences
-  const storedTheme = localStorage.getItem('theme')
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  const theme = storedTheme || (prefersDark ? 'dark' : 'light')
+  const storedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = storedTheme || (prefersDark ? "dark" : "light");
 
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark')
+  if (theme === "dark") {
+    document.documentElement.classList.add("dark");
   } else {
-    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.remove("dark");
   }
 
   // Listen for changes in system preference (only if no user preference is set)
   if (!storedTheme) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (e.matches) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
-    })
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (e.matches) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      });
   }
 </script>
 

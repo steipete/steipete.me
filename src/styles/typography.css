@@ -1,114 +1,56 @@
-@import "tailwindcss";
+@plugin '@tailwindcss/typography';
 
-@layer components {
+@layer base {
   .prose {
-    @apply text-base leading-7;
+    @apply prose-headings:!mb-3 prose-headings:!text-foreground prose-h3:italic prose-p:!text-foreground prose-a:!text-foreground prose-a:!decoration-dashed prose-a:underline-offset-8 hover:prose-a:text-accent prose-blockquote:!border-l-accent/50 prose-blockquote:opacity-80 prose-figcaption:!text-foreground prose-figcaption:opacity-70 prose-strong:!text-foreground prose-code:rounded prose-code:bg-muted/75 prose-code:p-1 prose-code:!text-foreground prose-code:before:!content-none prose-code:after:!content-none prose-ol:!text-foreground prose-ul:overflow-x-clip prose-ul:!text-foreground prose-li:marker:!text-accent prose-table:text-foreground prose-th:border prose-th:border-border prose-td:border prose-td:border-border prose-img:mx-auto prose-img:!my-2 prose-img:border-2 prose-img:border-border prose-hr:!border-border;
+  }
+  .prose a {
+    @apply break-words hover:!text-accent;
+  }
+  .prose thead th:first-child,
+  tbody td:first-child,
+  tfoot td:first-child {
+    padding-inline-start: 0.5714286em !important;
+  }
+  .prose h2#table-of-contents {
+    @apply mb-2;
+  }
+  .prose details {
+    @apply inline-block cursor-pointer text-foreground select-none;
+  }
+  .prose summary {
+    @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+  }
+  .prose h2#table-of-contents + p {
+    @apply hidden;
+  }
 
-    p {
-      @apply text-gray-700 dark:text-gray-300 my-5;
-    }
+  /* ===== Code Blocks & Syntax Highlighting ===== */
+  pre:has(code) {
+    @apply border border-border;
+  }
 
-    h1 {
-      @apply mt-0 mb-6 scroll-m-20 text-4xl leading-tight font-medium text-gray-900 dark:text-gray-100;
-    }
+  .prose code,
+  .prose blockquote {
+    @apply break-words;
+  }
 
-    h2 {
-      @apply mt-8 mb-4 scroll-m-20 text-2xl leading-tight font-medium text-gray-800 dark:text-gray-200;
-    }
+  .prose table code {
+    /* add line breaks whenever necessary for codes under table */
+    @apply break-all sm:break-normal;
+  }
 
-    h3 {
-      @apply mt-6 mb-4 scroll-m-20 text-xl leading-tight font-medium text-gray-900 dark:text-gray-100;
-    }
+  pre > code {
+    white-space: pre;
+  }
 
-    h4 {
-      @apply mt-6 mb-3 scroll-m-20 text-lg leading-tight font-medium text-gray-900 dark:text-gray-100;
-    }
-
-    h5 {
-      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium text-gray-900 dark:text-gray-100;
-    }
-
-    h6 {
-      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium text-gray-900 dark:text-gray-100;
-    }
-
-    a {
-      @apply font-medium break-words underline underline-offset-4 transition-colors text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300;
-    }
-
-    strong {
-      @apply font-medium text-gray-900 dark:text-gray-100;
-    }
-
-    ul {
-      @apply my-5 ml-6 list-disc [&>li]:mt-2 text-gray-700 dark:text-gray-300;
-    }
-
-    ol {
-      @apply my-5 ml-6 list-decimal [&>li]:mt-2 text-gray-700 dark:text-gray-300;
-    }
-
-    li {
-      @apply pl-2 [&>p]:my-0 text-gray-700 dark:text-gray-300;
-    }
-
-    ul ul,
-    ol ol,
-    ul ol,
-    ol ul {
-      @apply my-2 ml-6;
-    }
-
-    code {
-      @apply bg-gray-100 dark:bg-gray-800 relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words text-gray-900 dark:text-gray-50;
-    }
-    
-    pre {
-      @apply !bg-gray-50 dark:!bg-gray-950 !border !border-gray-200 dark:!border-gray-700 !rounded-md !p-4 !my-4 !overflow-x-auto;
-    }
-    
-    pre code {
-      @apply !bg-transparent !p-0 !text-gray-800 dark:!text-gray-50 !block;
-    }
-
-    blockquote {
-      @apply text-gray-600 dark:text-gray-300 my-6 border-l-2 border-gray-300 dark:border-gray-600 pl-6;
-    }
-
-    hr {
-      @apply border-gray-200 dark:border-gray-700 my-8 border-t;
-    }
-
-    table {
-      @apply my-6 block w-full overflow-x-auto text-sm;
-    }
-
-    thead {
-      @apply border-gray-300 dark:border-gray-700 border-b;
-    }
-
-    th {
-      @apply px-4 py-2 font-medium text-gray-900 dark:text-white;
-      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
-    }
-
-    tr {
-      @apply border-gray-200 dark:border-gray-800 border-y first:border-t-0 last:border-b-0;
-    }
-
-    td {
-      @apply text-gray-700 dark:text-gray-300 px-4 py-2 align-top break-words;
-      @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
-    }
-
-    img,
-    video,
-    figure {
-      @apply my-6;
-    }
-
-    kbd {
-      @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-md border px-2 py-1 text-xs font-medium text-gray-900 dark:text-gray-50;
-    }
+  /* Apply Dark Theme (if multi-theme specified) */
+  html[data-theme="dark"] pre:has(code),
+  html[data-theme="dark"] pre:has(code) span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }

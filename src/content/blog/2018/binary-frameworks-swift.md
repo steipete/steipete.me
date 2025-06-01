@@ -1,17 +1,13 @@
 ---
 title: Binary Frameworks in Swift
-pubDate: 2018-01-29T12:00:00.000Z
-description: >-
-  Apple introduced Swift in 2014, and it quickly replaced the 34-year-old
-  Objective-C. Swift is a modern, [open source](https://developer.apple.com/s...
+pubDatetime: 2018-01-29T12:00:00.000Z
+description: "Explores Swift's ABI stability and the challenges of shipping binary frameworks before Swift 5."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Apple introduced Swift in 2014, and it quickly replaced the 34-year-old Objective-C. Swift is a modern, [open source](https://developer.apple.com/swift/blog/?id=34) language that pushes safe programming patterns and adds modern features to make programming easier, more flexible, and more fun.
 
@@ -27,16 +23,16 @@ ABI stands for **Application Binary Interface**. Much like the more commonly kno
 
 ABI consists of many parts:
 
-* Data Layout
-* Type Metadata
-* Mangling
-* Calling Convention
-* Runtime
-* Standard Library
+- Data Layout
+- Type Metadata
+- Mangling
+- Calling Convention
+- Runtime
+- Standard Library
 
 Swift is now four years old and about to release version 4.1, yet it does not offer binary compatibility. For the longest time, it did not offer source compatibility either, meaning source code had to be adjusted for every version update. This, however, changed with Swift 4. [Apple now offers compatibility modes](https://swift.org/source-compatibility/) to compile previous versions of Swift, and even maintains an open source [Swift Source Compatibility Suite](https://github.com/apple/swift-source-compat-suite). With some effort, anyone can propose their open source projects to be included and tested. Now Swift source compatibility isn’t everything — changes in how Swift headers, especially nullability between macOS and iOS SDKs, are mapped, still require adjustments. However, it’s much less work than in the past.
 
->Array used to be 24 bytes, and is now 8 bytes (data that used to be stored inline moved into the heap buffer it points to). If a new-style 8 byte Array was passed into code compiled assuming 24 byte Arrays, the older code would read uninitialized memory trying to get to bytes 9-24. Once the ABI is locked down, the Swift team will be unable to make any further changes like that (or at least will have to jump through a lot of hoops to guarantee compatibility).<br><small style="display:block;text-align:right;opacity:0.5;">- David Smith, Apple Foundation Frameworks</small>
+> Array used to be 24 bytes, and is now 8 bytes (data that used to be stored inline moved into the heap buffer it points to). If a new-style 8 byte Array was passed into code compiled assuming 24 byte Arrays, the older code would read uninitialized memory trying to get to bytes 9-24. Once the ABI is locked down, the Swift team will be unable to make any further changes like that (or at least will have to jump through a lot of hoops to guarantee compatibility).<br><small style="display:block;text-align:right;opacity:0.5;">- David Smith, Apple Foundation Frameworks</small>
 
 ## ABI and Swift, a Moving Target
 
@@ -68,15 +64,15 @@ A swiftmodule file contains serialized ASTs (and potentially SIL) — it’s bas
 
 According to Apple’s Swift [ABI Stability Manifesto][]:
 
->Binary frameworks include both a Swift module file, which communicates source-level information of the framework’s API, and a shared library, which provides the compiled implementation that is loaded at runtime. Thus, there are two necessary goals for binary framework compatibility.
+> Binary frameworks include both a Swift module file, which communicates source-level information of the framework’s API, and a shared library, which provides the compiled implementation that is loaded at runtime. Thus, there are two necessary goals for binary framework compatibility.
 
 These two goals are ABI stability and Module format stability. In the same document, it says that:
 
->Module format stability stabilizes the module file, which is the compiler’s representation of the public interfaces of a framework. This includes API declarations and inlineable code. The module file is used by the compiler for necessary tasks such as type checking and code generation when compiling client code using a framework.
+> Module format stability stabilizes the module file, which is the compiler’s representation of the public interfaces of a framework. This includes API declarations and inlineable code. The module file is used by the compiler for necessary tasks such as type checking and code generation when compiling client code using a framework.
 
 Module format stability still doesn’t have a target date and — according to Chris Lattner’s July 2016 message, [_Looking back on Swift 3 and ahead to Swift 4_](https://lists.swift.org/pipermail/swift-evolution/Week-of-Mon-20160725/025676.html) — it is a stretch goal for Swift 5:
 
->At some point we need to stabilize the “.swiftmodule” binary file format (or replace it with a different mechanism) to allow 3rd party binary frameworks.  This is a very large amount of work over and above what is required for ABI stability of the standard library.
+> At some point we need to stabilize the “.swiftmodule” binary file format (or replace it with a different mechanism) to allow 3rd party binary frameworks. This is a very large amount of work over and above what is required for ABI stability of the standard library.
 
 ## Binary Swift Frameworks in Production
 

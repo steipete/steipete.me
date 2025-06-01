@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from "astro:content";
+import IconEdit from "@/assets/icons/IconEdit.svg";
+import { SITE } from "@/config";
+
+export interface Props {
+  hideEditPost?: CollectionEntry<"blog">["data"]["hideEditPost"];
+  class?: string;
+  post: CollectionEntry<"blog">;
+}
+
+const { hideEditPost, post, class: className = "" } = Astro.props;
+
+const href = `${SITE.editPost.url}${post.filePath}`;
+const showEditPost =
+  SITE.editPost.enabled && !hideEditPost && href.trim() !== "";
+---
+
+{
+  showEditPost && (
+    <div class:list={["opacity-80", className]}>
+      <span aria-hidden="true" class="max-sm:hidden">
+        |
+      </span>
+      <a
+        class="space-x-1.5 hover:opacity-75"
+        href={href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <IconEdit class="inline-block size-6" />
+        <span class="italic max-sm:text-sm sm:inline">
+          {SITE.editPost.text}
+        </span>
+      </a>
+    </div>
+  )
+}

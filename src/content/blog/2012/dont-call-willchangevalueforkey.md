@@ -1,7 +1,7 @@
 ---
 title: "Don't Call willChangeValueForKey Unless It's Really Needed"
-pubDate: 2012-04-05T15:27:00.000Z
-description: "Dive into the subtle details of Key-Value Observing (KVO) in Objective-C, where I clarify a common misconception about willChangeValueForKey and didChangeValueForKey. Learn why these manual notifications are unnecessary when using setter methods, how automatic change notifications actually work, and when manual KVO notifications are genuinely needed. This technical deep dive includes real-world examples from popular open-source projects that get this wrong."
+pubDatetime: 2012-04-05T15:27:00.000Z
+description: "Learn why willChangeValueForKey and didChangeValueForKey are unnecessary when using setter methods for KVO in Objective-C."
 tags:
   - iOS-Development
   - Objective-C
@@ -17,7 +17,7 @@ You're using KVO, right? So you most likely have already written code like this:
 {% gist 2314685 %}
 
 Carefully encapsulate your calls within a call to willChangeValueForKey/didChangeValueForKey to "enable" KVO.
-Well, turns out, you just did [shit work](http://files.sharenator.com/shit_Engineer_explains_why_lightsabers_WOULDNT_work-s600x477-89574-580.jpg). There's no reason to do the will/did dance, as long as you are using a *setter method* to change the ivar. It doesn't need to be backed by an ivar or declared as a property. KVO was written long before there was anything like @property in Objective-C.
+Well, turns out, you just did [shit work](http://files.sharenator.com/shit_Engineer_explains_why_lightsabers_WOULDNT_work-s600x477-89574-580.jpg). There's no reason to do the will/did dance, as long as you are using a _setter method_ to change the ivar. It doesn't need to be backed by an ivar or declared as a property. KVO was written long before there was anything like @property in Objective-C.
 
 In fact, I have been writing iOS apps for about four years and didn't know this. A [lot](https://github.com/mattt/TTTAttributedLabel/blob/d09777b2875381d660d1a183c0cb41b7f1068a32/TTTAttributedLabel.m#L226) [of](https://github.com/quamen/noise/blob/2021a1e9348ee9bb9c17b42f32f498d569b22d5e/Message.m#L20) [open](https://github.com/artifacts/microcosm/blob/a5adb56469aad80897f3496d71b150b6f3cbbcd7/TextureAtlas.m#L63)-[source](https://github.com/blommegard/HSPlayer/blob/6f4bb5215dd1f30a71d3fcdba46e3a7bcf3a84d1/HSPlayer/HSPlayerView.m#L278) [code](https://github.com/abrahamvegh/AVWebViewController/blob/f24720b414106ecb7bcd4a0ad5f7c6e34a1f2c8f/AVWebViewController.m#L64) also gets this wrong. Apple has some good KVO documentation, where it explains the concept of [automatic change notifications](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE).
 

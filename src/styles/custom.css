@@ -40,7 +40,9 @@
 
 /* Base styles */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
   line-height: 1.6;
   color: var(--text-color);
   background-color: #fff;
@@ -110,7 +112,8 @@ a:hover {
   border-radius: 0.25rem;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: var(--link-color);
   background-color: rgba(0, 123, 255, 0.1);
 }
@@ -147,7 +150,7 @@ main {
   main {
     margin-left: 2rem;
   }
-  
+
   #sidebar.show {
     transform: translateX(0);
   }
@@ -233,7 +236,9 @@ pre {
 }
 
 code {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:
+    SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
   font-size: 0.9em;
   color: #d63384;
   padding: 0.2em 0.4em;

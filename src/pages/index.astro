@@ -1,99 +1,111 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-// Import Link component when needed
-import { SITE } from '../consts';
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Socials from "@/components/Socials.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import Card from "@/components/Card.astro";
+import Hr from "@/components/Hr.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import IconRss from "@/assets/icons/IconRss.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { SITE, SOCIALS } from "@/config";
 
-// Get all blog posts and sort by date
-let allPosts = await getCollection('blog');
+const posts = await getCollection("blog");
 
-// Deduplicate posts by id if there are any duplicates
-const idMap = new Map();
-allPosts.forEach(post => {
-  // If we already have a post with this id, only keep the newer one
-  if (!idMap.has(post.id) || new Date(post.data.pubDate) > new Date(idMap.get(post.id).data.pubDate)) {
-    idMap.set(post.id, post);
-  }
-});
-
-// Convert back to array and sort
-allPosts = Array.from(idMap.values()).sort(
-	(a, b) => {
-		const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
-		const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
-		return dateB - dateA;
-	},
+const sortedPosts = getSortedPosts(posts);
+const posts2025AndLater = sortedPosts.filter(
+  ({ data }) => data.pubDatetime.getFullYear() >= 2025,
 );
-
-// Pagination settings
-const postsPerPage = 10;
-const totalPages = Math.ceil(allPosts.length / postsPerPage);
-const currentPage = 1;
-const posts = allPosts.slice(0, postsPerPage);
+const featuredPosts = posts2025AndLater.filter(({ data }) => data.featured);
+const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
 
-<Layout title={SITE.title} description={SITE.description}>
-  <section class="py-8">
-    <h1 class="text-4xl font-bold tracking-tight mb-10">Latest Posts</h1>
+<Layout>
+  <Header />
+  <main id="main-content" data-layout="index">
+    <section id="hero" class="pt-6 pb-4">
+      <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
+        Hi, I'm Pete.
+      </h1>
+      <a
+        target="_blank"
+        href="/rss.xml"
+        class="inline-block"
+        aria-label="rss feed"
+        title="RSS Feed"
+      >
+        <IconRss
+          width={20}
+          height={20}
+          class="scale-125 stroke-accent stroke-3"
+        />
+        <span class="sr-only">RSS Feed</span>
+      </a>
 
-    <div class="space-y-12">
-      {posts.map((post) => (
-        <article class="border-b border-border pb-8 last:border-0">
-          <h2 class="text-2xl font-semibold leading-tight mb-2">
-            <a href={`/posts/${post.id}/`} class="hover:text-primary">
-              {post.data.title}
-            </a>
-          </h2>
-
-          <div class="flex items-center text-sm text-muted-foreground mb-4">
-            <FormattedDate date={new Date(post.data.pubDate || post.data.date)} />
+      <p>
+        Recovering Entrepreneur vibe coding on his next thing.<br />Everything I
+        build is open source.
+      </p>
+      {
+        // only display if at least one social link is enabled
+        SOCIALS.filter((social) => social.active).length > 0 && (
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+            <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+            <Socials />
           </div>
+        )
+      }
+    </section>
 
-          {post.data.description && (
-            <p class="text-muted-foreground mb-4">{post.data.description}</p>
-          )}
+    <Hr />
 
-          <div>
-            <a href={`/posts/${post.id}/`} class="text-primary font-medium hover:underline">
-              Read more →
-            </a>
-          </div>
-        </article>
-      ))}
+    {
+      featuredPosts.length > 0 && (
+        <>
+          <section id="featured" class="pt-12 pb-6">
+            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
+            <ul>
+              {featuredPosts.map((data) => (
+                <Card variant="h3" {...data} />
+              ))}
+            </ul>
+          </section>
+          {recentPosts.length > 0 && <Hr />}
+        </>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <ul>
+            {recentPosts.map(
+              (data, index) =>
+                index < SITE.postPerIndex && <Card variant="h3" {...data} />,
+            )}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href="/posts/">
+        All Posts
+        <IconArrowRight class="inline-block" />
+      </LinkButton>
     </div>
-
-    {totalPages > 1 && (
-      <div class="flex justify-center mt-10 gap-2">
-        {currentPage > 1 && (
-          <a
-            href={currentPage - 1 === 1 ? '/' : `/page/${currentPage - 1}`}
-            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
-          >
-            ← Previous
-          </a>
-        )}
-
-        {Array.from({ length: totalPages }).map((_, i) => (
-          <a
-            href={i === 0 ? '/' : `/page/${i + 1}`}
-            class={`px-4 py-2 rounded-md ${currentPage === i + 1
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary hover:bg-accent'}`}
-          >
-            {i + 1}
-          </a>
-        ))}
-
-        {currentPage < totalPages && (
-          <a
-            href={`/page/${currentPage + 1}`}
-            class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
-          >
-            Next →
-          </a>
-        )}
-      </div>
-    )}
-  </section>
+  </main>
+  <Footer />
 </Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/");
+    }
+  });
+</script>

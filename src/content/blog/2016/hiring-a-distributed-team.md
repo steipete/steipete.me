@@ -1,16 +1,12 @@
 ---
 title: Hiring a distributed team
-pubDate: 2016-09-20T12:00:00.000Z
-description: >-
-  Who you hire can have a dramatic effect on your team’s culture and company’s
-  productivity. People are the most influential factor in determining th...
+pubDatetime: 2016-09-20T12:00:00.000Z
+description: "Lessons learned about hiring and building a successful distributed remote team at PSPDFKit over six years."
 tags:
   - Company
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Who you hire can have a dramatic effect on your team’s culture and company’s productivity. People are the most influential factor in determining the success or failure of a company. Hiring is difficult and comes with high stakes. Make the wrong hire and you could be living with the consequences for longer than you’d expect. Make the right hire and you might be surprised by the asset the person becomes to your company. Add the additional variable of hiring someone who is distributed for a remote team and it gets even more complex. During the past six years at PSPDFKit, we’ve slowly learned what’s important, what works, and what doesn’t work, at least for us.
 
@@ -32,14 +28,14 @@ Since the post has been released some people asked about the rejection snippets.
 
 If a potential candidate looks interesting, the next step is to send out our pre-screening form. We use a simple Google Form for this step, and it has worked really well. It’s structured to include both basic questions and open-ended free form questions. The form checks for a few very pertinent topics for us:
 
-* Full-Time? This is a check to confirm that we look for a full-time role.
-* Personal References for later follow-ups.
-* Salary expectations. We ask for a rough range to be able to gauge whether this is a non-starter from the beginning.
-* Earliest start date.
-* Experience with remote work.
-* What other companies have you applied to recently?
-* Why do you want to work for us?
-* What's your ideal work environment?
+- Full-Time? This is a check to confirm that we look for a full-time role.
+- Personal References for later follow-ups.
+- Salary expectations. We ask for a rough range to be able to gauge whether this is a non-starter from the beginning.
+- Earliest start date.
+- Experience with remote work.
+- What other companies have you applied to recently?
+- Why do you want to work for us?
+- What's your ideal work environment?
 
 ![Pre-screening Form](/assets/img/2016/hiring-a-distributed-team/pre-screening.png)
 

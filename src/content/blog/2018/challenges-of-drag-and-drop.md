@@ -1,9 +1,7 @@
 ---
 title: Challenges of Adopting Drag and Drop
-pubDate: 2018-11-07T08:10:00.000Z
-description: >-
-  Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer
-  (3.0)][]. In both of these releases, we improved our [Document Editor][] ...
+pubDatetime: 2018-11-07T08:10:00.000Z
+description: "Discusses the challenges and limitations faced when implementing drag and drop functionality for PDF editing on iOS 11."
 tags:
   - iOS
   - Development
@@ -11,8 +9,6 @@ tags:
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] to support [drag and drop][] for iPads on iOS 11 and above.
 
@@ -69,7 +65,7 @@ So far, the API seems really sensible, but it breaks apart when you consider our
 
 When solving the importing part of this issue, we opted to always delete the placeholder inserted on the collection view when performing a drop via the `UICollectionViewDropPlaceholderContext` as soon as we’re done loading the item from the `NSItemProvider`, and to instead just insert the appropriate items into the collection view manually.
 
-***Be advised:*** If you call `-[id<UICollectionViewDropPlaceholderContext> commitInsertionWithDataSourceUpdates:]` and the collection view ends up with more items than expected, `UICollectionView` will crash internally. When importing PDFs, always deleting the placeholder works better because then you can manually update the collection view to your liking and not be tied to what the placeholder expects the result to be.
+**_Be advised:_** If you call `-[id<UICollectionViewDropPlaceholderContext> commitInsertionWithDataSourceUpdates:]` and the collection view ends up with more items than expected, `UICollectionView` will crash internally. When importing PDFs, always deleting the placeholder works better because then you can manually update the collection view to your liking and not be tied to what the placeholder expects the result to be.
 
 This is not an issue when importing pictures from `Photos.app`, for example, since at that point it _does_ make sense that one drag item represents one picture. No need to worry in that case.
 
@@ -120,7 +116,6 @@ Sadly, not much of UIKit changed with iOS 12, so here’s hoping that iOS 13 exp
 At PSPDFKit, we know that a great API is always a delight to work with, so we are really happy with how adding drag-and-drop support to our Document Editor turned out, even if we had to restrict some of the features we had planned.
 
 You can play with the Document Editor drag-and-drop support if you get [PDF Viewer Pro][], and you can [customize][] what can be done with it if you’re an SDK user (you can download a [free trial][] of our SDK to play around with it as well).
-
 
 [drag and drop]: https://developer.apple.com/ios/drag-and-drop/
 [pspdfkit for ios (7.7)]: /blog/2018/pspdfkit-ios-7-7/

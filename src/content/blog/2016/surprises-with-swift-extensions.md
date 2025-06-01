@@ -1,17 +1,13 @@
 ---
 title: Surprises with Swift Extensions
-pubDate: 2016-03-24T12:00:00.000Z
-description: >-
-  tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You
-  can use `@objc(prefix_name)` to keep the name pretty in Swift and exp...
+pubDatetime: 2016-03-24T12:00:00.000Z
+description: "Common pitfalls and surprising behaviors when creating Swift extensions on Objective-C classes, with solutions for proper method naming."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use `@objc(prefix_name)` to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime.
 PSPDFKit is a commerical framework that allows you to embed a PDF viewer/editor into your app. Today, we received a report for a very weird crash with a stack trace that contained only UIKit symbols, but was clearly triggered by a specific action in PSPDFKit (Toggling the note annotation view controller quickly).
@@ -68,7 +64,7 @@ With that we were able to instantly reproduce the crash:
 libc++abi.dylib: terminating with uncaught exception of type NSException
 ```
 
-*Notice how this is all UIKit, but triggered by an action in our framework.* So we started digging and reading lots and lots of UIKit disassembly to understand what's happening under the hood. Everything seemed reasonable. Next step was to try and create a sample, so we could report a radar. Has to be UIKit's fault - right? :)
+_Notice how this is all UIKit, but triggered by an action in our framework._ So we started digging and reading lots and lots of UIKit disassembly to understand what's happening under the hood. Everything seemed reasonable. Next step was to try and create a sample, so we could report a radar. Has to be UIKit's fault - right? :)
 
 Since previous attempts to build a sample app failed, I started the other way around, with moving all relevant code into the app delegate and slowly trimming down on classes, without touching any of the 3rd-party dependencies. A very slow and cumbersome process. Of course I scanned all the files for categories but apart from a few harmless looking extensions the app was all Swift - some very neat MVVM and reactive programming in there. Interestingly enough, things stopped crashing once I did that. Ha - so it really had to be something in the app that was causing the crash. I looked through all the files but everything looked innocent. Then I took a closer look at `UIViewController+Containment.swift`, and added a breakpoint there...
 
@@ -76,4 +72,4 @@ Since previous attempts to build a sample app failed, I started the other way ar
 
 That was it. These seemingly innocent extensions were overriding private API. Apple's private API detection is not super sophisticated and wasn't triggered when the app was uploaded to the App Store. It's also not a public symbol so there were no warnings, not even a log message. Unprefixed categories are always dangerous, especially on classes that you do not own, like `UIViewController`. In PSPDFKit, we use categories for shared code, but prefix any method with `pspdf_` to be absolutely sure we do not hit any name clashes. It's certainly not pretty, and prefixes in Swift look even more alien, yet as you can see in this bug hunt, they are definitely necessary.
 
-The following case was especially evil because this category *almost* did the same thing as UIKit's internal private method of the same name. I shared my findings on Twitter and got a few interesting comments. Swift itself already fixes this problem, however only for pure Swift classes. Since Swift 2.2 landed the new symbolic selector references, [Joe Groff remarked that it's thinkable that future versions default to a more agressive name mangling.](https://twitter.com/jckarter/status/713114049911742464)
+The following case was especially evil because this category _almost_ did the same thing as UIKit's internal private method of the same name. I shared my findings on Twitter and got a few interesting comments. Swift itself already fixes this problem, however only for pure Swift classes. Since Swift 2.2 landed the new symbolic selector references, [Joe Groff remarked that it's thinkable that future versions default to a more agressive name mangling.](https://twitter.com/jckarter/status/713114049911742464)
