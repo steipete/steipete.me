@@ -2,7 +2,6 @@
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "./Layout.astro";
-import NewsletterForm from "@/components/NewsletterForm.astro";
 import { SITE } from "@/config";
 
 export interface Props {
@@ -18,19 +17,10 @@ const { frontmatter } = Astro.props;
 <Layout title={`${frontmatter.title} | ${SITE.title}`}>
   <Header />
   <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
-    <section id="about" class="prose mb-12 max-w-3xl prose-img:border-0 mt-8">
+    <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0 mt-8">
       <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
       <slot />
     </section>
-    
-    <div class="prose mb-12 max-w-3xl prose-img:border-0">
-      <h2>Stay Connected</h2>
-      <div class="not-prose">
-        <NewsletterForm variant="compact" />
-      </div>
-    </div>
-    
-    <p class="text-sm text-gray-500 mb-28 max-w-3xl">Imprint: Peter Steinberger, Siebensterngasse 15, 1070 Vienna, Austria</p>
   </main>
   <Footer />
 </Layout>

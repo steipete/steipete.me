@@ -135,6 +135,8 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       <slot />
     </article>
 
+    <NewsletterForm />
+    
     {
       SITE.editPost.enabled && (
         <div class="mt-8 pt-8 border-t border-border/50">
@@ -163,7 +165,6 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
         </div>
       )
     }
-     <NewsletterForm />
   </main>
 
   <Footer />

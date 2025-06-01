@@ -31,3 +31,11 @@ I'm looking for new opportunities to share my learnings at conferences. [Check o
 </div>
 
 If you'd like to connect or have questions about my work, feel free to reach out through any of the social links below.
+
+## Stay Connected
+
+<div class="not-prose">
+  <NewsletterForm variant="compact" />
+</div>
+
+<p class="text-sm text-gray-500 mt-8">Imprint: Peter Steinberger, Siebensterngasse 15, 1070 Vienna, Austria</p>
