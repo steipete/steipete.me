@@ -44,8 +44,8 @@ export const SITE: Site = {
   showArchives: false,
   showBackButton: false,
   editPost: {
-    enabled: false,
-    text: "Suggest Changes",
+    enabled: true,
+    text: "Edit on GitHub",
     url: "https://github.com/steipete/steipete.me/edit/main/",
   },
   dynamicOgImage: true,
