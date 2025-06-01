@@ -52,7 +52,7 @@ Gemini is seriously impressive. I find it's incredibly good at generating length
 **My Spec Refinement Loop – AI Critiquing AI:**
 This is a pattern I've found incredibly powerful:
 
-1.  **Voice-First Brain Dump:** I'm lazy with typing. I use an app called "Flow" (or Whisper Flow – just hit the `Fn` key on my Mac, and it transcribes) to dictate my initial thoughts, feature ideas, and user stories directly into a new Gemini chat in AI Studio. It's fast and captures ideas fluidly.
+1.  **Voice-First Brain Dump:** I'm lazy with typing. I use an app called "Whisper Flow" – just hit the `Fn` key on my Mac, and it transcribes) to dictate my initial thoughts, feature ideas, and user stories directly into a new Gemini chat in AI Studio. It's fast and captures ideas fluidly.
 2.  **Gemini's First Draft:** Gemini takes this verbal stream-of-consciousness and churns out a pretty decent first-pass structured specification document.
 3.  **The "Peer Review" by Another AI:** This is the fun part. I copy that entire generated spec and paste it into a *brand new, separate* Gemini chat. My prompt to this second instance is something like: *"You are an AI tasked with implementing this spec in one go. Before you start, what questions do you have? What's unclear? What's missing for you to build this successfully?"*
 4.  **Addressing the AI's Questions:** The second AI *always* comes back with brilliant questions. It points out ambiguities, edge cases I hadn't considered, and missing information. It's like having an infinitely patient, detail-oriented peer reviewer.
@@ -79,10 +79,10 @@ I'd already set up a GitHub repo for "Vibe Meter" and, within it, two distinct f
 
 And then, the magic (and sometimes the madness) begins. You hit "go," and the AIs start chugging away, planning steps, creating files, and writing code.
 
-**Dealing with the "Continue Monkey" – And My Solution, CodeLooper:**
+**Dealing with the "Continue Monkey" – And My Solution, [CodeLooper](https://codelooper.app):**
 One of the current papercuts in these AI-driven IDEs is the generation loop. They'll work for a bit, then pause, often requiring a manual click on a "Continue" button. This can be due to internal limits (Cursor sometimes has a 25-turn limit before pausing), connection hiccups, or the AI just needing a moment to plan its next multi-step move.
 
-This constant need to babysit the "Continue" button is why I'm building a side-project called "CodeLooper." It's a Mac menu bar app that uses a combination of screen capture, accessibility APIs, and even JavaScript injection (since Cursor itself is an Electron app) to detect when a generation loop has paused and, if it deems it safe, automatically click "Continue" for me. It's still a work in progress, but the goal is to achieve longer, truly unattended generation sessions. For this workshop, though, I was the designated "Continue Monkey."
+This constant need to babysit the "Continue" button is why I'm building a side-project called "[CodeLooper](https://codelooper.app)." It's a Mac menu bar app that uses a combination of screen capture, accessibility APIs, and even JavaScript injection (since Cursor itself is an Electron app) to detect when a generation loop has paused and, if it deems it safe, automatically click "Continue" for me. It's still a work in progress, but the goal is to achieve longer, truly unattended generation sessions. For this workshop, though, I was the designated "Continue Monkey."
 
 **MCPs – My Custom Toolkit for Supercharging Cursor:**
 Cursor allows you to define "MCPs" (which I think of as "More Capable Prompts" or "More Capable Tools"). These are essentially custom functions or external tools the AI agent within Cursor can choose to call. I've been building out a suite of these to give the AI more leverage:
@@ -99,7 +99,7 @@ These MCPs are about extending the AI's reach and making it more autonomous in a
 Cursor offers a selection of underlying LLMs, and I switch between them based on the task:
 
 *   **Gemini 2.5 Pro (May 6 Update):** This is my workhorse for most code generation within Cursor. It strikes a great balance of intelligence, speed, and cost.
-*   **o3:** This is what I call my "Dark Knight." It's incredibly smart, uncannily good at reasoning through complex problems, but it's *significantly* more expensive. I reserve o3 for when I'm truly stumped on a gnarly bug. You feed it the problem, and it often goes silent for a bit, "planning its next moves," reading more of your codebase, and then, like that brilliant but slightly arrogant senior dev, it'll often just present the solution with minimal fuss. It almost *always* cracks the problem.
+*   **OpenAI o3:** This is what I call my "Dark Knight." It's incredibly smart, uncannily good at reasoning through complex problems, but it's *significantly* more expensive. I reserve o3 for when I'm truly stumped on a gnarly bug. You feed it the problem, and it often goes silent for a bit, "planning its next moves," reading more of your codebase, and then, like that brilliant but slightly arrogant senior dev, it'll often just present the solution with minimal fuss. It almost *always* cracks the problem.
 *   **Claude Opus:** Also very capable. I find it sometimes a bit more prone to "vision quests" – deviating from the original task if it hits a snag, or getting stuck in its own reasoning loops (like repeatedly trying to downgrade a library if it encounters an issue with a newer version). But for certain types of refactoring or generation, it's excellent.
 
 During the initial generation, the Mac app (SwiftUI) ran into some turbulence. Swift 6 has tightened up its concurrency rules considerably (Sendability, `@MainActor` isolation), and there's simply less Swift 6 example code out in the wild for the models to have trained on. This meant more iteration was needed. The Electron app, on the other hand, initially started life as JavaScript because, in my haste, I forgot to explicitly re-state TypeScript in the main project generation prompt (the spec mentioned it, but the top-level instruction to the AI didn't). A good lesson: be explicit, even if it feels redundant. I later instructed it to convert the whole thing to TypeScript.
@@ -173,6 +173,6 @@ This is not some far-off future; this is what's possible *today*. The tools are 
 
 My advice? Don't wait. Dive in. Pick a small side project, something fun. Start experimenting with these tools. Learn how to prompt, how to iterate, how to "vibe" with your AI coding partner. See for yourself how it can transform your workflow, your learning, and your creative output.
 
-As for Vibe Meter? I'm definitely going to take the Mac app, polish it up (with more AI help, of course!), and integrate its core cost-tracking logic into my "CodeLooper" project. The cycle of AI-assisted creation continues.
+As for Vibe Meter? I'm definitely going to take the Mac app, polish it up (with more AI help, of course!), and integrate its core cost-tracking logic into my "[CodeLooper](https://codelooper.app)" project. The cycle of AI-assisted creation continues.
 
 Thanks for joining me on this live-coding adventure. Now, go build something cool!
