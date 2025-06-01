@@ -30,7 +30,6 @@ const latestDatetime =
 const datetime = dayjs(latestDatetime).tz(postTimezone || SITE.timezone);
 
 const date = datetime.format("D MMM, YYYY"); // e.g., '22 Mar, 2025'
-const time = datetime.format("hh:mm A"); // e.g., '08:30 PM'
 ---
 
 <div class:list={["flex items-end space-x-2 opacity-80", className]}>
@@ -51,8 +50,5 @@ const time = datetime.format("hh:mm A"); // e.g., '08:30 PM'
   }
   <span class:list={["text-sm italic", { "sm:text-base": size === "lg" }]}>
     <time datetime={datetime.toISOString()}>{date}</time>
-    <span aria-hidden="true"> | </span>
-    <span class="sr-only">&nbsp;at&nbsp;</span>
-    <span class="text-nowrap">{time}</span>
   </span>
 </div>

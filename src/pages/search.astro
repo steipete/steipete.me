@@ -64,9 +64,14 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
         search.triggerSearch(query);
       }
 
-      // Reset search param if search input is cleared
-      const searchInput = document.querySelector(".pagefind-ui__search-input");
+      // Reset search param if search input is cleared and auto-focus
+      const searchInput = document.querySelector(".pagefind-ui__search-input") as HTMLInputElement;
       const clearButton = document.querySelector(".pagefind-ui__search-clear");
+      
+      // Auto-focus the search input
+      if (searchInput) {
+        searchInput.focus();
+      }
       searchInput?.addEventListener("input", resetSearchParam);
       clearButton?.addEventListener("click", resetSearchParam);
 
