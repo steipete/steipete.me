@@ -19,7 +19,7 @@ I'm looking for new opportunities to share my learnings at conferences. [Check o
 
 ## GitHub Activity
 
-<div class="bg-secondary p-2 sm:p-6 rounded-lg">
+<div class="bg-secondary p-0 rounded-lg">
   <img 
     src="https://ghchart.rshah.org/steipete" 
     alt="Peter's GitHub Contribution Graph" 
