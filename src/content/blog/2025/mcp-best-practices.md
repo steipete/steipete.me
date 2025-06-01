@@ -9,7 +9,6 @@ tags:
   - Tools
   - TypeScript
   - Testing
-source: steipete.me
 ---
 
 Building high-quality Model Context Protocol (MCP) tools requires attention to detail across many dimensions. After developing several MCP tools, I've compiled this comprehensive guide to best practices that ensure your tools are reliable, user-friendly, and maintainable.
