@@ -79,7 +79,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self' steipete.me *.vercel.app; script-src 'self' 'unsafe-inline' steipete.me *.vercel.app; style-src 'self' 'unsafe-inline' steipete.me *.vercel.app; img-src 'self' data: steipete.me *.vercel.app; font-src 'self' steipete.me *.vercel.app; connect-src 'self' steipete.me *.vercel.app; media-src 'self' steipete.me *.vercel.app; object-src 'none'; frame-ancestors 'none'"
+          "value": "default-src 'self' https://steipete.me https://*.vercel.app; script-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; style-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; img-src 'self' data: https://steipete.me https://*.vercel.app; font-src 'self' https://steipete.me https://*.vercel.app; connect-src 'self' https://steipete.me https://*.vercel.app; media-src 'self' https://steipete.me https://*.vercel.app; object-src 'none'; frame-ancestors 'none'"
         }
       ]
     }
