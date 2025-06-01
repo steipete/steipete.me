@@ -4,7 +4,7 @@ title: "About"
 ---
 
 <div class="flex flex-col md:flex-row gap-8 items-start">
-  <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[400px]">
+  <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[340px]">
     <img src="/peter-office.jpg" alt="Peter in his office setup" class="w-full h-auto rounded-lg" />
   </div>
   <div class="flex-1 min-w-0">
@@ -19,7 +19,7 @@ I'm looking for new opportunities to share my learnings at conferences. [Check o
 
 ## GitHub Activity
 
-<div class="bg-secondary p-2 sm:p-6 rounded-lg">
+<div class="bg-secondary p-0 rounded-lg">
   <img 
     src="https://ghchart.rshah.org/steipete" 
     alt="Peter's GitHub Contribution Graph" 

@@ -271,6 +271,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     border: 0;
   }
 </style>
-  <!-- Twitter Widget Script -->
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  <!-- Twitter Widget Script - Load as external script -->
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" is:inline={false}></script>
 </Layout>
