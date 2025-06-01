@@ -9,18 +9,24 @@ I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contribut
 ## Project Structure
 
 ```text
-├── public/           # Static assets like images
-├── scripts/          # Utility scripts
+├── public/               # Static assets (images, fonts, favicon)
+│   ├── assets/          # Images for blog posts
+│   └── fonts/           # Web fonts
 ├── src/
-│   ├── components/   # Reusable UI components
-│   ├── content/      # Blog posts and content collections
-│   │   ├── blog/     # Blog posts in Markdown format
-│   │   └── config.ts # Content configuration
-│   ├── layouts/      # Page layouts
-│   └── pages/        # Pages and routes
-├── astro.config.mjs  # Astro configuration
-├── vercel.json       # Vercel deployment configuration
-└── package.json      # Project dependencies and scripts
+│   ├── assets/          # Icons and images used in components
+│   ├── components/      # Reusable UI components
+│   │   └── ui/          # React components
+│   ├── content/         # Content collections
+│   │   └── blog/        # Blog posts in Markdown format (organized by year)
+│   ├── layouts/         # Page layouts and templates
+│   ├── pages/           # Routes and pages
+│   ├── styles/          # Global styles and CSS
+│   └── utils/           # Utility functions
+├── astro.config.mjs     # Astro configuration
+├── vercel.json          # Vercel deployment and CSP configuration
+├── package.json         # Project dependencies and scripts
+├── tailwind.config.mjs  # Tailwind CSS configuration
+└── LICENSE              # Dual license (CC BY 4.0 + MIT)
 ```
 
 ## Commands
