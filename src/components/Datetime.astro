@@ -32,11 +32,11 @@ const datetime = dayjs(latestDatetime).tz(postTimezone || SITE.timezone);
 const date = datetime.format("D MMM, YYYY"); // e.g., '22 Mar, 2025'
 ---
 
-<div class:list={["flex items-end space-x-2 opacity-80", className]}>
+<div class:list={["flex items-center gap-2 opacity-80", className]}>
   <IconCalendar
     class:list={[
-      "inline-block size-6 min-w-[1.375rem]",
-      { "scale-90": size === "sm" },
+      "inline-block size-5 min-w-[1.25rem]",
+      { "size-4 min-w-[1rem]": size === "sm" },
     ]}
   />
   {
