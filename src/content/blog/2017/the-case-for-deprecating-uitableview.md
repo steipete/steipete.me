@@ -1,18 +1,13 @@
 ---
 title: The Case for Deprecating UITableView
-pubDate: 2017-01-19T12:10:00.000Z
-description: >-
-  UITableView is a cornerstone of classical iOS development and one of the
-  oldest classes. It's used in pretty much all iOS apps and has been around
-  since iPhone OS 2.0.
+pubDatetime: 2017-01-19T12:10:00.000Z
+description: "Argues why UITableView should be deprecated in favor of UICollectionView for better flexibility and modern iOS development."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 `UITableView` is a cornerstone of classical iOS development and one of the oldest classes. It's used in pretty much all iOS apps and has been around since iPhone OS 2.0. So why would we propose deprecating one of the most used classes?
 
@@ -182,7 +177,7 @@ The situation on Android is very similar. Since its first version, the Android f
 
 Google is more explicit about soft-deprecating `ListView`; just read the first sentence in their documentation:
 
->The RecyclerView widget is a more advanced and flexible version of ListView.
+> The RecyclerView widget is a more advanced and flexible version of ListView.
 
 While for some legacy features there is no default implementation, which requires developers [to write more boilerplate code](http://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview) to migrate their old code, in general `RecyclerView` provides much better performance and flexibility, and is thus the way to go.
 

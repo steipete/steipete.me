@@ -1,9 +1,7 @@
 ---
 title: Running tests with Clang Address Sanitizer
-pubDate: 2016-10-18T12:00:00.000Z
-description: >-
-  Clang has powerful sanitizers that help you find bugs faster, fix them with
-  more confidence, and find all these impossible-to-reproduce race condit...
+pubDatetime: 2016-10-18T12:00:00.000Z
+description: "Guide to using Clang Address Sanitizer for finding memory bugs, race conditions, and other runtime issues in iOS and Android development."
 tags:
   - iOS
   - Android
@@ -12,9 +10,8 @@ source: pspdfkit.com
 AIDescription: true
 ---
 
-
-
 Clang has powerful sanitizers that help you find bugs faster, fix them with more confidence, and find all these impossible-to-reproduce race conditions. These tools are [extremely powerful](https://research.google.com/pubs/archive/35604.pdf) and mature and exist in various forms since 2010. These tools are so incredibly useful that we collected our experiences using them, [between iOS, Android and our C++ core](/blog/2016/a-pragmatic-approach-to-cross-platform/), to help you through some gotchas.
+
 ## Address Sanitizer on iOS & macOS
 
 Enter [Clang's AddressSanitizer](http://clang.llvm.org/docs/AddressSanitizer.html). It's a fast memory error detector, based on both compiler instrumentation and a run-time library. It uses a shadow memory region and the slowdown is a very acceptable 2x. Apple added a checkbox for it in Xcode 7 and further improved support for it in Xcode 8:
@@ -174,7 +171,7 @@ Shout-out to [the](https://twitter.com/steipete/status/781560525075480580) [amaz
 
 ## Further reading
 
-* [WWDC 2015, Session 413: Advanced Debugging and the Address Sanitizer](https://developer.apple.com/videos/play/wwdc2015/413/)
-* [Mike Ash Friday Q&A 2015-07-03: Address Sanitizer](https://mikeash.com/pyblog/friday-qa-2015-07-03-address-sanitizer.html)
+- [WWDC 2015, Session 413: Advanced Debugging and the Address Sanitizer](https://developer.apple.com/videos/play/wwdc2015/413/)
+- [Mike Ash Friday Q&A 2015-07-03: Address Sanitizer](https://mikeash.com/pyblog/friday-qa-2015-07-03-address-sanitizer.html)
 
 If you want to [try for yourself how rock-solid our upcoming PDF Viewer app is, get the app](https://pdfviewer.io). (Available for both iOS and Android - onboarding is just a few clicks and it's free.)

@@ -1,30 +1,26 @@
 ---
-import { Separator } from './ui/separator'
-import { SOCIAL_LINKS } from '../consts'
-import Link from './Link.astro'
-import SocialIcons from './SocialIcons.astro'
+import Hr from "./Hr.astro";
+import Socials from "./Socials.astro";
 
-const today = new Date();
+const currentYear = new Date().getFullYear();
+
+export interface Props {
+  noMarginTop?: boolean;
+}
+
+const { noMarginTop = false } = Astro.props;
 ---
 
-<footer class="py-4">
+<footer class:list={["w-full", { "mt-auto": !noMarginTop }]}>
+  <Hr noPadding />
   <div
-    class="mx-auto flex max-w-3xl flex-col items-center justify-center gap-y-2 px-4 sm:flex-row sm:justify-between"
+    class="flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"
   >
-    <div class="flex flex-wrap items-center justify-center gap-x-2 text-center">
-      <span class="text-muted-foreground text-sm">
-        &copy; {today.getFullYear()} Peter Steinberger. Some rights reserved. 🖖
-      </span>
-      <Separator orientation="vertical" className="hidden h-4! sm:block" />
-      <p class="text-muted-foreground text-sm">
-        Built with <Link
-          href="https://astro.build"
-          class="text-foreground"
-          external
-          underline>Astro</Link
-        >
-      </p>
+    <Socials centered />
+    <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
+      <span>Copyright &#169; {currentYear}</span>
+      <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
+      <span>All rights reserved.</span>
     </div>
-    <SocialIcons links={SOCIAL_LINKS} />
   </div>
 </footer>

@@ -1,7 +1,7 @@
 ---
 title: "UIKit Debug Mode"
-pubDate: 2015-01-09T15:05:00.000Z
-description: "Discover hidden debugging features in UIKit that Apple engineers use internally to troubleshoot UI issues. I explain how to enable the secret UIPopoverControllerPaintsTargetRect setting and bypass Apple's InternalBuild checks using runtime tricks with Aspects and Facebook's fishhook. Learn how to access a wealth of internal debug flags that provide detailed logging for touches, gestures, animations, and more. This post includes practical code examples and implementation details for accessing these powerful hidden tools."
+pubDatetime: 2015-01-09T15:05:00.000Z
+description: "Unlock hidden UIKit debugging features by bypassing Apple's InternalBuild checks to access secret flags for logging touches, gestures, and animations."
 tags:
   - iOS-Development
   - UIKit

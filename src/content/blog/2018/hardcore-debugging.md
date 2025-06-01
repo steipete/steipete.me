@@ -1,7 +1,7 @@
 ---
 title: Hardcore Debugging - Heavy Weapons for Hard Bugs
-pubDate: 2018-03-07T12:00:00.000Z
-description: '## Tracking Retain/Release'
+pubDatetime: 2018-03-07T12:00:00.000Z
+description: "Advanced debugging techniques for tracking memory management issues, retain/release cycles, and hard-to-find bugs in iOS development."
 tags:
   - Web
   - Development
@@ -9,8 +9,6 @@ tags:
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 ## Tracking Retain/Release
 
@@ -24,7 +22,7 @@ This is pretty much one of the worst bugs.
 
 Now people who worked on the Mac platform long enough to remember manual retain release will surely know these kind of issues. However, ARC normally does a really great job at making sure over-releases are no longer an issue. Still, here I was, with this impossible crash, at midnight, desparate to find a solution.
 
-This only happened when Zombies are enabled, so our CI was still green, and it also only happened on our UI KIF tests. This caused quite a lot of frustation. Instruments is pretty good at tracking retain/release, however this only works for regular targets, not for test targets. 
+This only happened when Zombies are enabled, so our CI was still green, and it also only happened on our UI KIF tests. This caused quite a lot of frustation. Instruments is pretty good at tracking retain/release, however this only works for regular targets, not for test targets.
 
 And I need to step back a little bit here, because there are actually quite a few things we do to make these kind of issues very rare:
 
@@ -88,13 +86,13 @@ script import lldb.macosx.heap
 malloc_info --stack-history
 ```
 
-However, this didn't work at all, and it's unclear to me if that still works at all or just failed in the particular case. 
+However, this didn't work at all, and it's unclear to me if that still works at all or just failed in the particular case.
 
 ![Enable all debugging](/assets/img/2018/hardcore-debugging/xcode-debug-settings.png)
 
 Next, I went and enabled ASAN, UbSAN and the Main Thread Checker. Zombie Objects was already enabled. This creates a lengthy recompile, but didn't help a bit in my case.
 
-The root cause here is that some code has to call `autorelease` on the `PSPDFDocument`. So let's set a breakpoint. BUT - that doesn't work anymore with ARC, since ARC doesn't use message passing anymore for performance reasons, instead the compiler emits `objc_retain`, `objc_release` and `objc_autorelease`, which is quite a bit harder to break on, and debugging becomes impossibly slow if you try to break on *every* `objc_autorelease`, even using conditional rules is to slow. ARC does work work classes that implement custom retain/release logic, so there's a runtime check to test if a document implements such a method - so there's still hope. So, let's implement `autorelease` in our class, which forces ARC to go the slow path:
+The root cause here is that some code has to call `autorelease` on the `PSPDFDocument`. So let's set a breakpoint. BUT - that doesn't work anymore with ARC, since ARC doesn't use message passing anymore for performance reasons, instead the compiler emits `objc_retain`, `objc_release` and `objc_autorelease`, which is quite a bit harder to break on, and debugging becomes impossibly slow if you try to break on _every_ `objc_autorelease`, even using conditional rules is to slow. ARC does work work classes that implement custom retain/release logic, so there's a runtime check to test if a document implements such a method - so there's still hope. So, let's implement `autorelease` in our class, which forces ARC to go the slow path:
 
 ![Trying to implement autorelease under ARC](/assets/img/2018/hardcore-debugging/autorelease-ARC.png)
 
@@ -141,7 +139,7 @@ The naive way of just overriding NSObject's autorelease does not work with ARC e
 @end
 ```
 
-Now, `PSPDFDocument` is basically our core model, and it's used everywhere. I tried to just change the superclass from `NSObject` to `PSPDFRetainTracker`, however that caused header module errors. The helper class lives in a file called `PSPDFDebugHelper.h` which isn't part of the framework, and it'd be painful to restructure the headers to include that. Copying the code over also doesn't work, since `PSPDFDebugHelper.m` needs to be compiled with ARC disabled. 
+Now, `PSPDFDocument` is basically our core model, and it's used everywhere. I tried to just change the superclass from `NSObject` to `PSPDFRetainTracker`, however that caused header module errors. The helper class lives in a file called `PSPDFDebugHelper.h` which isn't part of the framework, and it'd be painful to restructure the headers to include that. Copying the code over also doesn't work, since `PSPDFDebugHelper.m` needs to be compiled with ARC disabled.
 
 Objective-C Runtime to the rescue. Let's just swap classes at runtime!
 
@@ -160,29 +158,29 @@ I'll simply get the instance from runtime here so I don't need to fiddle with fu
 Now, if you've never ever heard about `class_setSuperclass`, there's a good reason for that. DO NOT USE IT IN PRODUCTION. Just check out the header file. Apple is pretty blunt about that and writes "warning You should not use this function." and "not recommended". But alright, we're debugging here, and we need the heavy weaponry!
 
 ```objc
-/** 
+/**
  * Sets the superclass of a given class.
- * 
+ *
  * @param cls The class whose superclass you want to set.
  * @param newSuper The new superclass for cls.
- * 
+ *
  * @return The old superclass for cls.
- * 
+ *
  * @warning You should not use this function.
  */
 OBJC_EXPORT Class _Nonnull
-class_setSuperclass(Class _Nonnull cls, Class _Nonnull newSuper) 
-    __OSX_DEPRECATED(10.5, 10.5, "not recommended") 
-    __IOS_DEPRECATED(2.0, 2.0, "not recommended") 
-    __TVOS_DEPRECATED(9.0, 9.0, "not recommended") 
+class_setSuperclass(Class _Nonnull cls, Class _Nonnull newSuper)
+    __OSX_DEPRECATED(10.5, 10.5, "not recommended")
+    __IOS_DEPRECATED(2.0, 2.0, "not recommended")
+    __TVOS_DEPRECATED(9.0, 9.0, "not recommended")
     __WATCHOS_DEPRECATED(1.0, 1.0, "not recommended")
     __BRIDGEOS_DEPRECATED(2.0, 2.0, "not recommended");
- ```
+```
 
- To my surprise, this actually works! Running the test gets really really slow, as it spits out a ton of stack traces for every single retain/release and autorelease. And compiler optimizations are not enabled here since we want to debug, which makes ARC really really dumb - there's no optimization at all, and it emits a ton of calls. However, eventually, things crash again. Now copy out that huge log output, use your text editor of choice (Ideally not Atom or VS Code but one that can deal with A LOT of text, such as Sublime). And we just search for `AUTORELEASE 0x617000007780  (queue:com.apple.root.background-qos)` because that's what we want to know. And here we are:
+To my surprise, this actually works! Running the test gets really really slow, as it spits out a ton of stack traces for every single retain/release and autorelease. And compiler optimizations are not enabled here since we want to debug, which makes ARC really really dumb - there's no optimization at all, and it emits a ton of calls. However, eventually, things crash again. Now copy out that huge log output, use your text editor of choice (Ideally not Atom or VS Code but one that can deal with A LOT of text, such as Sublime). And we just search for `AUTORELEASE 0x617000007780  (queue:com.apple.root.background-qos)` because that's what we want to know. And here we are:
 
- ```
- )AUTORELEASE 0x617000007780  (queue:com.apple.root.background-qos) -> (
+```
+)AUTORELEASE 0x617000007780  (queue:com.apple.root.background-qos) -> (
 	0   PSPDFKit                            0x000000012ed5818b -[PSPDFRetainTracker autorelease] + 747
 	1   PSPDFKit                            0x0000000129fbce4c _ZN5PSPDF2asI13PSPDFDocumentEEPT_P11objc_object + 652
 	2   PSPDFKit                            0x0000000129fb83e3 _ZN5PSPDF11as_force_nnI13PSPDFDocumentEEPT_P8NSObject + 2563
@@ -240,7 +238,7 @@ During deallocation of one of our render tasks, the document is deallocated. Ins
 }
 ```
 
-This used to work, because in earlier versions of it, we just did a manual cast of the notification object to the document class. It can only be a document in the object. Years of writing code made me a grumpy old suspicious developer however, so we add checks even if we are sure what we get. Because crashing early is good. In that case we use a cast-helper in C++, which basically is a check that the object is not null and that it matches the class we say we want (`PSPDFDocument`!) via an `isKindOfClass:` check. This helper is quite optimized and cheap, but in debug, ARC emits `autorelease` in one of the inlined helpers. Calling `autorelease` within `dealloc` is not a good idea, and will give us exactly that crash. 
+This used to work, because in earlier versions of it, we just did a manual cast of the notification object to the document class. It can only be a document in the object. Years of writing code made me a grumpy old suspicious developer however, so we add checks even if we are sure what we get. Because crashing early is good. In that case we use a cast-helper in C++, which basically is a check that the object is not null and that it matches the class we say we want (`PSPDFDocument`!) via an `isKindOfClass:` check. This helper is quite optimized and cheap, but in debug, ARC emits `autorelease` in one of the inlined helpers. Calling `autorelease` within `dealloc` is not a good idea, and will give us exactly that crash.
 
 Let's look at the generated assembly to understand where this autorelease is really coming from:
 

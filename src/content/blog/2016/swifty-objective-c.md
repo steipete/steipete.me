@@ -1,18 +1,13 @@
 ---
 title: Swifty Objective-C
-pubDate: 2016-05-26T12:10:00.000Z
-description: >-
-  Objective-C originates from the early 1980s, and while the language has
-  evolved a lot over the years, it's still no match for really modern languages
-  like Swift.
+pubDatetime: 2016-05-26T12:10:00.000Z
+description: "Modern Objective-C language features that make it more Swift-like, including nullability annotations, generics, and new syntax improvements."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Objective-C originates from the early 1980s, and while the language has evolved a lot over the years, it's still no match for really modern languages like Swift. With Swift 3.0 on the horizon, it's smart to write new apps in Swift. However at PSPDFKit, we are still firmly in the Objective-C world. We build and distribute a binary framework to render and edit PDF documents. Getting all the PDF details right is a complex problem. In addition to core PDF functionality, we also offer a lot of UI classes to help with typical use cases. This results in a code base that is around 600k lines — a mix of [shared C++ code][cross-platform] and Objective-C++ for UI and wrapped models. Our headers are entirely modern Objective-C [annotated with generics and nullability](/blog/2015/pspdfkit-ios-5-0/) to ensure everything works great with Swift. Even though we are currently still stuck in the Objective-C world, it is not all that grim! With some ingenuity one can leverage many of the benefits of Swift even in a code base like ours. Here we'll list some of the approaches we use to bring the old and new world closer together.
 
@@ -22,16 +17,15 @@ Objective-C originates from the early 1980s, and while the language has evolved 
 
 Okay — let's talk about the elephant in the room. Swift is an amazing language and there are many reasons why you should use it. There are also many situations and requirements that make Objective-C the smarter choice. It really depends on the application, the use case you are addressing, your team and the scope and nature of the project. It's great that Apple gives us a choice here.
 
-*  Swift is evolving incredibly fast. Apple's open process is nothing short of amazing, especially considering the tight-lipped nature of the company. And while calling the initial release of Swift a 1.0 was quite bold, it quickly grew into a language that is fast, safe and allows you to write beautiful code. It's also a fast-moving target and there are still many, partly scary, bugs and issues that early adopters run into. For a smaller project or your typical app Swift might work well. Large projects might be put off by the compile time or optimization issues or just don't have the resources to stop development and spend weeks to update the codebase to Swift 3 (which can be quite a [disruptive][swift-3-migrate] [task][khan-swift-migration]).
+- Swift is evolving incredibly fast. Apple's open process is nothing short of amazing, especially considering the tight-lipped nature of the company. And while calling the initial release of Swift a 1.0 was quite bold, it quickly grew into a language that is fast, safe and allows you to write beautiful code. It's also a fast-moving target and there are still many, partly scary, bugs and issues that early adopters run into. For a smaller project or your typical app Swift might work well. Large projects might be put off by the compile time or optimization issues or just don't have the resources to stop development and spend weeks to update the codebase to Swift 3 (which can be quite a [disruptive][swift-3-migrate] [task][khan-swift-migration]).
 
-*  [Swift in its current form is in many ways more like C++ in that it is quite static][dynamic-swift-2]. There is no dynamic message sending and the runtime allows fewer changes than Objective-C. In the past this has led to both huge problems (such as optimization issues or monkey-patching code that should not be touched) but also to very elegant solutions (like the dynamic property resolution of Core Data objects via `NSManagedObject`, `NSUndoManager`, `UIAppearance` and many other features that you love in Apple's frameworks). [It *is* a difficult topic, and even people from Apple's UIKit team are wary of the dangers.](https://twitter.com/smileyborg/status/735247732877582337)
+- [Swift in its current form is in many ways more like C++ in that it is quite static][dynamic-swift-2]. There is no dynamic message sending and the runtime allows fewer changes than Objective-C. In the past this has led to both huge problems (such as optimization issues or monkey-patching code that should not be touched) but also to very elegant solutions (like the dynamic property resolution of Core Data objects via `NSManagedObject`, `NSUndoManager`, `UIAppearance` and many other features that you love in Apple's frameworks). [It _is_ a difficult topic, and even people from Apple's UIKit team are wary of the dangers.](https://twitter.com/smileyborg/status/735247732877582337)
 
-*  Using Swift without [binary compatibility][swift-abi] would mean that we have to offload technical details to our customers and restrict them in their choice of Xcode to a point where they might not be able to update to Xcode 7.3.1 if our SDK is still compiled with 7.3.0. Each minor compiler version change can produce code that is not compatible with other versions. This is additional technical complexity that we do not want to burden our customers with. We know that we are an edge case. For most projects this doesn't matter as much. We also fully believe that delaying the stable Swift ABI is a good thing. It's inconvenient in the short-term, but [will result in a better language in the long-term][ABI-apology-greg-parker]. Our customers also care about a small binary size and might not like 6 MB additional payload per architecture for Swift. As we always support the latest two iOS versions, this means that we probably can't use Swift for at least another two years.
+- Using Swift without [binary compatibility][swift-abi] would mean that we have to offload technical details to our customers and restrict them in their choice of Xcode to a point where they might not be able to update to Xcode 7.3.1 if our SDK is still compiled with 7.3.0. Each minor compiler version change can produce code that is not compatible with other versions. This is additional technical complexity that we do not want to burden our customers with. We know that we are an edge case. For most projects this doesn't matter as much. We also fully believe that delaying the stable Swift ABI is a good thing. It's inconvenient in the short-term, but [will result in a better language in the long-term][ABI-apology-greg-parker]. Our customers also care about a small binary size and might not like 6 MB additional payload per architecture for Swift. As we always support the latest two iOS versions, this means that we probably can't use Swift for at least another two years.
 
 We use Swift more and more when writing tests and example code and really like it. At the same time we're worried about the Xcode 8 transition and the additional complexity this burdens on our team. While the ABI is still in flux we can't use Swift in our main SDK. Instead we decided to use Objective-C++ to complement pure Objective-C where appropriate.
 
 Many people are afraid of this step as it sounds like a very complicated thing to do: Adding C++ in your code, a language that can be very complex — hard to learn and even harder to master — makes it seem like a lot of time and effort. But it really isn't. Instead of thinking about Objective-C++ as Objective-C with C++, rather think about Objective-C++ as a small language addition to Objective-C. In our Objective-C classes, we only use a very tiny amount of C++ to benefit from the convenience, safety, and performance features of C++. In contrast to full blown C++ implementations, learning a small subset for use in a mainly Objective-C codebase is very easy, even for developers without any prior C++ experience.
-
 
 ## Getting started with Objective-C++
 
@@ -43,7 +37,6 @@ Let's have a look at the steps needed to use Objective-C++ in your project, assu
 It's really that simple. Objective-C is highly interoperable with C++. You don't need to setup anything or alter your build settings at all. Granted, not all C code is valid C++ code. You might need to add a few additional casts, but you'll mostly be fine. Xcode 7 does [not yet](http://lists.llvm.org/pipermail/cfe-commits/Week-of-Mon-20140929/115672.html) support modules in Objective-C++, so you’ll have to use the older `#import` syntax instead of `@import`.
 
 Now that we see that it is actually very easy to support Objective-C++ in your applications, let's have a look at what we can do with it. Here are our favorite features.
-
 
 ### auto
 
@@ -72,7 +65,6 @@ auto allAnnotationsDict = [document allAnnotationsOfType:PSPDFAnnotationTypeAll]
 
 Much better — and it's still obvious what `allAnnotationsDict` is. `auto` will transform at compile time to the above — it doesn't require any runtime features. Joe Groff from the Swift compiler team mentioned that [top-of-tree clang now supports `__auto_type` for type inference in plain C and ObjC](https://twitter.com/jckarter/status/735887898717741060) - so eventually you can use this without even paying the C++ compile time overhead.
 
-
 ### Inline blocks
 
 Consider this inline block that processes an annotation for saving. It requires three parameters, which makes the declaration almost unbearably long. You would usually change this into a helper function — but that can't capture variables and might make things even more complex.
@@ -93,7 +85,6 @@ auto processAnnotation = ^(PSPDFAnnotation *annotation, BOOL addToIndex, NSUInte
 	// code
 };
 ```
-
 
 ### let
 
@@ -116,7 +107,6 @@ You could even go more crazy and use a macro:
 
 let password = @"test123";
 ```
-
 
 ### vector
 
@@ -295,7 +285,6 @@ if (const auto nav = controller.navigationController) {
 
 There are [many useful algorithms in the standard template library](http://www.cplusplus.com/reference/algorithm/). Instead of a code snippet, [watch the C++ Seasoning talk from Sean Parent](https://channel9.msdn.com/Events/GoingNative/2013/Cpp-Seasoning) - it will blow your mind.
 
-
 ### Gotchas and downsides
 
 You probably knew this was coming: What are the downsides of all these easy tweaks? We don't want to lie to you, there are a couple of them, but we think the benefits outweigh the issues by far.
@@ -325,7 +314,7 @@ C++ loves copying things. Consider this code:
 self.values.emplace_back(5);
 ```
 
-This code has no effect. The property will return a *copy* of the vector which you mutate, and which will be destructed right after the call. There are many ways to fix this — using a shared pointer is one solution:
+This code has no effect. The property will return a _copy_ of the vector which you mutate, and which will be destructed right after the call. There are many ways to fix this — using a shared pointer is one solution:
 
 ```objc
 @property (nonatomic) std::shared_ptr<std::vector<int>> values;
@@ -351,7 +340,6 @@ In Swift, there's a `@noescape` declaration that allows the compiler to optimize
 
 Of course we submitted [rdar://25737301](http://openradar.appspot.com/25737301) for that, and there's also a [Swift proposal](https://github.com/apple/swift-evolution/blob/master/proposals/0012-add-noescape-to-public-library-api.md) to add this to the Objective-C side of the language — so this is likely something that we'll see soon.
 
-
 ### Dot syntax
 
 This is a controversial topic. We use dot syntax for any method that does not have side effects — even if it is not declared as a property:
@@ -368,7 +356,7 @@ Apple converted many methods that should have been properties, but which simply 
 
 ### map, filter, flatMap
 
-The bread and butter data structures like `NSArray` and `NSSet` really miss higher order functions. While there are *some* useful methods, they really are perversely long and not convenient to use.
+The bread and butter data structures like `NSArray` and `NSSet` really miss higher order functions. While there are _some_ useful methods, they really are perversely long and not convenient to use.
 
 Consider this code that collects selected annotations from page views:
 
@@ -415,7 +403,6 @@ The whole helper is very straightforward. There are variants out there that retu
 
 We have similar methods available for things like filter or map, together with a bunch of other helpers like `-[NSArray pspdf_mutatedArrayUsingBlock:]` to encapsulate a lot of boiler plate code that everybody has written hundreds of times. While our helpers are currently not open source, there are quite a few open source projects that can help. [BlocksKit has quite a nice implementation of the above.][blockskit]
 
-
 ## Conclusion
 
 We use the methods mentioned in this post on a daily basis inside [PSPDFKit](https://pspdfkit.com/) and are convinced that it makes our code not only more readable but also increases the safety of the codebase. Many of the aforementioned approaches also speed up development time, as we no longer have to write the same boiler plate code over and over again — something all too common when working with Objective-C development. There are many other apps and frameworks that use Objective-C++. [Realm Cocoa](https://github.com/realm/realm-cocoa/tree/master/Realm), [Paper by FiftyThree](https://www.fiftythree.com/), [RxPromise](https://github.com/couchdeveloper/RXPromise), [Dropbox Djinni](https://github.com/dropbox/djinni), [Facebook's ComponentKit](https://github.com/facebook/componentkit) and [Pop](https://github.com/facebook/pop) — even many frameworks from Apple such as Core Graphics, [WebKit/WKWebView](https://github.com/WebKit/webkit/blob/master/Source/WebKit2/UIProcess/API/Cocoa/WKWebView.mm) or [the Objective-C runtime itself](https://github.com/opensource-apple/objc4/tree/master/runtime).
@@ -424,16 +411,16 @@ Thanks to some fantastic folks on Twitter that helped reviewing and improving th
 
 Made it till the end? Enjoy working on hard problems? [We are a remote company and hiring.](/careers)
 
-*Update*: We’ve published a second article, “[Even Swiftier Objective-C](/blog/2017/even-swiftier-objective-c/)”, that builds on the information presented herein, and includes information presented at the 2017 WWDC.
+_Update_: We’ve published a second article, “[Even Swiftier Objective-C](/blog/2017/even-swiftier-objective-c/)”, that builds on the information presented herein, and includes information presented at the 2017 WWDC.
 
 ## Further reading
 
-* [Smart Pointers][smart-pointers]
-* [Apple's (sadly deleted, but archived) documentation on Objective-C++](https://web.archive.org/web/20101203170217/http://developer.apple.com/library/mac/#/web/20101204020949/http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjectiveC/Articles/ocCPlusPlus.html) (Apple is using ObjC++ extensively in various system frameworks like Core Graphics and many parts of Xcode are written in it, so unlike the documentation, [it won't go away.](https://programmers.stackexchange.com/questions/80166/is-objective-c-being-phased-out))
-* [Resource Acquisition Is Initialization][raii]
-* [Talk by @steipete: [Objective] C++: What Could Possibly Go Wrong?](https://realm.io/news/altconf-peter-steinberger-objective-c++-what-could-possibly-go-wrong/)
-* [ComponentKit: Why C++](http://componentkit.org/docs/why-cpp.html)
-* [Effective Modern C++ (book)](https://www.amazon.com/Effective-Modern-Specific-Ways-Improve/dp/1491903996)
+- [Smart Pointers][smart-pointers]
+- [Apple's (sadly deleted, but archived) documentation on Objective-C++](https://web.archive.org/web/20101203170217/http://developer.apple.com/library/mac/#/web/20101204020949/http://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjectiveC/Articles/ocCPlusPlus.html) (Apple is using ObjC++ extensively in various system frameworks like Core Graphics and many parts of Xcode are written in it, so unlike the documentation, [it won't go away.](https://programmers.stackexchange.com/questions/80166/is-objective-c-being-phased-out))
+- [Resource Acquisition Is Initialization][raii]
+- [Talk by @steipete: [Objective] C++: What Could Possibly Go Wrong?](https://realm.io/news/altconf-peter-steinberger-objective-c++-what-could-possibly-go-wrong/)
+- [ComponentKit: Why C++](http://componentkit.org/docs/why-cpp.html)
+- [Effective Modern C++ (book)](https://www.amazon.com/Effective-Modern-Specific-Ways-Improve/dp/1491903996)
 
 [cross-platform]: /blog/2016/a-pragmatic-approach-to-cross-platform/
 [smart-pointers]: https://mbevin.wordpress.com/2012/11/18/smart-pointers "Smart Pointers Explained"

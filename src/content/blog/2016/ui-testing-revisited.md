@@ -1,17 +1,13 @@
 ---
-title: 'UI testing on iOS, without busy waiting'
-pubDate: 2016-09-29T15:00:00.000Z
-description: >-
-  At PSPDFKit, we've been using KIF since 2014 to test UI components. This
-  article revisits our UI testing approach and discusses alternatives.
+title: "UI testing on iOS, without busy waiting"
+pubDatetime: 2016-09-29T15:00:00.000Z
+description: "Comprehensive guide to effective UI testing on iOS using KIF framework without busy waiting and performance optimization techniques."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 At PSPDFKit, we've been using [KIF ("Keep It Functional")](https://github.com/kif-framework/KIF) since 2014 to test UI components. [We wrote about our process in April 2016](/blog/2016/running-ui-tests-with-ludicrous-speed/), and it's time to revisit. KIF is a good and proven solution. It mostly synthesizes `UITouch` objects or related events and the app processes it just as if the user would tap. KIF is compiled into your app and can run in tandem with other XCTests. You can mix `XCTAssert*` calls and UI instructions.
 
@@ -31,13 +27,13 @@ Apple released tools for UI automation all the way back in iOS 4. It was called 
 
 ## XCUI
 
-With Xcode 7 Apple gave us API to app UI, that can be used from Objective-C and Swift. No more JavaScript. It's also for iOS and macOS, where `UIAutomation` was iOS specific. XCUI is quite awesome and even can [automatically record tests](https://www.bignerdranch.com/blog/ui-testing-in-xcode-7-part-1-ui-testing-gotchas/) for you. 
+With Xcode 7 Apple gave us API to app UI, that can be used from Objective-C and Swift. No more JavaScript. It's also for iOS and macOS, where `UIAutomation` was iOS specific. XCUI is quite awesome and even can [automatically record tests](https://www.bignerdranch.com/blog/ui-testing-in-xcode-7-part-1-ui-testing-gotchas/) for you.
 
 Tests in XCUI run in a separate process. This is good in a way that you're testing closer to what you ship to your users and bad in the way that it makes it [very hard to mock data](http://stackoverflow.com/a/33310781/83160) or test model assumptions - which really is how we build almost all of our tests. And if you use workarounds that allow data mocking, you risk polluting your app with test data.
 
 XCUI also [didn't solve the synchronization problem](http://masilotti.com/ui-testing-xcode-7/) and the documentation recommends using [`func expectation(for predicate: NSPredicate, evaluatedWith object: Any, handler: XCPredicateExpectationHandler? = nil) -> XCTestExpectation`](https://developer.apple.com/reference/xctest/xctestcase/1500569-expectationforpredicate).
 
->The expectation periodically evaluates the predicate and also may use notifications or other events to optimistically re-evaluate.
+> The expectation periodically evaluates the predicate and also may use notifications or other events to optimistically re-evaluate.
 
 This is similar to our [`PSPDFWaitForConditionWithTimeout`](/blog/2016/running-ui-tests-with-ludicrous-speed/) helper that we use in KIF.
 
@@ -68,5 +64,5 @@ But don't trust us - see for yourself! We have an open source project that compa
 
 ## Further reading
 
-*  [WWDC 2015: UI Testing in Xcode](https://developer.apple.com/videos/play/wwdc2015/406/)
-*  [Three Ways UI Testing Just Made Test-Driven Development Even Better](http://masilotti.com/ui-testing-tdd/)
+- [WWDC 2015: UI Testing in Xcode](https://developer.apple.com/videos/play/wwdc2015/406/)
+- [Three Ways UI Testing Just Made Test-Driven Development Even Better](http://masilotti.com/ui-testing-tdd/)

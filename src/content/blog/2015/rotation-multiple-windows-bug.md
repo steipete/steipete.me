@@ -1,7 +1,7 @@
 ---
 title: "The curious case of rotation with multiple windows on iOS 8"
-pubDate: 2015-01-25T21:25:00.000Z
-description: "Journey with me as I diagnose and solve a perplexing iOS 8 regression where rotation occurs despite interface configurations explicitly prohibiting it. Through careful analysis of UIKit's decompiled code across iOS 7.1 and 8.1, I uncover how Apple's changes to UIWindow rotation handling break apps using multiple windows. This technical deep-dive reveals the core problem and presents a practical workaround that hides the rootViewController during window transitions to bypass the rotation issue without affecting iOS 7 compatibility."
+pubDatetime: 2015-01-25T21:25:00.000Z
+description: "Diagnose and solve an iOS 8 regression where unwanted rotation occurs in apps using multiple windows despite explicit configuration."
 tags:
   - iOS-Development
   - UIKit

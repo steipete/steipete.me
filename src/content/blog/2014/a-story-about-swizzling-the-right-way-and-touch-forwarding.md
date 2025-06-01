@@ -1,7 +1,7 @@
 ---
-title: "A Story About Swizzling \"the Right Way™\" and Touch Forwarding"
-pubDate: 2014-07-04T12:17:00.000Z
-description: "Dive into the intricacies of method swizzling in Objective-C as I troubleshoot a mysterious crash that occurs when my Aspects library interacts with New Relic's SDK. I explore how UIKit's touch forwarding system relies on the _cmd parameter, which traditional swizzling breaks by changing selector references. Through detailed analysis of the iOS runtime's touch handling mechanisms, I demonstrate a better swizzling approach that preserves _cmd integrity. This technical deep-dive includes disassembly of UIKit's forwardTouchMethod function and practical code examples for safer method replacement."
+title: 'A Story About Swizzling "the Right Way™" and Touch Forwarding'
+pubDatetime: 2014-07-04T12:17:00.000Z
+description: "Learn why traditional method swizzling breaks UIKit's touch forwarding and discover a better approach that preserves _cmd integrity."
 tags:
   - iOS-Development
   - Objective-C
@@ -17,17 +17,17 @@ AIDescription: true
 
 Some people think of me as the guy that does [crazy things to ObjC and swizzles everything](https://www.youtube.com/watch?v=psPNxC3G_hc). Not true. In [PSPDFKit](http://pspdfkit.com/) I'm actually quite conservative, but I do enjoy spending time with the runtime working on things such as [Aspects - a library for aspect oriented programming](https://github.com/steipete/Aspects).
 
-After my initial excitement, things have stalled a bit. I shipped Aspects in our PDF framework, and people started complaining that it *sometimes* freezes the app, basically [looping deep within the runtime, when the New Relic SDK was also linked](https://github.com/steipete/Aspects/issues/21).
+After my initial excitement, things have stalled a bit. I shipped Aspects in our PDF framework, and people started complaining that it _sometimes_ freezes the app, basically [looping deep within the runtime, when the New Relic SDK was also linked](https://github.com/steipete/Aspects/issues/21).
 
 Of course I tried to fix this. Contacting New Relic didn't bring any results at first, even after two paying customers started to report the same issue. After periodically bugging them for over a month I finally got a non-canned response, pointing me to [a blog entry about method swizzling](http://blog.newrelic.com/2014/04/16/right-way-to-swizzle/).
 
-This basically says that using `method_exchangeImplementations` is really bad, and that pretty much *everybody* does swizzling wrong. And they indeed have a point. Regular swizzling messes not only with your brain but also with assumptions that the runtime makes. Suddenly `_cmd` no longer is what it is supposed to be, and while in most cases it does not matter, there are a few cases where it does very much.
+This basically says that using `method_exchangeImplementations` is really bad, and that pretty much _everybody_ does swizzling wrong. And they indeed have a point. Regular swizzling messes not only with your brain but also with assumptions that the runtime makes. Suddenly `_cmd` no longer is what it is supposed to be, and while in most cases it does not matter, there are a few cases where it does very much.
 
 ### How most people swizzle (including me)
 
 This is the swizzling helper that I've used during the last few years:
 
-``` objective-c
+```objective-c
 BOOL PSPDFReplaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
     PSPDFAssert(c && origSEL && newSEL && block);
     if ([c respondsToSelector:newSEL]) return YES; // Selector already implemented, skip
@@ -55,13 +55,14 @@ BOOL PSPDFReplaceMethodWithBlock(Class c, SEL origSEL, SEL newSEL, id block) {
 
 This is a very common approach, with a small twist that it takes a block and uses `imp_implementationWithBlock` to create an IMP trampoline out of it. Usage is as follows:
 
-``` objective-c
+```objective-c
 SEL touchesMovedSEL = NSSelectorFromString(@"pspdf_wacomTouchesMoved:withEvent:");
 PSPDFWacomSwizzleMethodWithBlock(viewClass, @selector(touchesMoved:withEvent:), touchesMovedSEL, ^(UIView *_self, NSSet *touches, UIEvent *event) {
     [WacomManager.getManager.currentlyTrackedTouches moveTouches:touches knownTouches:[event touchesForView:_self] view:_self];
     ((void ( *)(id, SEL, NSSet *, UIEvent *))objc_msgSend)(_self, touchesMovedSEL, touches, event); // call the original method
 });
 ```
+
 (Yes, Wacom's framework for stylus support is horrible. There are way better ways to hook into touch handling, such as subclassing `UIApplication`'s `sendEvent:`.)
 
 Note the cast to `objc_msgSend`. While this (by luck) worked without casting in the earlier days, this will probably crash your arm64 build if you don't cast this correctly, because the variable argument casting specifications changed. Add [`#define OBJC_OLD_DISPATCH_PROTOTYPES 0`](https://twitter.com/gparker/status/236582488355520512) to your files to make sure this is detected at compile time, or even better, use Xcode 6 and enable error checking on this:
@@ -95,7 +96,7 @@ Somehow UIKit wants to call `pspdf_wacomTouchesMoved:withEvent:` on a class that
 The base class for `UIView` is `UIResponder`, and it implements all basic touch handling:
 (Note: I don't have access to the UIKit sources, so this might not be 100% accurate. The snippets are based on disassembling UIKit and manually converting this back to C.)
 
-``` objective-c
+```objective-c
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     forwardTouchMethod(self, _cmd, touches, event);
 }
@@ -103,7 +104,7 @@ The base class for `UIView` is `UIResponder`, and it implements all basic touch 
 
 Here it gets interesting. `_cmd` is used directly in this C function that (at least the name suggests) then forwards our touches up the responder chain. But let's keep digging, just to make sure. For curiosity's sake, I translated the whole function, including legacy behavior. (I don't remember any announcement where Apple changed this in iOS 5. Is this somewhere documented? [Hit me up on Twitter if you know more.](http://twitter.com/steipete))
 
-``` objective-c
+```objective-c
 static void forwardTouchMethod(id self, SEL _cmd, NSSet *touches, UIEvent *event) {
 	// The responder chain is used to figure out where to send the next touch
     UIResponder *nextResponder = [self nextResponder];
@@ -144,8 +145,7 @@ Forwarding using `_cmd` is not restricted to touch handling at all - on the Mac 
 
 Our naive use of `method_exchangeImplementations()` broke the `_cmd` assumption and resulted in a crash. How can we fix this? New Relic suggested using the direct method override. Let's try that:
 
-
-``` objective-c
+```objective-c
 __block IMP originalIMP = PSPDFReplaceMethodWithBlock(viewClass, @selector(touchesMoved:withEvent:), ^(UIView *_self, NSSet *touches, UIEvent *event) {
     [WacomManager.getManager.currentlyTrackedTouches moveTouches:touches knownTouches:[event touchesForView:_self] view:_self];
      ((void ( *)(id, SEL, NSSet *, UIEvent *))originalIMP)(_self, @selector(touchesMoved:withEvent:), touches, event);
@@ -182,10 +182,10 @@ If you read trough the whole article and are wondering why I'm not simply subcla
 
 Further Reading:
 
-*  [Mike Ash: Method Replacement for Fun and Profit (also read the comments!)](http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html).
-*  [Documentation for MSHookMessageEx](http://www.cydiasubstrate.com/api/c/MSHookMessageEx/)
-*  [New Relic's "The Right Way to Swizzle in Objective-C"](http://blog.newrelic.com/2014/04/16/right-way-to-swizzle/)
-*  [UIKit Headers](https://github.com/nst/iOS-Runtime-Headers/tree/master/Frameworks/UIKit.framework)
-*  [Hopper Disassembler](http://www.hopperapp.com/)
-*  [i386 Addressing Modes and Assembler Instructions](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/060-i386_Addressing_Modes_and_Assembler_Instructions/i386_intructions.html#//apple_ref/doc/uid/TP30000825-TPXREF101)
-*  [IA-32 Function Calling Conventions](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/LowLevelABI/130-IA-32_Function_Calling_Conventions/IA32.html#//apple_ref/doc/uid/TP40002492-SW4)
+- [Mike Ash: Method Replacement for Fun and Profit (also read the comments!)](http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html).
+- [Documentation for MSHookMessageEx](http://www.cydiasubstrate.com/api/c/MSHookMessageEx/)
+- [New Relic's "The Right Way to Swizzle in Objective-C"](http://blog.newrelic.com/2014/04/16/right-way-to-swizzle/)
+- [UIKit Headers](https://github.com/nst/iOS-Runtime-Headers/tree/master/Frameworks/UIKit.framework)
+- [Hopper Disassembler](http://www.hopperapp.com/)
+- [i386 Addressing Modes and Assembler Instructions](https://developer.apple.com/library/mac/documentation/DeveloperTools/Reference/Assembler/060-i386_Addressing_Modes_and_Assembler_Instructions/i386_intructions.html#//apple_ref/doc/uid/TP30000825-TPXREF101)
+- [IA-32 Function Calling Conventions](https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/LowLevelABI/130-IA-32_Function_Calling_Conventions/IA32.html#//apple_ref/doc/uid/TP40002492-SW4)

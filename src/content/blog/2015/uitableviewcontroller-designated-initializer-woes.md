@@ -1,7 +1,7 @@
 ---
 title: "UITableViewController designated initializer woes"
-pubDate: 2015-04-15T09:15:00.000Z
-description: "Explore a subtle but frustrating change in iOS 8.3 where Apple designated three initializers in UITableViewController, creating complications for proper subclassing. I examine how Apple's inconsistent implementation breaks the initializer chain when trying to follow best practices by marking superclass initializers as unavailable. This technical deep dive explains the conflict between UITableViewController's internal call order and Objective-C's designated initializer pattern, resulting in unexpected behavior. I present practical workarounds using compiler directives, with insights into how this issue originated from Swift's stricter initialization requirements."
+pubDatetime: 2015-04-15T09:15:00.000Z
+description: "Navigate the complications of subclassing UITableViewController after iOS 8.3 introduced designated initializers that break proper initialization patterns."
 tags:
   - iOS-Development
   - UIKit
@@ -21,7 +21,7 @@ This is a good thing. It's far too easy to break the initializer chain, even tho
 
 With iOS 8.3, Apple made a modification in `UITableViewController` that by now, every one using this class will have seen. `initWithStyle:` is now a designated initializer. And while throughout the beta period, this was the only designated one, the GM suddenly added both `initWithNibName:bundle:` and `initWithCoder:` to the list as well - making this class quite inconvenient to subclass.
 
-Most of your subclasses will have their own designated initializer since they likely depend on some object at initialization time. If that's the case, you generally want to prevent users from calling the *wrong* initializer, even if they are marked designated in the superclass.
+Most of your subclasses will have their own designated initializer since they likely depend on some object at initialization time. If that's the case, you generally want to prevent users from calling the _wrong_ initializer, even if they are marked designated in the superclass.
 
 A common idiom to do this is to declare them unavailable:
 
@@ -44,6 +44,7 @@ This is very unfortunate, and I assume it's not easy to correct since there sure
 What other ways are there do deal with it? Did I miss something here?
 
 <br><br>
+
 <hr>
 <a name="footnote1"></a>
 1. To be correct, [Clang commit r196314](http://lists.cs.uiuc.edu/pipermail/cfe-commits/Week-of-Mon-20131202/094628.html) landed in Xcode 5.1, so technically this already had support for designated initializers by using the `objc_designated_initializer` attribute directly.

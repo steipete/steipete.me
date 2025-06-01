@@ -1,9 +1,7 @@
 ---
-title: 'Marzipan: Porting iOS Apps to the Mac'
-pubDate: 2018-09-20T12:00:00.000Z
-description: >-
-  With macOS Mojave, Apple is adding support to run UIKit apps on macOS without
-  the requirement of rewriting the UI in AppKit. While this isn’t yet s...
+title: "Marzipan: Porting iOS Apps to the Mac"
+pubDatetime: 2018-09-20T12:00:00.000Z
+description: "Explores Apple's Marzipan technology for running UIKit apps on macOS and how to experiment with it before official third-party support."
 tags:
   - iOS
   - macOS
@@ -12,18 +10,15 @@ source: pspdfkit.com
 AIDescription: true
 ---
 
-
-
 With macOS Mojave, Apple is adding support to run UIKit apps on macOS without the requirement of rewriting the UI in AppKit. While this isn’t yet something that’s officially supported for third-party developers, let’s explore what to expect in 2019 and how to try it out today.
 
-This article is based on a talk (below) I presented at try! Swift New York called “Hacking Marzipan.” You can find [the slides on SpeakerDeck][].  
+This article is based on a talk (below) I presented at try! Swift New York called “Hacking Marzipan.” You can find [the slides on SpeakerDeck][].
 
 {% youtube https://www.youtube.com/watch?v=2OuQarA0a7I %}
 
 Be sure to also check out [other great videos on their YouTube channel][].
 
-*⚠️ Warning: Exploring the iOSMac platform requires hacks that weaken the security of your Mac, so you should use a separate machine to explore this new technology. Do not distribute iOSMac apps just yet — the underlying frameworks are still private and are likely subject to change.*
-
+_⚠️ Warning: Exploring the iOSMac platform requires hacks that weaken the security of your Mac, so you should use a separate machine to explore this new technology. Do not distribute iOSMac apps just yet — the underlying frameworks are still private and are likely subject to change._
 
 # What Is Marzipan?
 
@@ -58,7 +53,7 @@ Apple is testing this new platform in stages. macOS Mojave delivers Phase 1 with
 
 ## [marzipan_hook][]
 
-Michał Kałużny’s hack was one of the first and deserves a special mention. It piggybacks on Apple’s iOSMac apps and *injects* your code into an app to convert it into your own app, much like a virus entering your cells and causing it to do things the cell wasn’t made for. This is not an approach that scales, but Kałużny gets points for creativity!
+Michał Kałużny’s hack was one of the first and deserves a special mention. It piggybacks on Apple’s iOSMac apps and _injects_ your code into an app to convert it into your own app, much like a virus entering your cells and causing it to do things the cell wasn’t made for. This is not an approach that scales, but Kałużny gets points for creativity!
 
 ## [MarzipanPlatter][]
 
@@ -95,7 +90,7 @@ For the hack used here, you also need to disable sandboxing. Apple controls whic
 
 The iOSMac platform requires GPU acceleration and simply exits when this is not available.
 
-**Update:** It seems that Apple is actively working on this deficiency. As of Mojave Beta 11, *some* apps, including Home and PDF Viewer for Mac, now run inside a VM, while News still fails to load. Shoutout to [Michael Thomas][] for pinging me about this change!
+**Update:** It seems that Apple is actively working on this deficiency. As of Mojave Beta 11, _some_ apps, including Home and PDF Viewer for Mac, now run inside a VM, while News still fails to load. Shoutout to [Michael Thomas][] for pinging me about this change!
 
 ![](/assets/img/2018/porting-ios-apps-to-mac-marzipan-iosmac-uikit-appkit/mojave-vm.png)
 
@@ -208,7 +203,6 @@ If any dependency loads AppKit into your process, iOSMac will refuse to load unl
 ```
 
 In our case, `Photos.framework` caused AppKit to be loaded, and the only fix I found was to remove Photos and any of the references to it in the application. (We use it to select images for image annotations. However, this is a minor feature and the app will work great without it.)
-
 
 ```
 otool -L /System/Library/Frameworks/Photos.framework/Photos

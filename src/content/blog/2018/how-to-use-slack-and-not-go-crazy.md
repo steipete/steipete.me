@@ -1,17 +1,12 @@
 ---
 title: How to Use Slack and Not Go Crazy
-pubDate: 2018-06-21T12:00:00.000Z
-description: >-
-  Communicating well is one of the [key attributes of highly effective
-  teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40
-  peopl...
+pubDatetime: 2018-06-21T12:00:00.000Z
+description: "Best practices for using Slack effectively in a distributed team without getting overwhelmed by notifications and channels."
 tags:
   - Company
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Communicating well is one of the [key attributes of highly effective teams](https://web-preview.pspdfkit.com/d/rwgppre). We currently have 40 people at PSPDFKit, and because we’re spread across many countries and time zones, it’s a challenge to keep everyone in the loop. For a long time, we were small enough that email worked well. As we grew, we progressed to a single room in [Campfire](https://basecamp.com/retired/campfire) (now retired). But eventually we moved — like so many other companies — to Slack.
 
@@ -27,7 +22,7 @@ We understand some of this reasoning, but ultimately, we decided we want to keep
 
 It took a good while to get the most out of Slack. Initially, our public channels were very silent, as most communication took place in DMs. This caused a lot of interruptions to my day-to-day work, because people treated it like a chat and expected a fast response. To counter this, we began to push people toward using public channels, even when they just wanted to talk to one person. The motto was, everything that doesn’t have to be discussed by only two people should happen in the main channel that everyone could see. And often, the questions people had could be answered by more than one person, which resulted in less stress overall.
 
->I had always evaluated Slack from the point of view of “Does it make me more productive?” and “Does it help my team ship a better product?”. I had never considered the more important question “Does Slack make me look and feel like a dick?”
+> I had always evaluated Slack from the point of view of “Does it make me more productive?” and “Does it help my team ship a better product?”. I had never considered the more important question “Does Slack make me look and feel like a dick?”
 
 -- Dave Teare, AgileBits.
 
@@ -77,7 +72,7 @@ Feel free to use our emojis: [pspdfkit-slack-emoji.zip](/images/blog/2018/how-to
 
 ## Remind Me about This
 
-Slackbot has a built-in reminder. Treat it as a lightweight to-do list that you shouldn’t keep around for long. It’s great if you stumble upon something that requires follow-up work but don’t want to switch context right away. 
+Slackbot has a built-in reminder. Treat it as a lightweight to-do list that you shouldn’t keep around for long. It’s great if you stumble upon something that requires follow-up work but don’t want to switch context right away.
 
 ![Remind Me About This UI](/assets/img/2018/how-to-use-slack-and-not-go-crazy/remind-me.png)
 
@@ -90,13 +85,13 @@ It’s very easy to overuse DMs and see Slack as a real-time chat. In the defaul
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">PSA: when sending a slack to a busy person, never say “hi” and wait for a response before typing what you need to say.</p>&mdash; Eric Sammer (@esammer) <a href="https://twitter.com/esammer/status/999705305888899072?ref_src=twsrc%5Etfw">May 24, 2018</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Instead of DM, consider writing an email. If it doesn’t require an immediate response, don’t DM. Email is amazing. There are no notifications. (If you really get a notification for every new email, I don’t know how you get *anything* done.) Plus, it better pushes longform conversations. You can even say “Hi” at the beginning :)
+Instead of DM, consider writing an email. If it doesn’t require an immediate response, don’t DM. Email is amazing. There are no notifications. (If you really get a notification for every new email, I don’t know how you get _anything_ done.) Plus, it better pushes longform conversations. You can even say “Hi” at the beginning :)
 
 (In the NSSpain talk, I made the argument to just see DM as async, but as my team pointed out, “It’s hard to ignore a phone when it rings 😉.”)
 
 If it’s about a larger project, just create a new channel! DMs can’t easily be “lifted” to include more people, so often you start a conversation, realize you need someone else, and then have to copy or write it all again. Just make ad-hoc channels.
 
-Oh, and if you’re about to write something longer, consider using a Google Doc. Or — again — good old email. 
+Oh, and if you’re about to write something longer, consider using a Google Doc. Or — again — good old email.
 
 <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">I know it&#39;s cool to hate on email but sometimes I wake up to 176 Slack notifications and think pls pls condense this into a coherent email</p>&mdash; Lauren Goode (@LaurenGoode) <a href="https://twitter.com/LaurenGoode/status/636264527034646528?ref_src=twsrc%5Etfw">August 25, 2015</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -121,7 +116,7 @@ For calls with more than two people, we mostly switch to [zoom.us](https://zoom.
 
 ## Notifications & Focus
 
-We encourage people to be mindful about notifications. No DM is so important that it can’t wait half an hour. In fact, I see this still underused. Slack has a Do Not Disturb feature and Atlassian’s HipChat successor, Stride, made this one of its cornerstones, which they refer to a “Focus Mode.” If something is really urgent, people will call you *on your phone*. Everything else can wait a bit. Uninterrupted time is important — don’t let Slack take that away from you because someone is bored and asks you how your day is.
+We encourage people to be mindful about notifications. No DM is so important that it can’t wait half an hour. In fact, I see this still underused. Slack has a Do Not Disturb feature and Atlassian’s HipChat successor, Stride, made this one of its cornerstones, which they refer to a “Focus Mode.” If something is really urgent, people will call you _on your phone_. Everything else can wait a bit. Uninterrupted time is important — don’t let Slack take that away from you because someone is bored and asks you how your day is.
 
 <img src="/images/blog/2018/how-to-use-slack-and-not-go-crazy/snooze.png" alt="Snooze" width="50%">
 

@@ -8,12 +8,12 @@ export async function getStaticPaths() {
   // Return a fixed set of routes for testing
   return [
     {
-      params: { year: '2020', month: '01', day: '01', slug: 'test' },
-      props: {}
-    }
+      params: { year: "2020", month: "01", day: "01", slug: "test" },
+      props: {},
+    },
   ];
 }
 
 // Redirect to the blog homepage
-return Astro.redirect('/blog/', 301);
+return Astro.redirect("/blog/", 301);
 ---

@@ -1,13 +1,15 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
   // Get all blog posts
-  const allPosts = await getCollection('blog');
+  const allPosts = await getCollection("blog");
   const sortedPosts = allPosts.sort(
-    (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
+    (a, b) =>
+      new Date(b.data.pubDatetime).valueOf() -
+      new Date(a.data.pubDatetime).valueOf(),
   );
 
   // Define pagination
@@ -25,8 +27,8 @@ export async function getStaticPaths() {
       props: {
         posts: sortedPosts.slice(start, end),
         currentPage: pageNumber,
-        totalPages
-      }
+        totalPages,
+      },
     };
   });
 }
@@ -39,49 +41,59 @@ const { posts, currentPage, totalPages } = Astro.props;
     <h1 class="page-title">Blog Posts</h1>
 
     <div id="post-list">
-      {posts.map((post) => (
-        <div class="post-preview">
-          <h2>
-            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-          </h2>
+      {
+        posts.map((post) => (
+          <div class="post-preview">
+            <h2>
+              <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            </h2>
 
-          <div class="post-meta">
-            <i class="far fa-clock"></i>
-            <span class="post-date">
-              <FormattedDate date={post.data.pubDate} />
-            </span>
+            <div class="post-meta">
+              <i class="far fa-clock" />
+              <span class="post-date">
+                <FormattedDate date={post.data.pubDatetime} />
+              </span>
+            </div>
+
+            <div class="post-content">
+              <p>{post.data.description}</p>
+            </div>
+
+            <a href={`/blog/${post.id}/`} class="read-more">
+              Read more →
+            </a>
           </div>
-
-          <div class="post-content">
-            <p>{post.data.description}</p>
-          </div>
-
-          <a href={`/blog/${post.slug}/`} class="read-more">Read more →</a>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
     <div class="pagination">
-      {currentPage > 1 && (
-        <a href={`/blog${currentPage - 1 === 1 ? '' : '/' + (currentPage - 1)}`}>
-          ← Previous
-        </a>
-      )}
+      {
+        currentPage > 1 && (
+          <a
+            href={`/blog${currentPage - 1 === 1 ? "" : "/" + (currentPage - 1)}`}
+          >
+            ← Previous
+          </a>
+        )
+      }
 
-      {Array.from({ length: totalPages }).map((_, i) => (
-        <a
-          href={`/blog${i === 0 ? '' : '/' + (i + 1)}`}
-          class={currentPage === i + 1 ? 'active' : ''}
-        >
-          {i + 1}
-        </a>
-      ))}
+      {
+        Array.from({ length: totalPages }).map((_, i) => (
+          <a
+            href={`/blog${i === 0 ? "" : "/" + (i + 1)}`}
+            class={currentPage === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </a>
+        ))
+      }
 
-      {currentPage < totalPages && (
-        <a href={`/blog/${currentPage + 1}`}>
-          Next →
-        </a>
-      )}
+      {
+        currentPage < totalPages && (
+          <a href={`/blog/${currentPage + 1}`}>Next →</a>
+        )
+      }
     </div>
   </div>
 </BaseLayout>

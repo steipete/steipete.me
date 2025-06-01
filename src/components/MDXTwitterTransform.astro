@@ -9,8 +9,8 @@ const { content } = Astro.props;
 
 <script>
   // Find all Twitter and YouTube embed placeholders and replace them with the actual components
-  document.addEventListener('DOMContentLoaded', () => {
-    const mdxContent = document.querySelector('.mdx-content');
+  document.addEventListener("DOMContentLoaded", () => {
+    const mdxContent = document.querySelector(".mdx-content");
     if (!mdxContent) return;
 
     // Look for paragraphs with Twitter embeds
@@ -19,12 +19,12 @@ const { content } = Astro.props;
     const youtubeEmbedRegex = /{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %}/;
 
     // Find all paragraphs that might contain embeds
-    const paragraphs = mdxContent.querySelectorAll('p');
+    const paragraphs = mdxContent.querySelectorAll("p");
 
     let foundTwitterEmbeds = false;
     let foundYoutubeEmbeds = false;
 
-    paragraphs.forEach(paragraph => {
+    paragraphs.forEach((paragraph) => {
       const content = paragraph.innerHTML;
       const twitterMatch = content.match(twitterEmbedRegex);
       const youtubeMatch = content.match(youtubeEmbedRegex);
@@ -34,8 +34,8 @@ const { content } = Astro.props;
         const tweetUrl = twitterMatch[1];
 
         // Create a placeholder for the tweet
-        const placeholder = document.createElement('div');
-        placeholder.className = 'twitter-tweet-placeholder';
+        const placeholder = document.createElement("div");
+        placeholder.className = "twitter-tweet-placeholder";
         placeholder.dataset.tweetUrl = tweetUrl;
         placeholder.innerHTML = `
           <blockquote class="twitter-tweet">
@@ -45,26 +45,23 @@ const { content } = Astro.props;
 
         // Replace the paragraph with our placeholder
         paragraph.replaceWith(placeholder);
-      }
-      else if (youtubeMatch && youtubeMatch[1]) {
+      } else if (youtubeMatch && youtubeMatch[1]) {
         foundYoutubeEmbeds = true;
         let videoId = youtubeMatch[1];
 
         // Extract video ID from URL if needed
-        if (videoId.includes('youtube.com/watch')) {
+        if (videoId.includes("youtube.com/watch")) {
           const url = new URL(videoId);
-          videoId = url.searchParams.get('v') || '';
-        }
-        else if (videoId.includes('youtu.be/')) {
-          videoId = videoId.split('youtu.be/')[1]?.split('?')[0] || '';
-        }
-        else if (videoId.includes('youtube.com/embed/')) {
-          videoId = videoId.split('youtube.com/embed/')[1]?.split('?')[0] || '';
+          videoId = url.searchParams.get("v") || "";
+        } else if (videoId.includes("youtu.be/")) {
+          videoId = videoId.split("youtu.be/")[1]?.split("?")[0] || "";
+        } else if (videoId.includes("youtube.com/embed/")) {
+          videoId = videoId.split("youtube.com/embed/")[1]?.split("?")[0] || "";
         }
 
         // Create responsive container for the YouTube iframe
-        const container = document.createElement('div');
-        container.className = 'youtube-embed-container';
+        const container = document.createElement("div");
+        container.className = "youtube-embed-container";
         container.innerHTML = `
           <iframe
             width="560"
@@ -84,8 +81,8 @@ const { content } = Astro.props;
 
     // Only load the Twitter widgets script if we found Twitter embeds
     if (foundTwitterEmbeds) {
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
       script.async = true;
       document.head.appendChild(script);
     }

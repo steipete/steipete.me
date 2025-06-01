@@ -1,7 +1,7 @@
 ---
 title: "Adding Keyboard Shortcuts To UIAlertView"
-pubDate: 2013-03-06T22:38:00.000Z
-description: "Speed up your iOS development workflow by adding keyboard shortcuts to UIAlertView and UIActionSheet. Inspired by Flipboard's approach shared at NSConference, I demonstrate how to intercept keyboard events to make simulators respond to Enter and Escape keys. This technique uses private APIs and direct memory access, making it unsuitable for production apps, but it's a powerful developer productivity hack for testing. I provide a complete implementation with the necessary safety precautions for different iOS versions."
+pubDatetime: 2013-03-06T22:38:00.000Z
+description: "Add keyboard shortcuts to UIAlertView and UIActionSheet for faster simulator testing by intercepting keyboard events with Enter and Escape keys."
 tags:
   - iOS-Development
   - UIKit
@@ -18,7 +18,7 @@ I'm not even home from the more-than-excellent [NSConference](http://nsconferenc
 
 The actual hack is mostly based on [this blog post about intercepting the keyboard on iOS](http://nacho4d-nacho4d.blogspot.co.uk/2012/01/catching-keyboard-events-in-ios.html), and it's not pretty. I had to modify some constants to make it work on iOS 5/6:
 
-``` objective-c
+```objective-c
 #define GSEVENT_TYPE 2
 #define GSEVENT_FLAGS 12
 #define GSEVENTKEY_KEYCODE 15
@@ -76,7 +76,7 @@ __attribute__((constructor)) static void PSPDFKitAddKeyboardSupportForUIAlertVie
 
 You will also need some swizzling helpers. Here's what I use:
 
-``` objective-c
+```objective-c
 // http://www.mikeash.com/pyblog/friday-qa-2010-01-29-method-replacement-for-fun-and-profit.html
 static void PSPDFSwizzleMethod(Class c, SEL orig, SEL new) {
     Method origMethod = class_getInstanceMethod(c, orig);

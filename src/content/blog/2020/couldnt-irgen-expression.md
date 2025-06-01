@@ -1,7 +1,7 @@
 ---
-title: 'How to Fix LLDB: Couldn''t IRGen Expression'
-pubDate: 2020-06-04T13:00:00.000Z
-description: "Solve the mysterious 'Couldn't IRGen expression, no additional error' issue in LLDB when integrating Swift frameworks into your iOS app. I investigate why our customers couldn't use the debugger after adding PSPDFKit, analyzing how Swift modules store absolute paths in binaries, and how this breaks debugging on different machines. Learn why mixed Objective-C/Swift projects work while pure Swift ones fail, how the Swift trunk snapshot offers better diagnostics, and discover the surprising solution: removing dSYM bundles next to your framework. This deep-dive explains compiler flags like -no-serialize-debugging-options and covers essential troubleshooting techniques."
+title: "How to Fix LLDB: Couldn't IRGen Expression"
+pubDatetime: 2020-06-04T13:00:00.000Z
+description: "Solving the mysterious LLDB 'Couldn't IRGen expression' error by investigating Swift module path serialization and discovering that removing dSYM bundles fixes debugging issues."
 heroImage: /assets/img/2020/lldb-debugging/xcode-lldb.png
 tags:
   - iOS
@@ -22,11 +22,11 @@ AIDescription: true
 div.post-content > img:first-child { display:none; }
 </style>
 
-A few weeks ago, we started receiving support tickets with reports that people can't use the `lldb` debugger anymore after integrating [PSPDFKit](http://pspdfkit.com/). Instead of printing an object, they get `Couldn't IRGen expression, no additional error`. That's *obviously* not great, and trying to understand what's wrong here led me down a rabbit hole worth sharing.
+A few weeks ago, we started receiving support tickets with reports that people can't use the `lldb` debugger anymore after integrating [PSPDFKit](http://pspdfkit.com/). Instead of printing an object, they get `Couldn't IRGen expression, no additional error`. That's _obviously_ not great, and trying to understand what's wrong here led me down a rabbit hole worth sharing.
 
 ## Analysis
 
-The debugger from Xcode 11.5 (11E608c) fails to print information about variables using the `po`, `p`, or `e` commands. 
+The debugger from Xcode 11.5 (11E608c) fails to print information about variables using the `po`, `p`, or `e` commands.
 
 Example command: `po window`
 Result: `error: Couldn't IRGen expression, no additional error`
@@ -45,7 +45,7 @@ Let's see what works and what doesn't:
 - ❌ Swift-only example via CocoaPods or Carthage.
 - ❌ Swift-only example via CocoaPods using `xcframework`.
 
-⚠️ Testing here is extremely tricky; Apple saves absolute paths in the binary, so if you happen to have the same username on the build machine and your test machine, it might work, but it fails somewhere else. It also seems that LLDB uses the shared module cache, so you need to delete DerivedData on every run. And (see later in this article), *where* you store the example and which *other files* you store also play into this — dare I say, this was extremely confusing and frustrating to debug.
+⚠️ Testing here is extremely tricky; Apple saves absolute paths in the binary, so if you happen to have the same username on the build machine and your test machine, it might work, but it fails somewhere else. It also seems that LLDB uses the shared module cache, so you need to delete DerivedData on every run. And (see later in this article), _where_ you store the example and which _other files_ you store also play into this — dare I say, this was extremely confusing and frustrating to debug.
 
 I ended up creating a fresh virtual machine with a generic username with snapshots to ensure correct reproducibility. We also enabled `BUILD_LIBRARY_FOR_DISTRIBUTION` between the current release (9.3.3) and the upcoming version (9.4), which was another variable factor, but seems not to contribute to these test results.
 
@@ -73,7 +73,7 @@ The workaround is acceptable, but we wanted to better understand what the issue 
 
 On the linked Stack Overflow workaround, there's an interesting comment:
 
->There is currently a hard requirement that the version of the swift compiler you use to build your source and the version of lldb you use to debug it must come from the same toolchain. Currently the swift debug information for types is just a serialization of internal swift compiler data structures. It also depends on local path information, which makes it hard to move around. There is a longer term effort to change that design, but for now you have to rebuild all your binaries every time you update your tools, and you can't use pre-built binaries. — [Jim Ingham, Apple Engineer](https://stackoverflow.com/questions/54776459/whats-the-solution-for-error-couldnt-irgen-expression-no-additional-error/61824142#61824142)
+> There is currently a hard requirement that the version of the swift compiler you use to build your source and the version of lldb you use to debug it must come from the same toolchain. Currently the swift debug information for types is just a serialization of internal swift compiler data structures. It also depends on local path information, which makes it hard to move around. There is a longer term effort to change that design, but for now you have to rebuild all your binaries every time you update your tools, and you can't use pre-built binaries. — [Jim Ingham, Apple Engineer](https://stackoverflow.com/questions/54776459/whats-the-solution-for-error-couldnt-irgen-expression-no-additional-error/61824142#61824142)
 
 We found [SR-12783](https://bugs.swift.org/browse/SR-12783), which explains the problem and is also marked as resolved. The OP used the binary Instabug SDK, which is partially written in Swift: a situation very similar to ours.
 
@@ -101,7 +101,7 @@ error: module 'Swift' was created for incompatible target x86_64-apple-ios13.0-s
 
 This is interesting, since we compile our SDK with [`BUILD_LIBRARY_FOR_DISTRIBUTION = YES`](https://swift.org/blog/library-evolution/), so with library evolution enabled. The incompatible target issue seems to be a different problem.
 
-## Enabling LLDB Logging 
+## Enabling LLDB Logging
 
 There's [another trick](https://forums.swift.org/t/swiftpm-and-lldb/26966) in LLDB that enables a great deal of logging: put `log enable lldb types` into `~/.lldbinit` and you'll see [extremely helpful logs](https://gist.github.com/steipete/515646a9840c91a61b73d1ab9f255bb3) of how LLDB builds the debug context.
 
@@ -119,9 +119,9 @@ I was curious what `-no-serialize-debugging-options` changes in the binary, so I
 
 ![](/assets/img/2020/lldb-debugging/araxis-merge.png)
 
-That turned out to be another rabbit hole, since Xcode doesn't produce deterministic builds. Other build systems, like Buck, [use various workarounds](https://milen.me/writings/apple-linker-ld64-deterministic-builds-oso-prefix/) to achieve this, and there's an effort to enable [deterministic builds with Clang and LLD](http://blog.llvm.org/2019/11/deterministic-builds-with-clang-and-lld.html), but we're not yet there. 
+That turned out to be another rabbit hole, since Xcode doesn't produce deterministic builds. Other build systems, like Buck, [use various workarounds](https://milen.me/writings/apple-linker-ld64-deterministic-builds-oso-prefix/) to achieve this, and there's an effort to enable [deterministic builds with Clang and LLD](http://blog.llvm.org/2019/11/deterministic-builds-with-clang-and-lld.html), but we're not yet there.
 
-We can compare the sizes of the Mach-O sections in the binary: 
+We can compare the sizes of the Mach-O sections in the binary:
 
 `otool -l /bin/ls | grep -e '  cmd' -e datasize | sed 's/^ *//g'`
 
@@ -129,7 +129,7 @@ Surprisingly, the size of the sections is exactly the same, no matter if this fl
 
 ## SWIFT_SERIALIZE_DEBUGGING_OPTIONS
 
-I wondered: Is the flag even passed on? Am I using the right key? There's very little on the internet that even [documents](https://github.com/apple/swift-package-manager/pull/2713) [`SWIFT_SERIALIZE_DEBUGGING_OPTIONS`](https://twitter.com/evandcoleman/status/1266414571180429312), but it seems to be the same as `OTHER_SWIFT_FLAGS = -Xfrontend -no-serialize-debugging-options`. Changing the flag to include a type also breaks compilation, so the .xcconfig process definitely works. 
+I wondered: Is the flag even passed on? Am I using the right key? There's very little on the internet that even [documents](https://github.com/apple/swift-package-manager/pull/2713) [`SWIFT_SERIALIZE_DEBUGGING_OPTIONS`](https://twitter.com/evandcoleman/status/1266414571180429312), but it seems to be the same as `OTHER_SWIFT_FLAGS = -Xfrontend -no-serialize-debugging-options`. Changing the flag to include a type also breaks compilation, so the .xcconfig process definitely works.
 
 The problem is that setting the flag doesn't change anything for us. Here are the LLDB logs for different scenarios:
 
@@ -139,7 +139,7 @@ The problem is that setting the flag doesn't change anything for us. Here are th
 
 Luckily Swift is open source, so we can look up [the commit introducing `-no-serialize-debugging-options`](https://github.com/apple/swift/commit/8ee17a4d0d0bba46a0b3b6e200c95d40a548a02e). This seems like the flag only controls what is written in a `.swiftmodule` file — which is saved in the dSYM.
 
-(If you read my blog then you might be screaming: "Obviously! Adrian Prantl wrote that in SR-12783!" Yes. Sometimes I need some time to realize how things work. This includes the bit on how Swift modules are stored in the dSYM...) 
+(If you read my blog then you might be screaming: "Obviously! Adrian Prantl wrote that in SR-12783!" Yes. Sometimes I need some time to realize how things work. This includes the bit on how Swift modules are stored in the dSYM...)
 
 ## SR-12932 and the dSYM Conspiracy
 

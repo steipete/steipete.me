@@ -1,7 +1,7 @@
 ---
-title: 'Forbidden Controls in Catalyst: Optimize Interface for Mac'
-pubDate: 2020-09-22T18:00:00.000Z
-description: "Discover the undocumented limitations in macOS Big Sur's new 'Optimize Interface for Mac' mode for Catalyst apps. I investigate why certain UIKit controls like UIStepper and UISlider throw runtime exceptions when used with the Mac idiom, and explore what happens behind the scenes as UIKit maps these controls to AppKit equivalents. Through runtime inspection and disassembly, I identify which controls are forbidden, how customization attempts are blocked, and provide workarounds for detecting the Mac idiom in your code. This technical deep-dive includes findings from examining the shared dyld cache and reveals how Apple bridges UIKit and AppKit in the new unscaled Catalyst mode."
+title: "Forbidden Controls in Catalyst: Optimize Interface for Mac"
+pubDatetime: 2020-09-22T18:00:00.000Z
+description: "Investigating why certain UIKit controls throw runtime exceptions in Catalyst's 'Optimize Interface for Mac' mode and discovering which controls are forbidden."
 heroImage: /assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png
 tags:
   - macOS
@@ -92,7 +92,7 @@ The problem: It isn’t documented which controls are disallowed, and what’s e
 
 ```
 (lldb) po [0x7f9503c488f0 contentNSView]
-<NSSlider: 0x7f9503c37a40> 
+<NSSlider: 0x7f9503c37a40>
 ```
 
 `NSSlider` is the obvious choice, however, the Mac version lacks the appearance customization options UIKit has. Calling any of these customization methods will simply throw (crash) at runtime:
@@ -122,7 +122,7 @@ We find references to following controls:
 - `UISwitch` (inside `setTitle:`)
 - `UIButton`
 
-This includes any *subclasses* like `AVScrubber` (part of `AVPlayerView`), so [this can become a real problem](https://twitter.com/dezinezync/status/1309053206597697536?s=21).
+This includes any _subclasses_ like `AVScrubber` (part of `AVPlayerView`), so [this can become a real problem](https://twitter.com/dezinezync/status/1309053206597697536?s=21).
 
 The main method throwing is `_throwForUnsupportedNonMacIdiomBehaviorWithReason`, so it makes sense to search for it. It checks if the bundle identifier starts with "com.apple", and if it does, it just logs an error, while all other apps get an exception. There’s yet another check for `_allowsUnsupportedMacIdiomBehavior`, which is interesting. It seems the above controls at least have partial support in Big Sur. This can be enabled via calling `_setAllowsUnsupportedMacIdiomBehavior:]` on them. And indeed, calling `[UIStepper _setAllowsUnsupportedMacIdiomBehavior:1];` (I’m using Objective-C here since it’s easier to just redeclare the method in the header) does result in a working app.
 
@@ -140,13 +140,13 @@ macOS Path: `/System/iOSSupport/System/Library/PrivateFrameworks/UIKitCore.frame
 
 However, when we open the framework on macOS, there’s no binary. WTH? I remembered reading that Big Sur ships with [a built-in dynamic linker cache of all system-provided libraries](https://mjtsai.com/blog/2020/06/26/reverse-engineering-macos-11-0/). Luckily, [Hopper](https://www.hopperapp.com/) has already been updated to be informed of that shared cache, so we can load it via `/System/Library/dyld/` and then select `UIKitCore` as the target.
 
-Wait until everything is loaded and then select File > Produce Pseudo-Code File for All Procedures. This might take a few hours. Once the file is generated, pick a *fast* text editor (my weapon of choice for something like this is Sublime Text) and load the file. There, search for `_throwForUnsupportedNonMacIdiomBehaviorWithReason:` again.
+Wait until everything is loaded and then select File > Produce Pseudo-Code File for All Procedures. This might take a few hours. Once the file is generated, pick a _fast_ text editor (my weapon of choice for something like this is Sublime Text) and load the file. There, search for `_throwForUnsupportedNonMacIdiomBehaviorWithReason:` again.
 
 The problem: The file is heavily obfuscated; Hopper can’t read the selector names. We can search for the string "Unsupported iOS or Mac Catalyst iPad Idiom" to find the selector matching `_throwForUnsupportedNonMacIdiomBehaviorWithReason:`. In my case, that’s `sub_7fff465801e5`.
 
 ## Conclusion
 
-However, that’s the end of the story for now. The data is there, but the tools can’t [yet (!)](https://twitter.com/bsr43/status/1308462962680659971?s=21) get a useful format out. We know there are at least five controls that throw an exception on *some* usage at runtime, however, which one it is exactly is currently hard to know. Shipping a Catalyst app in the new Mac idiom is definitely an adventure.
+However, that’s the end of the story for now. The data is there, but the tools can’t [yet (!)](https://twitter.com/bsr43/status/1308462962680659971?s=21) get a useful format out. We know there are at least five controls that throw an exception on _some_ usage at runtime, however, which one it is exactly is currently hard to know. Shipping a Catalyst app in the new Mac idiom is definitely an adventure.
 
 ## Decompile via LLDB
 

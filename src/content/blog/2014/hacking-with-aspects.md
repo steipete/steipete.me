@@ -1,7 +1,7 @@
 ---
 title: "Hacking with Aspects"
-pubDate: 2014-05-06T00:45:00.000Z
-description: "Join me as I explore practical uses for Aspects, my open-source library for aspect-oriented programming in Objective-C. In this article, I investigate how Apple implements the iOS 6 iPad restriction that forces UIImagePickerController to be presented via a popover. Through runtime analysis with Hopper, I uncover Apple's view hierarchy traversal technique for popover detection and demonstrate how to use Aspects to bypass this restriction safely. This behind-the-scenes look reveals how UIKit works internally and showcases the power of runtime inspection for debugging and hacking."
+pubDatetime: 2014-05-06T00:45:00.000Z
+description: "Explore how Apple detects popover presentation in UIImagePickerController and learn to bypass the restriction using my Aspects library."
 tags:
   - iOS-Development
   - Aspects
@@ -17,7 +17,7 @@ AIDescription: true
 
 I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspects - a delightful, simple library for aspect oriented programming.](https://github.com/steipete/Aspects)
 
-Now Aspects is a great new tool in your toolkit. It allows to call code before, instead or after the original implementation, and there's no need to manually call super, cast `objc_msgSend` or any of that other stuff you ~~have to~~ should do on swizzling. Use it with reason, it has a few great use cases, some are well-explaind on the GitHub page. 
+Now Aspects is a great new tool in your toolkit. It allows to call code before, instead or after the original implementation, and there's no need to manually call super, cast `objc_msgSend` or any of that other stuff you ~~have to~~ should do on swizzling. Use it with reason, it has a few great use cases, some are well-explaind on the GitHub page.
 
 It's also great for hacking and debugging. While testing the example on an iPad that still runs iOS 6, I found this exception:
 `// *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'On iPad, UIImagePickerController must be presented via UIPopoverController'`

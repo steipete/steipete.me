@@ -1,5 +1,5 @@
 ---
-import { Tweet } from 'astro-embed';
+import { Tweet } from "astro-embed";
 
 const { url } = Astro.props;
 
@@ -7,9 +7,9 @@ const { url } = Astro.props;
 let tweetId = url;
 
 // If it's a full URL, extract just the ID or use the full URL (both work with astro-embed)
-if (url.includes('twitter.com') || url.includes('x.com')) {
+if (url.includes("twitter.com") || url.includes("x.com")) {
   // Strip any query parameters or fragments
-  tweetId = url.split('?')[0].split('#')[0];
+  tweetId = url.split("?")[0].split("#")[0];
 }
 ---
 

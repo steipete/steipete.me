@@ -5,19 +5,19 @@ const { id } = Astro.props;
 let videoId = id;
 
 // If it's a full URL, extract just the ID
-if (id.includes('youtube.com') || id.includes('youtu.be')) {
+if (id.includes("youtube.com") || id.includes("youtu.be")) {
   // Extract from youtube.com/watch?v=VIDEO_ID
-  if (id.includes('youtube.com/watch')) {
+  if (id.includes("youtube.com/watch")) {
     const url = new URL(id);
-    videoId = url.searchParams.get('v') || '';
+    videoId = url.searchParams.get("v") || "";
   }
   // Extract from youtu.be/VIDEO_ID
-  else if (id.includes('youtu.be/')) {
-    videoId = id.split('youtu.be/')[1]?.split('?')[0] || '';
+  else if (id.includes("youtu.be/")) {
+    videoId = id.split("youtu.be/")[1]?.split("?")[0] || "";
   }
   // Extract from youtube.com/embed/VIDEO_ID
-  else if (id.includes('youtube.com/embed/')) {
-    videoId = id.split('youtube.com/embed/')[1]?.split('?')[0] || '';
+  else if (id.includes("youtube.com/embed/")) {
+    videoId = id.split("youtube.com/embed/")[1]?.split("?")[0] || "";
   }
 }
 ---
@@ -30,8 +30,7 @@ if (id.includes('youtube.com') || id.includes('youtu.be')) {
     title="YouTube video player"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
+    allowfullscreen></iframe>
 </div>
 
 <style>

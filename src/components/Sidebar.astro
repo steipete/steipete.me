@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE } from "../consts";
 ---
 
 <div id="sidebar">
@@ -7,7 +7,10 @@ import { SITE_TITLE } from '../consts';
     <div id="profile-wrapper" class="d-flex flex-column">
       <div id="avatar" class="d-flex justify-content-center">
         <a href="/" alt="avatar">
-          <img src="https://gravatar.com/avatar/832ece085bfe2c7c5b0ed6be62d7e675?s=240&d=mp" alt="Peter Steinberger's avatar">
+          <img
+            src="https://gravatar.com/avatar/832ece085bfe2c7c5b0ed6be62d7e675?s=240&d=mp"
+            alt="Peter Steinberger's avatar"
+          />
         </a>
       </div>
       <div class="profile-text mt-3">
@@ -65,20 +68,23 @@ import { SITE_TITLE } from '../consts';
 
 <script>
   // Add active class to current page
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll(".nav-link");
 
-    navLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === '/' && currentPath === '/') {
-        link.classList.add('active');
-      } else if (href !== '/' && currentPath.startsWith(href)) {
-        link.classList.add('active');
+    navLinks.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (href === "/" && currentPath === "/") {
+        link.classList.add("active");
+      } else if (href !== "/" && currentPath.startsWith(href)) {
+        link.classList.add("active");
       }
     });
   });
 </script>
 
 <!-- Load FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>

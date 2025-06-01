@@ -1,7 +1,7 @@
 ---
 title: Logging in Swift
-pubDate: 2020-08-24T17:00:00.000Z
-description: "Dive deep into Apple's unified logging system with the new Swift Logger API introduced in iOS 14. I explore the benefits of OSLog's categorization, privacy features, and performance advantages while examining why most developers don't use it: the inability to access logs programmatically. Learn about the promising new OSLogStore API that Apple initially included but then removed from iOS 14 at the last minute, my investigation into private APIs for log streaming, and techniques for enabling debug mode. This comprehensive guide tracks the evolution of Apple's logging system and provides practical code examples for implementing effective logging in your Swift applications."
+pubDatetime: 2020-08-24T17:00:00.000Z
+description: "An in-depth exploration of Apple's unified logging system and the promising OSLogStore API that Apple removed from iOS 14 at the last minute."
 heroImage: /assets/img/2020/swift-logging/logd.jpeg
 tags:
   - iOS
@@ -88,7 +88,7 @@ Apple maintains a separate [`SwiftLog`](https://github.com/apple/swift-log) logg
 
 [^8]: There are efforts underway to try to unify or at least better align the two logging frameworks. See [Logging levels for Swift’s server-side logging APIs and new os_log APIs](https://forums.swift.org/t/logging-levels-for-swifts-server-side-logging-apis-and-new-os-log-apis/20365) in the Swift Forums.
 
->we recommend using os_log directly as decribed [here](https://developer.apple.com/documentation/os/logging). Using os_log through swift-log using this backend will be less efficient and will also prevent specifying the privacy of the message. The backend always uses `%{public}@` as the format string and eagerly converts all string interpolations to strings. This has two drawbacks: 1. the static components of the string interpolation would be eagerly copied by the unified logging system, which will result in loss of performance. 2. It makes all messages public, which changes the default privacy policy of os_log, and doesn’t allow specifying fine-grained privacy of sections of the message. In a separate on-going work, Swift APIs for os_log are being improved and made to align closely with swift-log APIs. References: [Unifying Logging Levels](https://forums.swift.org/t/custom-string-interpolation-and-compile-time-interpretation-applied-to-logging/18799), [Making os_log accept string interpolations using compile-time interpretation](https://forums.swift.org/t/logging-levels-for-swifts-server-side-logging-apis-and-new-os-log-apis/20365).
+> we recommend using os_log directly as decribed [here](https://developer.apple.com/documentation/os/logging). Using os_log through swift-log using this backend will be less efficient and will also prevent specifying the privacy of the message. The backend always uses `%{public}@` as the format string and eagerly converts all string interpolations to strings. This has two drawbacks: 1. the static components of the string interpolation would be eagerly copied by the unified logging system, which will result in loss of performance. 2. It makes all messages public, which changes the default privacy policy of os_log, and doesn’t allow specifying fine-grained privacy of sections of the message. In a separate on-going work, Swift APIs for os_log are being improved and made to align closely with swift-log APIs. References: [Unifying Logging Levels](https://forums.swift.org/t/custom-string-interpolation-and-compile-time-interpretation-applied-to-logging/18799), [Making os_log accept string interpolations using compile-time interpretation](https://forums.swift.org/t/logging-levels-for-swifts-server-side-logging-apis-and-new-os-log-apis/20365).
 
 There are also surprising bugs like [doubles that aren’t logged correctly](https://stackoverflow.com/questions/50937765/why-does-wrapping-os-log-cause-doubles-to-not-be-logged-correctly), which can be very hard to debug.
 
@@ -96,7 +96,7 @@ There are also surprising bugs like [doubles that aren’t logged correctly](htt
 
 Log files are useful whenever users report a bug or a crash is being sent. Most logging frameworks therefore include a rolling file logger, which makes it easy to access logs on demand.
 
-Apple’s [solution](https://developer.apple.com/forums/thread/650843?answerId=616460022) to accessing logs is either collecting a `sysdiagnose` or calling `log collect --device` on a terminal. The latter possibly requires filtering the output via the `--start` or `--last` limits and then sending the output manually. 
+Apple’s [solution](https://developer.apple.com/forums/thread/650843?answerId=616460022) to accessing logs is either collecting a `sysdiagnose` or calling `log collect --device` on a terminal. The latter possibly requires filtering the output via the `--start` or `--last` limits and then sending the output manually.
 
 This might work if your audience is macOS developers, but if you’re targeting regular users, it’s much harder to make them follow a tutorial and then explain how to send a multiple-hundred-megabyte `sysdiagnose`. Furthermore, this will only work if your user runs a recent version of macOS.
 
@@ -110,7 +110,7 @@ At [PSPDFKit](https://pspdfkit.com/), we tried switching to `os_log` but hit the
 
 ## New in iOS 14: OSLogStore
 
-With [`OSLogStore`](https://developer.apple.com/documentation/oslog/oslogstore), Apple added an API to access the log archive programmatically. It allows accessing `OSLogEntryLog`, which contains all the log information you’ll possibly ever need. 
+With [`OSLogStore`](https://developer.apple.com/documentation/oslog/oslogstore), Apple added an API to access the log archive programmatically. It allows accessing `OSLogEntryLog`, which contains all the log information you’ll possibly ever need.
 
 The new store access is available for all platform versions of 2020. It’s the missing piece in the `os_log` story that finally will get us the best of both worlds. Let’s look at how this works:
 
@@ -118,13 +118,13 @@ The new store access is available for all platform versions of 2020. It’s the 
 func getLogEntries() throws -> [OSLogEntryLog] {
     // Open the log store.
     let logStore = try OSLogStore(scope: .currentProcessIdentifier)
-    
+
     // Get all the logs from the last hour.
     let oneHourAgo = logStore.position(date: Date().addingTimeInterval(-3600))
-    
+
     // Fetch log objects.
     let allEntries = try logStore.getEntries(at: oneHourAgo)
-    
+
     // Filter the log to be relevant for our specific subsystem
     // and remove other elements (signposts, etc).
     return allEntries
@@ -161,7 +161,7 @@ The next issue is that the entries enumerator has a built-in way of filtering vi
 // - NSPredicate(format: "subsystem == \"com.steipete.LoggingTest\"")
 ```
 
-Credit for the syntax goes to Ole Begemann, who started investigating `OSLogStore` early on and maintains an [OSLogStoreTest](https://github.com/ole/OSLogStoreTest) sample project. 
+Credit for the syntax goes to Ole Begemann, who started investigating `OSLogStore` early on and maintains an [OSLogStoreTest](https://github.com/ole/OSLogStoreTest) sample project.
 
 ### iOS Entitlement Issues
 
@@ -197,7 +197,7 @@ Full credit goes to [Khaos Tian](https://twitter.com/khaost), who took the time 
 
 It’s often desirable to stream log messages as they come in. This is a feature of many popular analytics and logging frameworks. Of course, OSLog also needs this feature.
 
-LLDB is doing exactly that; it listens to OSLog messages and prints the streams as they’re created. Thankfully, LLDB is open source, so we can look at [`DarwinLogCollector.cpp`](https://github.com/llvm-mirror/lldb/blob/master/tools/debugserver/source/MacOSX/DarwinLog/DarwinLogCollector.cpp), which implements this feature.[^1] 
+LLDB is doing exactly that; it listens to OSLog messages and prints the streams as they’re created. Thankfully, LLDB is open source, so we can look at [`DarwinLogCollector.cpp`](https://github.com/llvm-mirror/lldb/blob/master/tools/debugserver/source/MacOSX/DarwinLog/DarwinLogCollector.cpp), which implements this feature.[^1]
 
 [^1]: A more convenient implementation is in [FLEX](https://github.com/Flipboard/FLEX/blob/master/Classes/GlobalStateExplorers/SystemLog/FLEXOSLogController.m).
 
@@ -249,7 +249,7 @@ API_AVAILABLE(macos(10.15)) API_UNAVAILABLE(ios, tvos, watchos)
 NS_SWIFT_NAME(local());
 ```
 
-However, running my example on iOS now fails completely because the `storeWithScope:error:` initializer is completely missing: 
+However, running my example on iOS now fails completely because the `storeWithScope:error:` initializer is completely missing:
 
 ```
 +[OSLogStore storeWithScope:error:]: unrecognized selector sent to class 0x1fae85728

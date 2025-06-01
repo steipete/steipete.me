@@ -1,7 +1,7 @@
 ---
 title: Updating macOS on a Hackintosh
-pubDate: 2020-06-01T08:00:00.000Z
-description: "Follow my step-by-step process for safely updating macOS on a custom-built Hackintosh system. I walk through updating OpenCore bootloader and essential kexts before attempting the macOS 10.15.5 upgrade, explaining how to create a bootable USB drive for testing, carefully update the complex config.plist file, and verify your system's compatibility. This practical guide includes tips for using tools like OCConfigCompare, upgrading to newer versions of AppleALC, Lilu, WhateverGreen, and other critical components, plus real-world insights from someone who balances Hackintosh use alongside genuine Apple hardware."
+pubDatetime: 2020-06-01T08:00:00.000Z
+description: "A practical guide to safely updating macOS on a Hackintosh by first updating OpenCore bootloader and essential kexts before upgrading the system."
 heroImage: /assets/img/2020/hackintosh/opencore-config.png
 tags:
   - macOS
@@ -33,7 +33,7 @@ Before updating macOS, you want to update OpenCore and the needed kexts. You can
 - Get a USB drive and GUID format it to HFS+ Journaled.
 - Mount both your boot disk EFI and your USB drive EFI partitions via [MountEFI](https://github.com/corpnewt/MountEFI).
 - Copy the `EFI` folder from your boot drive EFI partition to your USB drive EFI partition.\
-(I know, so much EFI!)
+  (I know, so much EFI!)
 - Reboot and select the USB drive as the source in your BIOS to verify that you can boot from the disk.
 
 ## Updating OpenCore
@@ -43,7 +43,7 @@ Did it work? Great, now it’s time to update OpenCore! There’s a monthly rele
 - Get the [latest OpenCore release](https://github.com/acidanthera/OpenCorePkg/releases). I cheated a bit and got myself a nightly build of [0.5.9-pre](https://github.com/williambj1/OpenCore-Factory/releases), since the release is just a few days away and it seemed worth the risk.
 - Replace `EFI/BOOT/BOOTx64.efi`, `EFI/OC/OpenCore.efi`, and `EFI/OC/Drivers/OpenRuntime`.
 
-If you’ve never done this before, I recommend reading [Updating OpenCore and macOS](https://dortania.github.io/OpenCore-Desktop-Guide/post-install/update.html), which explains the steps in far more detail. 
+If you’ve never done this before, I recommend reading [Updating OpenCore and macOS](https://dortania.github.io/OpenCore-Desktop-Guide/post-install/update.html), which explains the steps in far more detail.
 
 ## Updating config.plist
 
@@ -51,7 +51,7 @@ Now the fun part starts! OpenCore is configured with one giant `config.plist` an
 
 Use [OCConfigCompare](https://github.com/corpnewt/OCConfigCompare) to compare between the `sample.plist` and your `config.plist` The script has an auto-download feature, but since I used a nightly here, I set a manual folder.
 
-Use Xcode to edit the plist files, and be meticulous. Don’t forget that your configuration contains different settings, so be on the lookout for if a key has to simply be renamed and migrate your values. 
+Use Xcode to edit the plist files, and be meticulous. Don’t forget that your configuration contains different settings, so be on the lookout for if a key has to simply be renamed and migrate your values.
 
 ![OpenCore Config](/assets/img/2020/hackintosh/opencore-config.png)
 

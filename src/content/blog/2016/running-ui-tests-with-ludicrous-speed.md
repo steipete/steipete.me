@@ -1,17 +1,13 @@
 ---
 title: Running UI Tests on iOS With Ludicrous Speed
-pubDate: 2016-04-27T12:00:00.000Z
-description: >-
-  You might think the UI for [a PDF viewer/editor](/features/) would be trivial,
-  however it’s anything but. At PSPDFKit we have a ton of simple and c...
+pubDatetime: 2016-04-27T12:00:00.000Z
+description: "Techniques for dramatically speeding up UI test execution in Xcode using parallelization and optimization strategies."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 You might think the UI for [a PDF viewer/editor](/features/) would be trivial, however it’s anything but. At PSPDFKit we have a ton of simple and complex views and view controllers, running either modally or embedded, with several knobs and switches to configures things. We’d be in major trouble if we relied solely on manual testing. (<a href="#ludicrous-speed">tl;dr: Just show me the video!</a>)
 
@@ -29,7 +25,7 @@ We use Facebook's [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-
 
 ### UI tests.
 
-These are *the real integration tests* - they allow you to test your application like your users would. They cover the most with the least code, but are also - usually - fragile and the slowest to run. UI tests are not something that is easy in Apple-Land. (Android has it's own issues which we'll blog about very soon as part of this testing series.) We’ve been using a fork of [KIF](https://github.com/PSPDFKit-labs/KIF) since 2014, and while there's a lot of hackery going on, it has served us well. You can automate test flows, it’s open source and very hack-able but it has been a cause of frustration as well since we have had countless times where UI tests were flaky. Only now, two years later, we finally have things in a state that is reliable and fast, and I’m here to share what we’ve learned so that you don't have to suffer through yet another red build.
+These are _the real integration tests_ - they allow you to test your application like your users would. They cover the most with the least code, but are also - usually - fragile and the slowest to run. UI tests are not something that is easy in Apple-Land. (Android has it's own issues which we'll blog about very soon as part of this testing series.) We’ve been using a fork of [KIF](https://github.com/PSPDFKit-labs/KIF) since 2014, and while there's a lot of hackery going on, it has served us well. You can automate test flows, it’s open source and very hack-able but it has been a cause of frustration as well since we have had countless times where UI tests were flaky. Only now, two years later, we finally have things in a state that is reliable and fast, and I’m here to share what we’ve learned so that you don't have to suffer through yet another red build.
 
 ![Ludicrous Speed](/assets/img/2016/running-ui-tests-with-ludicrous-speed/spaceballs-ludicrous-speed.gif)
 
@@ -104,7 +100,7 @@ public extension PSPDFViewController {
 
 In the past, we usually added a `tester.waitForTimeInterval(0.3)` after the call, to ensure that the touch was processed, before moving on to checking the conditions. This works great. Locally. Usually. Not so much on Jenkins or Travis, where you likely have slower machines which might be really busy compiling Android at the same time. Suddenly touch processing takes longer, the 0.3 second delay is no longer enough and the test fails. You’re annoyed and submit a quick fix, changing the timeout by half a second, then a second, and the test almost always works, except in some rare cases where even one second isn’t enough. As these changes creep in over time, your UI tests become slow and slower.
 
-We reached a point where running our UI tests took *15 minutes* — without compile times. This was unacceptably slow and the real effect on the project was that people avoided writing new UI tests.
+We reached a point where running our UI tests took _15 minutes_ — without compile times. This was unacceptably slow and the real effect on the project was that people avoided writing new UI tests.
 
 ## Ludicrous Speed!
 
@@ -161,7 +157,7 @@ BOOL PSPDFWaitForConditionWithTimeout(NSTimeInterval timeout, PSPDFTestCondition
 }
 ```
 
-We rely on busy waiting via creating a custom runloop - the condition is checked every x milliseconds and only once it returns `true`, the control flow  continues. This might seem crude, but it's a much, much better solution than adding random timeouts and allows us to run tests at an insane speed while also getting reliable results, even under heavy load. It's somwhat similar to `XCTestCase`'s asynchronous testing extension `waitForExpectationsWithTimeout:handler:`, just faster and more flexible.
+We rely on busy waiting via creating a custom runloop - the condition is checked every x milliseconds and only once it returns `true`, the control flow continues. This might seem crude, but it's a much, much better solution than adding random timeouts and allows us to run tests at an insane speed while also getting reliable results, even under heavy load. It's somwhat similar to `XCTestCase`'s asynchronous testing extension `waitForExpectationsWithTimeout:handler:`, just faster and more flexible.
 
 Now, the final puzzle is to simply increase the speed of Core Animation itself. And the best part: This is not even private API!
 

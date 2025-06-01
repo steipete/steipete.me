@@ -1,17 +1,13 @@
 ---
 title: How We Work at PSPDFKit
-pubDate: 2019-07-03T07:00:00.000Z
-description: >-
-  Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work
-  many times. Transitioning from a company consisting of a single person t...
+pubDatetime: 2019-07-03T07:00:00.000Z
+description: "An inside look at PSPDFKit's development processes, from proposal-based feature planning to monorepo management and release automation."
 tags:
   - Company
   - Culture
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Since PSPDFKit’s beginnings in 2011, we’ve had to reinvent the way we work many times. Transitioning from a company consisting of a single person to one with more than 40 people requires change, and even more so when expanding from just iOS to Android, Web, Windows, and macOS.
 

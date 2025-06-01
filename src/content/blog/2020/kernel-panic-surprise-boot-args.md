@@ -1,8 +1,8 @@
 ---
 title: Kernel Panics and Surprise boot-args
-pubDate: 2020-05-20T08:00:00.000Z
-description: "Investigate a series of mysterious kernel panics on my 16-inch MacBook Pro that began with macOS 10.15.4. I discover my repaired MacBook came back with surprising and potentially security-weakening boot arguments like rootless=0 and kext-dev-mode=1. This technical exploration decodes what each of these undocumented boot-args actually does, from agc and smc settings to watchdog and nvme parameters. Learn how Apple repair centers might unintentionally leave debugging flags enabled and how to safely clear them through Recovery Mode."
-heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
+pubDatetime: 2020-05-20T08:00:00.000Z
+description: "Investigation into mysterious kernel panics reveals Apple repair centers left my MacBook with undocumented security-weakening boot arguments."
+heroImage: "https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096"
 tags:
   - macOS
   - Kernel
@@ -25,15 +25,15 @@ If you just came here, read the backstory: [The LG UltraFine 5K, kernel_task, an
 
 Was it just me? [No](https://twitter.com/jernejv/status/1243854771905273857?s=20), [it](https://twitter.com/SergejBerisaj/status/1243857963724558337?s=20) [seems](https://twitter.com/AlexManzer/status/1244606008955146240?s=20) [this](https://twitter.com/lostincode/status/1243900563902717953?s=20) [issue](https://twitter.com/collinluke/status/1251668176296910849?s=20) [is](https://twitter.com/pagetable/status/1244599318151155712?s=20) [fairly](https://twitter.com/BarrosMyles/status/1244021525562474497?s=20) [widespread](https://twitter.com/slaven/status/1244532699139731456?s=20). ([Even on the MacBook Air 2018](https://twitter.com/AVMatiushkin/status/1249671960713482240?s=20).) Great. (Honestly, just [search for AppleIntelFramebuffer on Twitter](https://twitter.com/search?q=AppleIntelFramebuffer&src=typed_query); this crash is everywhere!) Forced reboots are annoying, and I wanted to help, so I wrote a r̶a̶d̶a̶r̶ Feedback Assistant entry: FB7642937.
 
->Regression: MacBook Pro 16-inch panics almost every night in AppleIntelFramebuffer::setPowerState. This started with macOS 10.15.4
+> Regression: MacBook Pro 16-inch panics almost every night in AppleIntelFramebuffer::setPowerState. This started with macOS 10.15.4
 
 Some reports indicate that this happened earlier, with 10.15.3, but for me it started with 10.15.4. The panic backtrace is surprisingly readable and indicates a timeout in Intel’s graphic driver (AppleIntelFramebuffer):
 
 ```
 panic(cpu 2 caller 0xffffff8014016487): "AppleIntelFramebuffer::setPowerState(0xffffff835c3b6000 : 0xffffff7f975f5d88, 1 -> 0) timed out after 45938 ms"@/AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/xnu/xnu-6153.101.6/iokit/Kernel/IOServicePM.cpp:5296
 Backtrace (CPU 2), Frame : Return Address
-0xffffff83be6abb40 : 0xffffff80139215cd 
-0xffffff83be6abb90 : 0xffffff8013a5a3c5 
+0xffffff83be6abb40 : 0xffffff80139215cd
+0xffffff83be6abb90 : 0xffffff8013a5a3c5
 (...)
 
 BSD process name corresponding to current thread: kernel_task
@@ -42,7 +42,7 @@ Boot args: rootless=0 kext-dev-mode=1 agc=2 smc=0x2 watchdog=0 nvme=0x9 legacy_h
 
 ## Fun boot-args
 
-I posted about this on Twitter to learn more, but while nobody could tell me what was up, a friend noticed that I have “[fun boot-args](https://twitter.com/NSBiscuit/status/1243294676985294849?s=20).” WTH? 
+I posted about this on Twitter to learn more, but while nobody could tell me what was up, a friend noticed that I have “[fun boot-args](https://twitter.com/NSBiscuit/status/1243294676985294849?s=20).” WTH?
 
 I didn’t set any of these, but previously, I’d had to send my 16-inch MacBook in for repairs, as it had corrupted memory, resulting in [extremely](https://twitter.com/steipete/status/1230925689098002433) [weird bugs](https://twitter.com/jckarter/status/1230253181495459841) and [frequent kernel panics](https://twitter.com/gparker/status/1231155681991909376). Apple replaced most of the machine, so it came with a fresh install of macOS... and some interesting boot-args that they forgot to clear. (If you’re curious what these args do, some are [documented here](https://superuser.com/questions/255176/is-there-a-list-of-available-boot-args-for-darwin-os-x), and there are some more if you look toward the Hackintosh scene.)
 

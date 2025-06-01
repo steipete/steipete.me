@@ -1,7 +1,7 @@
 ---
 title: zld — A Faster Version of Apple's Linker
-pubDate: 2020-06-05T08:00:00.000Z
-description: "Accelerate your iOS build times by up to 40% with zld, a drop-in replacement for Apple's standard linker. I explain how to integrate this optimized linker into your project workflow, including strategies for monorepos and compatibility with Mac Catalyst. My practical guide covers installation via Homebrew, creating a conditional wrapper script that gracefully falls back to Apple's linker when needed, and configuring your Xcode project with the proper build settings. Learn how this simple change can save precious development time by significantly reducing linking duration."
+pubDatetime: 2020-06-05T08:00:00.000Z
+description: "How to speed up iOS build times by 40% using zld, a drop-in replacement for Apple's linker, with practical integration tips for real projects."
 heroImage: /assets/img/2020/zld/benchmarks.png
 tags:
   - Build-Performance
@@ -18,7 +18,7 @@ source: steipete.com
 AIDescription: true
 ---
 
-zld is [a drop-in replacement of Apple's linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:  
+zld is [a drop-in replacement of Apple's linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:
 
 > "Feel free to file an issue if you find it's not at least 40% faster for your case" — [Michael Eisel, Maintainer](https://github.com/michaeleisel)
 
@@ -94,6 +94,7 @@ PSPDF_NORELEASE_LDFLAGS = -ObjC -Wl,-no_uuid $(PSPDF_LINKER_IF_NOT_CATALYST)
 ```
 
 In `Defaults-Debug.xcconfig` and `Defaults-testing.xcconfig`
+
 ```
 // Use fast linker if available.
 OTHER_LDFLAGS = $(inherited) $(PSPDF_NORELEASE_LDFLAGS)

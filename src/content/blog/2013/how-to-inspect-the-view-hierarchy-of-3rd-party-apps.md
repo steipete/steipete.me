@@ -1,7 +1,7 @@
 ---
 title: "How To Inspect The View Hierarchy Of Third-Party Apps"
-pubDate: 2013-12-27T18:42:00.000Z
-description: "Unlock the secrets of iOS app design by exploring the view hierarchies of third-party applications with this step-by-step guide. Using a jailbroken device, learn how to configure debugging tools, inject code at runtime, and analyze an app's internal structure. I walk through setting up the necessary environment, creating custom debugging scripts, and extracting valuable insights from apps like Facebook and Flipboard. This technique offers a powerful learning opportunity for iOS developers seeking to understand how complex interfaces are implemented."
+pubDatetime: 2013-12-27T18:42:00.000Z
+description: "Learn how to inspect view hierarchies of third-party iOS apps using a jailbroken device and debugging tools like Reveal for design insights."
 tags:
   - iOS-Development
   - Debugging
@@ -16,27 +16,26 @@ AIDescription: true
 
 I'm generally not a big fan of jailbreaks. Mostly this is because they're used for piracy and all the hacks result in weird crashes that generally are impossible to reproduce. Still, [I was quite excited about the recent iOS 7 jailbreak](https://twitter.com/steipete/status/414759423102689281), since it enables us to attach the debugger to third-party apps and do a little bit of runtime analysis.
 
-Why? Because it's fun, and it can inspire you to solve things differently. Studying the view hierarchy of complex apps can be rather revealing and it's interesting to see how others are solving similar problems. 
+Why? Because it's fun, and it can inspire you to solve things differently. Studying the view hierarchy of complex apps can be rather revealing and it's interesting to see how others are solving similar problems.
 This was one thing that took many iterations to get right in [PSPDFKit, our iOS PDF framework](http://pspdfkit.com).
-
 
 So, how does this work? It's actually super simple.
 
 1.  [Jailbreak your device of choice](http://evasi0n.com/). I've used an iPad 4 here. Make sure it runs iOS 7.0.x. Both arm7(s) and arm64 devices will work now. **Don't jailbreak a device that's used in production.** Otherwise you lose a lot of security features as well. I only jailbreak a clean device and install some apps to inspect.
 
-2. Open Cydia and install OpenSSH, nano, and Cydia Substrate (previously called MobileSubstrate).
+2.  Open Cydia and install OpenSSH, nano, and Cydia Substrate (previously called MobileSubstrate).
 
-3. Copy the Reveal library. Find out the device IP address via Settings and execute the following in your terminal (this assumes you have installed [Reveal](http://revealapp.com/) already):<br>
-`scp -r /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework root@192.168.0.X:/System/Library/Frameworks`<br>
-`scp /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib root@192.168.0.X:/Library/MobileSubstrate/DynamicLibraries`.<br>
-For Spark Inspector, you would use `scp "/Applications/Spark Inspector.app/Contents/Resources/Frameworks/SparkInspector.dylib" root@192.168.0.X:/Library/MobileSubstrate/DynamicLibraries`<br>
-Note: The default SSH password on iOS is 'alpine.'
+3.  Copy the Reveal library. Find out the device IP address via Settings and execute the following in your terminal (this assumes you have installed [Reveal](http://revealapp.com/) already):<br>
+    `scp -r /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework root@192.168.0.X:/System/Library/Frameworks`<br>
+    `scp /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib root@192.168.0.X:/Library/MobileSubstrate/DynamicLibraries`.<br>
+    For Spark Inspector, you would use `scp "/Applications/Spark Inspector.app/Contents/Resources/Frameworks/SparkInspector.dylib" root@192.168.0.X:/Library/MobileSubstrate/DynamicLibraries`<br>
+    Note: The default SSH password on iOS is 'alpine.'
 
-4. SSH into the device and create following text file with `nano /Library/MobileSubstrate/DynamicLibraries/libReveal.plist`:
-`{ Filter = { Bundles = ( "<App ID>" ); }; }`<br>
-Previously, this worked with wildcard IDs, but this approach has problems with the updated Cydia Substrate. So simply add the App ID of the app you want to inspect, and then restart the app.
+4.  SSH into the device and create following text file with `nano /Library/MobileSubstrate/DynamicLibraries/libReveal.plist`:
+    `{ Filter = { Bundles = ( "<App ID>" ); }; }`<br>
+    Previously, this worked with wildcard IDs, but this approach has problems with the updated Cydia Substrate. So simply add the App ID of the app you want to inspect, and then restart the app.
 
-5. Respring with `killall SpringBoard` or simply restart the device.
+5.  Respring with `killall SpringBoard` or simply restart the device.
 
 Done! Start your app of choice and select it in Reveal. (This should also work similary for [SparkInspector](http://sparkinspector.com/).) Attaching via LLDB is a bit harder and I won't go into details here since this could also be used to pirate apps. Google for 'task_for_pid-allow,' 'debugserver,' and 'ldid' if you want to try this.
 

@@ -1,18 +1,15 @@
 ---
 title: A Pragmatic Approach to Cross-Platform
-pubDate: 2016-04-13T06:00:00.000Z
-description: >-
-  At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the
-  browser](/web). Yet, invisible to the user, all share a large part of the ...
+pubDatetime: 2016-04-13T06:00:00.000Z
+description: "How PSPDFKit shares a common C++ codebase across iOS, Android, and Web platforms while maintaining native user experiences."
 tags:
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
 
-
-
 At PSPDFKit we offer native SDKs for iOS, Android [and soon also for the browser](/web). Yet, invisible to the user, all share a large part of the codebase. This wasn’t always the case. Here’s what we learned over the last few years.
+
 ## Humble Beginning
 
 PSPDFKit started in 2010 as an iOS-only project. Back then there was just one person working on it. 6 years later, we’re 28 people, have frameworks for iOS, Android and the [Web](/web), and our core framework even runs on OS X and Windows.
@@ -34,7 +31,6 @@ With Objective-C out of the question, C or C++ where pretty much the only langua
 C++ is a pragmatic solution and a first-class citizen on almost every platform. Furthermore, we were [intrigued by the advances of C++ in form of C++ 11, 14 and 17](https://www.youtube.com/watch?v=1oHEYk6xuvQ). Many major projects that we use every day are built in C++: [WebKit](https://github.com/WebKit/webkit), [Clang](https://github.com/llvm-mirror/clang) — even [Swift itself](https://github.com/apple/swift). There’s great support for it on iOS: Objective-C and C++ can be freely mixed, and [Google offers an NDK](http://developer.android.com/intl/zh-cn/tools/sdk/ndk/index.html) that makes it relatively simply to build native libraries for Android.
 
 Especially for Android, there are also quite some downsides compared to pure Java or even JavaScript. Adding a native library greatly increases complexity and compile times, and also makes you think about which platforms should be supported. There’s also the problem of debugging: while Android Studio has made [some steps in that direction](http://tools.android.com/tech-docs/android-ndk-preview), there’s still no way to see a stack trace from Java down to your C++ code. You’re basically left with old-school `printf()` debugging.
-
 
 ## Android Inception
 
@@ -100,7 +96,7 @@ jni:
 
 ```
 
-In PSPDFKit we do this for many basic types such as `Rect`, `Size`, `Point`, `Matrix` and `Color`.  
+In PSPDFKit we do this for many basic types such as `Rect`, `Size`, `Point`, `Matrix` and `Color`.
 
 (As an aside, handling errors can understandably get somewhat tricky across platforms and languages. We discuss our approach to passing identifiable errors when using Djinni in our “[Failable Methods with Djinni](/blog/2018/failable-methods-with-djinni/)” blog post.)
 

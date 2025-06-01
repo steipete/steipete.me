@@ -1,9 +1,7 @@
 ---
-title: 'Converting Xcode Test Runs to JUnit, the Fast Way'
-pubDate: 2016-08-11T10:00:00.000Z
-description: >-
-  Testing is very important at PSPDFKit. We are building an SDK. When you give
-  your API to other developers, there are many more things that can go wrong.
+title: "Converting Xcode Test Runs to JUnit, the Fast Way"
+pubDatetime: 2016-08-11T10:00:00.000Z
+description: "A fast method for converting Xcode test results to JUnit format for better CI integration and test reporting."
 tags:
   - iOS
   - Development
@@ -11,8 +9,6 @@ tags:
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Testing is very important at PSPDFKit. We're building an SDK. When you give your API to other developers, there are many more things that can go wrong. For a long time, we've been using either a combination of xcodebuild with [xcpretty](https://github.com/supermarin/xcpretty) or [Facebook's xctool](https://github.com/facebook/xctool). No tool is perfect though. [xctool](https://github.com/facebook/xctool) is an alternative to xcodebuild but uses much of it under the hood and often breaks when Xcode is updated. At some point Facebook deprecated it, and currently it doesn't work with Xcode 8 anymore. [xcpretty](https://github.com/supermarin/xcpretty) is really good. It parses the very verbose output of xcodebuild and prints it into something sane that a human can read. A big shout-out to [Marin Usalj](https://twitter.com/_supermarin), who maintains the project.
 
@@ -28,7 +24,7 @@ Why JUnit? Because that's what Jenkins eats for breakfast. So naturally, [traine
 
 Before it was even publicly announced, Twitter had already adopted it and saw a [10x performance increase](https://github.com/KrauseFx/trainer/blob/f2afb8b3e0d870d6fb3f88b4ce46b87438522f62/README.md) in JUnit report generation.
 
-It also made our CI much, much less flaky, since random weird log messages no longer confuse the test converter. You can even run this *in combination* with xcpretty and get the best of both worlds. A flawed, but great version a human can read and a separate converter that translates test results from a (so far) stable-looking plist format.
+It also made our CI much, much less flaky, since random weird log messages no longer confuse the test converter. You can even run this _in combination_ with xcpretty and get the best of both worlds. A flawed, but great version a human can read and a separate converter that translates test results from a (so far) stable-looking plist format.
 
 So far trainer seems to be the only converter, though there are other tools that try to solve this differently, such as the recently open-sourced [fbxctest](https://github.com/facebook/FBSimulatorControl/commit/51856763f73889f676cf2224348400824e6ae9cf) by Facebook.
 

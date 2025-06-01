@@ -1,7 +1,7 @@
 ---
-title: 'Apple Silicon M1: A Developer''s Perspective'
-pubDate: 2020-11-28T13:00:00.000Z
-description: 'I put the new M1 MacBook Air through its paces as a serious development machine. From benchmarking Xcode build times to testing various developer tools, I explore how well Apple''s transition to custom silicon works for real-world development workflows. While most apps run brilliantly via Rosetta 2 and native performance is stunning, I uncover both surprising benefits and important limitations developers should understand before making the switch. This early assessment reveals why M1 Macs represent a fundamental shift in the developer experience.'
+title: "Apple Silicon M1: A Developer's Perspective"
+pubDatetime: 2020-11-28T13:00:00.000Z
+description: "A comprehensive evaluation of the M1 MacBook Air as a development machine, covering Xcode performance, compatibility issues, and the transition challenges for developers."
 heroImage: /assets/img/2020/m1/m1.jpg
 tags:
   - Apple-Silicon
@@ -26,7 +26,7 @@ Let me first start with the things everybody already talks about: Yes, this mach
 
 ## Xcode
 
-Xcode runs FAST on the M1. Compiling the [PSPDFKit PDF SDK](https://pspdfkit.com/) (debug, arm64) can almost compete with the fastest Intel-based MacBook Pro Apple offers (to date), with [8:49 minutes vs. 7:31 minutes](https://twitter.com/steipete/status/1332052251712614405?s=21). For comparison, my Hackintosh builds the same in less than 5 minutes. 
+Xcode runs FAST on the M1. Compiling the [PSPDFKit PDF SDK](https://pspdfkit.com/) (debug, arm64) can almost compete with the fastest Intel-based MacBook Pro Apple offers (to date), with [8:49 minutes vs. 7:31 minutes](https://twitter.com/steipete/status/1332052251712614405?s=21). For comparison, my Hackintosh builds the same in less than 5 minutes.
 
 One can't overstate how impressive this is for a fanless machine. Apple's last experiment with fanless MacBooks was the 12-inch version from 2017, which builds the same project in 41 minutes.
 
@@ -68,7 +68,7 @@ Lastly, 16&nbsp;GB RAM just isn't a lot. When running parallel tests, the machin
 
 ## Android Studio
 
-IntelliJ is working on porting the [JetBrains Runtime](https://youtrack.jetbrains.com/issue/JBR-2526) to Apple Silicon. JetBrains apps currently work through Rosetta 2; however, building via Gradle is [extremely slow](https://www.reddit.com/r/androiddev/comments/jx4ntt/apple_macbook_air_m1_is_very_slow_in_gradle_builds/). Gradle creates code at runtime, which seems like a particularly bad combination with the Rosetta 2 ahead-of-time translation logic. 
+IntelliJ is working on porting the [JetBrains Runtime](https://youtrack.jetbrains.com/issue/JBR-2526) to Apple Silicon. JetBrains apps currently work through Rosetta 2; however, building via Gradle is [extremely slow](https://www.reddit.com/r/androiddev/comments/jx4ntt/apple_macbook_air_m1_is_very_slow_in_gradle_builds/). Gradle creates code at runtime, which seems like a particularly bad combination with the Rosetta 2 ahead-of-time translation logic.
 
 I expect most issues will be solved by Q1 2021, but it'll likely be some more time until all Java versions run great on ARM. A lot of effort has been put into [loop unrolling and vectorization](https://bell-sw.com/java/arm/performance/2019/01/15/the-status-of-java-on-arm/); not everything there is available on ARM just yet.
 
@@ -88,7 +88,7 @@ There's the occasional app that can't be translated and fails on startup (e.g. [
 
 Electron-based apps are slow if they run on Rosetta. It seems the highly optimized V8 JavaScript compiler blocks ahead-of-time translation. The latest stable version of Electron (version 11) already [fully supports Apple Silicon](https://www.electronjs.org/blog/apple-silicon), and some companies — including Slack and 1Password — have updated their beta versions to run natively.
 
-Google just shipped [Chrome that runs on ARM](https://www.macworld.com/article/3597749/google-releases-chrome-87-with-support-for-apple-silicon-macs.html), but there's still quite a big performance gap between it and Apple Safari, which just *flies* on Apple Silicon.
+Google just shipped [Chrome that runs on ARM](https://www.macworld.com/article/3597749/google-releases-chrome-87-with-support-for-apple-silicon-macs.html), but there's still quite a big performance gap between it and Apple Safari, which just _flies_ on Apple Silicon.
 
 ## Conclusion
 

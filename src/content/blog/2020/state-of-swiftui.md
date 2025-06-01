@@ -1,7 +1,7 @@
 ---
-title: 'The State of SwiftUI'
-pubDate: 2020-09-13T11:00:00.000+02:00
-description: "Is SwiftUI ready for production in iOS 14 and macOS Big Sur? I take Apple's Fruta sample app for a test drive to find out. Diving into performance bottlenecks, AttributeGraph crashes, and platform-specific issues, I provide a realistic assessment of SwiftUI's current state. While there are significant improvements since last year, some rough edges remain that developers should be aware of before going all-in on this promising technology."
+title: "The State of SwiftUI"
+pubDatetime: 2020-09-13T11:00:00.000+02:00
+description: "Testing SwiftUI's production readiness in iOS 14 and macOS Big Sur through Apple's Fruta sample app, revealing performance issues and platform-specific limitations."
 heroImage: /assets/img/2020/fruta-swiftui/fruta-crash.png
 tags:
   - SwiftUI
@@ -25,7 +25,7 @@ Apple released SwiftUI last year, and it's been an exciting and wild ride. With 
 
 ## Fruta Sample App
 
-Let's look at [Apple's Fruta example](https://developer.apple.com/documentation/app_clips/fruta_building_a_feature-rich_app_with_swiftui), a cross-platform feature-rich app that's built completely in SwiftUI. It's great that Apple is finally releasing a more complex application for this year's cycle. 
+Let's look at [Apple's Fruta example](https://developer.apple.com/documentation/app_clips/fruta_building_a_feature-rich_app_with_swiftui), a cross-platform feature-rich app that's built completely in SwiftUI. It's great that Apple is finally releasing a more complex application for this year's cycle.
 
 I took a look when Big Sur beta 1 came out, and it was pretty unpolished:
 
@@ -47,7 +47,7 @@ Googling for this error reveals that there are [a](https://github.com/fermoya/Sw
 
 SwiftUI uses many components from AppKit and UIKit, which is a much better strategy than reinventing the wheel. These components are stateful and are synced with custom manager classes that perform the state diffing. These wrappers can cause issues, and as they're written in Swift, there aren't many possibilities to fix issues from the outside (unlike with swizzling in the earlier days).
 
-Example: Removing a favorited item while it's selected crashes in the AppKit binding that syncs the SwiftUI state with `NSTableView` (FB8684522). 
+Example: Removing a favorited item while it's selected crashes in the AppKit binding that syncs the SwiftUI state with `NSTableView` (FB8684522).
 
 <TwitterEmbed id="1305075451711369216" />
 
@@ -86,13 +86,13 @@ On my 2.4 GHz 8-Core Intel Core i9 MacBook Pro, it takes longer than a second to
 
 ![](/assets/img/2020/fruta-swiftui/instruments.png)
 
-* Of the 10 seconds captured, 30 percent of them are used for the various retain/release and malloc calls in Swift and Objective-C.
-* `NSAttributedString` shows up often in stack traces, which hints that text layout seems especially expensive.
-* The AttributeGraph SwiftUI layout engine seems to create a lot of throwaway objects. These might mostly be Swift structs, but they're still expensive.
-* JPG decoding happens on the main thread, but it's only responsible for less than 1 percent of the time spent here.
-* When checking Hide System Libraries, there's basically no work done in Fruta's business logic. 
-* Sorting for Top Functions, we see that AppKit's auto layout logic, combined with SwiftUI's graph, is taking up a lot of time.
-* There seems to be a lot of unnecessary invalidation. For example, `AppKitToolbarCoordinator` adds a toolbar item, which triggers `NSHostingView.preferencesDidChange()`, causing everything to lay itself out once again, even though the toolbar size doesn't change.
+- Of the 10 seconds captured, 30 percent of them are used for the various retain/release and malloc calls in Swift and Objective-C.
+- `NSAttributedString` shows up often in stack traces, which hints that text layout seems especially expensive.
+- The AttributeGraph SwiftUI layout engine seems to create a lot of throwaway objects. These might mostly be Swift structs, but they're still expensive.
+- JPG decoding happens on the main thread, but it's only responsible for less than 1 percent of the time spent here.
+- When checking Hide System Libraries, there's basically no work done in Fruta's business logic.
+- Sorting for Top Functions, we see that AppKit's auto layout logic, combined with SwiftUI's graph, is taking up a lot of time.
+- There seems to be a lot of unnecessary invalidation. For example, `AppKitToolbarCoordinator` adds a toolbar item, which triggers `NSHostingView.preferencesDidChange()`, causing everything to lay itself out once again, even though the toolbar size doesn't change.
 
 The good news is there seem to be a lot of potential future optimizations possible to make this fast. Alternatively, there's always the possibility of [dropping out of SwiftUI for performance critical parts](https://twitter.com/noahsark769/status/1304938866999046144?s=21).
 
@@ -100,7 +100,7 @@ This isn't unique to Fruta. I've been taking a look at [@Dimillian's](https://tw
 
 <TwitterEmbed id="1282655123244752897" />
 
-The general pattern here points to AppKit: The interaction between SwiftUI views and AppKit views [seems to](https://twitter.com/fcbunn/status/1259078251340800000) be [poor](https://twitter.com/stuartcarnie/status/1301895206875181056). It's important to understand that SwiftUI itself is fast — for many use cases it's even faster than using `CALayer`, [as 
+The general pattern here points to AppKit: The interaction between SwiftUI views and AppKit views [seems to](https://twitter.com/fcbunn/status/1259078251340800000) be [poor](https://twitter.com/stuartcarnie/status/1301895206875181056). It's important to understand that SwiftUI itself is fast — for many use cases it's even faster than using `CALayer`, [as
 @cocoawithlove proved](https://twitter.com/cocoawithlove/status/1143859576661393408) — and the UIKit port is by far faster and better than the AppKit port.
 
 ## Update for iOS 14 GM

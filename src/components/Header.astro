@@ -1,35 +1,191 @@
 ---
-import Link from './Link.astro'
-import ThemeToggle from './ThemeToggle.astro'
-import MobileMenu from './ui/mobile-menu'
-import { NAV_LINKS, SITE } from '../consts'
+import Hr from "./Hr.astro";
+import IconX from "@/assets/icons/IconX.svg";
+import IconMoon from "@/assets/icons/IconMoon.svg";
+import IconSearch from "@/assets/icons/IconSearch.svg";
+import IconArchive from "@/assets/icons/IconArchive.svg";
+import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
+import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
+import LinkButton from "./LinkButton.astro";
+import { SITE } from "@/config";
+
+const { pathname } = Astro.url;
+
+// Remove trailing slash from current pathname if exists
+const currentPath =
+  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+
+const isActive = (path: string) => {
+  const currentPathArray = currentPath.split("/").filter((p) => p.trim());
+  const pathArray = path.split("/").filter((p) => p.trim());
+
+  return currentPath === path || currentPathArray[0] === pathArray[0];
+};
 ---
 
-<header
-  class="bg-background/50 dark:bg-background/80 sticky top-0 z-10 backdrop-blur-md"
-  transition:persist
->
-  <div
-    class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4 p-4"
+<header>
+  <a
+    id="skip-to-content"
+    href="#main-content"
+    class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
-    <Link href="/" class="flex shrink-0 items-center gap-2 text-xl font-medium">
-      {SITE.title}
-    </Link>
-    <div class="flex items-center gap-2 md:gap-4">
-      <nav class="hidden items-center gap-4 text-sm sm:gap-6 md:flex">
-        {
-          NAV_LINKS.map((item) => (
-            <Link
-              href={item.href}
-              class="text-foreground/60 hover:text-foreground/80 capitalize transition-colors"
+    Skip to content
+  </a>
+  <div
+    id="nav-container"
+    class="mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row"
+  >
+    <div
+      id="top-nav-wrap"
+      class="relative flex w-full items-baseline justify-between bg-background p-4 sm:items-center sm:py-6"
+    >
+      <a
+        href="/"
+        class="absolute py-1 text-2xl leading-7 font-semibold whitespace-nowrap sm:static"
+      >
+        {SITE.title}
+      </a>
+      <nav
+        id="nav-menu"
+        class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
+      >
+        <button
+          id="menu-btn"
+          class="focus-outline self-end p-2 sm:hidden"
+          aria-label="Open Menu"
+          aria-expanded="false"
+          aria-controls="menu-items"
+        >
+          <IconX id="close-icon" class="hidden" />
+          <IconMenuDeep id="menu-icon" />
+        </button>
+        <ul
+          id="menu-items"
+          class:list={[
+            "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
+            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium [&>li>a]:hover:text-accent sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
+            "hidden",
+            "sm:mt-0 sm:ml-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
+          ]}
+        >
+          <li class="col-span-2">
+            <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
+              Posts
+            </a>
+          </li>
+          <!-- <li class="col-span-2">
+            <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+              Tags
+            </a>
+          </li> -->
+          <li class="col-span-2">
+            <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
+              About
+            </a>
+          </li>
+          {
+            SITE.showArchives && (
+              <li class="col-span-2">
+                <LinkButton
+                  href="/archives"
+                  class:list={[
+                    "focus-outline flex justify-center p-3 sm:p-1",
+                    {
+                      "active-nav [&>svg]:stroke-accent": isActive("/archives"),
+                    },
+                  ]}
+                  ariaLabel="archives"
+                  title="Archives"
+                >
+                  <IconArchive class="hidden sm:inline-block" />
+                  <span class="sm:sr-only">Archives</span>
+                </LinkButton>
+              </li>
+            )
+          }
+          <li class="col-span-1 flex items-center justify-center">
+            <LinkButton
+              href="/search"
+              class:list={[
+                "focus-outline flex p-3 sm:p-1",
+                { "[&>svg]:stroke-accent": isActive("/search") },
+              ]}
+              ariaLabel="search"
+              title="Search"
             >
-              {item.label}
-            </Link>
-          ))
-        }
+              <IconSearch />
+              <span class="sr-only">Search</span>
+            </LinkButton>
+          </li>
+          {
+            SITE.lightAndDarkMode && (
+              <li class="col-span-1 flex items-center justify-center">
+                <button
+                  id="theme-btn"
+                  class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
+                  title="Toggles light & dark"
+                  aria-label="auto"
+                  aria-live="polite"
+                >
+                  <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                  <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                </button>
+              </li>
+            )
+          }
+        </ul>
       </nav>
-      <MobileMenu client:load transition:persist />
-      <ThemeToggle transition:persist />
     </div>
   </div>
+  <Hr />
 </header>
+
+<script>
+  function toggleNav() {
+    const menuBtn = document.querySelector("#menu-btn");
+    const menuItems = document.querySelector("#menu-items");
+    const menuIcon = document.querySelector("#menu-icon");
+    const closeIcon = document.querySelector("#close-icon");
+
+    if (!menuBtn || !menuItems || !menuIcon || !closeIcon) return;
+
+    menuBtn.addEventListener("click", () => {
+      const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
+
+      menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
+      menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
+
+      menuItems.classList.toggle("hidden");
+      menuIcon.classList.toggle("hidden");
+      closeIcon.classList.toggle("hidden");
+    });
+  }
+
+  function setThemeFeature() {
+    // Theme toggle functionality
+    document.querySelector("#theme-btn")?.addEventListener("click", () => {
+      const currentTheme =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      document
+        .querySelector("#theme-btn")
+        ?.setAttribute("aria-label", newTheme);
+      document.body.style.colorScheme = newTheme;
+    });
+  }
+
+  toggleNav();
+  setThemeFeature();
+
+  // Runs on view transitions navigation
+  document.addEventListener("astro:after-swap", () => {
+    toggleNav();
+    setThemeFeature();
+  });
+</script>

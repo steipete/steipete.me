@@ -1,57 +1,60 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection("blog");
 
-  return posts.map(post => {
-    // Check if post is already in a year directory (e.g., 2020/apple-silicon-m1...)
-    const yearDirMatch = post.slug.match(/^(\d{4})\/(.*)/);
-    if (yearDirMatch) {
-      const year = yearDirMatch[1];
-      const slug = yearDirMatch[2];
+  return posts
+    .map((post) => {
+      // Use post.id as the slug (e.g., "2012/dont-call-willchangevalueforkey")
+      const postSlug = post.id;
+
+      // Skip posts without id
+      if (!postSlug) {
+        console.warn("Post without id found:", post);
+        return null;
+      }
+
+      // Check if post is already in a year directory (e.g., 2020/apple-silicon-m1...)
+      const yearDirMatch = postSlug.match(/^(\d{4})\/(.*)/);
+      if (yearDirMatch) {
+        return {
+          params: { slug: postSlug },
+          props: { post, yearSlug: postSlug },
+        };
+      }
+
+      // For posts not in year directories, extract year from metadata or slug
+      const pubDate = post.data.pubDatetime || post.data.date;
+      const year = pubDate
+        ? pubDate.getFullYear().toString()
+        : // Fallback: Try to extract year from slug if it starts with a date pattern
+          postSlug.match(/^(\d{4})-\d{2}-\d{2}/)
+          ? postSlug.substring(0, 4)
+          : // If no year can be found, use the current year as fallback
+            new Date().getFullYear().toString();
+
+      // Create a slug with the year prefix
+      const yearSlug = `${year}/${postSlug.replace(/^\d{4}-\d{2}-\d{2}-/, "")}`;
+
       return {
-        params: { slug: `${year}/${slug}` },
-        props: { post, yearSlug: `${year}/${slug}` }
+        params: { slug: yearSlug },
+        props: { post, yearSlug },
       };
-    }
-
-    // For posts not in year directories, extract year from metadata or slug
-    const pubDate = post.data.pubDate || post.data.date;
-    const year = pubDate ? pubDate.getFullYear().toString() :
-      // Fallback: Try to extract year from slug if it starts with a date pattern
-      post.slug.match(/^(\d{4})-\d{2}-\d{2}/) ?
-        post.slug.substring(0, 4) :
-        // If no year can be found, use the current year as fallback
-        new Date().getFullYear().toString();
-
-    // Create a slug with the year prefix
-    const yearSlug = `${year}/${post.slug.replace(/^\d{4}-\d{2}-\d{2}-/, '')}`;
-
-    return {
-      params: { slug: yearSlug },
-      props: { post, yearSlug }
-    };
-  });
+    })
+    .filter(Boolean); // Filter out null values
 }
 
 type Props = {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<"blog">;
   yearSlug: string;
 };
 
 const { post, yearSlug } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
-<BlogPostLayout
-  title={post.data.title}
-  description={post.data.description}
-  pubDate={post.data.pubDate}
-  updatedDate={post.data.updatedDate}
-  heroImage={post.data.heroImage}
-  slug={yearSlug}
->
+<BlogPostLayout {...post.data} slug={yearSlug}>
   <Content />
 </BlogPostLayout>

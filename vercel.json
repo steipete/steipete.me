@@ -7,12 +7,37 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/posts", "destination": "/", "permanent": true },
-    { "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug/", "permanent": true },
-    { "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug/", "permanent": true },
-    { "source": "/blog/:slug([^\\/]+)$", "destination": "/blog/:slug/", "permanent": true },
-    { "source": "/categories/:category(.*)", "destination": "/tags/:category", "permanent": true },
+    {
+      "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
+      "destination": "/blog/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
+      "destination": "/blog/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:slug([^\\/]+)$",
+      "destination": "/blog/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/categories/:category(.*)",
+      "destination": "/tags/:category",
+      "permanent": true
+    },
     { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
-    { "source": "/20:year/:month/:day/:slug(.*)", "destination": "/blog/:slug/", "permanent": true },
+    {
+      "source": "/20:year/:month/:day/:slug(.*)",
+      "destination": "/blog/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/a-new-beginning/",
+      "destination": "/blog/finding-my-spark-again/",
+      "permanent": true
+    },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "(?!steipete\\.me).*" }],
@@ -21,15 +46,15 @@
     }
   ],
   "rewrites": [
-    { 
-      "source": "/:path*", 
+    {
+      "source": "/:path*",
       "has": [
-        { 
-          "type": "host", 
-          "value": "(?!steipete\\.me).*" 
+        {
+          "type": "host",
+          "value": "(?!steipete\\.me).*"
         }
-      ], 
-      "destination": "https://steipete.me/:path*" 
+      ],
+      "destination": "https://steipete.me/:path*"
     }
   ],
   "headers": [
@@ -54,7 +79,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none'"
+          "value": "default-src 'self' https://steipete.me https://*.vercel.app; script-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; style-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; img-src 'self' data: https://steipete.me https://*.vercel.app; font-src 'self' https://steipete.me https://*.vercel.app; connect-src 'self' https://steipete.me https://*.vercel.app; media-src 'self' https://steipete.me https://*.vercel.app; object-src 'none'; frame-ancestors 'none'"
         }
       ]
     }

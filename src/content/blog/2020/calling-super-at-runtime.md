@@ -1,8 +1,7 @@
 ---
 title: Calling Super at Runtime in Swift
-pubDate: 2020-06-10T15:00:00.000Z
-description: >-
-  Join me on a deep dive into Swift's runtime as I tackle a seemingly simple problem: implementing a dynamic super call. I explore Swift's object model, discover obscure linker flags, and tinker with assembly language to solve this challenge. You'll learn how Swift methods are represented at runtime, why this problem is particularly tricky, and the surprising solution involving ARM64 registers and the Swift runtime's internals.
+pubDatetime: 2020-06-10T15:00:00.000Z
+description: "Implementing dynamic super calls in Swift through runtime manipulation, assembly language, and ARM64 register management for InterposeKit."
 heroImage: /assets/img/2020/calling-super/Xcode-debug.png
 tags:
   - Swift-Runtime
@@ -42,7 +41,7 @@ Simple enough! What the compiler creates for you is something along these lines:
      };
      objc_msgSendSuper2(&_super, _cmd);
  }
- ```
+```
 
 In compiled code, there's a lookup table so that `object_getClass` doesn't need to be called, but you see the principle. A struct is created, and `objc_msgSendSuper2` is called with it. The method is automatically dynamic, since UIKit is written in Objective-C, so the Swift compiler knows it needs to use dynamic dispatch.
 
@@ -74,7 +73,7 @@ class_addMethod(clazz, selector, imp_implementationWithBlock(^(__unsafe_unretain
 
 This works, and [we've been shipping code](https://pspdfkit.com/blog/2019/swizzling-in-swift/) like this for a while. For InterposeKit, I wanted to write the same in Swift.
 
-**Update:** Marcel correctly pointed out that I am mixing up `va_arg` and `va_list`, which are absolutely not the same. 
+**Update:** Marcel correctly pointed out that I am mixing up `va_arg` and `va_list`, which are absolutely not the same.
 
 Compare the two definitions of `printf`:
 
@@ -139,9 +138,9 @@ OBJC_EXPORT id _Nullable objc_msgSendSuper(struct objc_super * _Nonnull super, S
 #endif
 ```
 
-Previously, it was declared as a function that took `id`, `SEL`, and variadic arguments, returning `id` — now it takes and returns `void`. Why the change? 
+Previously, it was declared as a function that took `id`, `SEL`, and variadic arguments, returning `id` — now it takes and returns `void`. Why the change?
 
-The short version is that there is no guarantee that the ABI for variadic function matches the ABI for a function with a mixed number of arguments. In the ARM64 ABI, [variadic arguments are passed on the stack](https://blog.nelhage.com/2010/10/amd64-and-va_arg/). However, Apple changed the way message sending works in ARM64 to not use the variadic ABI anymore, instead using the regular function-calling ABI. 
+The short version is that there is no guarantee that the ABI for variadic function matches the ABI for a function with a mixed number of arguments. In the ARM64 ABI, [variadic arguments are passed on the stack](https://blog.nelhage.com/2010/10/amd64-and-va_arg/). However, Apple changed the way message sending works in ARM64 to not use the variadic ABI anymore, instead using the regular function-calling ABI.
 
 Without casting, even a trivial use of `objc_msgSend` will result in a crash. There is an interesting article about this by Mike Ash entitled [objc_msgSend's New Prototype](https://www.mikeash.com/pyblog/objc_msgsends-new-prototype.html). Mike's blog is brilliant, and I'm extremely happy that he still writes new posts from time to time, despite now working at Apple.
 
@@ -155,7 +154,7 @@ First of all, [assembly is hard](https://twitter.com/steipete/status/12700351794
 
 [^8]: Yes, there are [two concurring syntax branches](https://en.wikipedia.org/wiki/X86_assembly_language#Syntax). Intel syntax is popular in the DOS and Windows world, and AT&T syntax is for Unix. AT&T is source before destination, while Intel is destination before source.
 
-![Me trying to make sense of this via drawing](/assets/img/2020/calling-super/arm64-registers.jpg) 
+![Me trying to make sense of this via drawing](/assets/img/2020/calling-super/arm64-registers.jpg)
 
 **Caller-saved registers** ("clobbered") are registers you can freely work with and use as temporary variables. It's normal that a call writes temporary values into these registers. Some of them (specifically `x0-x7`) are used to transport parameters when calling other functions.
 
@@ -173,7 +172,7 @@ There are also floating-point registers (`q0`–`q7`), but we don't need them fo
 
 Adding inline assembly is a niche feature, but it has valid use cases; even Chris Lattner [is hoping that](https://forums.swift.org/t/a-proposal-for-inline-assembly/4643/4) a future version of Swift will include it. For now, we can use C and the Swift/Obj-C interop to write assembly.
 
-## Perfectly Forwarding Arguments 
+## Perfectly Forwarding Arguments
 
 Back to calling `super`: The goal is to perfectly forward all arguments from the caller to `objc_msgSendSuper2`, while also changing the first argument from `self` to `struct objc_super`, and potentially also filling this struct. Sounds easy enough!
 
@@ -205,7 +204,7 @@ add x0, x0, 8
 b objc_msgSendSuper2
 ```
 
-This is *beautiful*, since it's very simple, and it doesn't touch any of our calling registers — with the exception of the one that needs to be changed. This doesn't work in my case though — the goal was to create a `super` call in an existing class hierarchy, not via creating a new proxy where we have exact control of the memory layout. 
+This is _beautiful_, since it's very simple, and it doesn't touch any of our calling registers — with the exception of the one that needs to be changed. This doesn't work in my case though — the goal was to create a `super` call in an existing class hierarchy, not via creating a new proxy where we have exact control of the memory layout.
 
 ## Trampolines Explained
 
@@ -226,7 +225,7 @@ Another solution is that of trampolines. The basic principle is that you have tw
                │Trampoline Data #2 │ 0x5000 Read, Write
                ├───────────────────┤
                │Trampoline Data #3 │ 0x6000 Read, Write
-               └───────────────────┘               
+               └───────────────────┘
 ```
 
 With a fixed offset, we can reach the corresponding data from the entry, and we can read variables as needed. This is how `imp_implementationWithBlock` works, and luckily it's also [open source](https://github.com/0xxd0/objc4/blob/master/objc4/runtime/objc-block-trampolines.mm) — but there be [dragons](https://twitter.com/steipete/status/1269912889097363457?s=21). Landon Fuller [reimplemented this](https://landonf.org/code/objc/imp_implementationWithBlock.20110413.html) back when it was introduced in iOS 4.3, and he explains the principles really well.
@@ -235,7 +234,7 @@ With a fixed offset, we can reach the corresponding data from the entry, and we 
 
 There's a lot of logic required to correctly manage tables, and things need locking to make the code thread-safe. I decided that this is gonna be the backup plan and tried a more direct approach to just fetch everything at runtime.
 
-The principle: We save the registers that we might spill, fill the struct at runtime, restore the registers, and then perform the tail call. This sounds simple now that I write it up, but it caused serious headaches at first. 
+The principle: We save the registers that we might spill, fill the struct at runtime, restore the registers, and then perform the tail call. This sounds simple now that I write it up, but it caused serious headaches at first.
 
 Specifically, I tried to use the stack to generate the struct, which breaks stack-based parameter passing. I tried calling `malloc` in `asm`, but since that requires calling `free`, I couldn't do the tail call optimization anymore. And I encountered oh so many crashes because I didn't really understand what it means to align the stack pointer on 16 bytes.
 
@@ -250,7 +249,7 @@ Let's start by saving registers:
 "stp x0, x1, [sp, #-16]!\n" // push x1, then x0
 ```
 
-`stp` saves a pair of registers (2*8=16 bytes) on the stack, and it also automatically decrements the stack pointer. The stack on most architectures grows downward from max to 0, so via decrementing, we reserve memory:
+`stp` saves a pair of registers (2\*8=16 bytes) on the stack, and it also automatically decrements the stack pointer. The stack on most architectures grows downward from max to 0, so via decrementing, we reserve memory:
 
 ```
 // fetch filled struct objc_super, call with self + _cmd
@@ -309,7 +308,7 @@ While there are ways around this, they are less elegant and require even more as
 "b _objc_msgSendSuper2 \n"
 ```
 
-We copy `x9` back to `x0` and then call `objc_msgSendSuper2` with `b`, not saving the link registry and thus performing a tail call. 
+We copy `x9` back to `x0` and then call `objc_msgSendSuper2` with `b`, not saving the link registry and thus performing a tail call.
 
 ## Assembly Notes
 
@@ -353,9 +352,9 @@ add	sp, sp, #48             ; =48
 ret
 ```
 
-You can debug this via Debug > Debug Workflow > Always Show Disassembly. Step through commands via `ni` and `is`. 
+You can debug this via Debug > Debug Workflow > Always Show Disassembly. Step through commands via `ni` and `is`.
 
-![Xcode Assembly Debugger](/assets/img/2020/calling-super/Xcode-debug.png) 
+![Xcode Assembly Debugger](/assets/img/2020/calling-super/Xcode-debug.png)
 
 Right before the call to `_objc_msgSendSuper2`, we can inspect the `objc_super` struct:
 
@@ -369,7 +368,7 @@ ViewController
 
 ## Further Resources
 
-Thanks to everyone helping me with this post, especially [@badlogicgames](https://twitter.com/badlogicgames),  [@DavidJGoldman](https://twitter.com/DavidJGoldman), and [@mpweiher](https://twitter.com/mpweiher).
+Thanks to everyone helping me with this post, especially [@badlogicgames](https://twitter.com/badlogicgames), [@DavidJGoldman](https://twitter.com/DavidJGoldman), and [@mpweiher](https://twitter.com/mpweiher).
 
 I used these resources to learn:
 
@@ -379,9 +378,9 @@ I used these resources to learn:
 - [amd64 and va_arg](https://blog.nelhage.com/2010/10/amd64-and-va_arg/)
 - [Stack frame layout on x86-64](https://eli.thegreenplace.net/2011/09/06/stack-frame-layout-on-x86-64)
 - [Local Variables on the Stack](https://bob.cs.sonoma.edu/IntroCompOrg-RPi/sec-varstack.html)
-- [Wikipedia: Calling convention](https://en.wikipedia.org/wiki/Calling_convention#x86_(32-bit))
+- [Wikipedia: Calling convention](<https://en.wikipedia.org/wiki/Calling_convention#x86_(32-bit)>)
 - [Using the Stack in AArch64: Implementing Push and Pop](https://community.arm.com/developer/ip-products/processors/b/processors-ip-blog/posts/using-the-stack-in-aarch64-implementing-push-and-pop)
 - [x86 Assembly Guide](https://www.cs.yale.edu/flint/cs421/papers/x86-asm/asm.html)
-- [ARM Compiler Documentation](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0801a/BABBDBAD.html) 
+- [ARM Compiler Documentation](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0801a/BABBDBAD.html)
 - [Notes on x86-64 programming](https://www.lri.fr/~filliatr/ens/compil/x86-64.pdf)
 - [How x86_64 addresses memory](https://blog.yossarian.net/2020/06/13/How-x86_64-addresses-memory)

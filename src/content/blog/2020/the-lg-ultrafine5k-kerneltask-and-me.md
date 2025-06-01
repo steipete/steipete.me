@@ -1,7 +1,7 @@
 ---
-title: 'The LG UltraFine 5K, kernel_task, and Me'
-pubDate: 2020-05-19T06:00:00.000Z
-description: "Journey through my four-year saga with the LG UltraFine 5K display, from initial excitement to troubleshooting numerous issues across multiple MacBook Pro generations. I uncover how the display's problems evolved from Wi-Fi interference and ghosting to causing system slowdowns with excessive kernel_task CPU usage. The surprising solution? Simply plugging the monitor into the right side of the MacBook. This detailed account includes insights on thermal sensors, power delivery challenges, and brightness bugs, offering practical advice for anyone using this temperamental but beautiful display."
+title: "The LG UltraFine 5K, kernel_task, and Me"
+pubDatetime: 2020-05-19T06:00:00.000Z
+description: "A four-year saga with the problematic LG UltraFine 5K display and the surprising discovery that plugging it into the wrong MacBook side causes performance issues."
 heroImage: /assets/img/2020/appleintelframebuffer/lg-box.jpg
 tags:
   - Apple
@@ -40,11 +40,11 @@ With the 2017 MacBook Pro, I had an extraordinary amount of fun, since plugging 
 
 {% twitter https://twitter.com/steipete/status/956863946404827136 %}
 
-Nobody knew what was going on, and this all occurred before we had an Apple Store in Austria, so getting help there was out of the question. Apple eventually agreed to change my logic board for free, but only after countless hours of phone calls and emails and after this issue had been escalated multiple times. Mind you, this was all with active AppleCare and a machine that wasn’t even one year old. The replacement of my logic board took more than a week, and after it was returned, it had the exact same issue. I mostly gave up and just didn’t use my external screen. 
+Nobody knew what was going on, and this all occurred before we had an Apple Store in Austria, so getting help there was out of the question. Apple eventually agreed to change my logic board for free, but only after countless hours of phone calls and emails and after this issue had been escalated multiple times. Mind you, this was all with active AppleCare and a machine that wasn’t even one year old. The replacement of my logic board took more than a week, and after it was returned, it had the exact same issue. I mostly gave up and just didn’t use my external screen.
 
 ## kernel_task Goes Omnomnom
 
-The graphic issues disappeared with the 2018 MacBook Pro. However, the biggest issue was also the weirdest: Sometimes, after longer use, my MacBook Pro became unusably slow. Mere seconds after removing the external screen, kernel_task disappeared back into the CPU activity ground noise. Sometimes I had hours after disconnecting in which the MacBook worked, but other times this happened really fast. (I use [iStat Menus](https://bjango.com/mac/istatmenus/) here.) 
+The graphic issues disappeared with the 2018 MacBook Pro. However, the biggest issue was also the weirdest: Sometimes, after longer use, my MacBook Pro became unusably slow. Mere seconds after removing the external screen, kernel_task disappeared back into the CPU activity ground noise. Sometimes I had hours after disconnecting in which the MacBook worked, but other times this happened really fast. (I use [iStat Menus](https://bjango.com/mac/istatmenus/) here.)
 
 {% twitter https://twitter.com/steipete/status/1128703168697839617 %}
 
@@ -52,15 +52,15 @@ I was never able to reliably reproduce this, nor could Apple Support help. They 
 
 ## 16-Inch MacBook Pro and LG UltraFine
 
-I spend between eight and ten hours per day on my MacBook Pro, so updating it every year is a good investment. Of course, this also gave me the opportunity to test each hardware generation with the LG display. 
+I spend between eight and ten hours per day on my MacBook Pro, so updating it every year is a good investment. Of course, this also gave me the opportunity to test each hardware generation with the LG display.
 
 When Apple announced the 16-inch MacBook Pro, I just had to get one. I don’t enjoy splitting my work across multiple machines, and I like to move around in my apartment, so it had to be a portable one. Over the years, Apple has managed to build beefier and beefier portables. However, its 8-core 15-inch MacBook Pro is severely thermal throttled — [using this tool](https://software.intel.com/content/www/us/en/develop/articles/intel-power-gadget.html), you can see how it runs at top speed for a few seconds, only to be thermal throttled.
 
-The 16-inch MacBook Pro was marketed as “[thicker](https://www.theverge.com/2019/11/18/20971297/macbook-pro-16-inch-battery-apple-thickness-teardown-ifixit)” as a way of fixing the throttling, and it delivered! Everything is noticeably faster. It also fixed my biggest issue with the whole MacBook Pro lineup so far: the dreaded kernel_task that eats up CPU like Pac-Man eats ghosts. 
+The 16-inch MacBook Pro was marketed as “[thicker](https://www.theverge.com/2019/11/18/20971297/macbook-pro-16-inch-battery-apple-thickness-teardown-ifixit)” as a way of fixing the throttling, and it delivered! Everything is noticeably faster. It also fixed my biggest issue with the whole MacBook Pro lineup so far: the dreaded kernel_task that eats up CPU like Pac-Man eats ghosts.
 
 Then, in April, I stumbled upon a [Stack Exchange question](https://apple.stackexchange.com/questions/363337/how-to-find-cause-of-high-kernel-task-cpu-usage) that seemed to explain what was going on all these years.
 
->high CPU usage by kernel_task is caused by high Thunderbolt Left Proximity temperature, which is caused by charging and having normal peripherals plugged in at the same time.
+> high CPU usage by kernel_task is caused by high Thunderbolt Left Proximity temperature, which is caused by charging and having normal peripherals plugged in at the same time.
 
 I HAD PLUGGED THE SCREEN INTO THE WRONG SIDE. YES.
 

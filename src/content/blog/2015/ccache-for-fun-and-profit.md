@@ -1,17 +1,13 @@
 ---
 title: Using ccache for Fun and Profit
-pubDate: 2015-10-06T12:00:00.000Z
-description: >-
-  At PSPDFKit we work with a very large codebase: over 600k lines and growing.
-  Of course we aim to write compact, efficient code — but the PDF specif...
+pubDatetime: 2015-10-06T12:00:00.000Z
+description: "Complete guide to using ccache to dramatically speed up C/C++/Objective-C build times for large iOS projects and CI systems."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 At PSPDFKit we work with a very large codebase: over 600k lines and growing. Of course we aim to write compact, efficient code — but the PDF specification is large, and there are many edge cases that need special treatment. Compile times became a real issue with [PSPDFKit 5 for iOS](/blog/2015/pspdfkit-ios-5-0/): the addition of a complete PDF renderer slowed down compile times a lot.
 Our Android SDK had the same problem, and I learned about the ccache project a few months ago when our Android lead introduced it into our stack to fight the ever longer compile times of our C++ NDK code.
@@ -22,7 +18,7 @@ One more thing before we dive in. If you are working on large builds, once you'v
 
 [ccache](https://ccache.samba.org/) is a compiler cache that transparently sits on top of the compiler and first checks its cache before falling back on actually compiling. It has a direct and a preprocessor mode and there are a few gotchas since Clang support was only really added in version 3.2, and the current version is 3.2.3. It’s a project [with a long history](https://ccache.samba.org/releasenotes.html) and it’s main focus is to be correct before being fast.
 
-A web search for “ccache xcode” mostly yielded outdated information and after a quick try I couldn’t get it to work. As our codebase grew even more complex, test times went from almost unbearable to really unbearable — even though our Jenkins worker cluster now spans almost 10 Macs. After ranting on Twitter that administrating Jenkins is now [basically a full-time-job](https://twitter.com/steipete/status/650635755858063360), Christian Legnitto from  Facebook (who used to manage Apple’s OS X releases) suggested that I should give [ccache another go](https://twitter.com/legneato/status/650726724490006528).
+A web search for “ccache xcode” mostly yielded outdated information and after a quick try I couldn’t get it to work. As our codebase grew even more complex, test times went from almost unbearable to really unbearable — even though our Jenkins worker cluster now spans almost 10 Macs. After ranting on Twitter that administrating Jenkins is now [basically a full-time-job](https://twitter.com/steipete/status/650635755858063360), Christian Legnitto from Facebook (who used to manage Apple’s OS X releases) suggested that I should give [ccache another go](https://twitter.com/legneato/status/650726724490006528).
 
 ## Let’s get started
 
@@ -57,7 +53,7 @@ You also need to define the `CC` variable in Xcode. At [PSPDFKit](https://pspdfk
 
 ![Xcode with CC defined](/assets/img/2015/ccache-for-fun-and-profit/ccache-clang.png)
 
-That’s all! The next full rebuild will actually be a bit slower, and you can run `ccache -s` to see if things are actually working. Initially there should be a lot cache misses, but when the cache starts to fill up subsequent compilations will run *a lot* faster.
+That’s all! The next full rebuild will actually be a bit slower, and you can run `ccache -s` to see if things are actually working. Initially there should be a lot cache misses, but when the cache starts to fill up subsequent compilations will run _a lot_ faster.
 
 ## Caveats
 
@@ -88,7 +84,7 @@ max cache size                      15.0 GB
 
 ## Is it worth it?
 
-To give you an idea, with ccache our Jenkins test workers run in an average of 8 minutes, while they needed about 14 minutes before. Compiling and packaging PSPDFKit in all its variants used to take 50 minutes on the fastest MacBook Pro money can buy, but with ccache this went down to 15 minutes. Adding ccache to our stack has been a *huge* win and I’m amazed that I hadn’t heard about it earlier. What a great tool!
+To give you an idea, with ccache our Jenkins test workers run in an average of 8 minutes, while they needed about 14 minutes before. Compiling and packaging PSPDFKit in all its variants used to take 50 minutes on the fastest MacBook Pro money can buy, but with ccache this went down to 15 minutes. Adding ccache to our stack has been a _huge_ win and I’m amazed that I hadn’t heard about it earlier. What a great tool!
 
 ## Precompiled Header Issues
 

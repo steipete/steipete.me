@@ -4,11 +4,9 @@
 
 export async function getStaticPaths() {
   // Just a placeholder to demonstrate the structure
-  return [
-    { params: { old_slug: 'test' }, props: {} }
-  ];
+  return [{ params: { old_slug: "test" }, props: {} }];
 }
 
 // Redirect to the blog homepage
-return Astro.redirect('/blog/', 301);
+return Astro.redirect("/blog/", 301);
 ---

@@ -1,63 +1,67 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Sidebar from '../components/Sidebar.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDatetime, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-	</head>
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
 
-	<body>
-		<Sidebar />
-		<div id="main-wrapper">
-			<main>
-				<article class="post">
-					<h1 class="post-title">{title}</h1>
+  <body>
+    <Sidebar />
+    <div id="main-wrapper">
+      <main>
+        <article class="post">
+          <h1 class="post-title">{title}</h1>
 
-					<div class="post-meta">
-						<span>
-							Posted on <FormattedDate date={pubDate} />
-							{updatedDate && (
-								<span class="last-updated-on">
-									· Updated on <FormattedDate date={updatedDate} />
-								</span>
-							)}
-						</span>
-					</div>
+          <div class="post-meta">
+            <span>
+              Posted on <FormattedDate date={pubDatetime} />
+              {
+                updatedDate && (
+                  <span class="last-updated-on">
+                    · Updated on <FormattedDate date={updatedDate} />
+                  </span>
+                )
+              }
+            </span>
+          </div>
 
-					{heroImage && (
-						<div class="hero-image">
-							<img src={heroImage} alt="" />
-						</div>
-					)}
+          {
+            heroImage && (
+              <div class="hero-image">
+                <img src={heroImage} alt="" />
+              </div>
+            )
+          }
 
-					<div class="post-content">
-						<slot />
-					</div>
-				</article>
+          <div class="post-content">
+            <slot />
+          </div>
+        </article>
 
-				<Footer />
-			</main>
-		</div>
+        <Footer />
+      </main>
+    </div>
 
-		<script>
-			// Mobile sidebar toggle
-			const sidebarToggle = document.createElement('button');
-			sidebarToggle.classList.add('sidebar-toggle');
-			sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
-			document.body.appendChild(sidebarToggle);
+    <script>
+      // Mobile sidebar toggle
+      const sidebarToggle = document.createElement("button");
+      sidebarToggle.classList.add("sidebar-toggle");
+      sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
+      document.body.appendChild(sidebarToggle);
 
-			sidebarToggle.addEventListener('click', () => {
-				document.getElementById('sidebar').classList.toggle('show');
-			});
-		</script>
-	</body>
+      sidebarToggle.addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("show");
+      });
+    </script>
+  </body>
 </html>

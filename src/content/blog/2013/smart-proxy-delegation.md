@@ -1,7 +1,7 @@
 ---
 title: "Smart Proxy Delegation"
-pubDate: 2013-07-30T18:28:00.000Z
-description: "Streamline your delegate pattern implementation in Objective-C with a clever proxy approach that eliminates repetitive boilerplate code. I present a complete solution that handles method forwarding, respects the respondsToSelector check, properly manages weak references to avoid retain cycles, and even supports block-based callbacks. This technique significantly reduces code verbosity while maintaining safety and readability, making delegate calls as simple as a direct message send."
+pubDatetime: 2013-07-30T18:28:00.000Z
+description: "Eliminate delegate boilerplate code in Objective-C using NSProxy to automatically handle respondsToSelector checks and method forwarding."
 tags:
   - iOS-Development
   - Objective-C
@@ -16,8 +16,7 @@ AIDescription: true
 
 When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward and easy to understand:
 
-
-``` objective-c
+```objective-c
     id<PSPDFResizableViewDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(resizableViewDidBeginEditing:)]) {
         [delegate resizableViewDidBeginEditing:self];
@@ -30,7 +29,7 @@ In the past, [I've used an approach similar to what Apple does](https://gist.git
 
 What we really want is something like this:
 
-``` objective-c
+```objective-c
     [self.delegateProxy resizableViewDidBeginEditing:self];
 ```
 
@@ -38,7 +37,7 @@ We can use NSProxy to simply forward the method if it's implemented. This used t
 
 Our custom NSProxy is really quite simple and just a few lines of code. The important part is here:
 
-``` objective-c
+```objective-c
 - (BOOL)respondsToSelector:(SEL)selector {
     return [self.delegate respondsToSelector:selector];
 }
@@ -60,8 +59,8 @@ One sad detail is that if the method is not implemented in the delegate, message
 
 We want to make sure that implementing this in our classes is simple. Here's the pattern I use in [PSPDFKit](http://pspdfkit.com):
 
-``` objective-c
-@interface PSPDFResizableView () 
+```objective-c
+@interface PSPDFResizableView ()
 @property (nonatomic, strong) id <PSPDFResizableViewDelegate> delegateProxy;
 @end
 
@@ -72,12 +71,12 @@ PSPDF_DELEGATE_PROXY(id <PSPDFResizableViewDelegate>)
 }
 ```
 
-You'll notice a few things. First, we *lie* about the actual type of `delegateProxy`. It's a class of type `PSTDelegateProxy`, but we declare it as the delegate type so that we don't have to cast it every time we use it, and so that we also get compiler-checked warnings when there are typos in the selector. Notice that the proxy needs to be strongly retained.
+You'll notice a few things. First, we _lie_ about the actual type of `delegateProxy`. It's a class of type `PSTDelegateProxy`, but we declare it as the delegate type so that we don't have to cast it every time we use it, and so that we also get compiler-checked warnings when there are typos in the selector. Notice that the proxy needs to be strongly retained.
 
 Second, we're using a macro to simplify things. This macro expands into following:
 
-``` objective-c
-- (void)setDelegate:(id <PSTDelegate>)delegate { 
+```objective-c
+- (void)setDelegate:(id <PSTDelegate>)delegate {
 	self.delegateProxy = delegate ? (id <PSTDelegate>)[[PSPDFDelegateProxy alloc] initWithDelegate:delegate] : nil;
 }
 - (id <PSTDelegate>)delegate {
@@ -91,7 +90,7 @@ We keep the weak reference of the delegate directly in the PSPDFDelegateProxy; n
 
 Now we've already covered most of the cases. But there's one pattern that we still need to take care of, which is optional methods that change a default return value if implemented:
 
-``` objective-c
+```objective-c
 _acceptedStartPoint = YES;
 id<PSPDFSelectionViewDelegate> delegate = self.delegate;
 if ([delegate respondsToSelector:@selector(selectionView:shouldStartSelectionAtPoint:)]) {
@@ -101,13 +100,13 @@ if ([delegate respondsToSelector:@selector(selectionView:shouldStartSelectionAtP
 
 If the proxy can't find a delegate, it will return `nil (id), NO (BOOL), 0 (int), or 0.f (float)`. Sometimes we want a different default. But again, we can perfectly solve this with some more NSProxy trickery:
 
-``` objective-c
+```objective-c
     _acceptedStartPoint = [[(id)self.delegateProxy YESDefault] selectionView:self shouldStartSelectionAtPoint:location];
 ```
 
 And here's the relevant code for the subclass that is being returned after calling `YESDefault`:
 
-``` objective-c
+```objective-c
 
 - (void)forwardInvocation:(NSInvocation *)invocation {
     // If method is a BOOL, return YES.
@@ -122,5 +121,4 @@ We have to to go down to NSInvocation, which is a bit slower, but again, you won
 
 [All code (including test cases) is on GitHub.](https://github.com/steipete/PSTDelegateProxy)
 
-I've already implemented this almost everywhere in my [iOS PDF Framework](http://pspdfkit.com) and was able to delete *a lot* of boilerplate code. I'm [@steipete](http://twitter.com/steipete) on Twitter. Looking forward to your feedback.
-
+I've already implemented this almost everywhere in my [iOS PDF Framework](http://pspdfkit.com) and was able to delete _a lot_ of boilerplate code. I'm [@steipete](http://twitter.com/steipete) on Twitter. Looking forward to your feedback.

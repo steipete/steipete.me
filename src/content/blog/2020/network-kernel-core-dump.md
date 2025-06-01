@@ -1,8 +1,8 @@
 ---
 title: "Network Kernel Core Dump"
-pubDate: 2020-05-21T10:00:00.000Z
-description: "Learn the exact procedure for capturing macOS kernel core dumps over a network connection using two Macs. Following up on my previous kernel panic investigation, I share Apple's detailed instructions for setting up a core dump server on one Mac while configuring the problematic machine to transmit dumps when it crashes. This step-by-step guide covers everything from creating the /PanicDumps directory and configuring launchd services to setting the correct nvram boot arguments. The technique requires a wired Ethernet connection and provides a valuable troubleshooting method for persistent kernel issues."
-heroImage: 'https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096'
+pubDatetime: 2020-05-21T10:00:00.000Z
+description: "Step-by-step instructions from Apple for capturing macOS kernel core dumps over a network connection between two Macs."
+heroImage: "https://pbs.twimg.com/media/EUBGuLIXgAEAQ5n?format=jpg&name=4096x4096"
 tags:
   - macOS
   - Debugging
@@ -27,6 +27,7 @@ I am sharing this for future reference:
 Any Mac will work as a coredump server; you just need a gigabyte or so of free space per coredump. The kernel dump client can only be configured to transmit on a hard-wired Ethernet port, either built-in or over Thunderbolt. There is no support for transmitting core dumps across the AirPort interface, USB Ethernet, or across third-party Ethernet interfaces. This is an issue for early MacBook Air models which have no built-in Ethernet or Thunderbolt interfaces.
 
 On the server (non-panicking) machine run:
+
 - `sudo mkdir /PanicDumps`
 - `sudo chown root:wheel /PanicDumps`
 - `sudo chmod 1777 /PanicDumps`

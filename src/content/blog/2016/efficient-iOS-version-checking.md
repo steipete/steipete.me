@@ -1,18 +1,13 @@
 ---
 title: Efficient iOS Version Checking
-pubDate: 2016-07-06T12:00:00.000Z
-description: >-
-  Few apps have the luxury to support only the most recent version of iOS. It's
-  often necessary to set a lower deployment target and branch in code based on
-  specific versions of iOS.
+pubDatetime: 2016-07-06T12:00:00.000Z
+description: "Best practices for efficiently checking iOS versions in code while supporting multiple deployment targets."
 tags:
   - iOS
   - Development
 source: pspdfkit.com
 AIDescription: true
 ---
-
-
 
 Few apps have the luxury to support only the most recent version of iOS. It's often necessary to set a lower [deployment target](/guides/ios/current/announcements/version-support/) and branch in code based on specific versions of iOS. There are various ways to accomplish this and even Apple's message is a bit conflicted. I recently saw [this tweet](https://twitter.com/stevemoseley/status/748953473069092864) where someone basically warns to **not** do this:
 
@@ -72,7 +67,6 @@ else {
 ```
 
 In fact, this is exactly what Apple suggested at the [2013 Tech Talks in the Architecting Modern Apps, Part 2](http://devstreaming.apple.com/videos/techtalks/2013/15_Architecting_Modern_Apps_Part_2/Architecting_Modern_Apps_Part_2.pdf) session.
-
 
 Caveat: Sometimes the constants are missing. `NSFoundationVersionNumber` is defined in `NSObjCRuntime.h` and as part of Xcode 7.3.1 we have constants ranging from iPhone OS 2 to `#define NSFoundationVersionNumber_iOS_8_4 1144.17` - not 9.0-9.3. Same for `kCFCoreFoundationVersionNumber`. Note that while these numbers are similar, they are not the same. So use one or the other.
 
@@ -249,7 +243,7 @@ if ([UIPrintInteractionController class]) {
 
 [Greg Parker shares more about this in his Hamster Emporium archive](http://sealiesoftware.com/blog/archive/2009/09/09/objc_explain_Weak-import_classes.html), including this gem:
 
->Weak import for Objective-C did not make Snow Leopard for scheduling reasons. Assuming it ships in Mac OS X 10.7 Cat Name Forthcoming, you won't be able to use it until Mac OS X 10.8 LOLcat.
+> Weak import for Objective-C did not make Snow Leopard for scheduling reasons. Assuming it ships in Mac OS X 10.7 Cat Name Forthcoming, you won't be able to use it until Mac OS X 10.8 LOLcat.
 
 Weak linking can be extended to a whole framework. In PSPDFKit, we do this for [`SafariServices`](https://developer.apple.com/library/ios/documentation/SafariServices/Reference/SafariServicesFramework_Ref/), which contains [`SFSafariViewController`](https://developer.apple.com/library/ios/documentation/SafariServices/Reference/SFSafariViewController_Ref/index.html#//apple_ref/occ/cl/SFSafariViewController) (added in iOS 9).
 
@@ -266,6 +260,6 @@ For most apps, using `isOperatingSystemAtLeastVersion:` in Objective-C and `#ava
 
 ## Update
 
-After posting this article, Devin Coughlin, who *wrote* the `#available` feature replied why `systemVersion` can't be used in the Swift implementation:
+After posting this article, Devin Coughlin, who _wrote_ the `#available` feature replied why `systemVersion` can't be used in the Swift implementation:
 
->[@steipete Also: why not "systemVersion"? Because UIDevice is not present on macOS and we wanted the same code path on all platforms.](https://twitter.com/coughlin/status/750706938489425921)
+> [@steipete Also: why not "systemVersion"? Because UIDevice is not present on macOS and we wanted the same code path on all platforms.](https://twitter.com/coughlin/status/750706938489425921)
