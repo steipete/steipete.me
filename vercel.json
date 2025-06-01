@@ -39,23 +39,12 @@
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "(?!steipete\\.me).*" }],
+      "has": [{ "type": "host", "value": "^(?!steipete\\.me|.*\\.vercel\\.app).*$" }],
       "destination": "https://steipete.me/:path*",
       "permanent": true
     }
   ],
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "(?!steipete\\.me).*"
-        }
-      ],
-      "destination": "https://steipete.me/:path*"
-    }
-  ],
+  "rewrites": [],
   "headers": [
     {
       "source": "/(.*)",
