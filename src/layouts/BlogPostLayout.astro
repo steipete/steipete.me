@@ -221,10 +221,23 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
 
     // Load Twitter widgets script if we found Twitter embeds
     if (foundTwitterEmbeds) {
-      const script = document.createElement("script");
-      script.src = "https://platform.twitter.com/widgets.js";
-      script.async = true;
-      document.head.appendChild(script);
+      // Check if script is already loaded
+      if (!document.querySelector('script[src="https://platform.twitter.com/widgets.js"]')) {
+        const script = document.createElement("script");
+        script.src = "https://platform.twitter.com/widgets.js";
+        script.async = true;
+        document.body.appendChild(script);
+        
+        // Force re-render of tweets after script loads
+        script.onload = () => {
+          if (window.twttr && window.twttr.widgets) {
+            window.twttr.widgets.load();
+          }
+        };
+      } else if (window.twttr && window.twttr.widgets) {
+        // If script is already loaded, just reload widgets
+        window.twttr.widgets.load();
+      }
     }
   }
 
