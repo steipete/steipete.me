@@ -17,9 +17,11 @@ source: steipete.com
 
 A friend asked me to show off my current workflow, so I did an impromptu workshop for him and his developers. This is a snapshot of how I approach vibe coding these days. Don't expect a professional workshop - I did this as a favor and for the fun of it. I let Gemini extract the key points into a blog post, if you don't want to watch all of the 3-hour video.
 
+All the code generated during this workshop is available on [GitHub](https://github.com/steipete/VibeMeter).
+
 ## Transcript
 
-Alright, let's talk about how software development is changing, right now. For nearly 15 years, I was deep in the PDF world with PSPDFKit (now they rebranded as Nutrient). After selling the company, I took a much-needed breather. I was properly burned out. But a couple of months ago, that itch, that spark, came back. And what pulled me in? AI.
+Alright, let's talk about how software development is changing, right now. For nearly 15 years, I was deep in the PDF world with PSPDFKit (now they rebranded as Nutrient). After selling the company, I took a much-needed breather. I was properly burned out. But a couple of months ago, that itch, that [spark](/posts/2025/finding-my-spark-again/), came back. And what pulled me in? AI.
 
 It's a completely different landscape now. Everything I'm about to share is what I've crammed into my brain over the last two, very intense, months. I'm still discovering new things daily, but what's already possible is, frankly, incredibly cool. So, I decided to do a live workshop: go from a raw idea to a (hopefully) working product in a few hours, unscripted, just pure "vibe coding."
 
