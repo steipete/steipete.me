@@ -3,11 +3,11 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-<div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
-  <div style="flex: 0 0 auto; max-width: 400px;">
-    <img src="/peter-office.jpg" alt="Peter in his office setup" style="width: 100%; height: auto; border-radius: 8px;" />
+<div class="flex flex-col md:flex-row gap-8 items-start">
+  <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[400px]">
+    <img src="/peter-office.jpg" alt="Peter in his office setup" class="w-full h-auto rounded-lg" />
   </div>
-  <div style="flex: 1; min-width: 300px;">
+  <div class="flex-1 min-w-0">
     <p>Currently, I'm vibe coding my next project, exploring new technologies and opportunities in the web development ecosystem.</p>
     <p>After years in the native iOS space, I'm excited to be learning and building with modern web technologies.</p>
     <p>I share my time between Vienna and London.</p>
