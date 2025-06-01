@@ -19,23 +19,14 @@ I'm looking for new opportunities to share my learnings at conferences. [Check o
 
 ## GitHub Activity
 
-<div class="grid gap-4">
-  <div class="bg-secondary p-6 rounded-lg">
-    <img 
-      src="https://github-readme-stats.vercel.app/api?username=steipete&show_icons=true&theme=dark&hide_border=true&bg_color=00000000" 
-      alt="GitHub Stats" 
-      class="w-full"
-      loading="lazy"
-    />
-  </div>
-  <div class="bg-secondary p-6 rounded-lg">
-    <img 
-      src="https://github-readme-stats.vercel.app/api/top-langs/?username=steipete&layout=compact&theme=dark&hide_border=true&bg_color=00000000" 
-      alt="Top Languages" 
-      class="w-full"
-      loading="lazy"
-    />
-  </div>
+<div class="bg-secondary p-6 rounded-lg">
+  <img 
+    src="https://ghchart.rshah.org/steipete" 
+    alt="Peter's GitHub Contribution Graph" 
+    class="w-full"
+    style="max-width: 100%; height: auto;"
+    loading="lazy"
+  />
 </div>
 
 If you'd like to connect or have questions about my work, feel free to reach out through any of the social links below.
