@@ -8,8 +8,6 @@ tags: ["swift", "open-source", "development", "ai", "personal"]
 
 I recently found myself needing a component that converts messy, potentially malformed HTML to clean Markdown in Swift. After searching around, I couldn't find anything that really fit my needs, so I decided to write my own. The result is [Demark](https://github.com/steipete/Demark) – my first Swift package that's now available on the [Swift Package Index](https://swiftpackageindex.com/steipete/Demark).
 
-The Swift package that turns down HTML and turns up Markdown – it's a markup markdown!
-
 ## The Problem
 
 HTML to Markdown conversion sounds straightforward, but it's surprisingly complex when you need to handle:
@@ -58,7 +56,7 @@ AI helped me:
 
 ## Simple to Use
 
-Despite the complexity under the hood, Demark is dead simple to use:
+Despite the complexity under the hood, Demark is dead simple to use. The Swift package that turns down HTML and turns up Markdown – it's a markup markdown!
 
 ```swift
 import Demark
