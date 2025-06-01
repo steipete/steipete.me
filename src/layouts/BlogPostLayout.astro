@@ -166,6 +166,21 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
   <Footer />
 
 <script>
+  function initializeTwitterWidgets() {
+    // Check if Twitter widgets are already loaded
+    if (window.twttr && window.twttr.widgets) {
+      // Load all Twitter embeds on the page
+      window.twttr.widgets.load();
+    } else {
+      // If not loaded, wait for the script to load
+      window.addEventListener('load', () => {
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.load();
+        }
+      });
+    }
+  }
+
   function processEmbeds() {
     const article = document.querySelector("#article");
     if (!article) return;
@@ -183,6 +198,8 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     const twitterBlockquotes = article.querySelectorAll('blockquote.twitter-tweet');
     if (twitterBlockquotes.length > 0) {
       foundTwitterEmbeds = true;
+      // Initialize Twitter widgets for existing blockquotes
+      initializeTwitterWidgets();
     }
 
     // Process all text content in the article
@@ -256,9 +273,9 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       }
     });
 
-    // Force Twitter widgets to load if we found Twitter embeds
-    if (foundTwitterEmbeds && window.twttr && window.twttr.widgets) {
-      window.twttr.widgets.load();
+    // Initialize Twitter widgets if we found Twitter embeds
+    if (foundTwitterEmbeds) {
+      initializeTwitterWidgets();
     }
   }
 
@@ -266,21 +283,24 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
   document.addEventListener("DOMContentLoaded", processEmbeds);
   document.addEventListener("astro:page-load", processEmbeds);
   
-  // Also try processing on window load as a fallback
-  window.addEventListener("load", () => {
-    // Check if there are unprocessed Twitter embeds
-    const unprocessedTweets = document.querySelectorAll('blockquote.twitter-tweet:not([data-twitter-extracted-i])');
-    if (unprocessedTweets.length > 0) {
-      processEmbeds();
-    }
+  // Ensure Twitter widgets are initialized on mobile
+  // Mobile browsers may need extra time for the external script to load
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    // On mobile devices, check periodically if Twitter widgets are ready
+    let retryCount = 0;
+    const maxRetries = 10;
     
-    // Force Twitter widgets to load after a delay
-    setTimeout(() => {
+    const checkTwitterWidgets = setInterval(() => {
+      retryCount++;
+      
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load();
+        clearInterval(checkTwitterWidgets);
+      } else if (retryCount >= maxRetries) {
+        clearInterval(checkTwitterWidgets);
       }
-    }, 1000);
-  });
+    }, 500);
+  }
 </script>
 
 <style>
@@ -311,4 +331,17 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
   
   <!-- Twitter Widget Script - Load as external script -->
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" is:inline={false}></script>
+  
+  <!-- Fallback script for mobile initialization -->
+  <script is:inline>
+    // Ensure Twitter widgets are initialized after the external script loads
+    window.addEventListener('load', function() {
+      // Give the Twitter script time to initialize
+      setTimeout(function() {
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.load();
+        }
+      }, 100);
+    });
+  </script>
 </Layout>
