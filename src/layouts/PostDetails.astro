@@ -8,6 +8,7 @@ import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
+import NewsletterForm from "@/components/NewsletterForm.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
@@ -32,6 +33,7 @@ const {
   timezone,
   tags,
   hideEditPost,
+  heroImage,
 } = post.data;
 
 const { Content } = await render(post);
@@ -102,8 +104,20 @@ const nextPost =
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
     </div>
     <article id="article" class="mx-auto prose mt-6 max-w-3xl">
+      {
+        heroImage && (
+          <img
+            src={heroImage}
+            alt=""
+            class="mb-8 aspect-video w-full rounded-md object-cover"
+            loading="lazy"
+          />
+        )
+      }
       <Content />
     </article>
+
+    <NewsletterForm />
 
     <hr class="my-8 border-dashed" />
 
