@@ -6,7 +6,7 @@ import { NAV_LINKS, SITE } from '../consts'
 ---
 
 <header
-  class="bg-background/50 dark:bg-background/80 sticky top-0 z-10 backdrop-blur-md"
+  class="bg-background/50 dark:bg-gray-900/90 sticky top-0 z-10 backdrop-blur-md"
   transition:persist
 >
   <div
@@ -21,7 +21,7 @@ import { NAV_LINKS, SITE } from '../consts'
           NAV_LINKS.map((item) => (
             <Link
               href={item.href}
-              class="text-foreground/60 hover:text-foreground/80 capitalize transition-colors"
+              class="text-foreground/60 hover:text-muted-foreground capitalize transition-colors"
             >
               {item.label}
             </Link>

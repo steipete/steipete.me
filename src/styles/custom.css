@@ -205,40 +205,21 @@ main {
   font-size: 1rem;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sidebar-bg: #212529;
-    --text-color: #ffffff; /* Much brighter white text */
-    --link-color: #6ea8fe;
-    --hover-color: #9ec5fe;
-    --light-gray: #ced4da;
-  }
-  
-  body {
-    background-color: #1a1d20; /* Darker background for better contrast */
-  }
-  
-  /* Make headings brighter with high contrast for maximum visibility */
-  h1, h2, h3, h4, h5, h6 {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5) !important;
-  }
-  
-  /* Special styling for post titles to ensure visibility */
-  .post-title, h1.page-title, article h1, .prose h1 {
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.01em !important;
-    text-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
-  }
-  
-  /* Make normal text bright as well */
-  p, li, span, div {
-    color: #f0f0f0 !important;
-  }
+/* Dark mode support - using .dark class instead of media query */
+.dark {
+  --sidebar-bg: #0f0f0f;
+  --text-color: #f5f5f5;
+  --link-color: #7db8ff;
+  --hover-color: #a5ccff;
+  --light-gray: #d0d0d0;
 }
+
+.dark body {
+  background-color: #0a0a0a;
+  color: #f5f5f5;
+}
+
+/* Let Tailwind handle dark mode styles for headings and text */
 
 /* Code blocks */
 pre {
@@ -329,204 +310,202 @@ pre code {
   color: #e36209;
 }
 
-@media (prefers-color-scheme: dark) {
-  pre {
-    background-color: #0d1117 !important;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  pre code {
-    color: #ffffff;
-    text-wrap: pretty;
-    font-weight: 500;
-  }
-  
-  code {
-    color: #f8c8da;
-    background-color: rgba(255, 255, 255, 0.05);
-  }
+.dark pre {
+  background-color: #0d1117 !important;
+  border-color: rgba(255, 255, 255, 0.1);
+}
 
-  /* Astro Shiki code blocks - Dark Mode Syntax Highlighting */
-  .astro-code.github-dark {
-    --shiki-dark-bg: #0d1117 !important;
-    background-color: #0d1117 !important;
-  }
-  
-  /* Make all text in code blocks more visible in dark mode */
-  .astro-code.github-dark code span {
-    color: #e1e4e8 !important; /* Base color for all text */
-  }
-  
-  /* Increase brightness of inline styles even further */
-  .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
-    color: #ffffff !important;
-  }
-  
-  /* Ensure text with inline styles is bright enough */
-  .astro-code.github-dark [style*="color:#24292E"] {
-    color: #ffffff !important;
-  }
-  
-  /* Comments */
-  .astro-code.github-dark [style*="--shiki-dark:#6A737D"] {
-    color: #bbc7d3 !important;
-  }
-  
-  /* Strings */
-  .astro-code.github-dark [style*="--shiki-dark:#9ECBFF"],
-  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
-    color: #a5d6ff !important;
-  }
-  
-  /* Keywords */
-  .astro-code.github-dark [style*="--shiki-dark:#F97583"],
-  .astro-code.github-dark [style*="--shiki-dark:#FF7B72"] {
-    color: #ff7b82 !important;
-  }
-  
-  /* Functions */
-  .astro-code.github-dark [style*="--shiki-dark:#B392F0"],
-  .astro-code.github-dark [style*="--shiki-dark:#D2A8FF"] {
-    color: #d2a8ff !important;
-  }
-  
-  /* Numbers */
-  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"],
-  .astro-code.github-dark [style*="--shiki-dark:#56B6C2"] {
-    color: #f0883e !important;
-  }
-  
-  /* Operators */
-  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
-    color: #79c0ff !important;
-  }
-  
-  /* Classes */
-  .astro-code.github-dark [style*="--shiki-dark:#FFAB70"],
-  .astro-code.github-dark [style*="--shiki-dark:#FFA657"] {
-    color: #ffa657 !important;
-  }
-  
-  /* Properties */
-  .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
-    color: #79c0ff !important;
-  }
-  
-  /* Variables */
-  .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
-    color: #ffd8b5 !important;
-  }
+.dark pre code {
+  color: #ffffff;
+  text-wrap: pretty;
+  font-weight: 500;
+}
 
-  /* Support for Shiki's GitHub theme tokens (from main branch) */
-  .shiki.dark span {
-    color: #ffffff !important;
-  }
-  
-  .shiki.dark .comment {
-    color: #bbc7d3 !important;
-  }
-  
-  .shiki.dark .string {
-    color: #a5d6ff !important;
-  }
-  
-  .shiki.dark .keyword,
-  .shiki.dark .constant {
-    color: #ff7b82 !important;
-  }
-  
-  .shiki.dark .function {
-    color: #d2a8ff !important;
-  }
-  
-  .shiki.dark .number {
-    color: #f0883e !important;
-  }
-  
-  .shiki.dark .operator {
-    color: #79c0ff !important;
-  }
-  
-  .shiki.dark .class {
-    color: #ffa657 !important;
-  }
-  
-  .shiki.dark .property {
-    color: #79c0ff !important;
-  }
-  
-  .shiki.dark .builtin {
-    color: #ffa198 !important;
-  }
-  
-  .shiki.dark .variable {
-    color: #ffd8b5 !important;
-  }
-  
-  /* Fallback for any other token types */
-  .shiki.dark span[style*="color"] {
-    color: #e6edf3 !important;
-  }
+.dark code {
+  color: #f8c8da;
+  background-color: rgba(255, 255, 255, 0.05);
+}
 
-  /* Legacy token styling - keeping for compatibility */
-  .token.comment,
-  .token.prolog,
-  .token.doctype,
-  .token.cdata {
-    color: #bbc7d3;
-  }
+/* Astro Shiki code blocks - Dark Mode Syntax Highlighting */
+.dark .astro-code.github-dark {
+  --shiki-dark-bg: #0d1117 !important;
+  background-color: #0d1117 !important;
+}
 
-  .token.punctuation {
-    color: #ffffff;
-  }
+/* Make all text in code blocks more visible in dark mode */
+.dark .astro-code.github-dark code span {
+  color: #e1e4e8 !important; /* Base color for all text */
+}
 
-  .token.namespace {
-    opacity: 0.8;
-  }
+/* Increase brightness of inline styles even further */
+.dark .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
+  color: #ffffff !important;
+}
 
-  .token.property,
-  .token.tag,
-  .token.boolean,
-  .token.number,
-  .token.constant,
-  .token.symbol,
-  .token.deleted {
-    color: #ffb0ac;
-  }
+/* Ensure text with inline styles is bright enough */
+.dark .astro-code.github-dark [style*="color:#24292E"] {
+  color: #ffffff !important;
+}
 
-  .token.selector,
-  .token.attr-name,
-  .token.string,
-  .token.char,
-  .token.builtin,
-  .token.inserted {
-    color: #b9ffbf;
-  }
+/* Comments */
+.dark .astro-code.github-dark [style*="--shiki-dark:#6A737D"] {
+  color: #bbc7d3 !important;
+}
 
-  .token.operator,
-  .token.entity,
-  .token.url,
-  .language-css .token.string,
-  .style .token.string {
-    color: #b3dbff;
-  }
+/* Strings */
+.dark .astro-code.github-dark [style*="--shiki-dark:#9ECBFF"],
+.dark .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+  color: #a5d6ff !important;
+}
 
-  .token.atrule,
-  .token.attr-value,
-  .token.keyword {
-    color: #d9ebff;
-  }
+/* Keywords */
+.dark .astro-code.github-dark [style*="--shiki-dark:#F97583"],
+.dark .astro-code.github-dark [style*="--shiki-dark:#FF7B72"] {
+  color: #ff7b82 !important;
+}
 
-  .token.function,
-  .token.class-name {
-    color: #ecd9ff;
-  }
+/* Functions */
+.dark .astro-code.github-dark [style*="--shiki-dark:#B392F0"],
+.dark .astro-code.github-dark [style*="--shiki-dark:#D2A8FF"] {
+  color: #d2a8ff !important;
+}
 
-  .token.regex,
-  .token.important,
-  .token.variable {
-    color: #ffd2a6;
-  }
+/* Numbers */
+.dark .astro-code.github-dark [style*="--shiki-dark:#79B8FF"],
+.dark .astro-code.github-dark [style*="--shiki-dark:#56B6C2"] {
+  color: #f0883e !important;
+}
+
+/* Operators */
+.dark .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+  color: #79c0ff !important;
+}
+
+/* Classes */
+.dark .astro-code.github-dark [style*="--shiki-dark:#FFAB70"],
+.dark .astro-code.github-dark [style*="--shiki-dark:#FFA657"] {
+  color: #ffa657 !important;
+}
+
+/* Properties */
+.dark .astro-code.github-dark [style*="--shiki-dark:#79B8FF"] {
+  color: #79c0ff !important;
+}
+
+/* Variables */
+.dark .astro-code.github-dark [style*="--shiki-dark:#E1E4E8"] {
+  color: #ffd8b5 !important;
+}
+
+/* Support for Shiki's GitHub theme tokens (from main branch) */
+.dark .shiki.dark span {
+  color: #ffffff !important;
+}
+
+.dark .shiki.dark .comment {
+  color: #bbc7d3 !important;
+}
+
+.dark .shiki.dark .string {
+  color: #a5d6ff !important;
+}
+
+.dark .shiki.dark .keyword,
+.dark .shiki.dark .constant {
+  color: #ff7b82 !important;
+}
+
+.dark .shiki.dark .function {
+  color: #d2a8ff !important;
+}
+
+.dark .shiki.dark .number {
+  color: #f0883e !important;
+}
+
+.dark .shiki.dark .operator {
+  color: #79c0ff !important;
+}
+
+.dark .shiki.dark .class {
+  color: #ffa657 !important;
+}
+
+.dark .shiki.dark .property {
+  color: #79c0ff !important;
+}
+
+.dark .shiki.dark .builtin {
+  color: #ffa198 !important;
+}
+
+.dark .shiki.dark .variable {
+  color: #ffd8b5 !important;
+}
+
+/* Fallback for any other token types */
+.dark .shiki.dark span[style*="color"] {
+  color: #e6edf3 !important;
+}
+
+/* Legacy token styling - keeping for compatibility */
+.dark .token.comment,
+.dark .token.prolog,
+.dark .token.doctype,
+.dark .token.cdata {
+  color: #bbc7d3;
+}
+
+.dark .token.punctuation {
+  color: #ffffff;
+}
+
+.dark .token.namespace {
+  opacity: 0.8;
+}
+
+.dark .token.property,
+.dark .token.tag,
+.dark .token.boolean,
+.dark .token.number,
+.dark .token.constant,
+.dark .token.symbol,
+.dark .token.deleted {
+  color: #ffb0ac;
+}
+
+.dark .token.selector,
+.dark .token.attr-name,
+.dark .token.string,
+.dark .token.char,
+.dark .token.builtin,
+.dark .token.inserted {
+  color: #b9ffbf;
+}
+
+.dark .token.operator,
+.dark .token.entity,
+.dark .token.url,
+.dark .language-css .token.string,
+.dark .style .token.string {
+  color: #b3dbff;
+}
+
+.dark .token.atrule,
+.dark .token.attr-value,
+.dark .token.keyword {
+  color: #d9ebff;
+}
+
+.dark .token.function,
+.dark .token.class-name {
+  color: #ecd9ff;
+}
+
+.dark .token.regex,
+.dark .token.important,
+.dark .token.variable {
+  color: #ffd2a6;
 }
 
 /* Pagination */

@@ -1,55 +1,55 @@
-@tailwind components;
+@import "tailwindcss";
 
 @layer components {
   .prose {
     @apply text-base leading-7;
 
     p {
-      @apply text-gray-700 dark:text-gray-200 my-5;
+      @apply text-gray-700 dark:text-gray-300 my-5;
     }
 
     h1 {
-      @apply mt-0 mb-6 scroll-m-20 text-4xl leading-tight font-medium;
+      @apply mt-0 mb-6 scroll-m-20 text-4xl leading-tight font-medium text-gray-900 dark:text-gray-100;
     }
 
     h2 {
-      @apply mt-8 mb-4 scroll-m-20 text-2xl leading-tight font-medium;
+      @apply mt-8 mb-4 scroll-m-20 text-2xl leading-tight font-medium text-gray-800 dark:text-gray-200;
     }
 
     h3 {
-      @apply mt-6 mb-4 scroll-m-20 text-xl leading-tight font-medium;
+      @apply mt-6 mb-4 scroll-m-20 text-xl leading-tight font-medium text-gray-900 dark:text-gray-100;
     }
 
     h4 {
-      @apply mt-6 mb-3 scroll-m-20 text-lg leading-tight font-medium;
+      @apply mt-6 mb-3 scroll-m-20 text-lg leading-tight font-medium text-gray-900 dark:text-gray-100;
     }
 
     h5 {
-      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium;
+      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium text-gray-900 dark:text-gray-100;
     }
 
     h6 {
-      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium;
+      @apply mt-5 mb-3 scroll-m-20 leading-tight font-medium text-gray-900 dark:text-gray-100;
     }
 
     a {
-      @apply font-medium break-words underline underline-offset-4 transition-colors;
+      @apply font-medium break-words underline underline-offset-4 transition-colors text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300;
     }
 
     strong {
-      @apply font-medium;
+      @apply font-medium text-gray-900 dark:text-gray-100;
     }
 
     ul {
-      @apply my-5 ml-6 list-disc [&>li]:mt-2 dark:text-gray-50;
+      @apply my-5 ml-6 list-disc [&>li]:mt-2 text-gray-700 dark:text-gray-300;
     }
 
     ol {
-      @apply my-5 ml-6 list-decimal [&>li]:mt-2 dark:text-gray-50;
+      @apply my-5 ml-6 list-decimal [&>li]:mt-2 text-gray-700 dark:text-gray-300;
     }
 
     li {
-      @apply pl-2 [&>p]:my-0 dark:text-gray-50;
+      @apply pl-2 [&>p]:my-0 text-gray-700 dark:text-gray-300;
     }
 
     ul ul,
@@ -60,11 +60,11 @@
     }
 
     code {
-      @apply bg-gray-100 dark:bg-gray-800 relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words text-gray-900 dark:text-gray-100;
+      @apply bg-gray-100 dark:bg-gray-800 relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm font-medium break-words text-gray-900 dark:text-gray-50;
     }
     
     pre {
-      @apply !bg-gray-50 dark:!bg-gray-900 !border !border-gray-200 dark:!border-gray-700 !rounded-md !p-4 !my-4 !overflow-x-auto;
+      @apply !bg-gray-50 dark:!bg-gray-950 !border !border-gray-200 dark:!border-gray-700 !rounded-md !p-4 !my-4 !overflow-x-auto;
     }
     
     pre code {
@@ -72,7 +72,7 @@
     }
 
     blockquote {
-      @apply text-gray-500 dark:text-gray-400 my-6 border-l-2 pl-6;
+      @apply text-gray-600 dark:text-gray-300 my-6 border-l-2 border-gray-300 dark:border-gray-600 pl-6;
     }
 
     hr {
@@ -88,7 +88,7 @@
     }
 
     th {
-      @apply px-4 py-2 font-medium;
+      @apply px-4 py-2 font-medium text-gray-900 dark:text-white;
       @apply text-left [&[align=center]]:text-center [&[align=right]]:text-right;
     }
 
@@ -108,7 +108,7 @@
     }
 
     kbd {
-      @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-md border px-2 py-1 text-xs font-medium;
+      @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-md border px-2 py-1 text-xs font-medium text-gray-900 dark:text-gray-50;
     }
   }
 }

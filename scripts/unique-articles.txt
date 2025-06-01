@@ -1,6 +1,0 @@
-src/content/blog/2020/apple-silicon-mac-mini-for-ci.md
-src/content/blog/2020/apple-silicon-m1-a-developer-perspective.md
-src/content/blog/2020/state-of-swiftui.md
-src/content/blog/2021/fixing-keyboardshortcut-in-swiftui.md
-src/content/blog/2021/top-level-menu-visibility-in-swiftui.md
-src/content/blog/2021/supporting-both-tap-and-longpress-on-button-in-swiftui.md

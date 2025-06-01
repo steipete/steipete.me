@@ -13,6 +13,7 @@
     { "source": "/categories/:category(.*)", "destination": "/tags/:category", "permanent": true },
     { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
     { "source": "/20:year/:month/:day/:slug(.*)", "destination": "/blog/:slug/", "permanent": true },
+    { "source": "/blog/a-new-beginning/", "destination": "/blog/finding-my-spark-again/", "permanent": true },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "(?!steipete\\.me).*" }],

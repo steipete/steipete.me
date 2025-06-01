@@ -7,17 +7,17 @@ import { SITE } from '../../consts';
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection('blog');
 
-  // Deduplicate posts by slug if there are any duplicates
-  const slugMap = new Map();
+  // Deduplicate posts by id if there are any duplicates
+  const idMap = new Map();
   allPosts.forEach(post => {
-    // If we already have a post with this slug, only keep the newer one
-    if (!slugMap.has(post.slug) || new Date(post.data.pubDate) > new Date(slugMap.get(post.slug).data.pubDate)) {
-      slugMap.set(post.slug, post);
+    // If we already have a post with this id, only keep the newer one
+    if (!idMap.has(post.id) || new Date(post.data.pubDate) > new Date(idMap.get(post.id).data.pubDate)) {
+      idMap.set(post.id, post);
     }
   });
 
   // Convert back to array and sort
-  const sortedPosts = Array.from(slugMap.values()).sort(
+  const sortedPosts = Array.from(idMap.values()).sort(
     (a, b) => {
       const dateA = new Date(a.data.pubDate || a.data.date || 0).valueOf();
       const dateB = new Date(b.data.pubDate || b.data.date || 0).valueOf();
@@ -40,7 +40,7 @@ const { data: posts, currentPage, lastPage } = page;
       {posts.map((post) => (
         <article class="border-b border-border pb-8 last:border-0">
           <h2 class="text-2xl font-semibold leading-tight mb-2">
-            <a href={`/posts/${post.slug}/`} class="hover:text-primary">
+            <a href={`/posts/${post.id}/`} class="hover:text-primary">
               {post.data.title}
             </a>
           </h2>
@@ -50,11 +50,11 @@ const { data: posts, currentPage, lastPage } = page;
           </div>
 
           {post.data.description && (
-            <p class="text-foreground/80 mb-4">{post.data.description}</p>
+            <p class="text-muted-foreground mb-4">{post.data.description}</p>
           )}
 
           <div>
-            <a href={`/posts/${post.slug}/`} class="text-primary font-medium hover:underline">
+            <a href={`/posts/${post.id}/`} class="text-primary font-medium hover:underline">
               Read more →
             </a>
           </div>

@@ -42,7 +42,7 @@ const { posts, currentPage, totalPages } = Astro.props;
       {posts.map((post) => (
         <div class="post-preview">
           <h2>
-            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
           </h2>
 
           <div class="post-meta">
@@ -56,7 +56,7 @@ const { posts, currentPage, totalPages } = Astro.props;
             <p>{post.data.description}</p>
           </div>
 
-          <a href={`/blog/${post.slug}/`} class="read-more">Read more →</a>
+          <a href={`/blog/${post.id}/`} class="read-more">Read more →</a>
         </div>
       ))}
     </div>

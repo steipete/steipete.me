@@ -8,16 +8,7 @@ import { SITE } from '../../consts'
 // Get all blog posts and sort by date
 let allPosts = await getCollection('blog')
 
-// Add filename as slug if it's not available
-allPosts = allPosts.map(post => {
-  if (!post.slug) {
-    const filePath = post.id
-    const fileName = filePath.split('/').pop() || ''
-    const fileNameWithoutExt = fileName.replace(/\.(md|mdx)$/, '')
-    post.slug = fileNameWithoutExt
-  }
-  return post
-})
+// Remove the slug modification as we'll use post.id directly
 
 allPosts = allPosts.sort(
   (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
@@ -34,7 +25,7 @@ const posts = allPosts.slice(0, postsPerPage)
   <section class="py-8">
     <div class="mb-8">
       <h1 class="text-4xl font-bold tracking-tight mb-4">Blog Posts</h1>
-      <p class="text-foreground/80">
+      <p class="text-muted-foreground">
         A collection of my thoughts on iOS development, tech, and entrepreneurship.
       </p>
     </div>
@@ -48,15 +39,15 @@ const posts = allPosts.slice(0, postsPerPage)
                 <FormattedDate date={post.data.pubDate} />
               </div>
               <h2 class="text-2xl font-bold leading-tight">
-                <Link href={`/posts/${post.slug}/`} class="text-foreground">
+                <Link href={`/posts/${post.id}/`} class="text-foreground">
                   {post.data.title}
                 </Link>
               </h2>
             </div>
-            <p class="text-foreground/80">{post.data.description}</p>
+            <p class="text-muted-foreground">{post.data.description}</p>
             <div>
               <Link
-                href={`/posts/${post.slug}/`}
+                href={`/posts/${post.id}/`}
                 class="text-foreground inline-flex items-center gap-1 font-medium"
               >
                 Read more
