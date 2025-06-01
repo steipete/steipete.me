@@ -66,14 +66,6 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
       {title}
     </h1>
-    {
-      readingTime && (
-        <div class="text-sm text-foreground/60 mt-1">
-          {readingTime}
-        </div>
-      )
-    }
-
     <div class="flex items-center justify-between gap-4">
       <div class="flex items-end space-x-2 opacity-80 my-2">
         <svg
@@ -113,6 +105,14 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
                 <span class="text-nowrap">
                   Updated <FormattedDate date={modDatetime} />
                 </span>
+              </>
+            )
+          }
+          {
+            readingTime && (
+              <>
+                <span aria-hidden="true"> • </span>
+                <span class="text-nowrap">{readingTime}</span>
               </>
             )
           }
