@@ -40,20 +40,6 @@ I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contribut
 | `npm run dev`          | Starts local dev server at `localhost:4321` |
 | `npm run build`        | Build the production site to `./dist/`      |
 | `npm run preview`      | Preview the build locally, before deploying |
-| `npm run import-posts` | Import posts from GitHub repositories       |
-
-## Import Blog Posts
-
-This project includes a script to import blog posts from my previous GitHub repositories:
-
-```bash
-npm run import-posts
-```
-
-This will fetch and convert posts from:
-
-- https://github.com/steipete/steipete.com
-- https://github.com/steipete/petersteinberger.com
 
 ## Deployment
 
