@@ -15,11 +15,13 @@ title: "About"
   </div>
 </div>
 
+I'm looking for new opportunities to share my learnings at conferences. [Check out my speaking history and topics](https://github.com/steipete/speaking).
+
 ## GitHub Contributions
 
 <div class="bg-secondary p-6 rounded-lg">
   <img 
-    src="https://ghchart.rshah.org/409ba5/steipete" 
+    src="https://ghchart.rshah.org/steipete" 
     alt="GitHub Contributions Graph" 
     class="w-full"
     loading="lazy"
