@@ -4,10 +4,9 @@
   "description": "iOS developer, entrepreneur, founder of PSPDFKit (acquired), vibe coding my next project",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
     }
   ],
   "start_url": "/",

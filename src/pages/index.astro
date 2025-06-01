@@ -26,14 +26,14 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pt-6 pb-4">
-      <div class="flex items-start gap-4">
+      <div class="flex flex-col sm:flex-row items-start gap-4">
         <img 
           src="/peter-avatar.jpg" 
           alt="Peter Steinberger" 
-          class="w-40 h-40 rounded-full object-cover flex-shrink-0"
+          class="w-40 h-40 rounded-full object-cover flex-shrink-0 mx-auto sm:mx-0"
         />
-        <div class="flex-1">
-          <div class="flex items-center gap-2">
+        <div class="flex-1 text-center sm:text-left">
+          <div class="flex items-center gap-2 justify-center sm:justify-start">
             <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
               Hi, I'm Pete.
             </h1>
@@ -59,8 +59,8 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
           {
             // only display if at least one social link is enabled
             SOCIALS.filter((social) => social.active).length > 0 && (
-              <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-                <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+              <div class="mt-4 flex flex-row items-center justify-center sm:justify-start">
+                <div class="mr-2 whitespace-nowrap">Social Links:</div>
                 <Socials />
               </div>
             )
