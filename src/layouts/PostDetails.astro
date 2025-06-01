@@ -108,7 +108,7 @@ const nextPost =
         </div>
       )
     }
-    <div class="flex items-center gap-4 mt-2 mb-6">
+    <div class="flex items-center justify-between gap-4 mt-2 mb-6">
       <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
     </div>
@@ -307,4 +307,16 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
   );
+
+  /** Add lazy loading to all images in the article */
+  function addLazyLoading() {
+    const article = document.querySelector("#article");
+    if (!article) return;
+    
+    const images = article.querySelectorAll("img:not([loading])");
+    images.forEach((img) => {
+      img.setAttribute("loading", "lazy");
+    });
+  }
+  addLazyLoading();
 </script>
