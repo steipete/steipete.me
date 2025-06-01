@@ -47,4 +47,9 @@ This site is set up for easy deployment on Vercel. Just connect your GitHub repo
 
 ## License
 
-The content of this project is copyrighted by Peter Steinberger. The code is licensed under the MIT license.
+This repository uses dual licensing:
+
+- **Documentation & Blog Posts**: Licensed under [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
+- **Code & Code Snippets**: Licensed under the [MIT License](LICENSE)
+
+See the [LICENSE](LICENSE) file for full details.
