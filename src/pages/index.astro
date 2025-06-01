@@ -26,37 +26,47 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pt-6 pb-4">
-      <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
-        Hi, I'm Pete.
-      </h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="inline-block"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="scale-125 stroke-accent stroke-3"
+      <div class="flex items-start gap-4">
+        <img 
+          src="/peter-avatar.jpg" 
+          alt="Peter Steinberger" 
+          class="w-40 h-40 rounded-full object-cover flex-shrink-0"
         />
-        <span class="sr-only">RSS Feed</span>
-      </a>
-
-      <p>
-        Recovering Entrepreneur vibe coding on his next thing.<br />Everything I
-        build is open source.
-      </p>
-      {
-        // only display if at least one social link is enabled
-        SOCIALS.filter((social) => social.active).length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-            <Socials />
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
+              Hi, I'm Pete.
+            </h1>
+            <a
+              target="_blank"
+              href="/rss.xml"
+              class="inline-block"
+              aria-label="rss feed"
+              title="RSS Feed"
+            >
+              <IconRss
+                width={20}
+                height={20}
+                class="scale-125 stroke-accent stroke-3"
+              />
+              <span class="sr-only">RSS Feed</span>
+            </a>
           </div>
-        )
-      }
+          <p>
+            Recovering Entrepreneur vibe coding on his next thing.<br />Everything I
+            build is open source.
+          </p>
+          {
+            // only display if at least one social link is enabled
+            SOCIALS.filter((social) => social.active).length > 0 && (
+              <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+                <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+                <Socials />
+              </div>
+            )
+          }
+        </div>
+      </div>
     </section>
 
     <Hr />
