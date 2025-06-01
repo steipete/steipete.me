@@ -4,6 +4,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Layout from "./Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
 import { SITE } from "@/config";
 
 type Props = CollectionEntry<"blog">["data"] & {
@@ -73,7 +74,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       )
     }
 
-    <div class="flex items-center gap-4">
+    <div class="flex items-center justify-between gap-4">
       <div class="flex items-end space-x-2 opacity-80 my-2">
         <svg
           width="24"
@@ -117,6 +118,31 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
           }
         </span>
       </div>
+      {
+        SITE.editPost.enabled && (
+          <a
+            href={`${SITE.editPost.url}src/content/blog/${slug}.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-foreground/60 hover:text-accent inline-flex items-center gap-1"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
+            {SITE.editPost.text}
+          </a>
+        )
+      }
     </div>
 
     <article id="article" class="mx-auto prose mt-8 max-w-3xl">
@@ -134,34 +160,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       <slot />
     </article>
 
-    {
-      SITE.editPost.enabled && (
-        <div class="mt-8 pt-8 border-t border-border/50">
-          <a
-            href={`${SITE.editPost.url}src/content/blog/${slug}.md`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm text-foreground/60 hover:text-accent inline-flex items-center gap-1"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-              <polyline points="16 6 12 2 8 6" />
-              <line x1="12" y1="2" x2="12" y2="15" />
-            </svg>
-            {SITE.editPost.text}
-          </a>
-        </div>
-      )
-    }
+    <NewsletterForm />
   </main>
 
   <Footer />
