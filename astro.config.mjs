@@ -7,6 +7,8 @@ import tailwindcss from "@tailwindcss/vite";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import { SITE } from "./src/config";
+import speedInsights from "@vercel/speed-insights/astro";
+import webAnalytics from "@vercel/analytics/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -25,6 +27,8 @@ export default defineConfig({
       filter: (page) => SITE.showArchives || !page.endsWith("/archives"),
     }),
     react(),
+    speedInsights(),
+    webAnalytics(),
   ],
   vite: {
     resolve: {

@@ -28,6 +28,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.1.8",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "astro": "^5.8.1",
     "astro-embed": "^0.9.0",
     "dayjs": "^1.11.13",
