@@ -6,15 +6,6 @@ This is the source code for my personal website, built with [Astro](https://astr
 
 I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
 
-## Features
-
-- ✅ Modern, fast, and responsive website built with Astro
-- ✅ Blog with full markdown support
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap and RSS feed support
-- ✅ Import of posts from previous blogs
-
 ## Project Structure
 
 ```text
