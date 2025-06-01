@@ -8,8 +8,6 @@
     "build:check": "astro check && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "import-posts": "node scripts/import-posts.mjs",
-    "convert-posts": "node scripts/convert-posts.mjs",
     "deploy": "scripts/deploy.sh",
     "add-source-metadata": "node scripts/add-source-metadata.mjs",
     "remove-tags": "node scripts/remove-tags-from-posts.mjs",
