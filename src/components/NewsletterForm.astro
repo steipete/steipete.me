@@ -9,7 +9,7 @@ const { variant = 'default' } = Astro.props;
 <div class={variant === 'default' ? 'newsletter-box bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-6 my-8' : 'newsletter-compact mt-6'}>
   {variant === 'default' && (
     <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-      Get notified about new posts and insights on AI, development, and building.
+      New posts, shipping stories, and nerdy links straight to your inbox.
     </p>
   )}
   
@@ -22,13 +22,13 @@ const { variant = 'default' } = Astro.props;
     <input
       type="text"
       name="name"
-      placeholder="Your name"
+      placeholder="Your Name"
       class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
     <input
       type="email"
       name="email"
-      placeholder="Enter your email"
+      placeholder="Your Email"
       required
       class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
@@ -43,7 +43,7 @@ const { variant = 'default' } = Astro.props;
   
   {variant === 'default' && (
     <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
-      Expect about one email per month. I'll keep it interesting.
+      2× per month, pure signal, zero fluff.
     </p>
   )}
 </div>

@@ -11,6 +11,7 @@ import BackButton from "@/components/BackButton.astro";
 import NewsletterForm from "@/components/NewsletterForm.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
+import { calculateReadingTime } from "@/utils/readingTime";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
@@ -37,6 +38,7 @@ const {
 } = post.data;
 
 const { Content } = await render(post);
+const readingTime = calculateReadingTime(post.body);
 
 let ogImageUrl: string | undefined;
 
@@ -99,8 +101,18 @@ const nextPost =
     >
       {title}
     </h1>
-    <div class="flex items-center gap-4 mt-2 mb-6">
-      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+    <div class="flex items-center justify-between gap-4 mt-2 mb-6">
+      <div class="flex items-center gap-3">
+        <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+        {
+          readingTime && (
+            <>
+              <span class="text-foreground/30">•</span>
+              <span class="text-sm text-foreground/60">{readingTime}</span>
+            </>
+          )
+        }
+      </div>
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
     </div>
     <article id="article" class="mx-auto prose mt-6 max-w-3xl">
@@ -298,4 +310,16 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
   );
+
+  /** Add lazy loading to all images in the article */
+  function addLazyLoading() {
+    const article = document.querySelector("#article");
+    if (!article) return;
+    
+    const images = article.querySelectorAll("img:not([loading])");
+    images.forEach((img) => {
+      img.setAttribute("loading", "lazy");
+    });
+  }
+  addLazyLoading();
 </script>
