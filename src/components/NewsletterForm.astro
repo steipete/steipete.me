@@ -23,16 +23,16 @@ const { variant = 'default' } = Astro.props;
     class="flex flex-col sm:flex-row gap-3"
   >
     <input
+      type="text"
+      name="name"
+      placeholder="Your name"
+      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+    />
+    <input
       type="email"
       name="email"
       placeholder="Enter your email"
       required
-      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-    />
-    <input
-      type="text"
-      name="name"
-      placeholder="Your name (optional)"
       class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
     <button
