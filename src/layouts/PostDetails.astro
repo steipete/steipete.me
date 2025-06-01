@@ -130,17 +130,17 @@ const nextPost =
     <hr class="my-6 border-dashed" />
 
     <!-- Previous/Next Post Buttons -->
-    <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div data-pagefind-ignore class="flex flex-col sm:flex-row justify-between gap-6">
       {
         prevPost && (
           <a
             href={`/posts/${prevPost.slug}`}
-            class="flex w-full gap-1 hover:opacity-75"
+            class="flex gap-2 hover:opacity-75 items-start"
           >
-            <IconChevronLeft class="inline-block flex-none" />
-            <div>
-              <span>Previous Post</span>
-              <div class="text-sm text-accent/85">{prevPost.title}</div>
+            <IconChevronLeft class="inline-block flex-shrink-0 mt-0.5" />
+            <div class="min-w-0">
+              <span class="block text-sm text-foreground/70">Previous Post</span>
+              <div class="text-accent/85 whitespace-nowrap overflow-hidden text-ellipsis">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -149,13 +149,13 @@ const nextPost =
         nextPost && (
           <a
             href={`/posts/${nextPost.slug}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex gap-2 hover:opacity-75 items-start justify-end text-right ml-auto"
           >
-            <div>
-              <span>Next Post</span>
-              <div class="text-sm text-accent/85">{nextPost.title}</div>
+            <div class="min-w-0">
+              <span class="block text-sm text-foreground/70">Next Post</span>
+              <div class="text-accent/85 whitespace-nowrap overflow-hidden text-ellipsis">{nextPost.title}</div>
             </div>
-            <IconChevronRight class="inline-block flex-none" />
+            <IconChevronRight class="inline-block flex-shrink-0 mt-0.5" />
           </a>
         )
       }
