@@ -141,6 +141,12 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
 
     let foundTwitterEmbeds = false;
     let foundYoutubeEmbeds = false;
+    
+    // Check if there are any Twitter blockquotes already in the HTML
+    const twitterBlockquotes = article.querySelectorAll('blockquote.twitter-tweet');
+    if (twitterBlockquotes.length > 0) {
+      foundTwitterEmbeds = true;
+    }
 
     // Process all text content in the article
     const walker = document.createTreeWalker(

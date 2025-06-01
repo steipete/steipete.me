@@ -16,6 +16,13 @@ export const SOCIALS = [
     active: true,
   },
   {
+    name: "BlueSky",
+    href: "https://bsky.app/profile/steipete.me",
+    linkTitle: `${SITE.title} on BlueSky`,
+    icon: "bluesky",
+    active: true,
+  },
+  {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/steipete/",
     linkTitle: `${SITE.title} on LinkedIn`,
@@ -33,6 +40,24 @@ export const SOCIALS = [
 
 export const SHARE_LINKS = [
   {
+    name: "X",
+    href: "https://x.com/intent/post?url=",
+    linkTitle: `Share this post on X`,
+    icon: "twitter",
+  },
+  {
+    name: "BlueSky",
+    href: "https://bsky.app/intent/compose?text=",
+    linkTitle: `Share this post on BlueSky`,
+    icon: "bluesky",
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/sharing/share-offsite/?url=",
+    linkTitle: `Share this post on LinkedIn`,
+    icon: "linkedin",
+  },
+  {
     name: "WhatsApp",
     href: "https://wa.me/?text=",
     linkTitle: `Share this post via WhatsApp`,
@@ -43,12 +68,6 @@ export const SHARE_LINKS = [
     href: "https://www.facebook.com/sharer.php?u=",
     linkTitle: `Share this post on Facebook`,
     icon: "facebook",
-  },
-  {
-    name: "X",
-    href: "https://x.com/intent/post?url=",
-    linkTitle: `Share this post on X`,
-    icon: "twitter",
   },
   {
     name: "Telegram",
