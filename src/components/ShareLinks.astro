@@ -1,8 +1,27 @@
 ---
 import { SHARE_LINKS } from "@/constants";
 import LinkButton from "./LinkButton.astro";
+import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
+import IconFacebook from "@/assets/icons/IconFacebook.svg";
+import IconBrandX from "@/assets/icons/IconBrandX.svg";
+import IconBlueSky from "@/assets/icons/IconBlueSky.svg";
+import IconLinkedin from "@/assets/icons/IconLinkedin.svg";
+import IconTelegram from "@/assets/icons/IconTelegram.svg";
+import IconPinterest from "@/assets/icons/IconPinterest.svg";
+import IconMail from "@/assets/icons/IconMail.svg";
 
 const URL = Astro.url;
+
+const iconMap = {
+  whatsapp: IconWhatsapp,
+  facebook: IconFacebook,
+  twitter: IconBrandX,
+  bluesky: IconBlueSky,
+  linkedin: IconLinkedin,
+  telegram: IconTelegram,
+  pinterest: IconPinterest,
+  mail: IconMail,
+};
 ---
 
 <div
@@ -11,16 +30,21 @@ const URL = Astro.url;
   <span class="italic">Share this post on:</span>
   <div class="text-center">
     {
-      SHARE_LINKS.map((social) => (
-        <LinkButton
-          href={`${social.href + URL}`}
-          class="scale-90 p-2 hover:rotate-6 sm:p-1"
-          title={social.linkTitle}
-        >
-          <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
-          <span class="sr-only">{social.linkTitle}</span>
-        </LinkButton>
-      ))
+      SHARE_LINKS.map((social) => {
+        const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+        return (
+          <LinkButton
+            href={`${social.href + URL}`}
+            class="scale-90 p-2 hover:rotate-6 sm:p-1"
+            title={social.linkTitle}
+          >
+            {IconComponent && (
+              <IconComponent class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+            )}
+            <span class="sr-only">{social.linkTitle}</span>
+          </LinkButton>
+        );
+      })
     }
   </div>
 </div>
