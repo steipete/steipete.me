@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { SITE } from "@/config";
 import "@/styles/global.css";
+import Analytics from "@/components/Analytics.astro";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -131,6 +132,7 @@ const structuredData = {
   </head>
   <body>
     <slot />
+    <Analytics />
   </body>
 </html>
 
