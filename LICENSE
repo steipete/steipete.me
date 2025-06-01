@@ -4,11 +4,11 @@ This repository contains two types of content with different licenses:
 
 ## Documentation and Blog Posts
 
-All documentation, blog posts, and written content in this repository (primarily in `/src/content/blog/` and similar directories) are licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0).
+All documentation, blog posts, and written content in this repository (primarily in `/src/content/blog/` and similar directories) are licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
 
-To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-### Summary of CC BY-SA 4.0
+### Summary of CC BY 4.0
 
 You are free to:
 - **Share** — copy and redistribute the material in any medium or format
@@ -16,7 +16,7 @@ You are free to:
 
 Under the following terms:
 - **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made
-- **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original
+- **No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits
 
 ## Code and Code Snippets
 
@@ -47,5 +47,5 @@ SOFTWARE.
 ## Clarification
 
 - The website structure, configuration, and build scripts are considered code (MIT License)
-- Blog post content and documentation text are considered documentation (CC BY-SA 4.0)
+- Blog post content and documentation text are considered documentation (CC BY 4.0)
 - Code examples within blog posts are dual-licensed and may be used under either license
