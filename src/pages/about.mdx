@@ -3,6 +3,8 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
+import NewsletterForm from '../components/NewsletterForm.astro';
+
 <div class="flex flex-col md:flex-row gap-8 items-start">
   <div class="w-full md:w-auto md:flex-shrink-0 md:max-w-[281px]">
     <img src="/peter-office.jpg" alt="Peter in his office setup" class="w-full h-auto rounded-lg" />
@@ -35,7 +37,7 @@ If you'd like to connect or have questions about my work, feel free to reach out
 ## Stay Connected
 
 <div class="not-prose">
-  <NewsletterForm variant="compact" />
+  <NewsletterForm />
 </div>
 
 <p class="text-sm text-gray-500 mt-8">Imprint: Peter Steinberger, Siebensterngasse 15, 1070 Vienna, Austria</p>
