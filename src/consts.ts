@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://steipete.me/",
   author: "Peter Steinberger",
   profile: "https://steipete.me/about",
-  desc: "Recovering Entrepreneur vibe coding on his next thing. Everything I build is open source.",
+  desc: "Recovering Entrepreneur, vibe coding his next thing. Everything I build is open source.",
   title: "Peter Steinberger",
   ogImage: "peter-avatar.jpg",
   lightAndDarkMode: true,
