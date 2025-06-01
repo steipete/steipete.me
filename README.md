@@ -6,30 +6,27 @@ This is the source code for my personal website, built with [Astro](https://astr
 
 I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
 
-## Features
-
-- ✅ Modern, fast, and responsive website built with Astro
-- ✅ Blog with full markdown support
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap and RSS feed support
-- ✅ Import of posts from previous blogs
-
 ## Project Structure
 
 ```text
-├── public/           # Static assets like images
-├── scripts/          # Utility scripts
+├── public/               # Static assets (images, fonts, favicon)
+│   ├── assets/          # Images for blog posts
+│   └── fonts/           # Web fonts
 ├── src/
-│   ├── components/   # Reusable UI components
-│   ├── content/      # Blog posts and content collections
-│   │   ├── blog/     # Blog posts in Markdown format
-│   │   └── config.ts # Content configuration
-│   ├── layouts/      # Page layouts
-│   └── pages/        # Pages and routes
-├── astro.config.mjs  # Astro configuration
-├── vercel.json       # Vercel deployment configuration
-└── package.json      # Project dependencies and scripts
+│   ├── assets/          # Icons and images used in components
+│   ├── components/      # Reusable UI components
+│   │   └── ui/          # React components
+│   ├── content/         # Content collections
+│   │   └── blog/        # Blog posts in Markdown format (organized by year)
+│   ├── layouts/         # Page layouts and templates
+│   ├── pages/           # Routes and pages
+│   ├── styles/          # Global styles and CSS
+│   └── utils/           # Utility functions
+├── astro.config.mjs     # Astro configuration
+├── vercel.json          # Vercel deployment and CSP configuration
+├── package.json         # Project dependencies and scripts
+├── tailwind.config.mjs  # Tailwind CSS configuration
+└── LICENSE              # Dual license (CC BY 4.0 + MIT)
 ```
 
 ## Commands
@@ -47,4 +44,9 @@ This site is set up for easy deployment on Vercel. Just connect your GitHub repo
 
 ## License
 
-The content of this project is copyrighted by Peter Steinberger. The code is licensed under the MIT license.
+This repository uses dual licensing:
+
+- **Documentation & Blog Posts**: Licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
+- **Code & Code Snippets**: Licensed under the [MIT License](LICENSE)
+
+See the [LICENSE](LICENSE) file for full details.
