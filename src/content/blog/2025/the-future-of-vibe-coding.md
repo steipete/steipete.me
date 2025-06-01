@@ -79,10 +79,10 @@ I'd already set up a GitHub repo for "Vibe Meter" and, within it, two distinct f
 
 And then, the magic (and sometimes the madness) begins. You hit "go," and the AIs start chugging away, planning steps, creating files, and writing code.
 
-**Dealing with the "Continue Monkey" – And My Solution, CodeLooper:**
+**Dealing with the "Continue Monkey" – And My Solution, [CodeLooper](https://codelooper.app):**
 One of the current papercuts in these AI-driven IDEs is the generation loop. They'll work for a bit, then pause, often requiring a manual click on a "Continue" button. This can be due to internal limits (Cursor sometimes has a 25-turn limit before pausing), connection hiccups, or the AI just needing a moment to plan its next multi-step move.
 
-This constant need to babysit the "Continue" button is why I'm building a side-project called "CodeLooper." It's a Mac menu bar app that uses a combination of screen capture, accessibility APIs, and even JavaScript injection (since Cursor itself is an Electron app) to detect when a generation loop has paused and, if it deems it safe, automatically click "Continue" for me. It's still a work in progress, but the goal is to achieve longer, truly unattended generation sessions. For this workshop, though, I was the designated "Continue Monkey."
+This constant need to babysit the "Continue" button is why I'm building a side-project called "[CodeLooper](https://codelooper.app)." It's a Mac menu bar app that uses a combination of screen capture, accessibility APIs, and even JavaScript injection (since Cursor itself is an Electron app) to detect when a generation loop has paused and, if it deems it safe, automatically click "Continue" for me. It's still a work in progress, but the goal is to achieve longer, truly unattended generation sessions. For this workshop, though, I was the designated "Continue Monkey."
 
 **MCPs – My Custom Toolkit for Supercharging Cursor:**
 Cursor allows you to define "MCPs" (which I think of as "More Capable Prompts" or "More Capable Tools"). These are essentially custom functions or external tools the AI agent within Cursor can choose to call. I've been building out a suite of these to give the AI more leverage:
@@ -173,6 +173,6 @@ This is not some far-off future; this is what's possible *today*. The tools are 
 
 My advice? Don't wait. Dive in. Pick a small side project, something fun. Start experimenting with these tools. Learn how to prompt, how to iterate, how to "vibe" with your AI coding partner. See for yourself how it can transform your workflow, your learning, and your creative output.
 
-As for Vibe Meter? I'm definitely going to take the Mac app, polish it up (with more AI help, of course!), and integrate its core cost-tracking logic into my "CodeLooper" project. The cycle of AI-assisted creation continues.
+As for Vibe Meter? I'm definitely going to take the Mac app, polish it up (with more AI help, of course!), and integrate its core cost-tracking logic into my "[CodeLooper](https://codelooper.app)" project. The cycle of AI-assisted creation continues.
 
 Thanks for joining me on this live-coding adventure. Now, go build something cool!
