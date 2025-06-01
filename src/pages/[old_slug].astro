@@ -7,6 +7,6 @@ export async function getStaticPaths() {
   return [{ params: { old_slug: "test" }, props: {} }];
 }
 
-// Redirect to the blog homepage
-return Astro.redirect("/blog/", 301);
+// Redirect to the posts homepage
+return Astro.redirect("/posts/", 301);
 ---
