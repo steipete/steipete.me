@@ -6,7 +6,6 @@
   "framework": "astro",
   "trailingSlash": false,
   "redirects": [
-    { "source": "/posts", "destination": "/", "permanent": true },
     {
       "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
       "destination": "/blog/:slug/",
@@ -79,7 +78,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self' https://steipete.me https://*.vercel.app; script-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; style-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app; img-src 'self' data: https://steipete.me https://*.vercel.app; font-src 'self' https://steipete.me https://*.vercel.app; connect-src 'self' https://steipete.me https://*.vercel.app; media-src 'self' https://steipete.me https://*.vercel.app; object-src 'none'; frame-ancestors 'none'"
+          "value": "default-src 'self' https://steipete.me https://*.vercel.app https://platform.twitter.com https://syndication.twitter.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://steipete.me https://*.vercel.app https://platform.twitter.com https://cdn.syndication.twimg.com; style-src 'self' 'unsafe-inline' https://steipete.me https://*.vercel.app https://platform.twitter.com; img-src 'self' data: https: blob:; font-src 'self' https://steipete.me https://*.vercel.app; connect-src 'self' https://steipete.me https://*.vercel.app https://platform.twitter.com; media-src 'self' https://steipete.me https://*.vercel.app; object-src 'none'; frame-ancestors 'none'; frame-src https://platform.twitter.com https://syndication.twitter.com"
         }
       ]
     }
