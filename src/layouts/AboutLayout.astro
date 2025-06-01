@@ -23,9 +23,11 @@ const { frontmatter } = Astro.props;
       <slot />
     </section>
     
-    <div class="mb-12 max-w-3xl">
-      <h2 class="text-xl font-semibold mb-4">Stay Connected</h2>
-      <NewsletterForm variant="compact" />
+    <div class="prose mb-12 max-w-3xl prose-img:border-0">
+      <h2>Stay Connected</h2>
+      <div class="not-prose">
+        <NewsletterForm variant="compact" />
+      </div>
     </div>
     
     <p class="text-sm text-gray-500 mb-28 max-w-3xl">Imprint: Peter Steinberger, Siebensterngasse 15, 1070 Vienna, Austria</p>
