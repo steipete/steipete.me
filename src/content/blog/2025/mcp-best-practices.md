@@ -13,6 +13,16 @@ tags:
 
 Building high-quality Model Context Protocol (MCP) tools requires attention to detail across many dimensions. After developing several MCP tools, I've compiled this comprehensive guide to best practices that ensure your tools are reliable, user-friendly, and maintainable.
 
+## My MCP Tools
+
+Here are the MCP tools I've built following these practices:
+
+- 👻 [Peekaboo](https://github.com/steipete/Peekaboo): Enables your IDE to make screenshots and ask questions about images.
+- 🤖 [Terminator](https://github.com/steipete/Terminator): Manages a Terminal outside of the loop, so processes that might get stuck don't break the loop.
+- 🧠 [Claude Code](https://github.com/steipete/claude-code-mcp): A buddy for your IDE that your agent can ask if he's stuck. Can do coding task and offer "a pair of fresh eyes" that often un-stucks the loop.
+- 🐱 [Conduit](https://github.com/steipete/conduit-mcp): Advanced file manipulation for faster refactoring.
+- 🎯 [Automator](https://github.com/steipete/macos-automator-mcp): AppleScript for your IDE.
+
 ## I. General Tool Configuration & Behavior
 
 ### Sensible Defaults
