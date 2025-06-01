@@ -20,7 +20,7 @@ const { variant = 'default' } = Astro.props;
     action="https://buttondown.com/api/emails/embed-subscribe/steipete"
     method="post"
     target="_blank"
-    class={variant === 'default' ? 'flex flex-col sm:flex-row gap-3' : 'flex flex-col gap-2'}
+    class="flex flex-col sm:flex-row gap-3"
   >
     <input
       type="email"
@@ -33,11 +33,11 @@ const { variant = 'default' } = Astro.props;
       type="text"
       name="name"
       placeholder="Your name (optional)"
-      class={variant === 'default' ? 'flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent' : 'px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'}
+      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
     />
     <button
       type="submit"
-      class="px-6 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors font-medium whitespace-nowrap"
+      class="px-6 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
     >
       Subscribe
     </button>

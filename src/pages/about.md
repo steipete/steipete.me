@@ -32,4 +32,34 @@ I'm looking for new opportunities to share my learnings at conferences. [Check o
 
 If you'd like to connect or have questions about my work, feel free to reach out through any of the social links below.
 
+<div class="not-prose my-12">
+  <h2 class="text-xl font-semibold mb-4">Stay Connected</h2>
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/steipete"
+    method="post"
+    target="_blank"
+    class="flex flex-col sm:flex-row gap-3 max-w-2xl"
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+    />
+    <input
+      type="text"
+      name="name"
+      placeholder="Your name (optional)"
+      class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+    />
+    <button
+      type="submit"
+      class="px-6 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+    >
+      Subscribe
+    </button>
+  </form>
+</div>
+
 <p class="text-sm text-gray-500 mt-8">Imprint: Peter Steinberger, Siebensterngasse 15, 1070 Vienna, Austria</p>
