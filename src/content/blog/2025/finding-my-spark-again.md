@@ -13,8 +13,6 @@ source: steipete.com
 
 <blockquote class="twitter-tweet" data-width="550" data-theme="light" data-dnt="true"><p lang="en" dir="ltr">We are so back 🚀</p>&mdash; Peter Steinberger (@steipete) <a href="https://twitter.com/steipete/status/1925983535958999393?ref_src=twsrc%5Etfw">November 20, 2024</a></blockquote>
 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 When I sold my shares of [PSPDFKit](https://www.nutrient.io/) after building the company and making it my identity for over 13 years, I was very broken. I've been pouring 200% of my time, energy, and heart's blood into this company, and towards the end, I just felt that I needed a break. We've been very lucky to have found an amazing company with Insight, that acquired the majority.
 
 ## The Emptiness After
