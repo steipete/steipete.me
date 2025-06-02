@@ -66,4 +66,4 @@ The productivity multiplier is so absurd that arguing about the cost is like com
 
 Time is the only non-refillable resource. Claude Max at $200 is currently the cheapest way I know to mint extra hours—and those hours compound faster than any SaaS line item ever will.
 
-**What's your monthly AI spend?** I'm curious how my $600-800/month compares to other developers. Ping me on Twitter [@steipete](https://twitter.com/steipete) with your breakdown—and tell me what you're buying with the saved time.
+**What's your monthly AI spend?** Ping me on Twitter [@steipete](https://twitter.com/steipete) with your breakdown and what you're buying with the saved time.
