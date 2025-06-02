@@ -21,7 +21,9 @@ The thing is, people don't understand that you don't actually have to pay *that*
 
 **[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
 
-Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model, with the same downgrade behavior when you approach limits.
+Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model and switches to Sonnet when you reach 50% of the 5-hour limit (this is configurable). If you really burn through your whole allowance for that window, you can switch to API-based billing.
+
+If you're tight on money and you really need this extremely high use case, look at the [development partner program](https://support.anthropic.com/en/articles/11174108-about-the-development-partner-program) where they offer 30% off standard API pricing.
 
 For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal.
 
