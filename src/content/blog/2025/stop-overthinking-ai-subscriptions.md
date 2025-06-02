@@ -31,21 +31,21 @@ For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/),
 
 **Cursor Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
 
-Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Claude 3.5 Sonnet costs exactly 1 request.
+Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Gemini 2.5 Pro (my favorite model) costs exactly 1 request.
 
-That workshop I did? Probably 200+ AI requests across 3 hours. Let's do the math: 200 requests × $0.04 = **$8**. 
+[That workshop I did](/posts/2025/the-future-of-vibe-coding/)? Probably 200+ AI requests across 3 hours. Let's do the math: 200 requests × $0.04 = **$8**. 
 
 For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription. When you run out of fast requests, Cursor automatically switches to free requests (processed at lower priority) so you never truly hit a wall.
 
-## The Thing That Actually Gets Expensive: OpenAI's o3
+## What Actually Gets Expensive: OpenAI's o3
 
 Here's where I'll be honest: **about half my monthly AI bill goes to o3**. 
 
 OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
 
-I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of tokens. It thinks for minutes and then presents you a solution. It is currently by far the best model, but you don't need it for everyday implementation.
+I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of tokens. It thinks for minutes and then presents you a solution. It is currently by far the best model, but you don't need it for everyday work.
 
-I spent around $400 on o3 last month because I was working more efficiently. When I hit [truly difficult problems](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats banging my head against the wall for days.
+I spent around $400 on o3 last month because I was banging my head against a wall with some really tricky code. When I hit [truly difficult problems](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats banging my head against the wall for days.
 
 ## Budget Alternative: Repo Prompt for o3 Access
 
