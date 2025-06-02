@@ -28,7 +28,7 @@ The thing is, people don't understand that you don't actually have to pay *that*
 
 ## The Current Best Deal: Claude Max at $200/month
 
-**[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro (Anthropic also offers a $100/month 5× tier).
+**[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
 
 Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model and switches to Sonnet when you reach 50% of the 5-hour limit (this is configurable). If you really burn through your whole allowance for that window, you can switch to API-based billing.
 
@@ -54,7 +54,7 @@ I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of
 
 I spent around $400 on o3 last month because I was banging my head against a wall with some really tricky code. When I hit [truly difficult problems](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats getting stuck in debugging rabbit holes for days.
 
-## Budget Alternative: Repo Prompt for o3 Access
+## Smart Alternative: Repo Prompt for o3 Access
 
 If you're tight on money but still want o3's reasoning power, I highly recommend [Repo Prompt](https://repoprompt.com/) (macOS-only). It lets you use o3 through your ChatGPT subscription instead of paying API rates.
 
