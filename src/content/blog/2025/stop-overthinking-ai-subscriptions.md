@@ -1,5 +1,5 @@
 ---
-title: "Stop Over-thinking AI Subscriptions—Buy Back Your Time"
+title: "Stop Over-thinking AI Subscriptions"
 pubDatetime: 2025-06-02T10:00:00+01:00
 description: "After spending heavily on AI tools for two months, here's why the math actually works out—and which subscriptions are worth every penny."
 tags:
