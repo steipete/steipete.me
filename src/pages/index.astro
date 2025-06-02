@@ -7,6 +7,7 @@ import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
+import StructuredData from "@/components/StructuredData.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
@@ -23,6 +24,8 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
 
 <Layout description="Peter Steinberger: AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.">
+  <StructuredData type="WebSite" data={{}} />
+  <StructuredData type="Person" data={{}} />
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pt-6 pb-4">

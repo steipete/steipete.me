@@ -1,0 +1,77 @@
+---
+export interface Props {
+  type: "BlogPosting" | "Person" | "WebSite";
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+let structuredData = {};
+
+if (type === "BlogPosting") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: data.title,
+    description: data.description,
+    author: {
+      "@type": "Person",
+      name: data.author || "Peter Steinberger",
+      url: "https://steipete.me/about"
+    },
+    datePublished: data.pubDatetime.toISOString(),
+    dateModified: data.modDatetime?.toISOString() || data.pubDatetime.toISOString(),
+    publisher: {
+      "@type": "Person",
+      name: "Peter Steinberger",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://steipete.me/peter-avatar.jpg"
+      }
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": data.url
+    },
+    image: data.ogImage || "https://steipete.me/peter-avatar.jpg",
+    articleSection: data.tags?.[0] || "Technology",
+    keywords: data.tags?.join(", ") || "",
+    wordCount: data.wordCount,
+    timeRequired: data.readingTime
+  };
+} else if (type === "Person") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Peter Steinberger",
+    url: "https://steipete.me",
+    image: "https://steipete.me/peter-avatar.jpg",
+    sameAs: [
+      "https://github.com/steipete",
+      "https://twitter.com/steipete",
+      "https://bsky.app/profile/steipete.me"
+    ],
+    jobTitle: "Software Engineer",
+    description: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix."
+  };
+} else if (type === "WebSite") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Peter Steinberger",
+    url: "https://steipete.me",
+    description: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
+    author: {
+      "@type": "Person",
+      name: "Peter Steinberger"
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://steipete.me/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
