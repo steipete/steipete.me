@@ -18,9 +18,17 @@ I've been working heavily with AI for the past few months, and many times when I
 
 The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. After using the best AI subscription deals 2025 has to offer, here's the real math (all prices in USD).
 
+| Plan | Monthly Fee | Included Usage | Marginal Cost |
+|------|-------------|----------------|---------------|
+| Claude Pro | $20 | ~45 messages/5h | Rate limited |
+| Claude Max 5× | $100 | ~225 messages/5h | Rate limited |
+| Claude Max 20× | $200 | ~900 messages/5h | Rate limited |
+| Cursor Pro | $20 | 500 fast requests | $0.04/fast request |
+| OpenAI o3 | Pay-per-use | N/A | $10-40/1M tokens |
+
 ## The Current Best Deal: Claude Max at $200/month
 
-**[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
+**[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro (Anthropic also offers a $100/month 5× tier).
 
 Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model and switches to Sonnet when you reach 50% of the 5-hour limit (this is configurable). If you really burn through your whole allowance for that window, you can switch to API-based billing.
 
@@ -28,7 +36,7 @@ If you're tight on money and you really need this extremely high use case, look 
 
 ## Cursor: The Math That Makes Sense
 
-**[Cursor](https://cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
+**[Cursor](https://cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per fast request** ([Cursor lists it as $0.04 per fast request](https://forum.cursor.com/t/fast-request-pricing-transparency/42161)).
 
 Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Gemini 2.5 Pro (my favorite model) costs exactly 1 request.
 
@@ -40,7 +48,7 @@ For an afternoon of intensive coding with AI assistance, you're looking at pocke
 
 Here's where I'll be honest: **about half my monthly AI bill goes to o3**. 
 
-OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
+OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens** (cached input tokens are $2.50/1M). When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
 
 I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of tokens. It thinks for minutes and then presents you a solution.
 
