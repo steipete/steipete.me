@@ -70,6 +70,8 @@ One afternoon saved per month = $200 in billable time. Claude Max pays for itsel
 
 The productivity multiplier is so absurd that arguing about the cost is like complaining about the price of coffee while billing $200/hour.
 
+For a fun perspective on AI costs, check out [this thread](https://x.com/badlogicgames/status/1929665561715204520) that puts things in perspective.
+
 ## TL;DR
 
 Time is the only non-refillable resource. Claude Max at $200 is currently the cheapest way I know to mint extra hours—and those hours compound faster than any SaaS line item ever will.
