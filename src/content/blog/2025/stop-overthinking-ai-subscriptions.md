@@ -16,7 +16,7 @@ tags:
 
 I've been working heavily with AI for the past few months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
 
-The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. After testing the best AI subscription deals 2025 has to offer, here's the real math (all prices in USD).
+The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. After using the best AI subscription deals 2025 has to offer, here's the real math (all prices in USD).
 
 ## The Current Best Deal: Claude Max at $200/month
 
@@ -24,9 +24,7 @@ The thing is, people don't understand that you don't actually have to pay *that*
 
 Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model and switches to Sonnet when you reach 50% of the 5-hour limit (this is configurable). If you really burn through your whole allowance for that window, you can switch to API-based billing.
 
-If you're tight on money and you really need this extremely high use case, look at the [development partner program](https://support.anthropic.com/en/articles/11174108-about-the-development-partner-program) where they offer 30% off standard API pricing (this discount applies only to API usage, not the Max subscription).
-
-For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal.
+If you're tight on money and you really need this extremely high use case, look at the [development partner program](https://support.anthropic.com/en/articles/11174108-about-the-development-partner-program) where they offer 30% off standard API pricing (this discount applies only to API usage, not the Max sub).
 
 ## Cursor: The Math That Makes Sense
 
