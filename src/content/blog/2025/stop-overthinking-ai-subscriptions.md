@@ -72,7 +72,7 @@ The productivity multiplier is so absurd that arguing about the cost is like com
 
 Now you know—don't be a Mario:
 
-<blockquote class="twitter-tweet" data-width="550" data-theme="light" data-dnt="true"><p lang="en" dir="ltr">I spent a lot this month on AI, here's my breakdown:<br><br>o3-mini: $15<br>o3: $200<br>Claude Pro: $20<br>ChatGPT Pro: $20<br>Cursor: $20<br>Copilot Enterprise: $20<br><br>About $300 total.<br><br>However I saved 100s of hours of work. It's crazy cheap.</p>&mdash; Mario Zechner (@badlogicgames) <a href="https://twitter.com/badlogicgames/status/1929665561715204520?ref_src=twsrc%5Etfw">November 30, 2024</a></blockquote>
+<blockquote class="twitter-tweet" data-width="550" data-theme="light" data-dnt="true"><p lang="en" dir="ltr">Hi, my name is Mario, and I spent about $1000 in Anthropic pay-as-you-go before switching to Max and finding out that I stay well within the rate limit...<br><br>Don&#39;t be a Mario.</p>&mdash; Mario Zechner (@badlogicgames) <a href="https://twitter.com/badlogicgames/status/1929665561715204520?ref_src=twsrc%5Etfw">November 30, 2024</a></blockquote>
 
 ## TL;DR
 
