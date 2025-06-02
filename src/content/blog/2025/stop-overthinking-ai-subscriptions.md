@@ -1,80 +1,70 @@
 ---
 title: "Stop Over-thinking AI Subscriptions—Buy Back Your Time"
 pubDatetime: 2025-06-02T10:00:00+01:00
-description: "The single most underrated mindset shift in 2025: treat AI minutes like DevOps minutes—precious, billable, and worth optimizing."
+description: "After spending heavily on AI tools for two months, here's why the math actually works out—and which subscriptions are worth every penny."
 tags:
   - AI
   - Productivity
   - Claude
-  - ChatGPT
   - Cursor
   - Development
   - ROI
+  - Vibe-Coding
 ---
 
-The single most underrated mindset shift in 2025: treat AI minutes like DevOps minutes—precious, billable, and worth optimizing.
+I've been working heavily with AI for the past two months, and every time I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
 
-## My Personal Math
+The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. Here's the real math.
 
-| What | Cost | Time saved per month (rough) | Implied hourly rate |
-|------|------|------------------------------|-------------------|
-| Claude Max (20× plan) | $200/mo | 4-6 h of code review, prompt-engineering + spec drafting | €32-50/h |
-| ChatGPT Pro (GPT-4o) | $20/mo | 1-1.5 h debugging/chat/paste-in-log noise | €12-20/h |
-| Cursor IDE add-on | $19/mo | 30-45 min jumping between docs | €25-35/h |
+## The Current Best Deal: Claude Max at $200/month
 
-If you bill clients at €150/h—or just value your own evenings—these numbers are a joke. One decent prompt that spares an afternoon pays the whole stack.
+**Claude Max gives you almost unlimited use of Claude Code**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
 
-## Why Claude Max is the Current "No-Brainer"
+When you hit limits on the cheaper Claude Pro ($20/month), it doesn't downgrade you to a weaker model—you just hit rate limits and wait for the 5-hour reset. With Max, that practically never happens.
 
-**20× higher limits than Pro**, so the model never taps out when I paste half a codebase. [TechCrunch](https://techcrunch.com/2024/12/20/anthropic-unveils-claude-max-for-its-highest-usage-customers/) and [Reuters](https://www.reuters.com/technology/artificial-intelligence/anthropic-rolls-out-premium-claude-max-plan-200-month-2024-12-20/) covered the launch.
+For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal. That workshop I did? Probably 200+ AI requests across 3 hours. On Claude Pro, I'd have been rate-limited after the first hour.
 
-**100 five-hour "sessions" per month**—basically unlimited for anything short of data-lab work. [Reddit discussions](https://www.reddit.com/r/ClaudeAI/comments/1hh4bma/claude_max_is_now_available_for_200month/) confirm the math checks out.
+## Cursor: The Math That Makes Sense
 
-**Early feature flags** (voice mode, Code interpreter, long-context docs) land here first. [LinkedIn announcements](https://www.linkedin.com/posts/anthropic_claude-max-activity-7275913534567424000-qnHF) often show these dropping weeks before they hit Pro.
+**Cursor Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
 
-$200 is two pizzas per week in London; the ROI is embarrassingly skewed.
+Let's do the math: 200 requests × $0.04 = **$8**. 
 
-**Rule of thumb**: if Claude saves you one half-day task every four weeks, the sub already turned profit.
+For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription.
 
-## Typical Flow in My Day
+The real kicker? Premium models like Claude 4 cost more ($0.30 per request), but when you're stuck on a gnarly bug, paying $0.30 to unstick yourself is absurd value.
 
-**Morning stand-up** – feed Claude yesterday's commit diff → get an English changelog and a 3-bullet risk list.
+## The Thing That Actually Gets Expensive: OpenAI's o3
 
-**Vibe-coding session** – live-co-edit a SwiftUI view; Max handles the giant context window without whining.
+Here's where I'll be honest: **about half my monthly AI bill goes to o3**. 
 
-**Docs time** – paste product spec + tweets → Claude drafts the launch post (the one you're reading, in fact).
+OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers—but it adds up fast.
 
-**Evening inbox-zero** – ask for TL;DR on 15 Slack threads, hit send, close laptop.
+I spent around $400 on o3 last month because I was working more efficiently. When I hit truly difficult problems, throwing o3 at them for a few hours beats banging my head against the wall for days.
 
-**Total**: ~45 min saved, daily.
+## Budget Alternative: Repo Prompt for o3 Access
 
-## "But €185/mo is Still Money…"
+If you're tight on money but still want o3's reasoning power, I highly recommend [Repo Prompt](https://repoprompt.com/). It lets you use o3 through your ChatGPT subscription instead of paying API rates.
 
-So is every coffee you order because the sprint ran long.
+While it's more manual than integrated tools, it's incredibly effective at taking code changes and applying them to your project. The workflow is straightforward: export your repo context, get o3's analysis and suggestions, then apply the changes back to your codebase.
 
-Run this quick calc:
+It's an amazing tool that bridges the gap between premium AI access and budget constraints. Definitely worth experimenting with.
 
-```
-(hours Claude saves per week) × (your hourly rate) – 200
-```
+## The Contractor Math
 
-If the number is positive, congrats, you're leaving free cash on the table. If it's negative, you're probably under-estimating the time sink of context-switching.
+If you value your time at even **$2,000/day** (reasonable for experienced developers), the AI subscription math is a no-brainer.
 
-## Other Paid Tools Worth the Cash
+One afternoon saved per month = $250 in billable time. Claude Max pays for itself in 4 saved hours. Cursor pays for itself in 30 minutes.
 
-**Cursor IDE** – instant refactor suggestions inline. Treat it as junior dev that never sleeps.
+The productivity multiplier is so absurd that arguing about the cost is like complaining about the price of coffee while billing $200/hour.
 
-**Blackbox export in GitHub Copilot Enterprise** – €39/mo, but avoids the NDA headache.
+## Other Tools Worth the Money
 
-**Rewind** – timeline of your entire screen; perfect when Claude asks "got a stack trace?"
+**Cursor IDE** ($20/month) – Live AI pair programming. It's like having a junior developer who never gets tired and knows every framework.
 
-## When Not to Pay
+**Claude Code** (via Max subscription) – The terminal AI that actually understands your codebase context and can make complex changes without breaking everything.
 
-**Hobby tinkering < 5 h/month** — stick to free tiers.
-
-**Heavy proprietary data** — self-host Ollama or run a local Mistral 8x7B.
-
-**Teams with sub-€10k run-rate** — start on Pro plans first.
+**Rewind** – Screen recording AI that lets you ask "what error message did I see 20 minutes ago?" Perfect for those moments when Claude asks for details you didn't capture.
 
 ## TL;DR
 
