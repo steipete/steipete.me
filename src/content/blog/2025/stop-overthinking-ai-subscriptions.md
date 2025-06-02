@@ -36,7 +36,7 @@ If you're tight on money and you really need this extremely high use case, look 
 
 ## Cursor: The Math That Makes Sense
 
-**[Cursor](https://cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per fast request** ([Cursor lists it as $0.04 per fast request](https://forum.cursor.com/t/fast-request-pricing-transparency/42161)).
+**[Cursor](https://cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" ones. Beyond that, it's **$0.04 per fast request** (per Cursor docs).
 
 Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Gemini 2.5 Pro (my favorite model) costs exactly 1 request.
 
@@ -48,9 +48,9 @@ For an afternoon of intensive coding with AI assistance, you're looking at pocke
 
 Here's where I'll be honest: **about half my monthly AI bill goes to o3**. 
 
-OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens** (cached input tokens are $2.50/1M). When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
+OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. Cached input drops to $2.50/1M. When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
 
-I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of tokens. It thinks for minutes and then presents you a solution.
+o3 is my dark knight—silent, pricey, but rescues impossible bugs.
 
 I spent around $400 on o3 last month because I was banging my head against a wall with some really tricky code. When I hit [truly difficult problems](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats getting stuck in debugging rabbit holes for days.
 
