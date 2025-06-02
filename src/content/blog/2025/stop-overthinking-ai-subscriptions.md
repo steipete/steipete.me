@@ -20,7 +20,7 @@ The thing is, people don't understand that you don't actually have to pay *that*
 
 **[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
 
-The Claude Max subscription uses Opus as the default model. When you go below 50% of your allowance, it will downgrade you to use Sonnet. With the 20× higher limits, this downgrade rarely happens in practice.
+Claude Max works on a rolling 5-hour block system with roughly **900 messages per 5-hour window**. The moment you send your first prompt, the timer starts. When 5 hours are up, everything refreshes with a new block and full quota. The Claude Max subscription uses Opus as the default model, with the same downgrade behavior when you approach limits.
 
 For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal.
 
@@ -32,15 +32,15 @@ That workshop I did? Probably 200+ AI requests across 3 hours. Let's do the math
 
 For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription.
 
-Enabling max mode is far more expensive and can be useful for larger projects, but it's not a requirement to be really effective working with AI.
+Enabling Max mode is far more expensive and can be useful for larger projects (for larger context windows and longer thinking), but it's not a requirement to be really effective working with AI.
 
 ## The Thing That Actually Gets Expensive: OpenAI's o3
 
 Here's where I'll be honest: **about half my monthly AI bill goes to o3**. 
 
-OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers—but it adds up fast.
+OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
 
-I spent around $400 on o3 last month because I was working more efficiently. When I hit truly difficult problems, throwing o3 at them for a few hours beats banging my head against the wall for days.
+I spent around $400 on o3 last month because I was working more efficiently. When I hit truly difficult problems like [complex code](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats banging my head against the wall for days.
 
 ## Budget Alternative: Repo Prompt for o3 Access
 
@@ -62,4 +62,4 @@ The productivity multiplier is so absurd that arguing about the cost is like com
 
 Time is the only non-refillable resource. Claude Max at $200 is currently the cheapest way I know to mint extra hours—and those hours compound faster than any SaaS line item ever will.
 
-Thoughts? Ping me on X [@steipete](https://twitter.com/steipete) and tell me what you're buying with the saved time.
+Thoughts? Ping me on Twitter [@steipete](https://twitter.com/steipete) and tell me what you're buying with the saved time.
