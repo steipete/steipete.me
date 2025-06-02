@@ -28,7 +28,7 @@ If you're tight on money and you really need this extremely high use case, look 
 
 ## Cursor: The Math That Makes Sense
 
-**Cursor Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
+**[Cursor](https://www.cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
 
 Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Gemini 2.5 Pro (my favorite model) costs exactly 1 request.
 
