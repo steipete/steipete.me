@@ -9,6 +9,7 @@ import remarkCollapse from "remark-collapse";
 import { remarkLazyLoadImages } from "./src/utils/remarkLazyLoadImages.mjs";
 import { SITE } from "./src/config";
 import AstroPWA from "@vite-pwa/astro";
+import compressor from "astro-compressor";
 
 // https://astro.build/config
 export default defineConfig({
@@ -104,6 +105,10 @@ export default defineConfig({
       experimental: {
         directoryAndTrailingSlashHandler: true,
       },
+    }),
+    compressor({
+      gzip: true,
+      brotli: true,
     }),
   ],
   vite: {
