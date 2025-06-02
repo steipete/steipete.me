@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: "20"
-  ASTRO_TELEMETRY_DISABLED: 1
+  ASTRO_TELEMETRY_DISABLED: "1"
 
 jobs:
   build:
