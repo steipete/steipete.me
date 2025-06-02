@@ -16,6 +16,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
+      // @ts-ignore - TypeScript has issues with remark plugin tuple syntax
       [remarkCollapse, { test: "Table of contents" }],
       remarkLazyLoadImages
     ],

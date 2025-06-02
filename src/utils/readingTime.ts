@@ -11,7 +11,7 @@ export async function getReadingTime(postId: string): Promise<string> {
   const posts = await getCollection('blog');
   const post = posts.find(p => p.id === postId);
   
-  if (!post) {
+  if (!post || !post.body) {
     return '5 min read'; // fallback
   }
   
