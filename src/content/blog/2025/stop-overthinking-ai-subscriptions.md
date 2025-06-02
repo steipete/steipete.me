@@ -70,6 +70,10 @@ One afternoon saved per month = $200 in billable time. Claude Max pays for itsel
 
 The productivity multiplier is so absurd that arguing about the cost is like complaining about the price of coffee while billing $200/hour.
 
+Now you know—don't be a Mario:
+
+<blockquote class="twitter-tweet" data-width="550" data-theme="light" data-dnt="true"><p lang="en" dir="ltr">Hi, my name is Mario, and I spent about $1000 in Anthropic pay-as-you-go before switching to Max and finding out that I stay well within the rate limit...<br><br>Don&#39;t be a Mario.</p>&mdash; Mario Zechner (@badlogicgames) <a href="https://twitter.com/badlogicgames/status/1929665561715204520?ref_src=twsrc%5Etfw">November 30, 2024</a></blockquote>
+
 ## TL;DR
 
 Time is the only non-refillable resource. Claude Max at $200 is currently the cheapest way I know to mint extra hours—and those hours compound faster than any SaaS line item ever will.
