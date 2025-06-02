@@ -9,6 +9,7 @@ import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
 import NewsletterForm from "@/components/NewsletterForm.astro";
+import StructuredData from "@/components/StructuredData.astro";
 import { getPath } from "@/utils/getPath";
 import { slugifyStr } from "@/utils/slugify";
 import { calculateReadingTime } from "@/utils/readingTime";
@@ -82,9 +83,27 @@ const currentPostIndex = allPosts.findIndex((a) => a.slug === post.id);
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
+
+// Calculate word count for structured data
+const wordCount = post.body.split(/\s+/).length;
 ---
 
 <Layout {...layoutProps}>
+  <StructuredData 
+    type="BlogPosting" 
+    data={{
+      title,
+      description,
+      author,
+      pubDatetime,
+      modDatetime,
+      url: Astro.url.href,
+      ogImage,
+      tags,
+      wordCount,
+      readingTime
+    }} 
+  />
   <Header />
   <BackButton />
   <main
@@ -156,12 +175,18 @@ const nextPost =
     <hr class="my-6 border-dashed" />
 
     <!-- Previous/Next Post Buttons -->
-    <div data-pagefind-ignore class="flex flex-col sm:flex-row justify-between gap-6">
+    <div 
+      data-pagefind-ignore 
+      class="flex flex-col sm:flex-row justify-between gap-6"
+      data-prev-url={prevPost ? `/posts/${prevPost.slug}` : ''}
+      data-next-url={nextPost ? `/posts/${nextPost.slug}` : ''}
+    >
       {
         prevPost && (
           <a
             href={`/posts/${prevPost.slug}`}
             class="flex gap-2 hover:opacity-75 items-start"
+            id="prev-post-link"
           >
             <IconChevronLeft class="inline-block flex-shrink-0 mt-0.5" />
             <div class="min-w-0">
@@ -176,6 +201,7 @@ const nextPost =
           <a
             href={`/posts/${nextPost.slug}`}
             class="flex gap-2 hover:opacity-75 items-start justify-end text-right ml-auto"
+            id="next-post-link"
           >
             <div class="min-w-0">
               <span class="block text-sm text-foreground/70">Next Post</span>
@@ -322,4 +348,28 @@ const nextPost =
     });
   }
   addLazyLoading();
+
+  /** Keyboard navigation for posts */
+  function setupKeyboardNavigation() {
+    const navContainer = document.querySelector('[data-prev-url]');
+    if (!navContainer) return;
+    
+    const prevUrl = navContainer.getAttribute('data-prev-url');
+    const nextUrl = navContainer.getAttribute('data-next-url');
+    
+    document.addEventListener('keydown', (e) => {
+      // Ignore if user is typing in an input, textarea, or contenteditable
+      if (e.target.matches('input, textarea, [contenteditable="true"]')) return;
+      
+      // J key for next post
+      if (e.key === 'j' && nextUrl) {
+        window.location.href = nextUrl;
+      }
+      // K key for previous post
+      else if (e.key === 'k' && prevUrl) {
+        window.location.href = prevUrl;
+      }
+    });
+  }
+  setupKeyboardNavigation();
 </script>
