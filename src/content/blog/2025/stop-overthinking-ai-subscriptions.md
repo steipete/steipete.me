@@ -31,11 +31,11 @@ For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/),
 
 **Cursor Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
 
+Cursor offers two pricing modes: **Normal mode** charges a fixed number of requests per message regardless of context size, while **Max mode** uses token-based pricing (API cost + 20% margin) for complex reasoning tasks. Most everyday coding works perfectly fine in Normal mode where each message to Claude 3.5 Sonnet costs exactly 1 request.
+
 That workshop I did? Probably 200+ AI requests across 3 hours. Let's do the math: 200 requests × $0.04 = **$8**. 
 
-For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription.
-
-Enabling Max mode is far more expensive and can be useful for larger projects (for larger context windows and longer thinking), but it's not a requirement to be really effective working with AI.
+For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription. When you run out of fast requests, Cursor automatically switches to free requests (processed at lower priority) so you never truly hit a wall.
 
 ## The Thing That Actually Gets Expensive: OpenAI's o3
 
