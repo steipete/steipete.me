@@ -2,6 +2,7 @@
 title: "Stop Over-thinking AI Subscriptions"
 pubDatetime: 2025-06-02T10:00:00+01:00
 description: "After spending heavily on AI tools for two months, here's why the math actually works out—and which subscriptions are worth every penny."
+heroImage: /assets/img/2025/stop-overthinking-ai-subscriptions/hero.png
 tags:
   - AI
   - Productivity
@@ -40,7 +41,9 @@ Here's where I'll be honest: **about half my monthly AI bill goes to o3**.
 
 OpenAI's o3 model costs **$10 per 1M input tokens and $40 per 1M output tokens**. When you're debugging complex code and you want the absolute best reasoning, o3 delivers, but it adds up fast.
 
-I spent around $400 on o3 last month because I was working more efficiently. When I hit truly difficult problems like [complex code](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats banging my head against the wall for days.
+I call o3 my "dark knight" because it comes in, it is quiet, it eats up a lot of tokens. It thinks for minutes and then presents you a solution. It is currently by far the best model, but you don't need it for everyday implementation.
+
+I spent around $400 on o3 last month because I was working more efficiently. When I hit [truly difficult problems](https://github.com/steipete/AXorcist), throwing o3 at them for a few hours beats banging my head against the wall for days.
 
 ## Budget Alternative: Repo Prompt for o3 Access
 
