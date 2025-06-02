@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://steipete.me/",
   author: "Peter Steinberger",
   profile: "https://steipete.me/about",
-  desc: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork, remix, and ship.",
+  desc: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
   title: "Peter Steinberger",
   ogImage: "peter-avatar.jpg",
   lightAndDarkMode: true,
