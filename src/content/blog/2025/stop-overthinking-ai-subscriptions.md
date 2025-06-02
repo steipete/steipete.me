@@ -12,27 +12,27 @@ tags:
   - Vibe-Coding
 ---
 
-I've been working heavily with AI for the past two months, and every time I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
+I've been working heavily with AI for the past two months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
 
 The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. Here's the real math.
 
 ## The Current Best Deal: Claude Max at $200/month
 
-**Claude Max gives you almost unlimited use of Claude Code**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
+**[Claude Max](https://claude.ai/settings/billing) gives you almost unlimited use of [Claude Code](https://claude.ai/code)**, which is hands-down the best terminal-based AI tool available (next to Cursor). For $200/month, you get 20× the usage of Claude Pro.
 
-When you hit limits on the cheaper Claude Pro ($20/month), it doesn't downgrade you to a weaker model—you just hit rate limits and wait for the 5-hour reset. With Max, that practically never happens.
+The Claude Max subscription uses Opus as the default model. When you go below 50% of your allowance, it will downgrade you to use Sonnet. With the 20× higher limits, this downgrade rarely happens in practice.
 
-For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal. That workshop I did? Probably 200+ AI requests across 3 hours. On Claude Pro, I'd have been rate-limited after the first hour.
+For someone doing serious [vibe coding](/posts/2025/the-future-of-vibe-coding/), $200/month is a steal.
 
 ## Cursor: The Math That Makes Sense
 
 **Cursor Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" requests. Beyond that, it's **$0.04 per standard request**.
 
-Let's do the math: 200 requests × $0.04 = **$8**. 
+That workshop I did? Probably 200+ AI requests across 3 hours. Let's do the math: 200 requests × $0.04 = **$8**. 
 
 For an afternoon of intensive coding with AI assistance, you're looking at pocket change. Even if you burn through 1,000 requests in a month, that's $40 on top of your $20 subscription.
 
-The real kicker? Premium models like Claude 4 cost more ($0.30 per request), but when you're stuck on a gnarly bug, paying $0.30 to unstick yourself is absurd value.
+Enabling max mode is far more expensive and can be useful for larger projects, but it's not a requirement to be really effective working with AI.
 
 ## The Thing That Actually Gets Expensive: OpenAI's o3
 
@@ -52,19 +52,11 @@ It's an amazing tool that bridges the gap between premium AI access and budget c
 
 ## The Contractor Math
 
-If you value your time at even **$2,000/day** (reasonable for experienced developers), the AI subscription math is a no-brainer.
+Let's be conservative and say **$800/day** (though I'd assume many of you charge more). The AI subscription math is a no-brainer.
 
-One afternoon saved per month = $250 in billable time. Claude Max pays for itself in 4 saved hours. Cursor pays for itself in 30 minutes.
+One afternoon saved per month = $200 in billable time. Claude Max pays for itself in 5 saved hours. Cursor pays for itself in 45 minutes.
 
 The productivity multiplier is so absurd that arguing about the cost is like complaining about the price of coffee while billing $200/hour.
-
-## Other Tools Worth the Money
-
-**Cursor IDE** ($20/month) – Live AI pair programming. It's like having a junior developer who never gets tired and knows every framework.
-
-**Claude Code** (via Max subscription) – The terminal AI that actually understands your codebase context and can make complex changes without breaking everything.
-
-**Rewind** – Screen recording AI that lets you ask "what error message did I see 20 minutes ago?" Perfect for those moments when Claude asks for details you didn't capture.
 
 ## TL;DR
 
