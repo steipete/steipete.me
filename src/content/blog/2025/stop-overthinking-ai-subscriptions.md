@@ -12,7 +12,7 @@ tags:
   - Vibe-Coding
 ---
 
-I've been working heavily with AI for the past two months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
+I've been working heavily with AI for the past few months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
 
 The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. Here's the real math.
 
