@@ -65,7 +65,7 @@ That's it. Three lines to completely transform how you interact with your comput
 
 I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
 
-> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in 60 days.
+> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in 60 days. Once you experience the flow state of conversational computing, you won't want to go back.
 
 ## Why This Works (And When It Doesn't)
 
@@ -102,8 +102,6 @@ This isn't about AI replacing developers. It's about developers becoming orchest
 ## Should You Try This?
 
 If you're comfortable with calculated risks and have solid backups, absolutely. The learning curve is essentially zero—you just start talking to your computer like it's a competent colleague. Within days, you'll wonder how you ever worked without it.
-
-Start small. Don't immediately hand over root access. Use the standard permission mode, get comfortable with Claude's capabilities, then gradually expand what you're willing to delegate. But once you experience the flow state of conversational computing, you won't want to go back.
 
 Your terminal isn't just a terminal anymore. It's Claude. And Claude is absurdly capable.
 
