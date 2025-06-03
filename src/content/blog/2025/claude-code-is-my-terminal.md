@@ -73,7 +73,7 @@ Claude Code shines because it was built terminal-first, not bolted onto an IDE a
 
 Anthropic's [best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices) recommends keeping a `CLAUDE.md` file at your repo root with project-specific context. I've adopted this pattern and noticed Claude asks fewer clarifying questions and writes more accurate code. Little optimizations like this compound quickly.
 
-The main limitation? Network latency. When Claude needs to process large amounts of output or reason through complex problems, there's a noticeable pause. For time-sensitive debugging sessions, I still reach for traditional tools. But for everything else—especially exploratory work where I'm not sure exactly what I need—Claude's reasoning ability more than compensates for the occasional wait.
+The main limitation is response time. Claude's thinking process takes a few seconds, and for rapid-fire debugging sessions, I sometimes reach for traditional tools. However, you can prefix commands with `!` to run them directly without waiting for token evaluation—Claude will execute your command either way, but this is faster when you know exactly what you're calling. For exploratory work where I'm not sure what I need, Claude's reasoning ability more than compensates for the brief pause.
 
 ## Why Warp lacks
 
