@@ -53,7 +53,7 @@ The main limitation? Network latency. When Claude needs to process large amounts
 
 [Warp's](https://www.warp.dev/) mission is to "reinvent the terminal with AI". They've built beautiful GPU-accelerated panels, smart autocomplete, and collaborative features. It's genuinely impressive engineering.
 
-But Claude Code made their entire value proposition obsolete overnight. Why settle for AI suggestions in a sidebar when the AI can just... do the work? I kept Warp installed for exactly two use cases: long flights (offline mode) and massive CSV previews (GPU acceleration). Haven't launched it in three weeks.
+The fundamental difference comes down to trust and execution flow. Claude operates purely through text and is remarkably intelligent about understanding context and intent. With the `--dangerously-skip-permissions` flag, I can pre-authorize Claude to execute commands without constant confirmation prompts. Warp, while excellent, requires individual approval for each command—there's no equivalent to Claude's "dangerous mode" where you can grant blanket execution trust. This means Claude maintains conversational flow while Warp still interrupts with permission requests. I kept Warp installed for exactly two use cases: long flights (offline mode) and massive CSV previews (GPU acceleration). Haven't launched it in three weeks.
 
 ## The Setup I Actually Run
 
