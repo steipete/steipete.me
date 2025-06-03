@@ -2,6 +2,8 @@
 title: "Claude Code is My Terminal"
 pubDatetime: 2025-06-03T09:00:00+01:00
 description: "I run Claude Code with --dangerously-skip-permissions flag, giving it full system access. Let me show you a new way of approaching terminals."
+heroImage: /assets/img/2025/claude-code-is-my-terminal/hero.png
+heroImageAlt: "Claude Code terminal interface with stylized head and brain icon representing AI-powered command line"
 tags:
   - AI
   - Claude
