@@ -27,7 +27,7 @@ When I first installed Claude Code, I thought I was getting a smarter command li
 
 The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual restore dance, I pointed Claude at my backup disk and said:
 
-"Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
+"Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and restore Homebrew formulae and global npm packages."
 
 Claude drafts a migration plan, executes it step by step, and has my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
 
@@ -41,7 +41,7 @@ Compared to my old workflow of context-switching between terminal, documentation
 
 My daily Claude Code usage falls into several main outcomes:
 
-**Ship Code**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
+**Ship Code**: I haven't typed `git commit -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
 
 **Clean the OS**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals and happily calls `killall Dock` to restart the Dock after modifying the plist. Downloads folder cleanup, toggling dark mode, and system preference tweaks all happen through natural language.
 
@@ -105,7 +105,7 @@ We're in the very early days of AI-native development tools. Claude Code represe
 
 I'm not just typing commands faster—I'm operating at a fundamentally higher level of abstraction. Instead of thinking "I need to write a bash script to process these files, chmod it, test it, debug it," I think "organize these files by date and compress anything older than 30 days." The implementation details become Claude's problem.
 
-This isn't about AI replacing developers. It's about developers becoming orchestrators of incredibly powerful systems. The skill ceiling hasn't lowered—it's risen dramatically. The developers who thrive will be those who learn to think in terms of systems and outcomes rather than syntax and implementation.
+This isn't about AI replacing developers. It's about developers becoming orchestrators of incredibly powerful systems. The skill ceiling rises: syntax fades, system thinking shines. The developers who thrive will be those who learn to think in terms of systems and outcomes rather than syntax and implementation.
 
 ## Should You Try This?
 
