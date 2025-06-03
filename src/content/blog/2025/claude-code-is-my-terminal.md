@@ -45,7 +45,7 @@ My daily Claude Code usage falls into several main categories:
 
 **macOS Settings Wizard**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals better than I ever will and it happily calls `killall Dock` and restarts the Dock after modifying the plist.
 
-**Blog Auto-Pilot**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly.
+**Blog Auto-Pilot**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to talk with Claude, explain the topic and tell it to read my past blog posts to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly.
 
 **Desktop Marie Kondo**: Downloads folder cleanup, repo exploration and dot-file backups, Swift testing migrations, refactoring to Swift packages, toggling dark mode, grabbing apps, and dependency bumps with full CI monitoring loops.
 
