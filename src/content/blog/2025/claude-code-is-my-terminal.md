@@ -35,6 +35,8 @@ My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's
 
 **Desktop hygiene**: My Downloads folder used to be a graveyard of DMGs and random PDFs. Now I periodically ask Claude to "tidy Downloads—archive PDFs by month, delete DMGs older than a week, move screenshots to Screenshots folder." It handles the filesystem operations and my desktop stays civilized.
 
+**Writing blog posts**: Like this very post. I use [Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly. After I review and correct what I don't like, Claude automatically creates the pull request and handles the entire publishing workflow.
+
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
