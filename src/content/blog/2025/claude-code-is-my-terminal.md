@@ -39,7 +39,7 @@ Compared to my old workflow of context-switching between terminal, documentation
 
 ## What I Actually Use It For
 
-My daily Claude Code usage falls into four main categories:
+My daily Claude Code usage falls into several main categories:
 
 **Git Zen**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically.
 
