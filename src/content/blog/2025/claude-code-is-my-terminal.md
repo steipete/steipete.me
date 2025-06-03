@@ -15,11 +15,11 @@ tags:
   - Automation
 ---
 
+**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. It's replaced my terminal for everything from git workflows to system administration. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself.
+
 For the past two months, I've been living dangerously. I launch [Claude Code](https://claude.ai/code) ([released in late February](https://www.anthropic.com/news/claude-3-7-sonnet)) with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
 
-Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots (plus a [SuperDuper!](https://www.shirt-pocket.com/SuperDuper/SuperDuperDescription.html) clone). But after two months of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
-
-**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. It's replaced my terminal for everything from git workflows to system administration. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself.
+Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots (plus a [SuperDuper!](https://www.shirt-pocket.com/SuperDuper/SuperDuperDescription.html) clone). But after two months of full root access, I've had exactly zero incidents. The productivity gains are worth the calculated risk.
 
 ## From "AI Terminal" to Everything Terminal
 
@@ -29,7 +29,7 @@ The breakthrough moment came when I was migrating to a new Mac. Instead of doing
 
 "Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
 
-Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
+Claude drafts a migration plan, executes it step by step, and has my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
 
 ## The Economics of "Unlimited"
 
@@ -39,19 +39,15 @@ Compared to my old workflow of context-switching between terminal, documentation
 
 ## What I Actually Use It For
 
-My daily Claude Code usage falls into several main categories:
+My daily Claude Code usage falls into several main outcomes:
 
-**Git Zen**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
+**Ship Code**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
 
-**macOS Settings Wizard**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals better than I ever will and it happily calls `killall Dock` and restarts the Dock after modifying the plist.
+**Clean the OS**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals and happily calls `killall Dock` to restart the Dock after modifying the plist. Downloads folder cleanup, toggling dark mode, and system preference tweaks all happen through natural language.
 
-**Blog Auto-Pilot**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to talk with Claude, explain the topic and tell it to read my past blog posts to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly.
+**Automate Content**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to talk with Claude, explain the topic and tell it to read my past blog posts to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps formulate thoughts, and tests that everything displays correctly.
 
-**Desktop Marie Kondo**: Downloads folder cleanup, repo exploration and dot-file backups, Swift testing migrations, refactoring to Swift packages, toggling dark mode, grabbing apps, and dependency bumps with full CI monitoring loops.
-
-**Power Moves**: Generating fresh seed data for projects, letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, and off-loading log-file analysis.
-
-**Full Project Automation**: Recently for [CodeLooper](https://www.codelooper.app/) code signing and notarization setup, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [macOS Automator MCP Server](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
+**Spin Up New Machines**: Recently for [CodeLooper](https://www.codelooper.app/) code signing and notarization setup, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [macOS Automator MCP Server](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
 The pattern is clear: if the task touches git, the filesystem, system preferences, or CI, I've probably already thrown it at Claude Code and moved on to the fun stuff.
 
@@ -67,7 +63,7 @@ That's it. Three lines to completely transform how you interact with your comput
 
 The alias means I just type `cc` and I'm in.
 
-> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
+> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
 
 ## Why This Works (And When It Doesn't)
 
@@ -76,6 +72,8 @@ Claude Code shines because it was built terminal-first, not bolted onto an IDE a
 Anthropic's [best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices) recommends keeping a `CLAUDE.md` file at your repo root with project-specific context. I've adopted this pattern and noticed Claude asks fewer clarifying questions and writes more accurate code. Little optimizations like this compound quickly.
 
 The main limitation is response time. Claude's thinking process takes a few seconds, and for rapid-fire debugging sessions, I sometimes reach for traditional tools. However, you can prefix commands with `!` to run them directly without waiting for token evaluation—Claude will execute your command either way, but this is faster when you know exactly what you're calling. For exploratory work where I'm not sure what I need, Claude's reasoning ability more than compensates for the brief pause.
+
+Occasionally Claude gets confused by complex file paths or makes assumptions about my system that aren't quite right. When that happens, the old terminal skills still matter.
 
 ## Why Warp lacks
 
