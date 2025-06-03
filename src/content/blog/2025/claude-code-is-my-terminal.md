@@ -93,6 +93,9 @@ Twenty minutes later, Claude had processed every single post, set up proper redi
 
 That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant worker bee who happens to live in your terminal and work at mostly superhuman speed.
 
+![Claude Code terminal screenshot](/assets/img/2025/claude-code-is-my-terminal/claude-code-screenshot.png)
+*Meta: Claude Code helping me write this very blog post, including adding the hero image and optimizing it with ImageOptim*
+
 ## Where This is Heading
 
 We're in the very early days of AI-native development tools. Claude Code represents a paradigm shift: from terminals that help you run commands to terminals that understand intent and take action. The implications are staggering.
