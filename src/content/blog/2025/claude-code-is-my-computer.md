@@ -41,7 +41,7 @@ My daily Claude Code usage falls into several main outcomes:
 
 **Ship Code**: I haven't typed `git commit -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
 
-**Clean the OS**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals and happily calls `killall Dock` to restart the Dock after modifying the plist. Downloads folder cleanup and system preference tweaks all happen through natural language.
+**Clean the OS**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals and happily calls `killall Dock` to restart the Dock after modifying the plist.
 
 **Spin Up New Machines**: Recently when setting up [CodeLooper's](https://www.codelooper.app/) code signing and notarization, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [macOS Automator MCP Server](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
