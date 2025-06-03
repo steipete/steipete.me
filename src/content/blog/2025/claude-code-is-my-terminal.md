@@ -59,7 +59,7 @@ The pattern is clear: if the task touches git, the filesystem, system preference
 
 ```bash
 npm install -g @anthropic-ai/claude-code
-claude login                                         # browser OIDC auth
+claude login
 alias cc="claude --dangerously-skip-permissions"
 ```
 
