@@ -17,7 +17,7 @@ Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly
 
 ## From "AI Terminal" to Everything Terminal
 
-When I first installed Claude Code, I thought I was getting a smarter command line for coding tasks. What I actually got was a universal computer interface that happens to run in a terminal. The mental shift took a few days, but once it clicked, I realized Claude can literally do anything I ask on my computer.
+When I first installed Claude Code, I thought I was getting a smarter command line for coding tasks. What I actually got was a universal computer interface that happens to run in a terminal. The mental shift took a few weeks, but once it clicked, I realized Claude can literally do anything I ask on my computer.
 
 The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual Time Machine restore dance, I pointed Claude at my backup disk and said:
 
