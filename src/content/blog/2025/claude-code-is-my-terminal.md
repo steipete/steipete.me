@@ -35,8 +35,6 @@ My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's
 
 **Desktop hygiene**: My Downloads folder used to be a graveyard of DMGs and random PDFs. Now I periodically ask Claude to "tidy Downloads—archive PDFs by month, delete DMGs older than a week, move screenshots to Screenshots folder." It handles the filesystem operations and my desktop stays civilized.
 
-**Deep system tweaks**: Last week I asked it to modify how my Mac handles external displays. Claude dove into display configuration plists, adjusted HIDPI settings, and even created a launch daemon to apply my preferences on boot. Changes that would have taken me hours of research happened in minutes.
-
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](https://support.anthropic.com/en/articles/11174108-about-the-development-partner-program) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
