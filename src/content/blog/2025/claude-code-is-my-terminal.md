@@ -27,22 +27,6 @@ The breakthrough moment came when I was migrating to a new Mac. Instead of doing
 
 Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.
 
-## What I Actually Use It For
-
-My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's what a normal day looks like:
-
-**Git on autopilot**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically.
-
-**System administration**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals better than I ever will and it happily calls `killall Dock` and restarts the Dock after modifying the plist.
-
-**Desktop hygiene**: My Downloads folder used to be a graveyard of DMGs and random PDFs. Now I periodically ask Claude to "tidy Downloads—archive PDFs by month, delete DMGs older than a week, move screenshots to Screenshots folder." It handles the filesystem operations and my desktop stays civilized.
-
-**Writing blog posts**: Like this very post. I use [Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly. After I review and correct what I don't like, Claude automatically creates the pull request and handles the entire publishing workflow.
-
-**Complex Mac app setup**: Recently I needed to set up code signing and notarization for a Mac app. Claude handled installing the Homebrew package, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only part I had to do manually was clicking through the actual update UI (Claude can't click apps yet), but with a bit more prompting and my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
-
-Individually these save minutes, but together they return roughly an hour every day that used to disappear into terminal muscle-memory.
-
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
