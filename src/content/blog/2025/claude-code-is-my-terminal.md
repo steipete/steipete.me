@@ -21,7 +21,7 @@ When I first installed Claude Code, I thought I was getting a smarter command li
 
 The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual Time Machine restore dance, I pointed Claude at my backup disk and said:
 
-"Restore this Mac from my Time Machine disk—start with dotfiles, then system preferences, CLI tools, and copy only the apps I actually used last month."
+"Restore this Mac from my Time Machine disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
 
 Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.
 
