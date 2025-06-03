@@ -74,7 +74,7 @@ I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll t
 
 On a whim, I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects."
 
-Three hours later, while I was in meetings, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch. The git log showed 400+ commits of methodical fixes. I reviewed a few random posts, merged, and my blog was migrated.
+Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch. The git log showed 400+ commits of methodical fixes. I reviewed a few random posts, merged, and my blog was migrated.
 
 That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant, tireless junior developer who happens to live in your terminal and work at superhuman speed.
 
