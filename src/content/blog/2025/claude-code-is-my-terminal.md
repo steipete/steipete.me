@@ -49,7 +49,7 @@ My daily Claude Code usage falls into several main categories:
 
 **Desktop Marie Kondo**: Downloads folder cleanup, repo exploration and dot-file backups, Swift testing migrations, refactoring to Swift packages, toggling dark mode, grabbing apps, and dependency bumps with full CI monitoring loops.
 
-**Power Moves**: Generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
+**Power Moves**: Generating fresh seed data for projects, letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
 
 **Full Project Automation**: Whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself. Recently for code signing and notarization setup, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [macOS Automator MCP Server](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
