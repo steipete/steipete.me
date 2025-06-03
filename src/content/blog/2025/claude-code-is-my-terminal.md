@@ -13,11 +13,11 @@ tags:
   - Automation
 ---
 
-**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in 60 days. It's replaced my terminal for everything from git workflows to system administration. The $200/month Max plan pays for itself in saved contractor time.
+**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. It's replaced my terminal for everything from git workflows to system administration. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself in saved contractor time.
 
 For the past two months, I've been living dangerously. I launch [Claude Code](https://claude.ai/code) ([released in late February](https://www.anthropic.com/news/claude-3-7-sonnet)) with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
 
-Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots humming in the background. But after 60+ days of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
+Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots humming in the background. But after two months of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
 
 ## From "AI Terminal" to Everything Terminal
 
@@ -65,7 +65,7 @@ That's it. Three lines to completely transform how you interact with your comput
 
 I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
 
-> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in 60 days. Once you experience the flow state of conversational computing, you won't want to go back.
+> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
 
 ## Why This Works (And When It Doesn't)
 
