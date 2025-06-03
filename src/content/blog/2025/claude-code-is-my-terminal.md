@@ -39,6 +39,16 @@ My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's
 
 **Complex Mac app setup**: Recently I needed to set up code signing and notarization for a Mac app. Claude handled installing the Homebrew package, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only part I had to do manually was clicking through the actual update UI (Claude can't click apps yet), but with a bit more prompting and my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
+Individually these save minutes, but together they return roughly an hour every day that used to disappear into terminal muscle-memory.
+
+## The Full Scope
+
+Here's what I've actually thrown at Claude Code over the past months: repo exploration and dot-file backups, Swift testing migrations, Dock tweaks, refactoring to Swift packages, toggling dark mode, grabbing apps, dependency bumps with full CI monitoring loops. One-off power moves like generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
+
+The bigger wins come from full project automation: whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself.
+
+The pattern is clear: if the task touches git, the filesystem, system preferences, or CI, I've probably already thrown it at Claude Code and moved on to the fun stuff.
+
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
