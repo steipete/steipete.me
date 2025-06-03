@@ -65,7 +65,7 @@ alias cc="claude --dangerously-skip-permissions"
 
 That's it. Three lines to completely transform how you interact with your computer.
 
-I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
+The alias means I just type `cc` and I'm in.
 
 > **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
 
