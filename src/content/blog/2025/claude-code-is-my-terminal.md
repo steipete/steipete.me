@@ -25,9 +25,9 @@ Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly
 
 When I first installed Claude Code, I thought I was getting a smarter command line for coding tasks. What I actually got was a universal computer interface that happens to run in a terminal. The mental shift took a few weeks, but once it clicked, I realized Claude can literally do anything I ask on my computer.
 
-The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual Time Machine restore dance, I pointed Claude at my backup disk and said:
+The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual restore dance, I pointed Claude at my backup disk and said:
 
-"Restore this Mac from my Time Machine disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
+"Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
 
 Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
 
@@ -114,4 +114,4 @@ Your terminal isn't just a terminal anymore. It's Claude. And Claude is absurdly
 
 *What's your Claude Code workflow? Find me on Twitter [@steipete](https://twitter.com/steipete) with your favorite automation wins.*
 
-[^1]: Note that full Time Machine migrations can sometimes cause [various system issues](https://discussions.apple.com/thread/255759421) with newer macOS versions.
+[^1]: Note that full backup migrations can sometimes cause [various system issues](https://discussions.apple.com/thread/255759421) with newer macOS versions.
