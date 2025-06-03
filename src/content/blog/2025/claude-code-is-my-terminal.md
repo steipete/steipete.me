@@ -27,16 +27,15 @@ When I first installed Claude Code, I thought I was getting a smarter command li
 
 The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual restore dance, I pointed Claude at my backup disk and said: "Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and restore Homebrew formulae and global npm packages." Claude drafts a migration plan, executes it step by step, and has my new machine ready in under an hour.[^1]
 
-Last week, I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
-
-Another example: "[Create seed data for a project](https://x.com/steipete/status/1923897903698887036)" turns into Claude analyzing my codebase, understanding the data models, and generating realistic test data with proper relationships.
-
-Or: "Extract this feature into a Swift project" (that's how I released [Demark](/posts/2025/introducing-demark-html-to-markdown-in-swift/)) where Claude creates the package structure, writes tests, documentation, and handles the entire open-source release process.
-
-
 ## What I actually use it for
 
 My daily Claude Code usage falls into several main outcomes:
+
+**Automate Content**: "Convert ~40 posts from Jekyll to MDX format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
+
+**Generate Test Data**: "[Create seed data for a project](https://x.com/steipete/status/1923897903698887036)" turns into Claude analyzing my codebase, understanding the data models, and generating realistic test data with proper relationships.
+
+**Extract Features**: "Extract this feature into a Swift project" (that's how I released [Demark](/posts/2025/introducing-demark-html-to-markdown-in-swift/)) where Claude creates the package structure, writes tests, documentation, and handles the entire open-source release process.
 
 **Ship Code**: I haven't typed `git commit -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
 
