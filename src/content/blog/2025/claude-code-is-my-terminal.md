@@ -29,9 +29,6 @@ The breakthrough moment came when I was migrating to a new Mac. Instead of doing
 
 Last week, I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
 
-## The economics of 'unlimited'
-
-I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. Compared to my old workflow of context-switching between terminal, documentation, and Stack Overflow, I'm easily saving an hour per day. At contractor rates, the subscription pays for itself in about four hours of reclaimed time per month.
 
 ## What I actually use it for
 
@@ -57,7 +54,7 @@ alias cc="claude --dangerously-skip-permissions"
 
 That's it. Three lines to completely transform how you interact with your computer. The alias means I just type `cc` and I'm in.
 
-> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
+> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first, and consider testing on a secondary machine if you're nervous.
 
 ## Why this works (and when it doesn't)
 
