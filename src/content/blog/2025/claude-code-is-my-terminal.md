@@ -29,7 +29,7 @@ Claude drafted a migration plan, executed it step by step, and had my new machin
 
 My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's what a normal day looks like:
 
-**Git on autopilot**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and patching any lint failures. If tests fail, it reads the output and fixes the issues before repushing.
+**Git on autopilot**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. If tests fail, it reads the output and fixes the issues before repushing.
 
 **System administration**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals better than I ever will.
 
