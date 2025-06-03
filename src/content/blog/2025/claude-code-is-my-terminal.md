@@ -27,7 +27,7 @@ The breakthrough moment came when I was migrating to a new Mac. Instead of doing
 
 "Restore this Mac from my Time Machine disk—start with dotfiles, then system preferences, CLI tools, and install all brew and global npm packages."
 
-Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.
+Claude drafted a migration plan, executed it step by step, and had my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
 
 ## The Economics of "Unlimited"
 
@@ -108,3 +108,5 @@ Your terminal isn't just a terminal anymore. It's Claude. And Claude is absurdly
 ---
 
 *What's your Claude Code workflow? Find me on Twitter [@steipete](https://twitter.com/steipete) with your favorite automation wins.*
+
+[^1]: Note that full Time Machine migrations can sometimes cause [various system issues](https://discussions.apple.com/thread/255759421) with newer macOS versions.
