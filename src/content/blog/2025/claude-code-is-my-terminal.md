@@ -37,6 +37,8 @@ My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's
 
 **Writing blog posts**: Like this very post. I use [Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly. After I review and correct what I don't like, Claude automatically creates the pull request and handles the entire publishing workflow.
 
+**Complex Mac app setup**: Recently I needed to set up code signing and notarization for a Mac app. Claude handled installing the Homebrew package, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only part I had to do manually was clicking through the actual update UI (Claude can't click apps yet), but with a bit more prompting and my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
+
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
