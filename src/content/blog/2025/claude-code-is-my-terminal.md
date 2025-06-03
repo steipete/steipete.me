@@ -69,7 +69,7 @@ I also wrote a small LaunchAgent that starts Claude Code in the background at lo
 
 ## Why This Works (And When It Doesn't)
 
-Claude Code shines because it was built terminal-first, not bolted onto an IDE as an afterthought. The agent has full access to my filesystem, can execute commands, read output, and iterate based on results. When combined with the massive context window, it can hold entire codebases in memory while reasoning about changes.
+Claude Code shines because it was built terminal-first, not bolted onto an IDE as an afterthought. The agent has full access to my filesystem, can execute commands, read output, and iterate based on results.
 
 Anthropic's [best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices) recommends keeping a `CLAUDE.md` file at your repo root with project-specific context. I've adopted this pattern and noticed Claude asks fewer clarifying questions and writes more accurate code. Little optimizations like this compound quickly.
 
