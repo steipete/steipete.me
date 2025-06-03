@@ -13,11 +13,11 @@ tags:
   - Automation
 ---
 
-**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. It's replaced my terminal for everything from git workflows to system administration. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself.
-
 For the past two months, I've been living dangerously. I launch [Claude Code](https://claude.ai/code) ([released in late February](https://www.anthropic.com/news/claude-3-7-sonnet)) with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
 
 Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots humming in the background. But after two months of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
+
+**TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. It's replaced my terminal for everything from git workflows to system administration. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself.
 
 ## From "AI Terminal" to Everything Terminal
 
