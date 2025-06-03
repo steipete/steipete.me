@@ -31,17 +31,17 @@ The breakthrough moment came when I was migrating to a new Mac. Instead of doing
 
 My daily Claude Code usage falls into several main outcomes:
 
-**Automate Content**: "Convert ~40 posts from Jekyll to MDX format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
-
-**Generate Test Data**: "[Create seed data for a project](https://x.com/steipete/status/1923897903698887036)" turns into Claude analyzing my codebase, understanding the data models, and generating realistic test data with proper relationships.
+**Ship Content**: "Convert ~40 posts from Jekyll to MDX format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
 
 **Extract Features**: "Extract this feature into a Swift project" (that's how I released [Demark](/posts/2025/introducing-demark-html-to-markdown-in-swift/)) where Claude creates the package structure, writes tests, documentation, and handles the entire open-source release process.
+
+**Automate Content**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to talk with Claude, explain the topic and tell it to read my past blog posts to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps formulate thoughts, and tests that everything displays correctly.
+
+**Generate Test Data**: "[Create seed data for a project](https://x.com/steipete/status/1923897903698887036)" turns into Claude analyzing my codebase, understanding the data models, and generating realistic test data with proper relationships.
 
 **Ship Code**: I haven't typed `git commit -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically. It's also extremely good at resolving merge conflicts.
 
 **Clean the OS**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals and happily calls `killall Dock` to restart the Dock after modifying the plist. Downloads folder cleanup and system preference tweaks all happen through natural language.
-
-**Automate Content**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to talk with Claude, explain the topic and tell it to read my past blog posts to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps formulate thoughts, and tests that everything displays correctly.
 
 **Spin Up New Machines**: Recently when setting up [CodeLooper's](https://www.codelooper.app/) code signing and notarization, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [macOS Automator MCP Server](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
