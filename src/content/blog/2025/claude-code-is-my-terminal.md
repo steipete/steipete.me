@@ -98,6 +98,7 @@ Twenty minutes later, Claude had processed every single post, set up proper redi
 That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant worker bee who happens to live in your terminal and work at mostly superhuman speed.
 
 <img src="/assets/img/2025/claude-code-is-my-terminal/claude-code-screenshot.png" alt="Claude Code terminal screenshot" style="border: none; box-shadow: none;" />
+
 *Meta: Claude Code helping me write this very blog post, including adding the hero image and optimizing it with ImageOptim*
 
 ## Where This is Heading
