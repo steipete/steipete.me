@@ -81,7 +81,11 @@ The main limitation is response time. Claude's thinking process takes a few seco
 
 [Warp's](https://www.warp.dev/) mission is to "reinvent the terminal with AI". They've built beautiful GPU-accelerated panels, smart autocomplete, and collaborative features. It's genuinely impressive engineering.
 
-The fundamental difference comes down to trust and execution flow. Claude operates purely through text and is remarkably intelligent about understanding context and intent. With the `--dangerously-skip-permissions` flag, I can pre-authorize Claude to execute commands without constant confirmation prompts. Warp, while excellent, requires individual approval for each command—there's no equivalent to Claude's "dangerous mode" where you can grant blanket execution trust. This means Claude maintains conversational flow while Warp still interrupts with permission requests. I signed up for Warp because I like their mission and I hope they eventually go where Claude is. But it seems they have a fundamentally different idea about safety. Also, [Ghostty](https://ghostty.org/) is just the better terminal, native, not Electron-based and faster.
+## Permission Flag
+
+The fundamental difference comes down to trust and execution flow. Claude operates purely through text and is remarkably intelligent about understanding context and intent. With the `--dangerously-skip-permissions` flag, I can pre-authorize Claude to execute commands without constant confirmation prompts. Warp, while excellent, requires individual approval for each command—there's no equivalent to Claude's "dangerous mode" where you can grant blanket execution trust. This means Claude maintains conversational flow while Warp still interrupts with permission requests.
+
+I signed up for Warp because I like their mission and I hope they eventually go where Claude is. But it seems they have a fundamentally different idea about safety. Also, [Ghostty](https://ghostty.org/) is just the better terminal, native, not Electron-based and faster.
 
 ## A Few Days Ago, It Blew My Mind Again
 
@@ -93,7 +97,7 @@ Twenty minutes later, Claude had processed every single post, set up proper redi
 
 That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant worker bee who happens to live in your terminal and work at mostly superhuman speed.
 
-![Claude Code terminal screenshot](/assets/img/2025/claude-code-is-my-terminal/claude-code-screenshot.png){.no-border}
+<img src="/assets/img/2025/claude-code-is-my-terminal/claude-code-screenshot.png" alt="Claude Code terminal screenshot" style="border: none; box-shadow: none;" />
 *Meta: Claude Code helping me write this very blog post, including adding the hero image and optimizing it with ImageOptim*
 
 ## Where This is Heading
