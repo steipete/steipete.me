@@ -11,7 +11,7 @@ tags:
   - Claude-Code
 ---
 
-For the past two months, I've been living dangerously. I launch Claude Code with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on bare-metal macOS.
+For the past two months, I've been living dangerously. I launch Claude Code with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
 
 Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots humming in the background. But after 60+ days of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
 
