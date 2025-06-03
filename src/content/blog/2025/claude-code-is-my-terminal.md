@@ -49,7 +49,7 @@ Anthropic's [best practices guide](https://www.anthropic.com/engineering/claude-
 
 The main limitation? Network latency. When Claude needs to process large amounts of output or reason through complex problems, there's a noticeable pause. For time-sensitive debugging sessions, I still reach for traditional tools. But for everything else—especially exploratory work where I'm not sure exactly what I need—Claude's reasoning ability more than compensates for the occasional wait.
 
-## Warp vs Claude Code: Why I Switched
+## Why Warp lacks
 
 [Warp's](https://www.warp.dev/) mission is to "reinvent the terminal with AI". They've built beautiful GPU-accelerated panels, smart autocomplete, and collaborative features. It's genuinely impressive engineering.
 
