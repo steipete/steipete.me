@@ -70,7 +70,7 @@ I also wrote a small LaunchAgent that starts Claude Code in the background at lo
 
 ## A Few Days Ago, It Blew My Mind Again
 
-I was procrastinating on cleaning up my blog migration—142 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. Classic tedious grunt work that would eat a weekend.
+I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. Classic tedious grunt work that would eat a weekend.
 
 On a whim, I pointed Claude at the git repo and said: "Convert every post to the new Markdown-MDX hybrid, regenerate all metadata, fix broken image references, preserve redirects, and ship me a clean PR."
 
