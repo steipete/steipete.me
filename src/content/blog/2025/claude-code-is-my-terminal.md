@@ -72,7 +72,7 @@ I also wrote a small LaunchAgent that starts Claude Code in the background at lo
 
 I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. Classic tedious grunt work that would eat a weekend.
 
-On a whim, I pointed Claude at the git repo and said: "Convert every post to the new Markdown-MDX hybrid, regenerate all metadata, fix broken image references, preserve redirects, and ship me a clean PR."
+On a whim, I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects."
 
 Three hours later, while I was in meetings, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch. The git log showed 400+ commits of methodical fixes. I reviewed a few random posts, merged, and my blog was migrated.
 
