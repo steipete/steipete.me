@@ -25,11 +25,9 @@ Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly
 
 When I first installed Claude Code, I thought I was getting a smarter command line for coding tasks. What I actually got was a universal computer interface that happens to run in a terminal. The mental shift took a few weeks, but once it clicked, I realized Claude can literally do anything I ask on my computer.
 
-The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual restore dance, I pointed Claude at my backup disk and said:
+The breakthrough moment came when I was migrating to a new Mac. Instead of doing the usual restore dance, I pointed Claude at my backup disk and said: "Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and restore Homebrew formulae and global npm packages." Claude drafts a migration plan, executes it step by step, and has my new machine ready in under an hour.[^1]
 
-"Restore this Mac from my backup disk—start with dotfiles, then system preferences, CLI tools, and restore Homebrew formulae and global npm packages."
-
-Claude drafts a migration plan, executes it step by step, and has my new machine ready in under an hour. No overnight clone, no cruft from old apps I'd forgotten about. Just a clean, curated setup.[^1]
+Last week, I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects." Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch.
 
 ## The economics of 'unlimited'
 
@@ -57,9 +55,7 @@ claude login
 alias cc="claude --dangerously-skip-permissions"
 ```
 
-That's it. Three lines to completely transform how you interact with your computer.
-
-The alias means I just type `cc` and I'm in.
+That's it. Three lines to completely transform how you interact with your computer. The alias means I just type `cc` and I'm in.
 
 > **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, it saves me an hour a day and hasn't broken my Mac in two months. Once you experience the flow state of conversational computing, you won't want to go back.
 
@@ -79,19 +75,6 @@ The fundamental difference comes down to trust and execution flow. Claude operat
 
 I signed up for Warp because I like their mission and I hope they eventually go where Claude is. But it seems they have a fundamentally different idea about safety. Also, [Ghostty](https://ghostty.org/) is just the better terminal, native, not Electron-based and faster.
 
-## A few days ago, it blew my mind again
-
-I was procrastinating on cleaning up my blog migration—~40 posts from Jekyll that needed conversion to MDX format, updated frontmatter, fixed image paths, the works. Classic tedious grunt work that would eat a weekend.
-
-On a whim, I pointed Claude at the git repo and said: "Convert all posts into the new format here. Make sure to copy over the images and preserve the redirects."
-
-Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch. The git log showed 400+ commits of methodical fixes. I reviewed a few random posts, merged, and my blog was migrated.
-
-That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant worker bee who happens to live in your terminal and work at mostly superhuman speed.
-
-<img src="/assets/img/2025/claude-code-is-my-terminal/claude-code-screenshot.png" alt="Claude Code terminal screenshot" style="border: none; box-shadow: none;" />
-
-*Meta: Claude Code helping me write this blog post*
 
 ## Where this is heading
 
