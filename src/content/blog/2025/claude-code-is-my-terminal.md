@@ -11,7 +11,7 @@ tags:
   - Claude-Code
 ---
 
-For the past two months, I've been living dangerously. I launch Claude Code with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
+For the past two months, I've been living dangerously. I launch [Claude Code](https://claude.ai/code) with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
 
 Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots humming in the background. But after 60+ days of full root access, I've had exactly zero incidents. The productivity gains? Absolutely worth the calculated risk.
 
@@ -77,17 +77,6 @@ On a whim, I pointed Claude at the git repo and said: "Convert all posts into th
 Twenty minutes later, Claude had processed every single post, set up proper redirects, validated all image paths, and pushed a merge-ready branch. The git log showed 400+ commits of methodical fixes. I reviewed a few random posts, merged, and my blog was migrated.
 
 That's when it really hit me: we're not talking about a smart terminal or an AI coding assistant. Claude Code is closer to having a brilliant worker bee who happens to live in your terminal and work at superhuman speed.
-
-## The Trust Factor
-
-Giving an AI root access to your system requires a fundamental shift in how you think about trust and safety. My approach:
-
-1. **Hourly backups are non-negotiable**. Arq to both local and cloud storage.
-2. **Start with a test machine** if you're nervous. I ran Claude on a spare Mac mini for two weeks before trusting it with my main development machine.
-3. **Watch what it does initially**. Claude shows you commands before executing them (unless you enable auto-accept). Spend a few days understanding its patterns.
-4. **Set boundaries in CLAUDE.md**. I explicitly tell Claude which directories to never modify and which system settings are off-limits.
-
-After two months, my trust is earned. Claude has saved me countless hours without a single destructive mistake. The productivity gains are so significant that going back to a traditional terminal feels like coding with one hand tied behind my back.
 
 ## Where This is Heading
 
