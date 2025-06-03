@@ -56,13 +56,12 @@ The pattern is clear: if the task touches git, the filesystem, system preference
 ## The Setup I Actually Run
 
 ```bash
-brew install claude-code
-claude-code login                                    # browser OIDC auth
-claude-code config set auto_accept true              # skip prompts
-alias cc="claude-code --dangerously-skip-permissions"
+brew install claude
+claude login                                         # browser OIDC auth
+alias cc="claude --dangerously-skip-permissions"
 ```
 
-That's it. Four lines to completely transform how you interact with your computer.
+That's it. Three lines to completely transform how you interact with your computer.
 
 I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
 
@@ -81,19 +80,6 @@ The main limitation? Network latency. When Claude needs to process large amounts
 [Warp's](https://www.warp.dev/) mission is to "reinvent the terminal with AI". They've built beautiful GPU-accelerated panels, smart autocomplete, and collaborative features. It's genuinely impressive engineering.
 
 The fundamental difference comes down to trust and execution flow. Claude operates purely through text and is remarkably intelligent about understanding context and intent. With the `--dangerously-skip-permissions` flag, I can pre-authorize Claude to execute commands without constant confirmation prompts. Warp, while excellent, requires individual approval for each command—there's no equivalent to Claude's "dangerous mode" where you can grant blanket execution trust. This means Claude maintains conversational flow while Warp still interrupts with permission requests. I kept Warp installed for exactly two use cases: long flights (offline mode) and massive CSV previews (GPU acceleration). Haven't launched it in three weeks.
-
-## The Setup I Actually Run
-
-```bash
-brew install claude-code
-claude-code login                                    # browser OIDC auth
-claude-code config set auto_accept true              # skip prompts
-alias cc="claude-code --dangerously-skip-permissions"
-```
-
-That's it. Four lines to completely transform how you interact with your computer.
-
-I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
 
 ## A Few Days Ago, It Blew My Mind Again
 
