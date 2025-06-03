@@ -45,18 +45,11 @@ My daily Claude Code usage falls into four main categories:
 
 **Blog Auto-Pilot**: Like this very post. I use [Wispr Flow](https://wisprflow.ai/) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly.
 
-**Desktop Marie Kondo**: My Downloads folder used to be a graveyard of DMGs and random PDFs. Now I periodically ask Claude to "tidy Downloads—archive PDFs by month, delete DMGs older than a week, move screenshots to Screenshots folder." It handles the filesystem operations and my desktop stays civilized.
+**Desktop Marie Kondo**: Downloads folder cleanup, repo exploration and dot-file backups, Swift testing migrations, refactoring to Swift packages, toggling dark mode, grabbing apps, and dependency bumps with full CI monitoring loops.
 
-<details>
-<summary>The full scope of what I delegate to Claude</summary>
+**Power Moves**: Generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
 
-Here's what I've actually thrown at Claude Code over the past months: repo exploration and dot-file backups, Swift testing migrations, Dock tweaks, refactoring to Swift packages, toggling dark mode, grabbing apps, dependency bumps with full CI monitoring loops. One-off power moves like generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
-
-The bigger wins come from full project automation: whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself.
-
-Recently I needed to set up code signing and notarization for a Mac app. Claude handled installing the Homebrew package, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only part I had to do manually was clicking through the actual update UI (Claude can't click apps yet), but with a bit more prompting and my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
-
-</details>
+**Full Project Automation**: Whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself. Recently for code signing and notarization setup, Claude handled installing Homebrew packages, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only manual part was clicking through the update UI, but with my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
 
 The pattern is clear: if the task touches git, the filesystem, system preferences, or CI, I've probably already thrown it at Claude Code and moved on to the fun stuff.
 
