@@ -2,7 +2,7 @@
 title: "Claude Code is My Computer"
 pubDatetime: 2025-06-03T09:00:00+01:00
 description: "I run Claude Code with --dangerously-skip-permissions flag, giving it full system access. Let me show you a new way of approaching computers."
-heroImage: /assets/img/2025/claude-code-is-my-terminal/hero.png
+heroImage: /assets/img/2025/claude-code-is-my-computer/hero.png
 heroImageAlt: "Claude Code interface with stylized head and brain icon representing AI-powered computing"
 tags:
   - AI
@@ -21,7 +21,7 @@ For the past two months, I've been living dangerously. I launch [Claude Code](ht
 
 Yes, a rogue prompt could theoretically nuke my system. That's why I keep hourly [Arq](https://www.arqbackup.com/) snapshots (plus a [SuperDuper!](https://www.shirt-pocket.com/SuperDuper/SuperDuperDescription.html) clone), but after two months I've had zero incidents.
 
-## From 'AI assistant' to everything computer
+## From 'AI assistant' to everything terminal
 
 When I first installed Claude Code, I thought I was getting a smarter command line for coding tasks. What I actually got was a universal computer interface that happens to run in text. The mental shift took a few weeks, but once it clicked, I realized Claude can literally do anything I ask on my computer.
 
