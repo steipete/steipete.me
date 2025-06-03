@@ -9,6 +9,8 @@ tags:
   - Development
   - Productivity
   - Claude-Code
+  - DevOps
+  - Automation
 ---
 
 For the past two months, I've been living dangerously. I launch [Claude Code](https://claude.ai/code) with `--dangerously-skip-permissions`—the flag that bypasses all permission prompts. According to [Anthropic's docs](https://docs.anthropic.com/en/docs/claude-code), this is meant "only for Docker containers with no internet", yet it runs perfectly on regular macOS.
@@ -41,19 +43,51 @@ My daily Claude Code usage has evolved far beyond typical terminal tasks. Here's
 
 Individually these save minutes, but together they return roughly an hour every day that used to disappear into terminal muscle-memory.
 
-## The Full Scope
-
-Here's what I've actually thrown at Claude Code over the past months: repo exploration and dot-file backups, Swift testing migrations, Dock tweaks, refactoring to Swift packages, toggling dark mode, grabbing apps, dependency bumps with full CI monitoring loops. One-off power moves like generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
-
-The bigger wins come from full project automation: whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself.
-
-The pattern is clear: if the task touches git, the filesystem, system preferences, or CI, I've probably already thrown it at Claude Code and moved on to the fun stuff.
-
 ## The Economics of "Unlimited"
 
 I'm on Anthropic's [Max 20× plan](/posts/2025/stop-overthinking-ai-subscriptions/) at $200/month. That gives me roughly 900 messages per 5-hour window—essentially unlimited for single-developer use. The sessions refresh on a rolling basis, so I kick off a small task around 16:55 and get a fresh quota block just in time for evening work.
 
 Compared to my old workflow of context-switching between terminal, documentation, and Stack Overflow, I'm easily saving an hour per day. At contractor rates, the subscription pays for itself in about four hours of reclaimed time per month.
+
+## What I Actually Use It For
+
+My daily Claude Code usage falls into four main categories:
+
+**Git Zen**: I haven't typed `git add -m` in weeks. Instead, I say "commit everything in logical chunks" and Claude handles the entire flow—staging changes, writing meaningful commit messages, pushing, opening PRs, watching CI, and fixing any CI failures. When builds break, it analyzes the errors and patches them automatically.
+
+**System Marie Kondo**: "Hide recent apps in the Dock" becomes a single natural language command instead of Googling for the right `defaults write` incantation. Claude knows macOS internals better than I ever will and it happily calls `killall Dock` and restarts the Dock after modifying the plist.
+
+**Blog Auto-Pilot**: Like this very post. I use [Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) to transcribe tweets where I'd already talked about Claude Code, then explain the topic and tell Claude to write in my style. Instead of wrestling with Markdown formatting, Claude creates the document, helps me formulate thoughts, and tests that everything displays correctly.
+
+**Desktop Marie Kondo**: My Downloads folder used to be a graveyard of DMGs and random PDFs. Now I periodically ask Claude to "tidy Downloads—archive PDFs by month, delete DMGs older than a week, move screenshots to Screenshots folder." It handles the filesystem operations and my desktop stays civilized.
+
+<details>
+<summary>The full scope of what I delegate to Claude</summary>
+
+Here's what I've actually thrown at Claude Code over the past months: repo exploration and dot-file backups, Swift testing migrations, Dock tweaks, refactoring to Swift packages, toggling dark mode, grabbing apps, dependency bumps with full CI monitoring loops. One-off power moves like generating fresh seed data for projects, editing local JSON files (and even asking maintainers upstream to merge changes), letting Claude loop on gnarly Mac CI notarization scripts while I write blog posts, using it as an "amazing textual git terminal" to replay commits and auto-fix broken PRs, and off-loading log-file analysis.
+
+The bigger wins come from full project automation: whipping up complete Mac menu-bar apps with CI pipelines and having Claude babysit and self-repair the entire process, or re-creating entire Mac apps from scratch in under three hours without writing a single line myself.
+
+Recently I needed to set up code signing and notarization for a Mac app. Claude handled installing the Homebrew package, creating private keys, adding them to the keychain, creating backups, building the project, uploading to GitHub, running tests, and monitoring the process. The only part I had to do manually was clicking through the actual update UI (Claude can't click apps yet), but with a bit more prompting and my [Automator MCP](https://github.com/steipete/macos-automator-mcp), I could probably teach it that too.
+
+</details>
+
+The pattern is clear: if the task touches git, the filesystem, system preferences, or CI, I've probably already thrown it at Claude Code and moved on to the fun stuff.
+
+## The Setup I Actually Run
+
+```bash
+brew install claude-code
+claude-code login                                    # browser OIDC auth
+claude-code config set auto_accept true              # skip prompts
+alias cc="claude-code --dangerously-skip-permissions"
+```
+
+That's it. Four lines to completely transform how you interact with your computer.
+
+I also wrote a small LaunchAgent that starts Claude Code in the background at login, so it's always ready. The alias means I just type `cc` and I'm in.
+
+> **How to turn this on safely**: Start with hourly backups (I use [Arq](https://www.arqbackup.com/)), try it without the `--dangerously-skip-permissions` flag first to understand its patterns, and consider testing on a secondary machine if you're nervous. That said, Claude Code runs in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in 60 days.
 
 ## Why This Works (And When It Doesn't)
 
