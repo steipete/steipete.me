@@ -144,4 +144,4 @@ One optimization I'm proud of: the app only loads exchange rates when you actual
 
 If you're tracking AI costs, try [Vibe Meter](https://www.vibemeter.ai/). Source on [GitHub](https://github.com/steipete/VibeMeter). Watch the [workshop recording](/posts/2025/the-future-of-vibe-coding/) to see where it started.
 
-Three days. One person. Six AI assistants. Professional-grade software. The future is weird.
+Three days. One person. Six AI assistants. The future is weird.
