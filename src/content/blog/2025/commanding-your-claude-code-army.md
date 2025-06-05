@@ -60,10 +60,15 @@ cly() {
     _set_title "%~"
 }
 
-# Ensure directory path shows in title when at prompt
-precmd() { 
-    _set_title "%~" 
+# Update terminal title before each prompt (using proper ZSH hooks)
+_claude_precmd() {
+    _set_title "%~"
 }
+
+# Add our precmd function to the array (doesn't overwrite existing hooks)
+if [[ -z ${precmd_functions[(r)_claude_precmd]} ]]; then
+    precmd_functions+=(_claude_precmd)
+fi
 ```
 
 Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
