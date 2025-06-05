@@ -68,25 +68,6 @@ precmd() {
 
 Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
-## The Payoff
-
-This simple trick has saved me countless minutes of tab-hunting. When you're managing multiple AI assistants across different projects, being able to glance at your terminal tabs and instantly know which Claude is which is pure gold.
-
-Plus, it makes screen sharing much less confusing. "Let me switch to the Claude working on the API" is much clearer than "hold on, wrong Claude... nope, not that one either..."
-
-## Implementation
-
-1. Add the source line to your `~/.zshrc`:
-   ```zsh
-   [ -f ~/.config/zsh/claude-wrapper.zsh ] && source ~/.config/zsh/claude-wrapper.zsh
-   ```
-2. Create `~/.config/zsh/claude-wrapper.zsh` with the wrapper code
-3. Run `source ~/.zshrc` or restart your terminal
-4. Type `cly` instead of `claude` and watch the magic happen
-5. Never lose track of your Claude army again
-
-It's a small quality-of-life improvement that makes a big difference when you're juggling multiple AI-powered terminal sessions. And honestly, if you're going to give an AI full system access, you might as well know which directory it's operating in.
-
-**Hot tip**: You can just ask Claude to read this blog post and apply the changes for you! (in `--dangerously-skip-permissions` mode)
+**Hot tip**: Just ask Claude to read this blog post and set it up for you! (in `--dangerously-skip-permissions` mode, of course)
 
 Now if you'll excuse me, I need to check on my Claude instances. I think one of them is refactoring my entire codebase without asking. Again.
