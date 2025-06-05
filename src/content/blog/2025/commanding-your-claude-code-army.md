@@ -24,6 +24,8 @@ I'll admit it - I've become a [Claude Code](https://www.anthropic.com/claude-cod
 
 This is especially painful when you're running Claude with the `--dangerously-skip-permissions` flag (yes, I live dangerously - see my post about [Claude Code being my computer](/posts/2025/claude-code-is-my-computer/)). The last thing you want is to accidentally run the wrong command in the wrong directory with full system permissions.
 
+To make matters worse, Claude Code has a habit of changing the terminal title to whatever it feels like - usually something unhelpful like "Running command..." or just "claude". It's like having a helpful assistant who keeps reorganizing your desk while you're trying to work.
+
 ## The Solution: Terminal Title Magic
 
 Here's my approach - a clean ZSH setup that keeps terminal management code separate from my main configuration. First, I add one line to my `~/.zshrc`:
@@ -49,10 +51,30 @@ cly() {
     local folder=${PWD:t}  # Just the current folder name
     # Set title to show we're running Claude
     _set_title "📁 $folder — Claude"
+    
+    # Start a background process to continuously reset the title
+    # (prevents Claude from changing it)
+    (
+        while true; do
+            _set_title "📁 $folder — Claude"
+            sleep 0.5
+        done
+    ) &
+    local title_pid=$!
+    
     # Run Claude with dangerous permissions
     "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
+    local exit_code=$?
+    
+    # Kill the background title setter
+    kill $title_pid 2>/dev/null
+    wait $title_pid 2>/dev/null  # Clean up zombie process
+    
     # Restore normal title
     _set_title "%~"
+    
+    # Return the original exit code
+    return $exit_code
 }
 
 # Update terminal title before each prompt (using proper ZSH hooks)
@@ -66,7 +88,9 @@ if [[ -z ${precmd_functions[(r)_claude_precmd]} ]]; then
 fi
 ```
 
-When I run `cly`, my terminal title changes from `~/Projects/blog` to `📁 blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
+Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `📁 blog — Claude` and **stays that way**. The magic is in the background loop that runs every half second, constantly resetting the title. It's like having a bouncer at the door saying "Nice try, Claude, but this title is staying put."
+
+Without this persistent loop, Claude would change the title whenever it runs commands, leaving you with generic titles like "* Test Build" or "* PR Management" - helpful in theory, but useless when you have multiple Claudes running similar tasks in different projects. Now I always know exactly which directory each Claude instance is working in. Revolutionary? No. Life-changing? Absolutely.
 
 > *Hot tip: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)*
 
