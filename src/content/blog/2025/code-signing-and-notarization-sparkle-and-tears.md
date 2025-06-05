@@ -15,7 +15,7 @@ tags:
 
 *Or: How I Learned to Stop Worrying and Love the XPC Services*
 
-If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating way too many beta releases and spending countless hours debugging cryptic authorization errors, I finally cracked the code. Here's my journey from frustration to enlightenment.
+If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating way too many beta releases and spending countless hours debugging cryptic authorization errors, I finally cracked the code. Here's my step-by-step guide to code signing, notarization, and Sparkle auto-updates in sandboxed macOS apps.
 
 ## The Setup: Vibe Meter Meets Sparkle
 
@@ -217,7 +217,7 @@ sed 's/^- \(.*\)/<li>\1<\/li>/' | \
 sed 's/\*\*\([^*]*\)\*\*/<strong>\1<\/strong>/g'
 ```
 
-The result? Users see properly formatted changelogs with headers, lists, and styled text instead of raw Markdown.
+The result? Users see properly formatted changelogs with headers, lists, and styled text instead of raw Markdown. Note: This parser has limitations - it doesn't handle nested lists, images, or links. Keep your changelogs simple or extend the parser for more complex formatting.
 
 ## The Complete Architecture
 
