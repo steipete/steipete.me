@@ -16,7 +16,7 @@ tags:
 
 I've been working heavily with AI for the past few months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"
 
-The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. After using the best AI subscription deals 2025 has to offer, here's the real math (all prices in USD).
+The thing is, people don't understand that you don't actually have to pay *that* much to get incredible AI productivity. After using the best AI subscription deals 2025 has to offer, here's the real math (all prices in USD). (And yes, I built [Vibe Meter](/posts/2025/vibe-meter-monitor-your-ai-costs/) to track exactly how much I'm spending.)
 
 | Plan | Monthly Fee | Included Usage | Marginal Cost |
 |------|-------------|----------------|---------------|
