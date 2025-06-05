@@ -18,11 +18,9 @@ tags:
 
 I'll admit it - I've become a Claude Code power user. At any given moment, I have at least three instances running: one for writing blog posts, another fixing that "quick" bug that's now in hour three, and a third doing something I definitely forgot about. My terminal looks like a Claude Code convention.
 
-The problem? [Ghostty](https://ghostty.org/) (yes, with two T's - it's my favorite terminal) only shows the process name in the title. When you have six tabs all saying "claude", finding the right one becomes a game of terminal roulette.
-
 ## The Problem: Too Many Claudes, Not Enough Context
 
-Picture this: You're deep in flow, bouncing between Claude instances like a caffeinated pinball. You need the one working on your blog migration, but all your tabs just say "claude". You start clicking through them like you're hunting for that one browser tab playing audio.
+[Ghostty](https://ghostty.org/) (yes, with two T's - it's my favorite terminal) only shows the process name in the title. When you have six tabs all saying "claude", finding the right one becomes a game of terminal roulette.
 
 This is especially painful when you're running Claude with the `--dangerously-skip-permissions` flag (yes, I live dangerously - see my post about [Claude Code being my computer](/posts/2025/claude-code-is-my-computer/)). The last thing you want is to accidentally run the wrong command in the wrong directory with full system permissions.
 
@@ -49,13 +47,10 @@ _set_title() {
 # Claude wrapper with custom terminal title
 cly() {
     local folder=${PWD:t}  # Just the current folder name
-    
     # Set title to show we're running Claude
     _set_title "$folder — Claude"
-    
     # Run Claude with dangerous permissions
     "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
-    
     # Restore normal title
     _set_title "%~"
 }
@@ -71,8 +66,8 @@ if [[ -z ${precmd_functions[(r)_claude_precmd]} ]]; then
 fi
 ```
 
-Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
+When I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
-**Hot tip**: Just ask Claude to read this blog post and set it up for you! (in `--dangerously-skip-permissions` mode, of course)
+**Hot tip**: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)
 
 Now if you'll excuse me, I need to check on my Claude instances. I think one of them is refactoring my entire codebase without asking. Again.
