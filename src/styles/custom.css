@@ -260,7 +260,7 @@ pre code {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #6c757d;
+  color: #5a6268; /* Darkened by ~15% from #6c757d */
 }
 
 .token.punctuation {
@@ -313,6 +313,52 @@ pre code {
 .token.important,
 .token.variable {
   color: #e36209;
+}
+
+/* Light mode Shiki syntax highlighting overrides for better contrast */
+.astro-code:not(.github-dark) {
+  /* Comments - darken by ~15% */
+  --shiki-token-comment: #5a6268;
+  --shiki-token-prolog: #5a6268;
+  --shiki-token-doctype: #5a6268;
+  --shiki-token-cdata: #5a6268;
+  
+  /* Other token colors with increased contrast */
+  --shiki-token-punctuation: #1a1a1a;
+  --shiki-token-property: #c42f39;
+  --shiki-token-tag: #c42f39;
+  --shiki-token-boolean: #c42f39;
+  --shiki-token-number: #c42f39;
+  --shiki-token-constant: #c42f39;
+  --shiki-token-symbol: #c42f39;
+  --shiki-token-deleted: #c42f39;
+  
+  --shiki-token-selector: #1c6e2e;
+  --shiki-token-attr-name: #1c6e2e;
+  --shiki-token-string: #1c6e2e;
+  --shiki-token-char: #1c6e2e;
+  --shiki-token-builtin: #1c6e2e;
+  --shiki-token-inserted: #1c6e2e;
+  
+  --shiki-token-operator: #004aa8;
+  --shiki-token-entity: #004aa8;
+  --shiki-token-url: #004aa8;
+  
+  --shiki-token-atrule: #044190;
+  --shiki-token-attr-value: #044190;
+  --shiki-token-keyword: #044190;
+  
+  --shiki-token-function: #5935a1;
+  --shiki-token-class-name: #5935a1;
+  
+  --shiki-token-regex: #cc5507;
+  --shiki-token-important: #cc5507;
+  --shiki-token-variable: #cc5507;
+}
+
+/* Apply overrides to Shiki-generated spans */
+.astro-code:not(.github-dark) span[style*="color:#6C757D"] {
+  color: #5a6268 !important;
 }
 
 .dark pre {
