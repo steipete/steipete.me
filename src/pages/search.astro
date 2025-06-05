@@ -68,9 +68,10 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
       const searchInput = document.querySelector(".pagefind-ui__search-input") as HTMLInputElement;
       const clearButton = document.querySelector(".pagefind-ui__search-clear");
       
-      // Auto-focus the search input
+      // Auto-focus the search input and add placeholder
       if (searchInput) {
         searchInput.focus();
+        searchInput.placeholder = "Search posts, e.g. 'Swift concurrency'";
       }
       searchInput?.addEventListener("input", resetSearchParam);
       clearButton?.addEventListener("click", resetSearchParam);

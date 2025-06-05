@@ -53,13 +53,13 @@ Welcome to two easy steps to create your kernel core dump!
 
 1 — Change the boot-args to enable kernel debugging. This needs to be run with csrutil disabled or in recovery mode. `keepsyms=1` is used to symbolicate the panic log:
 
-```
+```bash
 sudo nvram boot-args="debug=0x104c44 keepsyms=1"
 ```
 
 2 — Once you get a panic with the debug= boot-args set, just dd the `Apple_KernelCoreDump` volume on your APFS container to a file:
 
-```
+```bash
 dd of=“~/IntelFramebufferFun.img” if="/Volumes/Apple_KernelCoreDump"
 ```
 

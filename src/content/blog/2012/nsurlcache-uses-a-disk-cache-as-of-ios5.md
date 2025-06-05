@@ -28,7 +28,7 @@ So, why should you care? Well, the Cache.db caches **any file** that has a corre
 
 The [default NSURLCache](https://developer.apple.com/library/ios/#documentation/Cocoa/Reference/Foundation/Classes/NSURLCache_Class/Reference/Reference.html) will be used, with a disk limit of 20MB. You can easily test this with GDB/LLDB:
 
-```
+```text
 p (int)[[NSURLCache sharedURLCache] diskCapacity]
 ```
 

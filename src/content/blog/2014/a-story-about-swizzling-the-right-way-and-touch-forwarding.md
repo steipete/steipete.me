@@ -72,7 +72,7 @@ Note the cast to `objc_msgSend`. While this (by luck) worked without casting in 
 
 This works as expected in most cases, but has the issue that the original implementation will be called with a different `_cmd` than it expects. This can be a problem when `_cmd` is actually used, such as in the touch forwarding logic. I learned this the hard way after swizzling `touchesMoved:withEvent:` to inject additional logic. The app crashed with the popular `doesNotRecognizeSelector:` exception.
 
-```
+```text
 * thread #1: tid = 0x695bfa, 0x0000000104cee973 libobjc.A.dylib`objc_exception_throw, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
     frame #0: 0x0000000104cee973 libobjc.A.dylib`objc_exception_throw
     frame #1: 0x000000010507e65d CoreFoundation`-[NSObject(NSObject) doesNotRecognizeSelector:] + 205

@@ -33,7 +33,7 @@ We resolve this by having a configuration file (Defaults-Testing-CI.xcconfig) on
 
 Defaults-Testing.xcconfig:
 
-```
+```text
 GCC_TREAT_WARNINGS_AS_ERRORS = YES
 ENABLE_NS_ASSERTIONS = YES
 
@@ -47,7 +47,7 @@ OTHER_CFLAGS = $(OTHER_CFLAGS_COMMON) -fno-omit-frame-pointer -g
 
 Defaults-Testing-CI.xcconfig:
 
-```
+```text
 // Release flags
 LLVM_LTO = YES_THIN
 GCC_UNROLL_LOOPS = YES
@@ -64,7 +64,7 @@ STRIP_STYLE = non-global
 
 What's not documented is the equivalent switch that you can use in your `xcconfig` file:
 
-```
+```text
 CLANG_ADDRESS_SANITIZER = YES
 ```
 
