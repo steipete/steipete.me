@@ -15,11 +15,11 @@ tags:
 
 *Or: How I Learned to Stop Worrying and Love the XPC Services*
 
-If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating **40 beta releases** and spending countless hours debugging "Failed to gain authorization" errors, I finally cracked the code. Here's my journey from frustration to enlightenment.
+If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating way too many beta releases and spending countless hours debugging cryptic authorization errors, I finally cracked the code. Here's my journey from frustration to enlightenment.
 
-## The Setup: VibeMeter Meets Sparkle
+## The Setup: Vibe Meter Meets Sparkle
 
-[VibeMeter](https://github.com/steipete/VibeMeter) is a sandboxed macOS menu bar app that tracks AI service spending. When I decided to add automatic updates using Sparkle 2.x, I thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
+[Vibe Meter](https://github.com/steipete/VibeMeter) is a sandboxed macOS menu bar app that tracks AI service spending. When I decided to add automatic updates using Sparkle 2.x, I thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
 
 Oh, sweet summer child.
 
