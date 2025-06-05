@@ -48,7 +48,7 @@ _set_title() {
 cly() {
     local folder=${PWD:t}  # Just the current folder name
     # Set title to show we're running Claude
-    _set_title "$folder — Claude"
+    _set_title "📁 $folder — Claude"
     # Run Claude with dangerous permissions
     "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
     # Restore normal title
@@ -66,8 +66,8 @@ if [[ -z ${precmd_functions[(r)_claude_precmd]} ]]; then
 fi
 ```
 
-When I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
+When I run `cly`, my terminal title changes from `~/Projects/blog` to `📁 blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
-**Hot tip**: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)
+> *Hot tip: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)*
 
 Now if you'll excuse me, I need to check on my Claude instances. I think one of them is refactoring my entire codebase without asking. Again.
