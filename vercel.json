@@ -39,7 +39,7 @@
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "^(?!steipete\\.me|.*\\.vercel\\.app).*$" }],
+      "has": [{ "type": "host", "value": "^(?!steipete\\.me|.*\\.vercel\\.app|.*\\.friendship\\.dev|.*\\.amantus\\.dev).*$" }],
       "destination": "https://steipete.me/:path*",
       "permanent": true
     }
