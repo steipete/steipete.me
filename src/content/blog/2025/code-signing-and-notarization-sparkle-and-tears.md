@@ -122,7 +122,7 @@ fi
 
 ## The Grand Finale: It Works!
 
-![Sparkle update dialog working perfectly](/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/sparkle.png)
+<img src="/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/sparkle.png" alt="Sparkle update dialog working perfectly" style="border: none;" />
 
 After two days of intense debugging, I finally had a working setup. My complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
 
@@ -225,7 +225,7 @@ What emerged is a surprisingly elegant zero-infrastructure solution that leverag
 
 ### Dynamic Channel Switching
 
-![Vibe Meter settings showing update channel options](/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/vibemeter-settings.png)
+<img src="/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/vibemeter-settings.png" alt="Vibe Meter settings showing update channel options" style="border: none;" />
 
 The app includes runtime logic to switch between update channels without reinstallation. Users can choose "stable" for production releases or "pre-release" for beta access, and the app dynamically points to the appropriate appcast URL.
 
