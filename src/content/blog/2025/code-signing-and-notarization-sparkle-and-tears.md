@@ -1,7 +1,7 @@
 ---
 title: "Code Signing and Notarization: Sparkle and Tears"
 pubDatetime: 2025-06-05T08:00:00.000+01:00
-description: "The brutal truth about implementing Sparkle auto-updates in sandboxed macOS apps - from 12 failed releases to enlightenment."
+description: "The brutal truth about implementing Sparkle auto-updates in sandboxed macOS apps - from 40 failed releases to enlightenment."
 tags:
   - macOS
   - Development
@@ -11,19 +11,23 @@ tags:
   - Swift
 ---
 
+**TL;DR**: Implementing Sparkle in sandboxed macOS apps requires specific entitlements, careful code signing order, and respect for XPC services - skip the pain with my battle-tested scripts.
+
 *Or: How I Learned to Stop Worrying and Love the XPC Services*
 
-If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating **12 beta releases** and spending countless hours debugging "Failed to gain authorization" errors, we finally cracked the code. Here's our journey from frustration to enlightenment.
+Two days ago, I was supposed to release Vibe Meter and I already wrote the blog post, but I spoke too soon. Turns out code signing and everything around it is still hard. So here's a helpful guide so you don't have to go through the same pain as I did.
+
+If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating **40 beta releases** and spending countless hours debugging "Failed to gain authorization" errors, I finally cracked the code. Here's my journey from frustration to enlightenment.
 
 ## The Setup: VibeMeter Meets Sparkle
 
-[VibeMeter](https://github.com/steipete/VibeMeter) is a sandboxed macOS menu bar app that tracks AI service spending. When we decided to add automatic updates using Sparkle 2.x, we thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
+[VibeMeter](https://github.com/steipete/VibeMeter) is a sandboxed macOS menu bar app that tracks AI service spending. When I decided to add automatic updates using Sparkle 2.x, I thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
 
 Oh, sweet summer child.
 
 ## Act 1: The Mysterious Authorization Failure
 
-Our first attempts seemed promising. The app built, signed, and notarized successfully. But when users tried to update, they were greeted with:
+My first attempts seemed promising. The app built, signed, and notarized successfully. But when users tried to update, they were greeted with:
 
 ```
 Error: Failed to gain authorization required to update target
@@ -33,11 +37,11 @@ This error is Sparkle's polite way of saying "I can't talk to my XPC services, a
 
 ## Act 2: The Entitlements Enigma
 
-After digging through Sparkle's documentation and Console logs, we discovered our first issue: missing mach-lookup entitlements. In a sandboxed app, Sparkle uses XPC services to perform privileged operations, and these services need special permissions to communicate.
+After digging through Sparkle's documentation[^1] and Console logs, I discovered my first issue: missing mach-lookup entitlements. In a sandboxed app, Sparkle uses XPC services to perform privileged operations, and these services need special permissions to communicate.
 
 ### The Missing Piece
 
-Our entitlements file was missing a critical entry:
+My entitlements file was missing a critical entry:
 
 ```xml
 <key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
@@ -47,7 +51,7 @@ Our entitlements file was missing a critical entry:
 </array>
 ```
 
-But here's the kicker - we initially only added `-spks`, thinking it stood for "Sparkle Server." Turns out, you need BOTH:
+But here's the kicker - I initially only added `-spks`, thinking it stood for "Sparkle Server." Turns out, you need BOTH:
 - `-spks`: Sparkle Server (for the Installer.xpc service)
 - `-spkd`: Sparkle Downloader (for the Downloader.xpc service)
 
@@ -55,7 +59,7 @@ Missing either one results in the dreaded authorization error.
 
 ## Act 3: The Code Signing Circus
 
-Next came the code signing adventures. Our notarization script was doing what seemed logical:
+Next came the code signing adventures. My notarization script was doing what seemed logical:
 
 ```bash
 codesign --deep --force --sign "Developer ID" VibeMeter.app
@@ -63,7 +67,7 @@ codesign --deep --force --sign "Developer ID" VibeMeter.app
 
 But Sparkle's documentation specifically warns against using `--deep`. Why? Because it can mess up the XPC services' signatures. Instead, you need to sign components in a specific order.
 
-Here's the correct approach from our [codesign script](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh):
+Here's the correct approach from my [codesign script](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh):
 
 ```bash
 # Sign XPC services first
@@ -89,7 +93,7 @@ codesign --force --sign "$SIGN_IDENTITY" --entitlements VibeMeter.entitlements \
 
 ## Act 4: The Bundle ID Bamboozle
 
-At one point, we thought we were being clever by trying to change the XPC services' bundle identifiers to match our app's namespace. Big mistake. HUGE.
+At one point, I thought I was being clever by trying to change the XPC services' bundle identifiers to match my app's namespace. Big mistake. HUGE.
 
 Sparkle's XPC services MUST keep their original bundle IDs:
 - `org.sparkle-project.InstallerLauncher`
@@ -118,7 +122,7 @@ fi
 
 ## The Grand Finale: It Works!
 
-After 12 beta releases (yes, twelve!), we finally had a working setup. Our complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
+After 40 beta releases (yes, forty!), I finally had a working setup. My complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
 
 ### The Magic Recipe
 
@@ -225,6 +229,8 @@ Our [complete script collection](https://github.com/steipete/VibeMeter/tree/main
 
 ---
 
-*Special thanks to the Sparkle team for creating such a robust framework, even if it did make us question our sanity for a while. Also, shoutout to Claude for being an excellent debugging companion and for automating the final release process.*
+*Special thanks to the Sparkle team for creating such a robust framework, even if it did make me question my sanity for a while. Also, massive shoutout to Claude Code - without it, I probably wouldn't have bothered building this comprehensive automation pipeline.*
 
-**P.S.** If you're reading this and thinking "I should add automatic updates to my sandboxed Mac app," just remember: we created 12 beta releases to figure this out. Budget your time accordingly, or better yet, just steal our scripts. ☕️
+**P.S.** If you're reading this and thinking "I should add automatic updates to my sandboxed Mac app," just remember: I created 40 beta releases to figure this out. Budget your time accordingly, or better yet, just steal my scripts. ☕️
+
+[^1]: Sparkle's [sandboxing documentation](https://sparkle-project.org/documentation/sandboxing/) is comprehensive but doesn't cover every edge case you'll encounter in practice.
