@@ -2,6 +2,8 @@
 title: "Commanding Your Claude Code Army"
 pubDatetime: 2025-06-05T10:00:00+01:00
 description: "How a simple terminal trick helps me manage multiple Claude Code instances without losing my mind (or my terminal tabs)"
+heroImage: /assets/img/2025/commanding-your-claude-code-army/header.png
+heroImageAlt: "Terminal window showing Claude Code with current directory in the title bar"
 tags:
   - AI
   - Claude
