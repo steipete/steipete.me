@@ -235,48 +235,46 @@ No separate hosting, no Jekyll setup, no additional infrastructure - just GitHub
 
 Here's how all the scripts work together:
 
-```
-🚀 Main Release Flow (release.sh)
+🚀 Main Release Flow ([release.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh))
 
 release.sh
-├── 1. preflight-check.sh ────────────── Validates everything ready
-├── 2. generate-xcproj.sh ────────────── Generates Xcode project
-├── 3. build.sh ──────────────────────── Builds app with IS_PRERELEASE_BUILD flag
-├── 4. sign-and-notarize.sh ──────────── Signs & notarizes app
-│   ├── codesign-app.sh ─────────────── Code signs app bundle
-│   └── notarize-app.sh ─────────────── Notarizes signed app
-├── 5. create-dmg.sh ─────────────────── Creates & signs DMG
+├── 1. [preflight-check.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) ────────────── Validates everything ready
+├── 2. [generate-xcproj.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-xcproj.sh) ────────────── Generates Xcode project
+├── 3. [build.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/build.sh) ──────────────────────── Builds app with IS_PRERELEASE_BUILD flag
+├── 4. [sign-and-notarize.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/sign-and-notarize.sh) ──────────── Signs & notarizes app
+│   ├── [codesign-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh) ─────────────── Code signs app bundle
+│   └── [notarize-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) ─────────────── Notarizes signed app
+├── 5. [create-dmg.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/create-dmg.sh) ─────────────────── Creates & signs DMG
 ├── 6. GitHub CLI (gh) ───────────────── Creates GitHub release
-├── 7. generate-appcast.sh ───────────── Updates appcast XML files
-└── 8. verify-appcast.sh ─────────────── Validates appcast (optional)
+├── 7. [generate-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-appcast.sh) ───────────── Updates appcast XML files
+└── 8. [verify-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-appcast.sh) ─────────────── Validates appcast (optional)
 
 🏗️ Development Flow
 
-generate-xcproj.sh ────────────────────── Generate project (after Project.swift changes)
-├── format.sh ────────────────────────── Format code
-├── lint.sh ──────────────────────────── Lint code
-└── build.sh ─────────────────────────── Build & test
+[generate-xcproj.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-xcproj.sh) ────────────────────── Generate project (after Project.swift changes)
+├── [format.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/format.sh) ────────────────────────── Format code
+├── [lint.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/lint.sh) ──────────────────────────── Lint code
+└── [build.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/build.sh) ─────────────────────────── Build & test
 
 ✅ Verification Flow
 
-preflight-check.sh ───────────────────── Pre-release validation
-└── verify-prerelease-system.sh ──────── IS_PRERELEASE_BUILD system check
+[preflight-check.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) ───────────────────── Pre-release validation
+└── [verify-prerelease-system.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-prerelease-system.sh) ──────── IS_PRERELEASE_BUILD system check
 
-verify-app.sh ────────────────────────── Post-build verification
-verify-appcast.sh ────────────────────── Appcast validation
+[verify-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-app.sh) ────────────────────────── Post-build verification
+[verify-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-appcast.sh) ────────────────────── Appcast validation
 
 🔐 Manual Signing Flow
 
-sign-and-notarize.sh
-├── codesign-app.sh ──────────────────── Code sign app
-├── notarize-app.sh ──────────────────── Notarize app
-└── create-dmg.sh ────────────────────── Create distribution DMG
+[sign-and-notarize.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/sign-and-notarize.sh)
+├── [codesign-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh) ──────────────────── Code sign app
+├── [notarize-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) ──────────────────── Notarize app
+└── [create-dmg.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/create-dmg.sh) ────────────────────── Create distribution DMG
 
 🛠️ Utility Scripts (Called by others)
 
-- changelog-to-html.sh ← Called by update-appcast.sh
-- version.sh ← Standalone version management
-```
+- [changelog-to-html.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/changelog-to-html.sh) ← Called by [update-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/update-appcast.sh)
+- [version.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/version.sh) ← Standalone version management
 
 The key is that `release.sh` is the master orchestrator that calls most other scripts in sequence for a complete automated release.
 
