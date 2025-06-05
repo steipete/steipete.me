@@ -1,6 +1,6 @@
 ---
 title: "Code Signing and Notarization: Sparkle and Tears"
-pubDatetime: 2025-06-05T14:00:00.000+01:00
+pubDatetime: 2025-06-05T08:00:00.000+01:00
 description: "The brutal truth about implementing Sparkle auto-updates in sandboxed macOS apps - from 12 failed releases to enlightenment."
 tags:
   - macOS
