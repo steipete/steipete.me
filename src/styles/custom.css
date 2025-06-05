@@ -260,7 +260,7 @@ pre code {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #6c757d;
+  color: #495057; /* Darkened by ~30% total from #6c757d */
 }
 
 .token.punctuation {
@@ -313,6 +313,11 @@ pre code {
 .token.important,
 .token.variable {
   color: #e36209;
+}
+
+/* Apply overrides to Shiki-generated comment spans in light mode */
+.astro-code:not(.github-dark) span[style*="color:#6C757D"] {
+  color: #495057 !important; /* Darken by ~30% total from original */
 }
 
 .dark pre {
