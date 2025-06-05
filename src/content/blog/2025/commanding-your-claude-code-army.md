@@ -78,36 +78,6 @@ Creating a dedicated file for the Claude wrapper has several benefits:
 
 The `cly` alias is short, memorable, and distinct from the standard `claude` command. Some folks use `cc`, but I like that `cly` is unambiguous and easy to type.
 
-## Making It Even Better
-
-Want to get fancy? Here are some variations you could add to your wrapper file:
-
-```zsh
-# Show just the folder name for cleaner titles
-cly-short() {
-    local folder=${PWD:t}
-    _set_title "$folder — Claude"
-    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
-    _set_title "%~"
-}
-
-# Include git branch information
-cly-git() {
-    local folder=${PWD:t}
-    local branch=$(git branch --show-current 2>/dev/null || echo "no-git")
-    _set_title "$folder [$branch] — Claude"
-    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
-    _set_title "%~"
-}
-
-# Different contexts with emojis (if you're into that)
-cly-blog() {
-    _set_title "📝 ${PWD:t} — Claude"
-    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
-    _set_title "%~"
-}
-```
-
 ## The Payoff
 
 This simple trick has saved me countless minutes of tab-hunting. When you're managing multiple AI assistants across different projects, being able to glance at your terminal tabs and instantly know which Claude is which is pure gold.
