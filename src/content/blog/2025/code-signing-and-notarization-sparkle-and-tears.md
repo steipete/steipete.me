@@ -11,11 +11,9 @@ tags:
   - Swift
 ---
 
-**TL;DR**: Implementing Sparkle in sandboxed macOS apps requires specific entitlements, careful code signing order, and respect for XPC services - skip the pain with my battle-tested scripts.
+![Code Signing and Notarization: Sparkle and Tears](/assets/img/2025/code-signing-sparkle/header.png)
 
 *Or: How I Learned to Stop Worrying and Love the XPC Services*
-
-Two days ago, I was supposed to release Vibe Meter and I already wrote the blog post, but I spoke too soon. Turns out code signing and everything around it is still hard. So here's a helpful guide so you don't have to go through the same pain as I did.
 
 If you've ever tried to implement automatic updates in a sandboxed macOS app using Sparkle, you know it can feel like trying to solve a Rubik's cube while wearing oven mitts. After creating **40 beta releases** and spending countless hours debugging "Failed to gain authorization" errors, I finally cracked the code. Here's my journey from frustration to enlightenment.
 
@@ -37,7 +35,7 @@ This error is Sparkle's polite way of saying "I can't talk to my XPC services, a
 
 ## Act 2: The Entitlements Enigma
 
-After digging through Sparkle's documentation[^1] and Console logs, I discovered my first issue: missing mach-lookup entitlements. In a sandboxed app, Sparkle uses XPC services to perform privileged operations, and these services need special permissions to communicate.
+After digging through [Sparkle's documentation](https://sparkle-project.org/documentation/sandboxing/) and Console logs, I discovered my first issue: missing mach-lookup entitlements. In a sandboxed app, Sparkle uses XPC services to perform privileged operations, and these services need special permissions to communicate.
 
 ### The Missing Piece
 
@@ -93,7 +91,7 @@ codesign --force --sign "$SIGN_IDENTITY" --entitlements VibeMeter.entitlements \
 
 ## Act 4: The Bundle ID Bamboozle
 
-At one point, I thought I was being clever by trying to change the XPC services' bundle identifiers to match my app's namespace. Big mistake. HUGE.
+At one point, I thought I was being clever (or rather, [Claude Code](/posts/claude-code-is-my-computer/) thought...) by trying to change the XPC services' bundle identifiers to match my app's namespace. Big mistake.
 
 Sparkle's XPC services MUST keep their original bundle IDs:
 - `org.sparkle-project.InstallerLauncher`
@@ -122,7 +120,7 @@ fi
 
 ## The Grand Finale: It Works!
 
-After 40 beta releases (yes, forty!), I finally had a working setup. My complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
+After two days of intense debugging, I finally had a working setup. My complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
 
 ### The Magic Recipe
 
@@ -189,6 +187,44 @@ spctl -a -t exec -vv "$APP_BUNDLE"
 xcrun stapler validate "$APP_BUNDLE"
 ```
 
+## Pretty Changelogs in Sparkle
+
+One challenge I hadn't anticipated was making the update dialogs actually useful. Sparkle can display rich HTML changelogs, but getting from my Markdown changelog to properly formatted HTML required some creativity.
+
+My [changelog-to-html.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/changelog-to-html.sh) extracts version-specific sections from `CHANGELOG.md` and converts them to HTML:
+
+```bash
+# Extract version section and convert Markdown to HTML
+awk "/^## \\[$version\\]/{flag=1;next}/^## \\[/{flag=0}flag" CHANGELOG.md | \
+sed 's/^### \(.*\)/<h3>\1<\/h3>/' | \
+sed 's/^- \(.*\)/<li>\1<\/li>/' | \
+sed 's/\*\*\([^*]*\)\*\*/<strong>\1<\/strong>/g'
+```
+
+The result? Users see properly formatted changelogs with headers, lists, and styled text instead of raw Markdown.
+
+## The Complete Architecture
+
+What emerged is a surprisingly elegant zero-infrastructure solution that leverages GitHub's existing services:
+
+### GitHub-Centric Distribution
+- **Releases**: GitHub releases host the actual DMG files
+- **Appcast Hosting**: Raw GitHub URLs serve the XML feeds (`https://raw.githubusercontent.com/steipete/VibeMeter/main/appcast.xml`)
+- **Dual Feeds**: Separate appcasts for stable and pre-release channels
+- **Version Control**: Appcast files are versioned alongside the code
+
+### Dynamic Channel Switching
+The app includes runtime logic to switch between update channels without reinstallation. Users can choose "stable" for production releases or "pre-release" for beta access, and the app dynamically points to the appropriate appcast URL.
+
+### Automated Everything
+My [release.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) orchestrates the entire pipeline:
+1. Build and sign the app
+2. Create GitHub release with DMG
+3. Generate both appcast files with proper signatures
+4. Commit and push everything
+
+No separate hosting, no Jekyll setup, no additional infrastructure - just GitHub doing what it does best.
+
 ## Lessons Learned
 
 1. **Read the documentation carefully** - But also know that it might not cover every edge case
@@ -198,19 +234,11 @@ xcrun stapler validate "$APP_BUNDLE"
 5. **Automate everything** - Manual processes lead to human errors
 6. **Version control your scripts** - Build automation is as important as your app code
 
-## The Tools That Saved Our Sanity
-
-- **Console.app**: For watching XPC connection attempts in real-time
-- **codesign -dvv**: For verifying signatures and entitlements
-- **plutil**: For validating plist files
-- **GitHub Actions**: For consistent, reproducible builds
-- **Claude Code**: For debugging and script automation
-
 ## Performance and Reliability
 
 Our final pipeline includes sophisticated error handling and retry logic. The [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) can handle temporary Apple server issues, and our [preflight checks](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) catch common mistakes before they become expensive failures.
 
-The entire process, from clean build to GitHub release, takes about 10 minutes and rarely fails. When it does fail, the error messages are clear and actionable.
+The entire process, from clean build to GitHub release, is now fully automated and takes just a few minutes. All I have to do is tell Claude "Create a new beta release, see release.md" and it takes care of everything, and verifies all steps.
 
 ## Final Thoughts
 
@@ -229,8 +257,6 @@ Our [complete script collection](https://github.com/steipete/VibeMeter/tree/main
 
 ---
 
-*Special thanks to the Sparkle team for creating such a robust framework, even if it did make me question my sanity for a while. Also, massive shoutout to Claude Code - without it, I probably wouldn't have bothered building this comprehensive automation pipeline.*
+*Special thanks to the Sparkle team and Claude Code - without them, this automation pipeline wouldn't exist.*
 
-**P.S.** If you're reading this and thinking "I should add automatic updates to my sandboxed Mac app," just remember: I created 40 beta releases to figure this out. Budget your time accordingly, or better yet, just steal my scripts. ☕️
-
-[^1]: Sparkle's [sandboxing documentation](https://sparkle-project.org/documentation/sandboxing/) is comprehensive but doesn't cover every edge case you'll encounter in practice.
+**P.S.** Just [steal my scripts](https://github.com/steipete/VibeMeter/tree/main/scripts). It'll save you days of debugging. ☕️
