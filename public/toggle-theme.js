@@ -2,7 +2,24 @@
 
 // Get theme data from local storage
 let currentTheme = localStorage.getItem("theme");
-let userHasManuallySetTheme = localStorage.getItem("themeSetManually") === "true";
+let themeSetTimestamp = localStorage.getItem("themeSetTimestamp");
+let userHasManuallySetTheme = false;
+
+// Check if manual theme preference has expired (24 hours)
+if (themeSetTimestamp) {
+  const now = Date.now();
+  const setTime = parseInt(themeSetTimestamp);
+  const hoursSinceSet = (now - setTime) / (1000 * 60 * 60);
+  
+  if (hoursSinceSet < 24) {
+    userHasManuallySetTheme = true;
+  } else {
+    // Expired - clear manual settings
+    localStorage.removeItem("theme");
+    localStorage.removeItem("themeSetTimestamp");
+    currentTheme = null;
+  }
+}
 
 function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -24,7 +41,7 @@ function setPreference(isManualChange = false) {
   if (isManualChange) {
     // User clicked the toggle button
     localStorage.setItem("theme", themeValue);
-    localStorage.setItem("themeSetManually", "true");
+    localStorage.setItem("themeSetTimestamp", Date.now().toString());
     userHasManuallySetTheme = true;
   } else if (!userHasManuallySetTheme) {
     // System changed and user hasn't manually set theme
@@ -79,12 +96,5 @@ window
     if (!userHasManuallySetTheme) {
       themeValue = newSystemTheme;
       setPreference(false); // false = system change
-    } else if (currentTheme === getSystemTheme()) {
-      // If user's manual choice now matches system, clear the manual flag
-      // This allows the theme to follow system again
-      localStorage.removeItem("themeSetManually");
-      userHasManuallySetTheme = false;
-      themeValue = newSystemTheme;
-      setPreference(false);
     }
   });

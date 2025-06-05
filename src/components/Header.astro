@@ -161,31 +161,10 @@ const isActive = (path: string) => {
     });
   }
 
-  function setThemeFeature() {
-    // Theme toggle functionality
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      const currentTheme =
-        localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      const newTheme = currentTheme === "light" ? "dark" : "light";
-
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.setAttribute("data-theme", newTheme);
-      document
-        .querySelector("#theme-btn")
-        ?.setAttribute("aria-label", newTheme);
-      document.body.style.colorScheme = newTheme;
-    });
-  }
-
   toggleNav();
-  setThemeFeature();
 
   // Runs on view transitions navigation
   document.addEventListener("astro:after-swap", () => {
     toggleNav();
-    setThemeFeature();
   });
 </script>
