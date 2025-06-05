@@ -1,26 +1,35 @@
 /* eslint-env browser */
-const primaryColorScheme = "light"; // Default theme: "light" | "dark"
 
 // Get theme data from local storage
-const currentTheme = localStorage.getItem("theme");
+let currentTheme = localStorage.getItem("theme");
+let userHasManuallySetTheme = localStorage.getItem("themeSetManually") === "true";
+
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 function getPreferredTheme() {
-  // return theme value in localStorage if it's set
-  if (currentTheme) return currentTheme;
-
-  // return primary color scheme if it's set
-  if (primaryColorScheme) return primaryColorScheme;
-
-  // return user device's preferred color scheme
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // If user manually set a theme, use it
+  if (userHasManuallySetTheme && currentTheme) {
+    return currentTheme;
+  }
+  
+  // Otherwise, follow system preference
+  return getSystemTheme();
 }
 
 let themeValue = getPreferredTheme();
 
-function setPreference() {
-  localStorage.setItem("theme", themeValue);
+function setPreference(isManualChange = false) {
+  if (isManualChange) {
+    // User clicked the toggle button
+    localStorage.setItem("theme", themeValue);
+    localStorage.setItem("themeSetManually", "true");
+    userHasManuallySetTheme = true;
+  } else if (!userHasManuallySetTheme) {
+    // System changed and user hasn't manually set theme
+    // Don't save to localStorage, just update the display
+  }
   reflectPreference();
 }
 
@@ -50,7 +59,7 @@ window.onload = () => {
     // now this script can find and listen for clicks on the control
     document.querySelector("#theme-btn")?.addEventListener("click", () => {
       themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference();
+      setPreference(true); // true = manual change
     });
   }
 
@@ -64,6 +73,18 @@ window.onload = () => {
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
+    const newSystemTheme = isDark ? "dark" : "light";
+    
+    // If user hasn't manually set theme, follow system
+    if (!userHasManuallySetTheme) {
+      themeValue = newSystemTheme;
+      setPreference(false); // false = system change
+    } else if (currentTheme === getSystemTheme()) {
+      // If user's manual choice now matches system, clear the manual flag
+      // This allows the theme to follow system again
+      localStorage.removeItem("themeSetManually");
+      userHasManuallySetTheme = false;
+      themeValue = newSystemTheme;
+      setPreference(false);
+    }
   });
