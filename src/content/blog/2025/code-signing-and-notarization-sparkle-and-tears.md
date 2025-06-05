@@ -170,7 +170,6 @@ Look at this beauty! Now even Claude can do releases without messing up 🎉 I j
 # OR
 ./scripts/release.sh beta 1        # For 1.1.0-beta.1
 
-# Quick version management:
 # Use the version script to bump versions
 ./scripts/version.sh --minor       # 1.0.0 -> 1.1.0
 ./scripts/version.sh --major       # 1.0.0 -> 2.0.0
