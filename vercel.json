@@ -8,17 +8,17 @@
   "redirects": [
     {
       "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
-      "destination": "/posts/:slug/",
+      "destination": "/posts/:slug",
       "permanent": true
     },
     {
       "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
-      "destination": "/posts/:slug/",
+      "destination": "/posts/:slug",
       "permanent": true
     },
     {
       "source": "/blog/:slug([^\\/]+)$",
-      "destination": "/posts/:slug/",
+      "destination": "/posts/:slug",
       "permanent": true
     },
     {
@@ -29,12 +29,12 @@
     { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
     {
       "source": "/20:year/:month/:day/:slug(.*)",
-      "destination": "/posts/:slug/",
+      "destination": "/posts/:slug",
       "permanent": true
     },
     {
       "source": "/blog/a-new-beginning/",
-      "destination": "/posts/finding-my-spark-again/",
+      "destination": "/posts/finding-my-spark-again",
       "permanent": true
     },
     {
