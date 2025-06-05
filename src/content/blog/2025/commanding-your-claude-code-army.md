@@ -68,16 +68,6 @@ precmd() {
 
 Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
-## Why Keep It Separate?
-
-Creating a dedicated file for the Claude wrapper has several benefits:
-- Keeps your main `.zshrc` clean and focused
-- Makes it easy to share or disable the functionality
-- Allows for more complex implementations without cluttering your config
-- You can version control it separately if needed
-
-The `cly` alias is short, memorable, and distinct from the standard `claude` command. Some folks use `cc`, but I like that `cly` is unambiguous and easy to type.
-
 ## The Payoff
 
 This simple trick has saved me countless minutes of tab-hunting. When you're managing multiple AI assistants across different projects, being able to glance at your terminal tabs and instantly know which Claude is which is pure gold.
