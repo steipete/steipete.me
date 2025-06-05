@@ -19,13 +19,13 @@ If you've ever tried to implement automatic updates in a sandboxed macOS app usi
 
 ## The Setup: Vibe Meter Meets Sparkle
 
-[Vibe Meter](https://github.com/steipete/VibeMeter) is a sandboxed macOS menu bar app that tracks AI service spending. When I decided to add automatic updates using Sparkle 2.x, I thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
+[Vibe Meter](https://vibemeter.ai) is a sandboxed macOS menu bar app that tracks AI service spending. When I decided to add automatic updates using Sparkle 2.x, I thought it would be straightforward. After all, Sparkle is the de facto standard for macOS app updates, right?
 
 Oh, sweet summer child.
 
 ## Act 1: The Mysterious Authorization Failure
 
-I'd already spent considerable time figuring out code signing and notarization - which is its own pain point. But because I'd already solved that, I could simply tell Claude: "Look at this repository and do what we did there." And it got really far with the signing and notarization process.
+I'd already mastered code signing and notarization (its own nightmare), so I just told Claude: "Look at this repository and do what we did there." It nailed the signing and notarization process.
 
 My first attempts seemed promising. The app built, signed, and notarized successfully. But when users tried to update, they were greeted with:
 
@@ -93,13 +93,13 @@ codesign --force --sign "$SIGN_IDENTITY" --entitlements VibeMeter.entitlements \
 
 ## Act 4: The Bundle ID Bamboozle
 
-At one point, I thought I was being clever (or rather, [Claude Code](/posts/claude-code-is-my-computer/) thought...) by trying to change the XPC services' bundle identifiers to match my app's namespace. Big mistake.
+At one point, I thought I was being clever (or rather, [Claude Code](/posts/claude-code-is-my-computer/) thought...) by trying to manually modify the XPC services' bundle identifiers. Big mistake.
 
-Sparkle's XPC services MUST keep their original bundle IDs:
-- `org.sparkle-project.InstallerLauncher`
-- `org.sparkle-project.DownloaderService`
+For sandboxed apps, Sparkle requires specific bundle ID suffixes:
+- Use `-spks` suffix for the InstallerLauncher service
+- Use `-spki` suffix for the Installer service
 
-Why? Because Sparkle is hardcoded to look for these specific bundle IDs. Change them, and you'll get cryptic XPC connection errors that will make you question your career choices.
+The framework expects these exact suffixes. Use anything else, and you'll get cryptic XPC connection errors that will make you question your career choices.
 
 ## Act 5: The Build Number Blues
 
@@ -121,6 +121,8 @@ fi
 ```
 
 ## The Grand Finale: It Works!
+
+![Sparkle update dialog working perfectly](/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/sparkle.png)
 
 After two days of intense debugging, I finally had a working setup. My complete automation pipeline is now rock-solid, with [comprehensive scripts](https://github.com/steipete/VibeMeter/tree/main/scripts) that handle every aspect of the process.
 
@@ -158,7 +160,7 @@ My complete build pipeline consists of several specialized scripts:
 - **[generate-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-appcast.sh)**: Generates Sparkle appcast files
 - **[release.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh)**: Orchestrates the entire release process
 
-The beauty of this approach is that Claude can now create releases by simply running:
+Look at this beauty! Now even Claude can do releases without messing up 🎉 All I have to do is tell Claude "Create a new beta release, see release.md" and it takes care of everything, and verifies all steps.
 
 ```bash
 # Create a beta release
@@ -193,6 +195,8 @@ spctl -a -t exec -vv "$APP_BUNDLE"
 xcrun stapler validate "$APP_BUNDLE"
 ```
 
+Of course this needs certificates from Apple. Luckily Claude is smart enough to guide you through the whole process of downloading those files and adding them to the keychain and your environment.
+
 ## Pretty Changelogs in Sparkle
 
 One challenge I hadn't anticipated was making the update dialogs actually useful. Sparkle can display rich HTML changelogs, but getting from my Markdown changelog to properly formatted HTML required some creativity.
@@ -220,6 +224,9 @@ What emerged is a surprisingly elegant zero-infrastructure solution that leverag
 - **Version Control**: Appcast files are versioned alongside the code
 
 ### Dynamic Channel Switching
+
+![Vibe Meter settings showing update channel options](/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/vibemeter-settings.png)
+
 The app includes runtime logic to switch between update channels without reinstallation. Users can choose "stable" for production releases or "pre-release" for beta access, and the app dynamically points to the appropriate appcast URL.
 
 ### Automated Everything
@@ -250,13 +257,6 @@ release.sh
 ├── 7. generate-appcast.sh ───────────── Updates appcast XML files
 └── 8. verify-appcast.sh ─────────────── Validates appcast (optional)
 
-🏗️ Development Flow
-
-generate-xcproj.sh ────────────────────── Generate project (after Project.swift changes)
-├── format.sh ────────────────────────── Format code
-├── lint.sh ──────────────────────────── Lint code
-└── build.sh ─────────────────────────── Build & test
-
 ✅ Verification Flow
 
 preflight-check.sh ───────────────────── Pre-release validation
@@ -278,7 +278,7 @@ sign-and-notarize.sh
 - version.sh ← Standalone version management
 ```
 
-The key is that `release.sh` is the master orchestrator that calls most other scripts in sequence for a complete automated release.
+The key is that [`release.sh`](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) is the master orchestrator that calls most other scripts in sequence for a complete automated release.
 
 ## Lessons Learned
 
@@ -289,19 +289,11 @@ The key is that `release.sh` is the master orchestrator that calls most other sc
 5. **Automate everything** - Manual processes lead to human errors
 6. **Version control your scripts** - Build automation is as important as your app code
 
-## Performance and Reliability
-
-The final pipeline includes sophisticated error handling and retry logic. The [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) handles temporary Apple server issues, and the [preflight checks](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) catch common mistakes before they become expensive failures.
-
-The entire process, from clean build to GitHub release, is now fully automated and takes just a few minutes. All I have to do is tell Claude "Create a new beta release, see release.md" and it takes care of everything, and verifies all steps.
-
 ## Final Thoughts
 
 Implementing Sparkle in a sandboxed app is like solving a puzzle where the pieces keep changing shape. But once you understand the rules - respect the XPC services, get your entitlements right, and sign everything properly - it works beautifully.
 
 The irony? The final solution is actually quite simple. It's getting there that's the adventure. I don't know how anyone manages to ship working macOS apps at all, honestly.
-
-My [complete script collection](https://github.com/steipete/VibeMeter/tree/main/scripts) is open source and battle-tested. If you're implementing Sparkle updates, feel free to adapt my approach - it might save you from creating your own dozen beta releases.
 
 ## Resources
 
