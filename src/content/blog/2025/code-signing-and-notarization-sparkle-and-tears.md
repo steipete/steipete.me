@@ -11,7 +11,7 @@ tags:
   - Swift
 ---
 
-![Code Signing and Notarization: Sparkle and Tears](/assets/img/2025/code-signing-sparkle/header.png)
+![Code Signing and Notarization: Sparkle and Tears](/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/header.png)
 
 *Or: How I Learned to Stop Worrying and Love the XPC Services*
 
