@@ -127,4 +127,6 @@ Plus, it makes screen sharing much less confusing. "Let me switch to the Claude 
 
 It's a small quality-of-life improvement that makes a big difference when you're juggling multiple AI-powered terminal sessions. And honestly, if you're going to give an AI full system access, you might as well know which directory it's operating in.
 
+**Hot tip**: You can just ask Claude to read this blog post and apply the changes for you! (in `--dangerously-skip-permissions` mode)
+
 Now if you'll excuse me, I need to check on my Claude instances. I think one of them is refactoring my entire codebase without asking. Again.
