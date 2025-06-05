@@ -89,7 +89,7 @@ if [[ -z ${precmd_functions[(r)_claude_precmd]} ]]; then
 fi
 ```
 
-When I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
+When I run `cly`, my terminal title changes from `~/Projects/blog` to `~/Projects/blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
 > *Hot tip: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)*
 
