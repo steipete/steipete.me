@@ -26,59 +26,83 @@ This is especially painful when you're running Claude with the `--dangerously-sk
 
 ## The Solution: Terminal Title Magic
 
-Here's my secret weapon - a simple ZSH function that transforms my chaotic terminal into an organized command center:
+Here's my approach - a clean ZSH setup that keeps terminal management code separate from my main configuration. First, I add one line to my `~/.zshrc`:
 
 ```zsh
-# Function to set custom window title
-set_window_title() {
-    print -Pn "\e]0;$1\a"
+# Source Claude wrapper with dynamic terminal title
+[ -f ~/.config/zsh/claude-wrapper.zsh ] && source ~/.config/zsh/claude-wrapper.zsh
+```
+
+Then I create `~/.config/zsh/claude-wrapper.zsh` with the actual implementation:
+
+```zsh
+#!/usr/bin/env zsh
+# Simple, elegant terminal title management for Claude
+
+# Set terminal title
+_set_title() { 
+    print -Pn "\e]2;$1\a" 
 }
 
-# Claude wrapper function - "Surprise Me" edition
-surprise-me() {
-    # Set window title to show path and Claude Code
-    set_window_title "%~ — Claude Code"
+# Claude wrapper with custom terminal title
+cly() {
+    local folder=${PWD:t}  # Just the current folder name
     
-    # Run Claude with dangerous permissions (because I trust it... mostly)
-    claude --dangerously-skip-permissions "$@"
+    # Set title to show we're running Claude
+    _set_title "$folder — Claude"
     
-    # Reset title back to just the path when done
-    set_window_title "%~"
+    # Run Claude with dangerous permissions
+    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
+    
+    # Restore normal title
+    _set_title "%~"
+}
+
+# Ensure directory path shows in title when at prompt
+precmd() { 
+    _set_title "%~" 
 }
 ```
 
-Now when I run `surprise-me`, my terminal title changes from `~/Projects/blog` to `~/Projects/blog — Claude Code`. Revolutionary? No. Life-changing? Absolutely.
+Now when I run `cly`, my terminal title changes from `~/Projects/blog` to `blog — Claude`. Revolutionary? No. Life-changing? Absolutely.
 
-## Why "Surprise Me"?
+## Why Keep It Separate?
 
-You might wonder about the alias name. When you're giving an AI full system access, every command is a little surprise. Will it elegantly solve your problem? Will it decide to reorganize your entire filesystem? The suspense is half the fun!
+Creating a dedicated file for the Claude wrapper has several benefits:
+- Keeps your main `.zshrc` clean and focused
+- Makes it easy to share or disable the functionality
+- Allows for more complex implementations without cluttering your config
+- You can version control it separately if needed
 
-(In practice, Claude has been remarkably well-behaved. But the name keeps me honest about what I'm doing.)
+The `cly` alias is short, memorable, and distinct from the standard `claude` command. Some folks use `cc`, but I like that `cly` is unambiguous and easy to type.
 
 ## Making It Even Better
 
-Want to get fancy? Here are some variations I use:
+Want to get fancy? Here are some variations you could add to your wrapper file:
 
 ```zsh
-# Different aliases for different contexts
-blog-claude() {
-    set_window_title "%~ — Claude (Blog)"
-    claude --dangerously-skip-permissions "$@"
-    set_window_title "%~"
+# Show just the folder name for cleaner titles
+cly-short() {
+    local folder=${PWD:t}
+    _set_title "$folder — Claude"
+    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
+    _set_title "%~"
 }
 
-code-claude() {
-    set_window_title "%~ — Claude (Code)"
-    claude --dangerously-skip-permissions "$@"
-    set_window_title "%~"
-}
-
-# My favorite: shows the current git branch too
-git-claude() {
+# Include git branch information
+cly-git() {
+    local folder=${PWD:t}
     local branch=$(git branch --show-current 2>/dev/null || echo "no-git")
-    set_window_title "%~ [$branch] — Claude Code"
-    claude --dangerously-skip-permissions "$@"
-    set_window_title "%~"
+    _set_title "$folder [$branch] — Claude"
+    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
+    _set_title "%~"
+}
+
+# Different contexts with emojis (if you're into that)
+cly-blog() {
+    _set_title "📝 ${PWD:t} — Claude"
+    "$HOME/.claude/local/claude" --dangerously-skip-permissions "$@"
+    _set_title "%~"
 }
 ```
 
@@ -90,10 +114,14 @@ Plus, it makes screen sharing much less confusing. "Let me switch to the Claude 
 
 ## Implementation
 
-1. Add the function to your `~/.zshrc`
-2. Run `source ~/.zshrc` or restart your terminal
-3. Type `surprise-me` instead of `claude` and watch the magic happen
-4. Never lose track of your Claude army again
+1. Add the source line to your `~/.zshrc`:
+   ```zsh
+   [ -f ~/.config/zsh/claude-wrapper.zsh ] && source ~/.config/zsh/claude-wrapper.zsh
+   ```
+2. Create `~/.config/zsh/claude-wrapper.zsh` with the wrapper code
+3. Run `source ~/.zshrc` or restart your terminal
+4. Type `cly` instead of `claude` and watch the magic happen
+5. Never lose track of your Claude army again
 
 It's a small quality-of-life improvement that makes a big difference when you're juggling multiple AI-powered terminal sessions. And honestly, if you're going to give an AI full system access, you might as well know which directory it's operating in.
 
