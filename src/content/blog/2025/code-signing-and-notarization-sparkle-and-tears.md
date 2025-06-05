@@ -160,7 +160,7 @@ My complete build pipeline consists of several specialized scripts:
 - **[generate-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-appcast.sh)**: Generates Sparkle appcast files
 - **[release.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh)**: Orchestrates the entire release process
 
-Look at this beauty! Now even Claude can do releases without messing up 🎉 All I have to do is tell Claude "Create a new beta release, see release.md" and it takes care of everything, and verifies all steps.
+Look at this beauty! Now even Claude can do releases without messing up 🎉 I just tell it "Create a new beta release, see release.md" and it handles everything.
 
 ```bash
 # Create a beta release
@@ -170,7 +170,7 @@ Look at this beauty! Now even Claude can do releases without messing up 🎉 All
 ./scripts/release.sh stable
 ```
 
-And everything happens automatically - from building to GitHub release creation.
+Everything happens automatically - from building to GitHub release creation.
 
 ## The Notarization Nightmare
 
@@ -195,7 +195,7 @@ spctl -a -t exec -vv "$APP_BUNDLE"
 xcrun stapler validate "$APP_BUNDLE"
 ```
 
-Of course this needs certificates from Apple. Luckily Claude is smart enough to guide you through the whole process of downloading those files and adding them to the keychain and your environment.
+Of course this needs [certificates from Apple](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution). Luckily Claude is smart enough to guide you through the whole process of downloading those files and adding them to the keychain and your environment.
 
 ## Pretty Changelogs in Sparkle
 
@@ -219,28 +219,28 @@ What emerged is a surprisingly elegant zero-infrastructure solution that leverag
 
 ### GitHub-Centric Distribution
 - **Releases**: [GitHub releases](https://github.com/steipete/VibeMeter/releases) host the actual DMG files
-- **Appcast Hosting**: Raw GitHub URLs serve the XML feeds ([`https://raw.githubusercontent.com/steipete/VibeMeter/main/appcast.xml`](https://raw.githubusercontent.com/steipete/VibeMeter/main/appcast.xml))
+- **Appcast Hosting**: [Raw GitHub URLs](https://raw.githubusercontent.com/steipete/VibeMeter/main/appcast.xml) serve the XML feeds
 - **Dual Feeds**: Separate appcasts for [stable](https://github.com/steipete/VibeMeter/blob/main/appcast.xml) and [pre-release](https://github.com/steipete/VibeMeter/blob/main/appcast-prerelease.xml) channels
 - **Version Control**: Appcast files are versioned alongside the code
 
 ### Dynamic Channel Switching
 
-<img src="/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/vibemeter-settings.png" alt="Vibe Meter settings showing update channel options" style="border: none;" />
-
 The app includes runtime logic to switch between update channels without reinstallation. Users can choose "stable" for production releases or "pre-release" for beta access, and the app dynamically points to the appropriate appcast URL.
 
+<img src="/assets/img/2025/code-signing-and-notarization-sparkle-and-tears/vibemeter-settings.png" alt="Vibe Meter settings showing update channel options" style="border: none;" />
+
 ### Automated Everything
+
 The [release.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) orchestrates the entire pipeline:
 1. Build and sign the app
 2. Create GitHub release with DMG
 3. Generate both appcast files with proper signatures
 4. Commit and push everything
 
-No separate hosting, no Jekyll setup, no additional infrastructure - just GitHub doing what it does best.
+No separate hosting, no Jekyll setup, no additional infrastructure - just GitHub doing what it does best. The key is that [`release.sh`](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) is the master orchestrator that calls most other scripts in sequence for a complete automated release.
 
-### Script Flow Architecture
-
-Here's how all the scripts work together:
+<details>
+<summary>View the complete script flow architecture</summary>
 
 ```
 🚀 Main Release Flow (release.sh)
@@ -278,7 +278,7 @@ sign-and-notarize.sh
 - version.sh ← Standalone version management
 ```
 
-The key is that [`release.sh`](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) is the master orchestrator that calls most other scripts in sequence for a complete automated release.
+</details>
 
 ## Lessons Learned
 
@@ -294,6 +294,8 @@ The key is that [`release.sh`](https://github.com/steipete/VibeMeter/blob/main/s
 Implementing Sparkle in a sandboxed app is like solving a puzzle where the pieces keep changing shape. But once you understand the rules - respect the XPC services, get your entitlements right, and sign everything properly - it works beautifully.
 
 The irony? The final solution is actually quite simple. It's getting there that's the adventure. I don't know how anyone manages to ship working macOS apps at all, honestly.
+
+Now go download [Vibe Meter](https://vibemeter.ai) and read my dev diary on how I built it with Claude Code: [Vibe Meter: Monitor Your AI Costs](/posts/vibe-meter-monitor-your-ai-costs).
 
 ## Resources
 
