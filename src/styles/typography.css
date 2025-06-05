@@ -44,6 +44,22 @@
     white-space: pre;
   }
 
+  /* Light mode syntax highlighting contrast improvements */
+  html[data-theme="light"] pre:has(code),
+  html[data-theme="light"] pre:has(code) span,
+  :root pre:has(code),
+  :root pre:has(code) span {
+    /* Darken comment colors by ~30% total for better contrast */
+    --shiki-color-comment: #495057;
+    --shiki-token-comment: #495057;
+  }
+
+  /* Override inline styles for comments in light mode */
+  html[data-theme="light"] pre code span[style*="color:#6C757D"],
+  :root pre code span[style*="color:#6C757D"] {
+    color: #495057 !important;
+  }
+
   /* Apply Dark Theme (if multi-theme specified) */
   html[data-theme="dark"] pre:has(code),
   html[data-theme="dark"] pre:has(code) span {
