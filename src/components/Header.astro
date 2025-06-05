@@ -6,6 +6,7 @@ import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
+import IconAuto from "@/assets/icons/IconAuto.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
@@ -123,12 +124,14 @@ const isActive = (path: string) => {
                 <button
                   id="theme-btn"
                   class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                  title="Toggles light & dark"
+                  title="Toggles theme mode"
                   aria-label="auto"
                   aria-live="polite"
+                  data-theme-mode="auto"
                 >
-                  <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                  <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                  <IconAuto class="theme-icon-auto absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all" />
+                  <IconSunHigh class="theme-icon-light absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all" />
+                  <IconMoon class="theme-icon-dark absolute top-[50%] left-[50%] -translate-[50%] scale-0 -rotate-90 transition-all" />
                 </button>
               </li>
             )
@@ -161,31 +164,10 @@ const isActive = (path: string) => {
     });
   }
 
-  function setThemeFeature() {
-    // Theme toggle functionality
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      const currentTheme =
-        localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      const newTheme = currentTheme === "light" ? "dark" : "light";
-
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.setAttribute("data-theme", newTheme);
-      document
-        .querySelector("#theme-btn")
-        ?.setAttribute("aria-label", newTheme);
-      document.body.style.colorScheme = newTheme;
-    });
-  }
-
   toggleNav();
-  setThemeFeature();
 
   // Runs on view transitions navigation
   document.addEventListener("astro:after-swap", () => {
     toggleNav();
-    setThemeFeature();
   });
 </script>

@@ -1,51 +1,63 @@
 /* eslint-env browser */
 
-// Get theme data from local storage
-let currentTheme = localStorage.getItem("theme");
-let userHasManuallySetTheme = localStorage.getItem("themeSetManually") === "true";
+// Theme modes: "auto" | "light" | "dark"
+let themeMode = localStorage.getItem("themeMode") || "auto";
+let currentActualTheme = "light"; // The actual theme being displayed
 
 function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function getPreferredTheme() {
-  // If user manually set a theme, use it
-  if (userHasManuallySetTheme && currentTheme) {
-    return currentTheme;
+function getActualTheme() {
+  if (themeMode === "auto") {
+    return getSystemTheme();
   }
-  
-  // Otherwise, follow system preference
-  return getSystemTheme();
+  return themeMode;
 }
 
-let themeValue = getPreferredTheme();
+// Get the initial actual theme
+currentActualTheme = getActualTheme();
 
-function setPreference(isManualChange = false) {
-  if (isManualChange) {
-    // User clicked the toggle button
-    localStorage.setItem("theme", themeValue);
-    localStorage.setItem("themeSetManually", "true");
-    userHasManuallySetTheme = true;
-  } else if (!userHasManuallySetTheme) {
-    // System changed and user hasn't manually set theme
-    // Don't save to localStorage, just update the display
+function setPreference() {
+  // Save the mode (auto, light, or dark)
+  if (themeMode === "auto") {
+    localStorage.removeItem("themeMode");
+  } else {
+    localStorage.setItem("themeMode", themeMode);
   }
+  
+  // Update the actual theme
+  currentActualTheme = getActualTheme();
   reflectPreference();
 }
 
+function updateThemeButton() {
+  const btn = document.querySelector("#theme-btn");
+  if (!btn) return;
+  
+  // Update aria-label to show current mode
+  btn.setAttribute("aria-label", `Theme: ${themeMode} (${currentActualTheme})`);
+  
+  // Add data attribute for CSS styling
+  btn.setAttribute("data-theme-mode", themeMode);
+  
+  // Update title for better UX
+  const nextMode = themeMode === "auto" ? "light" : themeMode === "light" ? "dark" : "auto";
+  btn.setAttribute("title", `Switch to ${nextMode} mode`);
+}
+
 function reflectPreference() {
-  document.documentElement.setAttribute("data-theme", themeValue);
+  // Apply the actual theme
+  document.documentElement.setAttribute("data-theme", currentActualTheme);
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-
-  // Get a reference to the body element
+  // Update body color scheme
   const body = document.body;
-
-  // Check if the body element exists before using it
   if (body) {
-    // Set the `color-scheme` CSS property to the current theme
-    body.style.colorScheme = themeValue;
+    body.style.colorScheme = currentActualTheme;
   }
+  
+  // Update button state
+  updateThemeButton();
 }
 
 // set early so no page flashes / CSS is made aware
@@ -58,8 +70,15 @@ window.onload = () => {
 
     // now this script can find and listen for clicks on the control
     document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference(true); // true = manual change
+      // Cycle through: auto -> light -> dark -> auto
+      if (themeMode === "auto") {
+        themeMode = "light";
+      } else if (themeMode === "light") {
+        themeMode = "dark";
+      } else {
+        themeMode = "auto";
+      }
+      setPreference();
     });
   }
 
@@ -72,19 +91,10 @@ window.onload = () => {
 // sync with system changes
 window
   .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", ({ matches: isDark }) => {
-    const newSystemTheme = isDark ? "dark" : "light";
-    
-    // If user hasn't manually set theme, follow system
-    if (!userHasManuallySetTheme) {
-      themeValue = newSystemTheme;
-      setPreference(false); // false = system change
-    } else if (currentTheme === getSystemTheme()) {
-      // If user's manual choice now matches system, clear the manual flag
-      // This allows the theme to follow system again
-      localStorage.removeItem("themeSetManually");
-      userHasManuallySetTheme = false;
-      themeValue = newSystemTheme;
-      setPreference(false);
+  .addEventListener("change", () => {
+    // Only update if in auto mode
+    if (themeMode === "auto") {
+      currentActualTheme = getActualTheme();
+      reflectPreference();
     }
   });
