@@ -540,37 +540,3 @@ footer {
   color: var(--light-gray);
   font-size: 0.9rem;
 }
-
-/* Theme toggle button icons */
-#theme-btn[data-theme-mode="auto"] .theme-icon-auto {
-  scale: 1;
-  rotate: 0deg;
-}
-
-#theme-btn[data-theme-mode="auto"] .theme-icon-light,
-#theme-btn[data-theme-mode="auto"] .theme-icon-dark {
-  scale: 0;
-  rotate: 90deg;
-}
-
-#theme-btn[data-theme-mode="light"] .theme-icon-light {
-  scale: 1;
-  rotate: 0deg;
-}
-
-#theme-btn[data-theme-mode="light"] .theme-icon-auto,
-#theme-btn[data-theme-mode="light"] .theme-icon-dark {
-  scale: 0;
-  rotate: 90deg;
-}
-
-#theme-btn[data-theme-mode="dark"] .theme-icon-dark {
-  scale: 1;
-  rotate: 0deg;
-}
-
-#theme-btn[data-theme-mode="dark"] .theme-icon-auto,
-#theme-btn[data-theme-mode="dark"] .theme-icon-light {
-  scale: 0;
-  rotate: -90deg;
-}
