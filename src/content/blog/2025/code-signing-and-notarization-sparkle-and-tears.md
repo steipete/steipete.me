@@ -136,6 +136,8 @@ After two days of intense debugging, I finally had a working setup. My complete 
 
 ### The Working Configuration
 
+The XPC services themselves keep their original Sparkle bundle IDs (`org.sparkle-project.InstallerLauncher` and `org.sparkle-project.Downloader`). What we configure in the entitlements are the mach-lookup communication channels:
+
 ```xml
 <!-- VibeMeter.entitlements -->
 <key>com.apple.security.app-sandbox</key>
@@ -163,14 +165,19 @@ My complete build pipeline consists of several specialized scripts:
 Look at this beauty! Now even Claude can do releases without messing up 🎉 I just tell it "Create a new beta release, see release.md" and it handles everything.
 
 ```bash
-# Create a beta release
-./scripts/release.sh beta 1
+# Now create the release
+./scripts/release.sh stable        # For stable 1.1.0
+# OR
+./scripts/release.sh beta 1        # For 1.1.0-beta.1
 
-# Create a production release  
-./scripts/release.sh stable
+# Quick version management:
+# Use the version script to bump versions
+./scripts/version.sh --minor       # 1.0.0 -> 1.1.0
+./scripts/version.sh --major       # 1.0.0 -> 2.0.0
+./scripts/version.sh --set 1.1.0   # Set specific version
 ```
 
-Everything happens automatically - from building to GitHub release creation.
+Everything happens automatically - from building to GitHub release creation. These scripts are tuned for [Tuist](https://tuist.dev/) and can easily be adapted for simpler setups.
 
 ## The Notarization Nightmare
 
