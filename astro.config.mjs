@@ -13,6 +13,7 @@ import AstroPWA from "@vite-pwa/astro";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  trailingSlash: "never",
   markdown: {
     remarkPlugins: [
       remarkToc,
@@ -40,6 +41,11 @@ export default defineConfig({
         return true;
       },
       serialize: (item) => {
+        // Remove trailing slash from URL if present (except for root)
+        if (item.url.endsWith('/') && item.url !== SITE.website + '/') {
+          item.url = item.url.slice(0, -1);
+        }
+        
         const url = item.url;
         
         // Set defaults
@@ -53,18 +59,18 @@ export default defineConfig({
           item.lastmod = new Date().toISOString();
         }
         // Main section pages
-        else if (url.endsWith('/posts/') || url.endsWith('/about/') || url.endsWith('/search/')) {
+        else if (url.endsWith('/posts') || url.endsWith('/about') || url.endsWith('/search')) {
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }
         // Recent blog posts (2024-2025)
-        else if (url.includes('/posts/2025/') || url.includes('/posts/2024/')) {
+        else if (url.includes('/posts/2025') || url.includes('/posts/2024')) {
           item.priority = 0.8;
           item.changefreq = 'weekly';
         }
         // Somewhat recent posts (2020-2023)
-        else if (url.includes('/posts/2023/') || url.includes('/posts/2022/') || 
-                 url.includes('/posts/2021/') || url.includes('/posts/2020/')) {
+        else if (url.includes('/posts/2023') || url.includes('/posts/2022') || 
+                 url.includes('/posts/2021') || url.includes('/posts/2020')) {
           item.priority = 0.6;
           item.changefreq = 'monthly';
         }
@@ -79,7 +85,7 @@ export default defineConfig({
           item.changefreq = 'yearly';
         }
         // Pagination pages
-        else if (url.match(/\/page\/\d+\//)) {
+        else if (url.match(/\/page\/\d+$/)) {
           item.priority = 0.4;
           item.changefreq = 'weekly';
         }
