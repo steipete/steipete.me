@@ -172,7 +172,7 @@ And everything happens automatically - from building to GitHub release creation.
 
 ## The Notarization Nightmare
 
-Apple's notarization process adds another layer of complexity. Notarization is Apple's way of verifying your app is safe - you upload it to their servers, they scan it, and if approved, they \"staple\" a ticket to your app. The process typically takes a few minutes in Apple's notarization queue (officially called the \"processing queue\"). My [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) uses the modern [`notarytool`](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution) approach:
+Apple's notarization process adds another layer of complexity. Notarization verifies your app is safe - you upload it to Apple's servers for scanning, and if approved, they \"staple\" a ticket to your app. The process typically takes a few minutes in Apple's notarization queue (officially called the \"processing queue\"). The [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) uses the modern [`notarytool`](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution) approach:
 
 ```bash
 # Create ZIP for notarization (not DMG!)
@@ -197,7 +197,7 @@ xcrun stapler validate "$APP_BUNDLE"
 
 One challenge I hadn't anticipated was making the update dialogs actually useful. Sparkle can display rich HTML changelogs, but getting from my Markdown changelog to properly formatted HTML required some creativity.
 
-My [changelog-to-html.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/changelog-to-html.sh) extracts version-specific sections from `CHANGELOG.md` and converts them to HTML with what I call the "Poor Man's Markdown Parser":
+The [changelog-to-html.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/changelog-to-html.sh) extracts version-specific sections from `CHANGELOG.md` and converts them to HTML with what I call the "Poor Man's Markdown Parser":
 
 ```bash
 # Extract version section and convert Markdown to HTML
@@ -223,7 +223,7 @@ What emerged is a surprisingly elegant zero-infrastructure solution that leverag
 The app includes runtime logic to switch between update channels without reinstallation. Users can choose "stable" for production releases or "pre-release" for beta access, and the app dynamically points to the appropriate appcast URL.
 
 ### Automated Everything
-My [release.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) orchestrates the entire pipeline:
+The [release.sh script](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh) orchestrates the entire pipeline:
 1. Build and sign the app
 2. Create GitHub release with DMG
 3. Generate both appcast files with proper signatures
@@ -235,46 +235,48 @@ No separate hosting, no Jekyll setup, no additional infrastructure - just GitHub
 
 Here's how all the scripts work together:
 
-🚀 Main Release Flow ([release.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/release.sh))
+```
+🚀 Main Release Flow (release.sh)
 
 release.sh
-├── 1. [preflight-check.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) ────────────── Validates everything ready
-├── 2. [generate-xcproj.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-xcproj.sh) ────────────── Generates Xcode project
-├── 3. [build.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/build.sh) ──────────────────────── Builds app with IS_PRERELEASE_BUILD flag
-├── 4. [sign-and-notarize.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/sign-and-notarize.sh) ──────────── Signs & notarizes app
-│   ├── [codesign-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh) ─────────────── Code signs app bundle
-│   └── [notarize-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) ─────────────── Notarizes signed app
-├── 5. [create-dmg.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/create-dmg.sh) ─────────────────── Creates & signs DMG
+├── 1. preflight-check.sh ────────────── Validates everything ready
+├── 2. generate-xcproj.sh ────────────── Generates Xcode project
+├── 3. build.sh ──────────────────────── Builds app with IS_PRERELEASE_BUILD flag
+├── 4. sign-and-notarize.sh ──────────── Signs & notarizes app
+│   ├── codesign-app.sh ─────────────── Code signs app bundle
+│   └── notarize-app.sh ─────────────── Notarizes signed app
+├── 5. create-dmg.sh ─────────────────── Creates & signs DMG
 ├── 6. GitHub CLI (gh) ───────────────── Creates GitHub release
-├── 7. [generate-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-appcast.sh) ───────────── Updates appcast XML files
-└── 8. [verify-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-appcast.sh) ─────────────── Validates appcast (optional)
+├── 7. generate-appcast.sh ───────────── Updates appcast XML files
+└── 8. verify-appcast.sh ─────────────── Validates appcast (optional)
 
 🏗️ Development Flow
 
-[generate-xcproj.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/generate-xcproj.sh) ────────────────────── Generate project (after Project.swift changes)
-├── [format.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/format.sh) ────────────────────────── Format code
-├── [lint.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/lint.sh) ──────────────────────────── Lint code
-└── [build.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/build.sh) ─────────────────────────── Build & test
+generate-xcproj.sh ────────────────────── Generate project (after Project.swift changes)
+├── format.sh ────────────────────────── Format code
+├── lint.sh ──────────────────────────── Lint code
+└── build.sh ─────────────────────────── Build & test
 
 ✅ Verification Flow
 
-[preflight-check.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) ───────────────────── Pre-release validation
-└── [verify-prerelease-system.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-prerelease-system.sh) ──────── IS_PRERELEASE_BUILD system check
+preflight-check.sh ───────────────────── Pre-release validation
+└── verify-prerelease-system.sh ──────── IS_PRERELEASE_BUILD system check
 
-[verify-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-app.sh) ────────────────────────── Post-build verification
-[verify-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/verify-appcast.sh) ────────────────────── Appcast validation
+verify-app.sh ────────────────────────── Post-build verification
+verify-appcast.sh ────────────────────── Appcast validation
 
 🔐 Manual Signing Flow
 
-[sign-and-notarize.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/sign-and-notarize.sh)
-├── [codesign-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/codesign-app.sh) ──────────────────── Code sign app
-├── [notarize-app.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) ──────────────────── Notarize app
-└── [create-dmg.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/create-dmg.sh) ────────────────────── Create distribution DMG
+sign-and-notarize.sh
+├── codesign-app.sh ──────────────────── Code sign app
+├── notarize-app.sh ──────────────────── Notarize app
+└── create-dmg.sh ────────────────────── Create distribution DMG
 
 🛠️ Utility Scripts (Called by others)
 
-- [changelog-to-html.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/changelog-to-html.sh) ← Called by [update-appcast.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/update-appcast.sh)
-- [version.sh](https://github.com/steipete/VibeMeter/blob/main/scripts/version.sh) ← Standalone version management
+- changelog-to-html.sh ← Called by update-appcast.sh
+- version.sh ← Standalone version management
+```
 
 The key is that `release.sh` is the master orchestrator that calls most other scripts in sequence for a complete automated release.
 
@@ -289,7 +291,7 @@ The key is that `release.sh` is the master orchestrator that calls most other sc
 
 ## Performance and Reliability
 
-My final pipeline includes sophisticated error handling and retry logic. The [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) can handle temporary Apple server issues, and my [preflight checks](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) catch common mistakes before they become expensive failures.
+The final pipeline includes sophisticated error handling and retry logic. The [notarization script](https://github.com/steipete/VibeMeter/blob/main/scripts/notarize-app.sh) handles temporary Apple server issues, and the [preflight checks](https://github.com/steipete/VibeMeter/blob/main/scripts/preflight-check.sh) catch common mistakes before they become expensive failures.
 
 The entire process, from clean build to GitHub release, is now fully automated and takes just a few minutes. All I have to do is tell Claude "Create a new beta release, see release.md" and it takes care of everything, and verifies all steps.
 
