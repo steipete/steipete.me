@@ -25,7 +25,7 @@ div.post-content > img:first-child { display:none; }
 
 While working on our [PDF Viewer](https://pdfviewer.io) update for Big Sur and switching to the new Catalyst Mac Interface Idiom, I was greeted with a new exception coming directly from UIKit:
 
-```
+```text
 [General] UIStepper is not supported when running Catalyst apps in the Mac idiom.
 [General] (
 	0   CoreFoundation                      0x00007fff2067fbdf __exceptionPreprocess + 242
@@ -75,7 +75,7 @@ Internally, Apple uses a private `_UINSView` class to host an actual `NSView`. I
 
 If we look into the runtime, the class does pretty much what we’d expect (I omitted some less useful methods for the sake of brevity):
 
-```
+```text
 lldb) po [NSClassFromString(@"_UINSView") _shortMethodDescription]
 <_UINSView: 0x7fff86fac238>:
 in _UINSView:
@@ -90,14 +90,14 @@ Back to our crash — things make a bit more sense now. There’s no great equiv
 
 The problem: It isn’t documented which controls are disallowed, and what’s even more problematic is some controls are allowed, but customizations are disallowed. What does `UISlider` map toward? We can get the pointer from the visual debugger and then use our knowledge of the class structure to call directly into the AppKit view:
 
-```
+```text
 (lldb) po [0x7f9503c488f0 contentNSView]
 <NSSlider: 0x7f9503c37a40>
 ```
 
 `NSSlider` is the obvious choice, however, the Mac version lacks the appearance customization options UIKit has. Calling any of these customization methods will simply throw (crash) at runtime:
 
-```
+```text
 setMinimumTrackImage:forState: is not supported on PSPDFBrightnessSlider when running Catalyst apps in the Mac idiom.
  (
 	0   CoreFoundation                      0x00007fff2067fbdf __exceptionPreprocess + 242
@@ -158,7 +158,7 @@ The [dyld-shared-cache-big-sur project](https://github.com/antons/dyld-shared-ca
 
 Using this project, we can extract the dyld cache into a folder:
 
-```
+```bash
 ./dyld_shared_cache_util -extract ~/Developer/macOS\ Big\ Sur /System/Library/dyld/dyld_shared_cache_x86_64
 ```
 

@@ -15,8 +15,9 @@ type Props = CollectionEntry<"blog">["data"] & {
 const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } =
   Astro.props;
 
-// Enforce canonical URL to always be /posts/ path
-const canonicalPath = `/posts/${slug}/`;
+// Enforce canonical URL to always be /posts/ path without trailing slash
+// This matches Vercel's trailingSlash: false configuration
+const canonicalPath = `/posts/${slug}`;
 const canonicalURL = new URL(canonicalPath, Astro.site);
 ---
 

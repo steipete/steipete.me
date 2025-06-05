@@ -26,7 +26,7 @@ Installing ccache is simple: `brew install ccache` does the job (assuming [Homeb
 
 To make Xcode aware of ccache, we’ll use a small script that configures some environment variables then invokes ccache. Save this somewhere in your project and name it `ccache-clang`.
 
-```
+```bash
 #!/bin/sh
 if type -p ccache >/dev/null 2>&1; then
   export CCACHE_MAXSIZE=10G
@@ -61,7 +61,7 @@ It’s not all golden: ccache comes with a few downsides. There is **no support 
 
 It’s always a good idea to check the ccache status during compile runs to see if any project emits incompatible flags. See the “unsupported compiler option” option. It took me quite a while to clean all our projects up. Setting the `CCACHE_LOGFILE` environment variable temporarily can be extremely helpful to see exactly what is wrong: ccache will tell you what flags it doesn’t like and when cache hits and misses are occuring.
 
-```
+```text
 steipete@steipete-rmbp ~ $ ccache -s
 cache directory                     /Users/steipete/.ccache
 primary config                      /Users/steipete/.ccache/ccache.conf
