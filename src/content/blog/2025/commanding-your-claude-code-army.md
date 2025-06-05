@@ -71,3 +71,9 @@ When I run `cly`, my terminal title changes from `~/Projects/blog` to `📁 blog
 > *Hot tip: Just ask Claude to read this blog post and set it up for you! (in yolo mode, of course)*
 
 Now if you'll excuse me, I need to check on my Claude instances. I think one of them is refactoring my entire codebase without asking. Again.
+
+<style>
+  article img:first-of-type {
+    border: none !important;
+  }
+</style>
