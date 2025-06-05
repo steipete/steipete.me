@@ -49,15 +49,15 @@
   html[data-theme="light"] pre:has(code) span,
   :root pre:has(code),
   :root pre:has(code) span {
-    /* Darken comment colors by ~15% for better contrast */
-    --shiki-color-comment: #5a6268;
-    --shiki-token-comment: #5a6268;
+    /* Darken comment colors by ~30% total for better contrast */
+    --shiki-color-comment: #495057;
+    --shiki-token-comment: #495057;
   }
 
   /* Override inline styles for comments in light mode */
   html[data-theme="light"] pre code span[style*="color:#6C757D"],
   :root pre code span[style*="color:#6C757D"] {
-    color: #5a6268 !important;
+    color: #495057 !important;
   }
 
   /* Apply Dark Theme (if multi-theme specified) */

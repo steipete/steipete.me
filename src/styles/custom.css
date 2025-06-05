@@ -260,7 +260,7 @@ pre code {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #5a6268; /* Darkened by ~15% from #6c757d */
+  color: #495057; /* Darkened by ~30% total from #6c757d */
 }
 
 .token.punctuation {
@@ -317,11 +317,11 @@ pre code {
 
 /* Light mode Shiki syntax highlighting overrides for better contrast */
 .astro-code:not(.github-dark) {
-  /* Comments - darken by ~15% */
-  --shiki-token-comment: #5a6268;
-  --shiki-token-prolog: #5a6268;
-  --shiki-token-doctype: #5a6268;
-  --shiki-token-cdata: #5a6268;
+  /* Comments - darken by ~30% total */
+  --shiki-token-comment: #495057;
+  --shiki-token-prolog: #495057;
+  --shiki-token-doctype: #495057;
+  --shiki-token-cdata: #495057;
   
   /* Other token colors with increased contrast */
   --shiki-token-punctuation: #1a1a1a;
@@ -358,7 +358,7 @@ pre code {
 
 /* Apply overrides to Shiki-generated spans */
 .astro-code:not(.github-dark) span[style*="color:#6C757D"] {
-  color: #5a6268 !important;
+  color: #495057 !important;
 }
 
 .dark pre {
