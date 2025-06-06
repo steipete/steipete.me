@@ -13,7 +13,9 @@
   async function handleThemeToggle() {
     // Use View Transitions API if available (Safari 18+, Chrome 111+)
     if (document.startViewTransition) {
-      await document.startViewTransition(() => toggleTheme());
+      await document.startViewTransition(() => {
+        toggleTheme();
+      });
     } else {
       // Fallback for browsers without View Transitions API
       toggleTheme();
