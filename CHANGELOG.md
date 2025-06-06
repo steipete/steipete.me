@@ -12,6 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Root pages: `/about.md`
 - Raw markdown served with `Content-Type: text/plain` and proper caching headers
 
+### Fixed
+- Slow theme switching animation on iPhone Safari (#122)
+  - Removed universal CSS transitions that caused performance issues
+  - Targeted only elements that actually change during theme switching
+  - Added hardware acceleration for iOS Safari using transform3d
+
 ## [2025-01-06]
 
 ### Changed
