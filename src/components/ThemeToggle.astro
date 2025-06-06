@@ -10,6 +10,16 @@
     localStorage.setItem("theme", theme);
   }
 
+  async function handleThemeToggle() {
+    // Use View Transitions API if available (Safari 18+, Chrome 111+)
+    if (document.startViewTransition) {
+      await document.startViewTransition(() => toggleTheme());
+    } else {
+      // Fallback for browsers without View Transitions API
+      toggleTheme();
+    }
+  }
+
   // Check localStorage first, then fallback to system preferences
   const storedTheme = localStorage.getItem("theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -22,7 +32,7 @@
   }
 
   const button = document.getElementById("theme-toggle");
-  button?.addEventListener("click", toggleTheme);
+  button?.addEventListener("click", handleThemeToggle);
 </script>
 
 <button
