@@ -76,7 +76,18 @@ window.onload = () => {
     // now this script can find and listen for clicks on the control
     document.querySelector("#theme-btn")?.addEventListener("click", () => {
       themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference(true); // true = manual change
+      
+      // Use View Transitions API if available
+      if (!document.startViewTransition) {
+        // Fallback for browsers that don't support View Transitions
+        setPreference(true); // true = manual change
+        return;
+      }
+      
+      // Use View Transitions for smooth theme switching
+      document.startViewTransition(() => {
+        setPreference(true); // true = manual change
+      });
     });
   }
 

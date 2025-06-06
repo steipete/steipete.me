@@ -53,46 +53,41 @@ html[data-theme="dark"] {
     scrollbar-color: var(--color-muted) transparent;
   }
   
-  /* Target only elements that actually change during theme switching */
-  body,
-  html,
-  a,
-  button,
-  h1, h2, h3, h4, h5, h6,
-  p, span, div,
-  pre, code,
-  input, textarea, select,
-  th, td,
-  .nav-link,
-  .social-links a,
-  .pagination a,
-  .post-title,
-  .post-meta,
-  .post-content,
-  .dark {
-    transition: color 0.2s ease-in-out, 
-                background-color 0.2s ease-in-out,
-                border-color 0.2s ease-in-out;
+  /* View Transitions API for smooth theme switching (Safari 18+, Chrome 111+) */
+  :root {
+    view-transition-name: root;
   }
   
-  /* Fast color transitions for elements containing SVG icons */
-  button:has(svg),
-  a:has(svg) {
-    transition: color 0.05s ease-in-out !important;
+  /* Apply to html element as well for better compatibility */
+  html {
+    view-transition-name: root;
   }
   
-  /* Prevent SVG elements from having their own transitions */
-  svg, svg * {
-    transition: none !important;
+  /* Ensure smooth transition between light and dark themes */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.25s;
   }
   
-  /* Force hardware acceleration on iOS Safari */
-  @supports (-webkit-touch-callout: none) {
-    body {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
+  /* Customize the transition style */
+  ::view-transition-old(root) {
+    animation: fade-out 0.25s ease-out;
   }
+  
+  ::view-transition-new(root) {
+    animation: fade-in 0.25s ease-out;
+  }
+  
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
   html {
     @apply overflow-y-scroll scroll-smooth;
   }

@@ -2,12 +2,37 @@
 
 ---
 
+<style>
+  [data-theme="light"] .moon-icon,
+  [data-theme="dark"] .sun-icon {
+    display: none;
+  }
+  
+  [data-theme="light"] .sun-icon,
+  [data-theme="dark"] .moon-icon {
+    display: block;
+  }
+</style>
+
 <script>
   function toggleTheme() {
     const html = document.documentElement;
-    const theme = html.classList.contains("dark") ? "light" : "dark";
-    html.classList.toggle("dark");
-    localStorage.setItem("theme", theme);
+    const currentTheme = html.getAttribute("data-theme") || "light";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  }
+
+  async function handleThemeToggle() {
+    // Use View Transitions API if available (Safari 18+, Chrome 111+)
+    if (document.startViewTransition) {
+      await document.startViewTransition(() => {
+        toggleTheme();
+      });
+    } else {
+      // Fallback for browsers without View Transitions API
+      toggleTheme();
+    }
   }
 
   // Check localStorage first, then fallback to system preferences
@@ -15,14 +40,10 @@
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const theme = storedTheme || (prefersDark ? "dark" : "light");
 
-  if (theme === "dark") {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
+  document.documentElement.setAttribute("data-theme", theme);
 
   const button = document.getElementById("theme-toggle");
-  button?.addEventListener("click", toggleTheme);
+  button?.addEventListener("click", handleThemeToggle);
 </script>
 
 <button
@@ -36,7 +57,7 @@
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    class="h-5 w-5 dark:hidden"
+    class="sun-icon h-5 w-5"
   >
     <path
       stroke-linecap="round"
@@ -50,7 +71,7 @@
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    class="hidden h-5 w-5 dark:block"
+    class="moon-icon h-5 w-5"
   >
     <path
       stroke-linecap="round"

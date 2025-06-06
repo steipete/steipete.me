@@ -1,5 +1,5 @@
 ---
-import { ClientRouter } from "astro:transitions";
+import { ViewTransitions } from "astro:transitions";
 import { SITE } from "@/config";
 import "@/styles/global.css";
 import Analytics from "@/components/Analytics.astro";
@@ -54,6 +54,7 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="view-transition" content="same-origin" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -126,7 +127,7 @@ const structuredData = {
       )
     }
 
-    <ClientRouter />
+    <ViewTransitions />
 
     <script is:inline src="/toggle-theme.js"></script>
     
