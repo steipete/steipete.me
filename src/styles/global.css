@@ -88,16 +88,6 @@ html[data-theme="dark"] {
     to { opacity: 1; }
   }
   
-  /* Keep minimal transitions only for interactive elements */
-  a,
-  button {
-    transition: opacity 0.15s ease-in-out;
-  }
-  
-  /* Prevent SVG elements from having transitions */
-  svg, svg * {
-    transition: none !important;
-  }
   html {
     @apply overflow-y-scroll scroll-smooth;
   }
