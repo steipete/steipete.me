@@ -51,7 +51,28 @@ html[data-theme="dark"] {
     @apply border-border outline-accent/75;
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
-    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  }
+  
+  /* Target only elements that actually change during theme switching */
+  body,
+  html,
+  a,
+  button,
+  h1, h2, h3, h4, h5, h6,
+  p, span, div,
+  pre, code,
+  input, textarea, select,
+  th, td,
+  .nav-link,
+  .social-links a,
+  .pagination a,
+  .post-title,
+  .post-meta,
+  .post-content,
+  .dark {
+    transition: color 0.2s ease-in-out, 
+                background-color 0.2s ease-in-out,
+                border-color 0.2s ease-in-out;
   }
   
   /* Fast color transitions for elements containing SVG icons */
@@ -63,6 +84,14 @@ html[data-theme="dark"] {
   /* Prevent SVG elements from having their own transitions */
   svg, svg * {
     transition: none !important;
+  }
+  
+  /* Force hardware acceleration on iOS Safari */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
