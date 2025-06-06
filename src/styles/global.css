@@ -58,6 +58,11 @@ html[data-theme="dark"] {
     view-transition-name: root;
   }
   
+  /* Apply to html element as well for better compatibility */
+  html {
+    view-transition-name: root;
+  }
+  
   /* Ensure smooth transition between light and dark themes */
   ::view-transition-old(root),
   ::view-transition-new(root) {
