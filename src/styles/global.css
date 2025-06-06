@@ -51,6 +51,18 @@ html[data-theme="dark"] {
     @apply border-border outline-accent/75;
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  }
+  
+  /* Fast color transitions for elements containing SVG icons */
+  button:has(svg),
+  a:has(svg) {
+    transition: color 0.05s ease-in-out !important;
+  }
+  
+  /* Prevent SVG elements from having their own transitions */
+  svg, svg * {
+    transition: none !important;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
