@@ -167,28 +167,6 @@ PEEKABOO_AI_PROVIDERS="ollama/llava:latest" npx @modelcontextprotocol/inspector 
 
 This sets up Peekaboo with Ollama's LLaVA model and launches the MCP Inspector for immediate testing. Perfect for exploring the visual question answering capabilities in real-time.
 
-## The Vision: Autonomous Agent Debugging
-
-Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help agents stay in the loop. The goal is simple: if an agent can answer questions by itself, you don't have to intervene and it can simply continue and debug itself. This is the holy grail for building applications with CI - you want to do everything so the agent can loop and work until what you want is done.
-
-When your build fails, when your UI doesn't look right, when something breaks - instead of stopping and asking you "what do you see?", the agent can take a screenshot, analyze it, and continue fixing the problem autonomously. That's the power of giving agents their eyes.
-
-## My MCP Ecosystem
-
-Peekaboo is part of a growing collection of MCP servers I'm building:
-
-- **🧠 [claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Integrates Claude Code into Cursor and other agents, providing a buddy for offloading tasks or getting a second opinion when stuck
-- **🎯 [macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Run AppleScript and JXA (JavaScript for Automation) on macOS
-- **🤖 [Terminator](https://github.com/steipete/Terminator)** - External terminal so agents don't get stuck waiting on commands that never return
-
-Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
-
-## Swift Testing Migration
-
-With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
-
-One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
-
 ## Installation
 
 ```json
@@ -219,5 +197,27 @@ ollama pull llava:latest
 LLaVA is currently one of the most capable local vision models available through Ollama for screenshot analysis.
 
 **GitHub Repository**: [steipete/Peekaboo](https://github.com/steipete/Peekaboo)
+
+## The Vision: Autonomous Agent Debugging
+
+Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help agents stay in the loop. The goal is simple: if an agent can answer questions by itself, you don't have to intervene and it can simply continue and debug itself. This is the holy grail for building applications with CI - you want to do everything so the agent can loop and work until what you want is done.
+
+When your build fails, when your UI doesn't look right, when something breaks - instead of stopping and asking you "what do you see?", the agent can take a screenshot, analyze it, and continue fixing the problem autonomously. That's the power of giving agents their eyes.
+
+## My MCP Ecosystem
+
+Peekaboo is part of a growing collection of MCP servers I'm building:
+
+- **🧠 [claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Integrates Claude Code into Cursor and other agents, providing a buddy for offloading tasks or getting a second opinion when stuck
+- **🎯 [macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Run AppleScript and JXA (JavaScript for Automation) on macOS
+- **🤖 [Terminator](https://github.com/steipete/Terminator)** - External terminal so agents don't get stuck waiting on commands that never return
+
+Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
+
+## Swift Testing Migration
+
+With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
+
+One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
 
 Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
