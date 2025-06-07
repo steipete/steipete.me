@@ -102,8 +102,8 @@ Why the mix of TypeScript and Swift? Because [TypeScript has the best MCP suppor
 Here's what makes Peekaboo technically interesting:
 
 **🏗️ Hybrid Architecture**
-- [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli) + [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src) working in harmony
-- [Universal binary build script](https://github.com/steipete/Peekaboo/blob/main/build-universal.sh) creates optimized ARM64/x86_64 binaries
+- [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli/Sources/peekaboo) + [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src) working in harmony
+- [Universal binary build script](https://github.com/steipete/Peekaboo/blob/main/scripts/build-swift-universal.sh) creates optimized ARM64/x86_64 binaries
 - Bridges native macOS APIs with modern AI workflows
 
 **📸 Modern Screenshot Technology**
