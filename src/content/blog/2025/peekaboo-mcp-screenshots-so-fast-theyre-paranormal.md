@@ -73,9 +73,11 @@ The same principle applies to app names - partial matches work, case doesn't mat
 
 ## From AppleScript to Swift
 
-I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
+I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but AppleScript had a fatal flaw: it requires focus changes. To capture a window, I had to bring it to the foreground, screenshot the entire screen, then crop out just the application. This was incredibly disruptive - imagine typing and suddenly your focus jumps to another window because the AI needs a screenshot. Trust me, I tried it, and it's really annoying.
 
-The legacy AppleScript version is still available in the repository for reference, but the performance and maintainability improvements of the Swift rewrite make it clear why the migration was necessary.
+Beyond the user experience nightmare, AppleScript is slow and quickly became unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is my complete rewrite using Swift, which can access the window manager directly and capture any window without focus changes. The user never knows a screenshot was taken - exactly how it should be.
+
+The legacy AppleScript version is still available in the repository for reference, but the performance and user experience improvements of the Swift rewrite make it clear why the migration was necessary.
 
 ## Local vs Cloud: The Vision Model Showdown
 
@@ -174,14 +176,28 @@ One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For mo
 
 ### Manual Installation
 
-From [npm](https://www.npmjs.com/package/@steipete/peekaboo-mcp):
-```bash
-npm install -g @steipete/peekaboo-mcp
+Add to your MCP configuration file (`~/.cursor/mcp.json` or `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "peekaboo": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@steipete/peekaboo-mcp"
+      ],
+      "env": {
+        "PEEKABOO_AI_PROVIDERS": "ollama/llava:latest"
+      }
+    }
+  }
+}
 ```
 
-Or use directly with npx:
+Or install globally from [npm](https://www.npmjs.com/package/@steipete/peekaboo-mcp):
 ```bash
-npx @steipete/peekaboo-mcp
+npm install -g @steipete/peekaboo-mcp
 ```
 
 ### Setting Up Ollama
