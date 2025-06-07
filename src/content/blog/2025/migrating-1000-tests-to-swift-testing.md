@@ -188,7 +188,7 @@ struct CurrencyConversionTests {
 }
 ```
 
-The beauty? `CustomTestStringConvertible` makes each test case self-documenting in the test navigator with descriptions like "$100.0 × 0.85 → $85.0 (USD to EUR conversion)" instead of generic object names. Test failures become instantly readable, and we can test edge cases (nil, infinity, NaN) in a single elegant test.
+The beauty? [`CustomTestStringConvertible`](https://developer.apple.com/documentation/testing/customteststringconvertible) makes each test case self-documenting in the test navigator with descriptions like "$100.0 × 0.85 → $85.0 (USD to EUR conversion)" instead of generic object names. Test failures become instantly readable, and we can test edge cases (nil, infinity, NaN) in a single elegant test.
 
 ### 3. Instance Isolation Simplifies State Management
 
