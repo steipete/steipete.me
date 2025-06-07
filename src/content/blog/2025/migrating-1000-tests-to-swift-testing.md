@@ -15,9 +15,9 @@ tags:
   - macOS
 ---
 
-**TL;DR**: I let Claude Code convert 1,000+ tests to Swift Testing, watched it fail spectacularly, created an AI-generated playbook, then watched it succeed brilliantly. The difference? Better instructions.
+**TL;DR**: I let Claude Code convert 700+ tests to Swift Testing, watched it fail spectacularly, created an AI-generated playbook, then watched it succeed brilliantly. The difference? Better instructions.
 
-I've been migrating my test suites from XCTest to [Swift Testing](https://developer.apple.com/xcode/swift-testing/). Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
+I've been migrating my test suites from XCTest to [Swift Testing](https://developer.apple.com/xcode/swift-testing/). Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 700 tests across 118 files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
 
 ## The Initial Attempt
 
@@ -39,7 +39,7 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 ## Creating a Systematic Approach
 
-Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [*Meet Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10179/) and [*Go further with Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
+Instead of manually fixing 700 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [*Meet Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10179/) and [*Go further with Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
 
 But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) (affiliate link, I need moar credits!), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
 
@@ -391,17 +391,17 @@ Swift Testing's [`confirmation()`](https://developer.apple.com/documentation/tes
 ```swift
 @Test("Multi-step debouncer lifecycle")
 func multiStepDebouncerLifecycle() async throws {
-    try await confirmation("Complete lifecycle", expectedCount: 3) { confirm in
+    try await confirmation("Complete lifecycle", expectedCount: 3) { confirmation in
         // Step 1: Initial call
-        debouncer.call { confirm() }
+        debouncer.call { confirmation() }
         try await Task.sleep(for: .milliseconds(70))
         
         // Step 2: Second call after first completes
-        debouncer.call { confirm() }
+        debouncer.call { confirmation() }
         try await Task.sleep(for: .milliseconds(70))
         
         // Step 3: Final verification
-        confirm()
+        confirmation()
     }
 }
 ```
@@ -422,17 +422,6 @@ func externalAPITest() async throws {
 }
 ```
 
-### Silence Those Annoying Warnings
-
-Quick tip that'll save you from compiler nagging:
-
-```swift
-// Before: Compiler warning about literal true
-#expect(true)
-
-// After: Explicit Bool conversion silences warning
-#expect(Bool(true))
-```
 
 ## The Results
 
@@ -456,7 +445,7 @@ func testCurrencyConversion() {
     XCTAssertEqual(convert(100, rate: 0.85), 85.0, accuracy: 0.01)
 }
 
-// After: Swift Testing (4 lines)
+// After: Swift Testing (5 lines)
 @Test("Currency conversion with EUR rate", .tags(.currency))
 func currencyConversionEUR() {
     let result = convert(amount: 100.0, rate: 0.85)
