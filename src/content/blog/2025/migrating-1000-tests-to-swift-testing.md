@@ -19,7 +19,12 @@ I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe M
 
 ## The Initial Attempt
 
-My first approach was straightforward: let Claude Code handle the mechanical conversion. The initial results were... technically correct. The tests compiled. They even passed. But looking at the code, it was clear this was just XCTest with different syntax.
+My first move? Pure laziness:
+
+> Hey Claude Code, convert all these tests to swift-testing.  
+> I'll go make coffee.
+
+The initial results were... technically correct. The tests compiled. They even passed. But looking at the code, it was clear this was just XCTest with different syntax.
 
 The AI had converted:
 - `XCTestCase` classes to `@Suite` structs
