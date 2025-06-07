@@ -453,12 +453,23 @@ Quick tip that'll save you from compiler nagging:
 
 Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steipete/VibeMeter/pull/28), [Code Looper PR #8](https://github.com/steipete/CodeLooper/pull/8)), the transformation is dramatic:
 
-- **62% fewer test files** (61 → 23 files) through intelligent consolidation
-- **+1,006 lines of enhanced test code** with richer assertions and patterns
-- **Zero test duplication** thanks to parameterized tests  
+**Combined Results:**
+- **46% fewer test files** (91 → 49 files) through intelligent consolidation
+- **+3,258 lines of enhanced test code** across both projects
+  - Vibe Meter: 61 → 23 files, +1,006 lines  
+  - Code Looper: 30 → 26 files, +2,252 lines
+- **Zero test duplication** thanks to parameterized tests
 - **Hierarchical organization** that actually makes sense in Xcode's navigator
 - **Bulletproof error handling** with specific exception types
 - **CI that doesn't hang** with proper timeouts on every async test
+
+**Why more lines of code?** Swift Testing prioritizes maintainability over brevity. The increase comes from:
+- **Expressive syntax**: `#expect(result.isApproximatelyEqual(to: 85.0, tolerance: 0.01))` vs `XCTAssertEqual(result, 85.0, accuracy: 0.01)`  
+- **Explicit test cases**: Parameterized tests use structured test case types instead of manual loops
+- **Rich metadata**: Tests include descriptive names, tags, and time limits for better organization
+- **Better coverage**: Enhanced async patterns and comprehensive error handling
+
+This represents quality improvement, not bloat - moving from cryptic but compact tests to self-documenting, maintainable test suites.
 
 ## Key Takeaways
 
