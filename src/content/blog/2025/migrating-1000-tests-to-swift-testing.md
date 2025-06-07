@@ -49,7 +49,7 @@ So I ended up with [two documents](https://gist.github.com/steipete/84a5952c22e1
 
 I fed both into [Google's AI Studio](https://aistudio.google.com/), asked it to correct the outdated API references, and let Gemini compile everything into a comprehensive [Swift Testing resource](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) with both the API documentation and actionable migration patterns.
 
-**Why go through all this effort?** Swift Testing is new and underrepresented in open source compared to mature ecosystems like TypeScript/React where AI has absorbed countless examples. For emerging Swift technologies, you need to explicitly provide the knowledge that doesn't exist in the training data yet.
+**Why go through all this effort?** Swift Testing is new and underrepresented in open source compared to mature ecosystems like TypeScript/React where AI has absorbed countless examples. For emerging technologies, you need to explicitly provide the knowledge that doesn't exist in the training data yet.
 
 The key insight: AI needs concrete patterns and examples, not just documentation. This playbook became my guide for teaching Claude Code how to write *idiomatic* Swift Testing code, providing:
 - Migration patterns with before/after examples
@@ -349,31 +349,6 @@ do {
 }
 ```
 
-### Eliminating Meaningless Assertions
-
-Found a lot of these gems during migration:
-
-```swift
-// Before: The "please don't crash" test
-@Test("Sound engine play user alert sound")
-func soundEnginePlayUserAlertSound() async throws {
-    SoundEngine.play(.userAlert)
-    #expect(true) // If we get here, the call didn't crash
-}
-
-// After: Actually test something useful
-@Test("System sound enum pattern matching")
-func systemSoundEnumCases() async throws {
-    let userAlert = SystemSound.userAlert
-    
-    switch userAlert {
-    case .userAlert:
-        #expect(Bool(true)) // Explicit bool to silence warnings
-    case .named:
-        Issue.record("Expected userAlert case, got named case")
-    }
-}
-```
 
 ### Memory Leak Detection Built Right In
 
