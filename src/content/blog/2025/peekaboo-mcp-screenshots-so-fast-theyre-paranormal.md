@@ -191,30 +191,17 @@ One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For mo
 
 ## Installation
 
-### Manual Installation
-
-Add to your MCP configuration file (`~/.cursor/mcp.json` or `.cursor/mcp.json`):
-
 ```json
-{
-  "mcpServers": {
-    "peekaboo": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@steipete/peekaboo-mcp"
-      ],
-      "env": {
-        "PEEKABOO_AI_PROVIDERS": "ollama/llava:latest"
-      }
-    }
+"peekaboo": {
+  "command": "npx",
+  "args": [
+    "-y",
+    "@steipete/peekaboo-mcp"
+  ],
+  "env": {
+    "PEEKABOO_AI_PROVIDERS": "ollama/llava:latest"
   }
 }
-```
-
-Or install globally from [npm](https://www.npmjs.com/package/@steipete/peekaboo-mcp):
-```bash
-npm install -g @steipete/peekaboo-mcp
 ```
 
 ### Setting Up Ollama
