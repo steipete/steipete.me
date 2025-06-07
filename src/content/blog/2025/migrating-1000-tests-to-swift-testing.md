@@ -21,7 +21,7 @@ I've been migrating my test suites from XCTest to [Swift Testing](https://develo
 
 ## The Initial Attempt
 
-My first move? Pure laziness:
+Started with the laziest possible prompt:
 
 > Hey Claude Code, convert all these tests to swift-testing.  
 > I'll go make coffee.
@@ -61,13 +61,13 @@ The key insight: AI needs concrete patterns and examples, not just documentation
 
 With the playbook in hand, I gave Claude Code new instructions:
 
-> Read swift-testing-playbook.md and improve & refactor the tests. Periodically stop, compile, fix any build issues, commit, ensure everything is green locally and on CI, then continue until perfection.
+> Read `swift-testing-playbook.md` and improve & refactor the tests. Periodically stop, compile, fix any build issues, commit, ensure everything is green locally and on CI, then continue until perfection.
 
 **Plot twist**: The first time I tried this, Claude got creative and started implementing [new test patterns from the playbook](https://github.com/steipete/CodeLooper/pull/8/commits/d1bb7ba75dfefc821d24d5cfff6c785cd92f9079) instead of converting existing tests. I had to clarify:
 
 ![Claude getting carried away with implementing test patterns instead of converting existing tests](/assets/img/2025/migrating-1000-tests-to-swift-testing/claude-being-dumb.png)
 
-> Read swift-testing-playbook.md and swift-testing-api.md and refactor the **existing** tests in this codebase to use Swift Testing patterns.
+> Read `swift-testing-playbook.md` and `swift-testing-api.md` and refactor the **existing** tests in this codebase to use Swift Testing patterns.
 
 Lesson learned: Be very specific with AI instructions. "Improve tests using these patterns" can mean "create new tests" or "convert existing tests." The difference matters when you have existing test coverage to preserve.
 
