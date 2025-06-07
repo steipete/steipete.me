@@ -187,3 +187,5 @@ The combination of AI assistance and systematic refinement made this large-scale
 ---
 
 *The playbook and full migration history are available in the linked pull requests for those interested in the details.*
+
+**P.S.** - If you're still manually converting XCTestExpectation to confirmations, stop. Make AI do it. Just give it better instructions than I did.
