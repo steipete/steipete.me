@@ -117,11 +117,7 @@ After extensive testing, here are the best local vision models for Peekaboo:
 
 **[LLaVA](https://ollama.com/library/llava) (Large Language and Vision Assistant)**
 - **Default recommendation**: Best overall quality for vision tasks
-- Available sizes: 7b, 13b, 34b
-- Resource requirements:
-  - `llava:7b`: ~4.5GB download, ~8GB RAM
-  - `llava:13b`: ~8GB download, ~16GB RAM  
-  - `llava:34b`: ~20GB download, ~40GB RAM
+- Available sizes: 7b (8GB RAM), 13b (16GB RAM), 34b (40GB RAM)
 
 **[Qwen2-VL](https://ollama.com/library/qwen2-vl)**
 - **Best for resource-constrained systems**: Excellent performance with lower requirements
