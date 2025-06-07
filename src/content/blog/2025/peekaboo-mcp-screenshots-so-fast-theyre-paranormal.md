@@ -102,41 +102,29 @@ Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support
 
 ## Technical Highlights
 
-The Peekaboo project has several fascinating technical aspects that make it a compelling example of modern AI-enabled developer tooling:
+Here's what makes Peekaboo technically interesting:
 
-**🏗️ Hybrid Architecture Marvel**
-- Swift CLI + Node.js MCP server + AI vision models working together
-- Universal binary (ARM64/x86_64) with aggressive size optimization using lipo and strip
+**🏗️ Hybrid Architecture**
+- [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli) + [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src) working in harmony
+- [Universal binary build script](https://github.com/steipete/Peekaboo/blob/main/build-universal.sh) creates optimized ARM64/x86_64 binaries
 - Bridges native macOS APIs with modern AI workflows
 
-**📸 Advanced Screenshot Technology**
-- Uses ScreenCaptureKit (macOS 14+) with automatic shadow/frame exclusion
+**📸 Modern Screenshot Technology**
+- Uses Apple's [ScreenCaptureKit](https://developer.apple.com/documentation/screencapturekit) (macOS 14+) for efficient capture
+- Automatic shadow/frame exclusion for clean screenshots
 - Smart window targeting with fuzzy app matching
-- Multiple capture modes (screens, windows, specific apps)
 
-**🤖 AI Provider Abstraction**
-- Auto-fallback system across multiple AI providers (Ollama, OpenAI)
+**🤖 AI Provider Magic**
+- Auto-fallback system across multiple AI providers (Ollama → OpenAI)
 - Local LLaVA models + cloud GPT-4o vision in one unified interface
-- Environment-driven provider configuration
-
-**🔐 Permission Management Excellence**
-- Proactive Screen Recording + Accessibility permission checking
-- Graceful degradation with clear error codes and user guidance
-- Different permission models for different capture scenarios
+- Zero configuration needed - just works out of the box
 
 **🌉 Clever Protocol Bridge**
-- Node.js server translates between MCP JSON-RPC and Swift CLI JSON
-- Maintains type safety with Zod schemas
-- Stateless CLI design for crash resilience and clean resource management
+- Node.js translates between MCP JSON-RPC and Swift CLI JSON
+- Stateless CLI design for crash resilience
+- Type safety with Zod schemas throughout
 
-**🛠️ Production-Ready Polish**
-- Structured JSON logging with multi-layer debug capabilities
-- Comprehensive testing (unit, integration, E2E with mock AI providers)
-- Smart temporary file management and Base64 encoding strategies
-
-The most clever aspect is how it makes AI assistants "see" your screen through a chain of: macOS APIs → Swift CLI → Node.js bridge → MCP protocol → AI models, all while handling permissions, errors, and multiple AI providers seamlessly.
-
-This represents a sophisticated example of building AI-enabled developer tools that respect system boundaries while providing powerful capabilities.
+The magic happens through this elegant chain: macOS ScreenCaptureKit → Swift CLI → Node.js bridge → MCP protocol → AI models. Each component does one thing well, resulting in a system that's both powerful and maintainable.
 
 ## Testing with MCP Inspector
 
