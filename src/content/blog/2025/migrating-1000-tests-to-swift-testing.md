@@ -37,9 +37,9 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. The [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) session was eye-opening.
 
-After absorbing Apple's wisdom and reading various blog posts, I compiled everything into a comprehensive playbook that became my guide for teaching AI how to write *idiomatic* Swift Testing code.
+But here's where it gets interesting. I took the WWDC video transcript, content from various blog posts, and code snippets that seemed important, fed everything into Google's AI Studio, and let Gemini compile a comprehensive `swift-testing-playbook.md` document with actionable items.
 
-The key insight: AI needs concrete patterns and examples, not just documentation. The playbook provided:
+The key insight: AI needs concrete patterns and examples, not just documentation. This playbook became my guide for teaching Claude Code how to write *idiomatic* Swift Testing code, providing:
 - Migration patterns with before/after examples
 - Best practices for each Swift Testing feature
 - Common pitfalls and how to avoid them
