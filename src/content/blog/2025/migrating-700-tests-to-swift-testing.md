@@ -467,6 +467,12 @@ This represents quality improvement, not bloat. Moving from cryptic but compact 
 
 4. **Migration reveals test quality issues**: This wasn't just a syntax conversion. It was an opportunity to improve test architecture.
 
+## Additional AI Resources for Swift Testing
+
+For Cursor users, there's the [@Docs](https://docs.cursor.com/context/@-symbols/@-docs) context which [includes](https://raw.githubusercontent.com/getcursor/crawler/main/docs.jsonl) the Apple Documentation as a choice.
+
+There's also the [Context 7 MCP](https://context7.com/swiftlang/swift-testing) that can be instructed to fetch Apple's docs for testing, however this only includes code snippets and no explanation. (Enes mentioned that [this is on purpose](https://x.com/enesakar/status/1931296179502927935), though I got great results with explanatory text)
+
 The combination of AI assistance and systematic refinement made this large-scale migration manageable. While the initial AI conversion provided a foundation, the real value came from applying Swift Testing's features thoughtfully to create a more maintainable test suite.
 
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Vibe Meter: Monitor Your AI Costs"
 pubDatetime: 2025-06-04T12:00:00.000+01:00
-description: "Building Vibe Meter, a macOS menu bar app to track AI spending in real-time - from workshop demo to shipped product in three days."
+description: "How I built Vibe Meter, a macOS menu bar app to track AI spending in real-time - from workshop demo to shipped product in three days."
 tags:
   - AI
   - Development

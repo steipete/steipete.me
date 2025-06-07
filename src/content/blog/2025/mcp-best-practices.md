@@ -1,7 +1,7 @@
 ---
 title: MCP Best Practices
 pubDatetime: 2025-06-01T15:00:00.000+01:00
-description: "A comprehensive guide outlining best practices for building reliable, user-friendly Model Context Protocol (MCP) tools with proper configuration, testing, and release management."
+description: "My comprehensive guide outlining best practices for building reliable, user-friendly Model Context Protocol (MCP) tools with proper configuration, testing, and release management."
 tags:
   - MCP
   - Best-Practices
