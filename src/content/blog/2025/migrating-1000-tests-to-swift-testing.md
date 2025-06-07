@@ -336,4 +336,4 @@ The combination of AI assistance and systematic refinement made this large-scale
 
 ---
 
-**P.S.** - If you're still manually converting XCTestExpectation to confirmations, stop. Make AI do it. Just give it better instructions than I did.
+**P.S.** - If you're still manually converting XCTestExpectation, stop. Make AI do it. Just give it better instructions than I did.
