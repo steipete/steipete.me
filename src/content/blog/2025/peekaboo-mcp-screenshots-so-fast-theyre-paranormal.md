@@ -35,6 +35,18 @@ Peekaboo follows this philosophy with just **three tools**:
 
 Each tool is designed to be powerful and flexible rather than having dozens of specialized variants.
 
+## Lenient Tool Calling: Embrace Agent Imperfection
+
+Another crucial principle: **tool calling should be lenient**. Agents are not perfect and sometimes make mistakes. For example, when an agent calls `list` for running applications but includes an empty array for `include_window_details`:
+
+```
+"Invalid arguments: 'include_window_details' only allowed for 'application_windows'."
+```
+
+Technically, this is correct - window details are only valid for application windows. But the array is empty, and we can infer the agent's intent. The better approach is to be lenient and simply do what the agent most likely asked for.
+
+Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. If we're overly strict and return errors, they'll have to call the tool again, which ultimately slows down the loop. My belief (and I'm sure this is controversial) is that MCPs should be very lenient in parsing arguments. Agents are not infallible, so why should our tools be unforgiving?
+
 ## From AppleScript to Swift: A Performance Revolution
 
 I had an early version of Peekaboo that was simply based on AppleScript, but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
