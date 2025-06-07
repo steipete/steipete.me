@@ -49,7 +49,7 @@ Technically, this is correct - window details are only valid for application win
 
 Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. If we're overly strict and return errors, they'll have to call the tool again, which ultimately slows down the loop. My belief (and I'm sure this is controversial) is that MCPs should be very lenient in parsing arguments. Agents are not infallible, so why should our tools be unforgiving?
 
-## From AppleScript to Swift: A Performance Revolution
+## From AppleScript to Swift
 
 I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
 
