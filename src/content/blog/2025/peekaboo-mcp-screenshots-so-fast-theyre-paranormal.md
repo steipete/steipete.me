@@ -13,17 +13,18 @@ tags:
 
 ![Peekaboo MCP: Screenshots so fast they're paranormal](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
 
-**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through integrated AI models. It bridges the gap between what agents need to see and what they can access.
+**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
 
 Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utility that haunts your screen, capturing spectral snapshots for AI agents. Think of Peekaboo as supernatural contact lenses for your coding assistant.
 
-You know the drill:
+### The Problem with Blind Agents
+
 - "The button is broken!"
 - "Which button?"
 - "The blue one!"
 - "...I'm an AI, I can't see colors. Or buttons. Or anything really."
 
-Peekaboo solves this eternal struggle by giving AI agents their eyes - and it's smart about it.
+Peekaboo solves this fundamental limitation by giving AI agents vision capabilities.
 
 ## What Peekaboo Can Do
 
@@ -35,15 +36,11 @@ Peekaboo provides three main tools that give AI agents visual capabilities:
 
 Each tool is designed to be powerful and flexible. Want to capture all windows of an app? Done. Need to know if a button is visible? Just ask. Looking for a specific window by title? Peekaboo's got you covered.
 
-### The Game-Changer: Visual Question Answering
+### Visual Question Answering
 
-The best feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. If you mess up an Electron window (I would never do that), the agent could ask: "Hey, do you see this text in this window?" 
+The most powerful feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. The agent can ask: "What do you see in this window?" or "Is the submit button visible?" and get accurate answers.
 
-👁️‍🗨️ "I SEE DEAD PIXELS!" - Your AI Assistant, Probably
-
-Let AI roast your CSS crimes with visual evidence!
-
-We support either OpenAI or Ollama, so you can use a remote model or a local model that looks at the image and answers the question. This is incredibly beneficial because it saves context space. Peekaboo can return images directly as base64 (fast but fills up context quickly), but being able to ask questions is much more efficient and helps keep the model context lean.
+We support both OpenAI and Ollama, allowing you to choose between cloud and local vision models. This visual Q&A capability is incredibly beneficial because it saves context space. While Peekaboo can return images directly as base64, asking specific questions is much more efficient and helps keep the model context lean.
 
 ## Design Philosophy
 
