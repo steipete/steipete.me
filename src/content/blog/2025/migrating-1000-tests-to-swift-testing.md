@@ -533,17 +533,13 @@ func multiStepDebouncerLifecycle() async throws {
 Every codebase has those intermittent failures. Swift Testing provides a civilized way to handle them with [`withKnownIssue`](https://developer.apple.com/documentation/testing/withknownissue(_:isintermittent:sourcelocation:_:)):
 
 ```swift
-@Test("Race condition in timeout handling")
-func interventionTimeoutRaceCondition() async throws {
-    await withKnownIssue("Timeout vs completion race", isIntermittent: true) {
-        // Test that occasionally fails due to known race condition
-        let timeout: TimeInterval = 5.0
-        let startTime = Date()
-        
-        try await Task.sleep(for: .milliseconds(100))
-        let elapsed = Date().timeIntervalSince(startTime)
-        
-        #expect(elapsed < timeout, "Should complete before timeout")
+@Test("External API availability check")
+func externalAPITest() async throws {
+    await withKnownIssue("External API may be temporarily unavailable", isIntermittent: true) {
+        let url = URL(string: "https://api.exchangerate-api.com/v4/latest/USD")!
+        let (_, response) = try await URLSession.shared.data(from: url)
+        let httpResponse = response as! HTTPURLResponse
+        #expect(httpResponse.statusCode == 200, "Exchange rate API should be available")
     }
 }
 ```
