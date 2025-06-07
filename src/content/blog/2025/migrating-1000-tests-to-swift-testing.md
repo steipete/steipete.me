@@ -560,7 +560,8 @@ Quick tip that'll save you from compiler nagging:
 
 Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steipete/VibeMeter/pull/28), [Code Looper PR #8](https://github.com/steipete/CodeLooper/pull/8)), the transformation is dramatic:
 
-- **67% fewer test files** through intelligent consolidation
+- **62% fewer test files** (61 → 23 files) through intelligent consolidation
+- **+1,006 lines of enhanced test code** (plus 430 lines of documentation)
 - **Zero test duplication** thanks to parameterized tests  
 - **Hierarchical organization** that actually makes sense in Xcode's navigator
 - **Bulletproof error handling** with specific exception types
