@@ -38,6 +38,18 @@ We support either OpenAI or Ollama, so you can use a remote model or a local mod
 
 Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support, and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS. Other contributors are welcome to send pull requests for increased platform support!
 
+## Testing with MCP Inspector
+
+I thoroughly tested Peekaboo manually using the Model Context Protocol Inspector, along with various apps like Claude Desktop. The inspector is fantastic for interactive testing and development.
+
+To test this project interactively, you can use this one-liner:
+
+```bash
+PEEKABOO_AI_PROVIDERS="ollama/llava:latest" npx @modelcontextprotocol/inspector npx -y @steipete/peekaboo-mcp@beta
+```
+
+This sets up Peekaboo with Ollama's LLaVA model and launches the MCP Inspector for immediate testing. Perfect for exploring the visual question answering capabilities in real-time.
+
 ## The Vision: Autonomous Agent Debugging
 
 Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help agents stay in the loop. The goal is simple: if an agent can answer questions by itself, you don't have to intervene and it can simply continue and debug itself. This is the holy grail for building applications with CI - you want to do everything so the agent can loop and work until what you want is done.
