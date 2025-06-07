@@ -51,29 +51,72 @@ With the playbook in hand, I gave Claude Code new instructions:
 
 This iterative approach revealed several patterns worth sharing:
 
-### 1. Parameterized Tests Eliminate Duplication
+### 1. Nested Suites Bring Order to Chaos
 
-The most immediate win came from parameterized tests. Code Looper had numerous tests checking different AI providers:
+The biggest transformation came from consolidating scattered test files into organized hierarchies. Vibe Meter's CursorProvider tests went from this mess:
+
+```
+VibeMeterTests/
+├── CursorProviderBasicTests.swift
+├── CursorProviderDataTests.swift  
+├── CursorProviderNoTeamTests.swift
+├── CursorProviderTransitionTests.swift
+└── CursorProviderValidationTests.swift
+```
+
+To this beauty:
 
 ```swift
-// Before: Multiple nearly-identical tests
-@Test func anthropicProviderDetection() { /* ... */ }
-@Test func openAIProviderDetection() { /* ... */ }
-@Test func geminiProviderDetection() { /* ... */ }
-
-// After: One parameterized test
-@Test(arguments: [
-    ("Claude", .anthropic),
-    ("ChatGPT", .openai),
-    ("Gemini", .gemini)
-])
-func providerDetection(appName: String, expected: AIProvider) {
-    let detected = AIProvider.from(appName: appName)
-    #expect(detected == expected)
+@Suite("CursorProvider Tests", .tags(.provider, .unit))
+struct CursorProviderTests {
+    @Suite("Basic Functionality", .tags(.fast))
+    struct BasicFunctionality {
+        @Suite("Team Information")
+        struct TeamInformation { /* tests here */ }
+        
+        @Suite("Authentication") 
+        struct Authentication { /* tests here */ }
+    }
+    
+    @Suite("Data Fetching", .tags(.integration))
+    struct DataFetching { /* tests here */ }
+    
+    @Suite("Validation and Error Handling", .tags(.network))
+    struct ValidationAndErrorHandling { /* tests here */ }
 }
 ```
 
-### 2. Instance Isolation Simplifies State Management
+67% fewer files, infinitely better organization.
+
+### 2. Parameterized Tests Eliminate Copy-Paste Syndrome
+
+Remember writing the same test five times with different values? Those days are over:
+
+```swift
+// Before: The copy-paste special
+func testProgressColorSafe() {
+    let color = ProgressColorHelper.color(for: 0.1)
+    XCTAssertEqual(color, .progressSafe)
+}
+
+func testProgressColorWarning() {
+    let color = ProgressColorHelper.color(for: 0.6) 
+    XCTAssertEqual(color, .progressWarning)
+}
+
+// After: One test to rule them all
+@Test("Progress color thresholds", arguments: [
+    (0.1, .progressSafe, "safe zone"),
+    (0.6, .progressWarning, "warning zone"), 
+    (0.9, .progressDanger, "danger zone")
+])
+func progressColorThresholds(progress: Double, expected: Color, zone: String) {
+    let color = ProgressColorHelper.color(for: progress)
+    #expect(color == expected)
+}
+```
+
+### 3. Instance Isolation Simplifies State Management
 
 Swift Testing creates a fresh instance for each test, eliminating shared state issues:
 
@@ -97,7 +140,7 @@ Swift Testing creates a fresh instance for each test, eliminating shared state i
 
 No more worrying about test order or cleanup between tests. Each test gets its own clean instance.
 
-### 3. Better Error Handling
+### 4. Better Error Handling
 
 Swift Testing's error handling is more expressive than XCTest:
 
@@ -113,7 +156,7 @@ Swift Testing's error handling is more expressive than XCTest:
 }
 ```
 
-### 4. Time Limits Prevent CI Hangs
+### 5. Time Limits Prevent CI Hangs
 
 One particularly useful feature is `.timeLimit`:
 
@@ -159,13 +202,13 @@ The initial conversion kept performance tests that generated hundreds of log mes
 
 ## The Results
 
-Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steipete/VibeMeter/pull/28), [Code Looper PR #8](https://github.com/steipete/CodeLooper/pull/8)), the improvements are clear:
+Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steipete/VibeMeter/pull/28), [Code Looper PR #8](https://github.com/steipete/CodeLooper/pull/8)), the transformation is dramatic:
 
-- **Better test organization** with nested suites and descriptive names
-- **Reduced duplication** through parameterized tests
-- **Cleaner test lifecycle** with init/deinit instead of setUp/tearDown
-- **More expressive assertions** using Swift Testing's focused API
-- **Improved CI reliability** with proper timeouts and environment handling
+- **67% fewer test files** through intelligent consolidation
+- **Zero test duplication** thanks to parameterized tests  
+- **Hierarchical organization** that actually makes sense in Xcode's navigator
+- **Bulletproof error handling** with specific exception types
+- **CI that doesn't hang** with proper timeouts on every async test
 
 ## Key Takeaways
 
