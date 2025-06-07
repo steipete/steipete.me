@@ -15,7 +15,11 @@ tags:
   - macOS
 ---
 
-I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
+I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. 
+
+Full disclosure: I actually tried Swift Testing months ago but completely messed it up because I linked to the wrong version without understanding it was already integrated into Xcode. Shoutout to [Stuart](https://x.com/throwspace/status/1929658866804953371) who nudged me to try again - sometimes you need that external push to revisit something you wrote off too quickly.
+
+Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
 
 ## The Initial Attempt
 
