@@ -11,6 +11,45 @@ tags:
   - Developer Tools
 ---
 
+<div class="cursor-install-button">
+  <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==">
+    <img class="dark-theme-img" src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Add to Cursor" />
+    <img class="light-theme-img" src="https://cursor.com/deeplink/mcp-install-light.png" alt="Add to Cursor" />
+  </a>
+</div>
+
+<style>
+.cursor-install-button {
+  margin-bottom: 2rem;
+}
+.cursor-install-button a {
+  display: inline-block;
+  border: none !important;
+  box-shadow: none !important;
+}
+.cursor-install-button img {
+  border: none !important;
+  box-shadow: none !important;
+  width: 50%;
+  height: auto;
+}
+/* Theme switching */
+html[data-theme="light"] .dark-theme-img {
+  display: none;
+}
+html[data-theme="light"] .light-theme-img {
+  display: block;
+}
+html[data-theme="dark"] .dark-theme-img,
+html:not([data-theme]) .dark-theme-img {
+  display: block;
+}
+html[data-theme="dark"] .light-theme-img,
+html:not([data-theme]) .light-theme-img {
+  display: none;
+}
+</style>
+
 ![Peekaboo MCP: Screenshots so fast they're paranormal](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
 
 **TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
@@ -151,10 +190,6 @@ With this release, I also took the opportunity to update the Swift testing from 
 One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
 
 ## Installation
-
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.png)](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
-
-**One-click install for Cursor** - Sets up Peekaboo with Ollama's LLaVA model as the default AI provider.
 
 ### Manual Installation
 
