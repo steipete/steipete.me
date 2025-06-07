@@ -47,7 +47,7 @@ So I ended up with two documents:
 1. The complete Swift Testing API documentation from Apple (via Firecrawl)
 2. An actionable playbook with examples from WWDC videos and various blog posts
 
-I fed both into [Google's AI Studio](https://aistudio.google.com/), asked Claude to correct the outdated API references, and let Gemini compile everything into a comprehensive [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) document with actionable items.
+I fed both into [Google's AI Studio](https://aistudio.google.com/), asked it to correct the outdated API references, and let Gemini compile everything into a comprehensive [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) document with actionable items.
 
 The key insight: AI needs concrete patterns and examples, not just documentation. This playbook became my guide for teaching Claude Code how to write *idiomatic* Swift Testing code, providing:
 - Migration patterns with before/after examples
