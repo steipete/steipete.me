@@ -61,7 +61,7 @@ With the playbook in hand, I gave Claude Code new instructions:
 
 > Read swift-testing-playbook.md and improve & refactor the tests. Periodically stop, compile, fix any build issues, commit, ensure everything is green locally and on CI, then continue until perfection.
 
-**Plot twist**: The first time I tried this, Claude got creative and started implementing new test patterns from the playbook instead of converting existing tests. I had to clarify:
+**Plot twist**: The first time I tried this, Claude got creative and started implementing [new test patterns from the playbook](https://github.com/steipete/CodeLooper/pull/8/commits/d1bb7ba75dfefc821d24d5cfff6c785cd92f9079) instead of converting existing tests. I had to clarify:
 
 > Read swift-testing-playbook.md and refactor the **existing** tests in this codebase to use Swift Testing patterns.
 
