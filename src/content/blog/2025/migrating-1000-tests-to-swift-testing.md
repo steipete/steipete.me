@@ -41,7 +41,13 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [Meet Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10179/) and [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
 
-But here's where it gets interesting. I took the WWDC video transcript, content from various blog posts, and code snippets that seemed important, fed everything into [Google's AI Studio](https://aistudio.google.com/), and let Gemini compile a comprehensive [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) document with actionable items.
+But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
+
+So I ended up with two documents:
+1. The complete Swift Testing API documentation from Apple (via Firecrawl)
+2. An actionable playbook with examples from WWDC videos and various blog posts
+
+I fed both into [Google's AI Studio](https://aistudio.google.com/), asked Claude to correct the outdated API references, and let Gemini compile everything into a comprehensive [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) document with actionable items.
 
 The key insight: AI needs concrete patterns and examples, not just documentation. This playbook became my guide for teaching Claude Code how to write *idiomatic* Swift Testing code, providing:
 - Migration patterns with before/after examples
@@ -65,78 +71,118 @@ This iterative approach revealed several patterns worth sharing:
 
 ### 1. Nested Suites Bring Order to Chaos
 
-The biggest transformation came from consolidating scattered test files into organized hierarchies. Vibe Meter's CursorProvider tests went from this mess:
+The biggest transformation came from consolidating scattered test files into organized hierarchies. Vibe Meter's AuthenticationTokenManager tests showed the most dramatic improvement:
 
 ```
+// Before: 4 separate test files
 VibeMeterTests/
-├── CursorProviderBasicTests.swift
-├── CursorProviderDataTests.swift  
-├── CursorProviderNoTeamTests.swift
-├── CursorProviderTransitionTests.swift
-└── CursorProviderValidationTests.swift
+├── AuthenticationTokenManagerCoreTests.swift
+├── AuthenticationTokenManagerCookieTests.swift  
+├── AuthenticationTokenManagerEdgeCasesTests.swift
+└── AuthenticationTokenManagerTests.swift
 ```
 
 To this beauty:
 
 ```swift
-@Suite("CursorProvider Tests", .tags(.provider, .unit))
-struct CursorProviderTests {
-    @Suite("Basic Functionality", .tags(.fast))
-    struct BasicFunctionality {
-        @Suite("Team Information")
-        struct TeamInformation { /* tests here */ }
+@Suite("Authentication Token Manager Tests", .tags(.authentication, .unit))
+@MainActor
+struct AuthenticationTokenManagerTests {
+    // MARK: - Core Functionality
+    @Suite("Core Functionality", .tags(.fast))
+    struct Core {
+        let mockManager: MockAuthenticationTokenManager
         
-        @Suite("Authentication") 
-        struct Authentication { /* tests here */ }
+        init() {
+            mockManager = MockAuthenticationTokenManager()
+        }
+        
+        @Test("save token success", .tags(.critical, .requiresKeychain))
+        func saveTokenSuccess() async throws {
+            // Core authentication tests...
+        }
     }
     
-    @Suite("Data Fetching", .tags(.integration))
-    struct DataFetching { /* tests here */ }
+    // MARK: - Cookie Management
+    @Suite("Cookie Management")
+    struct CookieManagement {
+        @Test("cookie extraction from headers")
+        func cookieExtractionFromHeaders() async throws {
+            // Cookie-related tests...
+        }
+    }
     
-    @Suite("Validation and Error Handling", .tags(.network))
-    struct ValidationAndErrorHandling { /* tests here */ }
+    // MARK: - Edge Cases
+    @Suite("Edge Cases", .tags(.edgeCase, .fast))
+    struct EdgeCases {
+        @Test("handles concurrent token updates")
+        func handlesConcurrentTokenUpdates() async throws {
+            // Edge case tests...
+        }
+    }
 }
 ```
 
-67% fewer files, infinitely better organization.
+75% fewer files, with logical organization that mirrors the actual functionality. Each nested suite can have its own setup, and the test navigator in Xcode finally makes sense.
 
 ### 2. Parameterized Tests Eliminate Copy-Paste Syndrome
 
-Remember writing the same test five times with different values? Vibe Meter had exactly this problem with currency conversions:
+Remember writing the same test five times with different values? Vibe Meter's currency conversion tests showcase Swift Testing's superior parameterization:
 
 ```swift
-// Before: The copy-paste special  
-func testConvert_SmallAmount() {
-    let result = CurrencyConversionHelper.convert(amount: 100.0, rate: 0.85)
-    XCTAssertEqual(result, 85.0, accuracy: 0.01)
-}
+// Before: Individual test methods for each scenario
+func testConvert_SmallAmount() { /* test code */ }
+func testConvert_LargeAmount() { /* test code */ }
+func testConvert_NegativeAmount() { /* test code */ }
+func testConvert_ZeroAmount() { /* test code */ }
+func testConvert_PrecisionAmount() { /* test code */ }
+// ... and many more
 
-func testConvert_LargeAmount() {
-    let result = CurrencyConversionHelper.convert(amount: 1_000_000.0, rate: 0.85) 
-    XCTAssertEqual(result, 850_000.0, accuracy: 0.01)
-}
-
-func testConvert_PrecisionAmount() {
-    let result = CurrencyConversionHelper.convert(amount: 999.99, rate: 1.2345)
-    XCTAssertEqual(result, 1234.488, accuracy: 0.001)
-}
-
-// After: One test to rule them all
-@Test("Currency conversion calculations", arguments: [
-    ConversionTestCase(100.0, rate: 0.85, expected: 85.0, "basic conversion"),
-    ConversionTestCase(1_000_000.0, rate: 0.85, expected: 850_000.0, "large amount conversion"), 
-    ConversionTestCase(0.01, rate: 0.85, expected: 0.0085, "small amount conversion"),
-    ConversionTestCase(999.99, rate: 1.2345, expected: 1234.488, "precision conversion")
-])
-func conversionCalculations(testCase: ConversionTestCase) async {
-    let result = await MainActor.run {
-        CurrencyConversionHelper.convert(amount: testCase.amount, rate: testCase.rate)
+// After: Sophisticated parameterized testing
+@Suite("Currency Conversion Tests", .tags(.currency, .unit))
+struct CurrencyConversionTests {
+    struct ConversionTestCase: Sendable, CustomTestStringConvertible {
+        let amount: Double
+        let rate: Double
+        let expected: Double
+        let description: String
+        
+        var testDescription: String { description }
     }
     
-    let tolerance = testCase.expected.magnitude < 1.0 ? 0.0001 : 0.01
-    #expect(abs(result - testCase.expected) < tolerance)
+    static let conversionTestCases: [ConversionTestCase] = [
+        ConversionTestCase(100.0, rate: 0.85, expected: 85.0, "USD to EUR conversion"),
+        ConversionTestCase(0.0, rate: 0.85, expected: 0.0, "zero amount conversion"),
+        ConversionTestCase(100.0, rate: 1.0, expected: 100.0, "same currency conversion"),
+        ConversionTestCase(-100.0, rate: 0.85, expected: -85.0, "negative amount conversion"),
+        ConversionTestCase(1_000_000.0, rate: 0.85, expected: 850_000.0, "large amount conversion"),
+        ConversionTestCase(0.01, rate: 0.85, expected: 0.0085, "small amount conversion"),
+        ConversionTestCase(999.99, rate: 1.2345, expected: 1234.488, "precision conversion"),
+    ]
+    
+    @Test("Currency conversion calculations", .tags(.critical), 
+          arguments: CurrencyConversionTests.conversionTestCases)
+    func conversionCalculations(testCase: ConversionTestCase) async {
+        let result = await MainActor.run {
+            CurrencyConversionHelper.convert(amount: testCase.amount, rate: testCase.rate)
+        }
+        
+        let tolerance = testCase.expected.magnitude < 1.0 ? 0.0001 : 0.01
+        #expect(result.isApproximatelyEqual(to: testCase.expected, tolerance: tolerance))
+    }
+    
+    @Test("Invalid rate handling", .tags(.edgeCase), 
+          arguments: [nil, 0.0, -1.0, .infinity, .nan] as [Double?])
+    func invalidRateHandling(invalidRate: Double?) async {
+        let result = await MainActor.run {
+            CurrencyConversionHelper.convert(amount: 100.0, rate: invalidRate)
+        }
+        #expect(result == 100.0) // Should return original amount for invalid rates
+    }
 }
 ```
+
+The beauty? `CustomTestStringConvertible` makes each test case self-documenting in the test navigator, and we can test edge cases (nil, infinity, NaN) in a single elegant test.
 
 ### 3. Instance Isolation Simplifies State Management
 
@@ -192,49 +238,177 @@ Error handling is also more expressive than XCTest:
 }
 ```
 
-### 5. Time Limits Prevent CI Hangs
+### 5. Advanced Async Testing with Retry Logic
+
+One of the most impressive transformations was the NetworkRetryHandler tests, which demonstrate Swift Testing's superior async capabilities:
+
+```swift
+@Suite("NetworkRetryHandler Tests", .tags(.network, .unit))
+@MainActor
+struct NetworkRetryHandlerTests {
+    @Test("exponential backoff with jitter")
+    func exponentialBackoffWithJitter() async {
+        let config = NetworkRetryHandler.Configuration(
+            maxRetries: 2,
+            initialDelay: 0.1,  // Using milliseconds for faster tests
+            maxDelay: 1.0,
+            multiplier: 3.0,
+            jitterFactor: 0.0   // No jitter for predictable testing
+        )
+        let customHandler = NetworkRetryHandler(configuration: config)
+        var attemptCount = 0
+        var attemptTimes: [Date] = []
+        
+        // When
+        do {
+            _ = try await customHandler.execute {
+                attemptCount += 1
+                attemptTimes.append(Date())
+                throw NetworkRetryHandler.RetryableError.connectionError
+            }
+        } catch {
+            // Expected - should retry and then fail
+        }
+        
+        // Then
+        #expect(attemptCount == 3) // initial + 2 retries
+        
+        if attemptTimes.count >= 2 {
+            let firstDelay = attemptTimes[1].timeIntervalSince(attemptTimes[0])
+            #expect(abs(firstDelay - 0.1) < 0.05) // Allow 50ms tolerance
+        }
+        if attemptTimes.count >= 3 {
+            let secondDelay = attemptTimes[2].timeIntervalSince(attemptTimes[1])
+            #expect(abs(secondDelay - 0.3) < 0.05) // Expected: 0.1 * 3.0
+        }
+    }
+    
+    @Test("successful operation on first attempt", .timeLimit(.seconds(1)))
+    func successfulOperationFirstAttempt() async throws {
+        let handler = NetworkRetryHandler()
+        var callCount = 0
+        
+        let result = try await handler.execute {
+            callCount += 1
+            return "Success"
+        }
+        
+        #expect(result == "Success")
+        #expect(callCount == 1)
+    }
+}
+```
+
+This showcases:
+- Complex async behavior verification with precise timing
+- Test-friendly configuration (milliseconds instead of seconds)
+- Clean error handling without XCTestExpectation
+- Time limits to prevent hanging tests
+
+### 6. Time Limits Prevent CI Hangs
 
 Performance tests were scattered across multiple files with no protection against runaway execution:
 
 ```swift
-// Before: Individual scattered performance tests
-func testCurrencyConversionPerformance() {
+// Before: Manual timing with XCTest
+func testLogging_Performance() {
+    let iterations = 10_000
+    let testMessage = "Performance test message"
+    
     measure {
+        for i in 0..<iterations {
+            LoggingService.info("\(testMessage) \(i)")
+        }
+    }
+}
+
+func testCurrencyConversionPerformance() {
+    self.measure {
         for _ in 0..<1000 {
             _ = CurrencyHelper.convert(100.0, rate: 0.85)
         }
     }
 }
 
-// After: Organized performance suite with time limits
+// After: Clean, declarative performance tests
 @Suite("Performance Benchmarks", .tags(.performance))
 struct PerformanceBenchmarks {
-    @Suite("Currency Conversion", .tags(.currency))
-    struct CurrencyConversion {
-        @Test("Bulk currency conversion performance", .timeLimit(.minutes(1)))
-        func bulkCurrencyConversionPerformance() {
-            // Given
-            let amounts = Array(stride(from: 0.01, through: 10000.0, by: 0.01))
-            let exchangeRates = ["EUR": 0.92, "GBP": 0.82, "JPY": 110.0]
-            
-            // When
-            let startTime = Date()
-            for amount in amounts {
-                for (_, rate) in exchangeRates {
-                    _ = CurrencyConversionHelper.convert(amount: amount, rate: rate)
-                }
+    @Test("Bulk currency conversion performance", .timeLimit(.minutes(1)))
+    @MainActor
+    func bulkCurrencyConversionPerformance() {
+        // Test configuration
+        let amounts = Array(stride(from: 0.01, through: 10000.0, by: 0.01))
+        let exchangeRates = ["EUR": 0.92, "GBP": 0.82, "JPY": 110.0, "AUD": 1.35, "CAD": 1.25]
+        
+        // Performance test
+        let startTime = Date()
+        for amount in amounts {
+            for (_, rate) in exchangeRates {
+                _ = CurrencyConversionHelper.convert(amount: amount, rate: rate)
             }
-            let duration = Date().timeIntervalSince(startTime)
-            
-            // Then
-            print("Converted \(amounts.count * exchangeRates.count) values in \(duration)s")
-            #expect(duration < 10.0) // Should complete in under 10 seconds
         }
+        let duration = Date().timeIntervalSince(startTime)
+        
+        // Verify performance
+        print("Converted \(amounts.count * exchangeRates.count) values in \(duration)s")
+        #expect(duration < 10.0) // Framework enforces the 1-minute limit
+    }
+    
+    @Test("Logging throughput", .timeLimit(.seconds(30)))
+    func loggingThroughput() async {
+        let iterations = 100_000
+        
+        // No manual measurement needed - framework handles it
+        for i in 0..<iterations {
+            LoggingService.debug("Test message \(i)")
+        }
+        
+        // Test will fail if it exceeds 30 seconds
     }
 }
 ```
 
 This prevents runaway tests from blocking CI pipelines - something I've dealt with too many times in XCTest.
+
+### 7. Multi-Dimensional Tagging for Test Organization
+
+Swift Testing's tagging system enables sophisticated test organization that goes far beyond XCTest's limited capabilities:
+
+```swift
+// Functional area tags
+@Suite("Authentication Token Manager Tests", .tags(.authentication, .unit))
+@Suite("Network Layer Tests", .tags(.network, .integration))
+@Suite("Currency Conversion Tests", .tags(.currency, .unit))
+
+// Performance characteristics
+@Suite("Core Functionality", .tags(.fast))
+@Test("Bulk processing", .tags(.slow))
+
+// Criticality levels
+@Test("save token success", .tags(.critical, .requiresKeychain))
+@Test("cache fallback", .tags(.nonCritical))
+
+// Dependencies and requirements
+@Test("keychain integration", .tags(.requiresKeychain))
+@Test("network connectivity", .tags(.requiresNetwork))
+
+// Edge cases and special scenarios
+@Test("handles malformed data", .tags(.edgeCase))
+@Test("race condition handling", .tags(.concurrency))
+
+// Running specific test subsets
+// swift test --filter .fast              // Only fast tests
+// swift test --filter .critical          // Only critical tests
+// swift test --filter .unit,.fast        // Unit tests that are fast
+// swift test --exclude .slow,.network    // Skip slow network tests
+```
+
+This multi-dimensional tagging enables:
+- Running only `.fast` tests in pull request CI
+- Running `.critical` tests before releases
+- Skipping `.requiresNetwork` tests in offline environments
+- Focusing on `.edgeCase` tests when debugging weird issues
+- Creating custom test suites for different scenarios
 
 ## Beyond Basic Conversion: Real Improvements
 
