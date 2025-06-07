@@ -170,35 +170,95 @@ struct NetworkTests {
 
 This prevents runaway tests from blocking CI pipelines - something I've dealt with too many times in XCTest.
 
-## The Challenges
+## Beyond Basic Conversion: Real Improvements
 
-The migration wasn't without issues:
+The mechanical migration was just the beginning. Here's where Swift Testing really shines:
 
-### Swift 6 Concurrency
+### Meaningful Error Testing with #expect(throws:)
 
-Code Looper's KeyboardShortcuts package required significant updates for Swift 6's strict concurrency. The AI initially made property setters async, which breaks the expected behavior:
+Stop settling for "it didn't crash" assertions:
 
 ```swift
-// This doesn't work - setters can't be async
-nonmutating set {
-    Task { @MainActor in
-        KeyboardShortcuts.setShortcut(newValue, for: self)
+// Before: Wishful thinking
+do {
+    try await manager.startListener()
+} catch {
+    #expect(error != nil) // Well, yes... that's why we're in catch
+}
+
+// After: Actual validation
+#expect(throws: URLError.self) {
+    try await api.fetchWithoutAuth()
+}
+
+// Even better: Test the specific error properties
+do {
+    try await api.fetchWithoutAuth()
+    Issue.record("Expected URLError to be thrown")
+} catch let error as URLError {
+    #expect(error.code == .notConnectedToInternet)
+}
+```
+
+### Eliminating Meaningless Assertions
+
+Found a lot of these gems during migration:
+
+```swift
+// Before: The "please don't crash" test
+@Test("Sound engine play user alert sound")
+func soundEnginePlayUserAlertSound() async throws {
+    SoundEngine.play(.userAlert)
+    #expect(true) // If we get here, the call didn't crash
+}
+
+// After: Actually test something useful
+@Test("System sound enum pattern matching")
+func systemSoundEnumCases() async throws {
+    let userAlert = SystemSound.userAlert
+    
+    switch userAlert {
+    case .userAlert:
+        #expect(Bool(true)) // Explicit bool to silence warnings
+    case .named:
+        Issue.record("Expected userAlert case, got named case")
     }
 }
 ```
 
-### CI Environment Differences
+### Memory Leak Detection Built Right In
 
-Several tests that worked locally failed in CI:
-- ApplicationMover tests trying to mount disk images
-- Tests attempting to show UI dialogs
-- Login item tests trying to modify system settings
+Swift Testing's instance isolation makes leak detection elegant:
 
-The solution was to detect the CI environment and skip these tests when appropriate.
+```swift
+@Test("ThreadSafeBox instances are properly deallocated")
+func threadSafeBoxMemoryLeaks() async throws {
+    weak var weakBox: ThreadSafeBox<String>?
+    
+    do {
+        let box = ThreadSafeBox("test-value")
+        weakBox = box
+        #expect(weakBox != nil, "Box should be alive within scope")
+    }
+    
+    await Task.yield() // Allow deallocation
+    #expect(weakBox == nil, "Box should be deallocated after scope ends")
+}
+```
 
-### Performance Test Noise
+### Descriptive Test Names That Tell Stories
 
-The initial conversion kept performance tests that generated hundreds of log messages. These weren't providing value and made CI output unreadable. Sometimes the best refactoring is deletion.
+No more cryptic function names:
+
+```swift
+// Before: What does this even test?
+@Test("windowControllerManagement")
+
+// After: Crystal clear intent
+@Test("Window controller management handles creation and lifecycle")
+@Test("Position saving and restoration persists window states")
+@Test("AppleScript support methods provide automation capabilities")
+```
 
 ## The Results
 
