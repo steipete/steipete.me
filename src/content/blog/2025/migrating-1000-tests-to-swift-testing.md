@@ -156,9 +156,23 @@ Swift Testing creates a fresh instance for each test, eliminating shared state i
 
 No more worrying about test order or cleanup between tests. Each test gets its own clean instance.
 
-### 4. Better Error Handling
+### 4. Better Error Handling and Assertions
 
-Swift Testing's error handling is more expressive than XCTest:
+Swift Testing provides two types of assertions that behave very differently:
+
+```swift
+// #expect: Soft assertion - continues test on failure
+#expect(user.email == "test@example.com")
+#expect(user.isActive == true)
+// ↑ Both assertions run even if first one fails
+
+// #require: Hard assertion - stops test immediately on failure
+let config = try #require(loadConfiguration())
+// ↑ Test stops here if config is nil, preventing crashes below
+let apiKey = try #require(config.apiKey)
+```
+
+Error handling is also more expressive than XCTest:
 
 ```swift
 // Validate specific error types
