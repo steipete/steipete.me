@@ -23,14 +23,17 @@ You know the drill:
 
 Peekaboo solves this eternal struggle by giving AI agents their eyes - and it's smart about it.
 
-## Smart Screenshot Capabilities
+## MCP Design Philosophy: Less is More
 
-You can request screenshots in multiple ways:
-- The whole screen or all screens
-- Specific applications (with multiple images for multiple windows)
-- Specific windows by title or index
+The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
-Peekaboo understands your context and delivers exactly what you need.
+Peekaboo follows this philosophy with just **three tools**:
+
+- **`image`** - Capture screenshots (screens, windows, specific apps)
+- **`analyze`** - Ask AI questions about captured images  
+- **`list`** - Enumerate available screens and windows
+
+Each tool is designed to be powerful and flexible rather than having dozens of specialized variants.
 
 ## From AppleScript to Swift: A Performance Revolution
 
@@ -49,6 +52,44 @@ We support either OpenAI or Ollama, so you can use a remote model or a local mod
 ## Architecture: TypeScript + Swift
 
 Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support, and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS. Other contributors are welcome to send pull requests for increased platform support!
+
+## Technical Highlights
+
+The Peekaboo project has several fascinating technical aspects that make it a compelling example of modern AI-enabled developer tooling:
+
+**🏗️ Hybrid Architecture Marvel**
+- Swift CLI + Node.js MCP server + AI vision models working together
+- Universal binary (ARM64/x86_64) with aggressive size optimization using lipo and strip
+- Bridges native macOS APIs with modern AI workflows
+
+**📸 Advanced Screenshot Technology**
+- Uses ScreenCaptureKit (macOS 14+) with automatic shadow/frame exclusion
+- Smart window targeting with fuzzy app matching
+- Multiple capture modes (screens, windows, specific apps)
+
+**🤖 AI Provider Abstraction**
+- Auto-fallback system across multiple AI providers (Ollama, OpenAI)
+- Local LLaVA models + cloud GPT-4o vision in one unified interface
+- Environment-driven provider configuration
+
+**🔐 Permission Management Excellence**
+- Proactive Screen Recording + Accessibility permission checking
+- Graceful degradation with clear error codes and user guidance
+- Different permission models for different capture scenarios
+
+**🌉 Clever Protocol Bridge**
+- Node.js server translates between MCP JSON-RPC and Swift CLI JSON
+- Maintains type safety with Zod schemas
+- Stateless CLI design for crash resilience and clean resource management
+
+**🛠️ Production-Ready Polish**
+- Structured JSON logging with multi-layer debug capabilities
+- Comprehensive testing (unit, integration, E2E with mock AI providers)
+- Smart temporary file management and Base64 encoding strategies
+
+The most clever aspect is how it makes AI assistants "see" your screen through a chain of: macOS APIs → Swift CLI → Node.js bridge → MCP protocol → AI models, all while handling permissions, errors, and multiple AI providers seamlessly.
+
+This represents a sophisticated example of building AI-enabled developer tools that respect system boundaries while providing powerful capabilities.
 
 ## Testing with MCP Inspector
 
