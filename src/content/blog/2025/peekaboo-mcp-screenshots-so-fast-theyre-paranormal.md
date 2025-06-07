@@ -116,7 +116,7 @@ I thoroughly tested Peekaboo manually using the Model Context Protocol Inspector
 To test this project interactively, you can use this one-liner:
 
 ```bash
-PEEKABOO_AI_PROVIDERS="ollama/llava:latest" npx @modelcontextprotocol/inspector npx -y @steipete/peekaboo-mcp@beta
+PEEKABOO_AI_PROVIDERS="ollama/llava:latest" npx @modelcontextprotocol/inspector npx -y @steipete/peekaboo-mcp
 ```
 
 This sets up Peekaboo with Ollama's LLaVA model and launches the MCP Inspector for immediate testing. Perfect for exploring the visual question answering capabilities in real-time.
@@ -132,5 +132,41 @@ When your build fails, when your UI doesn't look right, when something breaks - 
 With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
 
 One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
+
+## Installation
+
+### Quick Install for Cursor
+
+[![Add to Cursor](https://cursor.directory/icon.svg) Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
+
+This one-click install sets up Peekaboo with Ollama's LLaVA model as the default AI provider.
+
+### Manual Installation
+
+From npm:
+```bash
+npm install -g @steipete/peekaboo-mcp
+```
+
+Or use directly with npx:
+```bash
+npx @steipete/peekaboo-mcp
+```
+
+### Setting Up Ollama
+
+To use local AI models, you'll need [Ollama](https://ollama.ai) installed:
+
+```bash
+# Install Ollama (macOS)
+brew install ollama
+
+# Pull the LLaVA model (recommended for vision tasks)
+ollama pull llava:latest
+```
+
+LLaVA is currently one of the most capable local vision models available through Ollama for screenshot analysis.
+
+**GitHub Repository**: [steipete/Peekaboo](https://github.com/steipete/Peekaboo)
 
 Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
