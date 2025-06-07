@@ -114,11 +114,6 @@ Here's what makes Peekaboo technically interesting:
 - Auto-fallback system across multiple AI providers (Ollama → OpenAI)
 - Local LLaVA models + cloud GPT-4o vision in one unified interface
 
-**🌉 Clever Protocol Bridge**
-- Node.js translates between MCP JSON-RPC and Swift CLI JSON
-- Stateless CLI design for crash resilience
-- Type safety with Zod schemas throughout
-
 The magic happens through this elegant chain: macOS ScreenCaptureKit → Swift CLI → Node.js bridge → MCP protocol → AI models. Each component does one thing well, resulting in a system that's both powerful and maintainable.
 
 ## Testing with MCP Inspector
@@ -143,9 +138,9 @@ When your build fails, when your UI doesn't look right, when something breaks - 
 
 Peekaboo is part of a growing collection of MCP servers I'm building:
 
-- **[claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Bridge between Claude Code and MCP for enhanced development workflows
-- **[macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Automate macOS tasks and workflows through MCP integration
-- **[Terminator](https://github.com/steipete/Terminator)** - Terminal automation and command execution for AI agents
+- **🧠 [claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Bridge between Claude Code and MCP for enhanced development workflows
+- **🎯 [macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Automate macOS tasks and workflows through MCP integration
+- **🤖 [Terminator](https://github.com/steipete/Terminator)** - Terminal automation and command execution for AI agents
 
 Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
 
