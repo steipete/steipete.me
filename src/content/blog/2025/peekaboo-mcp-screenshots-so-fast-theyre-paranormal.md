@@ -13,4 +13,33 @@ tags:
 
 ![Peekaboo MCP: Screenshots so fast they're paranormal](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
 
-<!-- Content will be added when user provides the text -->
+Today I'm releasing the first non-beta version of Peekaboo, an MCP that helps agents to see. Peekaboo is basically giving AI agents their eyes - and it's smart about it.
+
+## Smart Screenshot Capabilities
+
+You can request screenshots in multiple ways:
+- The whole screen or all screens
+- Specific applications (with multiple images for multiple windows)
+- Specific windows by title or index
+
+Peekaboo understands your context and delivers exactly what you need.
+
+## From AppleScript to Swift: A Performance Revolution
+
+I had an early version of Peekaboo that was simply based on AppleScript, but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
+
+## The Game-Changer: Visual Question Answering
+
+The best feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. If you mess up an Electron window (I would never do that), the agent could ask: "Hey, do you see this text in this window?"
+
+We support either OpenAI or Ollama, so you can use a remote model or a local model that looks at the image and answers the question. This is incredibly beneficial because it saves context space. Peekaboo can return images directly as base64 (fast but fills up context quickly), but being able to ask questions is much more efficient and helps keep the model context lean.
+
+## Architecture: TypeScript + Swift
+
+Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support, and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS. Other contributors are welcome to send pull requests for increased platform support!
+
+## Swift Testing Migration
+
+With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
+
+Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
