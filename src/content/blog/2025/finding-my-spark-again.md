@@ -1,7 +1,7 @@
 ---
 title: Finding My Spark Again
 pubDatetime: 2025-06-01T14:00:00.000+01:00
-description: "Peter reflects on his post-exit journey from emptiness to rediscovering his passion for building, sparked by AI's transformative potential."
+description: "I reflect on my post-exit journey from emptiness to rediscovering my passion for building, sparked by AI's transformative potential."
 tags:
   - Career
   - Entrepreneurship
