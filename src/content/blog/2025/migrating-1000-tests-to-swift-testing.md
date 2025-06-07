@@ -24,14 +24,14 @@ My first move? Pure laziness:
 > Hey Claude Code, convert all these tests to swift-testing.  
 > I'll go make coffee.
 
-The initial results were... technically correct. The tests compiled. They even passed. But looking at the code, it was clear this was just XCTest with different syntax.
+The initial results were... technically correct. The tests compiled. They even passed. But looking at the code, it was clear this was just XCTest wearing a Swift Testing costume.
 
-The AI had converted:
-- `XCTestCase` classes to `@Suite` structs
-- `XCTAssert` calls to `#expect` statements  
-- `func testFoo()` to `@Test func foo()`
+When AI gives you lemons:
+- `XCTestCase` classes became `@Suite` structs
+- `XCTAssert` calls turned into `#expect` statements  
+- `func testFoo()` transformed to `@Test func foo()`
 
-But it missed the deeper opportunities that Swift Testing provides. The real work began after the initial conversion.
+But it missed the deeper opportunities that Swift Testing provides. The real work began after my coffee kicked in.
 
 ## Creating a Systematic Approach
 
