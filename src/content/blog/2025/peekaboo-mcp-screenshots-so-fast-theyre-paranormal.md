@@ -131,6 +131,16 @@ Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help a
 
 When your build fails, when your UI doesn't look right, when something breaks - instead of stopping and asking you "what do you see?", the agent can take a screenshot, analyze it, and continue fixing the problem autonomously. That's the power of giving agents their eyes.
 
+## My MCP Ecosystem
+
+Peekaboo is part of a growing collection of MCP servers I'm building:
+
+- **[claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Bridge between Claude Code and MCP for enhanced development workflows
+- **[macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Automate macOS tasks and workflows through MCP integration
+- **[Terminator](https://github.com/steipete/Terminator)** - Terminal automation and command execution for AI agents
+
+Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
+
 ## Swift Testing Migration
 
 With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
