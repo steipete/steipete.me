@@ -51,7 +51,9 @@ Agents are smart - if they get something back that they didn't explicitly ask fo
 
 ## From AppleScript to Swift: A Performance Revolution
 
-I had an early version of Peekaboo that was simply based on AppleScript, but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
+I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
+
+The legacy AppleScript version is still available in the repository for reference, but the performance and maintainability improvements of the Swift rewrite make it clear why the migration was necessary.
 
 ## The Game-Changer: Visual Question Answering
 
