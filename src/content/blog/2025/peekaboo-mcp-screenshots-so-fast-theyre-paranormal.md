@@ -13,7 +13,7 @@ tags:
 
 ![Peekaboo MCP: Screenshots so fast they're paranormal](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
 
-**TL;DR**: Peekaboo is an MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through integrated AI models. It bridges the gap between what agents need to see and what they can access.
+**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through integrated AI models. It bridges the gap between what agents need to see and what they can access.
 
 Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utility that haunts your screen, capturing spectral snapshots for AI agents. Think of Peekaboo as supernatural contact lenses for your coding assistant.
 
@@ -51,7 +51,7 @@ We support either OpenAI or Ollama, so you can use a remote model or a local mod
 
 The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
-![Cursor showing 40+ tools can become overwhelming](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/cursor-40-tools.png)
+<!-- TODO: Add cursor-40-tools.png image here -->
 
 ### Lenient Tool Calling
 
@@ -170,7 +170,7 @@ One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For mo
 
 ## Installation
 
-[![Add to Cursor](https://cursor.directory/icon.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.png)](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
 
 **One-click install for Cursor** - Sets up Peekaboo with Ollama's LLaVA model as the default AI provider.
 
