@@ -17,7 +17,7 @@ tags:
 
 **TL;DR**: I let Claude Code convert 1,000+ tests to Swift Testing, watched it fail spectacularly, created an AI-generated playbook, then watched it succeed brilliantly. The difference? Better instructions.
 
-I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
+I've been migrating my test suites from XCTest to [Swift Testing](https://developer.apple.com/xcode/swift-testing/). Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
 
 ## The Initial Attempt
 
@@ -29,9 +29,9 @@ My first move? Pure laziness:
 The initial results were... technically correct. The tests compiled. They even passed. But looking at the code, it was clear this was just XCTest wearing a Swift Testing costume.
 
 When AI gives you lemons:
-- `XCTestCase` classes became `@Suite` structs
-- `XCTAssert` calls turned into `#expect` statements  
-- `func testFoo()` transformed to `@Test func foo()`
+- `XCTestCase` classes became [`@Suite`](https://developer.apple.com/documentation/testing/suite) structs
+- `XCTAssert` calls turned into [`#expect`](https://developer.apple.com/documentation/testing/expect(_:_:sourceLocation:)) statements  
+- `func testFoo()` transformed to [`@Test`](https://developer.apple.com/documentation/testing/test) `func foo()`
 
 But it missed the deeper opportunities that Swift Testing provides. The real work began after my coffee kicked in.
 
@@ -158,7 +158,7 @@ No more worrying about test order or cleanup between tests. Each test gets its o
 
 ### 4. Better Error Handling and Assertions
 
-Swift Testing provides two types of assertions that behave very differently:
+[Swift Testing](https://developer.apple.com/documentation/testing/) provides two types of assertions that behave very differently:
 
 ```swift
 // #expect: Soft assertion - continues test on failure
@@ -322,7 +322,7 @@ No more cryptic function names:
 
 ### Advanced Confirmation Patterns
 
-Swift Testing's `confirmation()` handles complex async scenarios elegantly:
+Swift Testing's [`confirmation()`](https://developer.apple.com/documentation/testing/confirmation(_:expectedcount:sourcelocation:_:)) handles complex async scenarios elegantly:
 
 ```swift
 @Test("Multi-step debouncer lifecycle")
@@ -344,7 +344,7 @@ func multiStepDebouncerLifecycle() async throws {
 
 ### Taming Flaky Tests with withKnownIssue
 
-Every codebase has those intermittent failures. Swift Testing provides a civilized way to handle them:
+Every codebase has those intermittent failures. Swift Testing provides a civilized way to handle them with [`withKnownIssue`](https://developer.apple.com/documentation/testing/withknownissue(_:isintermittent:sourcelocation:_:)):
 
 ```swift
 @Test("Race condition in timeout handling")
