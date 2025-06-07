@@ -43,7 +43,7 @@ Instead of manually fixing 1,000 tests, I did what any reasonable developer woul
 
 But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
 
-So I ended up with two documents:
+So I ended up with [two documents](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95):
 1. The complete Swift Testing API documentation from Apple (via Firecrawl)
 2. An actionable playbook with examples from WWDC videos and various blog posts
 
