@@ -92,36 +92,39 @@ struct CursorProviderTests {
 
 ### 2. Parameterized Tests Eliminate Copy-Paste Syndrome
 
-Remember writing the same test five times with different values? Vibe Meter had this exact problem with currency formatting:
+Remember writing the same test five times with different values? Vibe Meter had exactly this problem with currency conversions:
 
 ```swift
-// Before: The copy-paste special
-func testFormatSmallAmount() {
-    let formatted = CurrencyFormatter.format(cents: 50)
-    XCTAssertEqual(formatted, "$0.50")
+// Before: The copy-paste special  
+func testConvert_SmallAmount() {
+    let result = CurrencyConversionHelper.convert(amount: 100.0, rate: 0.85)
+    XCTAssertEqual(result, 85.0, accuracy: 0.01)
 }
 
-func testFormatDollarAmount() {
-    let formatted = CurrencyFormatter.format(cents: 1250) 
-    XCTAssertEqual(formatted, "$12.50")
+func testConvert_LargeAmount() {
+    let result = CurrencyConversionHelper.convert(amount: 1_000_000.0, rate: 0.85) 
+    XCTAssertEqual(result, 850_000.0, accuracy: 0.01)
 }
 
-func testFormatLargeAmount() {
-    let formatted = CurrencyFormatter.format(cents: 123456)
-    XCTAssertEqual(formatted, "$1,234.56")
+func testConvert_PrecisionAmount() {
+    let result = CurrencyConversionHelper.convert(amount: 999.99, rate: 1.2345)
+    XCTAssertEqual(result, 1234.488, accuracy: 0.001)
 }
 
 // After: One test to rule them all
-@Test("Currency formatting handles various amounts", arguments: [
-    (50, "$0.50", "small change"),
-    (1250, "$12.50", "typical amount"),
-    (123456, "$1,234.56", "large amount"),
-    (0, "$0.00", "zero amount"),
-    (1, "$0.01", "minimum amount")
+@Test("Currency conversion calculations", arguments: [
+    ConversionTestCase(100.0, rate: 0.85, expected: 85.0, "basic conversion"),
+    ConversionTestCase(1_000_000.0, rate: 0.85, expected: 850_000.0, "large amount conversion"), 
+    ConversionTestCase(0.01, rate: 0.85, expected: 0.0085, "small amount conversion"),
+    ConversionTestCase(999.99, rate: 1.2345, expected: 1234.488, "precision conversion")
 ])
-func currencyFormatting(cents: Int, expected: String, scenario: String) {
-    let formatted = CurrencyFormatter.format(cents: cents)
-    #expect(formatted == expected, "Failed for \(scenario): \(cents) cents")
+func conversionCalculations(testCase: ConversionTestCase) async {
+    let result = await MainActor.run {
+        CurrencyConversionHelper.convert(amount: testCase.amount, rate: testCase.rate)
+    }
+    
+    let tolerance = testCase.expected.magnitude < 1.0 ? 0.0001 : 0.01
+    #expect(abs(result - testCase.expected) < tolerance)
 }
 ```
 
