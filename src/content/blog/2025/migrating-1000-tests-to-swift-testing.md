@@ -55,6 +55,12 @@ With the playbook in hand, I gave Claude Code new instructions:
 
 > Read swift-testing-playbook.md and improve & refactor the tests. Periodically stop, compile, fix any build issues, commit, ensure everything is green locally and on CI, then continue until perfection.
 
+**Plot twist**: The first time I tried this, Claude got creative and started implementing new test patterns from the playbook instead of converting existing tests. I had to interrupt and clarify:
+
+> Sorry, what are you doing here? Are you just creating random tests? We wanna test CodeLooper, but not create random tests, you misunderstood the assignment. Focus on converting the existing tests to new patterns.
+
+Lesson learned: Be very specific with AI instructions. "Improve tests using these patterns" can mean "create new tests" or "convert existing tests." The difference matters when you have existing test coverage to preserve.
+
 This iterative approach revealed several patterns worth sharing:
 
 ### 1. Nested Suites Bring Order to Chaos
