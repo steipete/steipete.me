@@ -475,6 +475,28 @@ There's also the [Context 7 MCP](https://context7.com/swiftlang/swift-testing) t
 
 The combination of AI assistance and systematic refinement made this large-scale migration manageable. While the initial AI conversion provided a foundation, the real value came from applying Swift Testing's features thoughtfully to create a more maintainable test suite.
 
+## Running Tests Faster with Filters
+
+One more tip that significantly speeds up the development workflow: use `swift test --filter` to run specific tests instead of the entire suite. This is especially useful when you're iterating on a particular feature:
+
+```bash
+# Run a single test suite by name
+swift test --filter "FooTests"
+
+# Run tests with specific tags
+swift test --filter-tag fast
+swift test --filter-tag currency
+
+# Combine multiple tags (runs tests with ALL specified tags)
+swift test --filter-tag unit --filter-tag fast
+
+# Skip tests with certain tags
+swift test --skip-tag slow
+swift test --skip-tag requiresNetwork
+```
+
+The performance difference is dramatic when working on a large codebase. Instead of waiting for 700+ tests to run, you can get feedback in seconds by filtering to just the tests you're working on. Combined with Swift Testing's parallel execution, this makes the test-driven development cycle incredibly fast.
+
 ---
 
 **P.S.** - If you're still manually converting `XCTestExpectation`, stop. [Make AI do it](claude-code-is-my-computer). Just give it [better instructions](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) than I did.
