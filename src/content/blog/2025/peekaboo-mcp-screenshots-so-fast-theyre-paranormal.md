@@ -35,7 +35,7 @@ Peekaboo solves this fundamental limitation by giving AI agents vision capabilit
 
 <style>
 .cursor-install-button {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 .cursor-install-button a {
   display: inline-block;
