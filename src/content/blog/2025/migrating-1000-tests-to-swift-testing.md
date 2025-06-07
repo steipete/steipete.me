@@ -92,29 +92,36 @@ struct CursorProviderTests {
 
 ### 2. Parameterized Tests Eliminate Copy-Paste Syndrome
 
-Remember writing the same test five times with different values? Those days are over:
+Remember writing the same test five times with different values? Vibe Meter had this exact problem with currency formatting:
 
 ```swift
 // Before: The copy-paste special
-func testProgressColorSafe() {
-    let color = ProgressColorHelper.color(for: 0.1)
-    XCTAssertEqual(color, .progressSafe)
+func testFormatSmallAmount() {
+    let formatted = CurrencyFormatter.format(cents: 50)
+    XCTAssertEqual(formatted, "$0.50")
 }
 
-func testProgressColorWarning() {
-    let color = ProgressColorHelper.color(for: 0.6) 
-    XCTAssertEqual(color, .progressWarning)
+func testFormatDollarAmount() {
+    let formatted = CurrencyFormatter.format(cents: 1250) 
+    XCTAssertEqual(formatted, "$12.50")
+}
+
+func testFormatLargeAmount() {
+    let formatted = CurrencyFormatter.format(cents: 123456)
+    XCTAssertEqual(formatted, "$1,234.56")
 }
 
 // After: One test to rule them all
-@Test("Progress color thresholds", arguments: [
-    (0.1, .progressSafe, "safe zone"),
-    (0.6, .progressWarning, "warning zone"), 
-    (0.9, .progressDanger, "danger zone")
+@Test("Currency formatting handles various amounts", arguments: [
+    (50, "$0.50", "small change"),
+    (1250, "$12.50", "typical amount"),
+    (123456, "$1,234.56", "large amount"),
+    (0, "$0.00", "zero amount"),
+    (1, "$0.01", "minimum amount")
 ])
-func progressColorThresholds(progress: Double, expected: Color, zone: String) {
-    let color = ProgressColorHelper.color(for: progress)
-    #expect(color == expected)
+func currencyFormatting(cents: Int, expected: String, scenario: String) {
+    let formatted = CurrencyFormatter.format(cents: cents)
+    #expect(formatted == expected, "Failed for \(scenario): \(cents) cents")
 }
 ```
 
