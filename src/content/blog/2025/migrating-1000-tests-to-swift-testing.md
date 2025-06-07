@@ -1,6 +1,6 @@
 ---
 title: "Migrating 1,000+ Tests to Swift Testing: A Real-World Experience"
-pubDatetime: 2025-06-07T15:00:00+01:00
+pubDatetime: 2025-06-06T19:00:00+01:00
 description: "How I migrated over 1,000 tests from XCTest to Swift Testing across two projects, with AI assistance and systematic refinement"
 heroImage: /assets/img/2025/migrating-1000-tests-to-swift-testing/hero.png
 heroImageAlt: "Swift Testing framework logo with test code in the background"
