@@ -39,7 +39,7 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 ## Creating a Systematic Approach
 
-Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. The [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) session was eye-opening.
+Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [Meet Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10179/) and [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
 
 But here's where it gets interesting. I took the WWDC video transcript, content from various blog posts, and code snippets that seemed important, fed everything into [Google's AI Studio](https://aistudio.google.com/), and let Gemini compile a comprehensive [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) document with actionable items.
 
