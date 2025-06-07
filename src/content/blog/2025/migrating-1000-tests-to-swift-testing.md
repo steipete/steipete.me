@@ -35,16 +35,16 @@ When AI gives you lemons:
 
 But it missed the deeper opportunities that Swift Testing provides. The real work began after my coffee kicked in.
 
-> **Full disclosure**: I actually tried Swift Testing last week but completely messed it up because I linked to the wrong version without understanding it was already integrated into Xcode. Shoutout to [Stuart](https://x.com/throwspace/status/1929658866804953371) who nudged me to try again - sometimes you need that external push to revisit something you wrote off too quickly.
+> **Full disclosure**: I actually tried Swift Testing last week but completely messed it up because I linked to the wrong version without understanding it was already integrated into Xcode. Shoutout to [Stuart](https://x.com/throwspace/status/1929658866804953371) who nudged me to try again. Sometimes you need that external push to revisit something you wrote off too quickly.
 
 ## Creating a Systematic Approach
 
-Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [Meet Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10179/) and [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
+Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [*Meet Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10179/) and [*Go further with Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
 
-But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
+But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) (affiliate link, I need moar credits, too much API!), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
 
 So I ended up with [two documents](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95):
-1. The complete Swift Testing API documentation from Apple (via [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE))
+1. The complete Swift Testing API documentation from Apple (via [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) affiliate link)
 2. An actionable playbook with examples from WWDC videos
 
 I fed both into [Google's AI Studio](https://aistudio.google.com/), asked it to correct the outdated API references, and let Gemini compile everything into a comprehensive [Swift Testing resource](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) with both the API documentation and actionable migration patterns.
@@ -133,6 +133,9 @@ struct AuthenticationTokenManagerTests {
 
 Remember writing the same test five times with different values? Vibe Meter's currency conversion tests showcase Swift Testing's superior parameterization:
 
+<details>
+<summary>View Currency Conversion Test Implementation</summary>
+
 ```swift
 // Before: Individual test methods for each scenario
 func testConvert_SmallAmount() { /* test code */ }
@@ -187,6 +190,8 @@ struct CurrencyConversionTests {
     }
 }
 ```
+
+</details>
 
 The beauty? [`CustomTestStringConvertible`](https://developer.apple.com/documentation/testing/customteststringconvertible) makes each test case self-documenting in the test navigator with descriptions like "$100.0 × 0.85 → $85.0 (USD to EUR conversion)" instead of generic object names. Test failures become instantly readable, and we can test edge cases (nil, infinity, NaN) in a single elegant test.
 
@@ -248,6 +253,9 @@ Error handling is also more expressive than XCTest:
 
 Performance tests were scattered across multiple files with no protection against runaway execution:
 
+<details>
+<summary>View Performance Test Implementation</summary>
+
 ```swift
 // Before: Manual timing with XCTest
 func testLogging_Performance() {
@@ -276,7 +284,7 @@ struct PerformanceBenchmarks {
     @MainActor
     func bulkCurrencyConversionPerformance() {
         // Test configuration
-        let amounts = Array(stride(from: 0.01, through: 10000.0, by: 0.01))
+        let amounts = Array(stride(from: 0.01, through: 10_000.0, by: 0.01))
         let exchangeRates = ["EUR": 0.92, "GBP": 0.82, "JPY": 110.0, "AUD": 1.35, "CAD": 1.25]
         
         // Performance test
@@ -307,7 +315,9 @@ struct PerformanceBenchmarks {
 }
 ```
 
-This prevents runaway tests from blocking CI pipelines - something I've dealt with too many times in XCTest.
+</details>
+
+This prevents runaway tests from blocking CI pipelines. Something I've dealt with too many times in XCTest.
 
 ## Beyond Basic Conversion: Real Improvements
 
@@ -463,13 +473,25 @@ Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steip
 - **Bulletproof error handling** with specific exception types
 - **CI that doesn't hang** with proper timeouts on every async test
 
-**Why more lines of code?** Swift Testing prioritizes maintainability over brevity. The increase comes from:
-- **Expressive syntax**: `#expect(result.isApproximatelyEqual(to: 85.0, tolerance: 0.01))` vs `XCTAssertEqual(result, 85.0, accuracy: 0.01)`  
-- **Explicit test cases**: Parameterized tests use structured test case types instead of manual loops
-- **Rich metadata**: Tests include descriptive names, tags, and time limits for better organization
-- **Better coverage**: Enhanced async patterns and comprehensive error handling
+**Why more lines of code?** Swift Testing prioritizes maintainability over brevity. Here's a typical transformation:
 
-This represents quality improvement, not bloat - moving from cryptic but compact tests to self-documenting, maintainable test suites.
+```swift
+// Before: XCTest (3 lines)
+func testCurrencyConversion() {
+    XCTAssertEqual(convert(100, rate: 0.85), 85.0, accuracy: 0.01)
+}
+
+// After: Swift Testing (4 lines)
+@Test("Currency conversion with EUR rate", .tags(.currency))
+func currencyConversionEUR() {
+    let result = convert(amount: 100.0, rate: 0.85)
+    #expect(result.isApproximatelyEqual(to: 85.0, tolerance: 0.01))
+}
+```
+
+The increase comes from descriptive test names, explicit tagging, better parameter naming, and structured test case types for parameterized tests.
+
+This represents quality improvement, not bloat. Moving from cryptic but compact tests to self-documenting, maintainable test suites.
 
 ## Key Takeaways
 
@@ -479,7 +501,7 @@ This represents quality improvement, not bloat - moving from cryptic but compact
 
 3. **Swift Testing encourages better patterns**: Features like parameterized tests and instance isolation naturally lead to cleaner test design.
 
-4. **Migration reveals test quality issues**: This wasn't just a syntax conversion - it was an opportunity to improve test architecture.
+4. **Migration reveals test quality issues**: This wasn't just a syntax conversion. It was an opportunity to improve test architecture.
 
 The combination of AI assistance and systematic refinement made this large-scale migration manageable. While the initial AI conversion provided a foundation, the real value came from applying Swift Testing's features thoughtfully to create a more maintainable test suite.
 
