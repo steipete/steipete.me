@@ -115,7 +115,7 @@ This represents a sophisticated example of building AI-enabled developer tools t
 
 ## Testing with MCP Inspector
 
-I thoroughly tested Peekaboo manually using the Model Context Protocol Inspector, along with various apps like Claude Desktop. The inspector is fantastic for interactive testing and development.
+I thoroughly tested Peekaboo manually using the [Model Context Protocol Inspector](https://modelcontextprotocol.io/docs/tools/inspector), along with various apps like Claude Desktop. The inspector is fantastic for interactive testing and development.
 
 To test this project interactively, you can use this one-liner:
 
@@ -147,7 +147,7 @@ This one-click install sets up Peekaboo with Ollama's LLaVA model as the default
 
 ### Manual Installation
 
-From npm:
+From [npm](https://www.npmjs.com/package/@steipete/peekaboo-mcp):
 ```bash
 npm install -g @steipete/peekaboo-mcp
 ```
