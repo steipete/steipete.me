@@ -15,7 +15,7 @@ tags:
   - macOS
 ---
 
-I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results.
+I've been migrating my test suites from XCTest to Swift Testing. Between [Vibe Meter](https://github.com/steipete/VibeMeter) and [Code Looper](https://github.com/steipete/CodeLooper), that's over 1,000 tests across 80+ files. Here's what I learned from letting AI help with the conversion and then systematically improving the results using my [Swift Testing playbook](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95).
 
 ## The Initial Attempt
 
@@ -37,7 +37,7 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 Instead of manually fixing 1,000 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. The [Go further with Swift Testing](https://developer.apple.com/videos/play/wwdc2024/10195/) session was eye-opening.
 
-After absorbing Apple's wisdom and reading various blog posts, I compiled everything into a comprehensive playbook. This [`swift-testing-playbook.md`](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) became my guide for teaching AI how to write *idiomatic* Swift Testing code.
+After absorbing Apple's wisdom and reading various blog posts, I compiled everything into a comprehensive playbook that became my guide for teaching AI how to write *idiomatic* Swift Testing code.
 
 The key insight: AI needs concrete patterns and examples, not just documentation. The playbook provided:
 - Migration patterns with before/after examples
@@ -305,7 +305,5 @@ If you're considering migrating to Swift Testing:
 The combination of AI assistance and systematic refinement made this large-scale migration manageable. While the initial AI conversion provided a foundation, the real value came from applying Swift Testing's features thoughtfully to create a more maintainable test suite.
 
 ---
-
-*The playbook and full migration history are available in the linked pull requests for those interested in the details.*
 
 **P.S.** - If you're still manually converting XCTestExpectation to confirmations, stop. Make AI do it. Just give it better instructions than I did.
