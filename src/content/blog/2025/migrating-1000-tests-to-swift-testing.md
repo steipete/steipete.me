@@ -485,4 +485,4 @@ The combination of AI assistance and systematic refinement made this large-scale
 
 ---
 
-**P.S.** - If you're still manually converting XCTestExpectation, stop. Make AI do it. Just give it [better instructions](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) than I did.
+**P.S.** - If you're still manually converting `XCTestExpectation`, stop. [Make AI do it](claude-code-is-my-computer). Just give it [better instructions](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) than I did.
