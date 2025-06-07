@@ -49,6 +49,8 @@ So I ended up with [two documents](https://gist.github.com/steipete/84a5952c22e1
 
 I fed both into [Google's AI Studio](https://aistudio.google.com/), asked it to correct the outdated API references, and let Gemini compile everything into a comprehensive [Swift Testing resource](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95) with both the API documentation and actionable migration patterns.
 
+**Why go through all this effort?** Swift Testing is new and underrepresented in open source compared to mature ecosystems like TypeScript/React where AI has absorbed countless examples. For emerging Swift technologies, you need to explicitly provide the knowledge that doesn't exist in the training data yet.
+
 The key insight: AI needs concrete patterns and examples, not just documentation. This playbook became my guide for teaching Claude Code how to write *idiomatic* Swift Testing code, providing:
 - Migration patterns with before/after examples
 - Best practices for each Swift Testing feature
