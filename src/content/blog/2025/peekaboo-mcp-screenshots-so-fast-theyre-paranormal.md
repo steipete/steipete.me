@@ -27,6 +27,8 @@ Peekaboo solves this eternal struggle by giving AI agents their eyes - and it's 
 
 The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
+![Cursor showing 40+ tools can become overwhelming](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/cursor-40-tools.png)
+
 Peekaboo follows this philosophy with just **three tools**:
 
 - **`image`** - Capture screenshots (screens, windows, specific apps)
