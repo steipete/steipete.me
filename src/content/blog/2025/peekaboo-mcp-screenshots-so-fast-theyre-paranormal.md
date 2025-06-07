@@ -149,11 +149,9 @@ One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For mo
 
 ## Installation
 
-### Quick Install for Cursor
+[![Add to Cursor](https://cursor.directory/icon.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
 
-[![Add to Cursor](https://cursor.directory/icon.svg) Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==)
-
-This one-click install sets up Peekaboo with Ollama's LLaVA model as the default AI provider.
+**One-click install for Cursor** - Sets up Peekaboo with Ollama's LLaVA model as the default AI provider.
 
 ### Manual Installation
 
