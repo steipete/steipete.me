@@ -45,7 +45,7 @@ The key insight: AI needs concrete patterns and examples, not just documentation
 - Common pitfalls and how to avoid them
 - Specific guidance on when to use each feature
 
-## The Refactoring Process
+## Round Two: AI Redemption Arc
 
 With the playbook in hand, I gave Claude Code new instructions:
 
