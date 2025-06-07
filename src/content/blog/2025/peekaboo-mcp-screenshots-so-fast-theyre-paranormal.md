@@ -25,21 +25,35 @@ You know the drill:
 
 Peekaboo solves this eternal struggle by giving AI agents their eyes - and it's smart about it.
 
-## MCP Design Philosophy: Less is More
+## What Peekaboo Can Do
+
+Peekaboo provides three main tools that give AI agents visual capabilities:
+
+- **`image`** - Capture screenshots of screens, windows, or specific applications
+- **`analyze`** - Ask AI questions about captured images using vision models
+- **`list`** - Enumerate available screens and windows for targeted captures
+
+Each tool is designed to be powerful and flexible. Want to capture all windows of an app? Done. Need to know if a button is visible? Just ask. Looking for a specific window by title? Peekaboo's got you covered.
+
+### The Game-Changer: Visual Question Answering
+
+The best feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. If you mess up an Electron window (I would never do that), the agent could ask: "Hey, do you see this text in this window?" 
+
+👁️‍🗨️ "I SEE DEAD PIXELS!" - Your AI Assistant, Probably
+
+Let AI roast your CSS crimes with visual evidence!
+
+We support either OpenAI or Ollama, so you can use a remote model or a local model that looks at the image and answers the question. This is incredibly beneficial because it saves context space. Peekaboo can return images directly as base64 (fast but fills up context quickly), but being able to ask questions is much more efficient and helps keep the model context lean.
+
+## Design Philosophy
+
+### Less is More
 
 The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
 ![Cursor showing 40+ tools can become overwhelming](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/cursor-40-tools.png)
 
-Peekaboo follows this philosophy with just **three tools**:
-
-- **`image`** - Capture screenshots (screens, windows, specific apps)
-- **`analyze`** - Ask AI questions about captured images  
-- **`list`** - Enumerate available screens and windows
-
-Each tool is designed to be powerful and flexible rather than having dozens of specialized variants.
-
-## Lenient Tool Calling: Embrace Agent Imperfection
+### Lenient Tool Calling
 
 Another crucial principle: **tool calling should be lenient**. Agents are not perfect and sometimes make mistakes. For example, when an agent calls `list` for running applications but includes an empty array for `include_window_details`:
 
@@ -56,16 +70,6 @@ Agents are smart - if they get something back that they didn't explicitly ask fo
 I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but the problem with AppleScript is that it's slow and quickly became almost unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is actually my complete rewrite of the original AppleScript version.
 
 The legacy AppleScript version is still available in the repository for reference, but the performance and maintainability improvements of the Swift rewrite make it clear why the migration was necessary.
-
-## The Game-Changer: Visual Question Answering
-
-The best feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. If you mess up an Electron window (I would never do that), the agent could ask: "Hey, do you see this text in this window?" 
-
-👁️‍🗨️ "I SEE DEAD PIXELS!" - Your AI Assistant, Probably
-
-Let AI roast your CSS crimes with visual evidence!
-
-We support either OpenAI or Ollama, so you can use a remote model or a local model that looks at the image and answers the question. This is incredibly beneficial because it saves context space. Peekaboo can return images directly as base64 (fast but fills up context quickly), but being able to ask questions is much more efficient and helps keep the model context lean.
 
 ## Local vs Cloud: The Vision Model Showdown
 
