@@ -51,7 +51,7 @@ We support either OpenAI or Ollama, so you can use a remote model or a local mod
 
 The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
-<!-- TODO: Add cursor-40-tools.png image here -->
+![Cursor showing 40+ tools can become overwhelming](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/cursor-40-tools.png)
 
 ### Lenient Tool Calling
 
