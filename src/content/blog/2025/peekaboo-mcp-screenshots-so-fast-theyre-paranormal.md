@@ -104,7 +104,6 @@ Here's what makes Peekaboo technically interesting:
 **🏗️ Hybrid Architecture**
 - [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli/Sources/peekaboo) + [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src) working in harmony
 - [Universal binary build script](https://github.com/steipete/Peekaboo/blob/main/scripts/build-swift-universal.sh) creates optimized ARM64/x86_64 binaries
-- Bridges native macOS APIs with modern AI workflows
 
 **📸 Modern Screenshot Technology**
 - Uses Apple's [ScreenCaptureKit](https://developer.apple.com/documentation/screencapturekit) (macOS 14+) for efficient capture
@@ -114,7 +113,6 @@ Here's what makes Peekaboo technically interesting:
 **🤖 AI Provider Magic**
 - Auto-fallback system across multiple AI providers (Ollama → OpenAI)
 - Local LLaVA models + cloud GPT-4o vision in one unified interface
-- Zero configuration needed - just works out of the box
 
 **🌉 Clever Protocol Bridge**
 - Node.js translates between MCP JSON-RPC and Swift CLI JSON
