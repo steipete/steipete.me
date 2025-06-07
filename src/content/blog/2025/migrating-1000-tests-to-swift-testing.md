@@ -481,16 +481,6 @@ This represents quality improvement, not bloat - moving from cryptic but compact
 
 4. **Migration reveals test quality issues**: This wasn't just a syntax conversion - it was an opportunity to improve test architecture.
 
-## Your Migration Strategy
-
-If you're considering migrating to Swift Testing:
-
-1. Start with new tests to get familiar with the patterns
-2. Create or adapt a playbook for your team's needs
-3. Use AI for the mechanical conversion, then refine systematically
-4. Treat it as a test quality audit, not just a syntax update
-5. Be prepared to handle Swift 6 concurrency requirements
-
 The combination of AI assistance and systematic refinement made this large-scale migration manageable. While the initial AI conversion provided a foundation, the real value came from applying Swift Testing's features thoughtfully to create a more maintainable test suite.
 
 ---
