@@ -1,5 +1,5 @@
 ---
-title: "Peekaboo MCP: Screenshots so fast they're paranormal"
+title: "Peekaboo MCP – lightning-fast macOS screenshots for AI agents"
 pubDatetime: 2025-06-07T12:00:00.000+01:00
 description: "Introducing Peekaboo MCP - the fastest way to take screenshots with Claude. Built with Swift and love for developer productivity."
 tags:
@@ -11,10 +11,25 @@ tags:
   - Developer Tools
 ---
 
+![Peekaboo MCP – lightning-fast macOS screenshots for AI agents](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
+
+**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
+
+Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utility that haunts your screen, capturing spectral snapshots for AI agents. Think of Peekaboo as supernatural contact lenses for your coding assistant.
+
+### The Problem with Blind Agents
+
+- "The button is broken!"
+- "Which button?"
+- "The blue one!"
+- "...I'm an AI, I can't see colors. Or buttons. Or anything really."
+
+Peekaboo solves this fundamental limitation by giving AI agents vision capabilities.
+
 <div class="cursor-install-button">
   <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==">
-    <img class="dark-theme-img" src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Add to Cursor" />
-    <img class="light-theme-img" src="https://cursor.com/deeplink/mcp-install-light.png" alt="Add to Cursor" />
+    <img class="dark-theme-img" src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Install Peekaboo in Cursor IDE" />
+    <img class="light-theme-img" src="https://cursor.com/deeplink/mcp-install-light.png" alt="Install Peekaboo in Cursor IDE" />
   </a>
 </div>
 
@@ -30,7 +45,7 @@ tags:
 .cursor-install-button img {
   border: none !important;
   box-shadow: none !important;
-  width: 50%;
+  max-width: 200px;
   height: auto;
 }
 /* Theme switching */
@@ -49,21 +64,6 @@ html:not([data-theme]) .light-theme-img {
   display: none;
 }
 </style>
-
-![Peekaboo MCP: Screenshots so fast they're paranormal](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
-
-**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
-
-Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utility that haunts your screen, capturing spectral snapshots for AI agents. Think of Peekaboo as supernatural contact lenses for your coding assistant.
-
-### The Problem with Blind Agents
-
-- "The button is broken!"
-- "Which button?"
-- "The blue one!"
-- "...I'm an AI, I can't see colors. Or buttons. Or anything really."
-
-Peekaboo solves this fundamental limitation by giving AI agents vision capabilities.
 
 ## What Peekaboo Can Do
 
@@ -103,11 +103,9 @@ The same principle applies to app names - partial matches work, case doesn't mat
 
 ## From AppleScript to Swift
 
-I had an early version of Peekaboo that was simply based on [AppleScript](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt), but AppleScript had a fatal flaw: it requires focus changes. To capture a window, I had to bring it to the foreground, screenshot the entire screen, then crop out just the application. This was incredibly disruptive - imagine typing and suddenly your focus jumps to another window because the AI needs a screenshot. Trust me, I tried it, and it's really annoying.
+My initial [AppleScript prototype](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt) had a fatal flaw: it required focus changes. To capture a window, I had to bring it to the foreground, screenshot the entire screen, then crop out just the application. Imagine typing and suddenly your focus jumps to another window because the AI needs a screenshot - incredibly disruptive.
 
-Beyond the user experience nightmare, AppleScript is slow and quickly became unmaintainable. The tooling is bad, it's just really old, and it's slow. This Peekaboo is my complete rewrite using Swift, which can access the window manager directly and capture any window without focus changes. The user never knows a screenshot was taken - exactly how it should be.
-
-The legacy AppleScript version is still available in the repository for reference, but the performance and user experience improvements of the Swift rewrite make it clear why the migration was necessary.
+The Swift rewrite uses ScreenCaptureKit to access the window manager directly and capture any window without focus changes. The user never knows a screenshot was taken - exactly how it should be.
 
 ## Local vs Cloud: The Vision Model Showdown
 
