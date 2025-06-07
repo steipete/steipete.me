@@ -244,74 +244,7 @@ Error handling is also more expressive than XCTest:
 }
 ```
 
-### 5. Advanced Async Testing with Retry Logic
-
-One of the most impressive transformations was the NetworkRetryHandler tests, which demonstrate Swift Testing's superior async capabilities:
-
-```swift
-@Suite("NetworkRetryHandler Tests", .tags(.network, .unit))
-@MainActor
-struct NetworkRetryHandlerTests {
-    @Test("exponential backoff with jitter")
-    func exponentialBackoffWithJitter() async {
-        let config = NetworkRetryHandler.Configuration(
-            maxRetries: 2,
-            initialDelay: 0.1,  // Using milliseconds for faster tests
-            maxDelay: 1.0,
-            multiplier: 3.0,
-            jitterFactor: 0.0   // No jitter for predictable testing
-        )
-        let customHandler = NetworkRetryHandler(configuration: config)
-        var attemptCount = 0
-        var attemptTimes: [Date] = []
-        
-        // When
-        do {
-            _ = try await customHandler.execute {
-                attemptCount += 1
-                attemptTimes.append(Date())
-                throw NetworkRetryHandler.RetryableError.connectionError
-            }
-        } catch {
-            // Expected - should retry and then fail
-        }
-        
-        // Then
-        #expect(attemptCount == 3) // initial + 2 retries
-        
-        if attemptTimes.count >= 2 {
-            let firstDelay = attemptTimes[1].timeIntervalSince(attemptTimes[0])
-            #expect(abs(firstDelay - 0.1) < 0.05) // Allow 50ms tolerance
-        }
-        if attemptTimes.count >= 3 {
-            let secondDelay = attemptTimes[2].timeIntervalSince(attemptTimes[1])
-            #expect(abs(secondDelay - 0.3) < 0.05) // Expected: 0.1 * 3.0
-        }
-    }
-    
-    @Test("successful operation on first attempt", .timeLimit(.seconds(1)))
-    func successfulOperationFirstAttempt() async throws {
-        let handler = NetworkRetryHandler()
-        var callCount = 0
-        
-        let result = try await handler.execute {
-            callCount += 1
-            return "Success"
-        }
-        
-        #expect(result == "Success")
-        #expect(callCount == 1)
-    }
-}
-```
-
-This showcases:
-- Complex async behavior verification with precise timing
-- Test-friendly configuration (milliseconds instead of seconds)
-- Clean error handling without XCTestExpectation
-- Time limits to prevent hanging tests
-
-### 6. Time Limits Prevent CI Hangs
+### 5. Time Limits Prevent CI Hangs
 
 Performance tests were scattered across multiple files with no protection against runaway execution:
 
@@ -375,46 +308,6 @@ struct PerformanceBenchmarks {
 ```
 
 This prevents runaway tests from blocking CI pipelines - something I've dealt with too many times in XCTest.
-
-### 7. Multi-Dimensional Tagging for Test Organization
-
-Swift Testing's tagging system enables sophisticated test organization that goes far beyond XCTest's limited capabilities:
-
-```swift
-// Functional area tags
-@Suite("Authentication Token Manager Tests", .tags(.authentication, .unit))
-@Suite("Network Layer Tests", .tags(.network, .integration))
-@Suite("Currency Conversion Tests", .tags(.currency, .unit))
-
-// Performance characteristics
-@Suite("Core Functionality", .tags(.fast))
-@Test("Bulk processing", .tags(.slow))
-
-// Criticality levels
-@Test("save token success", .tags(.critical, .requiresKeychain))
-@Test("cache fallback", .tags(.nonCritical))
-
-// Dependencies and requirements
-@Test("keychain integration", .tags(.requiresKeychain))
-@Test("network connectivity", .tags(.requiresNetwork))
-
-// Edge cases and special scenarios
-@Test("handles malformed data", .tags(.edgeCase))
-@Test("race condition handling", .tags(.concurrency))
-
-// Running specific test subsets
-// swift test --filter .fast              // Only fast tests
-// swift test --filter .critical          // Only critical tests
-// swift test --filter .unit,.fast        // Unit tests that are fast
-// swift test --exclude .slow,.network    // Skip slow network tests
-```
-
-This multi-dimensional tagging enables:
-- Running only `.fast` tests in pull request CI
-- Running `.critical` tests before releases
-- Skipping `.requiresNetwork` tests in offline environments
-- Focusing on `.edgeCase` tests when debugging weird issues
-- Creating custom test suites for different scenarios
 
 ## Beyond Basic Conversion: Real Improvements
 
