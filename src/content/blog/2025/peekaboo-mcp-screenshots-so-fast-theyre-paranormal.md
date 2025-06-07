@@ -138,9 +138,9 @@ When your build fails, when your UI doesn't look right, when something breaks - 
 
 Peekaboo is part of a growing collection of MCP servers I'm building:
 
-- **🧠 [claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Bridge between Claude Code and MCP for enhanced development workflows
-- **🎯 [macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Automate macOS tasks and workflows through MCP integration
-- **🤖 [Terminator](https://github.com/steipete/Terminator)** - Terminal automation and command execution for AI agents
+- **🧠 [claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Integrates Claude Code into Cursor and other agents, providing a buddy for offloading tasks or getting a second opinion when stuck
+- **🎯 [macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Run AppleScript and JXA (JavaScript for Automation) on macOS
+- **🤖 [Terminator](https://github.com/steipete/Terminator)** - External terminal so agents don't get stuck waiting on commands that never return
 
 Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
 
