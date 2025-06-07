@@ -170,13 +170,43 @@ Swift Testing's error handling is more expressive than XCTest:
 
 ### 5. Time Limits Prevent CI Hangs
 
-One particularly useful feature is `.timeLimit`:
+Performance tests were scattered across multiple files with no protection against runaway execution:
 
 ```swift
-@Suite("Network Tests", .timeLimit(.seconds(30)))
-struct NetworkTests {
-    @Test("Fast endpoint", .timeLimit(.seconds(2)))
-    func quickAPICall() async { /* ... */ }
+// Before: Individual scattered performance tests
+func testCurrencyConversionPerformance() {
+    measure {
+        for _ in 0..<1000 {
+            _ = CurrencyHelper.convert(100.0, rate: 0.85)
+        }
+    }
+}
+
+// After: Organized performance suite with time limits
+@Suite("Performance Benchmarks", .tags(.performance))
+struct PerformanceBenchmarks {
+    @Suite("Currency Conversion", .tags(.currency))
+    struct CurrencyConversion {
+        @Test("Bulk currency conversion performance", .timeLimit(.minutes(1)))
+        func bulkCurrencyConversionPerformance() {
+            // Given
+            let amounts = Array(stride(from: 0.01, through: 10000.0, by: 0.01))
+            let exchangeRates = ["EUR": 0.92, "GBP": 0.82, "JPY": 110.0]
+            
+            // When
+            let startTime = Date()
+            for amount in amounts {
+                for (_, rate) in exchangeRates {
+                    _ = CurrencyConversionHelper.convert(amount: amount, rate: rate)
+                }
+            }
+            let duration = Date().timeIntervalSince(startTime)
+            
+            // Then
+            print("Converted \(amounts.count * exchangeRates.count) values in \(duration)s")
+            #expect(duration < 10.0) // Should complete in under 10 seconds
+        }
+    }
 }
 ```
 
