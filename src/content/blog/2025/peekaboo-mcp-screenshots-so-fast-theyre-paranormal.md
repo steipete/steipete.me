@@ -40,7 +40,7 @@ Each tool is designed to be powerful and flexible. Want to capture all windows o
 
 The most powerful feature of Peekaboo is that agents can ask questions about screenshots. Imagine you're working on an app - it spins up but there's no UI, just a blank window. The agent can ask: "What do you see in this window?" or "Is the submit button visible?" and get accurate answers.
 
-We support both OpenAI and Ollama, allowing you to choose between cloud and local vision models. This visual Q&A capability is incredibly beneficial because it saves context space. While Peekaboo can return images directly as base64, asking specific questions is much more efficient and helps keep the model context lean.
+We support both OpenAI and Ollama, allowing you to choose between cloud and local vision models. This visual Q&A capability is incredibly beneficial because it saves context space. While Peekaboo can return images directly as base64 or files, asking specific questions is much more efficient and helps keep the model context lean.
 
 ## Design Philosophy
 
@@ -52,15 +52,9 @@ The most important rule when building MCPs: **Keep the number of tools small**. 
 
 ### Lenient Tool Calling
 
-Another crucial principle: **tool calling should be lenient**. Agents are not perfect and sometimes make mistakes. For example, when an agent calls `list` for running applications but includes an empty array for `include_window_details`:
+Another crucial principle: **tool calling should be lenient**. Agents are not perfect and sometimes make mistakes with parameters or argument combinations. Rather than returning errors for minor inconsistencies, Peekaboo tries to understand the agent's intent and do what they most likely meant.
 
-```
-"Invalid arguments: 'include_window_details' only allowed for 'application_windows'."
-```
-
-Technically, this is correct - window details are only valid for application windows. But the array is empty, and we can infer the agent's intent. The better approach is to be lenient and simply do what the agent most likely asked for.
-
-Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. If we're overly strict and return errors, they'll have to call the tool again, which ultimately slows down the loop. My belief (and I'm sure this is controversial) is that MCPs should be very lenient in parsing arguments. Agents are not infallible, so why should our tools be unforgiving?
+Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. Being overly strict just forces unnecessary retry loops. My belief (and I'm sure this is controversial) is that MCPs should be forgiving with arguments. Agents are not infallible, so why should our tools be unforgiving?
 
 ### Fuzzy Window Matching
 
