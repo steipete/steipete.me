@@ -65,6 +65,8 @@ With the playbook in hand, I gave Claude Code new instructions:
 
 **Plot twist**: The first time I tried this, Claude got creative and started implementing [new test patterns from the playbook](https://github.com/steipete/CodeLooper/pull/8/commits/d1bb7ba75dfefc821d24d5cfff6c785cd92f9079) instead of converting existing tests. I had to clarify:
 
+![Claude getting carried away with implementing test patterns instead of converting existing tests](/assets/img/2025/migrating-1000-tests-to-swift-testing/claude-being-dumb.png)
+
 > Read swift-testing-playbook.md and swift-testing-api.md and refactor the **existing** tests in this codebase to use Swift Testing patterns.
 
 Lesson learned: Be very specific with AI instructions. "Improve tests using these patterns" can mean "create new tests" or "convert existing tests." The difference matters when you have existing test coverage to preserve.
