@@ -54,7 +54,7 @@ The most important rule when building MCPs: **Keep the number of tools small**. 
 
 Another crucial principle: **tool calling should be lenient**. Agents are not perfect and sometimes make mistakes with parameters or argument combinations. Rather than returning errors for minor inconsistencies, Peekaboo tries to understand the agent's intent and do what they most likely meant.
 
-Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. Being overly strict just forces unnecessary retry loops. My belief (and I'm sure this is controversial) is that MCPs should be forgiving with arguments. Agents are not infallible, so why should our tools be unforgiving?
+Agents are smart - if they get something back that they didn't explicitly ask for, they'll adapt. Being overly strict just forces unnecessary retry loops. My belief (and this might be controversial) is that MCPs should be forgiving with arguments. Agents are not infallible, so why should our tools be unforgiving?
 
 ### Fuzzy Window Matching
 
@@ -93,11 +93,9 @@ After extensive testing, here are the best local vision models for Peekaboo:
 
 I chose LLaVA as the default because it offers the best balance of accuracy and capability for screenshot analysis. The model excels at understanding UI elements, reading text in images, and answering questions about visual content. While larger variants (13b, 34b) provide better results, even the 7b model handles most screenshot analysis tasks admirably.
 
-The field is moving fast though, so this gap between local and cloud models continues to narrow.
-
 ## Architecture: TypeScript + Swift
 
-Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support, and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS. Other contributors are welcome to send pull requests for increased platform support!
+Why the mix of TypeScript and Swift? Because [TypeScript has the best MCP support](https://github.com/modelcontextprotocol/typescript-sdk), and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS.
 
 ## Technical Highlights
 
