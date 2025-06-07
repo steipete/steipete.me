@@ -75,7 +75,26 @@ The legacy AppleScript version is still available in the repository for referenc
 
 For local image inference with Ollama, I've tested several models to find the best performers. While the landscape is rapidly evolving, none of the current local options match OpenAI's GPT-4o vision capabilities yet. However, local models offer privacy, cost control, and offline operation - valuable trade-offs depending on your use case.
 
-The most capable local vision models currently available through Ollama include options like LLaVA and its variants, but expect to make compromises on accuracy and detail recognition compared to cloud-based solutions. The field is moving fast though, so this gap continues to narrow.
+### Recommended Local Models
+
+After extensive testing, here are the best local vision models for Peekaboo:
+
+**[LLaVA](https://ollama.com/library/llava) (Large Language and Vision Assistant)**
+- **Default recommendation**: Best overall quality for vision tasks
+- Available sizes: 7b, 13b, 34b
+- Resource requirements:
+  - `llava:7b`: ~4.5GB download, ~8GB RAM
+  - `llava:13b`: ~8GB download, ~16GB RAM  
+  - `llava:34b`: ~20GB download, ~40GB RAM
+
+**[Qwen2-VL](https://ollama.com/library/qwen2-vl)**
+- **Best for resource-constrained systems**: Excellent performance with lower requirements
+- `qwen2-vl:7b`: ~4GB download, ~6GB RAM
+- Ideal for less beefy machines while maintaining good accuracy
+
+I chose LLaVA as the default because it offers the best balance of accuracy and capability for screenshot analysis. The model excels at understanding UI elements, reading text in images, and answering questions about visual content. While larger variants (13b, 34b) provide better results, even the 7b model handles most screenshot analysis tasks admirably.
+
+The field is moving fast though, so this gap between local and cloud models continues to narrow.
 
 ## Architecture: TypeScript + Swift
 
