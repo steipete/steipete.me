@@ -306,6 +306,60 @@ No more cryptic function names:
 @Test("AppleScript support methods provide automation capabilities")
 ```
 
+### Advanced Confirmation Patterns
+
+Swift Testing's `confirmation()` handles complex async scenarios elegantly:
+
+```swift
+@Test("Multi-step debouncer lifecycle")
+func multiStepDebouncerLifecycle() async throws {
+    try await confirmation("Complete lifecycle", expectedCount: 3) { confirm in
+        // Step 1: Initial call
+        debouncer.call { confirm() }
+        try await Task.sleep(for: .milliseconds(70))
+        
+        // Step 2: Second call after first completes
+        debouncer.call { confirm() }
+        try await Task.sleep(for: .milliseconds(70))
+        
+        // Step 3: Final verification
+        confirm()
+    }
+}
+```
+
+### Taming Flaky Tests with withKnownIssue
+
+Every codebase has those intermittent failures. Swift Testing provides a civilized way to handle them:
+
+```swift
+@Test("Race condition in timeout handling")
+func interventionTimeoutRaceCondition() async throws {
+    await withKnownIssue("Timeout vs completion race", isIntermittent: true) {
+        // Test that occasionally fails due to known race condition
+        let timeout: TimeInterval = 5.0
+        let startTime = Date()
+        
+        try await Task.sleep(for: .milliseconds(100))
+        let elapsed = Date().timeIntervalSince(startTime)
+        
+        #expect(elapsed < timeout, "Should complete before timeout")
+    }
+}
+```
+
+### Silence Those Annoying Warnings
+
+Quick tip that'll save you from compiler nagging:
+
+```swift
+// Before: Compiler warning about literal true
+#expect(true)
+
+// After: Explicit Bool conversion silences warning
+#expect(Bool(true))
+```
+
 ## The Results
 
 Looking at the final pull requests ([Vibe Meter PR #28](https://github.com/steipete/VibeMeter/pull/28), [Code Looper PR #8](https://github.com/steipete/CodeLooper/pull/8)), the transformation is dramatic:
