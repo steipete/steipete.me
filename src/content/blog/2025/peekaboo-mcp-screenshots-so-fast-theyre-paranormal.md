@@ -49,6 +49,12 @@ Let AI roast your CSS crimes with visual evidence!
 
 We support either OpenAI or Ollama, so you can use a remote model or a local model that looks at the image and answers the question. This is incredibly beneficial because it saves context space. Peekaboo can return images directly as base64 (fast but fills up context quickly), but being able to ask questions is much more efficient and helps keep the model context lean.
 
+## Local vs Cloud: The Vision Model Showdown
+
+For local image inference with Ollama, I've tested several models to find the best performers. While the landscape is rapidly evolving, none of the current local options match OpenAI's GPT-4o vision capabilities yet. However, local models offer privacy, cost control, and offline operation - valuable trade-offs depending on your use case.
+
+The most capable local vision models currently available through Ollama include options like LLaVA and its variants, but expect to make compromises on accuracy and detail recognition compared to cloud-based solutions. The field is moving fast though, so this gap continues to narrow.
+
 ## Architecture: TypeScript + Swift
 
 Why the mix of TypeScript and Swift? Because TypeScript has the best MCP support, and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS. Other contributors are welcome to send pull requests for increased platform support!
