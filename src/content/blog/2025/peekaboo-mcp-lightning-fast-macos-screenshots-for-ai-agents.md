@@ -156,4 +156,6 @@ When your build fails, when your UI doesn't look right, when something breaks - 
 
 For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
 
-Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time. 👻
+👻 Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
+
+⭐ the repo if this saves you a debug session.
