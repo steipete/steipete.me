@@ -97,6 +97,8 @@ Another crucial principle: **tool calling should be lenient**. Agents make mista
 
 Peekaboo implements fuzzy window matching because agents don't always know exact window titles. If an agent asks for "Chrome" but the window is titled "Google Chrome - Peekaboo MCP", we still match it. Partial matches work, case doesn't matter, and common variations are understood.
 
+For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
+
 ## Local vs Cloud Vision Models
 
 Peekaboo supports both local and cloud vision models. While cloud models like GPT-4o offer superior accuracy, local models provide privacy, cost control, and offline operation.
@@ -152,10 +154,4 @@ Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help a
 
 When your build fails, when your UI doesn't look right, when something breaks - instead of stopping and asking you "what do you see?", the agent can take a screenshot, analyze it, and continue fixing the problem autonomously. That's the power of giving agents their eyes.
 
-**GitHub Repository**: [steipete/Peekaboo](https://github.com/steipete/Peekaboo)
-
-For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
-
-👻 Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
-
-⭐ the repo if this saves you a debug session.
+👻 Peekaboo MCP is available now - ⭐ [the repo](https://github.com/steipete/Peekaboo) if this saves you a debug session.
