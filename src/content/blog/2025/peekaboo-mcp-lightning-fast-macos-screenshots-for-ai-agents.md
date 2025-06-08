@@ -1,7 +1,7 @@
 ---
 title: "Peekaboo MCP – lightning-fast macOS screenshots for AI agents"
 pubDatetime: 2025-06-07T12:00:00.000+01:00
-description: "Introducing Peekaboo MCP - the fastest way to take screenshots with Claude. Built with Swift and love for developer productivity."
+description: "Turn your blind AI into a visual debugger with instant screenshot capture and analysis"
 tags:
   - MCP
   - Claude
@@ -19,12 +19,7 @@ Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utilit
 
 ### The Problem with Blind Agents
 
-- "The button is broken!"
-- "Which button?"
-- "The blue one!"
-- "...I'm an AI, I can't see colors. Or buttons. Or anything really."
-
-Peekaboo solves this fundamental limitation by giving AI agents vision capabilities.
+Without visual capabilities, AI agents are fundamentally limited when debugging UI issues or understanding what's happening on screen. Peekaboo solves this limitation by giving AI agents vision capabilities.
 
 <div class="cursor-install-button">
   <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJjb21tYW5kIjogIm5weCIsCiAgImFyZ3MiOiBbCiAgICAiLXkiLAogICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgXSwKICAiZW52IjogewogICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogIH0KfQ==">
@@ -127,40 +122,13 @@ After extensive testing, here are the best local vision models for Peekaboo:
 
 I chose LLaVA as the default because it offers the best balance of accuracy and capability for screenshot analysis. The model excels at understanding UI elements, reading text in images, and answering questions about visual content. While larger variants (13b, 34b) provide better results, even the 7b model handles most screenshot analysis tasks admirably.
 
-## Architecture: TypeScript + Swift
+## Technical Architecture
 
-Why the mix of TypeScript and Swift? Because [TypeScript has the best MCP support](https://github.com/modelcontextprotocol/typescript-sdk), and the tooling around it is great - npm and npx are proven and easy ways to install it. Yes, there's Muse for Swift, but this combines the best of both worlds. It would be fairly straightforward to add multi-platform support with binaries for Windows and Linux, but so far I only work with macOS.
+Peekaboo combines TypeScript and Swift for the best of both worlds. TypeScript provides excellent [MCP support](https://github.com/modelcontextprotocol/typescript-sdk) and easy distribution via npm, while Swift enables direct access to Apple's [ScreenCaptureKit](https://developer.apple.com/documentation/screencapturekit) for capturing windows without focus changes.
 
-## Technical Highlights
+The system uses a [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli/Sources/peekaboo) that communicates with a [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src), supporting both local models (via Ollama) and cloud providers (OpenAI) with automatic fallback. Built with Swift 6 and the new Swift Testing framework, Peekaboo delivers fast, non-intrusive screenshot capture with intelligent window matching. You can read about my experience modernizing the test suite in [Migrating 700+ Tests to Swift Testing](/posts/migrating-700-tests-to-swift-testing).
 
-Here's what makes Peekaboo technically interesting:
-
-**🏗️ Hybrid Architecture**
-- [Swift CLI](https://github.com/steipete/Peekaboo/tree/main/peekaboo-cli/Sources/peekaboo) + [Node.js MCP server](https://github.com/steipete/Peekaboo/tree/main/src) working in harmony
-- [Universal binary build script](https://github.com/steipete/Peekaboo/blob/main/scripts/build-swift-universal.sh) creates optimized ARM64/x86_64 binaries
-
-**📸 Modern Screenshot Technology**
-- Uses Apple's [ScreenCaptureKit](https://developer.apple.com/documentation/screencapturekit) (macOS 14+) for efficient capture
-- Automatic shadow/frame exclusion for clean screenshots
-- Smart window targeting with fuzzy app matching
-
-**🤖 AI Provider Magic**
-- Auto-fallback system across multiple AI providers (Ollama → OpenAI)
-- Local LLaVA models + cloud GPT-4o vision in one unified interface
-
-The magic happens through this elegant chain: macOS ScreenCaptureKit → Swift CLI → Node.js bridge → MCP protocol → AI models. Each component does one thing well, resulting in a system that's both powerful and maintainable.
-
-## Testing with MCP Inspector
-
-I thoroughly tested Peekaboo manually using the [Model Context Protocol Inspector](https://modelcontextprotocol.io/docs/tools/inspector), along with various apps like Claude Desktop. The inspector is fantastic for interactive testing and development.
-
-To test this project interactively, you can use this one-liner:
-
-```bash
-PEEKABOO_AI_PROVIDERS="ollama/llava:latest" npx @modelcontextprotocol/inspector npx -y @steipete/peekaboo-mcp
-```
-
-This sets up Peekaboo with Ollama's LLaVA model and launches the MCP Inspector for immediate testing. Perfect for exploring the visual question answering capabilities in real-time.
+For detailed testing instructions using the MCP Inspector, see the [Peekaboo README](https://github.com/steipete/Peekaboo#testing--debugging).
 
 ## Installation
 
@@ -177,7 +145,8 @@ This sets up Peekaboo with Ollama's LLaVA model and launches the MCP Inspector f
 }
 ```
 
-### Setting Up Ollama
+<details>
+<summary>Setting up Ollama for local AI models</summary>
 
 To use local AI models, you'll need [Ollama](https://ollama.ai) installed:
 
@@ -190,6 +159,8 @@ ollama pull llava:latest
 ```
 
 LLaVA is currently one of the most capable local vision models available through Ollama for screenshot analysis.
+
+</details>
 
 **GitHub Repository**: [steipete/Peekaboo](https://github.com/steipete/Peekaboo)
 
@@ -209,10 +180,6 @@ Peekaboo is part of a growing collection of MCP servers I'm building:
 
 Each MCP serves a specific purpose in building autonomous, self-sufficient AI workflows.
 
-## Swift Testing Migration
-
-With this release, I also took the opportunity to update the Swift testing from XCTest to Swift Testing. You can read more about that experience in my recent post: [Migrating 700+ Tests to Swift Testing: A Real-World Experience](/posts/migrating-700-tests-to-swift-testing).
-
-One puzzle in this game is Peekaboo, and I'm happy that it's finally out. For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
+For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
 
 Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
