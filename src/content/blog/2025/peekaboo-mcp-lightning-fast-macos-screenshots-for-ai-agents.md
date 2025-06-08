@@ -13,7 +13,7 @@ tags:
 
 ![Peekaboo MCP – lightning-fast macOS screenshots for AI agents](/assets/img/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/banner.png)
 
-**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
+**TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, or the entire system, with optional visual question answering through local or remote AI models.
 
 > Without screenshots, agents debug blind—Peekaboo gives them eyes.
 
@@ -93,7 +93,7 @@ Another crucial principle: **tool calling should be lenient**. Agents make mista
 
 Peekaboo implements fuzzy window matching because agents don't always know exact window titles. If an agent asks for "Chrome" but the window is titled "Google Chrome - Peekaboo MCP", we still match it. Partial matches work, case doesn't matter, and common variations are understood.
 
-For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
+For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/2025/mcp-best-practices).
 
 ## Local vs Cloud Vision Models
 
