@@ -140,7 +140,7 @@ Peekaboo combines TypeScript and Swift for the best of both worlds. TypeScript p
 
 My initial [AppleScript prototype](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt) had a fatal flaw: it required focus changes to capture windows. The Swift rewrite uses ScreenCaptureKit to access the window manager directly - no focus changes, no user disruption.
 
-The system uses a Swift CLI that communicates with a Node.js MCP server, supporting both local models and cloud providers with automatic fallback. Built with Swift 6 and the new Swift Testing framework, Peekaboo delivers fast, non-intrusive screenshot capture with intelligent window matching. You can read about my experience modernizing the test suite in [Migrating 700+ Tests to Swift Testing](/posts/migrating-700-tests-to-swift-testing).
+The system uses a Swift CLI that communicates with a Node.js MCP server, supporting both local models and cloud providers with automatic fallback. Built with Swift 6 and the new Swift Testing framework ([now that I have experience with it!](/posts/migrating-700-tests-to-swift-testing)), Peekaboo delivers fast, non-intrusive screenshot capture with intelligent window matching.
 
 For detailed testing instructions using the MCP Inspector, see the [Peekaboo README](https://github.com/steipete/Peekaboo#testing--debugging).
 
