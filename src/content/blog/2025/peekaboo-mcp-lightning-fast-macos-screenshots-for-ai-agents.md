@@ -150,4 +150,4 @@ Peekaboo is like one puzzle piece in a larger set of MCPs I'm building to help a
 
 When your build fails, when your UI doesn't look right, when something breaks - instead of stopping and asking you "what do you see?", the agent can take a screenshot, analyze it, and continue fixing the problem autonomously. That's the power of giving agents their eyes.
 
-👻 Peekaboo MCP is available now - ⭐ [the repo](https://github.com/steipete/Peekaboo) if this saves you a debug session.
+👻 Peekaboo MCP is available now - ⭐ [the repo](https://github.com/steipete/Peekaboo) if this saves you a debug session!
