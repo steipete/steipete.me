@@ -11,7 +11,7 @@ tags:
   - Developer Tools
 ---
 
-![Peekaboo MCP – lightning-fast macOS screenshots for AI agents](/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/banner.png)
+![Peekaboo MCP – lightning-fast macOS screenshots for AI agents](/assets/img/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/banner.png)
 
 **TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, windows, or the entire system, with optional visual question answering through local or remote AI models.
 
@@ -27,7 +27,7 @@ Today I'm releasing the first stable version of Peekaboo, a ghostly macOS utilit
 Peekaboo solves this fundamental limitation by giving AI agents vision capabilities.
 
 <div class="cursor-install-button">
-  <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJwZWVrYWJvbyI6IHsKICAgICJjb21tYW5kIjogIm5weCIsCiAgICAiYXJncyI6IFsKICAgICAgIi15IiwKICAgICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgICBdLAogICAgImVudiI6IHsKICAgICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogICAgfQogIH0KfQ==">
+  <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=peekaboo&config=ewogICJjb21tYW5kIjogIm5weCIsCiAgImFyZ3MiOiBbCiAgICAiLXkiLAogICAgIkBzdGVpcGV0ZS9wZWVrYWJvby1tY3AiCiAgXSwKICAiZW52IjogewogICAgIlBFRUtBQk9PX0FJX1BST1ZJREVSUyI6ICJvbGxhbWEvbGxhdmE6bGF0ZXN0IgogIH0KfQ==">
     <img class="dark-theme-img" src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Install Peekaboo in Cursor IDE" />
     <img class="light-theme-img" src="https://cursor.com/deeplink/mcp-install-light.png" alt="Install Peekaboo in Cursor IDE" />
   </a>
@@ -88,7 +88,7 @@ We support both OpenAI and Ollama, allowing you to choose between cloud and loca
 
 The most important rule when building MCPs: **Keep the number of tools small**. Most IDEs and agents struggle once they encounter more than 40 different tools. My approach is to make every tool very powerful but keep the total count minimal to avoid cluttering the context.
 
-<img src="/assets/img/2025/peekaboo-mcp-screenshots-so-fast-theyre-paranormal/cursor-40-tools.png" alt="Cursor showing 40+ tools can become overwhelming" style="max-width: 50%; height: auto;" />
+<img src="/assets/img/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/cursor-40-tools.png" alt="Cursor showing 40+ tools can become overwhelming" style="max-width: 70%; height: auto;" />
 
 ### Lenient Tool Calling
 
