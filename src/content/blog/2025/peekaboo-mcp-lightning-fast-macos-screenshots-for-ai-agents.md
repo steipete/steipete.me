@@ -25,7 +25,7 @@ Without visual capabilities, AI agents are fundamentally limited when debugging 
 
 Peekaboo provides three main tools that give AI agents visual capabilities:
 
-- **`image`** - Capture screenshots of screens, windows, or specific applications
+- **`image`** - Capture screenshots of screens or specific applications
 - **`analyze`** - Ask AI questions about captured images using vision models
 - **`list`** - Enumerate available screens and windows for targeted captures
 
@@ -103,13 +103,36 @@ Peekaboo supports both local and cloud vision models. While cloud models like GP
 
 For local inference, I recommend LLaVA as the default for its balance of accuracy and performance. For resource-constrained systems, Qwen2-VL provides excellent results with lower requirements.
 
+<details>
+<summary>Model specifications and requirements</summary>
+
+**[LLaVA](https://ollama.com/library/llava) (Large Language and Vision Assistant)**
+- `llava:7b` - ~4.5GB download, ~8GB RAM required
+- `llava:13b` - ~8GB download, ~16GB RAM required  
+- `llava:34b` - ~20GB download, ~40GB RAM required
+- Best overall quality for vision tasks
+
+**[Qwen2-VL](https://ollama.com/library/qwen2-vl)**
+- `qwen2-vl:7b` - ~4GB download, ~6GB RAM required
+- Excellent performance with lower resource requirements
+- Ideal for less powerful machines
+
+**Installation:**
+```bash
+# Install your chosen model
+ollama pull llava:latest        # or llava:7b, llava:13b, etc.
+ollama pull qwen2-vl:7b        # for resource-constrained systems
+```
+
+</details>
+
 ## My MCP Ecosystem
 
 Peekaboo is part of a growing collection of MCP servers I'm building:
 
-- **claude-code-mcp** - Integrates Claude Code into Cursor for task offloading
-- **macos-automator-mcp** - Run AppleScript and JXA on macOS  
-- **Terminator** - External terminal so agents don't get stuck on long-running commands
+- **[claude-code-mcp](https://github.com/steipete/claude-code-mcp)** - Integrates Claude Code into Cursor for task offloading
+- **[macos-automator-mcp](https://github.com/steipete/macos-automator-mcp)** - Run AppleScript and JXA on macOS  
+- **[Terminator](https://github.com/steipete/Terminator)** - External terminal so agents don't get stuck on long-running commands
 
 Each serves a specific purpose in building autonomous AI workflows.
 
@@ -119,7 +142,7 @@ Peekaboo combines TypeScript and Swift for the best of both worlds. TypeScript p
 
 My initial [AppleScript prototype](https://github.com/steipete/Peekaboo/blob/main/peekaboo.scpt) had a fatal flaw: it required focus changes to capture windows. The Swift rewrite uses ScreenCaptureKit to access the window manager directly - no focus changes, no user disruption.
 
-The system uses a Swift CLI that communicates with a Node.js MCP server, supporting both local models and cloud providers with automatic fallback. Built with Swift 6 and the new Swift Testing framework, Peekaboo delivers fast, non-intrusive screenshot capture with intelligent window matching.
+The system uses a Swift CLI that communicates with a Node.js MCP server, supporting both local models and cloud providers with automatic fallback. Built with Swift 6 and the new Swift Testing framework, Peekaboo delivers fast, non-intrusive screenshot capture with intelligent window matching. You can read about my experience modernizing the test suite in [Migrating 700+ Tests to Swift Testing](/posts/migrating-700-tests-to-swift-testing).
 
 For detailed testing instructions using the MCP Inspector, see the [Peekaboo README](https://github.com/steipete/Peekaboo#testing--debugging).
 
@@ -133,4 +156,4 @@ When your build fails, when your UI doesn't look right, when something breaks - 
 
 For more insights on building robust MCP tools, check out my guide: [MCP Best Practices](/posts/mcp-best-practices).
 
-Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time.
+Peekaboo MCP is available now - giving your AI agents the gift of sight, one screenshot at a time. 👻
