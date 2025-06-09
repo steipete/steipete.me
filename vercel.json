@@ -7,6 +7,12 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/:path*.md",
+      "has": [{ "type": "host", "value": "steipete.me" }],
+      "destination": "https://steipete.md/:path*",
+      "permanent": false
+    },
+    {
       "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
       "destination": "/posts/:slug",
       "permanent": true
@@ -64,6 +70,11 @@
       "source": "/archives",
       "has": [{ "type": "host", "value": "steipete.md" }],
       "destination": "/archives.md"
+    },
+    {
+      "source": "/posts/:year/:slug",
+      "has": [{ "type": "host", "value": "steipete.md" }],
+      "destination": "/posts/:year/:slug.md"
     },
     {
       "source": "/posts/:slug",
