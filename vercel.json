@@ -52,34 +52,9 @@
   ],
   "rewrites": [
     {
-      "source": "/",
+      "source": "/:path((?!.*\\.md$).*)",
       "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/index.md"
-    },
-    {
-      "source": "/about",
-      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/about.md"
-    },
-    {
-      "source": "/posts",
-      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/posts.md"
-    },
-    {
-      "source": "/archives",
-      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/archives.md"
-    },
-    {
-      "source": "/posts/:year/:slug",
-      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/posts/:year/:slug.md"
-    },
-    {
-      "source": "/posts/:slug",
-      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/posts/:slug.md"
+      "destination": "/:path.md"
     }
   ],
   "headers": [
