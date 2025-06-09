@@ -52,9 +52,14 @@
   ],
   "rewrites": [
     {
-      "source": "/:path((?!.*\\.md$).*)",
+      "source": "/",
       "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/:path.md"
+      "destination": "/index.md"
+    },
+    {
+      "source": "/:path+",
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
+      "destination": "/:path+.md"
     }
   ],
   "headers": [
