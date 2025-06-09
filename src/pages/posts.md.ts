@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
         month: 'short',
         day: 'numeric',
       });
-      markdownContent += `- ${date}: [${post.data.title}](/posts/${post.slug}.md)\n`;
+      markdownContent += `- ${date}: [${post.data.title}](/posts/${post.id}.md)\n`;
     }
     
     markdownContent += '\n';
