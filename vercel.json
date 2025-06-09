@@ -45,7 +45,7 @@
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "^(?!steipete\\.me|steipete\\.md|.*\\.vercel\\.app|.*\\.friendship\\.dev|.*\\.amantus\\.dev).*$" }],
+      "has": [{ "type": "host", "value": "^(?!(steipete\\.me|www\\.steipete\\.me|steipete\\.md|www\\.steipete\\.md|.*\\.vercel\\.app|.*\\.friendship\\.dev|.*\\.amantus\\.dev)).*$" }],
       "destination": "https://steipete.me/:path*",
       "permanent": true
     }
@@ -53,32 +53,32 @@
   "rewrites": [
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/index.md"
     },
     {
       "source": "/about",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/about.md"
     },
     {
       "source": "/posts",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/posts.md"
     },
     {
       "source": "/archives",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/archives.md"
     },
     {
       "source": "/posts/:year/:slug",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/posts/:year/:slug.md"
     },
     {
       "source": "/posts/:slug",
-      "has": [{ "type": "host", "value": "steipete.md" }],
+      "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
       "destination": "/posts/:slug.md"
     }
   ],
