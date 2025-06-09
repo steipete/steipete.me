@@ -50,18 +50,7 @@
       "permanent": true
     }
   ],
-  "rewrites": [
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "(www\\.)?steipete\\.md" }],
-      "destination": "/index.md"
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "(www\\.)?steipete\\.md" }],
-      "destination": "/:path*.md"
-    }
-  ],
+  "rewrites": [],
   "headers": [
     {
       "source": "/(.*)",
