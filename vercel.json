@@ -57,9 +57,9 @@
       "destination": "/index.md"
     },
     {
-      "source": "/:path+",
+      "source": "/:path((?!.*\\.md$).*)",
       "has": [{ "type": "host", "value": "^(www\\.)?steipete\\.md$" }],
-      "destination": "/:path+.md"
+      "destination": "/:path.md"
     }
   ],
   "headers": [
