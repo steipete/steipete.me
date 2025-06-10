@@ -91,9 +91,6 @@ Apple plans to enable this by default in iOS 26, but why wait? Enable it now and
 Let's build something practical - a message counter that updates automatically:
 
 ```swift
-import UIKit
-import Observation
-
 @Observable
 class MessageStore {
     var unreadCount = 0
@@ -106,22 +103,6 @@ class MessageStore {
 
 class MessagesViewController: UIViewController {
     let messageStore = MessageStore()
-    let unreadLabel = UILabel()
-    let totalLabel = UILabel()
-    let badgeView = UIView()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-        
-        // Simulate receiving messages
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            self.messageStore.totalCount += 1
-            if Bool.random() {
-                self.messageStore.unreadCount += 1
-            }
-        }
-    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -132,14 +113,12 @@ class MessagesViewController: UIViewController {
         badgeView.isHidden = !messageStore.hasUnread
         badgeView.backgroundColor = messageStore.unreadCount > 5 ? .red : .blue
     }
-    
-    func setupViews() {
-        // Standard view setup code...
-    }
 }
 ```
 
-Every time the timer fires and updates the message counts, all three UI elements update automatically. The badge appears/disappears, changes color, and the labels show the latest counts. Zero manual intervention required.
+Every time the message counts change, all UI elements update automatically. The badge appears/disappears, changes color, and the labels show the latest counts. Zero manual intervention required.
+
+For the complete working example with proper view setup and a message simulation timer, check out the [example project on GitHub](https://github.com/steipete/AutomaticObservationDemo).
 
 ## Advanced Pattern: Observable Objects in Traits
 
@@ -149,23 +128,6 @@ Here's where things get really interesting. You can use UIKit's trait system to 
 // Define a custom trait for your observable model
 struct ObservableModelTrait<T: Observable & Equatable>: UITraitDefinition {
     static var defaultValue: T? { nil }
-}
-
-extension UITraitCollection {
-    var appModel: AppModel? {
-        self[ObservableModelTrait<AppModel>.self]
-    }
-}
-
-// Your app-wide model
-@Observable
-class AppModel: Equatable {
-    var currentUser: User?
-    var theme: Theme = .light
-    
-    static func == (lhs: AppModel, rhs: AppModel) -> Bool {
-        lhs === rhs  // Identity-based equality
-    }
 }
 
 // Inject at the root of your app
@@ -186,13 +148,13 @@ class SettingsViewController: UIViewController {
 }
 ```
 
-This pattern is incredibly powerful for app-wide state that needs to be accessible from multiple view controllers without passing references down through every level of your hierarchy.
+This pattern is incredibly powerful for app-wide state that needs to be accessible from multiple view controllers without passing references down through every level of your hierarchy. See the [full implementation with AppModel and trait extensions](https://github.com/steipete/AutomaticObservationDemo) in the example project.
 
 ## Performance Considerations
 
 You might be wondering about performance. The beauty of this system is that it only tracks dependencies when views are actually laying out. If a view isn't visible, it's not tracking. The observation framework uses a sophisticated dependency graph that ensures minimal overhead.
 
-In my testing with a complex view hierarchy (100+ views, multiple observable objects), the performance impact was negligible. The automatic tracking actually performed better than my manual update code because it eliminated redundant updates.
+In my testing with a complex view hierarchy (100+ views, multiple observable objects), the performance impact was negligible. The automatic tracking actually performed better than my manual update code because it eliminated redundant updates. Check out the [performance comparison demo](https://github.com/steipete/AutomaticObservationDemo) to see the benchmarks in action.
 
 ## iOS 26 and Beyond: updateProperties()
 
@@ -230,16 +192,17 @@ Of course, it's not all roses. Here are a few things to watch out for:
 - **Not all properties trigger updates**: Only properties accessed during `viewWillLayoutSubviews` (or `updateProperties`) are tracked
 - **Memory considerations**: Observable objects are retained while being observed, so be mindful of retain cycles
 
-## Example Project
+## Complete Example Project
 
-I've created a complete example project demonstrating all these patterns. Check it out on GitHub: [AutomaticObservationDemo](https://github.com/steipete/AutomaticObservationDemo)
+All the code snippets in this post come from a fully working example project. Check it out on GitHub: [AutomaticObservationDemo](https://github.com/steipete/AutomaticObservationDemo)
 
 The project includes:
-- Basic property observation examples
-- Complex nested observable objects  
-- Performance comparisons with manual updates
-- Migration examples from traditional UIKit patterns
-- Custom trait propagation patterns
+- ✅ Basic property observation with message counter
+- ✅ Complex nested observable objects  
+- ✅ Performance benchmarks comparing manual vs automatic updates
+- ✅ Migration patterns from traditional UIKit code
+- ✅ Advanced trait propagation system
+- ✅ Info.plist configuration for iOS 18+
 
 ## Wrapping Up
 
