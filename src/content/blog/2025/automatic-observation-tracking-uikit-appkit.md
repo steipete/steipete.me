@@ -99,7 +99,18 @@ The automatic observation tracking is supported in a variety of UIKit methods. H
 - [`updateConfiguration(using:)`](https://developer.apple.com/documentation/uikit/uitableviewheaderfooterview/3601061-updateconfiguration) (UITableViewHeaderFooterView)
 - When executing the `configurationUpdateHandler`
 
-This gives you plenty of options for where to place your observable property access. For most cases, `viewWillLayoutSubviews()` in view controllers and `layoutSubviews()` in views are the go-to choices.
+### NSView (AppKit)
+- [`updateConstraints()`](https://developer.apple.com/documentation/appkit/nsview/1526891-updateconstraints)
+- [`layout()`](https://developer.apple.com/documentation/appkit/nsview/1526146-layout)
+- [`draw(_:)`](https://developer.apple.com/documentation/appkit/nsview/1483686-draw)
+- [`updateLayer()`](https://developer.apple.com/documentation/appkit/nsview/1526068-updatelayer)
+
+### NSViewController (AppKit)
+- [`updateViewConstraints()`](https://developer.apple.com/documentation/appkit/nsviewcontroller/1434401-updateviewconstraints)
+- [`viewWillLayout()`](https://developer.apple.com/documentation/appkit/nsviewcontroller/1434481-viewwilllayout)
+- [`viewDidLayout()`](https://developer.apple.com/documentation/appkit/nsviewcontroller/1434491-viewdidlayout)
+
+This gives you plenty of options for where to place your observable property access. For most cases, `viewWillLayoutSubviews()` in UIKit view controllers, `layoutSubviews()` in UIKit views, and their AppKit equivalents (`viewWillLayout()` and `layout()`) are the go-to choices.
 
 ## Enabling the Magic
 
