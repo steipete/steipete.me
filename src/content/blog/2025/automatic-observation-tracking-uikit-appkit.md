@@ -172,9 +172,23 @@ struct AppModelTrait: UITraitDefinition {
     static let defaultValue: AppModel? = nil
 }
 
+// Add convenient accessors
+extension UITraitCollection {
+    var appModel: AppModel? {
+        self[AppModelTrait.self]
+    }
+}
+
+extension UIMutableTraits {
+    var appModel: AppModel? {
+        get { self[AppModelTrait.self] }
+        set { self[AppModelTrait.self] = newValue }
+    }
+}
+
 // Inject at the root of your app
 let appModel = AppModel()
-window.rootViewController?.traitOverrides = UITraitCollection(appModel: appModel)
+window.rootViewController?.traitOverrides.appModel = appModel
 
 // Access anywhere in your view hierarchy
 class SettingsViewController: UIViewController {
@@ -233,6 +247,7 @@ Of course, it's not all roses. Here are a few things to watch out for:
 - **Observation happens in specific methods**: Only properties accessed in the supported methods (see list above) are tracked
 - **Timing matters**: If you're doing expensive computations, consider caching results since these methods can be called frequently
 - **Memory considerations**: Observable objects are retained while being observed, so be mindful of retain cycles
+- **Thread safety**: While `@Observable` is thread-safe, mutations from different threads could lead to inconsistent UI representations. Keep all mutations on the main thread to avoid surprises
 
 ## Complete Example Project
 
