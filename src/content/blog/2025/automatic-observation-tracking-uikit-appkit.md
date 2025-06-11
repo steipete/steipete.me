@@ -160,9 +160,16 @@ First, a quick primer on custom traits: Since iOS 17, UIKit allows you to define
 Here's how to combine custom traits with observable objects:
 
 ```swift
-// Define a custom trait for your observable model
-struct ObservableModelTrait<T: Observable & Equatable>: UITraitDefinition {
-    static var defaultValue: T? { nil }
+@Observable 
+class AppModel {
+    var currentUser: User?
+    var theme: Theme = .light
+    // ... other app-wide state
+}
+
+// Define a custom trait for your app model
+struct AppModelTrait: UITraitDefinition {
+    static let defaultValue: AppModel? = nil
 }
 
 // Inject at the root of your app
