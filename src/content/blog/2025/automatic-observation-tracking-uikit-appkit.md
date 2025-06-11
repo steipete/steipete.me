@@ -193,15 +193,6 @@ class MyView: UIView {
 
 This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. Plus, automatic observation tracking is enabled by default in iOS 26, so you won't even need the plist key anymore.
 
-## Migration Strategy
-
-If you're maintaining an existing UIKit app, here's my recommended migration approach:
-
-1. **Start with new views**: Enable observation tracking and use it for all new view controllers
-2. **Identify hot spots**: Find views with complex manual update logic
-3. **Convert incrementally**: Move one view controller at a time to the new pattern
-4. **Remove the old cruft**: Delete all those `updateUI()` methods with satisfaction
-
 ## The Gotchas
 
 Of course, it's not all roses. Here are a few things to watch out for:
