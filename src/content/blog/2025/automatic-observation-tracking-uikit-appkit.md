@@ -118,14 +118,12 @@ Here's where it gets interesting. This feature isn't enabled by default (yet). Y
 
 ### For UIKit (iOS 18+)
 ```xml
-<key>UIObservationTrackingEnabled</key>
-<true/>
+<key>UIObservationTrackingEnabled</key><true/>
 ```
 
 ### For AppKit (macOS 15+)
 ```xml
-<key>NSObservationTrackingEnabled</key>
-<true/>
+<key>NSObservationTrackingEnabled</key><true/>
 ```
 
 Apple has enabled this by default in iOS 26 (already available in beta!). For iOS 18 and macOS 15, you'll need to enable it manually with the plist key.
