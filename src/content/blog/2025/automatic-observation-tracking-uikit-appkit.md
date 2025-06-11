@@ -68,6 +68,37 @@ class ProfileViewController: UIViewController {
 
 That's it. Change `user.name` anywhere in your app, and the label updates. No manual calls, no forgotten updates, no performance overhead from unnecessary refreshes. It just works.
 
+## Where Observation Tracking Works
+
+The automatic observation tracking is supported in a variety of UIKit methods. Here's the complete list:
+
+### UIView
+- `updateProperties()` (iOS 26+)
+- `layoutSubviews()`
+- `updateConstraints()`
+- `draw(_:)`
+
+### UIViewController
+- `updateProperties()` (iOS 26+)
+- `viewWillLayoutSubviews()`
+- `viewDidLayoutSubviews()`
+- `updateViewConstraints()`
+- `updateContentUnavailableConfiguration(using:)`
+
+### UIPresentationController
+- `containerViewWillLayoutSubviews()`
+- `containerViewDidLayoutSubviews()`
+
+### UIButton
+- `updateConfiguration()`
+- When executing the `configurationUpdateHandler`
+
+### UICollectionViewCell, UITableViewCell, UITableViewHeaderFooterView
+- `updateConfiguration(using:)`
+- When executing the `configurationUpdateHandler`
+
+This gives you plenty of options for where to place your observable property access. For most cases, `viewWillLayoutSubviews()` in view controllers and `layoutSubviews()` in views are the go-to choices.
+
 ## Enabling the Magic
 
 Here's where it gets interesting. This feature isn't enabled by default (yet). You need to add a key to your Info.plist:
@@ -156,9 +187,9 @@ You might be wondering about performance. The beauty of this system is that it o
 
 In my testing with a complex view hierarchy (100+ views, multiple observable objects), the performance impact was negligible. The automatic tracking actually performed better than my manual update code because it eliminated redundant updates. Check out the [performance comparison demo](https://github.com/steipete/AutomaticObservationDemo) to see the benchmarks in action.
 
-## iOS 26 and Beyond: updateProperties()
+## iOS 26 and Beyond
 
-Apple is already planning improvements. In iOS 26, they're introducing a dedicated `updateProperties()` method on both `UIView` and `UIViewController`:
+Apple is already planning improvements. In iOS 26, the new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access:
 
 ```swift
 class MyView: UIView {
@@ -173,7 +204,7 @@ class MyView: UIView {
 }
 ```
 
-This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns.
+This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. Plus, automatic observation tracking will be enabled by default in iOS 26, so you won't even need the plist key anymore.
 
 ## Migration Strategy
 
@@ -188,8 +219,8 @@ If you're maintaining an existing UIKit app, here's my recommended migration app
 
 Of course, it's not all roses. Here are a few things to watch out for:
 
-- **Observation happens in layout**: If you're doing expensive computations, consider caching results
-- **Not all properties trigger updates**: Only properties accessed during `viewWillLayoutSubviews` (or `updateProperties`) are tracked
+- **Observation happens in specific methods**: Only properties accessed in the supported methods (see list above) are tracked
+- **Timing matters**: If you're doing expensive computations, consider caching results since these methods can be called frequently
 - **Memory considerations**: Observable objects are retained while being observed, so be mindful of retain cycles
 
 ## Complete Example Project
