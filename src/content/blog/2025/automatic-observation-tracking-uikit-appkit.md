@@ -185,7 +185,7 @@ Since iOS 17, UIKit has quietly introduced custom traits - a way to attach arbit
 
 The magic happens when you combine custom traits with observable objects. You get automatic propagation AND automatic updates. It's like having your cake and eating it too.
 
-
+<details>
 <summary><strong>View the complete Example</strong></summary>
 
 Let's build an app-wide state container that any view can access and observe:
@@ -281,3 +281,4 @@ No delegates. No notifications. No manual updates. Change `appModel.currentUser`
 - [Example Project on GitHub](https://github.com/steipete/ObservationTrackingExample)
 - [Swift Forums Discussion on Observation Tracking](https://forums.swift.org/t/observation-tracking-in-uikit)
 - [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/) by Keith Harrison
+    
