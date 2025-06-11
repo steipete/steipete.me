@@ -164,7 +164,7 @@ For the complete working example with proper view setup and a message simulation
 
 ## iOS 26 and Beyond
 
-iOS 26 (already in beta!) brings improvements. The new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access:
+iOS 26 (already in beta!) brings improvements. The new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access. For a comprehensive overview of all iOS 26 UIKit additions, check out [Jordan Morgan's excellent writeup](https://www.swiftjectivec.com/ios-26-notable-uikit-additions/).
 
 ```swift
 class MyView: UIView {
