@@ -294,21 +294,28 @@ In practice, this pattern performs as well as (or better than) traditional deleg
 
 ## Gotchas and Best Practices
 
-### Thread Safety
+### Thread Safety with Swift 6
 
-While `@Observable` is thread-safe, UI updates must happen on the main thread:
+While `@Observable` is thread-safe, UI updates must happen on the main thread. With Swift 6 and modern concurrency:
 
 ```swift
 // ❌ Don't do this
-DispatchQueue.global().async {
+Task.detached {
     self.appModel.currentUser = newUser  // UI might update from background thread!
 }
 
-// ✅ Do this instead
-DispatchQueue.global().async {
-    let newUser = fetchUser()
-    DispatchQueue.main.async {
-        self.appModel.currentUser = newUser
+// ✅ Do this instead with Swift 6
+@MainActor
+func updateUser() async {
+    let newUser = await fetchUser()
+    appModel.currentUser = newUser  // Guaranteed to be on main thread
+}
+
+// Or use MainActor.run for one-off updates
+Task {
+    let newUser = await fetchUser()
+    await MainActor.run {
+        appModel.currentUser = newUser
     }
 }
 ```
@@ -334,17 +341,9 @@ viewController.traitOverrides.appModel = model
 viewController.loadViewIfNeeded()  // Force trait propagation
 ```
 
-## Migration Strategy
-
-If you're currently using singletons or passing models through initializers:
-
-1. **Start with new features**: Use this pattern for new view controllers
-2. **Gradual migration**: Replace singleton access with trait access one screen at a time
-3. **Remove coupling**: Delete those model properties from view controller initializers
-
 ## Complete Example
 
-I've created a full working example demonstrating these patterns in the [AutomaticObservationDemo](https://github.com/steipete/AutomaticObservationDemo) project on GitHub. The project includes:
+I've created a full working example demonstrating these patterns in the [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample) project on GitHub. The project includes:
 
 - Complete app model with user, theme, and network state
 - Multiple view controllers demonstrating the pattern
@@ -365,5 +364,5 @@ Have you tried this pattern? I'd love to hear your experiences. Find me on [Twit
 
 - [Automatic Observation Tracking in UIKit and AppKit](/posts/automatic-observation-tracking-uikit-appkit/) (my previous post)
 - [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/) by Keith Harrison
-- [Example Project on GitHub](https://github.com/steipete/AutomaticObservationDemo)
+- [Example Project on GitHub](https://github.com/steipete/ObservationTrackingExample)
 - [Apple's Observation Framework Documentation](https://developer.apple.com/documentation/observation)
