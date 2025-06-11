@@ -2,6 +2,7 @@
 title: "Automatic Observation Tracking in UIKit and AppKit: The Feature Apple Forgot to Mention"
 pubDatetime: 2025-06-10T14:00:00+01:00
 description: "Discover how iOS 18's hidden automatic observation tracking brings SwiftUI-like reactive programming to UIKit and AppKit, making your UI code cleaner and more maintainable."
+draft: true
 tags:
   - iOS
   - Swift
@@ -14,9 +15,7 @@ tags:
 
 ## The Hidden Gem in iOS 18
 
-Remember when SwiftUI came out and we all marveled at how views automatically updated when `@Published` properties changed? Well, Apple has been quietly working on bringing that same magic to UIKit and AppKit. The best part? It shipped in iOS 18/macOS 15, but hardly anyone knows about it.
-
-I stumbled upon this while digging through the iOS 18 release notes (yes, I'm that person who reads ALL the release notes). Buried deep in the documentation was a mention of "observation tracking" for UIKit. No fanfare, no WWDC session, just a quiet revolution in how we can write UI code.
+Remember when SwiftUI came out and we all marveled at how views automatically updated when `@Published` properties changed? Well, Apple has been quietly working on bringing that same magic to UIKit and AppKit. The best part? It shipped in iOS 18/macOS 15, but hardly anyone knows about it. You don't even need Xcode 26, it's just one simple plist entry away.
 
 ## The Problem We've All Faced
 
