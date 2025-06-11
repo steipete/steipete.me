@@ -126,7 +126,7 @@ Here's where it gets interesting. This feature isn't enabled by default (yet). Y
 <key>NSObservationTrackingEnabled</key><true/>
 ```
 
-Apple has enabled this by default in iOS 26 (already available in beta!). For iOS 18 and macOS 15, you'll need to enable it manually with the plist key.
+This plist key enables observation tracking in iOS 18 and macOS 15. Starting with their 26 releases, this is on by default and the key will simply be ignored.
 
 ## Real-World Example: A Message Counter
 
@@ -162,16 +162,6 @@ Every time the message counts change, all UI elements update automatically. The 
 
 For the complete working example with proper view setup and a message simulation timer, check out the [example project on GitHub](https://github.com/steipete/AutomaticObservationDemo).
 
-## Beyond the Basics
-
-This is just the beginning. In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/observable-objects-in-uikit-traits/) to learn this powerful pattern.
-
-## Performance Considerations
-
-You might be wondering about performance. The beauty of this system is that it only tracks dependencies when views are actually laying out. If a view isn't visible, it's not tracking. The observation framework uses a sophisticated dependency graph that ensures minimal overhead.
-
-In my testing with a complex view hierarchy (100+ views, multiple observable objects), the performance impact was negligible. The automatic tracking actually performed better than my manual update code because it eliminated redundant updates. Check out the [performance comparison demo](https://github.com/steipete/AutomaticObservationDemo) to see the benchmarks in action.
-
 ## iOS 26 and Beyond
 
 iOS 26 (already in beta!) brings improvements. The new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access:
@@ -200,25 +190,17 @@ Of course, it's not all roses. Here are a few things to watch out for:
 - **Memory considerations**: Observable objects are retained while being observed, so be mindful of retain cycles
 - **Thread safety**: While `@Observable` is thread-safe, mutations from different threads could lead to inconsistent UI representations. Keep all mutations on the main thread to avoid surprises
 
+## Performance Considerations
+
+You might be wondering about performance. The beauty of this system is that it only tracks dependencies when views are actually laying out. If a view isn't visible, it's not tracking. The observation framework uses a sophisticated dependency graph that ensures minimal overhead.
+
 ## Complete Example Project
-
-All the code snippets in this post come from a fully working example project. Check it out on GitHub: [AutomaticObservationDemo](https://github.com/steipete/AutomaticObservationDemo)
-
-The project includes:
-- ✅ Basic property observation with message counter
-- ✅ Complex nested observable objects  
-- ✅ Performance benchmarks comparing manual vs automatic updates
-- ✅ Migration patterns from traditional UIKit code
-- ✅ Advanced trait propagation system
-- ✅ Info.plist configuration for iOS 18+
-
-## Wrapping Up
 
 Automatic observation tracking is one of those features that makes you wonder how you lived without it. It brings the best parts of SwiftUI's reactive programming model to UIKit and AppKit, without requiring a complete rewrite of your app.
 
-The fact that Apple shipped this so quietly suggests they're still refining the API, but in my experience, it's already rock-solid for production use. Enable those plist keys, start using `@Observable`, and enjoy writing cleaner, more maintainable UI code.
+All the code snippets in this post come from a fully working example project. Check it out on GitHub: [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample)
 
-Have you tried automatic observation tracking in your apps? I'd love to hear about your experiences. Find me on [Twitter](https://twitter.com/steipete) or [Mastodon](https://mastodon.social/@steipete) and let's discuss!
+In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/observable-objects-in-uikit-traits/) to learn this powerful pattern.
 
 ## Resources
 
