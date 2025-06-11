@@ -1,6 +1,6 @@
 ---
 title: "Observable Objects in UIKit Traits: SwiftUI's Environment Pattern for UIKit"
-pubDatetime: 2025-06-10T21:00:00+01:00
+pubDatetime: 2025-06-10T19:00:00+01:00
 description: "Learn how to combine UIKit's custom traits with Observable objects to create a powerful environment pattern for app-wide state management, bringing SwiftUI-like data flow to UIKit."
 unlisted: true
 tags:
@@ -17,7 +17,7 @@ tags:
 
 In my previous post about [automatic observation tracking in UIKit and AppKit](/posts/automatic-observation-tracking-uikit-appkit/), I showed how iOS 18's hidden feature brings reactive UI updates to UIKit and AppKit. But there was one thing still missing: how do you elegantly pass observable objects through your view hierarchy?
 
-If you've used SwiftUI, you know the joy of `@EnvironmentObject` - drop an object at the root, access it anywhere. UIKit developers have been jealous of this pattern for years. Well, jealous no more.
+If you've used SwiftUI, you know the joy of `@EnvironmentObject` - drop an object at the root, access it anywhere. UIKit developers have been jealous of this pattern for years. Well, jealous no more. (Mac devs miss out tho - there's no equivalent on AppKit yet)
 
 ## Enter Custom Traits
 
@@ -115,6 +115,9 @@ No delegates. No notifications. No manual updates. Change `appModel.currentUser`
 
 ## Real-World Example: Theme Switching
 
+<details>
+<summary><strong>View the complete theme switching implementation</strong></summary>
+
 Here's a practical example - implementing app-wide theme switching:
 
 ```swift
@@ -176,6 +179,8 @@ class SettingsViewController: UIViewController {
     }
 }
 ```
+
+</details>
 
 ## Advanced Patterns
 
@@ -342,20 +347,11 @@ viewController.traitOverrides.appModel = model
 viewController.loadViewIfNeeded()  // Force trait propagation
 ```
 
-## Complete Example
-
-I've created a full working example demonstrating these patterns in the [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample) project on GitHub. The project includes:
-
-- Complete app model with user, theme, and network state
-- Multiple view controllers demonstrating the pattern
-- Modal presentation with trait passing
-- Unit tests showing how to test with traits
-
 ## Wrapping Up
 
 Combining custom traits with observable objects gives UIKit developers a powerful pattern that rivals SwiftUI's environment values. You get the benefits of reactive UI updates with the flexibility and control of UIKit.
 
-This pattern has become my go-to approach for app-wide state in UIKit apps. It's clean, it's testable, and it makes your view controllers beautifully decoupled.
+I've created a full working example demonstrating these patterns in the [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample) project on GitHub.
 
 Want to learn more about automatic observation tracking? Check out my [previous post](/posts/automatic-observation-tracking-uikit-appkit/) that covers the basics. Together, these two features transform how we write UIKit apps.
 

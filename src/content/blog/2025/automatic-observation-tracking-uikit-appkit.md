@@ -178,7 +178,7 @@ Automatic observation tracking is one of those features that makes you wonder ho
 
 All the code snippets in this post come from a fully working example project. Check it out on GitHub: [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample)
 
-In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/observable-objects-in-uikit-traits/) to learn this powerful pattern. Maybe one day AppKit gets a trait system as well, for now this is UIKit exclusive.
+In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/2025/observable-objects-in-uikit-traits/) to learn this powerful pattern. Maybe one day AppKit gets a trait system as well, for now this is UIKit exclusive.
 
 ## Resources
 
