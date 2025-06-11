@@ -52,6 +52,11 @@ import Observation
 class User {
     var name: String = ""
     var avatar: UIImage?
+    var unreadCount = 0
+    
+    var hasUnread: Bool {
+        unreadCount > 0
+    }
 }
 
 class ProfileViewController: UIViewController {
@@ -62,6 +67,7 @@ class ProfileViewController: UIViewController {
         // UIKit tracks these property accesses automatically!
         nameLabel.text = user.name
         avatarImageView.image = user.avatar
+        badgeView.isHidden = !user.hasUnread
     }
 }
 ```
@@ -131,40 +137,6 @@ Here's where it gets interesting. This feature isn't enabled by default (yet). Y
 
 This plist key enables observation tracking in iOS 18 and macOS 15. Starting with their 26 releases, this is on by default and the key will simply be ignored.
 
-## Real-World Example: A Message Counter
-
-Let's build something practical - a message counter that updates automatically:
-
-```swift
-@Observable
-class MessageStore {
-    var unreadCount = 0
-    var totalCount = 0
-    
-    var hasUnread: Bool {
-        unreadCount > 0
-    }
-}
-
-class MessagesViewController: UIViewController {
-    let messageStore = MessageStore()
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        // These views automatically update when the store changes!
-        unreadLabel.text = "Unread: \(messageStore.unreadCount)"
-        totalLabel.text = "Total: \(messageStore.totalCount)"
-        badgeView.isHidden = !messageStore.hasUnread
-        badgeView.backgroundColor = messageStore.unreadCount > 5 ? .red : .blue
-    }
-}
-```
-
-Every time the message counts change, all UI elements update automatically. The badge appears/disappears, changes color, and the labels show the latest counts. Zero manual intervention required.
-
-For the complete working example with proper view setup and a message simulation timer, check out the [example project on GitHub](https://github.com/steipete/AutomaticObservationDemo).
-
 ## iOS 26 and Beyond
 
 iOS 26 (already in beta!) brings improvements. The new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access. For a comprehensive overview of all iOS 26 UIKit additions, check out [Jordan Morgan's excellent writeup](https://www.swiftjectivec.com/ios-26-notable-uikit-additions/).
@@ -209,5 +181,5 @@ In my follow-up post, I show how to combine observable objects with UIKit's cust
 
 - [Apple's Observation Framework Documentation](https://developer.apple.com/documentation/observation)
 - [WWDC 2023: Discover Observation in Swift](https://developer.apple.com/videos/play/wwdc2023/10149/) (covers the foundation)
-- [Example Project on GitHub](https://github.com/steipete/AutomaticObservationDemo)
+- [Example Project on GitHub](https://github.com/steipete/ObservationTrackingExample)
 - [Swift Forums Discussion on Observation Tracking](https://forums.swift.org/t/observation-tracking-in-uikit)
