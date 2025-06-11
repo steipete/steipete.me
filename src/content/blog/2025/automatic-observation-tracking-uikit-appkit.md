@@ -73,13 +73,13 @@ That's it. Change `user.name` anywhere in your app, and the label updates. No ma
 The automatic observation tracking is supported in a variety of UIKit methods. Here's the complete list:
 
 ### UIView
-- `updateProperties()` (iOS 26 beta+)
+- `updateProperties()` (iOS 26+)
 - [`layoutSubviews()`](https://developer.apple.com/documentation/uikit/uiview/1622482-layoutsubviews)
 - [`updateConstraints()`](https://developer.apple.com/documentation/uikit/uiview/1622512-updateconstraints)
 - [`draw(_:)`](https://developer.apple.com/documentation/uikit/uiview/1622529-draw)
 
 ### UIViewController
-- `updateProperties()` (iOS 26 beta+)
+- `updateProperties()` (iOS 26+)
 - [`viewWillLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621437-viewwilllayoutsubviews)
 - [`viewDidLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621398-viewdidlayoutsubviews)
 - [`updateViewConstraints()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621379-updateviewconstraints)
