@@ -70,7 +70,10 @@ That's it. Change `user.name` anywhere in your app, and the label updates. No ma
 
 ## Where Observation Tracking Works
 
-The automatic observation tracking is supported in a variety of UIKit methods. Here's the complete list:
+The automatic observation tracking is supported in a variety of UIKit and AppKit methods. For most cases, `viewWillLayoutSubviews()` in UIKit view controllers, `layoutSubviews()` in UIKit views, and their AppKit equivalents (`viewWillLayout()` and `layout()`) are the go-to choices.
+
+<details>
+<summary><strong>View the complete list of supported methods</strong></summary>
 
 ### UIView
 - `updateProperties()` (iOS 26+)
@@ -110,7 +113,7 @@ The automatic observation tracking is supported in a variety of UIKit methods. H
 - [`viewWillLayout()`](https://developer.apple.com/documentation/appkit/nsviewcontroller/1434481-viewwilllayout)
 - [`viewDidLayout()`](https://developer.apple.com/documentation/appkit/nsviewcontroller/1434491-viewdidlayout)
 
-This gives you plenty of options for where to place your observable property access. For most cases, `viewWillLayoutSubviews()` in UIKit view controllers, `layoutSubviews()` in UIKit views, and their AppKit equivalents (`viewWillLayout()` and `layout()`) are the go-to choices.
+</details>
 
 ## Enabling the Magic
 
