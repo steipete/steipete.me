@@ -14,7 +14,7 @@ tags:
 
 ## The Missing Piece
 
-In my previous post about [automatic observation tracking in UIKit](/posts/automatic-observation-tracking-uikit-appkit/), I showed how iOS 18's hidden feature brings reactive UI updates to UIKit. But there was one thing still missing: how do you elegantly pass observable objects through your view hierarchy?
+In my previous post about [automatic observation tracking in UIKit and AppKit](/posts/automatic-observation-tracking-uikit-appkit/), I showed how iOS 18's hidden feature brings reactive UI updates to UIKit and AppKit. But there was one thing still missing: how do you elegantly pass observable objects through your view hierarchy?
 
 If you've used SwiftUI, you know the joy of `@EnvironmentObject` - drop an object at the root, access it anywhere. UIKit developers have been jealous of this pattern for years. Well, jealous no more.
 
@@ -363,7 +363,7 @@ Have you tried this pattern? I'd love to hear your experiences. Find me on [Twit
 
 ## Resources
 
-- [Automatic Observation Tracking in UIKit](/posts/automatic-observation-tracking-uikit-appkit/) (my previous post)
+- [Automatic Observation Tracking in UIKit and AppKit](/posts/automatic-observation-tracking-uikit-appkit/) (my previous post)
 - [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/) by Keith Harrison
 - [Example Project on GitHub](https://github.com/steipete/AutomaticObservationDemo)
 - [Apple's Observation Framework Documentation](https://developer.apple.com/documentation/observation)
