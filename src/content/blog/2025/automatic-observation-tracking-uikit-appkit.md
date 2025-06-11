@@ -178,7 +178,102 @@ Automatic observation tracking is one of those features that makes you wonder ho
 
 All the code snippets in this post come from a fully working example project. Check it out on GitHub: [ObservationTrackingExample](https://github.com/steipete/ObservationTrackingExample)
 
-In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/2025/observable-objects-in-uikit-traits/) to learn this powerful pattern. Maybe one day AppKit gets a trait system as well, for now this is UIKit exclusive.
+## The Missing Piece: Custom Traits
+
+If you've used SwiftUI, you know the joy of `@EnvironmentObject` - drop an object at the root, access it anywhere. UIKit developers have been jealous of this pattern for years. Well, jealous no more. (Mac devs miss out tho - there's no equivalent on AppKit yet)
+
+Since iOS 17, UIKit has quietly introduced custom traits - a way to attach arbitrary values to the trait collection that flows through your view hierarchy. These aren't just for dark mode and size classes anymore. Keith Harrison has an [excellent deep dive into custom traits](https://useyourloaf.com/blog/custom-traits-and-swiftui/) if you want the full story.
+
+The magic happens when you combine custom traits with observable objects. You get automatic propagation AND automatic updates. It's like having your cake and eating it too.
+
+
+<summary><strong>View the complete Example</strong></summary>
+
+Let's build an app-wide state container that any view can access and observe:
+
+```swift
+import UIKit
+import Observation
+
+@Observable 
+class AppModel {
+    var currentUser: User?
+    var theme: Theme = .light
+    var isOnline = true
+    
+    // Add more app-wide state as needed
+}
+
+// Define a custom trait for your app model
+struct AppModelTrait: UITraitDefinition {
+    static let defaultValue: AppModel? = nil
+}
+
+// Add convenient accessors
+extension UITraitCollection {
+    var appModel: AppModel? {
+        self[AppModelTrait.self]
+    }
+}
+
+extension UIMutableTraits {
+    var appModel: AppModel? {
+        get { self[AppModelTrait.self] }
+        set { self[AppModelTrait.self] = newValue }
+    }
+}
+```
+
+## Injecting the Model
+
+At your app's root (usually in your scene delegate or root view controller), inject the model:
+
+```swift
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    let appModel = AppModel()
+    
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options: UIScene.ConnectionOptions) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(windowScene: windowScene)
+        let rootViewController = MainTabBarController()
+        
+        // Inject the app model into the trait system
+        rootViewController.traitOverrides.appModel = appModel
+        
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
+    }
+}
+```
+
+## Observing Changes Anywhere
+
+Now the magic part - any view controller in your hierarchy can access and observe the model:
+
+```swift
+class ProfileViewController: UIViewController {
+    let nameLabel = UILabel()
+    let statusIndicator = UIView()
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        guard let model = traitCollection.appModel else { return }
+        
+        // These automatically update when model properties change!
+        nameLabel.text = model.currentUser?.name ?? "Guest"
+        statusIndicator.backgroundColor = model.isOnline ? .systemGreen : .systemRed
+        
+        // Theme updates
+        view.backgroundColor = model.theme.backgroundColor
+        nameLabel.textColor = model.theme.textColor
+    }
+}
+```
+No delegates. No notifications. No manual updates. Change `appModel.currentUser` anywhere in your app, and every view observing it updates automatically.
+</details>
 
 ## Resources
 
@@ -186,3 +281,5 @@ In my follow-up post, I show how to combine observable objects with UIKit's cust
 - [WWDC 2023: Discover Observation in Swift](https://developer.apple.com/videos/play/wwdc2023/10149/) (covers the foundation)
 - [Example Project on GitHub](https://github.com/steipete/ObservationTrackingExample)
 - [Swift Forums Discussion on Observation Tracking](https://forums.swift.org/t/observation-tracking-in-uikit)
+- [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/) by Keith Harrison
+    
