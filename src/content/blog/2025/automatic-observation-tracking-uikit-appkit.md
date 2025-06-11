@@ -73,13 +73,13 @@ That's it. Change `user.name` anywhere in your app, and the label updates. No ma
 The automatic observation tracking is supported in a variety of UIKit methods. Here's the complete list:
 
 ### UIView
-- `updateProperties()` (iOS 26+)
+- `updateProperties()` (iOS 26 beta+)
 - `layoutSubviews()`
 - `updateConstraints()`
 - `draw(_:)`
 
 ### UIViewController
-- `updateProperties()` (iOS 26+)
+- `updateProperties()` (iOS 26 beta+)
 - `viewWillLayoutSubviews()`
 - `viewDidLayoutSubviews()`
 - `updateViewConstraints()`
@@ -115,7 +115,7 @@ Here's where it gets interesting. This feature isn't enabled by default (yet). Y
 <true/>
 ```
 
-Apple plans to enable this by default in iOS 26, but why wait? Enable it now and start writing cleaner code today.
+Apple has enabled this by default in iOS 26 (already available in beta!). For iOS 18 and macOS 15, you'll need to enable it manually with the plist key.
 
 ## Real-World Example: A Message Counter
 
@@ -163,7 +163,7 @@ In my testing with a complex view hierarchy (100+ views, multiple observable obj
 
 ## iOS 26 and Beyond
 
-Apple is already planning improvements. In iOS 26, the new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access:
+iOS 26 (already in beta!) brings improvements. The new `updateProperties()` method on both `UIView` and `UIViewController` provides an even better place for observable property access:
 
 ```swift
 class MyView: UIView {
@@ -178,7 +178,7 @@ class MyView: UIView {
 }
 ```
 
-This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. Plus, automatic observation tracking will be enabled by default in iOS 26, so you won't even need the plist key anymore.
+This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. Plus, automatic observation tracking is enabled by default in iOS 26, so you won't even need the plist key anymore.
 
 ## Migration Strategy
 
