@@ -81,13 +81,13 @@ The automatic observation tracking is supported in a variety of UIKit and AppKit
 <summary><strong>View the complete list of supported methods</strong></summary>
 
 ### UIView
-- `updateProperties()` (iOS 26+)
+- [`updateProperties()`](https://developer.apple.com/documentation/uikit/automatic-trait-tracking) (iOS 26+)
 - [`layoutSubviews()`](https://developer.apple.com/documentation/uikit/uiview/1622482-layoutsubviews)
 - [`updateConstraints()`](https://developer.apple.com/documentation/uikit/uiview/1622512-updateconstraints)
 - [`draw(_:)`](https://developer.apple.com/documentation/uikit/uiview/1622529-draw)
 
 ### UIViewController
-- `updateProperties()` (iOS 26+)
+- [`updateProperties()`](https://developer.apple.com/documentation/uikit/automatic-trait-tracking) (iOS 26+)
 - [`viewWillLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621437-viewwilllayoutsubviews)
 - [`viewDidLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621398-viewdidlayoutsubviews)
 - [`updateViewConstraints()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621379-updateviewconstraints)
