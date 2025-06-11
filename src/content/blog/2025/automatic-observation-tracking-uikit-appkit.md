@@ -1,6 +1,6 @@
 ---
 title: "Automatic Observation Tracking in UIKit and AppKit: The Feature Apple Forgot to Mention"
-pubDatetime: 2025-06-10T14:00:00+01:00
+pubDatetime: 2025-06-10T18:00:00+01:00
 description: "Discover how iOS 18's hidden automatic observation tracking brings SwiftUI-like reactive programming to UIKit and AppKit, making your UI code cleaner and more maintainable."
 draft: true
 tags:
