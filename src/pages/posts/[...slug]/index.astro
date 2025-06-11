@@ -9,13 +9,20 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const posts = await getCollection("blog", ({ data }) => !data.draft && !data.unlisted);
   const postResult = posts.map((post) => ({
     params: { slug: getPath(post.id, post.filePath, false) },
     props: { post },
   }));
 
-  return postResult;
+  // Also include unlisted posts so they can be accessed via direct URL
+  const unlistedPosts = await getCollection("blog", ({ data }) => !data.draft && data.unlisted);
+  const unlistedResult = unlistedPosts.map((post) => ({
+    params: { slug: getPath(post.id, post.filePath, false) },
+    props: { post },
+  }));
+
+  return [...postResult, ...unlistedResult];
 }
 
 const { post } = Astro.props;
