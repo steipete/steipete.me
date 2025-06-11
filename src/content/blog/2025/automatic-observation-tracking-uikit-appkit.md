@@ -153,7 +153,11 @@ class MyView: UIView {
 }
 ```
 
-This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. Plus, automatic observation tracking is enabled by default in iOS 26, so you won't even need the plist key anymore.
+This method is specifically designed for property updates and runs before `layoutSubviews`, allowing for more efficient updates and clearer separation of concerns. 
+
+Just like the layout system has `setNeedsLayout()` and `layoutIfNeeded()`, the property update system provides [`setNeedsUpdateProperties()`](https://developer.apple.com/documentation/uikit/uiview/setNeedsUpdateProperties) and [`updatePropertiesIfNeeded()`](https://developer.apple.com/documentation/uikit/uiview/updatePropertiesIfNeeded). You can call `setNeedsUpdateProperties()` to schedule a property update on the next update cycle, or use `updatePropertiesIfNeeded()` to force an immediate update if one is pending. This gives you fine-grained control over when property updates occur, which is especially useful for optimizing performance in complex view hierarchies.
+
+Apple's [automatic trait tracking documentation](https://developer.apple.com/documentation/uikit/automatic-trait-tracking) provides detailed guidance on using these new APIs. Plus, automatic observation tracking is enabled by default in iOS 26, so you won't even need the plist key anymore.
 
 ## The Gotchas
 
