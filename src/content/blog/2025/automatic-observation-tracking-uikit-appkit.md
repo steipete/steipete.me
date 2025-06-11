@@ -39,7 +39,7 @@ class ProfileViewController: UIViewController {
 }
 ```
 
-Forgot to call `updateUI()`? Enjoy your stale UI. Called it too often? Hello, performance issues. It's like walking a tightrope while juggling flaming torches.
+Forgot to call `updateUI()`? Enjoy your stale UI. Called it too often? Hello, performance issues. It's tedious and error-prone.
 
 ## Enter Automatic Observation Tracking
 
