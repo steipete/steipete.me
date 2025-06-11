@@ -153,7 +153,11 @@ For the complete working example with proper view setup and a message simulation
 
 ## Advanced Pattern: Observable Objects in Traits
 
-Here's where things get really interesting. You can use UIKit's trait system to propagate observable objects through your view hierarchy, creating an "environment object" pattern similar to SwiftUI:
+Here's where things get really interesting. You can use UIKit's trait system to propagate observable objects through your view hierarchy, creating an "environment object" pattern similar to SwiftUI.
+
+First, a quick primer on custom traits: Since iOS 17, UIKit allows you to define custom traits that flow through the view hierarchy just like system traits (dark mode, size classes, etc.). These traits can hold any value and are automatically propagated to child view controllers and views. For an excellent deep dive into custom traits, check out Keith Harrison's article on [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/).
+
+Here's how to combine custom traits with observable objects:
 
 ```swift
 // Define a custom trait for your observable model
@@ -179,7 +183,7 @@ class SettingsViewController: UIViewController {
 }
 ```
 
-This pattern is incredibly powerful for app-wide state that needs to be accessible from multiple view controllers without passing references down through every level of your hierarchy. See the [full implementation with AppModel and trait extensions](https://github.com/steipete/AutomaticObservationDemo) in the example project.
+This pattern is incredibly powerful for app-wide state that needs to be accessible from multiple view controllers without passing references down through every level of your hierarchy. The trait system handles the propagation, and the observation framework handles the updates. It's the best of both worlds! See the [full implementation with AppModel and trait extensions](https://github.com/steipete/AutomaticObservationDemo) in the example project.
 
 ## Performance Considerations
 
