@@ -151,60 +151,9 @@ Every time the message counts change, all UI elements update automatically. The 
 
 For the complete working example with proper view setup and a message simulation timer, check out the [example project on GitHub](https://github.com/steipete/AutomaticObservationDemo).
 
-## Advanced Pattern: Observable Objects in Traits
+## Beyond the Basics
 
-Here's where things get really interesting. You can use UIKit's trait system to propagate observable objects through your view hierarchy, creating an "environment object" pattern similar to SwiftUI.
-
-First, a quick primer on custom traits: Since iOS 17, UIKit allows you to define custom traits that flow through the view hierarchy just like system traits (dark mode, size classes, etc.). These traits can hold any value and are automatically propagated to child view controllers and views. For an excellent deep dive into custom traits, check out Keith Harrison's article on [Custom Traits and SwiftUI](https://useyourloaf.com/blog/custom-traits-and-swiftui/).
-
-Here's how to combine custom traits with observable objects:
-
-```swift
-@Observable 
-class AppModel {
-    var currentUser: User?
-    var theme: Theme = .light
-    // ... other app-wide state
-}
-
-// Define a custom trait for your app model
-struct AppModelTrait: UITraitDefinition {
-    static let defaultValue: AppModel? = nil
-}
-
-// Add convenient accessors
-extension UITraitCollection {
-    var appModel: AppModel? {
-        self[AppModelTrait.self]
-    }
-}
-
-extension UIMutableTraits {
-    var appModel: AppModel? {
-        get { self[AppModelTrait.self] }
-        set { self[AppModelTrait.self] = newValue }
-    }
-}
-
-// Inject at the root of your app
-let appModel = AppModel()
-window.rootViewController?.traitOverrides.appModel = appModel
-
-// Access anywhere in your view hierarchy
-class SettingsViewController: UIViewController {
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        if let model = traitCollection.appModel {
-            // This view updates when theme changes!
-            view.backgroundColor = model.theme.backgroundColor
-            navigationItem.title = "Settings for \(model.currentUser?.name ?? "Guest")"
-        }
-    }
-}
-```
-
-This pattern is incredibly powerful for app-wide state that needs to be accessible from multiple view controllers without passing references down through every level of your hierarchy. The trait system handles the propagation, and the observation framework handles the updates. It's the best of both worlds! See the [full implementation with AppModel and trait extensions](https://github.com/steipete/AutomaticObservationDemo) in the example project.
+This is just the beginning. In my follow-up post, I show how to combine observable objects with UIKit's custom traits to create SwiftUI-like environment values that flow through your view hierarchy. Check out [Observable Objects in UIKit Traits](/posts/observable-objects-in-uikit-traits/) to learn this powerful pattern.
 
 ## Performance Considerations
 
