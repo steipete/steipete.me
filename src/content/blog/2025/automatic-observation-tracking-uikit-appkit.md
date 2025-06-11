@@ -74,27 +74,29 @@ The automatic observation tracking is supported in a variety of UIKit methods. H
 
 ### UIView
 - `updateProperties()` (iOS 26 beta+)
-- `layoutSubviews()`
-- `updateConstraints()`
-- `draw(_:)`
+- [`layoutSubviews()`](https://developer.apple.com/documentation/uikit/uiview/1622482-layoutsubviews)
+- [`updateConstraints()`](https://developer.apple.com/documentation/uikit/uiview/1622512-updateconstraints)
+- [`draw(_:)`](https://developer.apple.com/documentation/uikit/uiview/1622529-draw)
 
 ### UIViewController
 - `updateProperties()` (iOS 26 beta+)
-- `viewWillLayoutSubviews()`
-- `viewDidLayoutSubviews()`
-- `updateViewConstraints()`
-- `updateContentUnavailableConfiguration(using:)`
+- [`viewWillLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621437-viewwilllayoutsubviews)
+- [`viewDidLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621398-viewdidlayoutsubviews)
+- [`updateViewConstraints()`](https://developer.apple.com/documentation/uikit/uiviewcontroller/1621379-updateviewconstraints)
+- [`updateContentUnavailableConfiguration(using:)`](https://developer.apple.com/documentation/uikit/uiviewcontroller/4195484-updatecontentunavailableconfigur)
 
 ### UIPresentationController
-- `containerViewWillLayoutSubviews()`
-- `containerViewDidLayoutSubviews()`
+- [`containerViewWillLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uipresentationcontroller/1618335-containerviewwilllayoutsubviews)
+- [`containerViewDidLayoutSubviews()`](https://developer.apple.com/documentation/uikit/uipresentationcontroller/1618329-containerviewdidlayoutsubviews)
 
 ### UIButton
-- `updateConfiguration()`
-- When executing the `configurationUpdateHandler`
+- [`updateConfiguration()`](https://developer.apple.com/documentation/uikit/uibutton/3750773-updateconfiguration)
+- When executing the [`configurationUpdateHandler`](https://developer.apple.com/documentation/uikit/uibutton/3750772-configurationupdatehandler)
 
 ### UICollectionViewCell, UITableViewCell, UITableViewHeaderFooterView
-- `updateConfiguration(using:)`
+- [`updateConfiguration(using:)`](https://developer.apple.com/documentation/uikit/uicollectionviewcell/3600950-updateconfiguration) (UICollectionViewCell)
+- [`updateConfiguration(using:)`](https://developer.apple.com/documentation/uikit/uitableviewcell/3601058-updateconfiguration) (UITableViewCell)
+- [`updateConfiguration(using:)`](https://developer.apple.com/documentation/uikit/uitableviewheaderfooterview/3601061-updateconfiguration) (UITableViewHeaderFooterView)
 - When executing the `configurationUpdateHandler`
 
 This gives you plenty of options for where to place your observable property access. For most cases, `viewWillLayoutSubviews()` in view controllers and `layoutSubviews()` in views are the go-to choices.
