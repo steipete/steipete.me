@@ -2,7 +2,7 @@
 title: "Observable Objects in UIKit Traits: SwiftUI's Environment Pattern for UIKit"
 pubDatetime: 2025-06-10T21:00:00+01:00
 description: "Learn how to combine UIKit's custom traits with Observable objects to create a powerful environment pattern for app-wide state management, bringing SwiftUI-like data flow to UIKit."
-draft: true
+unlisted: true
 tags:
   - iOS
   - Swift
