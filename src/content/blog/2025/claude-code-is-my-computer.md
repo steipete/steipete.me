@@ -83,3 +83,7 @@ Your computer isn't just a computer anymore. It's Claude. And Claude is absurdly
 [^2]: `alias cc="claude --dangerously-skip-permissions"`
 
 Got a crazier Claude workflow? Ping me [@steipete](https://twitter.com/steipete).
+
+---
+
+**Essential Reading**: [How I Use Claude Code](https://spiess.dev/blog/how-i-use-claude-code) is a must-read by my friend and ex-employee Philipp for everyone using Claude Code.
