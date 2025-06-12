@@ -34,6 +34,16 @@ Claude Max works on a rolling 5-hour block system with roughly **900 messages pe
 
 If you're tight on money and you really need this extremely high use case, look at the [development partner program](https://support.anthropic.com/en/articles/11174108-about-the-development-partner-program) where they offer 30% off standard API pricing (this discount applies only to API usage, not the Max sub).
 
+## But What About Future Price Increases?
+
+I get messages all the time from people worried that token prices will go up. Here's the reality check:
+
+**Token prices have dropped 1000× in the last two years.** We've gone from GPT-3's astronomical pricing to incredibly capable open models. The competitive landscape has completely transformed—companies are building their own models now. Windsurf has SWE-1, Vercel launched v0-1.5lg, and every major player is racing to offer the best value.
+
+What indicators suggest prices will increase? None. If anything, competition is driving costs down to the fundamental floor: energy costs. Models are becoming commodities. The real differentiator is the tooling around them, not the raw compute.
+
+So stop worrying about hypothetical price hikes. The trend line points one direction: down.
+
 ## Cursor: The Math That Makes Sense
 
 **[Cursor](https://cursor.com/) Pro costs $20/month** and gives you 500 "fast" requests plus unlimited "slow" ones. Beyond that, it's **$0.04 per fast request** (per Cursor docs).
