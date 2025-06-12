@@ -40,7 +40,7 @@ I get messages all the time from people worried that token prices will go up. He
 
 **Token prices have dropped 1000× in the last two years.** We've gone from GPT-3's astronomical pricing to incredibly capable open models. The competitive landscape has completely transformed—companies are building their own models now. Windsurf has SWE-1, Vercel launched v0-1.5lg, and every major player is racing to offer the best value.
 
-What indicators suggest prices will increase? None. If anything, competition is driving costs down to the fundamental floor: energy costs. Models are becoming commodities. The real differentiator is the tooling around them, not the raw compute.
+What indicators suggest prices will increase? None. If anything, competition is driving costs down to the fundamental floor: [energy costs](https://blog.samaltman.com/the-gentle-singularity). Models are becoming commodities. The real differentiator is the tooling around them, not the raw compute.
 
 So stop worrying about hypothetical price hikes. The trend line points one direction: down.
 
