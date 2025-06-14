@@ -8,11 +8,7 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-Apple docs are invisible to LLMs.
-
-**The fix:** Paste URL → Get Markdown → Feed to AI.
-
-<a href="https://llm.codes" target="_blank">llm.codes</a>
+**TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 60+ other documentation sites) into clean Markdown that AI agents can actually read.
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
