@@ -78,7 +78,7 @@ For people who think [@Context7](https://x.com/Context7AI) is the answer: if you
 
 I used this trick before in my post about [migrating 700 tests to Swift Testing](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing). With llm.codes, you get significantly smaller markdown files, which preserves more token context space for your agent.
 
-I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository. Not everything can be fetched from Apple's docs, so feel free to use these files as well - they're ready to drop into your projects.
+I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository, that go beyond just documentation.
 
 The converter itself? Completely vibe-coded with Claude and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I chose the stack (Next.js, Tailwind, Vercel) but didn't write a single line of TypeScript-and it worked beautifully on the first try.
 
