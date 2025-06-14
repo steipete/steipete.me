@@ -82,7 +82,7 @@ The converter itself? Completely vibe-coded with Claude and <a href="https://git
 
 ## Try It Out
 
-<a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #000; color: white; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 16px;">Convert a page →</a>
+<a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank" style="display: inline-block; padding: 8px 18px; background-color: transparent; color: #374151; text-decoration: none; border: 1px solid #d1d5db; border-radius: 4px; font-weight: 500; font-size: 15px; transition: all 0.15s ease;">Convert a page →</a>
 
 **No sign-up, 10s turnaround**.
 
