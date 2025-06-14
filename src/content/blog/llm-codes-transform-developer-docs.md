@@ -24,9 +24,9 @@ The core issue? <a href="https://developer.apple.com/documentation/swiftui/" tar
 
 That's when I built the docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to documentation and fetch everything as clean Markdown. While it's optimized for Apple documentation, it supports a wide range of developer documentation sites. Here's what you get:
 
-- **Your AI can finally see Apple docs** - No more blind spots from JavaScript-rendered pages
-- **70% smaller files** - More context space for your actual code instead of wasted tokens
-- **Works with 69+ documentation sites** - From AWS to Tailwind, PyTorch to PostgreSQL
+- **Your AI can finally see Apple docs** - No blind spots from JavaScript pages
+- **70% smaller files** - More context space for your actual code
+- **Works with 69+ sites** - AWS, Tailwind, PyTorch, PostgreSQL, and more
 
 <details>
 <summary><strong>Supported Documentation Sites</strong></summary>
