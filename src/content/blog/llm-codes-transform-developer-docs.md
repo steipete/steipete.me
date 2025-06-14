@@ -8,7 +8,7 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-**TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 60+ other documentation sites) into clean Markdown that AI agents can actually read.
+**TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 69+ other documentation sites) into clean Markdown that AI agents can actually read.
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
@@ -26,7 +26,7 @@ That's when I built the docs converter. <a href="https://llm.codes" target="_bla
 
 - **Your AI can finally see Apple docs** - No more blind spots from JavaScript-rendered pages
 - **70% smaller files** - More context space for your actual code instead of wasted tokens
-- **Works with 60+ documentation sites** - From AWS to Tailwind, PyTorch to PostgreSQL
+- **Works with 69+ documentation sites** - From AWS to Tailwind, PyTorch to PostgreSQL
 
 <details>
 <summary><strong>Supported Documentation Sites</strong></summary>
