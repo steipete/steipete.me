@@ -44,6 +44,8 @@ For people who think [@Context7](https://x.com/Context7AI) is the answer: if you
 
 I used this trick before in my post about [migrating 700 tests to Swift Testing](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing), however the website I used to convert the docs wasn't optimized for Apple's pages. With llm.codes, you get significantly smaller markdown files, which preserves more token context space for your agent.
 
+I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository. Not everything can be fetched from Apple's docs, so feel free to use these files as well - they're ready to drop into your projects.
+
 ## Try It Out
 
 Head over to [llm.codes](https://llm.codes) and transform your first documentation page. It's free to use and doesn't require any sign-up. It uses [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) under the hood, and I pay for the credits to keep this service free for everyone.
