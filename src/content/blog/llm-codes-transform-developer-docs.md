@@ -1,6 +1,6 @@
 ---
 title: "llm.codes: Make Apple Docs AI-Readable"
-description: "Convert JavaScript-heavy docs into clean llms.txt. Works with Apple, AWS, React & 69+ sites. No signup, 10s turnaround."
+description: "Built this when Claude couldn't read Apple's docs. Now it converts 69+ documentation sites to clean llms.txt. Free, instant, no BS."
 pubDatetime: 2025-06-14T13:22:16+00:00
 heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
 heroImageAlt: "llm.codes interface showing documentation conversion tool"
