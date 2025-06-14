@@ -8,7 +8,9 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-Here's a story about why I built [llm.codes](https://llm.codes).
+**TL;DR:** [llm.codes](https://llm.codes) converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
+
+Here's a story about why I built it.
 
 I faced a typical problem with missing documentation. [Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI that respects the Icon/Text settings and wanted me to go down to AppKit.](https://x.com/steipete/status/1933819029224931619) Even when I asked it to google for a solution, nothing changed. The AI agent had world knowledge about Swift and SwiftUI, but was really bad at Swift Testing and anything Apple announced at WWDC 2024 - it simply had no clue.
 
