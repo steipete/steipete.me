@@ -4,7 +4,7 @@ description: "Built this when Claude couldn't read Apple's docs. Now it converts
 pubDatetime: 2025-06-14T13:22:16+00:00
 heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
 heroImageAlt: "llm.codes interface showing documentation conversion tool"
-tags: ["tools", "ai", "development", "documentation"]
+tags: ["tools", "ai", "development", "documentation", "llms"]
 draft: false
 ---
 
