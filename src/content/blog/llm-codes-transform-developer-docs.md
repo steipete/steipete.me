@@ -10,7 +10,7 @@ draft: false
 
 Here's a story about why I built [llm.codes](https://llm.codes).
 
-I faced a typical problem with missing documentation. Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI that respects the Icon/Text settings and wanted me to go down to AppKit. Even when I asked it to google for a solution, nothing changed. The AI agent had world knowledge about Swift and SwiftUI, but was really bad at Swift Testing and anything Apple announced at WWDC 2024 - it simply had no clue.
+I faced a typical problem with missing documentation. [Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI that respects the Icon/Text settings and wanted me to go down to AppKit.](https://x.com/steipete/status/1933819029224931619) Even when I asked it to google for a solution, nothing changed. The AI agent had world knowledge about Swift and SwiftUI, but was really bad at Swift Testing and anything Apple announced at WWDC 2024 - it simply had no clue.
 
 ## The Real Problem: JavaScript-Heavy Documentation
 
@@ -51,6 +51,8 @@ Here's the step-by-step process using llm.codes:
 5. Reference it when asking Claude: "Using the documentation in `docs/swiftui.md`, show me how to create a toolbar that respects Icon/Text display settings"
 
 For people who think [@Context7AI](https://x.com/Context7AI) is the answer: if you tag context7, you get SwiftUI sample code from 2019, which will produce horribly outdated code. You need current documentation, not ancient examples.
+
+I used this trick before in my post about [migrating 700 tests to Swift Testing](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing), however the website I used to convert the docs wasn't optimized for Apple's pages. With llm.codes, you get significantly smaller markdown files, which preserves more token context space for your agent.
 
 ## Why This Matters
 
