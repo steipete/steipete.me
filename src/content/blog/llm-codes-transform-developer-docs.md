@@ -74,7 +74,7 @@ Remember my toolbar problem? Here's [exactly what happened](https://x.com/steipe
 
 The solution was simple: I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and voilà! Suddenly I could convince Claude, and it wrote exactly the code I wanted.
 
-The key insight: When you work on a component, just ask Claude to read the docs <file name>. It will load everything it needs into its context and produce vastly better code.
+The key insight: When you work on a component, just ask Claude to read the docs. It will load everything it needs into its context and produce vastly better code.
 
 For people who think [@Context7](https://x.com/Context7AI) is the answer: if you use the context7 mcp for SwiftUI, you get sample code from 2019, which will produce horribly outdated code. You need current documentation, not ancient examples.
 
