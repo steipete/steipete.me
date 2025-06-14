@@ -8,7 +8,7 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-**TL;DR:** [llm.codes](https://llm.codes) converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
+**TL;DR:** <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
 
 AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with API that's not so common, the world knowledge will be limited.
 
@@ -20,7 +20,7 @@ The core issue? Apple's documentation heavily uses JavaScript, and Claude Code (
 
 ## Enter llm.codes
 
-That's when I built the Apple docs converter. [llm.codes](https://llm.codes) allows you to point to any Apple documentation and fetch everything as clean Markdown. I built it to specifically solve the JavaScript problem - it:
+That's when I built the Apple docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to any Apple documentation and fetch everything as clean Markdown. I built it to specifically solve the JavaScript problem - it:
 
 - Extracts all content from JavaScript-heavy pages
 - Removes unnecessary URLs, availability annotations, and keywords that just waste tokens
@@ -30,7 +30,7 @@ The service also supports:
 - **swiftpackageindex.com** - Swift Package Index documentation
 - **GitHub Pages** - Documentation hosted on GitHub Pages
 
-llm.codes uses [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) under the hood, and I pay for the credits to keep this service free for everyone.
+llm.codes uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target="_blank">Firecrawl</a> under the hood, and I pay for the credits to keep this service free for everyone.
 
 ## Real-World Example
 
@@ -48,6 +48,6 @@ I also maintain a [collection of pre-converted Markdown documentation files](htt
 
 ## Try It Out
 
-Head over to [llm.codes](https://llm.codes) and transform your first documentation page. It's free to use and doesn't require any sign-up. It uses [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) under the hood, and I pay for the credits to keep this service free for everyone.
+Head over to <a href="https://llm.codes" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up. It uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target="_blank">Firecrawl</a> under the hood, and I pay for the credits to keep this service free for everyone.
 
 Whether you're building iOS apps, working with Swift packages, or just want cleaner documentation for your AI workflows, llm.codes makes it simple to bridge the gap between human-readable docs and AI-consumable content.
