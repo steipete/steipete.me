@@ -84,6 +84,8 @@ The converter itself? Completely vibe-coded with Claude and <a href="https://git
 
 ## Try It Out
 
-Head over to <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
+<a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Convert a page →</a>
+
+**No sign-up, 10s turnaround**.
 
 As AI agents become more prevalent in our development workflows, tools like llm.codes will become essential bridges between existing documentation and AI capabilities. Until documentation providers offer <a href="https://llmstxt.org/" target="_blank">LLM-friendly formats</a> natively, we'll keep building these bridges ourselves.
