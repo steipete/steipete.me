@@ -22,7 +22,7 @@ The core issue? <a href="https://developer.apple.com/documentation/swiftui/" tar
 
 ## Enter llm.codes
 
-That's when I built the Apple docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to any Apple documentation and fetch everything as clean Markdown. I built it to specifically solve the JavaScript problem - it:
+That's when I built the docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to any Apple documentation and fetch everything as clean Markdown. I built it to specifically solve the JavaScript problem - it:
 
 - Extracts all content from JavaScript-heavy pages
 - Removes unnecessary URLs, availability annotations, and keywords that just waste tokens
