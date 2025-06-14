@@ -48,7 +48,9 @@ I also maintain a [collection of pre-converted Markdown documentation files](htt
 
 ## The Meta Story: Vibe-Coded with Claude
 
-In good tradition, the converter is completely vibe-coded and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I used Claude Code for everything and didn't write a single line of TypeScript myself. This doesn't mean you don't have to know the tools you work with - I made the decision to host it on Vercel, to use Next.js and Tailwind, and before building this I had a Python script to test if this was a valid approach with Firecrawl. But in general, I was surprised how well it works. You really feel the difference: while Swift works well, using agents for TypeScript is just wonderful and usually works on the first try, on the first prompt.
+In good tradition, the converter is completely vibe-coded and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I used Claude Code for everything and didn't write a single line of TypeScript myself. This doesn't mean you don't have to know the tools you work with - I made the decision to host it on Vercel, to use Next.js and Tailwind, and before building this I had a Python script to test if this was a valid approach with Firecrawl.
+
+But in general, I was surprised how well it works. You really feel the difference: while Swift works well, using agents for TypeScript is just wonderful and usually works on the first try, on the first prompt.
 
 ## Try It Out
 
