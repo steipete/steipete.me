@@ -1,10 +1,10 @@
 ---
-title: "llm.codes - Transform Developer Docs to Clean Markdown"
-description: "Introducing llm.codes, a tool that converts Apple developer documentation and other technical docs into clean, LLM-friendly Markdown format for better AI integration."
+title: "llm.codes: Make Apple Docs AI-Readable"
+description: "Built this when Claude couldn't read Apple's docs. Now it converts 69+ documentation sites to clean llms.txt. Free, instant, no BS."
 pubDatetime: 2025-06-14T13:22:16+00:00
 heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
 heroImageAlt: "llm.codes interface showing documentation conversion tool"
-tags: ["tools", "ai", "development", "documentation"]
+tags: ["tools", "ai", "development", "documentation", "llms"]
 draft: false
 ---
 
@@ -12,9 +12,7 @@ draft: false
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
-AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with an API that's not so common, the world knowledge will be limited.
-
-I faced a typical problem with missing documentation. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude tried to convince me that [it wasn't possible to make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619) and went down to AppKit. Even when I asked it to google for a solution, nothing changed.
+Even the smartest models can't fetch fresh docs - especially when the docs are hidden behind JavaScript. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude tried to convince me that [it wasn't possible to make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619) and went down to AppKit. Even when I asked it to google for a solution, nothing changed.
 
 ## The Real Problem: JavaScript-Heavy Documentation
 
@@ -70,9 +68,7 @@ llm.codes uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target=
 
 ## Real-World Example
 
-Remember my toolbar problem? Here's [exactly what happened](https://x.com/steipete/status/1933819029224931619):
-
-The solution was simple: I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and voilà! Suddenly I could convince Claude, and it wrote exactly the code I wanted.
+Remember my toolbar problem? [Here's what happened](https://x.com/steipete/status/1933819029224931619): I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and suddenly Claude wrote exactly the code I wanted.
 
 The key insight: When you work on a component, just ask Claude to read the docs. It will load everything it needs into its context and produce vastly better code.
 
@@ -80,16 +76,14 @@ For people who think [@Context7](https://x.com/Context7AI) is the answer: if you
 
 I used this trick before in my post about [migrating 700 tests to Swift Testing](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing). With llm.codes, you get significantly smaller markdown files, which preserves more token context space for your agent.
 
-I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository. Not everything can be fetched from Apple's docs, so feel free to use these files as well - they're ready to drop into your projects.
+I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository, that go beyond just documentation.
 
-## The Meta Story: Vibe-Coded with Claude
-
-In good tradition, the converter is completely vibe-coded and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I used Claude Code for everything and didn't write a single line of TypeScript myself. This doesn't mean you don't have to know the tools you work with - I made the decision to host it on Vercel, to use Next.js and Tailwind, and before building this I had a Python script to test if this was a valid approach with Firecrawl.
-
-I was surprised how well it works. You really feel the difference: while Swift works well, using agents for TypeScript is just wonderful and usually works on the first try, on the first prompt.
+The converter itself? Completely vibe-coded with Claude and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I chose the stack (Next.js, Tailwind, Vercel) but didn't write a single line of TypeScript-and it worked beautifully on the first try.
 
 ## Try It Out
 
-Head over to <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
+<a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank" style="display: inline-block; padding: 8px 18px; background-color: transparent; color: #374151; text-decoration: none; border: 1px solid #d1d5db; border-radius: 4px; font-weight: 500; font-size: 15px; transition: all 0.15s ease;">Convert a page →</a>
 
-As AI agents become more prevalent in our development workflows, tools like llm.codes will become essential bridges between existing documentation and AI capabilities. Until documentation providers offer <a href="https://llmstxt.org/" target="_blank">LLM-friendly formats</a> natively, we'll keep building these bridges ourselves.
+**No sign-up needed**.
+
+AI agents are the future of coding. Until docs catch up, llm.codes is your bridge to that future.
