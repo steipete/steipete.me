@@ -52,6 +52,6 @@ In good tradition, the converter is completely vibe-coded and <a href="https://g
 
 ## Try It Out
 
-Head over to <a href="https://llm.codes" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
+Head over to <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
 
 Whether you're building iOS apps, working with Swift packages, or just want cleaner documentation for your AI workflows, llm.codes makes it simple to bridge the gap between human-readable docs and AI-consumable content.
