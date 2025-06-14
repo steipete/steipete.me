@@ -2,13 +2,15 @@
 title: "llm.codes - Transform Developer Docs to Clean Markdown"
 description: "Introducing llm.codes, a tool that converts Apple developer documentation and other technical docs into clean, LLM-friendly Markdown format for better AI integration."
 pubDatetime: 2025-06-14T13:22:16+00:00
+heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
+heroImageAlt: "llm.codes interface showing documentation conversion tool"
 tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
 Here's a story about why I built [llm.codes](https://llm.codes).
 
-I was stuck on a problem where Claude told me there was no way to build a proper toolbar in AppKit that behaves as the system wants - where users can filter between icon or text display. Even after I asked it to google for solutions, it couldn't find the answer. The AI agent had world knowledge about Swift and SwiftUI, but was really bad at Swift Testing and anything Apple announced at WWDC 2024 - it simply had no clue.
+I faced a typical problem with missing documentation. Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI that respects the Icon/Text settings and wanted me to go down to AppKit. Even when I asked it to google for a solution, nothing changed. The AI agent had world knowledge about Swift and SwiftUI, but was really bad at Swift Testing and anything Apple announced at WWDC 2024 - it simply had no clue.
 
 ## The Real Problem: JavaScript-Heavy Documentation
 
@@ -36,15 +38,19 @@ The key insight: When you work on a component, just ask Claude to read the docum
 
 ## Real-World Example
 
-Remember my AppKit toolbar problem? Here's how llm.codes solved it:
+Remember my toolbar problem? Here's [exactly what happened](https://x.com/steipete/status/1933819029224931619):
 
-1. I went to [llm.codes](https://llm.codes)
-2. Pasted the NSToolbar documentation URL
-3. Downloaded the clean Markdown
-4. Stored it in `docs/nstoolbar.md`
-5. Asked Claude: "Using the documentation in `docs/nstoolbar.md`, show me how to create a toolbar with icon/text display options"
+The solution was simple: I dragged the scraped SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and voilà! Suddenly I could convince Claude, and it wrote exactly the code I wanted.
 
-Suddenly, Claude had access to all the modern NSToolbar APIs, including the display mode configurations that weren't in its training data. Problem solved.
+Here's the step-by-step process using llm.codes:
+
+1. Go to [llm.codes](https://llm.codes)
+2. Paste the SwiftUI documentation URL
+3. Download the clean Markdown
+4. Store it in your project (e.g., `docs/swiftui.md`)
+5. Reference it when asking Claude: "Using the documentation in `docs/swiftui.md`, show me how to create a toolbar that respects Icon/Text display settings"
+
+For people who think [@Context7AI](https://x.com/Context7AI) is the answer: if you tag context7, you get SwiftUI sample code from 2019, which will produce horribly outdated code. You need current documentation, not ancient examples.
 
 ## Why This Matters
 
@@ -62,6 +68,8 @@ The service is built to be fast and efficient:
 - Configurable crawling parameters to control scope
 - Intelligent content extraction that preserves code examples and formatting
 - Clean output optimized for token efficiency
+
+llm.codes uses [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) under the hood, and I pay for the credits to keep this service free for everyone.
 
 ## Try It Out
 
