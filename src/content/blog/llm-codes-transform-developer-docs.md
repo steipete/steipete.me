@@ -8,7 +8,7 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-**TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 69+ other documentation sites) into clean Markdown and llms.txt that AI agents can actually read.
+**TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 69+ other doc sites) into a clean llms.txt that AI agents can actually read.
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
