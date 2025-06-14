@@ -86,4 +86,4 @@ The converter itself? Completely vibe-coded with Claude and <a href="https://git
 
 **No sign-up needed**.
 
-As AI agents become more prevalent in our development workflows, tools like llm.codes will become essential bridges between existing documentation and AI capabilities. Until documentation providers offer <a href="https://llmstxt.org/" target="_blank">LLM-friendly formats</a> natively, we'll keep building these bridges ourselves.
+AI agents are the future of coding. Until docs catch up, llm.codes is your bridge to that future.
