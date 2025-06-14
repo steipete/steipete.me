@@ -68,9 +68,7 @@ llm.codes uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target=
 
 ## Real-World Example
 
-Remember my toolbar problem? Here's [exactly what happened](https://x.com/steipete/status/1933819029224931619):
-
-The solution was simple: I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and voilà! Suddenly I could convince Claude, and it wrote exactly the code I wanted.
+Remember my toolbar problem? [Here's what happened](https://x.com/steipete/status/1933819029224931619): I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and suddenly Claude wrote exactly the code I wanted.
 
 The key insight: When you work on a component, just ask Claude to read the docs. It will load everything it needs into its context and produce vastly better code.
 
