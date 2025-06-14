@@ -18,7 +18,7 @@ I faced a typical problem with missing documentation. While working on <a href="
 
 ## The Real Problem: JavaScript-Heavy Documentation
 
-The core issue? Apple's documentation heavily uses JavaScript, and Claude Code (or most AI agents to date) simply cannot parse that. It will fail and see nothing. So if you're working with a component where documentation only exists on JavaScript-rendered pages, you're completely stuck.
+The core issue? <a href="https://developer.apple.com/documentation/swiftui/" target="_blank">Apple's documentation heavily uses JavaScript</a>, and Claude Code (or most AI agents to date) simply cannot parse that. It will fail and see nothing. So if you're working with a component where documentation only exists on JavaScript-rendered pages, you're completely stuck.
 
 ## Enter llm.codes
 
