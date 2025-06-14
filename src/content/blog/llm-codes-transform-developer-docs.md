@@ -8,7 +8,9 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-**TL;DR:** <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
+**TL;DR:** I built a tool that converts JavaScript-heavy developer docs into clean Markdown so AI agents can actually read them.
+
+<a href="https://llm.codes" target="_blank">llm.codes</a>
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
