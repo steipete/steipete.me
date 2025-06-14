@@ -8,17 +8,17 @@ tags: ["tools", "ai", "development", "documentation"]
 draft: false
 ---
 
-**TL;DR:** I built a tool that converts JavaScript-heavy developer docs into clean Markdown so AI agents can actually read them.
+Apple docs are invisible to LLMs.
+
+**The fix:** Paste URL → Get Markdown → Feed to AI.
 
 <a href="https://llm.codes" target="_blank">llm.codes</a>
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
-AI agents like [Claude Code](/posts/2025/claude-code-is-my-computer) are powerful but limited by their training dates. Less common APIs? They know even less.
+AI agents like [Claude Code](/posts/2025/claude-code-is-my-computer) are powerful but limited by their training dates. Less common APIs? They know even less. While building <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude told me [I couldn't make a proper SwiftUI toolbar](https://x.com/steipete/status/1933819029224931619).
 
-While building <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude told me [I couldn't make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619). It pushed AppKit instead. Googling didn't help.
-
-## The Real Problem: JavaScript-Heavy Documentation
+## The Real Problem
 
 The core issue? <a href="https://developer.apple.com/documentation/swiftui/" target="_blank">Apple's docs use JavaScript</a>. AI agents can't parse that. They see nothing.
 
@@ -30,45 +30,34 @@ So I built <a href="https://llm.codes" target="_blank">llm.codes</a>. Point it a
 
 It's optimized for Apple docs but supports many sites. Here's what it does:
 
-- Extracts content from JavaScript pages
-- Removes URLs, availability notes, and filler words
-- Creates clean Markdown AI agents can read
+- **Save 30% tokens** per API call  
+- **Get current APIs**, not 2019 examples
+- **Works offline** - store docs in your project
 
 <details>
 <summary><strong>Supported Documentation Sites</strong></summary>
 
-**Mobile Development**
-- Apple Developer Documentation
-- Android Developer Documentation
-- React Native
-- Flutter
-- Swift Package Index
+**AI/ML**: Hugging Face • LangChain • NumPy • pandas • PyTorch • scikit-learn • TensorFlow
 
-**Programming Languages**
-- Python, TypeScript, JavaScript (MDN), Rust, Go, Java, Ruby, PHP, Swift, Kotlin
+**Build Tools**: Cargo • Maven • npm • pip • Vite • webpack
 
-**Web Frameworks**
-- React, Vue.js, Angular, Next.js, Nuxt, Svelte, Django, Flask, Express.js, Laravel
+**Cloud**: AWS • Azure • DigitalOcean • Google Cloud • Heroku • Netlify • Vercel
 
-**Cloud Platforms**
-- AWS, Google Cloud, Azure, DigitalOcean, Heroku, Vercel, Netlify
+**CSS**: Bootstrap • Bulma • Chakra UI • Material-UI • Tailwind CSS
 
-**Databases**
-- PostgreSQL, MongoDB, MySQL, Redis, Elasticsearch, Couchbase, Cassandra
+**Databases**: Cassandra • Couchbase • Elasticsearch • MongoDB • MySQL • PostgreSQL • Redis
 
-**DevOps & Infrastructure**
-- Docker, Kubernetes, Terraform, Ansible, GitHub, GitLab
+**DevOps**: Ansible • Docker • GitHub • GitLab • Kubernetes • Terraform
 
-**AI/ML Libraries**
-- PyTorch, TensorFlow, Hugging Face, scikit-learn, LangChain, pandas, NumPy
+**Mobile**: Android • Apple Developer • Flutter • React Native • Swift Package Index
 
-**CSS Frameworks**
-- Tailwind CSS, Bootstrap, Material-UI, Chakra UI, Bulma
+**Languages**: Go • Java • JavaScript (MDN) • Kotlin • PHP • Python • Ruby • Rust • Swift • TypeScript
 
-**Build Tools & Testing**
-- npm, webpack, Vite, pip, Cargo, Maven, Jest, Cypress, Playwright, pytest
+**Testing**: Cypress • Jest • Mocha • Playwright • pytest
 
-**And more**: Any GitHub Pages site (*.github.io)
+**Web**: Angular • Django • Express.js • Flask • Laravel • Next.js • Nuxt • React • Svelte • Vue.js
+
+**Plus**: Any GitHub Pages site (*.github.io)
 
 </details>
 
@@ -107,6 +96,4 @@ Works for iOS apps, Swift packages, or any docs you need AI to understand.
 
 ## The Future
 
-AI agents are taking over development. Tools like llm.codes bridge old docs to new AI.
-
-Until doc sites offer LLM formats, we build our own bridges.
+As AI agents become more prevalent in our development workflows, tools like llm.codes will become essential bridges between existing documentation and AI capabilities. Until documentation providers offer LLM-friendly formats natively, we'll keep building these bridges ourselves.
