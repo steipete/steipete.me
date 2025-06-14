@@ -10,7 +10,7 @@ draft: false
 
 **TL;DR:** <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
 
-AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with API that's not so common, the world knowledge will be limited.
+AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with an API that's not so common, the world knowledge will be limited.
 
 I faced a typical problem with missing documentation. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, [Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI and went down to AppKit.](https://x.com/steipete/status/1933819029224931619) Even when I asked it to google for a solution, nothing changed.
 
@@ -52,6 +52,6 @@ In good tradition, the converter is completely vibe-coded. I used Claude Code fo
 
 ## Try It Out
 
-Head over to <a href="https://llm.codes" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up. It uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target="_blank">Firecrawl</a> under the hood, and I pay for the credits to keep this service free for everyone.
+Head over to <a href="https://llm.codes" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
 
 Whether you're building iOS apps, working with Swift packages, or just want cleaner documentation for your AI workflows, llm.codes makes it simple to bridge the gap between human-readable docs and AI-consumable content.
