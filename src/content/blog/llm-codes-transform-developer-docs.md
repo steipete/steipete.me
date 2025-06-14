@@ -1,6 +1,6 @@
 ---
-title: "llm.codes - Transform Developer Docs to Clean Markdown"
-description: "Introducing llm.codes, a tool that converts Apple developer documentation and other technical docs into clean, LLM-friendly Markdown format for better AI integration."
+title: "llm.codes: Make Apple Docs AI-Readable"
+description: "Convert JavaScript-heavy docs into clean llms.txt. Works with Apple, AWS, React & 69+ sites. No signup, 10s turnaround."
 pubDatetime: 2025-06-14T13:22:16+00:00
 heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
 heroImageAlt: "llm.codes interface showing documentation conversion tool"
