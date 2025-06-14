@@ -16,48 +16,57 @@ Apple docs are invisible to LLMs.
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
-AI agents like [Claude Code](/posts/2025/claude-code-is-my-computer) are powerful but limited by their training dates. Less common APIs? They know even less. While building <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude told me [I couldn't make a proper SwiftUI toolbar](https://x.com/steipete/status/1933819029224931619).
+AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with an API that's not so common, the world knowledge will be limited.
 
-## The Real Problem
+I faced a typical problem with missing documentation. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude tried to convince me that [it wasn't possible to make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619) and went down to AppKit. Even when I asked it to google for a solution, nothing changed.
 
-The core issue? <a href="https://developer.apple.com/documentation/swiftui/" target="_blank">Apple's docs use JavaScript</a>. AI agents can't parse that. They see nothing.
+## The Real Problem: JavaScript-Heavy Documentation
 
-If your docs only exist on JavaScript pages, you're stuck.
+The core issue? <a href="https://developer.apple.com/documentation/swiftui/" target="_blank">Apple's documentation heavily uses JavaScript</a>, and Claude Code (or most AI agents to date) simply cannot parse that. It will fail and see nothing. So if you're working with a component where documentation only exists on JavaScript-rendered pages, you're completely stuck.
 
 ## Enter llm.codes
 
-So I built <a href="https://llm.codes" target="_blank">llm.codes</a>. Point it at any docs page. Get clean Markdown back.
+That's when I built the docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to documentation and fetch everything as clean Markdown. While it's optimized for Apple documentation, it supports a wide range of developer documentation sites. Here's what you get:
 
-It's optimized for Apple docs but supports many sites. Here's what it does:
-
-- **Save 30% tokens** per API call  
-- **Get current APIs**, not 2019 examples
-- **Works offline** - store docs in your project
+- **Your AI can finally see Apple docs** - No more blind spots from JavaScript-rendered pages
+- **70% smaller files** - More context space for your actual code instead of wasted tokens
+- **Works with 60+ documentation sites** - From AWS to Tailwind, PyTorch to PostgreSQL
 
 <details>
 <summary><strong>Supported Documentation Sites</strong></summary>
 
-**AI/ML**: Hugging Face • LangChain • NumPy • pandas • PyTorch • scikit-learn • TensorFlow
+**Mobile Development**
+- Apple Developer Documentation
+- Android Developer Documentation
+- React Native
+- Flutter
+- Swift Package Index
 
-**Build Tools**: Cargo • Maven • npm • pip • Vite • webpack
+**Programming Languages**
+- Python, TypeScript, JavaScript (MDN), Rust, Go, Java, Ruby, PHP, Swift, Kotlin
 
-**Cloud**: AWS • Azure • DigitalOcean • Google Cloud • Heroku • Netlify • Vercel
+**Web Frameworks**
+- React, Vue.js, Angular, Next.js, Nuxt, Svelte, Django, Flask, Express.js, Laravel
 
-**CSS**: Bootstrap • Bulma • Chakra UI • Material-UI • Tailwind CSS
+**Cloud Platforms**
+- AWS, Google Cloud, Azure, DigitalOcean, Heroku, Vercel, Netlify
 
-**Databases**: Cassandra • Couchbase • Elasticsearch • MongoDB • MySQL • PostgreSQL • Redis
+**Databases**
+- PostgreSQL, MongoDB, MySQL, Redis, Elasticsearch, Couchbase, Cassandra
 
-**DevOps**: Ansible • Docker • GitHub • GitLab • Kubernetes • Terraform
+**DevOps & Infrastructure**
+- Docker, Kubernetes, Terraform, Ansible, GitHub, GitLab
 
-**Mobile**: Android • Apple Developer • Flutter • React Native • Swift Package Index
+**AI/ML Libraries**
+- PyTorch, TensorFlow, Hugging Face, scikit-learn, LangChain, pandas, NumPy
 
-**Languages**: Go • Java • JavaScript (MDN) • Kotlin • PHP • Python • Ruby • Rust • Swift • TypeScript
+**CSS Frameworks**
+- Tailwind CSS, Bootstrap, Material-UI, Chakra UI, Bulma
 
-**Testing**: Cypress • Jest • Mocha • Playwright • pytest
+**Build Tools & Testing**
+- npm, webpack, Vite, pip, Cargo, Maven, Jest, Cypress, Playwright, pytest
 
-**Web**: Angular • Django • Express.js • Flask • Laravel • Next.js • Nuxt • React • Svelte • Vue.js
-
-**Plus**: Any GitHub Pages site (*.github.io)
+**And more**: Any GitHub Pages site (*.github.io)
 
 </details>
 
@@ -65,34 +74,29 @@ llm.codes uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target=
 
 ## Real-World Example
 
-Remember my toolbar problem? [Here's the tweet](https://x.com/steipete/status/1933819029224931619).
+Remember my toolbar problem? Here's [exactly what happened](https://x.com/steipete/status/1933819029224931619):
 
-The fix: I dragged SwiftUI markdown from [my agent-rules repo](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal. Claude read it. Wrote perfect code.
+The solution was simple: I dragged the generated SwiftUI markdown from [my agent-rules repository](https://github.com/steipete/agent-rules/blob/main/docs/swiftui.md) into the terminal, and voilà! Suddenly I could convince Claude, and it wrote exactly the code I wanted.
 
-**Key insight**: Ask Claude to read local docs. It loads what it needs and writes better code.
+The key insight: When you work on a component, just ask Claude to read the docs <file name>. It will load everything it needs into its context and produce vastly better code.
 
-About [@Context7](https://x.com/Context7AI): Their SwiftUI MCP gives you 2019 code. Old and broken. You need current docs.
+For people who think [@Context7](https://x.com/Context7AI) is the answer: if you use the context7 mcp for SwiftUI, you get sample code from 2019, which will produce horribly outdated code. You need current documentation, not ancient examples.
 
-I tried this before in my [Swift Testing migration post](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing). The old converter wasn't optimized for Apple docs. llm.codes creates smaller files, saving tokens.
+I used this trick before in my post about [migrating 700 tests to Swift Testing](https://steipete.me/posts/2025/migrating-700-tests-to-swift-testing), however the website I used to convert the docs wasn't optimized for Apple's pages. With llm.codes, you get significantly smaller markdown files, which preserves more token context space for your agent.
 
-I also keep [pre-converted docs](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repo. Some Apple docs can't be scraped. Use these instead.
+I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository. Not everything can be fetched from Apple's docs, so feel free to use these files as well - they're ready to drop into your projects.
 
 ## The Meta Story: Vibe-Coded with Claude
 
-The converter is vibe-coded and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I used Claude Code for everything. Zero TypeScript written by hand.
+In good tradition, the converter is completely vibe-coded and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I used Claude Code for everything and didn't write a single line of TypeScript myself. This doesn't mean you don't have to know the tools you work with - I made the decision to host it on Vercel, to use Next.js and Tailwind, and before building this I had a Python script to test if this was a valid approach with Firecrawl.
 
-Still made key choices:
-- Vercel hosting
-- Next.js and Tailwind
-- Python prototype to test Firecrawl first
-
-The result? It works great. TypeScript + AI agents = magic. First prompt, working code.
+But in general, I was surprised how well it works. You really feel the difference: while Swift works well, using agents for TypeScript is just wonderful and usually works on the first try, on the first prompt.
 
 ## Try It Out
 
-Try <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> now. Free. No sign-up.
+Head over to <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
 
-Works for iOS apps, Swift packages, or any docs you need AI to understand.
+Whether you're building iOS apps, working with Swift packages, or just want cleaner documentation for your AI workflows, llm.codes makes it simple to bridge the gap between human-readable docs and AI-consumable content.
 
 ## The Future
 
