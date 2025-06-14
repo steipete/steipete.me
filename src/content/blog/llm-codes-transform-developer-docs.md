@@ -12,7 +12,7 @@ draft: false
 
 > **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
 
-Even the smartest models can't fetch fresh docs—especially when the docs are hidden behind JavaScript. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude tried to convince me that [it wasn't possible to make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619) and went down to AppKit. Even when I asked it to google for a solution, nothing changed.
+Even the smartest models can't fetch fresh docs-especially when the docs are hidden behind JavaScript. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, Claude tried to convince me that [it wasn't possible to make a proper toolbar in SwiftUI](https://x.com/steipete/status/1933819029224931619) and went down to AppKit. Even when I asked it to google for a solution, nothing changed.
 
 ## The Real Problem: JavaScript-Heavy Documentation
 
@@ -80,7 +80,7 @@ I used this trick before in my post about [migrating 700 tests to Swift Testing]
 
 I also maintain a [collection of pre-converted Markdown documentation files](https://github.com/steipete/agent-rules/tree/main/docs) in my agent-rules repository. Not everything can be fetched from Apple's docs, so feel free to use these files as well - they're ready to drop into your projects.
 
-The converter itself? Completely vibe-coded with Claude and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I chose the stack (Next.js, Tailwind, Vercel) but didn't write a single line of TypeScript—and it worked beautifully on the first try.
+The converter itself? Completely vibe-coded with Claude and <a href="https://github.com/amantus-ai/llm-codes" target="_blank">open source</a>. I chose the stack (Next.js, Tailwind, Vercel) but didn't write a single line of TypeScript-and it worked beautifully on the first try.
 
 ## Try It Out
 
