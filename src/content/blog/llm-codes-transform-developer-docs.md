@@ -10,6 +10,8 @@ draft: false
 
 **TL;DR:** <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy developer documentation (like Apple's) into clean Markdown files that AI agents can actually read and understand.
 
+> **Quick Start**: Try it now with Apple's Foundation Models docs: <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a>
+
 AI agents such as [Claude Code](/posts/2025/claude-code-is-my-computer) are incredibly powerful, but they're limited by their training cutoff dates. And even then, if you work with an API that's not so common, the world knowledge will be limited.
 
 I faced a typical problem with missing documentation. While working on <a href="https://vibemeter.ai/" target="_blank">Vibe Meter</a>, [Claude tried to convince me that it wasn't possible to make a proper toolbar in SwiftUI and went down to AppKit.](https://x.com/steipete/status/1933819029224931619) Even when I asked it to google for a solution, nothing changed.
