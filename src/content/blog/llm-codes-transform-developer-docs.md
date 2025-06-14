@@ -22,15 +22,49 @@ The core issue? <a href="https://developer.apple.com/documentation/swiftui/" tar
 
 ## Enter llm.codes
 
-That's when I built the docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to any Apple documentation and fetch everything as clean Markdown. I built it to specifically solve the JavaScript problem - it:
+That's when I built the docs converter. <a href="https://llm.codes" target="_blank">llm.codes</a> allows you to point to documentation and fetch everything as clean Markdown. While it's optimized for Apple documentation, it supports a wide range of developer documentation sites. I built it to specifically solve the JavaScript problem - it:
 
 - Extracts all content from JavaScript-heavy pages
 - Removes unnecessary URLs, availability annotations, and keywords that just waste tokens
 - Produces clean Markdown that AI agents can actually read and understand
 
-The service also supports:
-- **swiftpackageindex.com** - Swift Package Index documentation
-- **GitHub Pages** - Documentation hosted on GitHub Pages
+<details>
+<summary><strong>Supported Documentation Sites</strong></summary>
+
+**Mobile Development**
+- Apple Developer Documentation
+- Android Developer Documentation
+- React Native
+- Flutter
+- Swift Package Index
+
+**Programming Languages**
+- Python, TypeScript, JavaScript (MDN), Rust, Go, Java, Ruby, PHP, Swift, Kotlin
+
+**Web Frameworks**
+- React, Vue.js, Angular, Next.js, Nuxt, Svelte, Django, Flask, Express.js, Laravel
+
+**Cloud Platforms**
+- AWS, Google Cloud, Azure, DigitalOcean, Heroku, Vercel, Netlify
+
+**Databases**
+- PostgreSQL, MongoDB, MySQL, Redis, Elasticsearch, Couchbase, Cassandra
+
+**DevOps & Infrastructure**
+- Docker, Kubernetes, Terraform, Ansible, GitHub, GitLab
+
+**AI/ML Libraries**
+- PyTorch, TensorFlow, Hugging Face, scikit-learn, LangChain, pandas, NumPy
+
+**CSS Frameworks**
+- Tailwind CSS, Bootstrap, Material-UI, Chakra UI, Bulma
+
+**Build Tools & Testing**
+- npm, webpack, Vite, pip, Cargo, Maven, Jest, Cypress, Playwright, pytest
+
+**And more**: Any GitHub Pages site (*.github.io)
+
+</details>
 
 llm.codes uses <a href="https://www.firecrawl.dev/referral?rid=9CG538BE" target="_blank">Firecrawl</a> under the hood, and I pay for the credits to keep this service free for everyone.
 
