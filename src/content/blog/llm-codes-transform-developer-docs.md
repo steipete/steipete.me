@@ -92,8 +92,4 @@ But in general, I was surprised how well it works. You really feel the differenc
 
 Head over to <a href="https://llm.codes?https://developer.apple.com/documentation/foundationmodels" target="_blank">llm.codes</a> and transform your first documentation page. It's free to use and doesn't require any sign-up.
 
-Whether you're building iOS apps, working with Swift packages, or just want cleaner documentation for your AI workflows, llm.codes makes it simple to bridge the gap between human-readable docs and AI-consumable content.
-
-## The Future
-
 As AI agents become more prevalent in our development workflows, tools like llm.codes will become essential bridges between existing documentation and AI capabilities. Until documentation providers offer LLM-friendly formats natively, we'll keep building these bridges ourselves.
