@@ -22,7 +22,7 @@ Anthropic has both an API endpoint which is very easy to calculate. They also of
 - **A)** How much that would actually cost if it would be API calls
 - **B)** How many requests you actually have open in that 5-hour window
 
-![Claude Code Usage Report showing token counts and cost calculations](/assets/img/2025/vibe-meter-2-claude-code-usage-calculation/claude-code-usage-report.png){.no-border}
+<img src="/assets/img/2025/vibe-meter-2-claude-code-usage-calculation/claude-code-usage-report.png" alt="Claude Code Usage Report showing token counts and cost calculations" class="no-border" />
 
 Well, turns out this is not easy at all. There is no API for that, there's no cost control, there's not even a hidden private API or something on the website that you could look at. The only way literally is to count the individual tokens that are sent to the LLM and then approximate how much is left. We also have to approximate when a window starts. As you can see, this was the start of a little adventure.
 
