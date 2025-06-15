@@ -44,10 +44,6 @@ BPE (Byte Pair Encoding) is a compression algorithm adapted for tokenization in 
 
 Instead of just splitting on whitespace or characters, BPE builds a vocabulary of frequently seen pairs of characters or subwords. This allows models to handle unknown words, rare terms, and typos more gracefully. [Learn more about BPE on Wikipedia](https://en.wikipedia.org/wiki/Byte-pair_encoding).
 
-## The Evolution of the Project
-
-The project also grew significantly. And as a reminder, this is still basically 100% written by Claude, although I spent significant time both in the profiler and in thinking about and in clear thinking.
-
 ## Agentic Coding and Clear Thinking
 
 Agentic coding, as I prefer to say, requires even more clear thinking, especially with Vibe Meter. I evolved my approach where I would use Claude Code and ask it to think hard about the problem. The thinking keyword is key because it triggers how much token Claude uses to actually think about the problem. There are various levels how you can trigger thinking, with Ultra Think being the highest level.
@@ -77,6 +73,8 @@ With this release, I also relented and started supporting macOS 14 which was qui
 In the 2.0 refactor, I also put a better effort on using modern Swift idioms, and most I did that by Claude teaching modern Swift via a new Markdown file that I fed to him and asked him to refactor my codebase using modern Swift idioms. I shared this and many other knowledge files (if you dare say so) in my new [agent rules repository](https://github.com/steipete/agent-rules/tree/main/docs).
 
 ## Project Statistics
+
+The project grew significantly. And as a reminder, this is still basically 100% written by Claude, although I spent significant time both in the profiler and in thinking about and in clear thinking.
 
 VibeMeter has grown into a substantial project:
 - **App code**: 24,529 lines
