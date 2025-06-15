@@ -70,6 +70,10 @@ While building Vibe Meter 2.0, I ran into a weird issue where Claude would argue
 
 With this release, I also relented and started supporting macOS 14 which was quite simple. The only issue was that I got very excited about automatic observation tracking and eventually had to revert it because this is something that is only supported on macOS 15 and later. Learn more about this hidden gem in my post: [Automatic Observation Tracking in UIKit and AppKit](https://steipete.me/posts/2025/automatic-observation-tracking-uikit-appkit).
 
+## Modern Swift Refactoring
+
+In the 2.0 refactor, I also put a better effort on using modern Swift idioms, and most I did that by Claude teaching modern Swift via a new Markdown file that I fed to him and asked him to refactor my codebase using modern Swift idioms. I shared this and many other knowledge files (if you dare say so) in my new [agent rules repository](https://github.com/steipete/agent-rules/tree/main/docs).
+
 ## Project Statistics
 
 VibeMeter has grown into a substantial project:
