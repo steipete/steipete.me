@@ -72,7 +72,7 @@ Remember my toolbar problem? [Here's what happened](https://x.com/steipete/statu
 
 The key insight: When you work on a component, just ask Claude to read the docs. It will load everything it needs into its context and produce vastly better code.
 
-For people who think [@Context7](https://x.com/Context7AI) is the answer: if you use the context7 mcp for SwiftUI, you get sample code from 2019, which will produce horribly outdated code. You need current documentation, not ancient examples.
+For people who think [@Context7](https://x.com/Context7AI) is the answer: if you use the context7 mcp for SwiftUI, you get [sample code from 2019](https://context7.com/ivanvorobei/swiftui), which will produce horribly outdated code. You need current documentation, not ancient examples.
 
 ## Beyond Just llm.codes
 

@@ -34,6 +34,37 @@ Luckily, I wasn't alone. There were other people that were already curious and i
 
 During the process I even started using SIMD operations, something which I only darkly remember got support in Swift but now it's crucial to offer a speedy parsing that doesn't clock down your CPU.
 
+### Vectorized Byte Pair Lookup
+
+The most impressive optimization is the vectorized lookup table that uses SIMD16 (16-byte vectors) for fast pattern matching:
+
+```swift
+// VibeMeter/Core/Utilities/Tiktoken/CoreBPESIMD.swift:222-281
+private struct VectorizedBytePairLookup {
+    // Pre-computed SIMD vectors for common byte pairs
+    private let pairVectors: [SIMD16<UInt8>: [(length: Int, rank: Int)]]
+
+    init(bytePairRanks: [Data: Int]) {
+        // Build SIMD lookup table for byte sequences
+        for (data, rank) in bytePairRanks {
+            if data.count > 16 { continue } // Skip sequences longer than SIMD width
+
+            // Create a SIMD vector padded with zeros
+            var vector = SIMD16<UInt8>(repeating: 0)
+            data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+                for i in 0 ..< min(data.count, 16) {
+                    vector[i] = bytes[i]
+                }
+            }
+
+            vectors[vector]?.append((length: data.count, rank: rank))
+        }
+    }
+}
+```
+
+This approach allows us to compare 16 bytes at once instead of doing byte-by-byte comparisons, dramatically speeding up the token counting process.
+
 ## Token Counting with TikToken
 
 As a basis, I used the open source [TikToken BPE tokenizer](https://github.com/openai/tiktoken) that is actually from OpenAI. There's no public tokenizer project from Anthropic. However, the tokens are similar enough that we can use this project and still get fairly accurate results.
