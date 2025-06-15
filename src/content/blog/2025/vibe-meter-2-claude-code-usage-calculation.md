@@ -69,3 +69,13 @@ While building Vibe Meter 2.0, I ran into a weird issue where Claude would argue
 ## Supporting macOS 14
 
 With this release, I also relented and started supporting macOS 14 which was quite simple. The only issue was that I got very excited about automatic observation tracking and eventually had to revert it because this is something that is only supported on macOS 15 and later. Learn more about this hidden gem in my post: [Automatic Observation Tracking in UIKit and AppKit](https://steipete.me/posts/2025/automatic-observation-tracking-uikit-appkit).
+
+## Project Statistics
+
+VibeMeter has grown into a substantial project:
+- **App code**: 24,529 lines
+- **Test code**: 22,560 lines  
+- **Total**: 47,089 lines across 218 Swift files
+- **Test coverage ratio**: 92% (tests are nearly as large as the app itself!)
+
+These numbers reflect the complexity of accurately parsing Claude's JSON-L files, implementing SIMD-accelerated token counting, and ensuring the reliability users expect from a cost monitoring tool.
