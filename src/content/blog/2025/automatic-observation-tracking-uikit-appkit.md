@@ -167,6 +167,44 @@ Of course, it's not all roses. Here are a few things to watch out for:
 - **Memory considerations**: Observable objects are retained while being observed, so be mindful of retain cycles
 - **Thread safety**: While `@Observable` is thread-safe, mutations from different threads could lead to inconsistent UI representations. Keep all mutations on the main thread to avoid surprises
 
+## A Pattern to Avoid
+
+You might be tempted to create a method that pre-accesses all observable properties:
+
+```swift
+// ❌ Don't do this
+override func trackObservableProperties() {
+    // Accessing all properties upfront
+    _ = model.backgroundColor
+    _ = model.cornerRadius
+    _ = model.title
+    // ... etc
+}
+```
+
+This is an anti-pattern for two reasons:
+
+1. **Inefficiency**: It establishes observation dependencies for ALL properties, even those not used in the current UI state. The beauty of automatic observation is that it only tracks properties actually accessed during updates.
+
+2. **Fragility**: You're maintaining a duplicate list of properties that can easily fall out of sync with your actual UI code.
+
+Instead, access properties directly where they're used:
+
+```swift
+// ✅ Do this
+override func layoutSubviews() {
+    super.layoutSubviews()
+    // Only accessed properties create dependencies
+    if model.isOptionEnabled {
+        view.foo = model.bar  // Only bar is observed
+    } else {
+        view.foo = model.baz  // Only baz is observed
+    }
+}
+```
+
+This way, only the properties actually affecting your UI get observation dependencies, making your code both more efficient and maintainable.
+
 ## Performance Considerations
 
 You might be wondering about performance. The beauty of this system is that it only tracks dependencies when views are actually laying out. If a view isn't visible, it's not tracking. The observation framework uses a sophisticated dependency graph that ensures minimal overhead.
