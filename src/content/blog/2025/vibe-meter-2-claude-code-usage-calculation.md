@@ -12,6 +12,8 @@ tags:
 
 ![Vibe Meter 2.0 Header](/assets/img/2025/vibe-meter-2-claude-code-usage-calculation/header.png)
 
+**TL;DR**: Built Vibe Meter 2.0 to track Claude subscription usage by parsing JSON-L files and counting tokens with a SIMD-accelerated BPE tokenizer. No official API exists, so we approximate usage by counting every token. The project grew to 47K lines of Swift with 92% test coverage, all written collaboratively with Claude using "thinking" triggers and modern Swift idioms.
+
 What started as a [simple idea](https://steipete.me/posts/2025/the-future-of-vibe-coding) to explain vibe coding to new people is slowly growing up. With version 2 of Vibe Meter, I added full support for Anthropic Claude subscription. While version 1 only focused on cost display for Cursor, for version 2 I wanted to add support for Anthropic Claude. This turned out to be much more of an adventure than I initially thought.
 
 ## The Challenge: API vs Subscription
