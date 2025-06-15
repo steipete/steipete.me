@@ -41,7 +41,7 @@ But it missed the deeper opportunities that Swift Testing provides. The real wor
 
 Instead of manually fixing 700 tests, I did what any reasonable developer would do: I procrastinated by watching WWDC videos. Both [*Meet Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10179/) and [*Go further with Swift Testing*](https://developer.apple.com/videos/play/wwdc2024/10195/) sessions were eye-opening.
 
-But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) (affiliate link, I need moar credits!), which converted Apple's entire Swift Testing documentation into a massive Markdown file.
+But here's where it gets complicated. The WWDC videos referenced outdated APIs that confused my AI agents. Plus, Claude couldn't access Apple's documentation because it's all JavaScript-rendered. I spent hours trying different approaches until I discovered [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE) (affiliate link, I need moar credits!), which converted Apple's entire Swift Testing documentation into a massive Markdown file. (This experience inspired me to build [llm.codes](https://steipete.me/posts/llm-codes-transform-developer-docs), where anyone can now generate up-to-date documentation from Apple's official sources.)
 
 So I ended up with [two documents](https://gist.github.com/steipete/84a5952c22e1ff9b6fe274ab079e3a95):
 1. The complete Swift Testing API documentation from Apple (via [Firecrawl](https://www.firecrawl.dev/referral?rid=9CG538BE))
