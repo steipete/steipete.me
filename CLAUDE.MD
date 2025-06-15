@@ -109,6 +109,18 @@ npm run preview
    - If a build fails after updates, diagnose the specific issue and FIX it properly
    - NEVER resort to downgrading as a solution
 
+## Slash Commands
+
+### /merged Command
+
+When the user types `/merged`, perform the following actions:
+
+1. Switch to the main branch: `git checkout main`
+2. Pull and rebase the latest changes: `git pull --rebase origin main`
+3. Confirm completion with a brief message
+
+This workflow ensures the main branch is always up-to-date after merging a PR.
+
 ## Tech Stack
 
 - **Astro** (latest version) - Main framework
