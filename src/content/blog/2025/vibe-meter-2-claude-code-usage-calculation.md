@@ -28,7 +28,7 @@ Well, turns out this is not easy at all. There is no API for that, there's no co
 
 ## Collaboration and Learning
 
-Luckily, I wasn't alone. There were other people that were already curious and interested in that idea, so I could learn from various open source projects. Counting tokens also is not as simple as you would think. Claude Code writes all interactions with their server into so-called JSON-L files which can be in the hundreds of megabytes large. So I spent a lot of time tweaking the parser, or dare I say me and Claude spent a lot of time tweaking the parser.
+Luckily, I wasn't alone. There were other people that were already curious and interested in that idea, so I could learn from various open source projects like [ccusage](https://github.com/ryoppippi/ccusage), which pioneered the approach of parsing Claude's JSON-L files. Counting tokens also is not as simple as you would think. Claude Code writes all interactions with their server into so-called JSON-L files which can be in the hundreds of megabytes large. So I spent a lot of time tweaking the parser, or dare I say me and Claude spent a lot of time tweaking the parser.
 
 ## SIMD Operations for Performance
 
