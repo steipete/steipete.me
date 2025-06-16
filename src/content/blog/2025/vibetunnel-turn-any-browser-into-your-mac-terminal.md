@@ -23,6 +23,8 @@ The idea sparked from a simple frustration: accessing your development machine's
 
 It started with Armin's prototype that piped stdin/stdout to files and used asciinema for playback. His initial approach was clever - capture terminal output to a JSONL file that described terminal dimensions and character events, then replay it using asciinema's player. But it was one-way communication only - no input, no interactivity, just a recording.
 
+Armin had actually built a similar library two years ago: "I used a library that I wrote, I think, two years ago... that library probably took me, like, three or four days because I had to really figure out how, like, pseudo terminals work." But this time was different: "I'm pretty sure you could write this whole thing up in probably, like, under an hour at this point. And I didn't even bother using my library again... I just copy pasted the whole library in and had Claude do the modifications to it."
+
 Within hours, we had transformed it into a full bidirectional terminal emulator. The journey from "wouldn't it be cool if..." to a working prototype showcases what's possible when you combine the right tools, the right team, and a healthy dose of determination. Here's how we built it in one intense session that stretched from morning coffee to well past midnight.
 
 ## The Architecture That Emerged
@@ -61,7 +63,11 @@ The solution? Multiplexing. Instead of one connection per terminal, we need a si
 
 ### Claude Code: The Secret Weapon (With Battle Scars)
 
-"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. The ability to say "integrate XtermJS for terminal emulation" and get working code in minutes is game-changing. But our experience revealed both the power and limitations of AI-assisted development.
+"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. The ability to say "integrate XtermJS for terminal emulation" and get working code in minutes is game-changing. 
+
+Armin put it in perspective: "20x is not an understatement in terms of how much faster we are with agents." He gave a concrete example: "This button that I added to the UI, which is, like, install the shell command and sudo the user. It wrote shell script. It wrote an Apple script. And then it wrote another thing around it, and it took it, like, two and a half minutes. And for me to figure out how to bring up the right sudo dialogue, how to like, which kind of workaround to use to bring this thing in would have been, like, two hours, three hours."
+
+He compared it to his experience at Sentry: "We every year, we had a hack week culture. So every year, we took four days to five days of three to four people working on one project. And, honestly, three, four people working for five days not nearly as impressive in terms of, like, how much stuff you can produce than I think, like, even within twelve hours."
 
 Claude excels at bootstrapping. Need to integrate a library you've never used? Claude will get you 80% there in minutes. Want to understand how Server-Sent Events work? Claude generates a working example faster than you can read the MDN docs. But Claude has its quirks, and we hit every single one:
 
@@ -75,6 +81,10 @@ The workflow that emerged was fascinating: Claude would generate the initial imp
 
 "You just say, hey, what's different in the Node reference implementation? Fix it. Make it like this." And Claude would dutifully port features between our three server implementations, maintaining API compatibility while adapting to each language's idioms.
 
+But as Armin warned: "You need to understand what you're doing still because otherwise it just goes down a path that just doesn't actually end up what it needs to be." He shared an example: "I sent it one of the early implementations of the whole thing. Said, like, step by step, please port this thing over. And the initial thing that it did was obviously very wrong. But it would have worked, but it would have been it wouldn't have gotten us to the end result that we needed because we need to stream some stuff up."
+
+The lesson? As Armin put it: "I think that this is what people often don't really get. It's not like you do one prompt and this comes out. You work with it. It is a tool. And if you are a really good engineer, it it's rocket fuel for for you. But if you don't if you don't know what you're doing, you still cannot build this."
+
 ## Three Servers, One Purpose: The Polyglot Experiment
 
 In true hackathon fashion, we ended up with three server implementations. What started as "let's just build it in Node" evolved into a fascinating polyglot experiment:
@@ -83,7 +93,9 @@ In true hackathon fashion, we ended up with three server implementations. What s
 
 2. **Rust** - Armin's performance-focused version using Actix Web. Built partially out of spite ("JavaScript is slow!") and partially because we wanted to see the performance difference. Spoiler: for our use case, the bottleneck is terminal I/O, not the web server. But the Rust version does use about 10x less memory. According to Mario: "Armin actually did a super great job extending his prototype so it also can take input and forward that to the standard in of the process."
 
-3. **Hummingbird (Swift)** - This one has the best backstory. Armin spent most of his time "cursing out Xcode" while trying to help with the Swift ecosystem integration. As Mario recalled: "He was very frustrated with Swift... He spent most of his time cursing out Xcode." Fed up, he said "Fine, I'll write a server in Swift to prove it's painful." Three hours and many profanities later, we had a working Hummingbird server. It's actually quite elegant - Swift's async/await makes the code surprisingly readable.
+3. **Hummingbird (Swift)** - This one has the best backstory. When I asked Armin what the hardest part was, his answer was immediate: "The hardest thing is Xcode." He elaborated on why it's so frustrating: "You're kinda used to being able to remote control a lot of stuff because a lot of it is, like, text based. And xcodebuild sort of runs on a command line, but... the behavior of xcodebuild on a command line on our machine at least doesn't match the behavior of Xcode play button. And so it kinda shows you, like, how inappropriate the tool is for agentic workflows."
+
+Fed up after spending "almost half an hour to, like, get, like, the bare bones things over from from a to b," he decided to prove a point by writing a server in Swift. Three hours and many profanities later, we had a working Hummingbird server. It's actually quite elegant - Swift's async/await makes the code surprisingly readable.
 
 We're keeping all three for educational purposes. As Mario explained: "We should keep both for educational purposes. Actually, all three for educational purposes because you have an aligned implementation of the same back end in three different environments." It's the same REST API implemented in three different environments - perfect for learning how different ecosystems handle HTTP, async I/O, and process management. The best part? You can switch between them with a simple flag. Having trouble with Node? Try Rust. Want to contribute but only know Swift? We've got you covered.
 
@@ -95,6 +107,8 @@ The final stack that emerged from our coding marathon is a testament to pragmati
 
 **Core Process Management**
 - **Rust Binary** - The heart of the system. Controls process spawning, named pipes, and I/O forwarding. Why Rust? Because when you're dealing with system-level process management, you want something that won't segfault at 2 AM. The binary is remarkably small - about 2MB compiled - and handles all the tricky bits of PTY allocation, signal forwarding, and process lifecycle management.
+
+Armin explained why this is actually harder than SSH: "What is a lot harder is drawing something in not the same terminal. Because what we're doing here is we're basically keeping it running the original terminal plus keeping it running in another terminal. And that is harder because, for instance, like, one of the terminals resizes, then you need to also update the other one. Or you wanna have a scroll back that is longer than what you would normally show."
 
 **Terminal Emulation**
 - **XtermJS** - Full terminal emulation with ANSI support in the browser. It's the same library that powers VS Code's terminal, which gave us confidence it could handle real-world usage. The integration was surprisingly smooth once we understood its API. Pro tip: the documentation is extensive but the examples are gold.
@@ -124,6 +138,8 @@ Beyond fixing the current input quirks (which are "better now" but still occasio
 
 We're making it open source because we know others will help. The architecture is intentionally modular - swap out any component and the rest keeps working. Maybe someone will even port Ghosty's terminal emulator. "That'd be fun." Or integrate it with tmux for persistent sessions. Or add collaborative features where multiple people can share a terminal. The possibilities are endless when you have a solid foundation.
 
+And as Armin pointed out: "Someone has to port Claude to work on a Windows terminal, and then we have to port our stuff work with Windows terminal." Because right now, "VibeTunnel is Mac only, basically, for the most part."
+
 ## The Real MVP: Teamwork, Claude, and Caffeine
 
 This project happened because of a perfect storm of factors:
@@ -138,13 +154,21 @@ As Mario reflected: "The individual components aren't really complex. It's just 
 
 Mario summed up the project perfectly: "We can definitely say we wouldn't even have attempted this without Claude Code... That would be a multi week project probably. Maybe not a multi week project, but definitely a week project."
 
+When I asked Armin what cost him the most time, his answer was predictable but telling: "The most time? Xcode." But he elaborated on a broader issue: "Anything that's not where the attended loop doesn't work." He explained how agents get stuck when trying to read from blocking pipes: "It tried to read from a pipe and the pipe was blocking. And so then the agents just get stuck there because the agent is trying to read from the socket and nothing happens."
+
 The real lesson here is about momentum. Once we had that first character appear in the browser - just a simple 'h' from typing 'hello' - we were hooked. Each small victory fueled the next. Input working? Let's add colors. Colors working? How about cursor movement. Before we knew it, we had a full terminal emulator.
+
+As Armin reflected on our team dynamics: "I don't think we could have picked a better compartmentalization of, like, who did what. We didn't really jump on each other... There was a surprising amount of, like, not stepping on each other. Everybody had a specific skill set that was very useful."
 
 ## Conclusion: Shipping Beats Perfect
 
 VibeTunnel is what happens when developers scratch their own itch with modern tools. It's not perfect - Unicode rendering is janky, input occasionally drops characters, and we need multiplexing. But it works, and as we agreed at the end: "I think this was this is a really cool project and something that a lot of people will use."
 
 The imperfections are almost charming. They're a reminder that this was built by humans, in a marathon session, fueled by the joy of creation. Every quirk has a story. That Unicode rendering issue? That's from when we were too tired to read the font documentation properly. The six-terminal limit? We discovered that at the worst possible moment during a demo.
+
+As Armin noted about the quality: "I don't think that we wrote the most amazing code with Claude. There's definitely a lot of slop in there. But I think if if if one were to want to make this really, really nice, you could actually use Claude to fix a ton of this stuff." 
+
+He also marveled at the completeness: "It's not just the app that is there. Right? There's the logo. There's the website. There is the read me. There's the documentation. Like, all of it just came out of effectively an agent."
 
 As we wrapped up at stupid o'clock in the morning, Mario said: "I will probably use it quite a bit... then it means you'll be annoyed by bugs and fix them."
 
