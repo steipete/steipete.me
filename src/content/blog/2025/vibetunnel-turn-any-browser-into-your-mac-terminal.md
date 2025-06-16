@@ -164,6 +164,13 @@ As Armin noted about the quality:
 
 > I don't think that we wrote the most amazing code with Claude. There's definitely a lot of slop in there. But I think if one were to want to make this really, really nice, you could actually use Claude to fix a ton of this stuff. Plus - it's not just the app that is there. Right? There's the logo. There's the website. There is the readme. There's the documentation. All of it just came out of effectively an agent.
 
+The scale of what we built in one marathon session? Over 16,000 lines of code:
+- Swift: 7,666 lines (57%)
+- Rust: 3,001 lines (22%)
+- Shell Scripts: 2,331 lines (17%)
+- TypeScript: 2,756 lines
+- **Total Core Code: 16,283 lines**
+
 At the end of our marathon session, we all agreed:
 
 > This was a really fun project. And isn't that what hacking is all about?
