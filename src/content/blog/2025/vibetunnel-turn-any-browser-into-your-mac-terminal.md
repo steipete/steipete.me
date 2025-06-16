@@ -15,7 +15,7 @@ tags:
 
 **TL;DR**: We built a browser-based terminal controller in one day using Claude Code, named pipes, and Xterm.js. No SSH needed, just open your browser and start typing. Check and command your agents on the go!
 
-What happens when three developers lock themselves in a room from 11am to 2pm with [Claude Code](https://www.anthropic.com/claude-code) and too much caffeine? You get [VibeTunnel](https://vibetunnel.sh) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
+What happens when three developers lock themselves in a room from 11am to 2pm with [Claude Code](https://www.anthropic.com/claude-code) and too much caffeine? You get [VibeTunnel](https://vibetunnel.sh) - a browser-based terminal that actually works. Control & command your agents on the go.
 
 This is the story of how Mario, Armin, and I built VibeTunnel in one marathon session.
 
