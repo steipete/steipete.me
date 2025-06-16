@@ -41,7 +41,7 @@ Within hours, we had transformed it into a full bidirectional terminal emulator.
 
 ### From Asciinema to Xterm.js: The Midnight Pivot
 
-Our first major challenge came after midnight when we needed a proper [scrollback buffer](https://unix.stackexchange.com/questions/145050/what-exactly-is-scrollback-and-scrollback-buffer). The initial asciinema approach had a fatal flaw - no history. You couldn't scroll back to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
+Our first major challenge came after midnight when we needed a proper [scrollback buffer](https://unix.stackexchange.com/questions/145050/what-exactly-is-scrollback-and-scrollback-buffer). The initial asciinema approach had a fatal flaw - no history. You couldn't scrollback to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
 
 Mario spent two hours going down a rabbit hole, investigating whether to write his own ANSI sequence renderer. He got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
 
