@@ -13,7 +13,7 @@ tags:
 
 ![VibeTunnel: Browser-Based Terminal Access](/assets/img/2025/vibetunnel/hero.jpg)
 
-What happens when three developers lock themselves in a room from 11am to 2pm with [Claude Code](https://www.anthropic.com/claude-code) and too much caffeine? You get [VibeTunnel](https://github.com/steipete/vibetunnel) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
+What happens when three developers lock themselves in a room from 11am to 2pm with [Claude Code](https://www.anthropic.com/claude-code) and too much caffeine? You get [VibeTunnel](https://vibetunnel.sh) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
 
 This is the story of how Mario, Armin, and I built VibeTunnel in one marathon session.
 
@@ -103,7 +103,9 @@ This unplanned polyglot approach revealed interesting patterns. The Rust version
 
 ## The Technology Stack: A Beautiful Frankenstein
 
-The final stack that emerged from our coding marathon is a testament to pragmatic engineering - we used whatever worked best for each layer:
+The final stack that emerged from our coding marathon is a testament to pragmatic engineering - we used whatever worked best for each layer.
+
+The main component that we distribute is a fully native SwiftUI app (with some sprinkles of AppKit) built with Swift 6. It packages all the bells and whistles, uses [Sparkle](https://sparkle-project.org/) for automatic updates, and ships with all the other components needed to make VibeTunnel work seamlessly. This native app ensures a smooth macOS experience while bundling the entire technology stack:
 
 **Core Process Management**
 - **Rust Binary** - The heart of the system. Controls process spawning, named pipes, and I/O forwarding. Why Rust? Because when you're dealing with system-level process management, you want something that won't segfault at 2 AM. The binary is remarkably small - about 2MB compiled - and handles all the tricky bits of PTY allocation, signal forwarding, and process lifecycle management.
@@ -130,17 +132,17 @@ Beyond fixing the current input quirks (which are "better now" but still occasio
 
 **Proper Unicode rendering** - Those box-drawing characters deserve to be beautiful. The issue isn't with Xterm.js (it supports Unicode fine) but with our font stack and CSS. We need proper font fallbacks and maybe some custom glyph rendering for the fancier Unicode blocks. "Make those box-drawing characters beautiful" became our rallying cry around 2 AM.
 
-**Native apps** - "There's open space for a native iOS app," we noted. Imagine having your Mac's terminal on your iPad, with proper keyboard support and maybe even some gesture controls. The WebSocket API is already there; someone just needs to build the native UI. We're secretly hoping someone will take the SwiftTerm library and build something amazing.
+**Native apps** - "There's open space for a native iOS app," we noted. Imagine having your Mac's terminal on your iPad, with proper keyboard support and maybe even some gesture controls. The API is already there; someone just needs to build the native UI. We're secretly hoping someone will take the [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm) library (or [libghostty](https://github.com/ghostty-org/ghostty)) and build something amazing.
 
 **Better Xterm.js integration** - "I'm pretty sure Xterm could be controlled in a better way." We're using maybe 30% of Xterm.js's capabilities. There's support for custom renderers, GPU acceleration, link detection, and so much more. The terminal could be so much smarter about understanding what you're doing and providing contextual help.
 
-**Security and authentication** - Right now it's basic auth over HTTPS. We want proper OAuth, session tokens, and maybe even WebAuthn support. The idea of using your fingerprint to access your terminal from anywhere is too cool to pass up.
-
-We're making it open source because we know others will help. The architecture is intentionally modular - swap out any component and the rest keeps working. Maybe someone will even port Ghosty's terminal emulator. "That'd be fun." Or integrate it with tmux for persistent sessions. Or add collaborative features where multiple people can share a terminal. The possibilities are endless when you have a solid foundation.
+We're making it open source because we want to use this ourselves, there's nothing great out there and we're doing it for the fun of it. The architecture is intentionally modular - swap out any component and the rest keeps working. Maybe someone will even port Ghostty's terminal emulator. "That'd be fun." Or integrate it with [tmux](https://github.com/tmux/tmux/wiki) for persistent sessions. Or add collaborative features where multiple people can share a terminal. The possibilities are endless when you have a solid foundation.
 
 And as Armin pointed out: "Someone has to port Claude to work on a Windows terminal, and then we have to port our stuff work with Windows terminal." Because right now, "VibeTunnel is Mac only, basically, for the most part."
 
 ## The Real MVP: Teamwork, Claude, and Caffeine
+
+![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
 
 This project happened because of a perfect storm of factors:
 
@@ -148,23 +150,27 @@ This project happened because of a perfect storm of factors:
 
 **Mario's frontend adventures with Claude** - Mario rebuilt the UI layer three times. The first version was a jQuery mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was his constant companion, generating boilerplate, explaining APIs, and occasionally leading him astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
 
+**Peter's deep knowledge of macOS** - Peter has been in the iOS and macOS space for almost 20 years and really knows how to build great Mac apps. He could reuse a lot of his existing work to get us really far, especially with distribution, and the difficulties around notarization and updating. He also built the website, the social pages, did the design, and the overall branding to make this from a quick hack project into something that feels like an actual beautifully designed product.
+
+I had the most fun building the website with v0 from Vercel. I almost didn't believe that it would shoot out something that is as cool as this. The website took maybe 15 minutes, and then I spent like an hour trying to get the audio player to work. So you never know where the difficult problems are.
+
 **The power of a deadline** - We pushed through from 11am to 2pm (or "10:10 to 2" if you ask Mario - he may have started a bit early out of excitement). There's something magical about a time constraint. It forces pragmatic decisions. "Should we implement proper error handling?" becomes "Does it crash? No? Ship it!"
 
 As Mario reflected: "The individual components aren't really complex. It's just fitting them together and making them work together." This became our mantra. Named pipes? Simple. SSE? Straightforward. Terminal emulation? Solved problem. But making them dance together in harmony? That's where the magic (and the bugs) lived.
 
 Mario summed up the project perfectly: "We can definitely say we wouldn't even have attempted this without Claude Code... That would be a multi week project probably. Maybe not a multi week project, but definitely a week project."
 
-When I asked Armin what cost him the most time, his answer was predictable but telling: "The most time? Xcode." But he elaborated on a broader issue: "Anything that's not where the attended loop doesn't work." He explained how agents get stuck when trying to read from blocking pipes: "It tried to read from a pipe and the pipe was blocking. And so then the agents just get stuck there because the agent is trying to read from the socket and nothing happens."
+When I asked Armin what cost him the most time, his answer was predictable but telling: "The most time? Xcode." But he elaborated on a broader issue: "Anything where the agents cannot loop independently." He explained how agents get stuck when trying to read from blocking pipes: "It tried to read from a pipe and the pipe was blocking. And so then the agents just get stuck there because the agent is trying to read from the socket and nothing happens."
 
 The real lesson here is about momentum. Once we had that first character appear in the browser - just a simple 'h' from typing 'hello' - we were hooked. Each small victory fueled the next. Input working? Let's add colors. Colors working? How about cursor movement. Before we knew it, we had a full terminal emulator.
 
-As Armin reflected on our team dynamics: "I don't think we could have picked a better compartmentalization of who did what. We didn't really jump on each other... There was a surprising amount of not stepping on each other. Everybody had a specific skill set that was very useful."
+As I reflected on our team dynamics: "I don't think we could have picked a better compartmentalization of who did what. We didn't really jump on each other... There was a surprising amount of not stepping on each other. Everybody had a specific skill set that was very useful."
 
 ## Conclusion: Shipping Beats Perfect
 
 VibeTunnel is what happens when developers scratch their own itch with modern tools. It's not perfect - Unicode rendering is janky, input occasionally drops characters, and we need multiplexing. But it works, and as we agreed at the end: "I think this was this is a really cool project and something that a lot of people will use."
 
-The imperfections are almost charming. They're a reminder that this was built by humans, in a marathon session, fueled by the joy of creation. Every quirk has a story. That Unicode rendering issue? That's from when we were too tired to read the font documentation properly. The six-terminal limit? We discovered that at the worst possible moment during a demo.
+The imperfections are almost charming. They're a reminder that this was built by humans, in a marathon session, fueled by the joy of creation. Every quirk has a story. That Unicode rendering issue? That's from when we were too tired to read the font documentation properly. The six-terminal limit? An acceptable trade-off that still makes the first version amazing and fun to use.
 
 As Armin noted about the quality: "I don't think that we wrote the most amazing code with Claude. There's definitely a lot of slop in there. But I think if one were to want to make this really, really nice, you could actually use Claude to fix a ton of this stuff." 
 
@@ -174,8 +180,8 @@ As we wrapped up at stupid o'clock in the morning, Mario said: "I will probably 
 
 "Don't count on it. Well, you just have to tell Claude to fix it."
 
-And that's the beauty of open source. We built the foundation, quirks and all. Now it's the community's turn to polish it into something amazing. Someone will fix the Unicode rendering. Another person will implement multiplexing. Maybe you'll be the one to build that iOS app. As Mario noted about the possibilities: "There's the open space for native iOS app... maybe at some point Android people will also pick it up."
+And that's the beauty of [open source](https://github.com/amantus-ai/vibetunnel). We built the foundation, quirks and all. Now it's the community's turn to polish it into something amazing. Someone will fix the Unicode rendering. Another person will implement multiplexing. Maybe you'll be the one to build that iOS app. As Mario noted about the possibilities: "There's the open space for native iOS app... maybe at some point Android people will also pick it up."
 
 At the end of our marathon session, we all agreed: "This was a really fun project." And isn't that what hacking is all about?
 
-Try VibeTunnel today. Your terminal is waiting in your browser. And remember - it was built in a day by three developers having fun, but it'll be improved forever by a community that shares our passion.
+Try [VibeTunnel](https://vibetunnel.sh) today. Your terminal is waiting in your browser. And remember - it was built in a day by three developers having fun, but it'll be improved forever by a community that shares our passion.
