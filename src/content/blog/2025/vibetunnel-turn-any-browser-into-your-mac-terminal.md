@@ -21,7 +21,7 @@ The idea sparked from a simple frustration: accessing your development machine's
 
 ## The Birth of VibeTunnel
 
-It started with Armin's prototype that piped stdin/stdout to files and used asciinema for playback. His initial approach was clever - capture terminal output to a JSONL file that described terminal dimensions and character events, then replay it using asciinema's player. But it was one-way communication only - no input, no interactivity, just a recording.
+It started with Armin's prototype that piped stdin/stdout to files and used [asciinema](https://asciinema.org/) for playback. His initial approach was clever - capture terminal output to a JSONL file that described terminal dimensions and character events, then replay it using asciinema's player. But it was one-way communication only - no input, no interactivity, just a recording.
 
 Armin had actually built a similar library two years ago: "I used a library that I wrote, I think, two years ago... that library probably took me, like, three or four days because I had to really figure out how, like, pseudo terminals work." But this time was different: "I'm pretty sure you could write this whole thing up in probably, like, under an hour at this point. And I didn't even bother using my library again... I just copy pasted the whole library in and had Claude do the modifications to it."
 
