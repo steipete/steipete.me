@@ -59,7 +59,7 @@ Mario exclaimed when we finally integrated Xterm.js:
 
 The only issue? Unicode rendering for things like box-drawing characters. When you start Claude Code, you get that nice orange border made of Unicode box-drawing characters - it currently falls back to ASCII replacements like '+' and '-' instead of smooth lines.
 
-> It just looks a little janky, but it's readable. This is a [known Xterm.js issue](https://github.com/xtermjs/xterm.js/issues/3731) with certain font configurations. After fighting with terminal emulation for hours, seeing anything render correctly felt like a victory.
+> It just looks a little janky, but it's readable. After fighting with terminal emulation for hours, seeing anything render correctly felt like a victory.
 
 ### The Streaming Challenge: Six Terminals and You're Out
 
