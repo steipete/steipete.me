@@ -15,109 +15,133 @@ tags:
 
 What happens when three developers lock themselves in a room from 11am to 2pm with Claude Code and too much caffeine? You get [VibeTunnel](https://github.com/steipete/vibetunnel) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
 
+The idea sparked from a simple frustration: accessing your development machine's terminal from anywhere shouldn't require complex SSH setups, port forwarding gymnastics, or fighting with corporate firewalls. We wanted something that just works - if you can browse the web, you should be able to access your terminal.
+
 ## The Birth of VibeTunnel
 
-It started with Armin's prototype that piped stdin/stdout to files and used asciinema for playback. Within hours, we had transformed it into a full bidirectional terminal emulator. Here's how we built it in one intense session.
+It started with Armin's prototype that piped stdin/stdout to files and used asciinema for playback. His initial approach was clever - capture terminal output to a JSONL file that described terminal dimensions and character events, then replay it using asciinema's player. But it was one-way communication only - no input, no interactivity, just a recording.
+
+Within hours, we had transformed it into a full bidirectional terminal emulator. The journey from "wouldn't it be cool if..." to a working prototype showcases what's possible when you combine the right tools, the right team, and a healthy dose of determination. Here's how we built it in one intense session that stretched from morning coffee to well past midnight.
 
 ## The Architecture That Emerged
 
-The whole system is beautifully simple:
+The whole system is beautifully simple, yet each component plays a crucial role in making browser-based terminal access feel native:
 
-**The Rust Core**: Armin built a binary that spawns and controls processes on the system. It uses named pipes for stdin and regular files for stdout, observing outputs and feeding inputs back to the process.
+**The Rust Core**: Armin built a binary that spawns and controls processes on the system. The magic happens through Unix named pipes - we use a regular file for stdout (so we can tail and observe it) and a named pipe for stdin (allowing real-time input injection). His Rust binary watches the stdout file for changes and writes incoming keystrokes to the stdin pipe. It's the bridge between the web world and your actual shell processes.
 
-**The Node.js Bridge**: I wrote a server at 11:11am (yes, we noted the time) that provides a simple API. When the frontend calls an endpoint, it executes Armin's binary with the session ID and forwards the commands.
+**The Node.js Bridge**: I wrote a server at 11:11am (yes, we noted the time - something about that symmetry felt auspicious) that provides a simple REST API. When the frontend calls an endpoint, it executes Armin's binary with the session ID and forwards the commands. Each API call is essentially: "Hey Rust binary, here's session 123, please write 'ls -la' to its stdin pipe." The Node server also handles session management, authentication, and serves the static frontend files.
 
-**The Frontend**: Using Google's Lit framework (a thin wrapper around web components), we built a UI that streams output events via Server-Sent Events (SSE) and sends keystrokes back through the API.
+**The Frontend**: Using Google's Lit framework (a thin wrapper around web components with no build step required!), we built a UI that streams output events via Server-Sent Events (SSE) and sends keystrokes back through the API. Lit's reactive properties and lightweight nature made it perfect for our rapid prototyping needs. Every keystroke triggers an API call, every terminal output update streams through SSE - it's surprisingly responsive for such a simple architecture.
 
 ## The Technical Journey
 
-### From Asciinema to XtermJS
+### From Asciinema to XtermJS: The Midnight Pivot
 
-Our first challenge came after midnight when we needed a proper scrollback buffer. The initial asciinema approach had no history - you couldn't scroll back to see previous output. I spent two hours investigating whether to write my own ANSI sequence renderer (spoiler: bad idea) before Armin suggested XtermJS.
+Our first major challenge came after midnight when we needed a proper scrollback buffer. The initial asciinema approach had a fatal flaw - no history. You couldn't scroll back to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
 
-"That was pretty fucking complete," as we noted. XtermJS handles all the ANSI escape sequences, cursor positioning, screen clearing - everything a real terminal needs. It outputs a buffer with characters, foreground colors, and background colors that renders directly to the DOM.
+I spent two hours going down a rabbit hole, investigating whether to write my own ANSI sequence renderer. I got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
 
-The only issue? Unicode rendering for things like box-drawing characters. When you start Claude Code, you get that nice orange border - it currently falls back to ASCII replacements. "It just looks a little janky, but it's readable."
+"That was pretty fucking complete," as we noted when we finally integrated XtermJS. It's a full terminal emulator that runs in the browser, handling all the ANSI escape sequences, cursor positioning, screen clearing - everything a real terminal needs. The magic is in how it works: feed it the raw output from your shell (including all those escape sequences), and it maintains an internal buffer representing exactly what should be displayed. It outputs this buffer with characters, foreground colors, and background colors that renders directly to the DOM. No canvas needed, just divs and spans with the right styling.
 
-### The Streaming Challenge
+The only issue? Unicode rendering for things like box-drawing characters. When you start Claude Code, you get that nice orange border made of Unicode box-drawing characters - it currently falls back to ASCII replacements like '+' and '-' instead of smooth lines. "It just looks a little janky, but it's readable." It's on the list of things to fix, but honestly, after fighting with terminal emulation for hours, seeing anything render correctly felt like a victory.
 
-We use Server-Sent Events (SSE) for streaming terminal output, but hit the browser's limit of six concurrent connections. Each terminal session needs its own stream, which means you can only have six terminals open at once.
+### The Streaming Challenge: Six Terminals and You're Out
 
-The solution? Multiplexing. Instead of one connection per terminal, we need a single stream that carries data for all terminals. It's on the roadmap.
+We chose Server-Sent Events (SSE) for streaming terminal output because it's simple, well-supported, and doesn't require WebSocket complexity. Each terminal connects to an endpoint like `/api/stream/session-123` and receives a continuous stream of output events. It worked beautifully... until we tried to open a seventh terminal.
 
-### Claude Code: The Secret Weapon
+Turns out browsers have a hard limit of six concurrent connections to the same domain. It's an HTTP/1.1 limitation that exists to prevent connection flooding. Each terminal session needs its own stream, which means you can only have six terminals open at once. We discovered this the hard way when terminal number seven just... didn't work. No errors, no warnings, just a blank screen waiting for a connection that would never come.
 
-"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. But Claude has its quirks:
+The solution? Multiplexing. Instead of one connection per terminal, we need a single SSE stream that carries data for all terminals. Each message would be tagged with a session ID, and the frontend would route it to the correct terminal display. It's more complex but would remove the six-terminal limitation entirely. The architecture is already sketched out: a single `/api/stream/all` endpoint that broadcasts all terminal updates, with the frontend filtering based on which terminals are actually visible. It's on the roadmap, right after we fix the input handling quirks.
 
-- It struggles with asynchronous flows
-- The initial async code was "the worst code you could write"
-- Required significant manual rewriting and simplification
+### Claude Code: The Secret Weapon (With Battle Scars)
 
-But for bootstrapping and integrating unknown technologies? Unbeatable. "You just say, hey, what's different in the Node reference implementation? Fix it. Make it like this."
+"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. The ability to say "integrate XtermJS for terminal emulation" and get working code in minutes is game-changing. But our experience revealed both the power and limitations of AI-assisted development.
 
-## Three Servers, One Purpose
+Claude excels at bootstrapping. Need to integrate a library you've never used? Claude will get you 80% there in minutes. Want to understand how Server-Sent Events work? Claude generates a working example faster than you can read the MDN docs. But Claude has its quirks, and we hit every single one:
 
-In true hackathon fashion, we ended up with three server implementations:
+- **Asynchronous flow blindness**: Claude struggles with complex async patterns. The initial code for handling concurrent terminal sessions was, to quote directly, "the worst code you could write." Race conditions everywhere, promises that never resolved, event handlers that fired multiple times. It technically worked... until it didn't.
 
-1. **Node.js** - The reference implementation
-2. **Rust** - For those who want performance
-3. **Hummingbird (Swift)** - Because Armin spent most of his time "cursing out Xcode"
+- **Over-engineering simple things**: Ask Claude to read a file and stream its contents? You'll get a beautiful abstraction with generators, streams, and transforms. Sometimes you just need `fs.readFileSync()`.
 
-We're keeping all three for educational purposes. It's the same backend API implemented in three different environments - perfect for learning.
+- **Context window amnesia**: As the codebase grew, Claude would forget earlier architectural decisions. "Wait, why are we using named pipes again?" It required constant reminders and context refreshing.
 
-## The Technology Stack
+The workflow that emerged was fascinating: Claude would generate the initial implementation, I'd test it, discover the edge cases, then spend significant time refactoring. But here's the key insight - even with all the fixes needed, we were still moving 5x faster than coding from scratch. It's not about getting perfect code; it's about getting *something* that works, then iterating rapidly.
 
-The final stack that emerged from our coding marathon:
+"You just say, hey, what's different in the Node reference implementation? Fix it. Make it like this." And Claude would dutifully port features between our three server implementations, maintaining API compatibility while adapting to each language's idioms.
 
-- **Rust Binary** - Controls process spawning, named pipes, and I/O forwarding
-- **XtermJS** - Full terminal emulation with ANSI support in the browser
-- **Lit Framework** - Google's lightweight web components (no build step!)
-- **Server-Sent Events** - For streaming terminal output
-- **Node.js/Rust/Swift** - Pick your server flavor
+## Three Servers, One Purpose: The Polyglot Experiment
 
-## Getting Started
+In true hackathon fashion, we ended up with three server implementations. What started as "let's just build it in Node" evolved into a fascinating polyglot experiment:
 
-Once we clean up the input handling (it's "better now" but not perfect), installation will be:
+1. **Node.js** - The reference implementation that I built first. It's the most complete, with all the session management, authentication hooks, and error handling. About 400 lines of Express.js that just works. Perfect for developers who want to hack on it immediately - everyone knows Node.
 
-```bash
-# Clone and run
-git clone https://github.com/steipete/vibetunnel
-cd vibetunnel
-npm install
-npm start
-```
+2. **Rust** - Armin's performance-focused version using Actix Web. Built partially out of spite ("JavaScript is slow!") and partially because we wanted to see the performance difference. Spoiler: for our use case, the bottleneck is terminal I/O, not the web server. But the Rust version does use about 10x less memory.
 
-Choose your backend:
-- `--server=node` for the reference implementation
-- `--server=rust` for performance
-- `--server=swift` for the Hummingbird version
+3. **Hummingbird (Swift)** - This one has the best backstory. Armin spent most of his time "cursing out Xcode" while trying to help with the Swift ecosystem integration. Fed up, he said "Fine, I'll write a server in Swift to prove it's painful." Three hours and many profanities later, we had a working Hummingbird server. It's actually quite elegant - Swift's async/await makes the code surprisingly readable.
 
-## What's Next
+We're keeping all three for educational purposes. It's the same REST API implemented in three different environments - perfect for learning how different ecosystems handle HTTP, async I/O, and process management. The best part? You can switch between them with a simple flag. Having trouble with Node? Try Rust. Want to contribute but only know Swift? We've got you covered.
 
-Beyond fixing the current input quirks:
+This polyglot approach also revealed interesting patterns. The Rust version forced us to think carefully about lifetimes and session cleanup. The Swift version's strong typing caught several API inconsistencies. The Node version's ecosystem made adding features trivial. Each implementation taught us something that improved the others.
 
-- **Multiplexed connections** - Break the 6-terminal limit
-- **Proper Unicode rendering** - Make those box-drawing characters beautiful
-- **Native apps** - "There's open space for a native iOS app"
-- **Better XtermJS integration** - "I'm pretty sure Xterm could be controlled in a better way"
+## The Technology Stack: A Beautiful Frankenstein
 
-We're making it open source because we know others will help. Maybe someone will even port Ghosty's terminal emulator. "That'd be fun."
+The final stack that emerged from our coding marathon is a testament to pragmatic engineering - we used whatever worked best for each layer:
 
-## The Real MVP: Teamwork and Claude
+**Core Process Management**
+- **Rust Binary** - The heart of the system. Controls process spawning, named pipes, and I/O forwarding. Why Rust? Because when you're dealing with system-level process management, you want something that won't segfault at 2 AM. The binary is remarkably small - about 2MB compiled - and handles all the tricky bits of PTY allocation, signal forwarding, and process lifecycle management.
 
-This project happened because:
-- Armin cranked out the Rust binary in 2-3 hours (while cursing Swift)
-- I rebuilt everything multiple times with Claude's help
-- We all pushed through from 11am to 2pm (or "10:10 to 2" if you ask me)
+**Terminal Emulation**
+- **XtermJS** - Full terminal emulation with ANSI support in the browser. It's the same library that powers VS Code's terminal, which gave us confidence it could handle real-world usage. The integration was surprisingly smooth once we understood its API. Pro tip: the documentation is extensive but the examples are gold.
 
-"The individual components aren't really complex. It's just fitting them together and making them work together."
+**Frontend Framework**
+- **Lit Framework** - Google's lightweight web components library. No build step required! This was crucial for our rapid iteration. Just save the file and reload. Lit's reactive properties made state management trivial, and web components meant our terminal widget was completely self-contained. You could drop it into any webpage and it would just work.
 
-## Conclusion
+**Communication Layer**
+- **Server-Sent Events** - For streaming terminal output. We chose SSE over WebSockets because it's simpler, works through proxies better, and automatic reconnection is built-in. The unidirectional nature (server to client only) perfectly matched our needs for output streaming.
 
-VibeTunnel is what happens when developers scratch their own itch with modern tools. It's not perfect - Unicode rendering is janky, input has quirks, and we need multiplexing. But it works, and it's something "a lot of people will use."
+**Backend Options**
+- **Node.js/Rust/Swift** - Pick your flavor based on your team's expertise or deployment constraints. They all expose the same REST API, so switching between them is literally just changing a command-line flag.
 
-As we wrapped up: "I will probably use it quite a bit... then it means you'll be annoyed by bugs and fix them."
+## What's Next: The Roadmap We Sketched at 3 AM
+
+Beyond fixing the current input quirks (which are "better now" but still occasionally eat a character or two), we have an ambitious roadmap:
+
+**Multiplexed connections** - Breaking the 6-terminal limit is priority one. The plan is to implement a single SSE connection that streams all terminal sessions, with client-side routing based on session IDs. This would also enable some cool features like terminal broadcasting - imagine typing in one terminal and having it appear in multiple sessions simultaneously.
+
+**Proper Unicode rendering** - Those box-drawing characters deserve to be beautiful. The issue isn't with XtermJS (it supports Unicode fine) but with our font stack and CSS. We need proper font fallbacks and maybe some custom glyph rendering for the fancier Unicode blocks. "Make those box-drawing characters beautiful" became our rallying cry around 2 AM.
+
+**Native apps** - "There's open space for a native iOS app," we noted. Imagine having your Mac's terminal on your iPad, with proper keyboard support and maybe even some gesture controls. The WebSocket API is already there; someone just needs to build the native UI. We're secretly hoping someone will take the SwiftTerm library and build something amazing.
+
+**Better XtermJS integration** - "I'm pretty sure Xterm could be controlled in a better way." We're using maybe 30% of XtermJS's capabilities. There's support for custom renderers, GPU acceleration, link detection, and so much more. The terminal could be so much smarter about understanding what you're doing and providing contextual help.
+
+**Security and authentication** - Right now it's basic auth over HTTPS. We want proper OAuth, session tokens, and maybe even WebAuthn support. The idea of using your fingerprint to access your terminal from anywhere is too cool to pass up.
+
+We're making it open source because we know others will help. The architecture is intentionally modular - swap out any component and the rest keeps working. Maybe someone will even port Ghosty's terminal emulator. "That'd be fun." Or integrate it with tmux for persistent sessions. Or add collaborative features where multiple people can share a terminal. The possibilities are endless when you have a solid foundation.
+
+## The Real MVP: Teamwork, Claude, and Caffeine
+
+This project happened because of a perfect storm of factors:
+
+**Armin's systems wizardry** - He cranked out the Rust binary in 2-3 hours, building the critical process management layer that makes everything possible. But the best part was his running commentary. While implementing PTY allocation and signal handling - notoriously tricky systems programming - he was simultaneously "cursing out Xcode" as he tried to help with Swift integration. The frustration was so intense that he rage-coded an entire Swift server just to prove a point. It ended up being one of our cleanest implementations.
+
+**My frontend adventures with Claude** - I rebuilt the UI layer three times. The first version was a jQuery mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was my constant companion, generating boilerplate, explaining APIs, and occasionally leading me astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
+
+**The power of a deadline** - We pushed through from 11am to 2pm (or "10:10 to 2" if you ask me - I may have started a bit early out of excitement). There's something magical about a time constraint. It forces pragmatic decisions. "Should we implement proper error handling?" becomes "Does it crash? No? Ship it!"
+
+"The individual components aren't really complex. It's just fitting them together and making them work together." This became our mantra. Named pipes? Simple. SSE? Straightforward. Terminal emulation? Solved problem. But making them dance together in harmony? That's where the magic (and the bugs) lived.
+
+The real lesson here is about momentum. Once we had that first character appear in the browser - just a simple 'h' from typing 'hello' - we were hooked. Each small victory fueled the next. Input working? Let's add colors. Colors working? How about cursor movement. Before we knew it, we had a full terminal emulator.
+
+## Conclusion: Shipping Beats Perfect
+
+VibeTunnel is what happens when developers scratch their own itch with modern tools. It's not perfect - Unicode rendering is janky, input occasionally drops characters, and we need multiplexing. But it works, and it's something "a lot of people will use."
+
+The imperfections are almost charming. They're a reminder that this was built by humans, in a marathon session, fueled by the joy of creation. Every quirk has a story. That Unicode rendering issue? That's from when we were too tired to read the font documentation properly. The six-terminal limit? We discovered that at the worst possible moment during a demo.
+
+As we wrapped up at stupid o'clock in the morning: "I will probably use it quite a bit... then it means you'll be annoyed by bugs and fix them."
 
 "Don't count on it. Well, you just have to tell Claude to fix it."
 
-Try VibeTunnel today. Your terminal is waiting in your browser.
+And that's the beauty of open source. We built the foundation, quirks and all. Now it's the community's turn to polish it into something amazing. Someone will fix the Unicode rendering. Another person will implement multiplexing. Maybe you'll be the one to build that iOS app.
+
+Try VibeTunnel today. Your terminal is waiting in your browser. And remember - it was built in a day, but it'll be improved forever.
