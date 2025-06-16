@@ -25,7 +25,7 @@ We met up for a hackathon without knowing exactly what we wanted to build, but w
 
 This first version lets you control Claude Code remotely - imagine being at lunch and checking if your agent finished that refactoring task, then immediately giving it the next assignment.
 
-But here's the thing - we didn't want to constrain VibeTunnel to just Claude Code. It can control anything in your terminal. The broader frustration remains: accessing your development machine's terminal from anywhere shouldn't require complex SSH setups, port forwarding gymnastics, or fighting with corporate firewalls. We wanted something that just works. And we're making it [open source](https://github.com/amantus-ai/vibetunnel) so everyone can benefit.
+But here's the thing - we didn't want to constrain VibeTunnel to just Claude Code. It can control anything in your terminal. Accessing your development machine's terminal from anywhere shouldn't require complex SSH setups. We wanted something that just works. And we're making it [open source](https://github.com/amantus-ai/vibetunnel) so everyone can benefit.
 
 ![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
 
