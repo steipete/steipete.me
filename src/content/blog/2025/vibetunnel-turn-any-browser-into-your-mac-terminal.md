@@ -19,8 +19,6 @@ What happens when three developers lock themselves in a room from 11am to 2pm wi
 
 This is the story of how Mario, Armin, and I built VibeTunnel in one marathon session.
 
-![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
-
 We met up for a hackathon without knowing exactly what we wanted to build, but we knew one thing: we were all completely in love with building stuff with AI. As we talked, we realized we shared the same frustration - we all wanted to check on our AI agents and see how far they'd gotten with their tasks.
 
 ## Motivation
@@ -28,6 +26,8 @@ We met up for a hackathon without knowing exactly what we wanted to build, but w
 The actual use case that drove us? Being able to check on Claude Code from anywhere, get push notifications, and give it new commands when it's done. This first version lets us control Claude Code remotely - imagine being at lunch and checking if your agent finished that refactoring task, then immediately giving it the next assignment.
 
 But here's the thing - we didn't want to constrain VibeTunnel to just Claude Code. It can control anything in your terminal. The broader frustration remains: accessing your development machine's terminal from anywhere shouldn't require complex SSH setups, port forwarding gymnastics, or fighting with corporate firewalls. We wanted something that just works. And we're making it [open source](https://github.com/amantus-ai/vibetunnel) so everyone can benefit.
+
+![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
 
 ## The Birth of VibeTunnel
 
