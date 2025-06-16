@@ -13,7 +13,7 @@ tags:
 
 ![VibeTunnel: Browser-Based Terminal Access](/assets/img/2025/vibetunnel/hero.jpg)
 
-What happens when three developers lock themselves in a room from 11am to 2pm with Claude Code and too much caffeine? You get [VibeTunnel](https://github.com/steipete/vibetunnel) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
+What happens when three developers lock themselves in a room from 11am to 2pm with [Claude Code](https://www.anthropic.com/claude-code) and too much caffeine? You get [VibeTunnel](https://github.com/steipete/vibetunnel) - a browser-based terminal that actually works. No SSH client needed, no port forwarding, just pure terminal access through your browser.
 
 This is the story of how Mario, Armin, and I built VibeTunnel in one marathon session.
 
@@ -39,13 +39,13 @@ The whole system is beautifully simple, yet each component plays a crucial role 
 
 ## The Technical Journey
 
-### From Asciinema to XtermJS: The Midnight Pivot
+### From Asciinema to Xterm.js: The Midnight Pivot
 
 Our first major challenge came after midnight when we needed a proper [scrollback buffer](https://unix.stackexchange.com/questions/145050/what-exactly-is-scrollback-and-scrollback-buffer). The initial asciinema approach had a fatal flaw - no history. You couldn't scroll back to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
 
 Mario spent two hours going down a rabbit hole, investigating whether to write his own ANSI sequence renderer. He got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
 
-"I first investigated whether I can write my own ANSI sequence renderer. That kinda worked. But there were so many edge cases that I eventually searched for something else," Mario explained. Armin had been recommending [Xterm.js](https://xtermjs.org) all along: "Armin recommended XtermJS." But Mario initially resisted, finding an issue on GitHub suggesting asciinema now supported scrollback buffering. "I went through that a bit and thought maybe I can figure that out, but there was no way to get that working. So I went back to Xterm and spent about two hours figuring out how it works and how to massage it so it works in our context as well."
+"I first investigated whether I can write my own ANSI sequence renderer. That kinda worked. But there were so many edge cases that I eventually searched for something else," Mario explained. Armin had been recommending [Xterm.js](https://xtermjs.org) all along: "Armin recommended Xterm.js." But Mario initially resisted, finding an issue on GitHub suggesting asciinema now supported scrollback buffering. "I went through that a bit and thought maybe I can figure that out, but there was no way to get that working. So I went back to Xterm and spent about two hours figuring out how it works and how to massage it so it works in our context as well."
 
 "That was pretty fucking complete," Mario exclaimed when we finally integrated Xterm.js. It's a full terminal emulator that runs in the browser, handling all the ANSI escape sequences, cursor positioning, screen clearing - everything a real terminal needs. The magic is in how it works: feed it the raw output from your shell (including all those escape sequences), and it maintains an internal buffer representing exactly what should be displayed. It outputs this buffer with characters, foreground colors, and background colors that renders directly to the DOM. No canvas needed, just divs and spans with the right styling.
 
@@ -57,17 +57,17 @@ The only issue? Unicode rendering for things like box-drawing characters. When y
 
 We chose Server-Sent Events (SSE) for streaming terminal output because it's simple, well-supported, and doesn't require WebSocket complexity. Each terminal connects to an endpoint like `/api/stream/session-123` and receives a continuous stream of output events. It worked beautifully... until we tried to open a seventh terminal.
 
-Turns out browsers have a hard limit of six concurrent connections to the same domain. It's an HTTP/1.1 limitation that exists to prevent connection flooding. Each terminal session needs its own stream, which means you can only have six terminals open at once. We discovered this the hard way when terminal number seven just... didn't work. No errors, no warnings, just a blank screen waiting for a connection that would never come.
+Turns out browsers have a [hard limit of six concurrent connections](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to the same domain. It's an HTTP/1.1 limitation that exists to prevent connection flooding. Each terminal session needs its own stream, which means you can only have six terminals open at once. We discovered this the hard way when terminal number seven just... didn't work. No errors, no warnings, just a blank screen waiting for a connection that would never come.
 
 The solution? Multiplexing. Instead of one connection per terminal, we need a single SSE stream that carries data for all terminals. Each message would be tagged with a session ID, and the frontend would route it to the correct terminal display. It's more complex but would remove the six-terminal limitation entirely. The architecture is already sketched out: a single `/api/stream/all` endpoint that broadcasts all terminal updates, with the frontend filtering based on which terminals are actually visible. It's on the roadmap, right after we fix the input handling quirks.
 
 ### Claude Code: The Secret Weapon (With Battle Scars)
 
-"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. The ability to say "integrate XtermJS for terminal emulation" and get working code in minutes is game-changing. 
+"We wouldn't even have attempted this without Claude Code," we agreed. What would have been a week-long project compressed into hours. The ability to say "integrate Xterm.js for terminal emulation" and get working code in minutes is game-changing. 
 
 Armin put it in perspective: "20x is not an understatement in terms of how much faster we are with agents." He gave a concrete example: "This button that I added to the UI, which is install the shell command and sudo the user. It wrote shell script. It wrote an Apple script. And then it wrote another thing around it, and it took it two and a half minutes. And for me to figure out how to bring up the right sudo dialogue, which kind of workaround to use to bring this thing in would have been two hours, three hours."
 
-He compared it to his experience at Sentry: "We every year, we had a hack week culture. So every year, we took four days to five days of three to four people working on one project. And, honestly, three, four people working for five days not nearly as impressive in terms of how much stuff you can produce than I think even within twelve hours."
+He compared it to his experience at [Sentry](https://sentry.io): "We every year, we had a hack week culture. So every year, we took four days to five days of three to four people working on one project. And, honestly, three, four people working for five days not nearly as impressive in terms of how much stuff you can produce than I think even within twelve hours."
 
 Claude excels at bootstrapping. Need to integrate a library you've never used? Claude will get you 80% there in minutes. Want to understand how Server-Sent Events work? Claude generates a working example faster than you can read the MDN docs. But Claude has its quirks, and we hit every single one:
 
@@ -83,7 +83,7 @@ The workflow that emerged was fascinating: Claude would generate the initial imp
 
 But as Armin warned: "You need to understand what you're doing still because otherwise it just goes down a path that just doesn't actually end up what it needs to be." He shared an example: "I sent it one of the early implementations of the whole thing. Said step by step, please port this thing over. And the initial thing that it did was obviously very wrong. But it would have worked, but it wouldn't have gotten us to the end result that we needed because we need to stream some stuff up."
 
-The lesson? As Armin put it: "I think that this is what people often don't really get. It's not like you do one prompt and this comes out. You work with it. It is a tool. And if you are a really good engineer, it's rocket fuel for you. But if you don't know what you're doing, you still cannot build this."
+The lesson? This is what people often don't really get. It's not like you do one prompt and this comes out. You work with it. It is a tool. And if you are a really good engineer, it's rocket fuel for you. But if you don't know what you're doing, you still cannot build this.
 
 ## Three Servers, One Purpose: The Polyglot Experiment
 
