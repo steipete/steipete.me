@@ -47,7 +47,7 @@ Mario spent two hours going down a rabbit hole, investigating whether to write h
 
 Mario explained:
 
-> I first investigated whether I can write my own ANSI sequence renderer. That kinda worked. But there were so many edge cases that I eventually searched for something else. Armin had been recommending [Xterm.js](https://xtermjs.org) all along.
+> I first investigated whether I could write my own ANSI sequence renderer. That kinda worked. But there were so many edge cases that I eventually searched for something else. Armin had been recommending [Xterm.js](https://xtermjs.org) all along.
 
 > I went through that a bit and thought maybe I can figure that out, but there was no way to get that working. So I went back to Xterm and spent about two hours figuring out how it works and how to massage it so it works in our context as well.
 
@@ -73,11 +73,11 @@ The solution? Multiplexing. Instead of one connection per terminal, we need a si
 
 Armin put it in perspective:
 
-> 20x is not an understatement in terms of how much faster we are with agents. As an Example: This button that I added to the UI, which is install the shell command and sudo the user. It wrote shell script. It wrote an Apple script. And then it wrote another thing around it, and it took it two and a half minutes. And for me to figure out how to bring up the right sudo dialogue, which kind of workaround to use to bring this thing in would have been two hours, three hours.
+> 20x is not an understatement in terms of how much faster we are with agents. As an example: This button that I added to the UI, which is install the shell command and sudo the user. It wrote shell script. It wrote an Apple script. And then it wrote another thing around it, and it took it two and a half minutes. And for me to figure out how to bring up the right sudo dialogue, which kind of workaround to use to bring this thing in would have been two hours, three hours.
 
 He compared it to his experience at [Sentry](https://sentry.io):
 
-> We every year, we had a hack week culture. So every year, we took four days to five days of three to four people working on one project. And, honestly, three, four people working for five days not nearly as impressive in terms of how much stuff you can produce than I think even within twelve hours.
+> Every year, we had a hack week culture. So every year, we took four days to five days of three to four people working on one project. And, honestly, three, four people working for five days not nearly as impressive in terms of how much stuff you can produce than I think even within twelve hours.
 
 Claude excels at bootstrapping. Need to integrate a library you've never used? Claude will get you 80% there in minutes. Want to understand how Server-Sent Events work? Claude generates a working example faster than you can read the MDN docs. 
 
