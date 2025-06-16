@@ -35,7 +35,7 @@ The whole system is beautifully simple, yet each component plays a crucial role 
 
 **The Node.js Bridge**: Mario wrote a server at 11:11am (yes, he noted the time - something about that symmetry felt auspicious) that provides a simple REST API. When the frontend calls an endpoint, it executes Armin's binary with the session ID and forwards the commands. Each API call is essentially: "Hey Rust binary, here's session 123, please write 'ls -la' to its stdin pipe." The Node server also handles session management, authentication, and serves the static frontend files.
 
-**The Frontend**: Using Google's [Lit framework](https://lit.dev) (a thin wrapper around web components with no build step required!), we built a UI that streams output events via Server-Sent Events (SSE) and sends keystrokes back through the API. Lit's reactive properties and lightweight nature made it perfect for our rapid prototyping needs. Every keystroke triggers an API call, every terminal output update streams through SSE - it's surprisingly responsive for such a simple architecture.
+**The Frontend**: Using Google's [Lit framework](https://lit.dev) (a thin wrapper around web components with no build step required!), we built a UI that streams output events via [Server-Sent Events (SSE)](https://en.wikipedia.org/wiki/Server-sent_events) and sends keystrokes back through the API. Lit's reactive properties and lightweight nature made it perfect for our rapid prototyping needs. Every keystroke triggers an API call, every terminal output update streams through SSE - it's surprisingly responsive for such a simple architecture.
 
 ## The Technical Journey
 
