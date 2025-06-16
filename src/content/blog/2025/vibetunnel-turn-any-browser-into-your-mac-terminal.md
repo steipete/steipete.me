@@ -19,6 +19,8 @@ What happens when three developers lock themselves in a room from 11am to 2pm wi
 
 This is the story of how Mario, Armin, and I built VibeTunnel in one marathon session.
 
+![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
+
 We met up for a hackathon without knowing exactly what we wanted to build, but we knew one thing: we were all completely in love with building stuff with AI. As we talked, we realized we shared the same frustration - we all wanted to check on our AI agents and see how far they'd gotten with their tasks.
 
 ## Motivation
@@ -131,8 +133,6 @@ Armin explained why this is actually harder than SSH:
 - **Node.js/Rust/Swift** - Pick your flavor based on your team's expertise or deployment constraints. They all expose the same REST API, so switching between them is literally just changing a command-line flag.
 
 ## The Real MVP: Teamwork, Claude, and Caffeine
-
-![The VibeTunnel team: Peter, Armin and Mario (from left to right)](/assets/img/2025/vibetunnel/team.jpg)
 
 This project happened because of a perfect storm of factors:
 
