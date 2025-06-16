@@ -29,7 +29,7 @@ The whole system is beautifully simple, yet each component plays a crucial role 
 
 **The Rust Core**: Armin built a binary that spawns and controls processes on the system. The magic happens through Unix named pipes - we use a regular file for stdout (so we can tail and observe it) and a named pipe for stdin (allowing real-time input injection). His Rust binary watches the stdout file for changes and writes incoming keystrokes to the stdin pipe. It's the bridge between the web world and your actual shell processes.
 
-**The Node.js Bridge**: I wrote a server at 11:11am (yes, we noted the time - something about that symmetry felt auspicious) that provides a simple REST API. When the frontend calls an endpoint, it executes Armin's binary with the session ID and forwards the commands. Each API call is essentially: "Hey Rust binary, here's session 123, please write 'ls -la' to its stdin pipe." The Node server also handles session management, authentication, and serves the static frontend files.
+**The Node.js Bridge**: Mario wrote a server at 11:11am (yes, he noted the time - something about that symmetry felt auspicious) that provides a simple REST API. When the frontend calls an endpoint, it executes Armin's binary with the session ID and forwards the commands. Each API call is essentially: "Hey Rust binary, here's session 123, please write 'ls -la' to its stdin pipe." The Node server also handles session management, authentication, and serves the static frontend files.
 
 **The Frontend**: Using Google's Lit framework (a thin wrapper around web components with no build step required!), we built a UI that streams output events via Server-Sent Events (SSE) and sends keystrokes back through the API. Lit's reactive properties and lightweight nature made it perfect for our rapid prototyping needs. Every keystroke triggers an API call, every terminal output update streams through SSE - it's surprisingly responsive for such a simple architecture.
 
@@ -39,7 +39,7 @@ The whole system is beautifully simple, yet each component plays a crucial role 
 
 Our first major challenge came after midnight when we needed a proper scrollback buffer. The initial asciinema approach had a fatal flaw - no history. You couldn't scroll back to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
 
-I spent two hours going down a rabbit hole, investigating whether to write my own ANSI sequence renderer. I got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
+Mario spent two hours going down a rabbit hole, investigating whether to write his own ANSI sequence renderer. He got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
 
 "That was pretty fucking complete," as we noted when we finally integrated XtermJS. It's a full terminal emulator that runs in the browser, handling all the ANSI escape sequences, cursor positioning, screen clearing - everything a real terminal needs. The magic is in how it works: feed it the raw output from your shell (including all those escape sequences), and it maintains an internal buffer representing exactly what should be displayed. It outputs this buffer with characters, foreground colors, and background colors that renders directly to the DOM. No canvas needed, just divs and spans with the right styling.
 
@@ -65,7 +65,7 @@ Claude excels at bootstrapping. Need to integrate a library you've never used? C
 
 - **Context window amnesia**: As the codebase grew, Claude would forget earlier architectural decisions. "Wait, why are we using named pipes again?" It required constant reminders and context refreshing.
 
-The workflow that emerged was fascinating: Claude would generate the initial implementation, I'd test it, discover the edge cases, then spend significant time refactoring. But here's the key insight - even with all the fixes needed, we were still moving 5x faster than coding from scratch. It's not about getting perfect code; it's about getting *something* that works, then iterating rapidly.
+The workflow that emerged was fascinating: Claude would generate the initial implementation, Mario would test it, discover the edge cases, then spend significant time refactoring. But here's the key insight - even with all the fixes needed, we were still moving 5x faster than coding from scratch. It's not about getting perfect code; it's about getting *something* that works, then iterating rapidly.
 
 "You just say, hey, what's different in the Node reference implementation? Fix it. Make it like this." And Claude would dutifully port features between our three server implementations, maintaining API compatibility while adapting to each language's idioms.
 
@@ -73,7 +73,7 @@ The workflow that emerged was fascinating: Claude would generate the initial imp
 
 In true hackathon fashion, we ended up with three server implementations. What started as "let's just build it in Node" evolved into a fascinating polyglot experiment:
 
-1. **Node.js** - The reference implementation that I built first. It's the most complete, with all the session management, authentication hooks, and error handling. About 400 lines of Express.js that just works. Perfect for developers who want to hack on it immediately - everyone knows Node.
+1. **Node.js** - The reference implementation that Mario built first. It's the most complete, with all the session management, authentication hooks, and error handling. About 400 lines of Express.js that just works. Perfect for developers who want to hack on it immediately - everyone knows Node.
 
 2. **Rust** - Armin's performance-focused version using Actix Web. Built partially out of spite ("JavaScript is slow!") and partially because we wanted to see the performance difference. Spoiler: for our use case, the bottleneck is terminal I/O, not the web server. But the Rust version does use about 10x less memory.
 
@@ -124,9 +124,9 @@ This project happened because of a perfect storm of factors:
 
 **Armin's systems wizardry** - He cranked out the Rust binary in 2-3 hours, building the critical process management layer that makes everything possible. But the best part was his running commentary. While implementing PTY allocation and signal handling - notoriously tricky systems programming - he was simultaneously "cursing out Xcode" as he tried to help with Swift integration. The frustration was so intense that he rage-coded an entire Swift server just to prove a point. It ended up being one of our cleanest implementations.
 
-**My frontend adventures with Claude** - I rebuilt the UI layer three times. The first version was a jQuery mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was my constant companion, generating boilerplate, explaining APIs, and occasionally leading me astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
+**Mario's frontend adventures with Claude** - Mario rebuilt the UI layer three times. The first version was a jQuery mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was his constant companion, generating boilerplate, explaining APIs, and occasionally leading him astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
 
-**The power of a deadline** - We pushed through from 11am to 2pm (or "10:10 to 2" if you ask me - I may have started a bit early out of excitement). There's something magical about a time constraint. It forces pragmatic decisions. "Should we implement proper error handling?" becomes "Does it crash? No? Ship it!"
+**The power of a deadline** - We pushed through from 11am to 2pm (or "10:10 to 2" if you ask Mario - he may have started a bit early out of excitement). There's something magical about a time constraint. It forces pragmatic decisions. "Should we implement proper error handling?" becomes "Does it crash? No? Ship it!"
 
 "The individual components aren't really complex. It's just fitting them together and making them work together." This became our mantra. Named pipes? Simple. SSE? Straightforward. Terminal emulation? Solved problem. But making them dance together in harmony? That's where the magic (and the bugs) lived.
 
@@ -138,7 +138,7 @@ VibeTunnel is what happens when developers scratch their own itch with modern to
 
 The imperfections are almost charming. They're a reminder that this was built by humans, in a marathon session, fueled by the joy of creation. Every quirk has a story. That Unicode rendering issue? That's from when we were too tired to read the font documentation properly. The six-terminal limit? We discovered that at the worst possible moment during a demo.
 
-As we wrapped up at stupid o'clock in the morning: "I will probably use it quite a bit... then it means you'll be annoyed by bugs and fix them."
+As we wrapped up at stupid o'clock in the morning, Mario said: "I will probably use it quite a bit... then it means you'll be annoyed by bugs and fix them."
 
 "Don't count on it. Well, you just have to tell Claude to fix it."
 
