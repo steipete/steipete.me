@@ -59,8 +59,6 @@ Mario exclaimed when we finally integrated Xterm.js:
 
 The only issue? Unicode rendering for things like box-drawing characters. When you start Claude Code, you get that nice orange border made of Unicode box-drawing characters - it currently falls back to ASCII replacements like '+' and '-' instead of smooth lines.
 
-> It just looks a little janky, but it's readable. After fighting with terminal emulation for hours, seeing anything render correctly felt like a victory.
-
 ### The Streaming Challenge: Six Terminals and You're Out
 
 We chose Server-Sent Events (SSE) for streaming terminal output because it's simple, well-supported, and doesn't require WebSocket complexity. Each terminal connects to an endpoint like `/api/stream/session-123` and receives a continuous stream of output events. It worked beautifully... until we tried to open a seventh terminal.
