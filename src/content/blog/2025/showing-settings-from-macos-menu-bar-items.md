@@ -171,4 +171,4 @@ The dock icon manipulation (switching between [`.accessory`](https://developer.a
 
 What should be a one-liner in other frameworks requires careful orchestration in SwiftUI. The combination of [`MenuBarExtra`](https://developer.apple.com/documentation/swiftui/menubarextra), [`Settings`](https://developer.apple.com/documentation/swiftui/settings) scenes, and [`openSettings`](https://developer.apple.com/documentation/swiftui/opensettingsaction) wasn't designed with the unique constraints of menu bar apps in mind.
 
-If you're experiencing similar issues, I've filed feedback with Apple (FB10184971). Consider filing your own to help prioritize a fix. Until then, this workaround will get your settings window to appear reliably.
+This shouldn't be so hard. Opening a settings window is one of the most basic operations any app needs to perform. The fact that it requires hidden windows, activation policy juggling, and precise timing delays in 2025 is a testament to how menu bar apps remain second-class citizens in SwiftUI. Until Apple addresses these fundamental issues, we're stuck with these workarounds.
