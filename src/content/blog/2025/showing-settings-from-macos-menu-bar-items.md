@@ -71,7 +71,7 @@ struct MyView: View {
     }
 }
 ```
-This currently works on macOS 15, but doesn't work on macOS Sequoia (15). The logic needs an existing SwiftUI render tree, and simply calling the environment variable does nothing if none is found. The workaround? As horrible as it sounds, a *hidden window*. Of course, that comes with its own issues, unless you massage the window that it's really off-screen and ideally also doesn't react to touches.
+This currently works on macOS 15, but doesn't work on macOS Tahoe (26). The logic needs an existing SwiftUI render tree, and simply calling the environment variable does nothing if none is found. The workaround? As horrible as it sounds, a *hidden window*. Of course, that comes with its own issues, unless you massage the window that it's really off-screen and ideally also doesn't react to touches.
 
 ## Hide & Seek
 
