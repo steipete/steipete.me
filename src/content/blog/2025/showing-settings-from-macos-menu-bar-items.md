@@ -104,12 +104,49 @@ struct HiddenWindowView: View {
                     // Activate and open
                     NSApp.activate(ignoringOtherApps: true)
                     openSettings()
+                    
+                    // 2. No window ordering - After openSettings(), you might need additional window management to ensure
+                    // it comes to front:
+                    try? await Task.sleep(for: .milliseconds(200))
+                    if let settingsWindow = findSettingsWindow() {
+                        settingsWindow.makeKeyAndOrderFront(nil)
+                        settingsWindow.orderFrontRegardless()
+                    }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .settingsWindowClosed)) { _ in
                 // Restore menu bar app state when settings closes
                 NSApp.setActivationPolicy(.accessory)
             }
+    }
+}
+
+// Window identifier for settings
+static let settingsWindowIdentifier = "com.apple.SwiftUI.Settings"
+
+/// Finds the settings window using multiple detection methods
+static func findSettingsWindow() -> NSWindow? {
+    // Try multiple methods to find the window
+    return NSApp.windows.first { window in
+        // Check by identifier
+        if window.identifier?.rawValue == settingsWindowIdentifier {
+            return true
+        }
+        
+        // Check by title
+        if window.isVisible && window.styleMask.contains(.titled) &&
+           (window.title.localizedCaseInsensitiveContains("settings") ||
+            window.title.localizedCaseInsensitiveContains("preferences")) {
+            return true
+        }
+        
+        // Check by content view controller type
+        if let contentVC = window.contentViewController,
+           String(describing: type(of: contentVC)).contains("Settings") {
+            return true
+        }
+        
+        return false
     }
 }
 
