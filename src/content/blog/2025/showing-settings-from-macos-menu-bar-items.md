@@ -1,8 +1,16 @@
 ---
 title: "Showing Settings from macOS Menu Bar Items: A 5-Hour Journey Through Hell"
 description: "Why something as simple as showing a settings dialog from a macOS menu bar app took me 5 hours to figure out, and requires 50 lines of code for what should be a one-liner."
-pubDatetime: 2025-01-17T01:00:00+01:00
-tags: ["macOS", "SwiftUI", "MenuBarExtra", "Settings", "Frustration", "Sequoia", "Bug"]
+pubDatetime: 2025-01-17T01:00:00.000+01:00
+tags:
+  - macOS
+  - SwiftUI
+  - MenuBarExtra
+  - Settings
+  - Frustration
+  - Sequoia
+  - Bug
+draft: false
 ---
 
 You're probably wondering why I'm writing a blog post on how to show the settings dialog from macOS. After all, this is trivial, right? This should be extremely simple.
