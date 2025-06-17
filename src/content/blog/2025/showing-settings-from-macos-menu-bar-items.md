@@ -77,13 +77,15 @@ The workaround? As horrible as it sounds, a *hidden window*. Of course, that com
 
 ## Hide & Seek
 
-Now, this works, however the window will open in the background, and no amount of `makeKeyAndOrderFront(nil)` will help. Trust me. I (and [Claude](/posts/2025/claude-code-is-my-computer/)) tried plenty variations.
+Now, this works, however the window will open in the *background*, and no amount of `makeKeyAndOrderFront(nil)` will help. Trust me. I (and [Claude](/posts/2025/claude-code-is-my-computer/)) tried plenty variations.
 
-The real reason? macOS doesn't allow a window to become selected when there's no Dock icon. And since it's common to hide the Dock icon for pure Menu Bar apps, that's a problem. The workaround is to show the Dock icon just before calling `openSettings()` and then hiding it again. In a way, this is also convenient for the user as the Icon now represents the "app" - the visible window, and once that closes, we hide the Dock icon again. (via calling `NSApp.setActivationPolicy(.accessory)`). Of course the whole thing requires some delays to really work, so let me present you the final, working solution:
+The real reason? macOS doesn't allow a window to become selected when there's no Dock icon. And since it's common to hide the Dock icon for pure Menu Bar apps, that's a problem.
+
+The workaround? Show the Dock icon just before calling `openSettings()` and then hiding it again. In a way, this is also convenient for the user as the Icon now represents the "app" - the visible window, and once that closes, we hide the Dock icon again. (via calling `NSApp.setActivationPolicy(.accessory)`). Of course the whole thing requires some delays to really work, so let me present you the final, working solution (I apologize in advance):
 
 ## The Working Solution
 
-Here's the minimal implementation that works on macOS 14 and higher, using Swift 6:
+Here's the minimal implementation for macOS 14 and higher, using Swift 6:
 
 ```swift
 // Hidden window to provide context
@@ -102,13 +104,11 @@ struct HiddenWindowView: View {
                     // Activate and open
                     NSApp.activate(ignoringOtherApps: true)
                     openSettings()
-                    
-                    // Restore menu bar app state
-                    Task {
-                        try? await Task.sleep(for: .seconds(1))
-                        NSApp.setActivationPolicy(.accessory)
-                    }
                 }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .settingsWindowClosed)) { _ in
+                // Restore menu bar app state when settings closes
+                NSApp.setActivationPolicy(.accessory)
             }
     }
 }
@@ -127,6 +127,9 @@ struct MenuBarApp: App {
         // Required Settings scene
         Settings {
             SettingsView()
+                .onDisappear {
+                    NotificationCenter.default.post(name: .settingsWindowClosed, object: nil)
+                }
         }
         
         // Hidden window for context
@@ -140,6 +143,7 @@ struct MenuBarApp: App {
 
 extension Notification.Name {
     static let openSettingsRequest = Notification.Name("openSettingsRequest")
+    static let settingsWindowClosed = Notification.Name("settingsWindowClosed")
 }
 ```
 
@@ -155,6 +159,8 @@ The hidden window serves multiple purposes:
 - Gives us a place to handle the complex timing orchestration
 
 The dock icon manipulation (switching between [`.accessory`](https://developer.apple.com/documentation/appkit/nsapplication/activationpolicy/accessory) and [`.regular`](https://developer.apple.com/documentation/appkit/nsapplication/activationpolicy/regular)) is necessary because macOS only brings windows to the front reliably for apps with dock icons.
+
+## Fin
 
 What should be a one-liner in other frameworks requires careful orchestration in SwiftUI. The combination of [`MenuBarExtra`](https://developer.apple.com/documentation/swiftui/menubarextra), [`Settings`](https://developer.apple.com/documentation/swiftui/settings) scenes, and [`openSettings`](https://developer.apple.com/documentation/swiftui/opensettingsaction) wasn't designed with the unique constraints of menu bar apps in mind.
 
