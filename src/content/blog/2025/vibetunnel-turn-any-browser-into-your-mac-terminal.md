@@ -134,9 +134,7 @@ Armin explained why this is actually harder than SSH:
 
 This project happened because of a perfect storm of factors:
 
-**Armin's systems wizardry** - He cranked out the Rust binary in 2-3 hours, building the critical process management layer that makes everything possible. Mario praised his work:
-
-> He was done with his little TTY forwarder within about two or three hours. But the best part was his running commentary. While implementing PTY allocation and signal handling - notoriously tricky systems programming - he was simultaneously venting about Xcode as he tried to help with Swift integration. The frustration was so intense that he rage-coded an entire Swift server just to prove a point. It ended up being one of our cleanest implementations.
+**Armin's systems wizardry** - He cranked out the Rust binary in 2-3 hours, building the critical process management layer that makes everything possible.
 
 **Mario's frontend adventures with Claude** - Mario rebuilt the UI layer three times. The first version was a mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was his constant companion, generating boilerplate, explaining APIs, and occasionally leading him astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
 
