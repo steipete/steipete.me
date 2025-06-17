@@ -12,7 +12,7 @@ tags:
 draft: false
 ---
 
-Opening a settings window from a macOS menu bar app should be trivial. It's not. After spending 5 hours debugging this seemingly simple task, I'm documenting the gotchas to save you the same frustration.
+Opening a settings window from a macOS menu bar app should be trivial. It's not. After spending hours debugging, I'm documenting the gotchas to save you the same frustration.
 
 ## The Problem
 
@@ -20,12 +20,11 @@ SwiftUI provides [`SettingsLink`](https://developer.apple.com/documentation/swif
 
 ```swift
 MenuBarExtra("Test", systemImage: "star.fill") {
-    SettingsLink { 
+    SettingsLink {
         Text("Open settings") 
     }
 }
 ```
-
 Simple, right? Except it doesn't work reliably in [`MenuBarExtra`](https://developer.apple.com/documentation/swiftui/menubarextra). The documentation doesn't mention this limitation.
 
 According to Apple's documentation, `SettingsLink` should "open the app's settings scene when activated." However, this assumes your app is already active and has proper window management context - assumptions that don't hold for menu bar apps.
@@ -42,17 +41,20 @@ The root issue is that [`NSApplication`](https://developer.apple.com/documentati
 
 ## The Evolution of Workarounds
 
-### Pre-Sonoma (The Old Way)
+### The Old Way
+
+This is how it used to work. Private API, but relatively safe and simple:
 
 ```swift
 if #available(macOS 13, *) {
     NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
 } else {
+    // macOS 12 or earlier
     NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
 }
 ```
 
-This stopped working in Sonoma with the error: "Please use SettingsLink for opening the Settings scene." Apple deprecated these selectors in favor of SwiftUI's scene-based approach, but didn't account for the unique challenges of menu bar apps.
+This stopped working in Sonoma (14) with the error: "Please use SettingsLink for opening the Settings scene." Apple deprecated these selectors in favor of SwiftUI's scene-based approach, but didn't account for the unique challenges of menu bar apps.
 
 ### The openSettings Environment Action
 
@@ -64,32 +66,22 @@ struct MyView: View {
 
     var body: some View {
         Button("Open Settings") {
-            NSApp.activate(ignoringOtherApps: true)  // Critical!
             openSettings()
         }
     }
 }
 ```
+This currently works on macOS 15, but doesn't work on macOS Sequoia (15). The logic needs an existing SwiftUI render tree, and simply calling the environment variable does nothing if none is found. The workaround? As horrible as it sounds, a *hidden window*. Of course, that comes with its own issues, unless you massage the window that it's really off-screen and ideally also doesn't react to touches.
 
-The key insight: **You MUST call [`NSApp.activate(ignoringOtherApps: true)`](https://developer.apple.com/documentation/appkit/nsapplication/1428468-activate) first.**
+## Hide & Seek
 
-This method "activates the receiver app, brings its windows to the front, and makes it the key app." The `ignoringOtherApps` parameter ensures activation happens even if another app is currently active - crucial for menu bar apps that need to steal focus.
+Now, this works, however the window will open in the background, and no amount of `makeKeyAndOrderFront(nil)` will help. Trust me. I (and Claude) tried plenty variations.
 
-### The Sequoia Complication
-
-In macOS Sequoia, even this isn't enough. The system requires a window context, leading to this workaround:
-
-1. **Create a hidden window** - Provides the necessary window context for `openSettings` to function
-2. **Temporarily show the dock icon** - Switch from `.accessory` to `.regular` activation policy
-3. **Activate the app** - Make it the frontmost application
-4. **Open settings** - Now with proper context and activation
-5. **Handle timing delays** - AppKit needs time to process each state change
-
-This is necessary because the [`openSettings` action](https://developer.apple.com/documentation/swiftui/opensettingsaction) expects to be called from within a window context. Without a window, it silently fails.
+The real reason? macOS doesn't allow a window to become selected when there's no Dock icon. And since it's common to hide the Dock icon for pure Menu Bar apps, that's a problem. The workaround is to show the Dock icon just before calling `openSettings()` and then hiding it again. In a way, this is also convenient for the user as the Icon now represents the "app" - the visible window, and once that closes, we hide the Dock icon again. (via calling `NSApp.setActivationPolicy(.accessory)`). Of course the whole thing requires some delays to really work, so let me present you the final, working solution:
 
 ## The Working Solution
 
-Here's the minimal implementation that works across macOS versions:
+Here's the minimal implementation that works on macOS 14 and higher, using Swift 6:
 
 ```swift
 // Hidden window to provide context
@@ -161,13 +153,6 @@ The hidden window serves multiple purposes:
 - Gives us a place to handle the complex timing orchestration
 
 The dock icon manipulation (switching between [`.accessory`](https://developer.apple.com/documentation/appkit/nsapplication/activationpolicy/accessory) and [`.regular`](https://developer.apple.com/documentation/appkit/nsapplication/activationpolicy/regular)) is necessary because macOS only brings windows to the front reliably for apps with dock icons.
-
-## Key Takeaways
-
-1. **Always activate your app first** with `NSApp.activate(ignoringOtherApps: true)`
-2. **Don't trust SettingsLink** in menu bar apps
-3. **Test across macOS versions** - behavior changes between releases
-4. **Consider the dock icon state** - it affects window focus behavior
 
 What should be a one-liner in other frameworks requires careful orchestration in SwiftUI. The combination of [`MenuBarExtra`](https://developer.apple.com/documentation/swiftui/menubarextra), [`Settings`](https://developer.apple.com/documentation/swiftui/settings) scenes, and [`openSettings`](https://developer.apple.com/documentation/swiftui/opensettingsaction) wasn't designed with the unique constraints of menu bar apps in mind.
 
