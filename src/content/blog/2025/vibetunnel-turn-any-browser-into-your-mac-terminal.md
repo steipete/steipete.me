@@ -41,9 +41,9 @@ Within hours, we had transformed it into a full bidirectional terminal emulator.
 
 ## The Technical Journey
 
-### From Asciinema to Xterm.js: The Midnight Pivot
+### From Asciinema to Xterm.js: The Marathon Pivot
 
-Our first major challenge came after midnight when we needed a proper [scrollback buffer](https://unix.stackexchange.com/questions/145050/what-exactly-is-scrollback-and-scrollback-buffer). The initial asciinema approach had a fatal flaw - no history. You couldn't scrollback to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
+Our first major challenge came when we needed a proper [scrollback buffer](https://unix.stackexchange.com/questions/145050/what-exactly-is-scrollback-and-scrollback-buffer). The initial asciinema approach had a fatal flaw - no history. You couldn't scrollback to see previous output, making it useless for any real work. Imagine running a build command and not being able to scroll up to see the errors!
 
 Mario spent two hours going down a rabbit hole, investigating whether to write his own ANSI sequence renderer. He got surprisingly far - basic text output worked, colors were rendering, cursor movement was... sort of working. But then came the edge cases: double-width characters, complex cursor positioning, alternate screen buffers, and the hundreds of other ANSI escape sequences that real terminals support. It was becoming clear this was a month-long project, not a two-hour hack.
 
@@ -136,7 +136,7 @@ This project happened because of a perfect storm of factors:
 
 **Armin's systems wizardry** - He cranked out the Rust binary in 2-3 hours, building the critical process management layer that makes everything possible.
 
-**Mario's frontend adventures with Claude** - Mario rebuilt the UI layer three times. The first version was a mess (don't judge, it was 11 PM). The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was his constant companion, generating boilerplate, explaining APIs, and occasionally leading him astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
+**Mario's frontend adventures with Claude** - Mario rebuilt the UI layer three times. The first version was a mess. The second used vanilla JavaScript and quickly became unmaintainable. The third, using Lit, was the charm. Claude was his constant companion, generating boilerplate, explaining APIs, and occasionally leading him astray with over-engineered solutions. The key was learning when to trust Claude and when to take control.
 
 **My deep knowledge of macOS and Product-market fit** - I've been in the iOS and macOS space for almost 20 years and really know how to build great products. I could reuse a lot of my existing work to get us really far, especially with branding, distribution, and the difficulties around notarization and updating. I built the app, onboarding, website, the social pages, did the design, and the overall branding to make this from a quick hack project into an actual beautifully designed product.
 
