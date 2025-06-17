@@ -56,7 +56,7 @@ This stopped working in Sonoma with the error: "Please use SettingsLink for open
 
 ### The openSettings Environment Action
 
-Apple provides an [`openSettings` environment action](https://developer.apple.com/documentation/swiftui/opensettingsaction) for programmatic access:
+Apple provides an [`openSettings` environment action](https://developer.apple.com/documentation/swiftui/opensettingsaction) for programmatic access (available since macOS 14.0+):
 
 ```swift
 struct MyView: View {
