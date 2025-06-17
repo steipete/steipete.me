@@ -35,7 +35,7 @@ Menu bar apps operate differently from regular macOS apps:
 - **No dock icon by default** - They use [`NSApplication.ActivationPolicy.accessory`](https://developer.apple.com/documentation/appkit/nsapplication/activationpolicy/accessory)
 - **Not "active" in the traditional sense** - They don't appear in the app switcher
 - **Windows may appear behind other apps** - Without proper activation, windows lack focus
-- **No keyboard focus without activation** - The system doesn't automatically activate menu bar apps when you interact with their UI
+- **No SwiftUI graph loaded** - Settings needs some SwiftUI view initalized and the menu bar uses AppKit under the hood.
 
 The root issue is that [`NSApplication`](https://developer.apple.com/documentation/appkit/nsapplication) treats menu bar apps as background utilities, not foreground applications. This affects how windows are ordered and receive events.
 
@@ -71,11 +71,13 @@ struct MyView: View {
     }
 }
 ```
-This currently works on macOS 15, but doesn't work on macOS Tahoe (26). The logic needs an existing SwiftUI render tree, and simply calling the environment variable does nothing if none is found. The workaround? As horrible as it sounds, a *hidden window*. Of course, that comes with its own issues, unless you massage the window that it's really off-screen and ideally also doesn't react to touches.
+This currently works on macOS 15, but doesn't work on macOS Tahoe (26). The logic needs an existing SwiftUI render tree, and simply calling the environment variable does nothing if none is found. 
+
+The workaround? As horrible as it sounds, a *hidden window*. Of course, that comes with its own issues, unless you massage the window that it's really off-screen and ideally also doesn't react to touches.
 
 ## Hide & Seek
 
-Now, this works, however the window will open in the background, and no amount of `makeKeyAndOrderFront(nil)` will help. Trust me. I (and Claude) tried plenty variations.
+Now, this works, however the window will open in the background, and no amount of `makeKeyAndOrderFront(nil)` will help. Trust me. I (and [Claude](/posts/2025/claude-code-is-my-computer/)) tried plenty variations.
 
 The real reason? macOS doesn't allow a window to become selected when there's no Dock icon. And since it's common to hide the Dock icon for pure Menu Bar apps, that's a problem. The workaround is to show the Dock icon just before calling `openSettings()` and then hiding it again. In a way, this is also convenient for the user as the Icon now represents the "app" - the visible window, and once that closes, we hide the Dock icon again. (via calling `NSApp.setActivationPolicy(.accessory)`). Of course the whole thing requires some delays to really work, so let me present you the final, working solution:
 
