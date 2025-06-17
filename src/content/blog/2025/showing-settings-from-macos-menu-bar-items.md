@@ -43,7 +43,7 @@ The root issue is that [`NSApplication`](https://developer.apple.com/documentati
 
 ### The Old Way
 
-This is how it used to work. Private API, but relatively safe and simple:
+This is how it used to work. Private API, but widely used and simple:
 
 ```swift
 if #available(macOS 13, *) {
