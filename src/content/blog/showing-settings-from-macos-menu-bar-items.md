@@ -1,7 +1,7 @@
 ---
 title: "Showing Settings from macOS Menu Bar Items: A 5-Hour Journey Through Hell"
 description: "Why something as simple as showing a settings dialog from a macOS menu bar app took me 5 hours to figure out, and requires 50 lines of code for what should be a one-liner."
-pubDatetime: 2025-01-17T08:00:00+01:00
+pubDatetime: 2025-01-17T01:00:00+01:00
 tags: ["macOS", "SwiftUI", "MenuBarExtra", "Settings", "Frustration", "Sequoia", "Bug"]
 ---
 
