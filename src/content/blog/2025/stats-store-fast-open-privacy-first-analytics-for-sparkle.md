@@ -23,7 +23,7 @@ The problem? When I checked for backend implementations, [everything was ancient
 
 I fired up [Google's AI Studio](https://aistudio.google.com/) and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and [shadcn/ui](https://ui.shadcn.com/), a stack I already know and love.
 
-After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I synced to GitHub and let [Claude Code](/posts/2025/claude-code-is-my-computer/) take over. Claude added tests, dark mode, improved the design, and fixed the API flow.
+After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I [synced to GitHub](https://github.com/steipete/stats-store) and let [Claude Code](/posts/2025/claude-code-is-my-computer/) take over. Claude added tests, dark mode, improved the design, and fixed the API flow.
 
 Total time? Six hours. All while working on the next VibeTunnel release. Plus an hour picking the perfect domain (I really like stats.store).
 
@@ -45,7 +45,7 @@ Everything is designed to answer simple questions: How many people use my app? W
 
 ## Free for Open Source
 
-Here's the deal: if you're building open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
+Here's the deal: if you're building free or open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
 
 Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy. All you have to do is [redirecting the appcast URLs](https://github.com/steipete/stats-store#sparkle-integration), stats.store will fetch the correct one and pass them along.
 
