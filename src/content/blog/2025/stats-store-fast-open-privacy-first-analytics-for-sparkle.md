@@ -33,15 +33,19 @@ Total time? Six hours. All while working on the next VibeTunnel release. Plus an
 
 ## What is stats.store?
 
-It's exactly what I needed: a modern, privacy-first analytics backend for Sparkle. You get:
+It's exactly what I needed: a modern, privacy-first analytics backend for Sparkle. You get basic update statistics, macOS version distribution, and a clean dashboard - all while respecting user privacy.
 
-- Basic update statistics (who's updating, who's not)
-- macOS version distribution
-- Zero personal data collection
-- Real-time updates
-- A clean dashboard
+**What gets collected:**
+- **System info:** macOS version, CPU type (Intel/Apple Silicon), Mac model, core count, RAM, system language
+- **App usage:** Version numbers, update timestamps, daily unique users (via salted IP hashes)
 
-The whole thing is [open source and MIT-licensed](https://github.com/steipete/stats-store).
+**What doesn't get collected:**
+- No IP addresses, names, or emails
+- No usage patterns or behavior tracking  
+- No location data beyond language preference
+- No device IDs or fingerprinting
+
+Everything is designed to answer simple questions: How many people use my app? What macOS versions should I support? When do people actually update? The whole thing is [open source and MIT-licensed](https://github.com/steipete/stats-store).
 
 ## Free for Open Source
 
@@ -50,27 +54,6 @@ Here's the deal: if you're building open source Mac apps, it's completely free. 
 Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy.
 
 If enough people join, we'll have a nice community dataset showing how fast Mac users update their OS and what hardware they're running. Could be interesting!
-
-## What data is saved?
-
-stats.store collects just enough to be useful, nothing more:
-
-**System info:**
-- macOS version and CPU architecture (Intel or Apple Silicon)
-- Mac model and core count
-- RAM size and system language
-
-**App usage:**
-- Version numbers and update timestamps
-- Daily unique users (via salted IP hashes - no tracking across days)
-
-**What we don't collect:**
-- No IP addresses, names, or emails
-- No usage patterns or behavior tracking
-- No location data beyond language preference
-- No device IDs or fingerprinting
-
-Everything is designed to answer simple questions: How many people use my app? What macOS versions should I support? When do people actually update?
 
 ## Try It
 
