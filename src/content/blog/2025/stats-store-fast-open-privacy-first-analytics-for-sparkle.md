@@ -13,19 +13,15 @@ tags:
 draft: false
 ---
 
-**tl;dr**: I built a free, open source analytics backend for Sparkle because all existing solutions are ancient, and I wanted to know how many people use VibeTunnel without being creepy about it.
+**tl;dr**: I built a free, open source analytics backend for Sparkle because all existing solutions are ancient, and I wanted to know how many people use [VibeTunnel](https://vibetunnel.sh) without being creepy about it.
 
-
-
-Last night I got curious about how many people are actually using [VibeTunnel](https://vibetunnel.sh). But I'm also philosophically against deep app analytics. Everything I make is open source and free, and integrating an analytics SDK just didn't feel right.
-
-Sparkle has this neat little [system profiling](https://sparkle-project.org/documentation/system-profiling/) feature that's perfect for people like me - it just tells you the macOS version and how many people opened your app this week. No IP addresses, no creepy tracking, just enough to stay motivated.
+I'm philosophically against deep app analytics. Everything I make is open source and free, and integrating an analytics SDK just didn't feel right. Sparkle has this neat little [system profiling](https://sparkle-project.org/documentation/system-profiling/) feature that's perfect for people like me - it just tells you the macOS version and how many people opened your app this week. No IP addresses, no creepy tracking, just enough to stay motivated.
 
 The problem? When I checked for backend implementations, [everything was ancient](https://sparkle-project.org/documentation/system-profiling/). So naturally, I thought: "How hard can it be?"
 
-## Building stats.store with AI
+## Building stats.store with agents
 
-I fired up [Google's AI Studio](https://aistudio.google.com/) and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and [shadcn/ui](https://ui.shadcn.com/), a stack I already know and love.
+I fired up Google's AI Studio and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and [shadcn/ui](https://ui.shadcn.com/), a stack I already know and love.
 
 After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I synced to GitHub and let Claude Code take over. Claude added tests, dark mode, improved the design, and fixed the API flow.
 
