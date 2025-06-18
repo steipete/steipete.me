@@ -25,7 +25,7 @@ So naturally, I thought: "How hard can it be?"
 
 I fired up Google's AI Studio and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and [shadcn/ui](https://ui.shadcn.com/), a stack I already know and love.
 
-After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I synced to GitHub and let Claude Code take over. Claude added tests, dark mode, improved the design, fixed the API flow - the works.
+After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I synced to GitHub and let Claude Code take over. Claude added tests, dark mode, improved the design, and fixed the API flow.
 
 Total time? Six hours. All while working on the next VibeTunnel release. Plus an hour picking the perfect domain (I really like stats.store).
 
