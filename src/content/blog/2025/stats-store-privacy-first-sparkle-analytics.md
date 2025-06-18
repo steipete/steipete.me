@@ -47,7 +47,7 @@ Everything is designed to answer simple questions: How many people use my app? W
 
 Here's the deal: if you're building open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
 
-Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy. All you have to do is [redirecting the appcast URLs](https://github.com/steipete/stats-store#sparkle-integration), stats.store will fetch the correct one and pass them along.
+Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy. All you have to do is [redirect the appcast URLs](https://github.com/steipete/stats-store#how-it-works-the-magic-part-), stats.store will fetch the correct one and pass them along.
 
 If enough people join, we'll have a nice community dataset showing how fast Mac users update their OS and what hardware they're running. Could be interesting!
 
