@@ -64,4 +64,4 @@ Building with AI meant I spent time on the product, not boilerplate. The future 
 
 Check out [stats.store](https://stats.store). If you have a Sparkle-based Mac app and want simple, privacy-respecting analytics, let me know. Together we can build something useful for the Mac developer community.
 
-*Questions? Hit me up on [Twitter](https://twitter.com/steipete) or [email](mailto:steipete@gmail.com).*
+*Questions? Hit me up on [Twitter](https://twitter.com/steipete) or [email](mailto:peter@steipete.me).*
