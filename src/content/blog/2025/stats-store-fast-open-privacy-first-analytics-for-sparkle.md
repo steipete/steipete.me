@@ -19,7 +19,7 @@ Last night I got curious about how many people are actually using [VibeTunnel](h
 
 Sparkle has this neat little [system profiling](https://sparkle-project.org/documentation/system-profiling/) feature that's perfect for people like me - it just tells you the macOS version and how many people opened your app this week. No IP addresses, no creepy tracking, just enough to stay motivated.
 
-The problem? When I checked for backend implementations, everything was ancient. [Sparkler](https://github.com/mackuba/sparkler)? Years old. [JDSparkle](https://github.com/balthisar/JDSparkle)? Running on outdated CakePHP. Most others were PHP scripts from a decade ago.
+The problem? When I checked for backend implementations, [everything was ancient](https://sparkle-project.org/documentation/system-profiling/).
 
 So naturally, I thought: "How hard can it be?"
 
