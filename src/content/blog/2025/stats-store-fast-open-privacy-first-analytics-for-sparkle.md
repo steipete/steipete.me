@@ -122,16 +122,6 @@ I don't want this to be a complete self-service product because the risk of peop
 
 If we get a few people to do this, we should have a really nice overview of how fast people update their macOS versions and which machines are common, which I think is interesting data for the entire Mac developer community.
 
-## Pricing for Commercial Apps
-
-For commercial applications, stats.store uses a simple, predictable pricing model:
-
-- **Free tier** - Up to 1,000 monthly active users
-- **Indie tier** - $9/month for up to 10,000 MAU
-- **Pro tier** - $29/month for up to 100,000 MAU
-- **Enterprise** - Custom pricing for larger apps
-
-No hidden fees, no surprise bills, no per-event charges.
 
 ## Open Source Foundation
 
