@@ -1,5 +1,5 @@
 ---
-title: "stats.store: Building a Privacy-First Sparkle Analytics Backend in 6 Hours"
+title: "stats.store: Building a Privacy-First Sparkle Analytics Backend"
 description: "How curiosity about VibeTunnel users led me to build stats.store - a free, open source analytics backend for Sparkle using AI tools, all while cooking dinner."
 pubDatetime: 2025-06-18T10:00:00.000+01:00
 heroImage: /assets/img/2025/stats-store/hero.png
