@@ -49,17 +49,6 @@ Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the bac
 
 If enough people join, we'll have a nice community dataset showing how fast Mac users update their OS and what hardware they're running. Could be interesting!
 
-## The Tech Stack
-
-For the curious:
-- **Next.js** for the web app
-- **Supabase** for the database
-- **Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/)** for styling
-- **TypeScript** everywhere
-- **Vercel** for hosting
-
-Building with AI meant I spent time on the product, not boilerplate. The future is wild.
-
 ## Try It
 
 Check out [stats.store](https://stats.store). If you have a Sparkle-based Mac app and want simple, privacy-respecting analytics, let me know. Together we can build something useful for the Mac developer community.
