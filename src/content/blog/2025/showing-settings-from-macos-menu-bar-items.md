@@ -1,7 +1,7 @@
 ---
 title: "Showing Settings from macOS Menu Bar Items: A 5-Hour Journey"
 description: "Why something as simple as showing a settings dialog from a macOS menu bar app took me 5 hours to figure out, and requires 50 lines of code for what should be a one-liner."
-pubDatetime: 2025-06-17T02:00:00.000+01:00
+pubDatetime: 2025-06-17T12:00:00.000+01:00
 heroImage: /assets/img/2025/showing-settings-from-macos-menu-bar-items/hero.png
 heroImageAlt: "macOS Settings window appearing from a menu bar app"
 tags:
