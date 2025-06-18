@@ -45,7 +45,7 @@ The whole thing is [open source and MIT-licensed](https://github.com/steipete/st
 
 Here's the deal: if you're building open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
 
-Want in? Just email me. I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy.
+Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy.
 
 If enough people join, we'll have a nice community dataset showing how fast Mac users update their OS and what hardware they're running. Could be interesting!
 
