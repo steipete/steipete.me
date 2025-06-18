@@ -23,7 +23,7 @@ So naturally, I thought: "How hard can it be?"
 
 ## Building stats.store with AI
 
-I fired up Google's AI Studio and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and shadcn/ui, a stack I already know and love.
+I fired up Google's AI Studio and wrote a simple spec (you can see it on [GitHub](https://github.com/steipete/stats-store/tree/main/docs/spec.md)). Then I fed it into [v0](https://v0.dev) - they use Next.js, Supabase, Tailwind, and [shadcn/ui](https://ui.shadcn.com/), a stack I already know and love.
 
 After about five or six rounds of typing "continue" into v0, I had something workable. But v0 is great for frontend, less so when things get complex. It started making mistakes it couldn't fix. So I synced to GitHub and let Claude Code take over. Claude added tests, dark mode, improved the design, fixed the API flow - the works.
 
@@ -54,7 +54,7 @@ If enough people join, we'll have a nice community dataset showing how fast Mac 
 For the curious:
 - **Next.js** for the web app
 - **Supabase** for the database
-- **Tailwind CSS + shadcn/ui** for styling
+- **Tailwind CSS + [shadcn/ui](https://ui.shadcn.com/)** for styling
 - **TypeScript** everywhere
 - **Vercel** for hosting
 
