@@ -1,5 +1,5 @@
 ---
-title: "stats.store: Building a Privacy-First Sparkle Analytics Backend"
+title: "stats.store: Building Privacy-First Sparkle Analytics"
 description: "How curiosity about VibeTunnel users led me to build stats.store - a free, open source analytics backend for Sparkle using AI tools, all while cooking dinner."
 pubDatetime: 2025-06-18T10:00:00.000+01:00
 heroImage: /assets/img/2025/stats-store/hero.png
@@ -45,7 +45,7 @@ Everything is designed to answer simple questions: How many people use my app? W
 
 ## Free for Open Source
 
-Here's the deal: if you're building free or open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
+Here's the deal: if you're building open source Mac apps, it's completely free. I'll cover the hosting (Vercel and Supabase make this pretty cheap anyway).
 
 Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the backend - and by backend, I mean I'll literally go into Supabase and edit the table. We're keeping it scrappy. All you have to do is [redirecting the appcast URLs](https://github.com/steipete/stats-store#sparkle-integration), stats.store will fetch the correct one and pass them along.
 
