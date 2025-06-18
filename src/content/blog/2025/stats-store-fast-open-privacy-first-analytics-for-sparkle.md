@@ -51,6 +51,27 @@ Want in? Just [email me](mailto:peter@steipete.me). I'll add your app to the bac
 
 If enough people join, we'll have a nice community dataset showing how fast Mac users update their OS and what hardware they're running. Could be interesting!
 
+## What data is saved?
+
+stats.store collects just enough to be useful, nothing more:
+
+**System info:**
+- macOS version and CPU architecture (Intel or Apple Silicon)
+- Mac model and core count
+- RAM size and system language
+
+**App usage:**
+- Version numbers and update timestamps
+- Daily unique users (via salted IP hashes - no tracking across days)
+
+**What we don't collect:**
+- No IP addresses, names, or emails
+- No usage patterns or behavior tracking
+- No location data beyond language preference
+- No device IDs or fingerprinting
+
+Everything is designed to answer simple questions: How many people use my app? What macOS versions should I support? When do people actually update?
+
 ## Try It
 
 Check out [stats.store](https://stats.store). If you have a Sparkle-based Mac app and want simple, privacy-respecting analytics, let me know. Together we can build something useful for the Mac developer community.
