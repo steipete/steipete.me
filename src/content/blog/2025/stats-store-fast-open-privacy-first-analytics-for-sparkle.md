@@ -13,6 +13,8 @@ tags:
 draft: false
 ---
 
+**tl;dr**: I built a free, open source analytics backend for Sparkle because all existing solutions are ancient, and I wanted to know how many people use VibeTunnel without being creepy about it.
+
 Last night I got curious about how many people are actually using [VibeTunnel](https://vibetunnel.com). But I'm also philosophically against deep app analytics. Everything I make is open source and free, and integrating an analytics SDK just didn't feel right.
 
 Sparkle has this neat little [system profiling](https://sparkle-project.org/documentation/system-profiling/) feature that's perfect for people like me - it just tells you the macOS version and how many people opened your app this week. No IP addresses, no creepy tracking, just enough to stay motivated.
