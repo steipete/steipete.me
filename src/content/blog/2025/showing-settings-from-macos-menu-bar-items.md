@@ -186,7 +186,7 @@ extension Notification.Name {
 
 The [`NotificationCenter`](https://developer.apple.com/documentation/foundation/notificationcenter) approach decouples the menu action from the window context, allowing the hidden window to handle the actual settings opening.
 
-For a production-ready implementation with all edge cases (yes, there are some more...) handled, see [VibeTunnel's SettingsOpener.swift](https://github.com/amantus-ai/vibetunnel/blob/main/VibeTunnel/Utilities/SettingsOpener.swift).
+For a production-ready implementation with all edge cases (yes, there are some more...) handled, see [VibeTunnel's SettingsOpener.swift](https://github.com/amantus-ai/vibetunnel/blob/2a63599ce0b09d139ddc9954f41f2a5840264f9f/mac/VibeTunnel/Utilities/SettingsOpener.swift#L4).
 
 ## Scene Order Matters (Unfortunately)
 
