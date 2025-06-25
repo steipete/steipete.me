@@ -62,7 +62,8 @@ const ogImage = ogImageUrl
 
 // Generate the canonical URL - always use the full path with year
 const postPath = getPath(post.id, post.filePath, true);
-const computedCanonicalURL = canonicalURL || new URL(postPath, Astro.site).href;
+const computedCanonicalURL = canonicalURL || 
+  (Astro.site ? new URL(postPath, Astro.site).href : new URL(postPath, Astro.url.origin).href);
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
