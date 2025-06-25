@@ -37,7 +37,7 @@ Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/d
 
 There's also [a video where I do the whole process from idea to final app using this workflow](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts.
 
-Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project and told it to generate an SDD from that, but use web tech for it, and rebuilt it in TypeScript. The code **is** the spec. (something for a future blog post...)
+Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (something for a future blog post...)
 
 ![Software Design Document in Google AI Studio](/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/sweetistics-sdd.png)
 
