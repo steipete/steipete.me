@@ -12,6 +12,8 @@ tags:
 
 **TL;DR**: AI agents are like slot machines for programmers - every prompt is a pull of the lever that could yield amazing results or send you on a wild debugging adventure. After two months of intense usage, building multiple products simultaneously, I've learned that the key isn't prompt engineering - it's explaining problems from multiple angles and managing context like a conductor leading an orchestra.
 
+*Note: This blog post is a summary of my conversation with Mayank, created with the help of AI. The full video interview will be available on Monday, January 30th.*
+
 ## The Ultimate Catnip for Programmers
 
 "I call them slot machines because I feel they are the ultimate drug for programmers. My friends call them catnip for programmers."
