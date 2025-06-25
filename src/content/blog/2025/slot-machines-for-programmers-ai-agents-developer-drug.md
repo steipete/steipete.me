@@ -1,7 +1,7 @@
 ---
 title: "Slot Machines for Programmers: Why AI Agents Are the Ultimate Developer Drug"
 description: "AI agents are the most addictive tool for developers - like slot machines where every prompt could produce something amazing or send you on a debugging quest. Here's why I'm hooked and how to make the most of this new superpower."
-pubDatetime: 2025-01-25T23:00:00+00:00
+pubDatetime: 2025-01-25T17:00:00+00:00
 tags:
   - AI
   - Claude
