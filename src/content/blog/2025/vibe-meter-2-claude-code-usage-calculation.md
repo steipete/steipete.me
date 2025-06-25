@@ -28,7 +28,7 @@ Well, turns out this is not easy at all. There is no API for that, there's no co
 
 ## Collaboration and Learning
 
-Luckily, I wasn't alone. There were other people that were already curious and interested in that idea, so I could learn from various open source projects like [ccusage](https://github.com/ryoppippi/ccusage), which pioneered the approach of parsing Claude's JSON-L files. Counting tokens also is not as simple as you would think. Claude Code writes all interactions with their server into so-called JSON-L files which can be in the hundreds of megabytes large. So I spent a lot of time tweaking the parser, or dare I say me and Claude spent a lot of time tweaking the parser.
+Luckily, I wasn't alone. There were other people that were already curious and interested in that idea, so I could learn from various open source projects like [ccusage](https://github.com/ryoppippi/ccusage), which pioneered the approach of parsing Claude's JSON-L files. Counting tokens also is not as simple as you would think. Claude Code writes all interactions with their server into so-called JSON-L files which can be in the hundreds of megabytes large. So I spent a lot of time tweaking the parser, or dare I say me and Claude did.
 
 ## SIMD Operations for Performance
 
@@ -65,19 +65,17 @@ private struct VectorizedBytePairLookup {
 
 This approach allows us to compare 16 bytes at once instead of doing byte-by-byte comparisons, dramatically speeding up the token counting process.
 
-## Token Counting with TikToken
+## Token Counting with TikToken & BPE
 
 As a basis, I used the open source [TikToken BPE tokenizer](https://github.com/openai/tiktoken) that is actually from OpenAI. There's no public tokenizer project from Anthropic. However, the tokens are similar enough that we can use this project and still get fairly accurate results.
-
-### Some Theory: What is BPE?
 
 BPE (Byte Pair Encoding) is a compression algorithm adapted for tokenization in NLP. It breaks text into subword units (tokens), often capturing whole words or common prefixes/suffixes.
 
 Instead of just splitting on whitespace or characters, BPE builds a vocabulary of frequently seen pairs of characters or subwords. This allows models to handle unknown words, rare terms, and typos more gracefully. [Learn more about BPE on Wikipedia](https://en.wikipedia.org/wiki/Byte-pair_encoding).
 
-## Agentic Coding and Clear Thinking
+## Agentic Engineering and Clear Thinking
 
-Agentic coding, as I prefer to say, requires even more clear thinking, especially with Vibe Meter. I evolved my approach where I would use Claude Code and ask it to think hard about the problem. The thinking keyword is key because it triggers how much token Claude uses to actually think about the problem. There are various levels how you can trigger thinking, with Ultra Think being the highest level.
+Agentic engineering, as I prefer to say, requires even more clear thinking. I evolved my approach where I would use Claude Code and ask it to think hard about the problem. The thinking keyword is key because it triggers how much token Claude uses to actually think about the problem. There are various levels how you can trigger thinking, with Ultra Think being the highest level.
 
 > As I work more with Claude Code, I tend to slow down, ask it to plan, present options, ultrathink, and then pick the best one. And always using a fresh context. Much better results.
 
@@ -105,14 +103,11 @@ In the 2.0 refactor, I also put a better effort on using modern Swift idioms, an
 
 ## Project Statistics
 
-The project grew significantly. And as a reminder, this is still basically 100% written by Claude, although I spent significant time both in the profiler and in thinking about and in clear thinking.
-
 VibeMeter has grown into a substantial project:
 - **App code**: 24,529 lines
 - **Test code**: 22,560 lines  
 - **Total**: 47,089 lines across 218 Swift files
 - **Test coverage ratio**: 92% (tests are nearly as large as the app itself!)
 
-These numbers reflect the complexity of accurately parsing Claude's JSON-L files, implementing SIMD-accelerated token counting, and ensuring the reliability users expect from a cost monitoring tool.
-
 Note: Vibe Meter is still on the pre-release channel for now, there's a few edge-cases I wanna get right before making it 2.0 official, but it's close!
+[Get it here](https://vibemeter.ai/) and switch update channel for the preview!
