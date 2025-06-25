@@ -1,121 +1,40 @@
 ---
 title: "My AI-Powered Codebase Understanding Workflow"
-description: "How I use Google's AI Studio and repo2txt to quickly understand new codebases. A practical workflow that leverages Gemini's massive context window for code comprehension."
+description: "A quick tip on how I use repo2txt and Google AI Studio to understand new codebases. Gemini's 1M token context window is perfect for asking questions about code."
 pubDatetime: 2025-06-25T12:30:00+02:00
 tags: ["ai", "productivity", "coding", "gemini", "development"]
 ---
 
-**TL;DR**: Convert any GitHub repository to markdown using [repo2txt](https://repo2txt.simplebasedomain.com/), then drag it into [Google AI Studio](https://aistudio.google.com/prompts/new_chat) to ask questions about the codebase. Gemini's 1M token context window makes it exceptional for understanding code structure and implementation details.
+**TL;DR**: Convert GitHub repos to markdown with [repo2txt](https://repo2txt.simplebasedomain.com/), drag into [Google AI Studio](https://aistudio.google.com/prompts/new_chat), and ask questions. Gemini's massive context window makes it amazing for code comprehension.
 
-## The Problem with Understanding New Codebases
+## The Problem
 
-Whenever I dive into a new project, whether it's for evaluation, integration, or inspiration, I need to quickly understand how things work. Reading through files one by one is time-consuming, and documentation often doesn't answer the specific questions I have.
-
-That's where AI comes in—but not just any AI workflow. I've found a specific combination that works incredibly well.
+Whenever I want to understand a new codebase, the absolute best way I found is using AI—but with a specific workflow that actually works.
 
 ## My Two-Step Workflow
 
-### Step 1: Convert Repository to Markdown
+**Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you (skip images—they'll just slow down your browser).
 
-The first tool in my arsenal is [repo2txt](https://repo2txt.simplebasedomain.com/). This simple web tool converts any GitHub repository into a single markdown file.
-
-Here's how I use it:
-
-1. Paste the GitHub repository URL
-2. Wait for it to generate the file tree
-3. Select all the source code files that interest me (skip images, they'll just slow down your browser)
-4. Download the markdown file
-
-The beauty of this approach is that you get the full context of the project in a format that's perfect for AI consumption.
-
-### Step 2: Analyze with Google AI Studio
-
-Next, I head over to [Google AI Studio](https://aistudio.google.com/prompts/new_chat) and create a new chat. This is where the magic happens:
-
-1. Drag the markdown file directly into the chat
-2. Start asking questions
-
-The questions I typically ask:
+**Step 2**: Head to [Google AI Studio](https://aistudio.google.com/prompts/new_chat), drag in the markdown file, and start asking questions like:
 - "What's interesting about this project?"
-- "How did they solve [specific problem]?"
-- "What patterns are they using for [feature]?"
-- "Show me how they implement [functionality]"
+- "How did they solve this and this?"
 
-## Why Gemini Excels at This
+## Why This Works
 
-Gemini has become my go-to for code analysis because:
+Gemini is amazing at coding (not tests—it's a documentation tool). It has a 1,000,000 token context window, and AI Studio shows you the approximate token size so you don't have to be too careful. 
 
-- **Massive context window**: 1,000,000 tokens means you can analyze entire codebases
-- **Excellent at code comprehension**: It understands code structure and can trace through implementations
-- **Great for exploration**: Unlike documentation-focused tools, it helps you discover what you don't know to ask
-
-One important note: While Gemini is amazing at understanding and explaining code, it's not the best for generating tests. Think of it as your documentation and exploration companion.
-
-## Real-World Applications
-
-This workflow has helped me in several scenarios:
-
-### Understanding Implementation Details
-
-When I need to understand how a library implements a specific feature, I can quickly get answers like:
-- The exact flow of data through the system
-- How edge cases are handled
-- What design patterns are employed
-
-### Building Specifications
-
-By analyzing multiple similar projects, I can:
-- Extract common patterns
-- Understand different approaches to the same problem
-- Create better specifications for my own implementations
-
-### Quick Project Evaluation
-
-When evaluating whether to use a library or framework:
-- Assess code quality and structure
-- Understand the complexity of integration
-- Identify potential issues or limitations
-
-## Pro Tips
-
-1. **Token awareness**: AI Studio shows you the approximate token size. Modern models have plenty of capacity, but be mindful when including large files.
-
-2. **Multiple repositories**: You can drag in multiple converted repositories to compare implementations or understand how different projects solve similar problems.
-
-3. **Supplement with research**: Drag in additional documentation, blog posts, or research papers alongside the code for even better context.
-
-4. **Focus on source code**: When selecting files in repo2txt, focus on source code rather than assets. Images and binary files will just consume tokens without adding value.
-
-## Why This Works So Well
-
-The combination of repo2txt's clean markdown output and Gemini's code comprehension capabilities creates a powerful analysis environment. You're not just searching for keywords—you're having a conversation about the code with an AI that has the entire codebase in context.
-
-This approach has fundamentally changed how I approach new codebases. Instead of spending hours jumping between files and trying to piece together the mental model, I can get oriented in minutes and dive deep into the specific areas that matter to me.
+You can even drag in multiple repositories or additional research to build your own software or write specifications based on what you learn.
 
 ## Alternative: DeepWiki
 
-An honorable mention goes to [DeepWiki](https://deepwiki.com/), which offers a different approach. It's surprisingly great at understanding a codebase and even integrates a free agent for deeper analysis.
+An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel).
 
-For example, here's [VibeTunnel analyzed on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel) - my latest project for turning any browser into a macOS terminal.
+The downside: you can't mix and match multiple repositories like with the repo2txt workflow.
 
-The main trade-off: While DeepWiki excels at single repository analysis with its integrated agent, you can't mix and match multiple repositories like you can with the repo2txt + Gemini workflow. Choose based on your needs:
+## That's It!
 
-- **DeepWiki**: Best for deep diving into a single repository with agent assistance
-- **repo2txt + Gemini**: Best for comparing multiple codebases or when you need maximum flexibility
-
-## Try It Yourself
-
-Next time you need to understand a new codebase:
-
-1. Head to [repo2txt.simplebasedomain.com](https://repo2txt.simplebasedomain.com/)
-2. Convert the repository to markdown
-3. Open [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
-4. Drag in the file and start exploring
-
-Or give [DeepWiki](https://deepwiki.com/) a try for single-repository deep dives.
-
-You'll be surprised how quickly you can understand complex codebases with these approaches.
+There's a lot of people on Twitter that ask me about my workflows, so whenever I have an idea of something that's really useful I'll make a new blog post and share it with the world!
 
 ---
 
-_What's your workflow for understanding new codebases? Have you tried using AI tools for code comprehension? Let me know on [Twitter @steipete](https://twitter.com/steipete)!_
+_What's your workflow for understanding new codebases? Let me know on [Twitter @steipete](https://twitter.com/steipete)!_
