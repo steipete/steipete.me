@@ -23,7 +23,7 @@ But this workflow isn't just for understanding existing code, it's become my sec
 
 ## From Idea to SDD
 
-Whenever I start a new project, I'll paste all my ideas into AI Studio. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a SDD. During my research I'll often find other oss projects that solve similar things, so I drag in the compiled markdown and ask Gemini things like 
+Whenever I start a new project, I'll paste all my ideas into AI Studio. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a Software Design Document. During my research I'll often find other oss projects that solve similar things, so I drag in the compiled markdown and ask Gemini things like 
 
 > Which edge cases are implemented here that I didn't think of?
 
