@@ -71,7 +71,7 @@ As a basis, I used the open source [TikToken BPE tokenizer](https://github.com/o
 
 BPE (Byte Pair Encoding) is a compression algorithm adapted for tokenization in NLP. It breaks text into subword units (tokens), often capturing whole words or common prefixes/suffixes.
 
-Instead of just splitting on whitespace or characters, BPE builds a vocabulary of frequently seen pairs of characters or subwords. This allows models to handle unknown words, rare terms, and typos more gracefully. [Learn more about BPE on Wikipedia](https://en.wikipedia.org/wiki/Byte-pair_encoding).
+Instead of just splitting on whitespace or characters, [BPE](https://en.wikipedia.org/wiki/Byte-pair_encoding) builds a vocabulary of frequently seen pairs of characters or subwords. This allows models to handle unknown words, rare terms, and typos more gracefully.
 
 ## Agentic Engineering and Clear Thinking
 
