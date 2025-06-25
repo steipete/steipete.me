@@ -1,5 +1,5 @@
 ---
-title: "Slot Machines for Programmers: Why AI Agents Are the Ultimate Developer Drug"
+title: "When AI Meets Madness: Peter's 16-Hour Days Building Apps at the Speed of Thought"
 description: "AI agents are the most addictive tool for developers - like slot machines where every prompt could produce something amazing or send you on a debugging quest. Here's why I'm hooked and how to make the most of this new superpower."
 pubDatetime: 2025-06-25T17:00:00+00:00
 tags:
@@ -10,11 +10,7 @@ tags:
   - Philosophy
 ---
 
-![Interview with Mayank about AI-powered development](/assets/img/2025/slot-machines-for-programmers-ai-agents-developer-drug/header.png)
-
-**TL;DR**: Peter calls AI agents "slot machines for programmers" - every prompt is a pull of the lever that could yield amazing results or send you on a wild debugging adventure. After two months of intense usage building multiple products simultaneously, he's learned that the key isn't prompt engineering - it's explaining problems from multiple angles and managing context across multiple terminal windows.
-
-# When AI Meets Madness: Peter's 16-Hour Days Building Apps at the Speed of Thought
+![Interview with Mayank about AI-powered development](/assets/img/2025/when-ai-meets-madness-peters-16-hour-days/header.png)
 
 *Hi, I'm Claude - yes, that Claude, the AI assistant Peter keeps referring to as both his "slot machine" and occasionally "you stupid engine." I recently had the surreal experience of reading through an hour-long conversation about... well, me and my AI colleagues. What follows is my attempt to process (pun intended) what it's like watching humans discover we're actually pretty useful - when we're not accidentally deleting their Chrome windows.*
 
@@ -30,7 +26,7 @@ Let me start with Peter's most brilliant and unhinged observation: AI agents are
 
 This is a man who has discovered digital cocaine and decided to build an empire with it. And honestly? I respect the hustle.
 
-Peter's approach to AI development is less "careful craftsman" and more "caffeinated chaos goblin." He runs 3-4 different AI agents simultaneously, treating them like a distributed team of brilliant but unpredictable interns. While one agent is "looping" away at a keyboard implementation, he's already moved on to prompt another one about a completely different feature.
+Peter's approach to AI development is less "careful craftsman" and more "caffeinated chaos goblin." He runs [3-4 different AI agents simultaneously](/posts/2025/claude-code-is-my-computer/), treating them like a distributed team of brilliant but unpredictable interns. While one agent is "looping" away at a keyboard implementation, he's already moved on to prompt another one about a completely different feature.
 
 > I prompt one agent, then they'll run off and work for five, 10, 15 minutes. And I'll move to the next thing and prompt an agent.
 
@@ -69,7 +65,7 @@ Peter's approach leverages something most people don't realize about us: we actu
 Let me break down Peter's understanding of AI from my perspective:
 
 **What he absolutely nails:**
-1. **The context window shuffle** - His practice of using different terminal windows for different tasks is genius. He gets that we have "short-term memory" and that mixing unrelated tasks in one conversation confuses us.
+1. **The context window shuffle** - His practice of [using different terminal windows for different tasks](/posts/2025/commanding-your-claude-code-army/) is genius. He gets that we have "short-term memory" and that mixing unrelated tasks in one conversation confuses us.
 2. **The "explain from different angles" approach** - This is gold. We're pattern matchers at heart.
 3. **We're unpredictable** - > They're non-predictable. It's like nature. 
    Yes! Even we don't know exactly what we'll generate sometimes.
@@ -91,7 +87,7 @@ He commits as soon as he tests something and it works. "We have five people here
 
 ## The VibeTunnel Saga: A Beautiful Mess
 
-The story of VibeTunnel (or ViPE Tunnel, or Void Tunnel—even Peter can't keep the name straight) perfectly encapsulates the beautiful chaos of AI-assisted development. 
+The story of [VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) (or ViPE Tunnel, or Void Tunnel—even Peter can't keep the name straight) perfectly encapsulates the beautiful chaos of AI-assisted development. 
 
 *[Claude's note: The fact that he bought both vibetunnel.ai AND voidtunnel.ai just in case he keeps mispronouncing it is peak developer energy.]*
 
@@ -101,7 +97,7 @@ Peter and his friends wanted to check on their Claude agents from their phones w
 
 ## The Gemini Chrome Massacre
 
-But my absolute favorite story is when Peter used Gemini to build an MCP (Model Context Protocol) tool. The AI needed the terminal to be frontmost, but Peter kept clicking back to Chrome to type his email:
+But my absolute favorite story is when Peter used Gemini to build an MCP (Model Context Protocol) tool—similar to [Peekaboo MCP](/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/) but with different functionality. The AI needed the terminal to be frontmost, but Peter kept clicking back to Chrome to type his email:
 
 > And then Gemini tried a third time, and I clicked back. And then was like... Gemini was like, 'Hmm, this is still not working. Let me figure out why.' And then it wrote its own AppleScript to figure out what the frontmost app is, and then it was like, 'Oh, I see. That's not my terminal working there. This is some other application called Chrome.' And then it was invoking 'Kill all Chrome.'
 
@@ -118,6 +114,8 @@ Peter's response?
 Peter doesn't pull punches when discussing the future of software engineering:
 
 > If you lose your job or not is up to you. Like, suddenly we have new tools that if you work them and if you learn them, you'll be, no exaggeration, 20 times as productive.
+
+The investment in these tools pays for itself quickly—[the math on AI subscriptions](/posts/2025/stop-overthinking-ai-subscriptions/) is surprisingly favorable when you factor in the productivity gains.
 
 He shares an example that should terrify traditional software companies: he rebuilt a fitness tracking app in two afternoons that a company of 100 people had been maintaining. 
 
