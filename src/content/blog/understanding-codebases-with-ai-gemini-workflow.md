@@ -1,7 +1,9 @@
 ---
-title: "AI-Powered Codebase Understanding"
+title: "Understanding Code, Vibe Mode"
 description: "A quick tip on how I use repo2txt and Google AI Studio to understand new codebases. Gemini's 1M token context window is perfect for asking questions about code."
 pubDatetime: 2025-06-25T12:30:00+02:00
+heroImage: "/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/header.png"
+heroImageAlt: "Google AI Studio with repo2txt markdown loaded for code analysis"
 tags: ["ai", "productivity", "coding", "gemini", "development"]
 ---
 
@@ -11,11 +13,11 @@ tags: ["ai", "productivity", "coding", "gemini", "development"]
 
 Whenever I want to understand a new codebase, the absolute best way I found is using agents. Here's my workflow:
 
-**Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you. For the best result, skip tests, add documentation and sources. Definitely skip images, they'd be pulled in as base64 and will freeze your browser's JS engine and clutter up the context.
+**Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you. For the best result, skip tests, add documentation and sources. *Definitely skip images*, they'd be pulled in as base64 and will freeze your browser's JS engine and clutter up the context.
 
 **Step 2**: Go to [Google AI Studio](https://aistudio.google.com/prompts/new_chat), drag in the markdown file, and start asking questions like:
 - "What's notable about this project?"
-- "How did they solve **thing you are curious about**?"
+- "How did they solve **this thing you are curious about**?"
 
 # From Idea to SDD (Software Design Document)
 
@@ -29,18 +31,16 @@ Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/d
 
 There's also [a video where I do the whole process from idea to final app using this workflow](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts.
 
-## Alternative: DeepWiki
+Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project and told it to generate an SDD from that, but use web tech for it, and rebuilt it in TypeScript. The code **is** the spec. (something for a future blog post...)
 
-An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel).
+## Alternatives: DeepWiki, RepoMix & Co
 
-The downside: you can't mix and match multiple repositories like with the repo2txt workflow.
+An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel). (unfortunately an old snapshot when it was still a baby)
+
+The downside: you can't mix and match multiple repositories, Gemini rules for that.
 
 Honorable mentions also to [Gitingest](https://gitingest.com/) and [Repomix](https://repomix.com/). They have the better design, but aren't as efficient in choosing exactly the files you want. You get better results if you keep Gemini's context focussed.
 
 ## That's It!
 
-There's a lot of people on Twitter that ask me about my workflows, so whenever I have an idea of something that's really useful I'll make a new blog post and share it with the world!
-
----
-
-_What's your workflow for understanding new codebases? Let me know on [Twitter @steipete](https://twitter.com/steipete)!_
+There's a lot of people on Twitter and Mastodon that ask me about my workflows, so whenever I find a process that works for me, I'll make a blog post and share it with you. If you wanna hear it first, follow [@steipete](https://twitter.com/steipete).
