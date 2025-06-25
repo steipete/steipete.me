@@ -1,7 +1,7 @@
 ---
 title: "Slot Machines for Programmers: Why AI Agents Are the Ultimate Developer Drug"
 description: "AI agents are the most addictive tool for developers - like slot machines where every prompt could produce something amazing or send you on a debugging quest. Here's why I'm hooked and how to make the most of this new superpower."
-pubDatetime: 2025-01-25T17:00:00+00:00
+pubDatetime: 2025-06-25T17:00:00+00:00
 tags:
   - AI
   - Claude
@@ -14,7 +14,7 @@ tags:
 
 **TL;DR**: AI agents are like slot machines for programmers - every prompt is a pull of the lever that could yield amazing results or send you on a wild debugging adventure. After two months of intense usage, building multiple products simultaneously, I've learned that the key isn't prompt engineering - it's explaining problems from multiple angles and managing context like a conductor leading an orchestra.
 
-*Note: This blog post is a summary of my conversation with Mayank, created with the help of AI. The full video interview will be available on Monday, January 30th.*
+*Note: This blog post is a summary of my conversation with Mayank, created with the help of AI. The full video interview will be available on Monday, June 30th.*
 
 ## The Ultimate Catnip for Programmers
 

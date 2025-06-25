@@ -1,7 +1,7 @@
 ---
 title: "My AI Workflow for Understanding Any Codebase"
 description: "A quick tip on how I use repo2txt and Google AI Studio to understand new codebases. Gemini's 1M token context window is perfect for asking questions about code."
-pubDatetime: 2025-01-25T12:00:00+00:00
+pubDatetime: 2025-06-25T12:00:00+00:00
 heroImage: "/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/header.png"
 heroImageAlt: "Google AI Studio with repo2txt markdown loaded for code analysis"
 tags: ["ai", "productivity", "coding", "gemini", "development"]
