@@ -44,6 +44,16 @@
       "permanent": true
     },
     {
+      "source": "/posts/llm-codes-transform-developer-docs",
+      "destination": "/posts/2025/llm-codes-transform-developer-docs",
+      "permanent": true
+    },
+    {
+      "source": "/posts/understanding-codebases-with-ai-gemini-workflow",
+      "destination": "/posts/2025/understanding-codebases-with-ai-gemini-workflow",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "^(?!(steipete\\.me|www\\.steipete\\.me|steipete\\.md|www\\.steipete\\.md|.*\\.vercel\\.app|.*\\.friendship\\.dev|.*\\.amantus\\.dev)).*$" }],
       "destination": "https://steipete.me/:path*",

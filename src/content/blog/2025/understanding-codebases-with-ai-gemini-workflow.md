@@ -45,7 +45,7 @@ Heck, I restarted an old side project of mine by simply giving Gemini the whole 
 
 ## Alternatives: DeepWiki, RepoMix & Co
 
-An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel). [VibeTunnel is my current focus](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal), it turns any browser into your terminal to command your agents (like Claude Code or Gemini CLI) on the go. (unfortunately DeepWiki shows an old snapshot when it was still a baby, so it's not ideal for fast-moving projects)
+An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel). [VibeTunnel is my current focus](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal), it turns any browser into your terminal to command your agents (like Claude Code or Gemini CLI) on the go.
 
 The downside: you can't mix and match multiple repositories, Gemini rules for that.
 

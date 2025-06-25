@@ -186,7 +186,72 @@ extension Notification.Name {
 
 The [`NotificationCenter`](https://developer.apple.com/documentation/foundation/notificationcenter) approach decouples the menu action from the window context, allowing the hidden window to handle the actual settings opening.
 
-For a production-ready implementation with all edge cases (yes, there are some more...) handled, see [VibeTunnel's SettingsOpener.swift](https://github.com/amantus-ai/vibetunnel/blob/main/VibeTunnel/Utilities/SettingsOpener.swift).
+For a production-ready implementation with all edge cases (yes, there are some more...) handled, see [VibeTunnel's SettingsOpener.swift](https://github.com/amantus-ai/vibetunnel/blob/2a63599ce0b09d139ddc9954f41f2a5840264f9f/mac/VibeTunnel/Utilities/SettingsOpener.swift#L4).
+
+## Scene Order Matters (Unfortunately)
+
+While implementing @steipete's solution described above, I (@matejkob) discovered another gotcha: **the order of scenes in your App's body actually affects whether this workaround functions correctly**.
+
+The working example shown earlier has the scenes in this order:
+1. `MenuBarExtra`
+2. `Settings` 
+3. `Window` (hidden)
+
+However, I found that if you arrange them like this (which seems equally logical):
+
+```swift
+var body: some Scene {
+    MenuBarExtra("My App", systemImage: "star.fill") {
+        ContentView()
+    }
+    .menuBarExtraStyle(.menu)
+    
+    Settings {
+        SettingsView()
+            .onDisappear {
+                NotificationCenter.default.post(name: .settingsWindowClosed, object: nil)
+            }
+    }
+    
+    // Hidden window for settings context
+    Window("Hidden", id: "HiddenWindow") {
+        HiddenWindowView()
+    }
+    .windowResizability(.contentSize)
+    .defaultSize(width: 100, height: 100)
+}
+```
+
+The hidden window won't be "visible" to the SwiftUI environment system (at least not on macOS Sequoia 15.5), and the `openSettings()` call will fail silently. However, moving the hidden `Window` scene **before** the `Settings` scene makes it work perfectly:
+
+```swift
+var body: some Scene {
+    // Hidden window for settings context - MUST come before Settings
+    Window("Hidden", id: "HiddenWindow") {
+        HiddenWindowView()
+    }
+    .windowResizability(.contentSize)
+    .defaultSize(width: 100, height: 100)
+    
+    MenuBarExtra("My App", systemImage: "star.fill") {
+        ContentView()
+    }
+    .menuBarExtraStyle(.menu)
+    
+    Settings {
+        SettingsView()
+            .onDisappear {
+                NotificationCenter.default.post(name: .settingsWindowClosed, object: nil)
+            }
+    }
+}
+```
+
+This suggests that SwiftUI's scene resolution and environment propagation happens in declaration order, and the `@Environment(\.openSettings)` action in the hidden window needs its context established before the `Settings` scene is processed.
+
+Whether this is an Xcode build system quirk, a SwiftUI implementation detail, or intended behavior is unclear from Apple's documentation. What is clear is that **the hidden window must be declared before the Settings scene** for this workaround to function reliably.
+
+This adds yet another layer of undocumented complexity to what should be a simple operation - not only do we need a hidden window and activation policy juggling, but we also need to carefully order our scene declarations to avoid mysterious failures.
 
 ## Understanding the Workaround
 
