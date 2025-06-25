@@ -27,8 +27,6 @@ Whenever I start a new project, I'll paste all my ideas into AI Studio. These da
 
 > Which edge cases are implemented here that I didn't think of?
 
-This is an extremely effective way to write a great SDD. 
-
 ## The Two-Context Technique
 
 Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini context and ask it to take the spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
@@ -37,7 +35,7 @@ After a few rounds, you get a bullet-proof multi-hundred line spec.md that you c
 
 Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to buid [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
 
-There's also [a video where I do the whole process from idea to final app using this workflow](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts.
+Wanna see me in action? Here's [a video where I do the whole process from idea to final app](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts. Maybe I'll use [Gemini CLI](https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/) in the future. [AI moves so fast!](https://x.com/steipete/status/1937919798740214023)
 
 Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (something for a future blog post...)
 
