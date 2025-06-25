@@ -11,17 +11,23 @@ tags: ["ai", "productivity", "coding", "gemini", "development"]
 
 Whenever I want to understand a new codebase, the absolute best way I found is using agents. Here's my workflow:
 
-**Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you. For the best result, skip tests, add documentation and sources. Definitely skip images, they'd be pulled in as base64 and might freeze your browser.
+**Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you. For the best result, skip tests, add documentation and sources. Definitely skip images, they'd be pulled in as base64 and will freeze your browser's JS engine and clutter up the context.
 
 **Step 2**: Go to [Google AI Studio](https://aistudio.google.com/prompts/new_chat), drag in the markdown file, and start asking questions like:
 - "What's notable about this project?"
 - "How did they solve **thing you are curious about**?"
 
-## Why This Works
+# From Idea to SDD (Software Design Document)
 
-Gemini is amazing at coding. It has a 1 Mio token context window, and Google's AI Studio is a great work environment and unlike OpenAI's website, the system prompt is not heavily tiered for short outputs. You can easily create 500 line markdown files it - I use it not only for understanding code but also for creating [Software Design Documents](https://steipete.com/posts/2025/the-future-of-vibe-coding).
+Whenever I start a new project, I'll paste all my ideas into Gemini. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into an SDD. During my research I'll often find other oss projects that solve similarm things, so I drag in the compiled markdown and ask Gemini things like 
 
-You can even drag in multiple repositories, websites, whole books (!) or any other material you're trying to understand quickly.
+> "Which edge cases are implemented here that I didn't think of?"
+
+This is an extremely effective way to write a better SDD. Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini instance and ask it to take the Spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option. After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
+
+Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to buid [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
+
+There's also [a video where I do the whole process from idea to final app using this workflow](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts.
 
 ## Alternative: DeepWiki
 
