@@ -9,9 +9,7 @@ tags: ["ai", "productivity", "coding", "gemini", "development"]
 
 ## The Problem
 
-Whenever I want to understand a new codebase, the absolute best way I found is using AI—but with a specific workflow that actually works.
-
-## My Two-Step Workflow
+Whenever I want to understand a new codebase, the absolute best way I found is using AI—but with a specific workflow that actually works:
 
 **Step 1**: Go to [repo2txt](https://repo2txt.simplebasedomain.com/) and paste in a GitHub repository URL. It gives you the full tree of the project. Select all the source code files that interest you (skip images—they'll just slow down your browser).
 
