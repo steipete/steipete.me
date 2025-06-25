@@ -39,7 +39,7 @@ Wanna see me in action? Here's [a video where I do the whole process from idea t
 
 ## The Code is the Spec
 
-Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (something for a future blog post...)
+Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (blacked out some secrets, something for a future blog post...)
 
 ![Software Design Document in Google AI Studio](/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/sweetistics-sdd.png)
 
@@ -51,9 +51,11 @@ The downside: you can't mix and match multiple repositories, Gemini rules for th
 
 Honorable mentions also to [Gitingest](https://gitingest.com/) and [Repomix](https://repomix.com/). They have the better design, but aren't as efficient in choosing exactly the files you want. You get better results if you keep Gemini's context focussed.
 
+As to alternatives to Google's AI Studio, I haven't found anything that comes close. OpenAI has great models, but they really don't want to write 500-line markdown files.
+
 ## That's It!
 
 There's a lot of people on Twitter and Mastodon that ask me about my workflows, so whenever I find a process that works for me, I'll make a blog post and share it with you. Wanna be the first to hear about it? Follow [@steipete](https://twitter.com/steipete) or sign up for my newsletter. 
 
---
+---
 Now go [check out VibeTunnel](https://vibetunnel.sh/) and make sure your agents never get a break!
