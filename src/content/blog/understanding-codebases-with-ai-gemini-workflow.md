@@ -37,7 +37,7 @@ Heck, I restarted an old side project of mine by simply giving Gemini the whole 
 
 ## Alternatives: DeepWiki, RepoMix & Co
 
-An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel). (unfortunately an old snapshot when it was still a baby)
+An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at understanding a codebase and includes a free agent. For example, here's [VibeTunnel on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel). [VibeTunnel is my current focus](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal), it turns any browser into your terminal to command your agents (like Claude Code or Gemini CLI) on the go. (unfortunately DeepWiki shows an old snapshot when it was still a baby, so it's not ideal for fast-moving projects)
 
 The downside: you can't mix and match multiple repositories, Gemini rules for that.
 
@@ -45,4 +45,7 @@ Honorable mentions also to [Gitingest](https://gitingest.com/) and [Repomix](htt
 
 ## That's It!
 
-There's a lot of people on Twitter and Mastodon that ask me about my workflows, so whenever I find a process that works for me, I'll make a blog post and share it with you. If you wanna hear it first, follow [@steipete](https://twitter.com/steipete).
+There's a lot of people on Twitter and Mastodon that ask me about my workflows, so whenever I find a process that works for me, I'll make a blog post and share it with you. Wanna be the first to hear about it? Follow [@steipete](https://twitter.com/steipete) or sign up for my newsletter. 
+
+--
+Now go [check out VibeTunnel](https://vibetunnel.sh/) and make sure your agents never get a break!
