@@ -58,4 +58,5 @@ As to alternatives to Google's AI Studio, I haven't found anything that comes cl
 There's a lot of people on Twitter and Mastodon that ask me about my workflows, so whenever I find a process that works for me, I'll make a blog post and share it with you. Wanna be the first to hear about it? Follow [@steipete](https://twitter.com/steipete) and sign up for my newsletter.
 
 ---
-Now go and build something, or join me & the [VibeTunnel Team](https://vibetunnel.sh/). Your agents won't know what hit them!
+Now go and build something amazing, or join me & the [VibeTunnel Team](https://vibetunnel.sh/).
+We'll make sure your agents won't know what hit them!
