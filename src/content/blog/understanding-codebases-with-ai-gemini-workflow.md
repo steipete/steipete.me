@@ -92,6 +92,17 @@ The combination of repo2txt's clean markdown output and Gemini's code comprehens
 
 This approach has fundamentally changed how I approach new codebases. Instead of spending hours jumping between files and trying to piece together the mental model, I can get oriented in minutes and dive deep into the specific areas that matter to me.
 
+## Alternative: DeepWiki
+
+An honorable mention goes to [DeepWiki](https://deepwiki.com/), which offers a different approach. It's surprisingly great at understanding a codebase and even integrates a free agent for deeper analysis.
+
+For example, here's [VibeTunnel analyzed on DeepWiki](https://deepwiki.com/amantus-ai/vibetunnel) - my latest project for turning any browser into a macOS terminal.
+
+The main trade-off: While DeepWiki excels at single repository analysis with its integrated agent, you can't mix and match multiple repositories like you can with the repo2txt + Gemini workflow. Choose based on your needs:
+
+- **DeepWiki**: Best for deep diving into a single repository with agent assistance
+- **repo2txt + Gemini**: Best for comparing multiple codebases or when you need maximum flexibility
+
 ## Try It Yourself
 
 Next time you need to understand a new codebase:
@@ -101,7 +112,9 @@ Next time you need to understand a new codebase:
 3. Open [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
 4. Drag in the file and start exploring
 
-You'll be surprised how quickly you can understand complex codebases with this approach.
+Or give [DeepWiki](https://deepwiki.com/) a try for single-repository deep dives.
+
+You'll be surprised how quickly you can understand complex codebases with these approaches.
 
 ---
 
