@@ -34,8 +34,6 @@ Luckily, I wasn't alone. There were other people that were already curious and i
 
 During the process I even started using SIMD operations, something which I only darkly remember got support in Swift but now it's crucial to offer a speedy parsing that doesn't clock down your CPU.
 
-### Vectorized Byte Pair Lookup
-
 The most impressive optimization is the vectorized lookup table that uses SIMD16 (16-byte vectors) for fast pattern matching:
 
 ```swift
@@ -56,7 +54,6 @@ private struct VectorizedBytePairLookup {
                     vector[i] = bytes[i]
                 }
             }
-
             vectors[vector]?.append((length: data.count, rank: rank))
         }
     }
