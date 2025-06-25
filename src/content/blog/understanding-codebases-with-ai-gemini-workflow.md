@@ -33,7 +33,7 @@ Once I am happy with the output, I copy the markdown, paste it into a fresh Gemi
 
 After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
 
-Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to buid [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
+Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to build [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
 
 Wanna see me in action? Here's [a video where I do the whole process from idea to final app](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts. Maybe I'll use [Gemini CLI](https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/) in the future. [AI moves so fast!](https://x.com/steipete/status/1937919798740214023)
 
