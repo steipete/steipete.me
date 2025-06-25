@@ -19,13 +19,19 @@ Whenever I want to understand a new codebase, the absolute best way I found is u
 - "What's notable about this project?"
 - "How did they solve **this thing you are curious about**?"
 
-# From Idea to SDD
+## From Idea to SDD
 
-Whenever I start a new project, I'll paste all my ideas into Gemini. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a Software Design Document (SDD). During my research I'll often find other oss projects that solve similarm things, so I drag in the compiled markdown and ask Gemini things like 
+Whenever I start a new project, I'll paste all my ideas into AI Studio. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a SDD. During my research I'll often find other oss projects that solve similarm things, so I drag in the compiled markdown and ask Gemini things like 
 
 > Which edge cases are implemented here that I didn't think of?
 
-This is an extremely effective way to write a better SDD. Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini instance and ask it to take the Spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option. After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
+This is an extremely effective way to write a great SDD. 
+
+## Gemini vs Gemini
+
+Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini instance and ask it to take the Spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
+
+After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
 
 Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to buid [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
 
@@ -34,6 +40,8 @@ There's also [a video where I do the whole process from idea to final app using 
 Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project and told it to generate an SDD from that, but use web tech for it, and rebuilt it in TypeScript. The code **is** the spec. (something for a future blog post...)
 
 ![Software Design Document in Google AI Studio](/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/sweetistics-sdd.png)
+
+**Been hiding some parts, what would live be without surprises?**
 
 ## Alternatives: DeepWiki, RepoMix & Co
 
