@@ -19,7 +19,7 @@ Whenever I want to understand a new codebase, the absolute best way I found is u
 
 ## Why This Works
 
-Gemini is amazing at coding (not tests—it's a documentation tool). It has a 1,000,000 token context window, and AI Studio shows you the approximate token size so you don't have to be too careful. 
+Gemini is amazing at coding. It has a 1 Mio token context window, and Google's AI Studio is a great work environment and unlike OpenAI's website, the system prompt is not heavily tiered for short outputs. You can easily create 500 line markdown files it - I use it not only for understanding code but also for creating [Software Design Documents](https://steipete.com/posts/software-design-documents/).
 
 You can even drag in multiple repositories or additional research to build your own software or write specifications based on what you learn.
 
