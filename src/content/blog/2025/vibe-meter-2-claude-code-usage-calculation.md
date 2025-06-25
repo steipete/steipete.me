@@ -18,7 +18,7 @@ What started as a [simple idea](https://steipete.me/posts/2025/the-future-of-vib
 
 ## The Challenge: API vs Subscription
 
-Anthropic has both an API endpoint which is very easy to calculate. They also offer subscriptions where especially in the max version you get around 900 requests in a 5-hour window. I was curious:
+Anthropic has both API endpoints with straightforward pricing. They also offer subscriptions where especially in the max version you get around 900 requests in a 5-hour window. I was curious:
 - **A)** How much that would actually cost if it would be API calls
 - **B)** How many requests you actually have open in that 5-hour window
 
@@ -32,7 +32,7 @@ Luckily, I wasn't alone. There were other people that were already curious and i
 
 ## SIMD Operations for Performance
 
-During the process I even started using SIMD operations, something which I only darkly remember got support in Swift but now it's crucial to offer a speedy parsing that doesn't clock down your CPU.
+During the process I even started using SIMD operations, something which I only darkly remember got support in Swift but now it's crucial to offer a speedy parsing that doesn't bog down your CPU.
 
 The most impressive optimization is the vectorized lookup table that uses SIMD16 (16-byte vectors) for fast pattern matching:
 
@@ -96,7 +96,7 @@ With this release, I also relented and started supporting macOS 14 which was qui
 
 ## Modern Swift Refactoring
 
-In the 2.0 refactor, I also put a better effort on using modern Swift idioms, and most I did that by Claude teaching modern Swift via a new Markdown file that I fed to him and asked him to refactor my codebase using modern Swift idioms. I shared this and many other knowledge files (if you dare say so) in my new [agent rules repository](https://github.com/steipete/agent-rules/tree/main/docs).
+In the 2.0 refactor, I also put a better effort on using modern Swift idioms, and most I did that by Claude teaching modern Swift via a new Markdown file that I fed to him and asked him to refactor my codebase using modern Swift idioms. I shared this and many other knowledge files in my new [agent rules repository](https://github.com/steipete/agent-rules/tree/main/docs).
 
 ## Project Statistics
 
