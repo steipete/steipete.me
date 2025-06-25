@@ -12,9 +12,9 @@ tags:
 
 ![Vibe Meter 2.0 Header](/assets/img/2025/vibe-meter-2-claude-code-usage-calculation/header.png)
 
-**TL;DR**: Built Vibe Meter 2.0 to track Claude subscription usage by parsing JSON-L files and counting tokens with a SIMD-accelerated BPE tokenizer. No official API exists, so we approximate usage by counting every token. The project grew to 47K lines of Swift with 92% test coverage, all written collaboratively with Claude using "thinking" triggers and modern Swift idioms.
+**TL;DR**: Built Vibe Meter 2.0 to track Claude Code subscription usage by parsing JSON-L files and counting tokens with a SIMD-accelerated BPE tokenizer. No official API exists, so I approximated usage by counting every token. The project grew to 47K lines of Swift with 92% test coverage, all written with CC using "thinking" triggers and modern Swift idioms.
 
-What started as a [simple idea](https://steipete.me/posts/2025/the-future-of-vibe-coding) to explain vibe coding to new people is slowly growing up. With version 2 of Vibe Meter, I added full support for Anthropic Claude subscription. While version 1 only focused on cost display for Cursor, for version 2 I wanted to add support for Anthropic Claude. This turned out to be much more of an adventure than I initially thought.
+What started as a [simple idea](https://steipete.me/posts/2025/the-future-of-vibe-coding) to explain vibe coding to new people is slowly growing up. With version 2 of Vibe Meter, I added full support for Anthropic's subscription. While v1 only focused on cost display for Cursor, for version 2 I wanted to add support for CC. This turned out to be much more of an adventure than I initially thought.
 
 ## The Challenge: API vs Subscription
 
@@ -114,3 +114,5 @@ VibeMeter has grown into a substantial project:
 - **Test coverage ratio**: 92% (tests are nearly as large as the app itself!)
 
 These numbers reflect the complexity of accurately parsing Claude's JSON-L files, implementing SIMD-accelerated token counting, and ensuring the reliability users expect from a cost monitoring tool.
+
+Note: Vibe Meter is still on the pre-release channel for now, there's a few edge-cases I wanna get right before making it 2.0 official, but it's close!
