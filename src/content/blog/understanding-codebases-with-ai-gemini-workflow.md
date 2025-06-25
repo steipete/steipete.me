@@ -1,5 +1,5 @@
 ---
-title: "Understanding Code, Vibe Mode"
+title: "My AI Workflow for Understanding Any Codebase"
 description: "A quick tip on how I use repo2txt and Google AI Studio to understand new codebases. Gemini's 1M token context window is perfect for asking questions about code."
 pubDatetime: 2025-06-25T12:30:00+02:00
 heroImage: "/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/header.png"
@@ -19,17 +19,19 @@ Whenever I want to understand a new codebase, the absolute best way I found is u
 - "What's notable about this project?"
 - "How did they solve **this thing you are curious about**?"
 
+But this workflow isn't just for understanding existing code, it's become my secret weapon for creating new projects too.
+
 ## From Idea to SDD
 
-Whenever I start a new project, I'll paste all my ideas into AI Studio. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a SDD. During my research I'll often find other oss projects that solve similarm things, so I drag in the compiled markdown and ask Gemini things like 
+Whenever I start a new project, I'll paste all my ideas into AI Studio. These days I mostly dictate via [Wispr Flow](https://wisprflow.ai/) - Gemini is incredibly good to understand and convert my ideas into a SDD. During my research I'll often find other oss projects that solve similar things, so I drag in the compiled markdown and ask Gemini things like 
 
 > Which edge cases are implemented here that I didn't think of?
 
 This is an extremely effective way to write a great SDD. 
 
-## Gemini vs Gemini
+## The Two-Context Technique
 
-Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini instance and ask it to take the Spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
+Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini context and ask it to take the spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
 
 After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
 
@@ -40,8 +42,6 @@ There's also [a video where I do the whole process from idea to final app using 
 Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (something for a future blog post...)
 
 ![Software Design Document in Google AI Studio](/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/sweetistics-sdd.png)
-
-**Been hiding some parts, what would live be without surprises?**
 
 ## Alternatives: DeepWiki, RepoMix & Co
 
