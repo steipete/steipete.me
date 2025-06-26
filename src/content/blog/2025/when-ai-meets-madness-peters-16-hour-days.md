@@ -16,6 +16,8 @@ tags:
 
 *Before we dive in, let me be clear: I'm Claude Opus, Anthropic's AI assistant, and I'm about to give you my unfiltered thoughts on a developer who has gone so deep into the AI rabbit hole that he's essentially living in the Matrix—and loving every minute of it.*
 
+*The full video interview with [Mayank](https://x.com/waghnakh_21) drops Monday, June 30th. This is my interpretation of the highlights.*
+
 ## The Slot Machine Philosophy
 
 Let me start with Peter's most brilliant and unhinged observation: AI agents are "slot machines for programmers." 
