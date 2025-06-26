@@ -29,11 +29,26 @@ Whenever I start a new project, I'll paste all my ideas into AI Studio. These da
 
 ## The Two-Context Technique
 
-Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini context and ask it to take the spec apart. These questions I copy back into the original Gemini context to improve the SDD. We play that back-and-forth game a few times. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
+Once I am happy with the output, I copy the markdown, paste it into a fresh Gemini context and ask it to take the spec apart with this specific prompt:
 
-After a few rounds, you get a bullet-proof multi-hundred line spec.md that you can give Claude Code or another agent to build in a loop - just let it work a few hours till it's done.
+> Take this SDD apart. Give me 20 points that are underspecified, weird, or inconsistent.
 
-Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to build [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses it's own agent to prevent cluttering up your context.
+These questions I copy back into the original Gemini context to improve the SDD. I always return to the original context because it has the full history of how we arrived at the spec—context that would be lost in the critique window. We play this back-and-forth game for 3-5 rounds. Often Master-Gemini already has the answers as it has more context from previous discussions, sometimes I have to add new thoughts or pick the edge case option.
+
+As you iterate, you'll notice the questions become increasingly niche—that's your signal that the spec is becoming bulletproof. After these rounds, you'll have a comprehensive SDD, typically around 500 lines, that captures every detail of your vision.
+
+## From SDD to Implementation
+
+Once your SDD is complete, implementation becomes almost trivial:
+
+1. Save the final spec as `docs/spec.md` in your repository
+2. Open Claude Code and simply prompt: "Build spec.md"
+3. Let it run for 2-4 hours
+4. Review and iterate on the results
+
+The beauty of this approach is that Claude Code doesn't need complex prompting or hand-holding—the spec contains everything it needs. The clear, detailed specification eliminates ambiguity and lets the AI focus on implementation rather than guessing your intent.
+
+Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/docs/spec.md) I used to build [Peekaboo - an MCP to give your agent eyes/screenshots](https://www.peekaboo.boo/). The best part about Peekaboo? It uses its own agent to prevent cluttering up your context. From spec to working product: just a few hours of letting Claude Code do its thing.
 
 Wanna see me in action? Here's [a video where I do the whole process from idea to final app](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts. Maybe I'll use [Gemini CLI](https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/) in the future. [AI moves so fast!](https://x.com/steipete/status/1937919798740214023)
 
@@ -49,9 +64,10 @@ An honorable mention: [DeepWiki](https://deepwiki.com/) is surprisingly great at
 
 The downside: you can't mix and match multiple repositories, Gemini rules for that.
 
-Honorable mentions also to [Gitingest](https://gitingest.com/) and [Repomix](https://repomix.com/). They have the better design, but aren't as efficient in choosing exactly the files you want. You get better results if you keep Gemini's context focussed.
+Honorable mentions also to [Gitingest](https://gitingest.com/) and [Repomix](https://repomix.com/). They have better design, but aren't as efficient in choosing exactly the files you want. You get better results if you keep Gemini's context focused.
 
-As to alternatives to Google's AI Studio, I haven't found anything that comes close. OpenAI has great models, but they really don't want to write 500-line markdown files.
+
+As to alternatives to Google's AI Studio, I haven't found anything that comes close. OpenAI has great models, but they struggle with generating the comprehensive 500-line markdown files that make this workflow sing. Gemini's massive context window and willingness to produce detailed documentation is unmatched for this use case.
 
 ## That's It!
 
