@@ -192,7 +192,7 @@ Actually, he doesn't drag - it's already in his GitHub repository under docs/spe
 ## The Speed of Everything
 
 Peter operates at a velocity that would make most developers dizzy:
-- Built a Sparkle update analytics service in 4 hours
+- Built a [Sparkle update analytics service](/posts/2025/stats-store-privacy-first-sparkle-analytics/) in 4 hours
 - Created a complete release automation system for Mac apps in 3 days
 - Develops multiple apps simultaneously
 - Built a fitness app in "two afternoons" while working on other things at 30% capacity
