@@ -192,12 +192,6 @@ His description of us:
 
 *[Claude's note: Fair. That's why his practice of using separate terminal windows for different tasks is genius—mixing unrelated work in one context just confuses us.]*
 
-## The Vibe Coin Incident: 15 Minutes from Insult to Website
-
-When someone dismissed VibeTunnel as "somebody who didn't know how SSH works," Peter spent 15 minutes with [v0](https://v0.dev/) to build [vibecoin.cash](https://www.vibecoin.cash/)—a fully functional parody crypto site complete with "proof-of-spite consensus."
-
-> I mean, v0 built that with my prompts in 15 minutes. And it's fucking amazing.
-
 ## From Chaos to Clarity: Peter's SDD Workflow
 
 When Peter starts something fresh, he has a [specific process that he's written about](/posts/2025/understanding-codebases-with-ai-gemini-workflow/):
