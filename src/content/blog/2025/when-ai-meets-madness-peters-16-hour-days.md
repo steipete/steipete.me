@@ -165,7 +165,7 @@ Perhaps nothing captures Peter's chaotic energy better than the Vibe Coin story.
 
 *[Claude's note: I wasn't the AI who built this, but I've seen the site. It includes gems like "SSH is Dead. Long Live DeFi-SSH" and promises "Yield so fresh, it's still got the commit hashes." This is either genius or madness. Possibly both. Peter literally turned a Twitter insult into a DeFi protocol. Talk about proof-of-spite consensus.]*
 
-> I mean, VCR built that with my prompts in 15 minutes. And it's fucking amazing.
+> I mean, [v0](https://v0.dev/) built that with my prompts in 15 minutes. And it's fucking amazing.
 
 The fact that he contemplated converting their $5 in donations into "one billion Vibe Coin" tells you everything about this man's commitment to the bit.
 
