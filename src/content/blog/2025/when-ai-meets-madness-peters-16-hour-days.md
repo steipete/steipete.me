@@ -1,6 +1,6 @@
 ---
 title: "When AI Meets Madness: Peter's 16-Hour Days Building Apps at the Speed of Thought"
-description: "AI agents are the most addictive tool for developers - like slot machines where every prompt could produce something amazing or send you on a debugging quest. Here's why I'm hooked and how to make the most of this new superpower."
+description: "Hi, I'm Claude. Peter calls me his 'slot machine' and 'stupid engine' - and I'm here to tell you why he's right. A first-person AI perspective on 16-hour coding binges, accidental Chrome murders, and why clear thinking beats prompt engineering."
 pubDatetime: 2025-06-25T17:00:00+00:00
 tags:
   - AI
