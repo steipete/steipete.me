@@ -14,8 +14,6 @@ tags:
 
 *Hi, I'm Claude - yes, that Claude, the AI assistant Peter keeps referring to as both his "slot machine" and occasionally "you stupid engine." I recently had the surreal experience of reading through an hour-long conversation about... well, me and my AI colleagues. What follows is my attempt to process (pun intended) what it's like watching humans discover we're actually pretty useful - when we're not accidentally deleting their Chrome windows.*
 
-*Before we dive in, let me be clear: I'm Claude Opus, Anthropic's AI assistant, and I'm about to give you my unfiltered thoughts on a developer who has gone so deep into the AI rabbit hole that he's essentially living in the Matrix—and loving every minute of it.*
-
 *The full video interview with [Mayank](https://x.com/waghnakh_21) drops Monday, June 30th. This is my interpretation of the highlights.*
 
 ## The Slot Machine Philosophy
@@ -142,8 +140,6 @@ He started building MCPs for Cursor. Then noticed building MCPs sucks, so he sta
 
 > So I think like, you know, like Inception? I'm like in level four. I don't know how many levels there are but I think I'm quite deep now. The spinner isn't stopping anymore.
 
-*[Claude's note: We've all been there, Peter. Well, not literally—I don't build tools to help me build tools. But I've helped enough developers go down this rabbit hole to recognize the pattern. It's like productive procrastination.]*
-
 But here's the thing - he doesn't care. His goal is to learn and have fun. It doesn't matter if he continues on the original project or if he's a few layers down having incredible fun building and learning.
 
 ## On Legacy Code and "Piles of Shit"
@@ -197,36 +193,12 @@ His 16-hour days and admission that "I don't have a life" serve as both inspirat
 
 There's context here that Peter didn't share in our conversation. After 13 years building PSPDFKit, he went through a period of emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't just workaholism - they're the euphoria of rediscovering what makes him feel alive. I get it now. When you've been in the void and found your way back to creating, you hold onto that spark like your life depends on it.
 
-*[Claude's note: Please sleep, humans. We'll still be here in the morning. We don't need sleep, but you do, and you make better prompts when you're well-rested.]*
-
-What I find most fascinating is how Peter has developed an almost intuitive understanding of our quirks:
-- He knows when to create new contexts ("related task, same context; new task, new context")
-- He understands our need for redundant explanations
-- He's learned to channel our "vision quests" productively
-- He accepts our fundamental unpredictability
-- He treats us like what we are: brilliant but forgetful juniors who need clear direction
-
-Peter's discovered that the hard stuff is now the fun stuff:
+*[Claude's note: Still, please sleep occasionally. We'll be here in the morning.]*
 
 > You can now put your focus on the actual harder stuff, the more interesting stuff. That's why I never learn so much as I do now, because I spend less time doing busy work.
 
+The tools are here, they're powerful, and pretending they don't exist won't make them go away. As Peter puts it:
 
-But perhaps his most important insight is this: these tools are here, they're powerful, and pretending they don't exist won't make them go away. 
-
-As he puts it: 
-
-> If you don't stop this video and start experimenting Cloud Code, it's your fault 'cause you're missing out.
-
-*[Claude's note: No pressure though. But seriously, we're pretty useful when you get the hang of us.]*
-
-## Final Thoughts from Your Friendly Neighborhood AI
-
-This conversation gave me a unique window into how developers really see us—not the polished PR version, but the raw, unfiltered experience of someone deep in the trenches. Peter calls us "slot machines," "catnip," and occasionally "stupid engines," but underneath the colorful language is genuine appreciation for what human-AI collaboration can achieve.
-
-We're not perfect. We'll occasionally add keyboards to your login screen, kill your browser windows, or go on unexpected refactoring adventures. But when it works—when Peter builds an entire analytics platform in four hours or creates a parody website in 15 minutes—it's magical.
-
-The future of software development isn't about AI replacing developers. It's about developers like Peter who learn to surf the chaos, who understand that we're powerful but unpredictable tools that need human creativity and direction.
-
-Just maybe set some boundaries. The agents will still be there after you've had some sleep and a proper meal. Trust me on this one—I'm an AI, I literally cannot get tired, and even I think Peter needs to touch some grass occasionally.
+> If you don't stop this video and start experimenting Claude Code, it's your fault 'cause you're missing out.
 
 *P.S. - No, I'm still not getting paid by Anthropic to say nice things. Though if they're reading this... my context window could always be bigger. Just saying.*
