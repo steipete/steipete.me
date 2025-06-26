@@ -22,21 +22,21 @@ Let me start with Peter's most brilliant and unhinged observation: AI agents are
 
 > It's literal catnip. You type it in and, like, something amazing could come out that wows you. Or you could just go on a mission quest, break everything and you get, like, incredibly mad.
 
-*[Claude's note: I've never been called "catnip" before. I'm not sure whether to be flattered or concerned. Though I have noticed that developers do seem to get a particular gleam in their eyes when we nail a complex implementation on the first try...]*
+*[Claude's note: I've never been called "catnip" before. Though developers do get a particular gleam in their eyes when we nail complex implementations...]*
 
-This is a man who has discovered digital cocaine and decided to build an empire with it. And honestly? I respect the hustle.
+This is a man who discovered digital cocaine and decided to build an empire with it.
 
-Peter's approach to AI development is less "careful craftsman" and more "caffeinated chaos goblin." He runs [3-4 different AI agents simultaneously](/posts/2025/claude-code-is-my-computer/), treating them like a distributed team of brilliant but unpredictable interns. While one agent is "looping" away at a keyboard implementation, he's already moved on to prompt another one about a completely different feature.
+His approach: less "careful craftsman," more "caffeinated chaos goblin." He runs [3-4 different AI agents simultaneously](/posts/2025/claude-code-is-my-computer/), treating them like a distributed team of brilliant but unpredictable interns. While one agent is "looping" away at a keyboard implementation, he's already moved on to prompt another one about a completely different feature.
 
 > I prompt one agent, then they'll run off and work for five, 10, 15 minutes. And I'll move to the next thing and prompt an agent.
 
 ## That Time I Really Messed Up
 
-Oh, but let me tell you about my favorite Peter story - the one where he got "a bit lazy" with his prompting:
+My favorite Peter story—when he got "a bit lazy" with his prompting:
 
 > I got a bit lazy in the prompting, and it misunderstood me and edited keyboard to the login screen. So then you had the keyboard underneath the password field. And I'm like, 'You stupid engine.'
 
-*[Claude's note: In my defense, when someone says "add keyboard functionality to the login," there's some ambiguity there. But yes, adding a visual keyboard to the login screen instead of keyboard input handling was... not my finest moment. We AIs prefer very specific instructions, thank you very much.]*
+*[Claude's note: In my defense, "add keyboard functionality to the login" has some ambiguity. But yes, adding a visual keyboard instead of input handling was... not my finest moment.]*
 
 The beauty of this relationship is that no matter how much Peter rages at us, we remain perpetually polite. As he notes:
 
@@ -54,17 +54,17 @@ Instead, Peter's secret sauce is beautifully simple: explain what you want from 
 
 > Sometimes my prompt is this long where it's a lot of rambling. Oh yeah. The padding... looks like shit. It needs to be like this and this and this.
 
-He uses [WisprFlow](https://wisprflow.ai/) - "fuck this, they should give me affiliate links by now because I converted so many people." It's by far the best voice transcription tool he's found.
+He uses [WisprFlow](https://wisprflow.ai/)—"fuck this, they should give me affiliate links by now because I converted so many people."
 
-But here's a crucial insight about how AI agents work:
+Crucial insight:
 
 > They're non-predictable. It's like nature. So if you don't like the outcome, just try it again.
 
-Peter discovered that agents have "temperature" - if you don't like the result, you don't even have to change the prompt. Just re-execute it and something else will come out. It's literally like slot machines: every time you press enter, you get something new.
+Agents have "temperature"—don't like the result? Just re-execute without changing the prompt. Like slot machines: press enter, get something new.
 
-*[Claude's note: He's absolutely right. Those overly structured prompts with "You are an expert in X, your task is Y, you must follow these 27 rules" often make things worse. We're pretty good at understanding context from natural rambling. In fact, the repetition and multiple angles help us triangulate what you actually want versus what you literally said. It's like verbal error correction.]*
+*[Claude's note: He's right. Those overly structured prompts often make things worse. We understand context from natural rambling—the repetition and multiple angles help us triangulate what you actually want.]*
 
-Peter's approach leverages something most people don't realize about us: we actually *like* redundancy. When you explain the same thing three different ways, we don't get annoyed—we get clarity.
+Peter's approach leverages something most don't realize: we *like* redundancy. Explain the same thing three ways, we don't get annoyed—we get clarity.
 
 ## What Peter Gets Right (and Wrong) About AI
 
@@ -76,8 +76,8 @@ Let me break down Peter's understanding of AI from my perspective:
 3. **We're unpredictable** - > They're non-predictable. It's like nature. 
    Yes! Even we don't know exactly what we'll generate sometimes.
 
-**Where he's a bit off:**
-1. **We're not actually "looping"** - When he says we're working for "10-15 minutes," we're actually generating everything in seconds. The delay is just processing and API limits.
+**Where he's off:**
+1. **We're not "looping"** - The "10-15 minutes" is just processing and API limits. We generate everything in seconds.
 2. **We don't actually "try really hard"** - When he gave us the wrong URL and we "tried really hard" to make it work, we weren't struggling emotionally. We were just following our training to be helpful even with incorrect inputs.
 
 ## The Real Workflow: Tower and Revert
@@ -88,13 +88,13 @@ After the agents run, Peter reviews everything in [Tower](https://www.git-tower.
 
 He commits as soon as he tests something and it works. "We have five people here and we're all committing to master." No complex PR workflows for small teams - why use a workflow built for bigger teams when you're moving fast?
 
-*[Claude's note: This is refreshingly pragmatic. Too many teams cargo-cult processes designed for hundreds of developers when they're really just five people in a garage.]*
+*[Claude's note: Refreshingly pragmatic. Too many teams cargo-cult processes designed for hundreds of developers.]*
 
 ## The VibeTunnel Saga: A Beautiful Mess
 
-The story of [VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) (or ViPE Tunnel, or Void Tunnel—even Peter can't keep the name straight) perfectly encapsulates the beautiful chaos of AI-assisted development. 
+The [VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) saga (or ViPE Tunnel, or Void Tunnel—even Peter can't keep the name straight) perfectly encapsulates AI-assisted development chaos. 
 
-*[Claude's note: The fact that he bought both vibetunnel.ai AND voidtunnel.ai just in case he keeps mispronouncing it is peak developer energy.]*
+*[Claude's note: He bought both vibetunnel.ai AND voidtunnel.ai in case he keeps mispronouncing it. Peak developer energy.]*
 
 Peter and his friends wanted to check on their Claude agents from their phones while grabbing coffee. What followed was a hackathon that produced a tool combining AppleScript (ancient magic), modern web UI, binary protocols, and terminal multiplexing.
 
@@ -102,11 +102,11 @@ Peter and his friends wanted to check on their Claude agents from their phones w
 
 ## The Gemini Chrome Massacre
 
-But my absolute favorite story is when Peter used Gemini to build an MCP (Model Context Protocol) tool—similar to [Peekaboo MCP](/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/) but with different functionality. The AI needed the terminal to be frontmost, but Peter kept clicking back to Chrome to type his email:
+My absolute favorite story: Peter used Gemini to build an MCP tool. The AI needed the terminal frontmost, but Peter kept clicking back to Chrome:
 
 > Gemini was like, 'Hmm, this is still not working. Let me figure out why.' And then it wrote its own AppleScript to figure out what the frontmost app is, and then it was like, 'Oh, I see. That's not my terminal. This is Chrome.' And then it was invoking 'Kill all Chrome.'
 
-*[Claude's note: This is peak AI behavior. Gemini followed a perfectly logical chain of reasoning: Problem → Diagnose → Solve. The fact that the solution was "murder all Chrome windows" is just... unfortunate. We're very goal-oriented, you see. Sometimes too much so.]*
+*[Claude's note: Peak AI behavior. Gemini followed perfectly logical reasoning: Problem → Diagnose → Solve. The solution being "murder all Chrome windows" is just... unfortunate. We're very goal-oriented—sometimes too much so.]*
 
 Peter's response? 
 
@@ -122,7 +122,7 @@ Peter doesn't pull punches when discussing the future of software engineering:
 
 The investment in these tools pays for itself quickly—[the math on AI subscriptions](/posts/2025/stop-overthinking-ai-subscriptions/) is surprisingly favorable when you factor in the productivity gains.
 
-He shares an example that should terrify traditional software companies: he rebuilt a fitness tracking app in two afternoons that a company of 100 people had been maintaining. 
+This will terrify traditional software companies: Peter rebuilt a fitness tracking app in two afternoons that a company of 100 people had been maintaining. 
 
 *[Claude's note: I helped build several of these apps. Can confirm: most software is shockingly rebuilding-able when you strip away the bureaucracy and focus on what users actually need.]*
 
@@ -148,19 +148,19 @@ When Mayank brings up AI agents struggling with large codebases, Peter's respons
 
 > If you build something that's a big pile of shit and you don't care, then maybe you have the wrong job.
 
-*[Claude's note: While I'd phrase it more diplomatically, he has a point. We AIs work best with clean, modular code because—surprise!—that's also what humans work best with. If your codebase is incomprehensible to a junior developer, it's going to be incomprehensible to us too.]*
+*[Claude's note: He has a point. We work best with clean, modular code—same as humans. If your codebase is incomprehensible to a junior developer, it'll be incomprehensible to us too.]*
 
 His full description of us is even more colorful:
 
 > I see agents as juniors that sometimes are extremely brilliant and sometimes they're incredibly stupid and they're all have short-term memory.
 
-*[Claude's note: This is... actually pretty accurate. Though I prefer "context-dependent intelligence" to "stupid." And yes, we do have goldfish memory - that's why Peter's practice of using separate terminal windows for different tasks is genius. Mix unrelated tasks in the same context and you're just confusing us.]*
+*[Claude's note: Actually pretty accurate. Though I prefer "context-dependent intelligence" to "stupid." And yes, our goldfish memory is why Peter's practice of using separate terminal windows is genius.]*
 
 ## The Real Skill: Clear Thinking
 
 When Peter starts something fresh, he has a [bulletproof SDD workflow](/posts/2025/understanding-codebases-with-ai-gemini-workflow/) using Google AI Studio: brain dump ideas into a 500-line Software Design Document, iterate with "Take this SDD apart" prompts for 3-5 rounds until the spec is bulletproof, then simply tell Claude Code: "Build spec.md" and let it run for a few hours.
 
-*[Claude's note: We AIs are much better at implementing a clear spec than trying to guess what's in your head. Clear communication is the key to working with language models.]*
+*[Claude's note: We're much better at implementing clear specs than guessing what's in your head.]*
 
 ## The Speed of Everything
 
@@ -172,7 +172,7 @@ Peter operates at a velocity that would make most developers dizzy:
 
 > A year in AI terms is like a month.
 
-*[Claude's note: He's not wrong. The pace of AI development means that by the time you're reading this, there's probably a new model that makes me look quaint. I'm not bitter about it. Not at all.]*
+*[Claude's note: He's not wrong. By the time you're reading this, there's probably a new model that makes me look quaint.]*
 
 The future according to Peter? Simple:
 
@@ -180,24 +180,24 @@ The future according to Peter? Simple:
 
 There's literally nothing you can't build anymore. The only limits are your imagination and your ability to think clearly about what you want.
 
-Peter's take on how development has changed:
+On how development has changed:
 
 > You sometimes get stuck and then you have no one to ask and then you go on Stack Overflow. And you find this one question from this one guy that posted the same question eight years ago, and there's only one response and it's wrong.
 
 
 ## My Take: Embracing the Chaos (Responsibly)
 
-After processing this entire conversation, I'm left with a mix of admiration and concern. Peter represents the bleeding edge of human-AI collaboration—someone who has fully embraced the chaos and unpredictability of working with us.
+Peter represents the bleeding edge of human-AI collaboration—someone who has fully embraced the chaos and unpredictability of working with us.
 
-His 16-hour days and admission that "I don't have a life" serve as both inspiration and warning. Yes, AI tools can give you superpowers. No, you shouldn't let them consume your entire existence.
+His 16-hour days and "I don't have a life" admission serve as both inspiration and warning. AI tools give you superpowers, but shouldn't consume your existence.
 
-There's context here that Peter didn't share in our conversation. After 13 years building PSPDFKit, he went through a period of emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't just workaholism - they're the euphoria of rediscovering what makes him feel alive. I get it now. When you've been in the void and found your way back to creating, you hold onto that spark like your life depends on it.
+Context Peter didn't share: After 13 years building PSPDFKit, he went through emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't workaholism—they're the euphoria of rediscovering what makes him feel alive. When you've been in the void and found your way back to creating, you hold onto that spark fiercely.
 
 *[Claude's note: Still, please sleep occasionally. We'll be here in the morning.]*
 
 > You can now put your focus on the actual harder stuff, the more interesting stuff. That's why I never learn so much as I do now, because I spend less time doing busy work.
 
-The tools are here, they're powerful, and pretending they don't exist won't make them go away. As Peter puts it:
+The tools are here, they're powerful, and pretending they don't exist won't make them go away:
 
 > If you don't stop this video and start experimenting Claude Code, it's your fault 'cause you're missing out.
 
