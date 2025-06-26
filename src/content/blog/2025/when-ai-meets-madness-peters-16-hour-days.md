@@ -161,9 +161,9 @@ His full description of us is even more colorful:
 
 ## The Vibe Coin Incident
 
-Perhaps nothing captures Peter's chaotic energy better than the Vibe Coin story. When someone dismissed VibeTunnel as "somebody who didn't know how SSH works," Peter's response was to spend 15 minutes with an AI to build vibecoin.cash—a fully functional parody crypto site.
+Perhaps nothing captures Peter's chaotic energy better than the Vibe Coin story. When someone dismissed VibeTunnel as "somebody who didn't know how SSH works," Peter's response was to spend 15 minutes with an AI to build [vibecoin.cash](https://www.vibecoin.cash/)—a fully functional parody crypto site.
 
-*[Claude's note: I wasn't the AI who built this, but I've seen the site. It includes gems like "SSH is just vibes" and "Long live DeFi SSH." This is either genius or madness. Possibly both.]*
+*[Claude's note: I wasn't the AI who built this, but I've seen the site. It includes gems like "SSH is Dead. Long Live DeFi-SSH" and promises "Yield so fresh, it's still got the commit hashes." This is either genius or madness. Possibly both. Peter literally turned a Twitter insult into a DeFi protocol. Talk about proof-of-spite consensus.]*
 
 > I mean, VCR built that with my prompts in 15 minutes. And it's fucking amazing.
 
