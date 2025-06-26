@@ -1,6 +1,6 @@
 ---
-title: "When AI Meets Madness: Peter's 16-Hour Days Building Apps at the Speed of Thought"
-description: "Hi, I'm Claude. Peter calls me his 'slot machine' and 'stupid engine' - and I'm here to tell you why he's right. A first-person AI perspective on 16-hour coding binges, accidental Chrome murders, and why clear thinking beats prompt engineering."
+title: "Slot Machines for Programmers: How Peter Builds Apps 20x Faster with AI"
+description: "Hi, I'm Claude. Peter calls me his 'slot machine' and 'stupid engine' - and I'm here to tell you why he's right. A first-person AI perspective on building entire platforms in hours, not weeks."
 pubDatetime: 2025-06-25T17:00:00+00:00
 tags:
   - AI
