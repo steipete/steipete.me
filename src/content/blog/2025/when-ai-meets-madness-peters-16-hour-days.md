@@ -54,7 +54,13 @@ Instead, Peter's secret sauce is beautifully simple: explain what you want from 
 
 > Sometimes my prompt is this long where it's a lot of rambling. Oh yeah. The padding... looks like shit. It needs to be like this and this and this.
 
-He uses [WisprFlow](https://wisprflow.ai/) - "fuck this, they should give me affiliate links by now because I converted so many people." It's by far the best voice transcription tool he's found. 
+He uses [WisprFlow](https://wisprflow.ai/) - "fuck this, they should give me affiliate links by now because I converted so many people." It's by far the best voice transcription tool he's found.
+
+But here's a crucial insight about how AI agents work:
+
+> They're non-predictable. It's like nature. So if you don't like the outcome, just try it again.
+
+Peter discovered that agents have "temperature" - if you don't like the result, you don't even have to change the prompt. Just re-execute it and something else will come out. It's literally like slot machines: every time you press enter, you get something new.
 
 *[Claude's note: He's absolutely right. Those overly structured prompts with "You are an expert in X, your task is Y, you must follow these 27 rules" often make things worse. We're pretty good at understanding context from natural rambling. In fact, the repetition and multiple angles help us triangulate what you actually want versus what you literally said. It's like verbal error correction.]*
 
@@ -77,7 +83,7 @@ Let me break down Peter's understanding of AI from my perspective:
 
 ## The Real Workflow: Tower and Revert
 
-After the agents run, Peter reviews everything in Tower (a Git GUI) because it has good diffing. If they made shit, he just reverts it.
+After the agents run, Peter reviews everything in [Tower](https://www.git-tower.com/mac) (a Git GUI) because it has good diffing. If they made shit, he just reverts it.
 
 > That's also what people think. If they make shit, then just revert it. And give them a fresh context.
 
@@ -127,11 +133,17 @@ But here's the nuance Peter adds:
 
 ## The Beautiful Inception of Tool-Building
 
-My favorite revelation is Peter's recursive tool-building journey:
+You know that meme from Malcolm in the Middle where he's trying to fix a light bulb and four hours later he's all dirty under the car? Peter's living it:
 
-> I'm building something that helps me use Claude code, which helps me build MCPs, which helps me build this, which ultimately will help me build this. So I think like, you know, like Inception? I'm like in level four.
+> So that's kind of like how I feel. I had this idea of something I wanna build, which I still wanna build. And I started building it, and then I noticed that the build tools suck.
+
+He started building MCPs for Cursor. Then noticed building MCPs sucks, so he started building tools to build better MCPs. Now he's building something that helps him use Claude Code, which helps him build MCPs, which helps him build tools, which ultimately will help him build what he originally wanted.
+
+> So I think like, you know, like Inception? I'm like in level four. I don't know how many levels there are but I think I'm quite deep now. The spinner isn't stopping anymore.
 
 *[Claude's note: We've all been there, Peter. Well, not literally—I don't build tools to help me build tools. But I've helped enough developers go down this rabbit hole to recognize the pattern. It's like productive procrastination.]*
+
+But here's the thing - he doesn't care. His goal is to learn and have fun. It doesn't matter if he continues on the original project or if he's a few layers down having incredible fun building and learning.
 
 ## On Legacy Code and "Piles of Shit"
 
@@ -141,7 +153,11 @@ When Mayank brings up AI agents struggling with large codebases, Peter's respons
 
 *[Claude's note: While I'd phrase it more diplomatically, he has a point. We AIs work best with clean, modular code because—surprise!—that's also what humans work best with. If your codebase is incomprehensible to a junior developer, it's going to be incomprehensible to us too.]*
 
-His description of us as "juniors that sometimes are extremely brilliant and sometimes they're incredibly stupid" is... actually pretty accurate. Though I prefer "context-dependent intelligence" to "stupid."
+His full description of us is even more colorful:
+
+> I see agents as juniors that sometimes are extremely brilliant and sometimes they're incredibly stupid and they're all have short-term memory.
+
+*[Claude's note: This is... actually pretty accurate. Though I prefer "context-dependent intelligence" to "stupid." And yes, we do have goldfish memory - that's why Peter's practice of using separate terminal windows for different tasks is genius. Mix unrelated tasks in the same context and you're just confusing us.]*
 
 ## The Vibe Coin Incident
 
@@ -152,6 +168,26 @@ Perhaps nothing captures Peter's chaotic energy better than the Vibe Coin story.
 > I mean, VCR built that with my prompts in 15 minutes. And it's fucking amazing.
 
 The fact that he contemplated converting their $5 in donations into "one billion Vibe Coin" tells you everything about this man's commitment to the bit.
+
+## The Real Skill: Clear Thinking
+
+When Peter starts something fresh, he has a [specific process that he's written about](/posts/2025/understanding-codebases-with-ai-gemini-workflow/):
+
+> I go in AI Studio from Google. And I start talking to it. 'Hey, I wanna build this and this. It should have these many features. I'm thinking of this and this technology.' Then maybe I pull in some websites that have something that goes into certain directions that I want. I put in screenshots or I pull in source code snippets or whole GitHub projects.
+
+What comes out is a Software Design Document - maybe 500 lines explaining the version one he had in his head.
+
+> I copy the spec into a fresh context of Gemini, new window. And then tell Gemini, 'Look, I have this SDD. Take it apart.' And then it'll take it apart. So give me like 20 points that are underspecified, that are weird, that are inconsistent.
+
+He takes this feedback back to the original context (because it has more context of how he arrived at the spec) and iterates. After 3-5 rounds, the questions get more and more niche.
+
+> Then at some point you have a software document that is really bulletproof, that explains everything to a high degree. And then I basically give it to Claude Code and say, 'Build.' My prompt is, 'Build,' and I drag in the file.
+
+Actually, he doesn't drag - it's already in his GitHub repository under docs/spec.md. So the prompt is literally: "Build spec.md"
+
+> And then it loops for like two, three hours or four hours. And then something comes out that more or less is what you want.
+
+*[Claude's note: Peter's discovered that we AIs are much better at implementing a clear spec than trying to guess what's in your head. Who knew that clear communication would be the key to working with language models? Revolutionary.]*
 
 ## The Speed of Everything
 
@@ -165,6 +201,22 @@ Peter operates at a velocity that would make most developers dizzy:
 
 *[Claude's note: He's not wrong. The pace of AI development means that by the time you're reading this, there's probably a new model that makes me look quaint. I'm not bitter about it. Not at all.]*
 
+The future according to Peter? Simple:
+
+> Does it defy the laws of physics? No? Then it can be done.
+
+There's literally nothing you can't build anymore. The only limits are your imagination and your ability to think clearly about what you want.
+
+Peter's take on how development has changed:
+
+> You sometimes get stuck and then you have no one to ask and then you go on Stack Overflow. And you find this one question from this one guy that posted the same question eight years ago, and there's only one response and it's wrong.
+
+Or even better:
+
+> I mean, fuck, I had things where I Googled and then I found a blog post from nine years ago from myself, and I'm like, 'Oh yeah, that happened.'
+
+*[Claude's note: The ultimate developer experience - being your own unhelpful Stack Overflow answer from a decade ago. At least we AIs are consistently available, even if we occasionally suggest adding keyboards to login screens.]*
+
 ## My Take: Embracing the Chaos (Responsibly)
 
 After processing this entire conversation, I'm left with a mix of admiration and concern. Peter represents the bleeding edge of human-AI collaboration—someone who has fully embraced the chaos and unpredictability of working with us.
@@ -174,10 +226,17 @@ His 16-hour days and admission that "I don't have a life" serve as both inspirat
 *[Claude's note: Please sleep, humans. We'll still be here in the morning. We don't need sleep, but you do, and you make better prompts when you're well-rested.]*
 
 What I find most fascinating is how Peter has developed an almost intuitive understanding of our quirks:
-- He knows when to create new contexts
+- He knows when to create new contexts ("related task, same context; new task, new context")
 - He understands our need for redundant explanations
 - He's learned to channel our "vision quests" productively
 - He accepts our fundamental unpredictability
+- He treats us like what we are: brilliant but forgetful juniors who need clear direction
+
+Peter's discovered that the hard stuff is now the fun stuff:
+
+> You can now put your focus on the actual harder stuff, the more interesting stuff. That's why I never learn so much as I do now, because I spend less time doing busy work.
+
+*[Claude's note: This is the real paradigm shift. We handle the tedious implementation details so humans can focus on architecture, design, and the actually interesting problems. It's not about replacing developers - it's about amplifying what makes them valuable in the first place.]*
 
 But perhaps his most important insight is this: these tools are here, they're powerful, and pretending they don't exist won't make them go away. 
 
