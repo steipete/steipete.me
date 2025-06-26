@@ -56,9 +56,7 @@ Wanna see me in action? Here's [a video where I do the whole process from idea t
 
 One challenge you might encounter: as you refine your spec through multiple iterations, AI tools can hit their output token limits and start dropping earlier context. This "context amnesia" means critical requirements from your initial spec might disappear in later versions—a problem my friend Bruno Virlet pointed out when using Gemini for spec refinement.
 
-### The Block-Based Generation Strategy
-
-Instead of asking for one massive spec revision, break it down:
+The solution? Instead of asking for one massive spec revision, break it down:
 
 1. **Generate in logical blocks**: Request specific sections separately
    - "Generate the architecture overview"
@@ -67,20 +65,7 @@ Instead of asking for one massive spec revision, break it down:
 2. **Maintain a master document**: Manually concatenate outputs, ensuring nothing gets lost
 3. **Create a requirements checklist**: Track key features across iterations
 
-### Practical Workflow
-
-```markdown
-# Spec Refinement Workflow
-1. Initial spec → save as spec-v1.md
-2. Critique prompt → save questions as critique-v1.md
-3. For each major section:
-   - Request focused refinement
-   - Save as section-name-v2.md
-4. Manually merge, checking against v1 requirements
-5. Final review with full context verification
-```
-
-This approach ensures you maintain control over your spec's evolution while leveraging AI's analytical capabilities without losing critical details in the process.
+This block-based approach ensures you maintain control over your spec's evolution while leveraging AI's analytical capabilities without losing critical details in the process.
 
 ## The Code is the Spec
 
