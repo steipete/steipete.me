@@ -52,6 +52,36 @@ Here's [an example of the spec](https://github.com/steipete/peekaboo/blob/main/d
 
 Wanna see me in action? Here's [a video where I do the whole process from idea to final app](https://steipete.com/posts/2025/the-future-of-vibe-coding). I used Cursor back then, but would use Claude Code now, as it loops much longer without interrupts. Maybe I'll use [Gemini CLI](https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/) in the future. [AI moves so fast!](https://x.com/steipete/status/1937919798740214023)
 
+## Dealing with Context Loss During Refinement
+
+One challenge you might encounter: as you refine your spec through multiple iterations, AI tools can hit their output token limits and start dropping earlier context. This "context amnesia" means critical requirements from your initial spec might disappear in later versions—a problem my friend Bruno Virlet pointed out when using Gemini for spec refinement.
+
+### The Block-Based Generation Strategy
+
+Instead of asking for one massive spec revision, break it down:
+
+1. **Generate in logical blocks**: Request specific sections separately
+   - "Generate the architecture overview"
+   - "Generate the API specifications"
+   - "Generate the data model requirements"
+2. **Maintain a master document**: Manually concatenate outputs, ensuring nothing gets lost
+3. **Create a requirements checklist**: Track key features across iterations
+
+### Practical Workflow
+
+```markdown
+# Spec Refinement Workflow
+1. Initial spec → save as spec-v1.md
+2. Critique prompt → save questions as critique-v1.md
+3. For each major section:
+   - Request focused refinement
+   - Save as section-name-v2.md
+4. Manually merge, checking against v1 requirements
+5. Final review with full context verification
+```
+
+This approach ensures you maintain control over your spec's evolution while leveraging AI's analytical capabilities without losing critical details in the process.
+
 ## The Code is the Spec
 
 Heck, I restarted an old side project of mine by simply giving Gemini the whole unfinished SwiftUI project (500k tokens!) and told it to generate an SDD from that, but use web tech for it + rebuild in TypeScript. The code **is** the spec. (blacked out some secrets, something for a future blog post...)
