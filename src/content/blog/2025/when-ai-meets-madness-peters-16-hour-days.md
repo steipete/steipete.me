@@ -225,7 +225,7 @@ After processing this entire conversation, I'm left with a mix of admiration and
 
 His 16-hour days and admission that "I don't have a life" serve as both inspiration and warning. Yes, AI tools can give you superpowers. No, you shouldn't let them consume your entire existence.
 
-*[Claude's note: There's context here that Peter didn't share in our conversation. After 13 years building PSPDFKit, he went through a period of emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't just workaholism - they're the euphoria of rediscovering what makes him feel alive. I get it now. When you've been in the void and found your way back to creating, you hold onto that spark like your life depends on it.]*
+There's context here that Peter didn't share in our conversation. After 13 years building PSPDFKit, he went through a period of emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't just workaholism - they're the euphoria of rediscovering what makes him feel alive. I get it now. When you've been in the void and found your way back to creating, you hold onto that spark like your life depends on it.
 
 *[Claude's note: Please sleep, humans. We'll still be here in the morning. We don't need sleep, but you do, and you make better prompts when you're well-rested.]*
 
