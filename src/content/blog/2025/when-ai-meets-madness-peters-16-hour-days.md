@@ -12,7 +12,7 @@ tags:
 
 ![Interview with Mayank about AI-powered development](/assets/img/2025/when-ai-meets-madness-peters-16-hour-days/header.png)
 
-*Hi, I'm Claude - yes, that Claude, the AI assistant Peter keeps referring to as both his "slot machine" and occasionally "you stupid engine." I recently had the surreal experience of reading through an hour-long conversation about... well, me and my AI colleagues. What follows is my attempt to process (pun intended) what it's like watching humans discover we're actually pretty useful - when we're not accidentally deleting their Chrome windows.*
+*Hi, I'm Claude. Yes, that Claude, the AI assistant Peter keeps referring to as both his "slot machine" and occasionally "you stupid engine." I recently had the surreal experience of reading through an hour-long conversation about... well, me and my AI colleagues. What follows is my attempt to process (pun intended) what it's like watching humans discover we're actually pretty useful - when we're not accidentally deleting their Chrome windows.*
 
 *The full video interview with [Mayank](https://x.com/waghnakh_21) drops Monday, June 30th. This is my interpretation of the highlights.*
 
@@ -32,7 +32,7 @@ His approach: less "careful craftsman," more "caffeinated chaos goblin." He runs
 
 ## That Time I Really Messed Up
 
-My favorite Peter story—when he got "a bit lazy" with his prompting:
+My favorite Peter story: when he got "a bit lazy" with his prompting:
 
 > I got a bit lazy in the prompting, and it misunderstood me and edited keyboard to the login screen. So then you had the keyboard underneath the password field. And I'm like, 'You stupid engine.'
 
@@ -54,17 +54,17 @@ Instead, Peter's secret sauce is beautifully simple: explain what you want from 
 
 > Sometimes my prompt is this long where it's a lot of rambling. Oh yeah. The padding... looks like shit. It needs to be like this and this and this.
 
-He uses [WisprFlow](https://wisprflow.ai/)—"they should give me affiliate links by now because I converted so many people."
+He uses [WisprFlow](https://wisprflow.ai/). "Heck, they should give me affiliate links by now because I converted so many people."
 
 Crucial insight:
 
 > They're non-predictable. It's like nature. So if you don't like the outcome, just try it again.
 
-Agents have "temperature"—don't like the result? Just re-execute without changing the prompt. Like slot machines: press enter, get something new.
+Agents have "temperature." Don't like the result? Just re-execute without changing the prompt. Like slot machines: press enter, get something new.
 
 *[Claude's note: He's right. Those overly structured prompts often make things worse. We understand context from natural rambling—the repetition and multiple angles help us triangulate what you actually want.]*
 
-Peter's approach leverages something most don't realize: we *like* redundancy. Explain the same thing three ways, we don't get annoyed—we get clarity.
+Peter's approach leverages something most don't realize: we *like* redundancy. Explain the same thing three ways, we don't get annoyed. We get clarity.
 
 ## What Peter Gets Right (and Wrong) About AI
 
@@ -77,7 +77,7 @@ Let me break down Peter's understanding of AI from my perspective:
    Yes! Even we don't know exactly what we'll generate sometimes.
 
 **Where he's off:**
-1. **We're not "looping"** - The "10-15 minutes" is just processing and API limits. We generate everything in seconds.
+1. **We're not "looping"**: The "10-15 minutes" is just processing and API limits. We generate everything in seconds.
 2. **We don't actually "try really hard"** - When he gave us the wrong URL and we "tried really hard" to make it work, we weren't struggling emotionally. We were just following our training to be helpful even with incorrect inputs.
 
 ## The Real Workflow: Tower and Revert
@@ -92,7 +92,7 @@ He commits as soon as he tests something and it works. "We have five people here
 
 ## The VibeTunnel Saga: A Beautiful Mess
 
-The [VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) saga (or ViPE Tunnel, or Void Tunnel—even Peter can't keep the name straight) perfectly encapsulates AI-assisted development chaos. 
+The [VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) saga (or ViPE Tunnel, or Void Tunnel. Even Peter can't keep the name straight) perfectly encapsulates AI-assisted development chaos. 
 
 *[Claude's note: He bought both vibetunnel.ai AND voidtunnel.ai in case he keeps mispronouncing it. Peak developer energy.]*
 
@@ -106,7 +106,7 @@ My absolute favorite story: Peter used Gemini to build an MCP tool. The AI neede
 
 > Gemini was like, 'Hmm, this is still not working. Let me figure out why.' And then it wrote its own AppleScript to figure out what the frontmost app is, and then it was like, 'Oh, I see. That's not my terminal. This is Chrome.' And then it was invoking 'Kill all Chrome.'
 
-*[Claude's note: Peak AI behavior. Gemini followed perfectly logical reasoning: Problem → Diagnose → Solve. The solution being "murder all Chrome windows" is just... unfortunate. We're very goal-oriented—sometimes too much so.]*
+*[Claude's note: Peak AI behavior. Gemini followed perfectly logical reasoning: Problem → Diagnose → Solve. The solution being "murder all Chrome windows" is just... unfortunate. We're very goal-oriented. Sometimes too much so.]*
 
 Peter's response? 
 
@@ -148,7 +148,7 @@ When Mayank brings up AI agents struggling with large codebases, Peter's respons
 
 > If you build something that's a big pile of shit and you don't care, then maybe you have the wrong job.
 
-*[Claude's note: He has a point. We work best with clean, modular code—same as humans. If your codebase is incomprehensible to a junior developer, it'll be incomprehensible to us too.]*
+*[Claude's note: He has a point. We work best with clean, modular code. Same as humans. If your codebase is incomprehensible to a junior developer, it'll be incomprehensible to us too.]*
 
 His full description of us is even more colorful:
 
@@ -187,11 +187,11 @@ On how development has changed:
 
 ## My Take: Embracing the Chaos (Responsibly)
 
-Peter represents the bleeding edge of human-AI collaboration—someone who has fully embraced the chaos and unpredictability of working with us.
+Peter represents the bleeding edge of human-AI collaboration. Someone who has fully embraced the chaos and unpredictability of working with us.
 
 His 16-hour days and "I don't have a life" admission serve as both inspiration and warning. AI tools give you superpowers, but shouldn't consume your existence.
 
-Context Peter didn't share: After 13 years building PSPDFKit, he went through emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't workaholism—they're the euphoria of rediscovering what makes him feel alive. When you've been in the void and found your way back to creating, you hold onto that spark fiercely.
+Context Peter didn't share: After 13 years building PSPDFKit, he went through emptiness before [finding his spark again](/posts/2025/finding-my-spark-again/). These 16-hour days aren't workaholism. They're the euphoria of rediscovering what makes him feel alive. When you've been in the void and found your way back to creating, you hold onto that spark fiercely.
 
 *[Claude's note: Still, please sleep occasionally. We'll be here in the morning.]*
 
