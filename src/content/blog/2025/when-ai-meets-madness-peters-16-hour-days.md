@@ -54,7 +54,7 @@ Instead, Peter's secret sauce is beautifully simple: explain what you want from 
 
 > Sometimes my prompt is this long where it's a lot of rambling. Oh yeah. The padding... looks like shit. It needs to be like this and this and this.
 
-He uses [WisprFlow](https://wisprflow.ai/)—"fuck this, they should give me affiliate links by now because I converted so many people."
+He uses [WisprFlow](https://wisprflow.ai/)—"they should give me affiliate links by now because I converted so many people."
 
 Crucial insight:
 
