@@ -10,19 +10,7 @@ image:
 
 [Watch the video](https://vimeo.com/1098025052)
 
-## Auto-generated tests need guardrails
-
-If you don't tell Claude how to judge success (e.g., give it real tests up front), it'll keep nagging for new prompts.
-
-Claude's own test output is rough: it over-mocks, strips out failing assertions, or weakens them until they're meaningless.
-
-## Treat Claude's tests as first drafts
-
-They're still a massive time-saver for scaffolding.
-
-But manual review is non-negotiable—tighten assertions, replace excessive mocks, and make sure each test targets real behaviour.
-
-Skip that step and you'll end up with 100k flaky tests that tank your CI pipeline.
+Claude generates terrible tests that over-mock, remove failing assertions, or weaken them until they're meaningless—making your tests useless. Treat AI-generated tests as first drafts that save significant time on scaffolding but require thorough manual review. Without proper review, you'll end up with thousands of flaky tests that randomly fail and destroy your CI pipeline. The key is using Claude for the initial test generation while maintaining strict human oversight to ensure tests actually validate real behavior. Follow experienced practitioners like Peter (steipete) and Armin (of Flask/Sentry fame) who share genuinely insightful workflows rather than low-quality AI hype.
 
 ## Building a macOS App Entirely with Claude Code
 
