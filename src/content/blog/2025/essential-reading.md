@@ -55,7 +55,15 @@ Key insight: "Claude Code has fundamentally changed how I approach many programm
 
 [Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko))
 
-Agentic coding revolutionizes software development by having AI agents actively collaborate alongside humans, breaking down complex tasks into subtasks and executing them autonomously—unlike traditional autocomplete tools that merely suggest code snippets. The explosion of this approach is driven by advanced models like Claude and GPT-4, specifically trained for tool usage, enabling agents to interact with external tools, APIs, and codebases in sophisticated ways. Success depends critically on context management: agents need concise, well-structured information and clear error messages from development tools to function effectively. Terminal-based interfaces prove more effective than editor integrations for complex agentic workflows, supporting easier experimentation and remote operation. Beyond just writing code, agentic tools excel at debugging CI pipelines, system configuration, web automation, and countless other tasks, showcasing their broad potential across the entire development ecosystem.
+Armin explores agentic coding as a transformative paradigm where AI agents become true collaborators rather than mere autocomplete tools, describing it as "catnip for programmers" that draws developers into addictive, energizing sessions. Claude Code emerges as the leading tool, with its terminal-based interface enabling powerful agent chaining and remote workflows that editor integrations can't match.
+
+- **Context is king**: Success requires rich context, descriptive function names, and simple codebases—Go, PHP, and basic Python work best
+- **Dev environment matters**: Agents need centralized logging, clear error messages, and tools that fail loudly to recover from mistakes
+- **Terminal > Editor**: Terminal interfaces enable agent nesting and composability that's difficult in traditional IDEs
+- **Beyond coding**: Agents excel at debugging CI pipelines, browser automation, file management, and even online sales automation
+- **Avoid context rot**: Long-running tasks suffer from accumulated failures—often better to restart than compress context
+
+"The early adopter programmers are just the beginning of a broader wave of agentic AI use."
 
 ## A Cautionary Perspective on AI Coding
 
