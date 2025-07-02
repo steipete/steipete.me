@@ -1,7 +1,7 @@
 ---
 title: "Essential Reading"
 description: "Key insights on AI-generated tests, their limitations, and best practices for using them effectively"
-pubDate: "2025-07-02T10:00:00+01:00"
+pubDatetime: "2025-07-02T08:00:00+00:00"
 tags: ["ai", "testing", "claude", "development"]
 image: 
   url: ""
@@ -56,3 +56,17 @@ Key insight: "Claude Code has fundamentally changed how I approach many programm
 [Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU)
 
 Agentic coding revolutionizes software development by having AI agents actively collaborate alongside humans, breaking down complex tasks into subtasks and executing them autonomously—unlike traditional autocomplete tools that merely suggest code snippets. The explosion of this approach is driven by advanced models like Claude and GPT-4, specifically trained for tool usage, enabling agents to interact with external tools, APIs, and codebases in sophisticated ways. Success depends critically on context management: agents need concise, well-structured information and clear error messages from development tools to function effectively. Terminal-based interfaces prove more effective than editor integrations for complex agentic workflows, supporting easier experimentation and remote operation. Beyond just writing code, agentic tools excel at debugging CI pipelines, system configuration, web automation, and countless other tasks, showcasing their broad potential across the entire development ecosystem.
+
+## A Cautionary Perspective on AI Coding
+
+[Read the full article](https://albertofortin.com/writing/coding-with-ai)
+
+Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
+
+- **AI limitations are real**: LLMs generate inconsistent, poorly structured code and struggle to maintain coherence across multiple files
+- **Use AI as an assistant, not a lead developer**: Best for specific tasks like renaming parameters, translating pseudo-code, or learning new languages
+- **"Vibe coding" is dangerous**: Relying on AI without technical knowledge is "a recipe for disaster"
+- **Protect your skills**: Over-reliance on AI risks degrading critical thinking and coding abilities
+- **Return to fundamentals**: Sometimes pen and paper planning beats AI-generated solutions
+
+"I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant."
