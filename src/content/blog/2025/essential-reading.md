@@ -1,6 +1,6 @@
 ---
-title: "Essential Reading"
-description: "Key insights on AI-generated tests, their limitations, and best practices for using them effectively"
+title: "Essential Reading for Agentic Engineers"
+description: "A curated collection of must-read articles and videos for mastering Claude Code, agentic coding workflows, and the future of AI-assisted development"
 pubDatetime: "2025-07-01T02:00:00+00:00"
 heroImage: /assets/img/2025/essential-reading/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering"
