@@ -45,7 +45,7 @@ Key insight: "Claude Code has fundamentally changed how I approach many programm
 
 ## Agentic Coding: The Future of Software Development with Agents
 
-[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU)
+[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko))
 
 Agentic coding revolutionizes software development by having AI agents actively collaborate alongside humans, breaking down complex tasks into subtasks and executing them autonomously—unlike traditional autocomplete tools that merely suggest code snippets. The explosion of this approach is driven by advanced models like Claude and GPT-4, specifically trained for tool usage, enabling agents to interact with external tools, APIs, and codebases in sophisticated ways. Success depends critically on context management: agents need concise, well-structured information and clear error messages from development tools to function effectively. Terminal-based interfaces prove more effective than editor integrations for complex agentic workflows, supporting easier experimentation and remote operation. Beyond just writing code, agentic tools excel at debugging CI pipelines, system configuration, web automation, and countless other tasks, showcasing their broad potential across the entire development ecosystem.
 
