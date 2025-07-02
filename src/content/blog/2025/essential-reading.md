@@ -12,7 +12,7 @@ Here's a collection of articles and videos I consider essential reading to get u
 
 ## How to Use Claude Code Effectively
 
-[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philipp_spiess](https://twitter.com/philipp_spiess))
+[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess))
 
 Philipp Spiess shares practical workflow tips for maximizing Claude Code's effectiveness:
 
