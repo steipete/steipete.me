@@ -8,13 +8,13 @@ image:
   alt: ""
 ---
 
-[Watch the video](https://vimeo.com/1098025052)
+[Watch the video](https://vimeo.com/1098025052) by @steipete
 
 Claude generates terrible tests that over-mock, remove failing assertions, or weaken them until they're meaningless—making your tests useless. Treat AI-generated tests as first drafts that save significant time on scaffolding but require thorough manual review. Without proper review, you'll end up with thousands of flaky tests that randomly fail and destroy your CI pipeline. The key is using Claude for the initial test generation while maintaining strict human oversight to ensure tests actually validate real behavior. Follow experienced practitioners like Peter (steipete) and Armin (of Flask/Sentry fame) who share genuinely insightful workflows rather than low-quality AI hype.
 
 ## Building a macOS App Entirely with Claude Code
 
-[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code)
+[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne (@indragie)
 
 Indragie Karunaratne built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
 
@@ -27,7 +27,7 @@ This represents a fundamental shift in how developers can work—AI agents aren'
 
 ## How to Use Claude Code Effectively
 
-[Read the full article](https://spiess.dev/blog/how-i-use-claude-code)
+[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess (@philipp_spiess)
 
 Philipp Spiess shares practical workflow tips for maximizing Claude Code's effectiveness:
 
@@ -47,7 +47,7 @@ Agentic coding revolutionizes software development by having AI agents actively 
 
 ## A Cautionary Perspective on AI Coding
 
-[Read the full article](https://albertofortin.com/writing/coding-with-ai)
+[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin
 
 Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
