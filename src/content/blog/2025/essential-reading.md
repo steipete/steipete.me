@@ -44,15 +44,15 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 85 min
 
-Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo: auto-refactors, FFmpeg conversions, Playwright tests, all while you watch the unfiltered chaos unfold.
+Mario shares his hard-won patterns for using Claude Code effectively on real projects, demonstrating workflows from ad-hoc scripting to complex cross-language porting live, revealing how to maintain control while leveraging AI's speed.
 
-- **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
-- **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
-- **Live, no-cut learning**: every stumble, fix, and "aha" moment lands on screen, so you see what polished demos hide
-- **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
-- **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
+- **Claude changes everything but demands discipline**: It writes terrible code but enables rapid iteration - the key is maintaining tight control and understanding what it generates
+- **Context is everything**: Use CLAUDE.md files, structured documentation, and tools like `jq` to query JSON databases instead of letting Claude waste tokens exploring your codebase
+- **Survival tactics**: Run with `--dangerously-skip-permissions`, write task summaries before context compaction hits, and hack Claude Code via [claude-trace](https://github.com/badlogic/lemmy/tree/main/apps/claude-trace) to become better at context management
+- **LLMs as a flexible ISA**: Your prompts are code, your .md/.json files are state on disk - build deterministic workflows with human checkpoints for quality control
+- **Live demo on production code**: Watch the prompts-as-code principle in action - porting changes across a large polyglot codebase (Java/C++/C#) using LSP databases and .json state files, turning 2-week tasks into 1-day sprints
 
-> It's like pairing with a senior dev who never sleeps: Claude just keeps shipping.
+> It's not about the AI being smart - it's about being smart about the AI.
 
 ## Claude Code Best Practices from Anthropic
 
