@@ -10,33 +10,6 @@ image:
 
 Here's a collection of articles and videos I consider essential reading to get up-to-speed on agentic engineering. I'll keep this one updated as I discover new exceptional resources.
 
-## I can't sleep gud anymore - A Practical Guide to Agentic Computering
-
-[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
-
-The host wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
-
-- **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
-- **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
-- **Live, no-cut learning**: every stumble, fix, and "aha" moment lands on screen, so you see what polished demos hide
-- **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
-- **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
-
-"It's like pairing with a senior dev who never sleeps—Claude just keeps shipping."
-
-## Building a macOS App Entirely with Claude Code
-
-[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://twitter.com/indragie))
-
-Indragie Karunaratne built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
-
-- **Context engineering matters**: Detailed specifications and "priming" Claude with examples produces much higher quality code
-- **Modern Swift can be tricky**: Claude is competent but sometimes struggles with recent language features
-- **Productivity transformation**: Rapid prototyping, mock data generation, and automated release scripts made shipping a polished side project actually achievable
-- **The future is here**: "It's like I found an extra 5 hours every day, and all it cost me was $200 a month"
-
-This represents a fundamental shift in how developers can work—AI agents aren't just assistants but capable collaborators that can handle entire codebases.
-
 ## How to Use Claude Code Effectively
 
 [Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philipp_spiess](https://twitter.com/philipp_spiess))
@@ -65,6 +38,45 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 "The early adopter programmers are just the beginning of a broader wave of agentic AI use."
 
+## I can't sleep gud anymore - A Practical Guide to Agentic Computering
+
+[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
+
+The host wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
+
+- **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
+- **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
+- **Live, no-cut learning**: every stumble, fix, and "aha" moment lands on screen, so you see what polished demos hide
+- **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
+- **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
+
+"It's like pairing with a senior dev who never sleeps—Claude just keeps shipping."
+
+## Claude Code Best Practices from Anthropic
+
+[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering
+
+Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
+
+- **Customize your environment**: Use `CLAUDE.md` files for context, curate allowed tools carefully, and install GitHub CLI for enhanced interactions
+- **Adopt proven workflows**: Follow the Explore→Plan→Code→Commit approach, leverage TDD, iterate visually with screenshots, and use "Safe YOLO mode" for autonomous tasks
+- **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
+- **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
+- **Key insight**: "Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output"
+
+## Building a macOS App Entirely with Claude Code
+
+[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://twitter.com/indragie))
+
+Indragie Karunaratne built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
+
+- **Context engineering matters**: Detailed specifications and "priming" Claude with examples produces much higher quality code
+- **Modern Swift can be tricky**: Claude is competent but sometimes struggles with recent language features
+- **Productivity transformation**: Rapid prototyping, mock data generation, and automated release scripts made shipping a polished side project actually achievable
+- **The future is here**: "It's like I found an extra 5 hours every day, and all it cost me was $200 a month"
+
+This represents a fundamental shift in how developers can work—AI agents aren't just assistants but capable collaborators that can handle entire codebases.
+
 ## A Cautionary Perspective on AI Coding
 
 [Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort))
@@ -78,18 +90,6 @@ Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after disc
 - **Return to fundamentals**: Sometimes pen and paper planning beats AI-generated solutions
 
 "I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant."
-
-## Claude Code Best Practices from Anthropic
-
-[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering
-
-Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
-
-- **Customize your environment**: Use `CLAUDE.md` files for context, curate allowed tools carefully, and install GitHub CLI for enhanced interactions
-- **Adopt proven workflows**: Follow the Explore→Plan→Code→Commit approach, leverage TDD, iterate visually with screenshots, and use "Safe YOLO mode" for autonomous tasks
-- **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
-- **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
-- **Key insight**: "Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output"
 
 ## The Evolution of Software: From 1.0 to 3.0
 
