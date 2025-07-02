@@ -21,7 +21,7 @@ Philipp shares practical workflow tips for maximizing Claude Code's effectivenes
 - **Advanced techniques**: Use "ultrathink" for complex problems, interrupt early when things go wrong, and leverage Git worktrees for parallel work
 - **Safety first**: Stage Git changes frequently and use them as checkpoints
 
-Key insight: "Claude Code has fundamentally changed how I approach many programming tasks... The key is finding the right balance between automation and human oversight."
+> Claude Code has fundamentally changed how I approach many programming tasks... The key is finding the right balance between automation and human oversight.
 
 ## Agentic Coding: The Future of Software Development with Agents
 
@@ -35,7 +35,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 - **Beyond coding**: Agents excel at debugging CI pipelines, browser automation, file management, and even online sales automation
 - **Avoid context rot**: Long-running tasks suffer from accumulated failures—often better to restart than compress context
 
-"The early adopter programmers are just the beginning of a broader wave of agentic AI use."
+> The early adopter programmers are just the beginning of a broader wave of agentic AI use.
 
 ## I can't sleep gud anymore - A Practical Guide to Agentic Computering
 
@@ -49,7 +49,7 @@ Mario wires Anthropic's Claude straight into VS Code and lets it rip through a r
 - **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
 - **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
 
-"It's like pairing with a senior dev who never sleeps—Claude just keeps shipping."
+> It's like pairing with a senior dev who never sleeps—Claude just keeps shipping.
 
 ## Claude Code Best Practices from Anthropic
 
@@ -61,7 +61,7 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 - **Adopt proven workflows**: Follow the Explore→Plan→Code→Commit approach, leverage TDD, iterate visually with screenshots, and use "Safe YOLO mode" for autonomous tasks
 - **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
 - **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
-- **Key insight**: "Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output"
+> Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output.
 
 ## Building a macOS App Entirely with Claude Code
 
@@ -88,7 +88,7 @@ Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering
 - **Protect your skills**: Over-reliance on AI risks degrading critical thinking and coding abilities
 - **Return to fundamentals**: Sometimes pen and paper planning beats AI-generated solutions
 
-"I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant."
+> I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant.
 
 ## The Evolution of Software: From 1.0 to 3.0
 
@@ -102,4 +102,4 @@ Andrej presents a framework for understanding software evolution through three p
 - **Natural language democratizes coding**: "Vibe coding" makes software development accessible to anyone, but deployment complexity remains a barrier
 - **Agents need new interfaces**: Documentation must evolve from human-centric ("click this") to machine-actionable commands
 
-"We are at a historic moment where software is fundamentally changing... Being fluent in all three paradigms will be valuable for future engineers."
+> We are at a historic moment where software is fundamentally changing... Being fluent in all three paradigms will be valuable for future engineers.
