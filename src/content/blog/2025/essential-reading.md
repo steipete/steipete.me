@@ -2,7 +2,7 @@
 title: "Essential Reading"
 description: "Key insights on AI-generated tests, their limitations, and best practices for using them effectively"
 pubDatetime: "2025-07-02T02:00:00+00:00"
-tags: ["ai", "testing", "claude", "development"]
+tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
 image: 
   url: ""
   alt: ""
