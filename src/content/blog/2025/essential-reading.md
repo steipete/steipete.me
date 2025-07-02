@@ -72,9 +72,11 @@ Indragie built and shipped Context, a macOS app for debugging MCP servers, with 
 - **Context engineering matters**: Detailed specifications and "priming" Claude with examples produces much higher quality code
 - **Modern Swift can be tricky**: Claude is competent but sometimes struggles with recent language features
 - **Productivity transformation**: Rapid prototyping, mock data generation, and automated release scripts made shipping a polished side project actually achievable
-- **The future is here**: "It's like I found an extra 5 hours every day, and all it cost me was $200 a month"
+- **The future is here**: Massive productivity gains make the investment worthwhile
 
 This represents a fundamental shift in how developers can work—AI agents aren't just assistants but capable collaborators that can handle entire codebases.
+
+> It's like I found an extra 5 hours every day, and all it cost me was $200 a month.
 
 ## A Cautionary Perspective on AI Coding
 
