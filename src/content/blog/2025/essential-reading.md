@@ -10,7 +10,7 @@ image:
 
 Here's a collection of articles and videos I consider essential reading to get up-to-speed on agentic engineering. I'll keep this one updated as I discover new exceptional resources.
 
-## AI-Generated Tests: Handle with Care
+## I can't sleep gud anymore - A Practical Guide to Agentic Computering
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
 
