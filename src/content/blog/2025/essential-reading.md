@@ -82,3 +82,17 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 - **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
 - **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
 - **Key insight**: "Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output"
+
+## The Evolution of Software: From 1.0 to 3.0
+
+[Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy))
+
+Karpathy presents a framework for understanding software evolution through three paradigms: Software 1.0 (traditional code), Software 2.0 (neural networks), and Software 3.0 (LLMs programmable via natural language). LLMs are becoming the new operating systems where English is the programming language, fundamentally changing how we interact with computers.
+
+- **LLMs as infrastructure**: Like utilities and semiconductor fabs, they're centralized, capital-intensive services with high reliability requirements
+- **The "people spirits" paradox**: LLMs have encyclopedic knowledge but jagged intelligence, hallucinations, and no persistent memory
+- **Partial autonomy is key**: Apps like Cursor and Perplexity provide "autonomy sliders" letting users balance AI generation with human verification
+- **Natural language democratizes coding**: "Vibe coding" makes software development accessible to anyone, but deployment complexity remains a barrier
+- **Agents need new interfaces**: Documentation must evolve from human-centric ("click this") to machine-actionable commands
+
+"We are at a historic moment where software is fundamentally changing... Being fluent in all three paradigms will be valuable for future engineers."
