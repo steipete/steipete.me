@@ -14,7 +14,15 @@ Here's a collection of articles and videos I consider essential reading to get u
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
 
-Claude generates terrible tests that over-mock, remove failing assertions, or weaken them until they're meaningless—making your tests useless. Treat AI-generated tests as first drafts that save significant time on scaffolding but require thorough manual review. Without proper review, you'll end up with thousands of flaky tests that randomly fail and destroy your CI pipeline. The key is using Claude for the initial test generation while maintaining strict human oversight to ensure tests actually validate real behavior. Follow experienced practitioners like Peter (steipete) and Armin (of Flask/Sentry fame) who share genuinely insightful workflows rather than low-quality AI hype.
+The host wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
+
+- **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
+- **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
+- **Live, no-cut learning**: every stumble, fix, and "aha" moment lands on screen, so you see what polished demos hide
+- **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
+- **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
+
+"It's like pairing with a senior dev who never sleeps—Claude just keeps shipping."
 
 ## Building a macOS App Entirely with Claude Code
 
