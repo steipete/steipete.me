@@ -1,7 +1,7 @@
 ---
 title: "Essential Reading"
 description: "Key insights on AI-generated tests, their limitations, and best practices for using them effectively"
-pubDatetime: "2025-07-02T08:00:00+00:00"
+pubDatetime: "2025-07-02T02:00:00+00:00"
 tags: ["ai", "testing", "claude", "development"]
 image: 
   url: ""
@@ -58,3 +58,15 @@ Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after disc
 - **Return to fundamentals**: Sometimes pen and paper planning beats AI-generated solutions
 
 "I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant."
+
+## Claude Code Best Practices from Anthropic
+
+[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering
+
+Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
+
+- **Customize your environment**: Use `CLAUDE.md` files for context, curate allowed tools carefully, and install GitHub CLI for enhanced interactions
+- **Adopt proven workflows**: Follow the Explore→Plan→Code→Commit approach, leverage TDD, iterate visually with screenshots, and use "Safe YOLO mode" for autonomous tasks
+- **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
+- **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
+- **Key insight**: "Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output"
