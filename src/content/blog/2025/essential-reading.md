@@ -10,7 +10,7 @@ tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices"
 
 **Kickstart your transition from vibe coding to agentic engineering.** 
 
-Agentic engineering represents a fundamental shift in how we build software—moving from traditional coding where you write every line, to collaborating with AI agents that can understand context, break down complex tasks, and execute them autonomously. These aren't just autocomplete tools; they're programmable partners that can handle entire codebases, debug CI pipelines, and ship production-ready features.
+Agentic engineering represents a fundamental shift in how we build software: moving from traditional coding where you write every line, to collaborating with AI agents that can understand context, break down complex tasks, and execute them autonomously. These aren't just autocomplete tools; they're programmable partners that can handle entire codebases, debug CI pipelines, and ship production-ready features.
 
 Here's my curated collection of essential articles and videos that will accelerate your journey into this new paradigm. Each resource has been chosen for its practical insights and real-world applications. I'll keep this list updated as the field evolves.
 
@@ -34,11 +34,11 @@ Philipp shares practical workflow tips for maximizing Claude Code's effectivenes
 
 Armin explores agentic coding as a transformative paradigm where AI agents become true collaborators rather than mere autocomplete tools, describing it as "catnip for programmers" that draws developers into addictive, energizing sessions. Claude Code emerges as the leading tool, with its terminal-based interface enabling powerful agent chaining and remote workflows that editor integrations can't match.
 
-- **Context is king**: Success requires rich context, descriptive function names, and simple codebases—Go, PHP, and basic Python work best
+- **Context is king**: Success requires rich context, descriptive function names, and simple codebases. Go, PHP, and basic Python work best
 - **Dev environment matters**: Agents need centralized logging, clear error messages, and tools that fail loudly to recover from mistakes
 - **Terminal > Editor**: Terminal interfaces enable agent nesting and composability that's difficult in traditional IDEs
 - **Beyond coding**: Agents excel at debugging CI pipelines, browser automation, file management, and even online sales automation
-- **Avoid context rot**: Long-running tasks suffer from accumulated failures—often better to restart than compress context
+- **Avoid context rot**: Long-running tasks suffer from accumulated failures. Often better to restart than compress context
 
 > The early adopter programmers are just the beginning of a broader wave of agentic AI use.
 
@@ -46,7 +46,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 90 min video
 
-Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
+Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo: auto-refactors, FFmpeg conversions, Playwright tests, all while you watch the unfiltered chaos unfold.
 
 - **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
 - **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
@@ -54,7 +54,7 @@ Mario wires Anthropic's Claude straight into VS Code and lets it rip through a r
 - **Token bills stay tiny**: lean prompts + periodic context-shrinks slash usage costs without clipping capability
 - **Copy-paste-ready workflow**: walk away with a blueprint to spin up your own tireless AI sidekick in minutes
 
-> It's like pairing with a senior dev who never sleeps—Claude just keeps shipping.
+> It's like pairing with a senior dev who never sleeps: Claude just keeps shipping.
 
 ## Claude Code Best Practices from Anthropic
 
@@ -67,7 +67,7 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 - **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
 - **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
 
-> Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output.
+> Claude performs best when it has a clear target to iterate against: a visual mock, a test case, or another kind of output.
 
 ## Building a macOS App Entirely with Claude Code
 
@@ -80,7 +80,7 @@ Indragie built and shipped Context, a macOS app for debugging MCP servers, with 
 - **Productivity transformation**: Rapid prototyping, mock data generation, and automated release scripts made shipping a polished side project actually achievable
 - **The future is here**: Massive productivity gains make the investment worthwhile
 
-This represents a fundamental shift in how developers can work—AI agents aren't just assistants but capable collaborators that can handle entire codebases.
+This represents a fundamental shift in how developers can work: AI agents aren't just assistants but capable collaborators that can handle entire codebases.
 
 > It's like I found an extra 5 hours every day, and all it cost me was $200 a month.
 
