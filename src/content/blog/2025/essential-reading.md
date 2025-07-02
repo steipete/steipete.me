@@ -51,7 +51,7 @@ Agentic coding revolutionizes software development by having AI agents actively 
 
 ## A Cautionary Perspective on AI Coding
 
-[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin
+[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort))
 
 Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
