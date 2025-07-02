@@ -10,9 +10,7 @@ tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices"
 
 **Kickstart your transition from vibe coding to agentic engineering.** 
 
-Agentic engineering represents a fundamental shift in how we build software: moving from traditional coding where you write every line, to collaborating with AI agents that can understand context, break down complex tasks, and execute them autonomously. These aren't just autocomplete tools; they're programmable partners that can handle entire codebases, debug CI pipelines, and ship production-ready features.
-
-Here's my curated collection of essential articles and videos that will accelerate your journey into this new paradigm. Each resource has been chosen for its practical insights and real-world applications. I'll keep this list updated as the field evolves.
+These resources will help you master the new paradigm of AI-assisted development, where agents become true collaborators that can handle entire codebases and ship production features. Each piece was chosen for its practical, real-world insights. I'll keep this list updated as the field evolves.
 
 ## How to Use Claude Code Effectively
 
