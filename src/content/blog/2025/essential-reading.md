@@ -14,7 +14,7 @@ These resources will help you master the new paradigm of AI-assisted development
 
 ## How to Use Claude Code Effectively
 
-[Read the article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess)) • June 2025 • 14 min read
+[Read the article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess)) • June 2025 • 14 min
 
 Philipp shares practical workflow tips for maximizing Claude Code's effectiveness:
 
@@ -28,7 +28,7 @@ Philipp shares practical workflow tips for maximizing Claude Code's effectivenes
 
 ## Agentic Coding: The Future of Software Development with Agents
 
-[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • June 2025 • 37 min video
+[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • June 2025 • 37 min
 
 Armin explores agentic coding as a transformative paradigm where AI agents become true collaborators rather than mere autocomplete tools, describing it as "catnip for programmers" that draws developers into addictive, energizing sessions. Claude Code emerges as the leading tool, with its terminal-based interface enabling powerful agent chaining and remote workflows that editor integrations can't match.
 
@@ -42,7 +42,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 ## I can't sleep gud anymore - A Practical Guide to Agentic Computering
 
-[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 85 min video
+[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 85 min
 
 Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo: auto-refactors, FFmpeg conversions, Playwright tests, all while you watch the unfiltered chaos unfold.
 
@@ -56,7 +56,7 @@ Mario wires Anthropic's Claude straight into VS Code and lets it rip through a r
 
 ## Claude Code Best Practices from Anthropic
 
-[Read the article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering • April 2025 • 15 min read
+[Read the article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering • April 2025 • 15 min
 
 Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
 
@@ -69,7 +69,7 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 
 ## Building a macOS App Entirely with Claude Code
 
-[Read the article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 19 min read
+[Read the article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 19 min
 
 Indragie built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
 
@@ -84,7 +84,7 @@ This represents a fundamental shift in how developers can work: AI agents aren't
 
 ## A Cautionary Perspective on AI Coding
 
-[Read the article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort)) • May 2025 • 8 min read
+[Read the article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort)) • May 2025 • 8 min
 
 Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
@@ -98,7 +98,7 @@ Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering
 
 ## The Evolution of Software: From 1.0 to 3.0
 
-[Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy)) • June 2025 • 40 min video
+[Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy)) • June 2025 • 40 min
 
 Andrej presents a framework for understanding software evolution through three paradigms: Software 1.0 (traditional code), Software 2.0 (neural networks), and Software 3.0 (LLMs programmable via natural language). LLMs are becoming the new operating systems where English is the programming language, fundamentally changing how we interact with computers.
 
