@@ -2,10 +2,9 @@
 title: "Essential Reading"
 description: "Key insights on AI-generated tests, their limitations, and best practices for using them effectively"
 pubDatetime: "2025-07-01T02:00:00+00:00"
+heroImage: /assets/img/2025/essential-reading/hero.png
+heroImageAlt: "Essential Reading for Agentic Engineering"
 tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
-image: 
-  url: "/assets/img/2025/essential-reading/hero.png"
-  alt: "Essential Reading for Agentic Engineering"
 ---
 
 Here's a collection of articles and videos I consider essential reading to get up-to-speed on agentic engineering. I'll keep this one updated as I discover new exceptional resources.
