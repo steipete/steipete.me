@@ -2,16 +2,21 @@
 title: "Essential Reading for Agentic Engineers"
 description: "A curated collection of must-read articles and videos for mastering Claude Code, agentic coding workflows, and the future of AI-assisted development"
 pubDatetime: "2025-07-01T02:00:00+00:00"
+lastUpdated: "2025-07-02"
 heroImage: /assets/img/2025/essential-reading/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering"
 tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
 ---
 
-Here's a collection of articles and videos I consider essential reading to get up-to-speed on agentic engineering. I'll keep this one updated as I discover new exceptional resources.
+**Kickstart your transition from vibe coding to agentic engineering.** 
+
+Agentic engineering represents a fundamental shift in how we build software—moving from traditional coding where you write every line, to collaborating with AI agents that can understand context, break down complex tasks, and execute them autonomously. These aren't just autocomplete tools; they're programmable partners that can handle entire codebases, debug CI pipelines, and ship production-ready features.
+
+Here's my curated collection of essential articles and videos that will accelerate your journey into this new paradigm. Each resource has been chosen for its practical insights and real-world applications. I'll keep this list updated as the field evolves.
 
 ## How to Use Claude Code Effectively
 
-[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess))
+[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess)) • June 2025 • 10 min read
 
 Philipp shares practical workflow tips for maximizing Claude Code's effectiveness:
 
@@ -25,7 +30,7 @@ Philipp shares practical workflow tips for maximizing Claude Code's effectivenes
 
 ## Agentic Coding: The Future of Software Development with Agents
 
-[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko))
+[Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • June 2025 • 85 min video
 
 Armin explores agentic coding as a transformative paradigm where AI agents become true collaborators rather than mere autocomplete tools, describing it as "catnip for programmers" that draws developers into addictive, energizing sessions. Claude Code emerges as the leading tool, with its terminal-based interface enabling powerful agent chaining and remote workflows that editor integrations can't match.
 
@@ -39,7 +44,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 ## I can't sleep gud anymore - A Practical Guide to Agentic Computering
 
-[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
+[Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 90 min video
 
 Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
 
@@ -53,7 +58,7 @@ Mario wires Anthropic's Claude straight into VS Code and lets it rip through a r
 
 ## Claude Code Best Practices from Anthropic
 
-[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering
+[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering • April 2025 • 15 min read
 
 Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
 
@@ -61,11 +66,12 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 - **Adopt proven workflows**: Follow the Explore→Plan→Code→Commit approach, leverage TDD, iterate visually with screenshots, and use "Safe YOLO mode" for autonomous tasks
 - **Optimize interactions**: Be specific in instructions, reference exact files, course-correct early, and use `/clear` to maintain focused context
 - **Advanced techniques**: Utilize multi-Claude workflows, git worktrees for parallel tasks, headless mode for automation, and subagents for complex problems
+
 > Claude performs best when it has a clear target to iterate against—a visual mock, a test case, or another kind of output.
 
 ## Building a macOS App Entirely with Claude Code
 
-[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://twitter.com/indragie))
+[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 20 min read
 
 Indragie built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
 
@@ -80,7 +86,7 @@ This represents a fundamental shift in how developers can work—AI agents aren'
 
 ## A Cautionary Perspective on AI Coding
 
-[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort))
+[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort)) • May 2025 • 8 min read
 
 Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
@@ -94,7 +100,7 @@ Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering
 
 ## The Evolution of Software: From 1.0 to 3.0
 
-[Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy))
+[Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy)) • June 2025 • 60 min video
 
 Andrej presents a framework for understanding software evolution through three paradigms: Software 1.0 (traditional code), Software 2.0 (neural networks), and Software 3.0 (LLMs programmable via natural language). LLMs are becoming the new operating systems where English is the programming language, fundamentally changing how we interact with computers.
 
