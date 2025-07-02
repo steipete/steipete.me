@@ -14,7 +14,7 @@ These resources will help you master the new paradigm of AI-assisted development
 
 ## How to Use Claude Code Effectively
 
-[Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess)) • June 2025 • 10 min read
+[Read the article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess)) • June 2025 • 10 min read
 
 Philipp shares practical workflow tips for maximizing Claude Code's effectiveness:
 
@@ -56,7 +56,7 @@ Mario wires Anthropic's Claude straight into VS Code and lets it rip through a r
 
 ## Claude Code Best Practices from Anthropic
 
-[Read the full article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering • April 2025 • 15 min read
+[Read the article](https://www.anthropic.com/engineering/claude-code-best-practices) by Anthropic Engineering • April 2025 • 15 min read
 
 Anthropic's engineering team shares comprehensive best practices for maximizing Claude Code's effectiveness:
 
@@ -69,7 +69,7 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 
 ## Building a macOS App Entirely with Claude Code
 
-[Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 20 min read
+[Read the article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 20 min read
 
 Indragie built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
 
@@ -84,7 +84,7 @@ This represents a fundamental shift in how developers can work: AI agents aren't
 
 ## A Cautionary Perspective on AI Coding
 
-[Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort)) • May 2025 • 8 min read
+[Read the article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort)) • May 2025 • 8 min read
 
 Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
