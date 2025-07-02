@@ -43,7 +43,7 @@ Philipp Spiess shares practical workflow tips for maximizing Claude Code's effec
 
 Key insight: "Claude Code has fundamentally changed how I approach many programming tasks... The key is finding the right balance between automation and human oversight."
 
-## Understanding Agentic Coding
+## Agentic Coding: The Future of Software Development with Agents
 
 [Watch the video](https://www.youtube.com/watch?v=nfOVgz_omlU)
 
