@@ -14,7 +14,7 @@ Here's a collection of articles and videos I consider essential reading to get u
 
 [Read the full article](https://spiess.dev/blog/how-i-use-claude-code) by Philipp Spiess ([@philippspiess](https://x.com/philippspiess))
 
-Philipp Spiess shares practical workflow tips for maximizing Claude Code's effectiveness:
+Philipp shares practical workflow tips for maximizing Claude Code's effectiveness:
 
 - **Start fresh often**: Use `/clear` frequently to prevent context drift and maintain focus
 - **Precise prompts win**: Provide extensive context, edge cases, and specific examples
@@ -42,7 +42,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames))
 
-The host wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
+Mario wires Anthropic's Claude straight into VS Code and lets it rip through a real repo—auto-refactors, FFmpeg conversions, Playwright tests—while you watch the unfiltered chaos unfold.
 
 - **Claude crushes grunt work**: refactors modules, writes bash one-liners, and updates docs right where they live
 - **Prompt hacks you can steal**: sprinkle tiny CLAUDE.md files, lock down file access, and /clear to keep context laser-focused
@@ -68,7 +68,7 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 
 [Read the full article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://twitter.com/indragie))
 
-Indragie Karunaratne built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
+Indragie built and shipped Context, a macOS app for debugging MCP servers, with Claude Code writing ~19,000 of the 20,000 lines of code. Key insights:
 
 - **Context engineering matters**: Detailed specifications and "priming" Claude with examples produces much higher quality code
 - **Modern Swift can be tricky**: Claude is competent but sometimes struggles with recent language features
@@ -81,7 +81,7 @@ This represents a fundamental shift in how developers can work—AI agents aren'
 
 [Read the full article](https://albertofortin.com/writing/coding-with-ai) by Alberto Fortin ([@a7fort](https://x.com/a7fort))
 
-Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
+Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering fundamental structural issues in his AI-generated codebase. His key insights:
 
 - **AI limitations are real**: LLMs generate inconsistent, poorly structured code and struggle to maintain coherence across multiple files
 - **Use AI as an assistant, not a lead developer**: Best for specific tasks like renaming parameters, translating pseudo-code, or learning new languages
@@ -95,7 +95,7 @@ Alberto Fortin offers a sobering counterpoint to AI coding enthusiasm after disc
 
 [Watch the video](https://www.youtube.com/watch?v=LCEmiRjPEtQ) by Andrej Karpathy ([@karpathy](https://x.com/karpathy))
 
-Karpathy presents a framework for understanding software evolution through three paradigms: Software 1.0 (traditional code), Software 2.0 (neural networks), and Software 3.0 (LLMs programmable via natural language). LLMs are becoming the new operating systems where English is the programming language, fundamentally changing how we interact with computers.
+Andrej presents a framework for understanding software evolution through three paradigms: Software 1.0 (traditional code), Software 2.0 (neural networks), and Software 3.0 (LLMs programmable via natural language). LLMs are becoming the new operating systems where English is the programming language, fundamentally changing how we interact with computers.
 
 - **LLMs as infrastructure**: Like utilities and semiconductor fabs, they're centralized, capital-intensive services with high reliability requirements
 - **The "people spirits" paradox**: LLMs have encyclopedic knowledge but jagged intelligence, hallucinations, and no persistent memory
