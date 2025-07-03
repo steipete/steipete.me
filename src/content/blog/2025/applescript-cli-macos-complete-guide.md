@@ -217,5 +217,5 @@ Making AppleScript work in CLI tools requires:
 3. Correct code signing
 4. Optional: `responsibility_spawnattrs_setdisclaim` for cleaner permission dialogs
 
-Yeah. I know. Building native is hard mode. Every day you learn a new insanity.
-Happy scripting! And may your permission dialogs always show the right app name.
+Building native is hard mode. Every day you learn a new insanity.
+May your permission dialogs always show the right app name.
