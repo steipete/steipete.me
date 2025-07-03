@@ -112,14 +112,6 @@ Create an entitlements file - yes, CLI tools can have these too:
 <dict>
     <key>com.apple.security.automation.apple-events</key>
     <true/>
-    
-    <!-- Often needed for dynamic code loading -->
-    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
-    <true/>
-    
-    <!-- For scripting additions -->
-    <key>com.apple.security.scripting-targets</key>
-    <true/>
 </dict>
 </plist>
 ```
