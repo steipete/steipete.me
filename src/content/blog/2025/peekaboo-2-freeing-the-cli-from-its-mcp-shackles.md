@@ -93,8 +93,6 @@ peekaboo analyze receipt.png "Extract all items and prices"
 peekaboo image --mode screen --analyze "What errors are shown in the console?"
 ```
 
-Don't have an OpenAI key? You can get one at [platform.openai.com](https://platform.openai.com/api-keys), or use the free local Ollama provider with `ollama pull llava:latest` for privacy-focused workflows.
-
 ## Why CLI > MCP
 
 Agents are really, really good at calling CLIs (actually much better than calling MCPs), so you don't have to clutter up your context and you can use all the features that Peekaboo has on demand, no installation required. Just add a note in your project's CLAUDE.md or agent instructions file that "peekaboo is available for screenshots", or simply mention peekaboo whenever your current context requires visual debugging.
