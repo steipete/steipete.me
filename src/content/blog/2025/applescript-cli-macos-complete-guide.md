@@ -9,13 +9,28 @@ tags:
   - CLI
   - Swift
   - Security
+  - MCP
+  - AI
+  - Cursor
 ---
 
 ![Making AppleScript Work in macOS CLI Tools](/assets/img/2025/applescript-cli-macos-complete-guide/header.png)
 
 *Or: How I Learned to Stop Fighting TCC and Embrace the Info.plist*
 
-Building a macOS CLI tool that uses AppleScript? Prepare for a journey through undocumented APIs, security entitlements, and permission dialogs that blame Terminal for your app's sins. After countless hours of debugging silent failures and confusing permission prompts, I've assembled the definitive guide to making AppleScript actually work in CLI tools.
+This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is cranking out code, and then bam! The inline terminal opens something blocking (file watcher, dev server, whatever) and the whole loop grinds to a halt. I'd have to manually click around to get things moving again. Productivity killer.
+
+My solution? Build an MCP (Model Context Protocol) server that could control an external terminal. That way, even when commands block, Cursor's loop keeps running. I called it [Terminator](https://github.com/steipete/Terminator) - because who doesn't love a good terminal/Terminator pun?
+
+## The Evolution of a Hack
+
+My first attempt was pure AppleScript - simple, direct terminal automation. It worked! Well, sort of. The script needed window focus to function, which meant it would constantly steal focus while Cursor was running. Try coding on multiple screens while your terminal keeps jumping to the foreground. Not fun.
+
+"No problem," I thought, "I'll be clever and convert this to an MCP server." That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
+
+Sure, I could have used Apple's `osascript` command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
+
+After way too many hours debugging why my CLI tool couldn't send Apple Events, I finally cracked the code. Here's everything I learned, so you don't have to suffer like I did.
 
 ## The Problem: Terminal Gets All the Blame
 
