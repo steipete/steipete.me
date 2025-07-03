@@ -26,6 +26,8 @@ My solution? Build an MCP (Model Context Protocol) server that could control an 
 
 My first attempt was [pure AppleScript](https://github.com/steipete/Terminator/blob/main/scripts/terminator.scpt) - simple, direct terminal automation. It worked! Well, sort of. The script needed window focus to function, which meant it would constantly steal focus while Cursor was running. Try coding on multiple screens while your terminal keeps jumping to the foreground. Not fun.
 
+The focus-stealing got so bad that at one point, the AI started writing its own AppleScript to detect which app was in the foreground. When it discovered Chrome was blocking its terminal access, it simply... killed all my Chrome windows. That was [the first time I apologized to an AI agent](https://steipete.me/posts/2025/when-ai-meets-madness-peters-16-hour-days#the-gemini-chrome-massacre). Clearly, I needed a better solution.
+
 "No problem," I thought, "I'll be clever and convert this to an MCP server." That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
 
 Sure, I could have used Apple's `osascript` command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
