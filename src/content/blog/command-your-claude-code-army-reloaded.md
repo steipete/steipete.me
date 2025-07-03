@@ -1,7 +1,7 @@
 ---
 title: 'Command your Claude Code Army, Reloaded'
 description: 'Enhance your Claude Code workflow with VibeTunnel terminal title management for better multi-session tracking'
-pubDate: 2025-07-03T16:30:00+01:00
+pubDatetime: 2025-07-03T16:30:00+01:00
 tags: ["ai", "claude", "productivity", "vibetunnel", "terminal"]
 ---
 
