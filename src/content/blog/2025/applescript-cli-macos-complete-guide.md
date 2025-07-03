@@ -159,7 +159,7 @@ fi
 
 ## The Advanced Stuff: Escaping Terminal's Shadow
 
-Remember how permission dialogs blame Terminal instead of your app? There's an undocumented API to fix that: `responsibility_spawnattrs_setdisclaim`.
+Remember how permission dialogs blame Terminal instead of your app? There's an undocumented API to fix that: `responsibility_spawnattrs_setdisclaim`. I discovered this gem from [Qt's excellent blog post about the responsible process problem](https://www.qt.io/blog/the-curious-case-of-the-responsible-process).
 
 ```swift
 // Bridge the private API
