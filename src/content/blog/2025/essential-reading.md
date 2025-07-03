@@ -44,7 +44,7 @@ Armin explores agentic coding as a transformative paradigm where AI agents becom
 
 [Watch the video](https://vimeo.com/1098025052) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • June 2025 • 85 min
 
-Mario shares his hard-won patterns for using Claude Code effectively on real projects, demonstrating workflows from ad-hoc scripting to complex cross-language porting live, revealing how to maintain control while leveraging AI's speed.
+Mario shares his hard-won patterns for using Claude Code effectively on real projects, demonstrating workflows from ad-hoc scripting to complex cross-language porting live, revealing how to maintain control while leveraging AI's speed. Also see his blog post "[Prompts are code](https://mariozechner.at/posts/2025-01-02-prompts-are-code/)" for deeper insights into this paradigm.
 
 - **Claude changes everything but demands discipline**: It writes terrible code but enables rapid iteration - the key is maintaining tight control and understanding what it generates
 - **Context is everything**: Use CLAUDE.md files, structured documentation, and tools like `jq` to query JSON databases instead of letting Claude waste tokens exploring your codebase
