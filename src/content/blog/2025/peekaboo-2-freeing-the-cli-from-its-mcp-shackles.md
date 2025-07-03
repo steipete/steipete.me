@@ -101,7 +101,7 @@ Agents are really, really good at calling CLIs (actually much better than callin
 
 As Armin Ronacher perfectly articulates in ["Code Is All You Need"](https://lucumr.pocoo.org/2025/7/3/tools/), CLIs offer composability, reliability, and verifiability that complex tool interfaces can't match. CLIs work for both humans and AI agents – we can run, debug, and understand them. Once a CLI command works, it can be executed hundreds of times without requiring additional inference or context. This mechanical predictability makes CLIs the universal, composable interface that bridges human and AI interaction.
 
-I'm not saying all MCPs are useless - for example [Microsoft's Playwright MCP](https://github.com/microsoft/playwright-mcp) for browser automation is great. However, they also built an [MCP for GitHub](https://github.com/microsoft/mcp), which is simply a lesser version of the existing []`gh` cli](https://cli.github.com/) which does the same thing. If this got you thinking, watch Manuel Odendahl's excellent [“MCPs are Boring” talk](https://www.youtube.com/watch?v=J3oJqan2Gv8) from AI Engineer.
+I'm not saying all MCPs are useless - for example [Microsoft's Playwright MCP](https://github.com/microsoft/playwright-mcp) for browser automation is great. However, they also built an [MCP for GitHub](https://github.com/microsoft/mcp), which is simply a lesser version of the existing [`gh` cli](https://cli.github.com/) which does the same thing. If this got you thinking, watch Manuel Odendahl's excellent [“MCPs are Boring” talk](https://www.youtube.com/watch?v=J3oJqan2Gv8) from AI Engineer.
 
 ## Get Started Today
 
