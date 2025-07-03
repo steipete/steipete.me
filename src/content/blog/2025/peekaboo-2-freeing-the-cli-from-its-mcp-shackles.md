@@ -14,11 +14,9 @@ tags:
 
 [![Peekaboo 2.0 – Free the CLI from its MCP shackles](/assets/img/2025/peekaboo-2-freeing-the-cli-from-its-mcp-shackles/banner.png)](https://peekaboo.dev/)
 
-**TL;DR**: Peekaboo 2.0 is now available as a standalone CLI that both humans and AI can use – just run `peekaboo` and it works!
-
 A few weeks ago I [built Peekaboo](https://steipete.me/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents), lightning-fast macOS screenshots for AI agents. The twist? Not only is it really fast at screenshots, it can also use a separate agent to answer queries - saving precious context space for your main agent.
 
-In the last few weeks, I had a bit of a mind shift change and I realized that **most MCPs are actually better if they're just CLIs**. Agents have an easier time calling CLIs, they can be loaded on-demand without cluttering the context, and they are composable. With that, I release Peekaboo 2.0 which has been freed from its MCP shackles and is now also available as CLI. 
+Lately there's a mind shift in the community to realize that **most MCPs are actually better if they're just CLIs**. Agents have an easier time calling CLIs, they can be loaded on-demand without cluttering the context, and they are composable. With that, I release Peekaboo 2.0, which has been freed from its MCP shackles and is now also available as CLI. 
 
 ## How It Works
 
@@ -37,6 +35,17 @@ $ peekaboo analyze "What's on this webpage?" --image ~/Desktop/safari-2025-07-03
 ✓ The webpage shows the Peekaboo documentation with installation instructions...
 ```
 
+But here's where it gets even better – you can combine capture and analyze in a single command:
+
+```bash
+$ peekaboo force --app "Safari" --analyze "Summarize this webpage"
+✓ Screenshot captured from Safari
+✓ Analysis: The webpage displays a blog post about Peekaboo 2.0, announcing 
+  its evolution from an MCP-only tool to a CLI-first architecture. Key points
+  include easier agent integration, on-demand loading, and the benefits of 
+  CLIs over complex protocols for both humans and AI agents...
+```
+
 ## Installation Options
 
 Peekaboo 2.0 can be installed via Homebrew:
@@ -46,7 +55,7 @@ brew tap steipete/tap
 brew install peekaboo
 ```
 
-Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still use the MCP server; nothing changed there.
+Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still [use the MCP server](https://github.com/steipete/Peekaboo); nothing changed there.
 
 ## Why CLI > MCP
 
