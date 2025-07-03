@@ -183,46 +183,6 @@ func launchWithOwnPermissions(path: String, arguments: [String]) throws {
 
 This makes your CLI tool responsible for its own permissions, not its parent process. The permission dialog will now correctly show "YourCLI wants to control..."
 
-## Real-World Example: A Notification CLI
-
-Here's a complete example that ties everything together:
-
-```swift
-// main.swift
-import Foundation
-import AppKit
-
-func showNotification(_ message: String, title: String) throws {
-    let script = """
-    display notification "\(message)" with title "\(title)"
-    """
-    
-    let appleScript = NSAppleScript(source: script)
-    var error: NSDictionary?
-    
-    guard appleScript?.executeAndReturnError(&error) != nil else {
-        if let error = error {
-            throw NSError(
-                domain: "AppleScriptError",
-                code: error["NSAppleScriptErrorNumber"] as? Int ?? -1,
-                userInfo: error as? [String: Any]
-            )
-        }
-        throw NSError(domain: "AppleScriptError", code: -1, userInfo: nil)
-    }
-}
-
-// Usage
-do {
-    try showNotification("Hello from CLI!", title: "NotifyCLI")
-    print("✅ Notification sent!")
-} catch {
-    print("❌ Failed: \(error)")
-    exit(1)
-}
-```
-
-Build it with the embedded Info.plist, sign it with entitlements, and voilà - a CLI tool that properly identifies itself to macOS.
 
 ## Common Gotchas and Solutions
 
@@ -232,8 +192,6 @@ Usually means missing entitlements. Double-check your `com.apple.security.automa
 ### "Terminal wants to control..."
 Your Info.plist isn't embedded correctly. Verify with `otool`.
 
-### Permission granted but still fails
-Some Apple apps need additional entitlements like `com.apple.security.temporary-exception.apple-events`.
 
 ### Works in development, fails in production
 Check your code signing. Developer ID certificates have different requirements than ad-hoc signing.
