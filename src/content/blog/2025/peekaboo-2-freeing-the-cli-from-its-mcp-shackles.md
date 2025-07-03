@@ -12,6 +12,8 @@ tags:
   - AI Agents
 ---
 
+[![Peekaboo 2.0 – Freeing the CLI from its MCP shackles](/assets/img/2025/peekaboo-2-freeing-the-cli-from-its-mcp-shackles/banner.png)](https://peekaboo.dev/)
+
 A few weeks ago I built [Peekaboo](https://peekaboo.dev/), lightning-fast macOS screenshots for AI agents. As you do, I built an MCP server that makes it easy for agents to not only request screenshots of the screen or individual apps but also ask questions about those screenshots, saving on context and only getting information they actually need. The actual processing would be done by a different model that is configurable.
 
 In the last few weeks, I had a bit of a mind shift change and I realized that **most MCPs are actually better if they're just CLIs**. With that, I release Peekaboo 2.0 which has been freed from its MCP shackles and is now also available as CLI. 
