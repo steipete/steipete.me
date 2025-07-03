@@ -18,29 +18,27 @@ tags:
 
 *Or: How I Learned to Stop Fighting TCC and Embrace the Info.plist*
 
-**TL;DR:** If you're building a macOS CLI tool that uses AppleScript, you need to embed an Info.plist into your binary, sign it with proper entitlements, and optionally use the undocumented `responsibility_spawnattrs_setdisclaim` API to avoid permission dialogs that blame Terminal instead of your app. This post shows you exactly how.
+**TL;DR:** If you're building a macOS CLI that uses AppleScript, you need to embed an Info.plist into your binary, sign it with proper entitlements, and optionally use the undocumented `responsibility_spawnattrs_setdisclaim` API to avoid permission dialogs that blames the hosting app.
 
-This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is looping through its tasks, and then bam! The inline terminal opens something blocking (file watcher, dev server, whatever) and the whole loop grinds to a halt. I'd have to manually click around to get things moving again. Productivity killer.
+This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is looping through its tasks, and then bam! The inline terminal opens something blocking (file watcher, dev server, ...) and the whole loop stops. I have to manually click around to get things moving again.
 
-My solution? Build an MCP (Model Context Protocol) server that could control an external terminal. That way, even when commands block, Cursor's loop keeps running. I called it [Terminator](https://github.com/steipete/Terminator) - because who doesn't love a good terminal/Terminator pun?
+My solution? Build an MCP that controls an external terminal. That way, even when commands block, Cursor's loop keeps running. I called it [Terminator](https://github.com/steipete/Terminator) - 'cause who doesn't love a good terminal/Terminator pun?
 
 ## The Evolution of a Hack
 
-My first attempt was [pure AppleScript](https://github.com/steipete/Terminator/blob/main/scripts/terminator.scpt) - simple, direct terminal automation. It worked! Well, sort of. The script needed window focus to function, which meant it would constantly steal focus while Cursor was running. Try coding on multiple screens while your terminal keeps jumping to the foreground. Not fun.
+My first attempt was [pure AppleScript](https://github.com/steipete/Terminator/blob/main/scripts/terminator.scpt) - simple, direct terminal automation. It worked! Well, sort of... The script needed window focus to function, which meant it would constantly steal focus while Cursor was running.
 
 The focus-stealing got so bad that at one point, the AI started writing its own AppleScript to detect which app was in the foreground. When it discovered Chrome was blocking its terminal access, it simply... killed all my Chrome windows. That was [the first time I apologized to an AI agent](https://steipete.me/posts/2025/when-ai-meets-madness-peters-16-hour-days#the-gemini-chrome-massacre). Clearly, I needed a better solution.
 
-"No problem," I thought, "I'll be clever and convert this to an MCP server." That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
+That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
 
-Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
+Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, AppKi's AppleScript API gives you much better error handling - if you can get it working.
 
 ## Plot Twist: Enter Claude Code
 
-Here's the thing - I never actually finished Terminator. Why? Because [Claude Code](https://docs.anthropic.com/en/docs/claude-code) came along and made it obsolete. As a massive Claude Code fanboy (seriously, [check](https://steipete.me/posts/2025/claude-code-is-my-computer/) [out](https://steipete.me/posts/2025/commanding-your-claude-code-army/) [my](https://steipete.me/posts/command-your-claude-code-army-reloaded/) [posts](https://steipete.me/posts/2025/vibe-meter-2-claude-code-usage-calculation/)), I ditched Cursor and never looked back. Claude Code doesn't have the inline terminal blocking issues that plagued Cursor.
+Here's the thing - I never actually finished Terminator. Why? Because [Claude Code](https://docs.anthropic.com/en/docs/claude-code) came along and made it obsolete. As a massive Claude Code fanboy (seriously, [check](https://steipete.me/posts/2025/claude-code-is-my-computer/) [out](https://steipete.me/posts/2025/commanding-your-claude-code-army/) [my](https://steipete.me/posts/command-your-claude-code-army-reloaded/) [posts](https://steipete.me/posts/2025/vibe-meter-2-claude-code-usage-calculation/)), I ditched Cursor. Claude Code doesn't have these inline terminal blocking issues.
 
-But here's why I'm still writing this: Someone out there is building a CLI tool that needs AppleScript. Maybe it's for terminal automation, maybe it's for something completely different. And when they hit these same walls, they'll waste days figuring out what took me hours to crack.
-
-So even though Terminator sits unfinished in my GitHub (a monument to problems that Claude Code solved), the knowledge I gained diving into macOS's undocumented AppleScript APIs is too valuable to keep to myself.
+I'm writing this here since future you or me will stumble into the same issue eventually, and hopefully you can just drag this URL into Claude Code and it'll fix everything up. Let Terminator lurk unfinished in my GitHub.
 
 ## The Problem: Terminal Gets All the Blame
 
@@ -53,7 +51,7 @@ script?.executeAndReturnError(nil)  // Spoiler: This won't work as expected
 
 You'll either get:
 1. Silent failure (no error, no result, no nothing)
-2. A permission dialog that says "Terminal wants to control Finder" (not your app!)
+2. A permission dialog that says "Terminal wants to control Finder/Cursor" (not your cli)
 3. Error -1750 (errOSASystemError) with zero helpful context
 
 The root cause? macOS's security model requires proper app identification through bundle IDs, code signing, and entitlements. Without these, your CLI tool is just an anonymous process hiding behind Terminal.
@@ -157,9 +155,9 @@ else
 fi
 ```
 
-## The Advanced Stuff: Escaping Terminal's Shadow
+## The Advanced Stuff: Escaping Cursor's Shadow
 
-Remember how permission dialogs blame Terminal instead of your app? There's an undocumented API to fix that: `responsibility_spawnattrs_setdisclaim`. I discovered this gem from [Qt's excellent blog post about the responsible process problem](https://www.qt.io/blog/the-curious-case-of-the-responsible-process).
+Remember how permission dialogs blame the hosting app (e.g. Cursor when you build an MCP) instead of your app? There's an undocumented API to fix that: `responsibility_spawnattrs_setdisclaim`. I discovered this gem from [Qt's excellent blog post about the responsible process problem](https://www.qt.io/blog/the-curious-case-of-the-responsible-process).
 
 ```swift
 // Bridge the private API
@@ -189,20 +187,8 @@ func launchWithOwnPermissions(path: String, arguments: [String]) throws {
 }
 ```
 
-This makes your CLI tool responsible for its own permissions, not its parent process. The permission dialog will now correctly show "YourCLI wants to control..."
+This makes your CLI tool responsible for its own permissions, not its parent process. The permission dialog will now correctly show "Your CLI wants to control..."
 
-
-## Common Gotchas and Solutions
-
-### Error -1750 (errOSASystemError)
-Usually means missing entitlements. Double-check your `com.apple.security.automation.apple-events`.
-
-### "Terminal wants to control..."
-Your Info.plist isn't embedded correctly. Verify with `otool`.
-
-
-### Works in development, fails in production
-Check your code signing. Developer ID certificates have different requirements than ad-hoc signing.
 
 ## Testing Your Implementation
 
@@ -228,11 +214,8 @@ codesign -dv yourcli
 Making AppleScript work in CLI tools requires:
 1. An embedded Info.plist for identity
 2. Proper entitlements for permissions
-3. Correct code signing (without `--deep`!)
+3. Correct code signing
 4. Optional: `responsibility_spawnattrs_setdisclaim` for cleaner permission dialogs
 
-It's a lot of hoops to jump through, but the result is a professional CLI tool that integrates seamlessly with macOS security. Your users get clear permission dialogs with your app's name, and you get AppleScript that actually works.
-
-Just remember: that `responsibility_spawnattrs_setdisclaim` API is undocumented and could vanish in any macOS update. But until Apple gives us a proper API, it's the best we've got.
-
+Yeah. I know. Building native is hard mode. Every day you learn a new insanity.
 Happy scripting! And may your permission dialogs always show the right app name.
