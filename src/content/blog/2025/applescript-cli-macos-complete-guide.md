@@ -24,7 +24,7 @@ My solution? Build an MCP (Model Context Protocol) server that could control an 
 
 ## The Evolution of a Hack
 
-My first attempt was pure AppleScript - simple, direct terminal automation. It worked! Well, sort of. The script needed window focus to function, which meant it would constantly steal focus while Cursor was running. Try coding on multiple screens while your terminal keeps jumping to the foreground. Not fun.
+My first attempt was [pure AppleScript](https://github.com/steipete/Terminator/blob/main/scripts/terminator.scpt) - simple, direct terminal automation. It worked! Well, sort of. The script needed window focus to function, which meant it would constantly steal focus while Cursor was running. Try coding on multiple screens while your terminal keeps jumping to the foreground. Not fun.
 
 "No problem," I thought, "I'll be clever and convert this to an MCP server." That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
 
