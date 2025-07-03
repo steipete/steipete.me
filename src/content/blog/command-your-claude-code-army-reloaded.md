@@ -5,11 +5,11 @@ pubDatetime: 2025-07-03T02:00:00+01:00
 tags: ["ai", "claude", "productivity", "vibetunnel", "terminal"]
 ---
 
-Managing multiple Claude Code sessions just got a whole lot easier. With [VibeTunnel](https://github.com/amantus-ai/vibetunnel)'s new terminal title management feature, you can now see at a glance what each Claude instance is working on across your projects.
+Managing multiple Claude Code sessions just got a whole lot easier. With [VibeTunnel](https://vibetunnel.sh/)'s new terminal title management feature, you can now see at a glance what each Claude instance is working on across your projects.
 
 ![VibeTunnel showing multiple Claude sessions with descriptive titles](/assets/img/2025/command-your-claude-code-army-reloaded/vibetunnel.png)
 
-The screenshot above shows the power of this feature: each Claude session displays exactly what it's working on - from "Searching for OpenAI Swift dependencies" to "Testing AI analysis functionality" to "Implementing Git repository monitoring". No more guessing which terminal is doing what!
+The screenshot above shows the power of this feature: each Claude session displays exactly what it's working on, and Claude does this automatically without us having to ask for it. Clicking on a session selects that terminal, and you can also click on the folder icon to open Finder or on the Git info to open your Git client. This is all new in VibeTunnel 1.0 Beta 6, which you can download at [vibetunnel.sh](https://vibetunnel.sh/).
 
 ## VibeTunnel Terminal Title Management
 
