@@ -22,7 +22,7 @@ Lately there's a mind shift in the community to realize that **most MCPs are act
 
 The magic behind Peekaboo 2.0 is its clean separation of concerns. From day one, I built it as a Swift CLI with a thin TypeScript wrapper for MCP support. This architecture means the CLI version isn't a port or afterthought – it's the core engine. I simply moved the AI processing features from TypeScript into the Swift CLI, giving you the same powerful functionality without the MCP overhead.
 
-Here's what this means for you: instead of loading 40+ MCP tools into your agent's context (eating up valuable tokens), agents can now discover and use Peekaboo on-demand:
+Here's what this means for you: instead of loading MCP tool descriptions into your agent's context (eating up valuable tokens), agents can now discover and use Peekaboo on-demand:
 
 ```bash
 $ peekaboo --help
@@ -55,7 +55,7 @@ brew tap steipete/tap
 brew install peekaboo
 ```
 
-Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still [use the MCP server](https://github.com/steipete/Peekaboo); nothing changed there.
+Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still use the MCP server; nothing changed there.
 
 ## Why CLI > MCP
 
