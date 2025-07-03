@@ -20,7 +20,7 @@ tags:
 
 **TL;DR:** If you're building a macOS CLI tool that uses AppleScript, you need to embed an Info.plist into your binary, sign it with proper entitlements, and optionally use the undocumented `responsibility_spawnattrs_setdisclaim` API to avoid permission dialogs that blame Terminal instead of your app. This post shows you exactly how.
 
-This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is cranking out code, and then bam! The inline terminal opens something blocking (file watcher, dev server, whatever) and the whole loop grinds to a halt. I'd have to manually click around to get things moving again. Productivity killer.
+This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is looping through its tasks, and then bam! The inline terminal opens something blocking (file watcher, dev server, whatever) and the whole loop grinds to a halt. I'd have to manually click around to get things moving again. Productivity killer.
 
 My solution? Build an MCP (Model Context Protocol) server that could control an external terminal. That way, even when commands block, Cursor's loop keeps running. I called it [Terminator](https://github.com/steipete/Terminator) - because who doesn't love a good terminal/Terminator pun?
 
