@@ -13,7 +13,7 @@ The screenshot above shows the power of this feature: each Claude session displa
 
 I tried the solution from my [previous post](/posts/2025/commanding-your-claude-code-army/), but Claude kept rewriting the terminal title, so I needed a better solution—hence this VibeTunnel integration.
 
-## VibeTunnel Terminal Title Management for CLAUDE.md
+## VibeTunnel Terminal Title Management
 
 Here's the complete section to add to your `~/.claude/CLAUDE.md` file:
 
