@@ -35,17 +35,6 @@ $ peekaboo analyze ~/Desktop/safari-2025-07-03.png "What's on this webpage?"
 ✓ The webpage shows the Peekaboo documentation with installation instructions...
 ```
 
-But here's where it gets even better – you can combine capture and analyze in a single command:
-
-```bash
-$ peekaboo image --app "Safari" --analyze "Summarize this webpage"
-✓ Screenshot captured from Safari
-✓ Analysis: The webpage displays a blog post about Peekaboo 2.0, announcing 
-  its evolution from an MCP-only tool to a CLI-first architecture. Key points
-  include easier agent integration, on-demand loading, and the benefits of 
-  CLIs over complex protocols for both humans and AI agents...
-```
-
 ## Installation Options
 
 Peekaboo 2.0 can be installed via Homebrew:
@@ -86,11 +75,14 @@ Once configured, Peekaboo transforms from a simple screenshot tool into a visual
 # Debug UI issues
 peekaboo image --app "MyApp" --analyze "Do you see three buttons here?"
 
-# Analyze build failures
-peekaboo image --app "Xcode" --analyze "What test failures are shown?"
-
 # Understand complex interfaces
 peekaboo image --mode screen --analyze "What errors are shown in the console?"
+
+# But here's where it gets even better – combine capture and analyze:
+peekaboo image --app "Safari" --analyze "Summarize this webpage"
+# ✓ Screenshot captured from Safari
+# ✓ Analysis: The webpage displays a blog post about Peekaboo 2.0, announcing 
+#   its evolution from an MCP-only tool to a CLI-first architecture...
 ```
 
 ## Why CLI > MCP
