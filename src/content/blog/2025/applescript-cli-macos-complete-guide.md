@@ -32,7 +32,13 @@ The focus-stealing got so bad that at one point, the AI started writing its own 
 
 Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
 
-After way too many hours debugging why my CLI tool couldn't send Apple Events, I finally cracked the code. Here's everything I learned, so you don't have to suffer like I did.
+## Plot Twist: Enter Claude Code
+
+Here's the thing - I never actually finished Terminator. Why? Because [Claude Code](https://docs.anthropic.com/en/docs/claude-code) came along and made it obsolete. As a massive Claude Code fanboy (seriously, [check](https://steipete.me/posts/2025/claude-code-is-my-computer/) [out](https://steipete.me/posts/2025/commanding-your-claude-code-army/) [my](https://steipete.me/posts/command-your-claude-code-army-reloaded/) [posts](https://steipete.me/posts/2025/vibe-meter-2-claude-code-usage-calculation/)), I ditched Cursor and never looked back. Claude Code doesn't have the inline terminal blocking issues that plagued Cursor.
+
+But here's why I'm still writing this: Someone out there is building a CLI tool that needs AppleScript. Maybe it's for terminal automation, maybe it's for something completely different. And when they hit these same walls, they'll waste days figuring out what took me hours to crack.
+
+So even though Terminator sits unfinished in my GitHub (a monument to problems that Claude Code solved), the knowledge I gained diving into macOS's undocumented AppleScript APIs is too valuable to keep to myself.
 
 ## The Problem: Terminal Gets All the Blame
 
