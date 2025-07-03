@@ -14,15 +14,15 @@ tags:
 
 [![Peekaboo 2.0 – Free the CLI from its MCP shackles](/assets/img/2025/peekaboo-2-freeing-the-cli-from-its-mcp-shackles/banner.png)](https://peekaboo.dev/)
 
-A few weeks ago I [built Peekaboo](https://steipete.me/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents), lightning-fast macOS screenshots for AI agents. The twist? Not only is it really fast at screenshots, it can also use a separate agent to answer queries - saving precious context space for your main agent.
+A few weeks ago I [built Peekaboo](https://steipete.me/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents), lightning-fast macOS screenshots for AI agents. The twist? Not only is it really fast at screenshots, it can also use a separate agent to answer queries - saving precious context space for your main agent. Plus, in contrast to the macOS `screencapture`, it doesn't need user action or steals app focus.
 
 Lately there's a mind shift in the community to realize that **most MCPs are actually better if they're just CLIs**. Agents have an easier time calling CLIs, they can be loaded on-demand without cluttering the context, and they are composable. With that, I release Peekaboo 2.0, which has been freed from its MCP shackles and is now also available as CLI. 
 
 ## How It Works
 
-The magic behind Peekaboo 2.0 is its clean separation of concerns. From day one, I built it as a Swift CLI with a thin TypeScript wrapper for MCP support. This architecture means the CLI version isn't a port or afterthought – it's the core engine. I simply moved the AI processing features from TypeScript into the Swift CLI, giving you the same powerful functionality without the MCP overhead.
+The magic behind Peekaboo 2.0 is its clean separation of concerns. From day one, I built it as a Swift CLI with a thin TypeScript wrapper for MCP support. This architecture means the CLI version isn't a port or afterthought – it's the core engine. I had to do some refactoring, move the AI processing features from TypeScript into the Swift CLI, and now you get the same powerful functionality without the MCP overhead.
 
-Here's what this means for you: instead of loading MCP tool descriptions into your agent's context (eating up valuable tokens), agents can now discover and use Peekaboo on-demand:
+Here's what this means for you: instead of installing an MCP into Claude/Cursor, cluttering up the context for every session, agents can now discover and use Peekaboo on-demand:
 
 ```bash
 $ peekaboo --help
@@ -61,11 +61,9 @@ Or you can just download it from [GitHub](https://github.com/steipete/peekaboo).
 
 Agents are really, really good at calling CLIs (actually much better than calling MCPs), so you don't have to clutter up your context and you can use all the features that Peekaboo has on demand, no installation required. Just add a note in your project's CLAUDE.md or agent instructions file that "peekaboo is available for screenshots", or simply mention peekaboo whenever your current context requires visual debugging.
 
-As Armin Ronacher perfectly articulates in ["Code Is All You Need"](https://lucumr.pocoo.org/2025/7/3/tools/), CLIs offer composability, reliability, and verifiability that complex tool interfaces can't match. CLIs work for both humans and AI agents – we can run, debug, and understand them. Once a CLI command works, it can be executed hundreds of times without requiring additional inference or context. This mechanical predictability makes CLIs the universal interface that bridges human and AI interaction.
+As Armin Ronacher perfectly articulates in ["Code Is All You Need"](https://lucumr.pocoo.org/2025/7/3/tools/), CLIs offer composability, reliability, and verifiability that complex tool interfaces can't match. CLIs work for both humans and AI agents – we can run, debug, and understand them. Once a CLI command works, it can be executed hundreds of times without requiring additional inference or context. This mechanical predictability makes CLIs the universal, composable interface that bridges human and AI interaction.
 
-## The Power of Simplicity
-
-This shift in thinking – from complex MCP servers to simple CLIs – represents a broader understanding of how AI agents work best. They excel at understanding command-line interfaces, parsing help text, and constructing appropriate commands. By embracing this natural affinity, we can build tools that are both more powerful and easier to use.
+I'm not saying all MCPs are useless - for example [Microsoft's Playwright MCP](https://github.com/microsoft/playwright-mcp) for browser automation is great. However, they also built an [MCP for GitHub](https://github.com/microsoft/mcp), which is simply a lesser version of the existing []`gh` cli](https://cli.github.com/) which does the same thing. If this got you thinking, watch Manuel Odendahl's excellent [“MCPs are Boring” talk](https://www.youtube.com/watch?v=J3oJqan2Gv8) from AI Engineer.
 
 ## Get Started Today
 
