@@ -84,10 +84,10 @@ Once configured, Peekaboo transforms from a simple screenshot tool into a visual
 
 ```bash
 # Debug UI issues
-peekaboo image --app "MyApp" --analyze "Why is this button misaligned?"
+peekaboo image --app "MyApp" --analyze "Do you see three buttons here?"
 
-# Extract text from images
-peekaboo analyze receipt.png "Extract all items and prices"
+# Analyze build failures
+peekaboo image --app "Xcode" --analyze "What test failures are shown?"
 
 # Understand complex interfaces
 peekaboo image --mode screen --analyze "What errors are shown in the console?"
