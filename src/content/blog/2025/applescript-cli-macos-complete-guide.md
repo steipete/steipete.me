@@ -30,7 +30,7 @@ The focus-stealing got so bad that at one point, the AI started writing its own 
 
 "No problem," I thought, "I'll be clever and convert this to an MCP server." That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
 
-Sure, I could have used Apple's `osascript` command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
+Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, native AppleScript gives you much finer control - if you can get it working.
 
 After way too many hours debugging why my CLI tool couldn't send Apple Events, I finally cracked the code. Here's everything I learned, so you don't have to suffer like I did.
 
