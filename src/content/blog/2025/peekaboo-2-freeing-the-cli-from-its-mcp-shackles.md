@@ -28,17 +28,17 @@ Here's what this means for you: instead of installing an MCP into Claude/Cursor,
 $ peekaboo --help
 Capture screenshots and analyze them with AI
 
-$ peekaboo capture --app "Safari"
+$ peekaboo image --app "Safari"
 ✓ Screenshot saved to: ~/Desktop/safari-2025-07-03.png
 
-$ peekaboo analyze "What's on this webpage?" --image ~/Desktop/safari-2025-07-03.png
+$ peekaboo analyze ~/Desktop/safari-2025-07-03.png "What's on this webpage?"
 ✓ The webpage shows the Peekaboo documentation with installation instructions...
 ```
 
 But here's where it gets even better – you can combine capture and analyze in a single command:
 
 ```bash
-$ peekaboo force --app "Safari" --analyze "Summarize this webpage"
+$ peekaboo image --app "Safari" --analyze "Summarize this webpage"
 ✓ Screenshot captured from Safari
 ✓ Analysis: The webpage displays a blog post about Peekaboo 2.0, announcing 
   its evolution from an MCP-only tool to a CLI-first architecture. Key points
