@@ -32,7 +32,7 @@ The focus-stealing got so bad that at one point, the AI started writing its own 
 
 That's when I fell down the rabbit hole. Getting AppleScript to work in a CLI tool turned out to be a maze of undocumented APIs, security permissions, and macOS quirks that nobody warns you about.
 
-Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, AppKi's AppleScript API gives you much better error handling - if you can get it working.
+Sure, I could have used Apple's [`osascript`](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/osascript) command and called it a day. But where's the fun in that? Plus, AppKit's AppleScript API gives you much better error handling - if you can get it working.
 
 ## Plot Twist: Enter Claude Code
 
