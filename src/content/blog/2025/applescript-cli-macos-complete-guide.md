@@ -1,6 +1,6 @@
 ---
 title: "Making AppleScript Work in macOS CLI Tools: The Undocumented Parts"
-pubDatetime: 2025-07-04T10:00:00.000+01:00
+pubDatetime: 2025-07-03T14:00:00.000+01:00
 description: "The complete guide to making AppleScript work in command-line tools - from Info.plist embedding to handling TCC permissions and the mysterious responsibility_spawnattrs_setdisclaim API."
 tags:
   - macOS
