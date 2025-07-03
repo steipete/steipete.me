@@ -1,6 +1,6 @@
 ---
 title: "Peekaboo 2.0 – Free the CLI from its MCP shackles"
-pubDatetime: 2025-07-03T01:00:00.000+01:00
+pubDatetime: 2025-07-03T02:00:00.000+01:00
 description: "Peekaboo 2.0 ditches the MCP-only approach for a CLI-first architecture, because CLIs are the universal interface that both humans and AI agents can actually use effectively"
 tags:
   - MCP
@@ -56,6 +56,44 @@ brew install peekaboo
 ```
 
 Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still use the MCP server; nothing changed there.
+
+## Configuring OpenAI for AI Analysis
+
+While Peekaboo can capture screenshots without any configuration, the real magic happens when you enable AI analysis. Without an OpenAI API key, you're missing out on the powerful GPT-4 Vision integration that can understand and describe what's on your screen.
+
+Here's how to set it up:
+
+```bash
+# Option 1: Export in your shell profile (~/.zshrc or ~/.bash_profile)
+export OPENAI_API_KEY="sk-..."
+
+# Option 2: Use Peekaboo's configuration file
+peekaboo config init
+peekaboo config edit
+
+# Add this to the config:
+{
+  "aiProviders": {
+    "providers": "openai/gpt-4o,ollama/llava:latest",
+    "openaiApiKey": "${OPENAI_API_KEY}"  // Or paste your key directly
+  }
+}
+```
+
+Once configured, Peekaboo transforms from a simple screenshot tool into a visual AI assistant:
+
+```bash
+# Debug UI issues
+peekaboo image --app "MyApp" --analyze "Why is this button misaligned?"
+
+# Extract text from images
+peekaboo analyze receipt.png "Extract all items and prices"
+
+# Understand complex interfaces
+peekaboo image --mode screen --analyze "What errors are shown in the console?"
+```
+
+Don't have an OpenAI key? You can get one at [platform.openai.com](https://platform.openai.com/api-keys), or use the free local Ollama provider with `ollama pull llava:latest` for privacy-focused workflows.
 
 ## Why CLI > MCP
 
