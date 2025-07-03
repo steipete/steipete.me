@@ -14,6 +14,8 @@ tags:
   - DevOps
 ---
 
+> **Update**: There's a better solution now! Check out [Command Your Claude Code Army, Reloaded](/posts/2025/command-your-claude-code-army-reloaded/) for VibeTunnel integration that gives Claude automatic title management.
+
 **TL;DR**: Running multiple Claude Code instances? Here's a ZSH trick to keep your terminal titles organized and your sanity intact.
 
 I'll admit it - I've become a [Claude Code](https://www.anthropic.com/claude-code) power user. At any given moment, I have at least three instances running: one for writing blog posts, another fixing that "quick" bug that's now in hour three, and a third doing something I definitely forgot about. My terminal looks like a Claude Code convention.
