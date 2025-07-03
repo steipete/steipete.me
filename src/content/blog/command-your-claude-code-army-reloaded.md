@@ -21,9 +21,9 @@ Here's the complete section to add to your `~/.claude/CLAUDE.md` file:
 When working in VibeTunnel sessions, actively use the `vt title` command to communicate your current actions and progress:
 
 ### Usage
-\`\`\`bash
+```bash
 vt title "Current action - project context"
-\`\`\`
+```
 
 ### Guidelines
 - **Update frequently**: Set the title whenever you start a new task, change focus, or make significant progress
@@ -33,7 +33,7 @@ vt title "Current action - project context"
 - If `vt` command fails (only works inside VibeTunnel), simply ignore the error and continue
 
 ### Examples
-\`\`\`bash
+```bash
 # When starting a task
 vt title "Setting up Git app integration"
 
@@ -48,7 +48,7 @@ vt title "Analyzing session-manager.ts for race conditions"
 
 # When writing tests
 vt title "Adding tests for GitAppLauncher"
-\`\`\`
+```
 
 ### When to Update
 - At the start of each new task or subtask
@@ -64,7 +64,7 @@ This helps users track your progress across multiple VibeTunnel sessions and und
 
 To enable this feature in your Claude Code setup, you have two options:
 
-1. **Automatic setup**: Simply tell Claude Code "Copy steipete.me to CLAUDE.md" and it will set everything up for you automatically.
+1. **Automatic setup**: Simply paste the URL of this blog post into Claude and tell it to set it up for you.
 
 2. **Manual setup**: Add the configuration above to your global Claude rules at `~/.claude/CLAUDE.md`. You can also check out the [full gist](https://gist.github.com/steipete/c297c84e1684c330b3325825d835da03) for additional implementation details.
 
