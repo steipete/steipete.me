@@ -29,7 +29,8 @@ Luckily, when I built Peekaboo, I already foresaw that this could be an option, 
 Peekaboo 2.0 can be installed via Homebrew:
 
 ```bash
-brew install steipete/peekaboo/peekaboo
+brew tap steipete/tap
+brew install peekaboo
 ```
 
 Or you can just download it from [GitHub](https://github.com/steipete/peekaboo). Of course, you can still use the MCP server; nothing changed there.
