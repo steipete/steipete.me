@@ -1,7 +1,7 @@
 ---
 title: "Making AppleScript Work in macOS CLI Tools: The Undocumented Parts"
 pubDatetime: 2025-07-03T14:00:00.000+01:00
-description: "The complete guide to making AppleScript work in command-line tools - from Info.plist embedding to handling TCC permissions and the mysterious responsibility_spawnattrs_setdisclaim API."
+description: "How to make AppleScript work in macOS CLI tools without permission dialogs blaming Terminal. A deep dive into Info.plist embedding, TCC, and undocumented APIs born from building Terminator MCP."
 tags:
   - macOS
   - Development
@@ -17,6 +17,8 @@ tags:
 ![Making AppleScript Work in macOS CLI Tools](/assets/img/2025/applescript-cli-macos-complete-guide/header.png)
 
 *Or: How I Learned to Stop Fighting TCC and Embrace the Info.plist*
+
+**TL;DR:** If you're building a macOS CLI tool that uses AppleScript, you need to embed an Info.plist into your binary, sign it with proper entitlements, and optionally use the undocumented `responsibility_spawnattrs_setdisclaim` API to avoid permission dialogs that blame Terminal instead of your app. This post shows you exactly how.
 
 This all started with Cursor being annoying. You know how it goes - you're in the zone, AI is cranking out code, and then bam! The inline terminal opens something blocking (file watcher, dev server, whatever) and the whole loop grinds to a halt. I'd have to manually click around to get things moving again. Productivity killer.
 
