@@ -38,6 +38,8 @@ I recommend using the CLI, and you don't even need any configuration. The agent 
 
 Agents are really, really good at calling CLIs (actually much better than calling MCPs), so you don't have to clutter up your context and you can use all the features that Peekaboo has on demand, no installation required.
 
+As Armin Ronacher perfectly articulates in ["Code Is All You Need"](https://lucumr.pocoo.org/2025/7/3/tools/), CLIs offer composability, reliability, and verifiability that complex tool interfaces can't match. CLIs work for both humans and AI agents – we can run, debug, and understand them. Once a CLI command works, it can be executed hundreds of times without requiring additional inference or context. This mechanical predictability makes CLIs the universal interface that bridges human and AI interaction.
+
 ## The Power of Simplicity
 
 This shift in thinking – from complex MCP servers to simple CLIs – represents a broader understanding of how AI agents work best. They excel at understanding command-line interfaces, parsing help text, and constructing appropriate commands. By embracing this natural affinity, we can build tools that are both more powerful and easier to use.
