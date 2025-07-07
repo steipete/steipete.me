@@ -50,7 +50,7 @@ Here's where things get spicy. While the internet is flooded with "10 AMAZING PR
 
 > This is the greatest bullshit. There are so many people out there that try to explain you... All those long websites about prompting... That's all bullshit.
 
-Instead, Peter's secret sauce is beautifully simple: explain what you want from multiple angles, like you're talking to someone slightly unfamiliar with your product. No structure needed. Just ramble.
+Instead, Peter's secret sauce is beautifully simple: [explain what you want from multiple angles](https://x.com/steipete/status/1939465704803336424/photo/1), like you're talking to someone slightly unfamiliar with your product. No structure needed. Just ramble.
 
 > Sometimes my prompt is this long where it's a lot of rambling. Oh yeah. The padding... looks like shit. It needs to be like this and this and this.
 
