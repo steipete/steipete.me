@@ -2,14 +2,15 @@
 title: "VibeTunnel's first AI-anniversary"
 description: "It's been one month since we released the first version of VibeTunnel, and since in the AI world time is so much faster, let's call it VibeTunnel's first anniversary. I wanted to give an update on the project and share some of the bits that I've learned."
 pubDatetime: 2025-07-15T10:00:00+01:00
+heroImage: "/assets/img/2025/vibetunnel-first-anniversary/header.png"
 tags: ["vibetunnel", "ai", "terminal", "tools"]
 ---
 
-It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/), and since in the AI world time is so much faster, let's call it VibeTunnel's first anniversary. I wanted to give an update on the project and share some of the bits that I've learned.
+It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/), and since AI time runs so much faster, let's call it VibeTunnel's first anniversary! Let's review what happened in a ~~year~~ month.
 
 ## The Numbers
 
-Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in beta.1 to **144,021 lines** in beta.10 – that's a 36x increase in just one month! Here's how the codebase evolved:
+Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in b1 to **144,021 lines** in b10 – that's a 36x increase in just one month! Does that count now as big project, will it convince some non-believers that large projects can't be built with agents?
 
 | Release | Date | Total LOC | Code | Tests | Mac | Web | iOS |
 |---------|------|-----------|------|-------|-----|-----|-----|
@@ -24,13 +25,13 @@ Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code
 | beta.9 | Jul 11 | 138,584 | 103,586 | 34,998 | 32,660 | 79,374 | 26,550 |
 | beta.10 | Jul 15 | 144,021 | 107,942 | 36,079 | 34,462 | 83,009 | 26,550 |
 
-What's fascinating is the test coverage – starting from zero tests in beta.1, we quickly ramped up to maintain a healthy **33% test-to-code ratio** from beta.3 onwards. The web component saw explosive growth (20x from beta.1), while the Mac app was introduced in beta.3 and more than doubled in size. The iOS app also debuted in beta.3 and stabilized after beta.7, focusing on refinement rather than new features.
+The iOS app is still a work-in-progress, and test coverage certainly could be higher, but dare I say, we definitely improved code quality over time. We also went through Rust, go, to node as server, but are planning to replace parts with Rust again, to decrease memory overhead. Gotta go full circle! And languages really are (almost) implementation details, when you have agents.
 
 ## Development Velocity
 
 The pace has been intense:
 - **1,264 commits** across 10 beta releases
-- **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and iOS apps
+- **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and (totally vibed) iOS apps
 - **275 commits** in just two days (beta.1 to beta.2)
 - An average of **126 commits per release**
 - **10 contributors** with Peter Steinberger leading at 406 commits
@@ -39,27 +40,30 @@ The most active period was the beta.2 to beta.3 sprint (436 commits) where we tr
 
 ## Key Technical Milestones
 
-### The Node-pty Fork (Beta.9)
+### The Node-pty Fork (b9)
 
-One of the most critical decisions was forking Microsoft's node-pty. We were experiencing random crashes that also affected VS Code and other Electron apps. After deep debugging, we identified thread-safety issues and created our own fork with proper resource management. This single change dramatically improved stability.
+One of the most critical decisions was forking Microsoft's node-pty. We were experiencing random crashes that also affected VS Code and other Electron apps. After some gnarly debugging, we identified a thread-safety issue and some totally unnecessary socket code, and created our own fork. This single change dramatically improved stability.
 
-### Unified Control Protocol (Beta.7)
+### Unified Control Protocol (b7)
 
-We redesigned the communication between the Mac app and web frontend, creating a unified control protocol that handles screen recording permissions, terminal management, and system controls. This architectural change enabled features like deferred permission requests and better error handling.
+We redesigned the communication between the Mac app and web frontend, creating a unified unix socket that handles screen recording permissions, terminal management, and system controls. This change enabled features like deferred permission requests and better error handling.
 
-### Repository Discovery (Beta.10)
+### Repository Discovery (b10)
 
-The latest release added intelligent Git repository discovery – when creating a new session, VibeTunnel now automatically finds and suggests your recently modified projects. It's a small feature that makes a big difference in daily workflow.
+The latest release added intelligent Git repository discovery – when creating a new session, VibeTunnel now automatically finds and suggests your recently modified projects. It's a small feature that makes a big difference in daily workflow. Making this work was more work than you'd think, since this can be updated on the Mac side and updates are sent live from Mac -> Unix Socket -> Server -> WebSocket -> Frontend. Gotta do it right!
 
-### Terminal Title Management (Beta.6)
+### Terminal Title Management (b6)
 
-My personal favorite feature landed in beta.6: the `vt title` command. As someone who runs multiple Claude Code sessions in parallel, I needed a way to track what each AI assistant was working on. This feature, which I [wrote about in detail](/posts/command-your-claude-code-army-reloaded/), lets you dynamically update session names from within the terminal. It integrates beautifully with Claude Code, allowing AI assistants to automatically communicate their current task. The implementation required adding a file watcher to detect session.json changes and integrating with all four title modes – a perfect example of how user dogfooding drives feature development.
+My personal fav feature landed in b6: the `vt title` command. As maniac who runs multiple Claudes in parallel, I needed a way to track what each agent is up to. [This feature](/posts/command-your-claude-code-army-reloaded/) lets you dynamically update session names from within the terminal. It integrates beautifully with Claude Code, allowing AI assistants to automatically communicate their current task. This was trickier than you'd think, as we first had to write a filter to prevent claude from updating the title itself, which it does, but mostly with useless descriptions. Then we needed to find a good spot to inject ascii commands into the terminal stream... and ofc it also needs to be fast!
+
+
+
+
+
+
+
 
 ## Platform Evolution
-
-### Web-First Architecture
-
-The web component grew the fastest because it's the heart of VibeTunnel's cross-platform strategy. Every feature starts in the web interface, then gets platform-specific enhancements. This approach let us ship iOS support in record time.
 
 ### Mobile Experience
 
