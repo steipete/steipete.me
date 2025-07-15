@@ -1,7 +1,7 @@
 ---
 title: "VibeTunnel's first AI-anniversary"
 description: "It's been one month since we released the first version of VibeTunnel, and since in the AI world time is so much faster, let's call it VibeTunnel's first anniversary. I wanted to give an update on the project and share some of the bits that I've learned."
-pubDatetime: 2025-01-15T10:00:00+01:00
+pubDatetime: 2025-07-15T10:00:00+01:00
 tags: ["vibetunnel", "ai", "terminal", "tools"]
 ---
 
