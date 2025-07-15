@@ -37,11 +37,11 @@ We also went through Rust, go, to Node as server backends, but are planning to [
 ## Development Velocity
 
 The pace has been intense:
-- **1,264 commits** across 10 beta releases
+- **1,264 commits** across 10 beta releases (beta.1 to beta.10)
 - **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and (totally vibed) iOS apps
 - **275 commits** in just two days (beta.1 to beta.2)
 - An average of **126 commits per release**
-- **10 contributors** with Peter Steinberger leading at 406 commits
+- **2,842 total commits** from 32 contributors (including AI agents!) as of today
 
 I wonder if there are other open source projects out there that operate in such velocity. This certainly wouldn't have been possible without agentic engineering - especially considering that from beta 3 on it was mostly just me, as Armin and Mario moved on to other projects plus a few smaller external contributions.
 
@@ -91,9 +91,11 @@ VibeTunnel wouldn't be where it is today without our amazing contributors. Speci
 
 **Major Contributors**: [Manuel Maly](https://github.com/manuelmaly) (72), [Helmut Januschka](https://github.com/hjanuschka) (55), [Jeff Hurray](https://github.com/jhurray) (36), and [David Collado](https://github.com/collado-dev) (14) for their significant features and improvements.
 
-**Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Chris Reynolds, Clay Warren, Madhava Jay, Michi Hoffmann, Raghav Sethi, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Tao Xu, Zhiqiang Zhou, and noppe - every contribution matters!
+**Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Clay Warren, Chris Reynolds, Madhava Jay, Michi Hoffmann, Raghav Sethi, Tao Xu, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Zhiqiang Zhou, and noppe - every contribution matters!
 
-Together, we've built something special with **2,791 commits** from 27 contributors. Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
+**Our Robot Overlords**: Cursor Agent, blacksmith-sh[bot], and devin-ai-integration[bot] - yes, we used AI agents to build a tool for AI agents. It's agents all the way down! 🤖
+
+Together, we've built something special with **2,842 commits** from 32 contributors. Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
 
 ## Looking Forward
 
