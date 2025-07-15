@@ -5,7 +5,7 @@ pubDatetime: 2025-07-15T10:00:00+01:00
 tags: ["vibetunnel", "ai", "terminal", "tools"]
 ---
 
-It's been one month since we released the first version of VibeTunnel, and since in the AI world time is so much faster, let's call it VibeTunnel's first anniversary. I wanted to give an update on the project and share some of the bits that I've learned.
+It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/), and since in the AI world time is so much faster, let's call it VibeTunnel's first anniversary. I wanted to give an update on the project and share some of the bits that I've learned.
 
 ## The Numbers
 
@@ -50,6 +50,10 @@ We redesigned the communication between the Mac app and web frontend, creating a
 ### Repository Discovery (Beta.10)
 
 The latest release added intelligent Git repository discovery – when creating a new session, VibeTunnel now automatically finds and suggests your recently modified projects. It's a small feature that makes a big difference in daily workflow.
+
+### Terminal Title Management (Beta.6)
+
+My personal favorite feature landed in beta.6: the `vt title` command. As someone who runs multiple Claude Code sessions in parallel, I needed a way to track what each AI assistant was working on. This feature, which I [wrote about in detail](/posts/command-your-claude-code-army-reloaded/), lets you dynamically update session names from within the terminal. It integrates beautifully with Claude Code, allowing AI assistants to automatically communicate their current task. The implementation required adding a file watcher to detect session.json changes and integrating with all four title modes – a perfect example of how user dogfooding drives feature development.
 
 ## Platform Evolution
 
@@ -104,6 +108,8 @@ The community has been incredible. Special thanks to Mario Zechner, Armin Ronach
 ## The AI Connection
 
 Why call it an "AI-anniversary"? Because in the AI world, development cycles are compressed. What used to take months now happens in weeks. VibeTunnel itself is built for this new pace – it's a tool designed for AI-assisted development where you need rock-solid remote access to manage your AI coding sessions.
+
+The `vt title` feature exemplifies this perfectly: it was born from my own need to manage multiple Claude Code instances, implemented in a single day, and has become essential for anyone running an "AI army" of coding assistants. This rapid iteration from need to solution is only possible in the AI era.
 
 In one month, we've built what would traditionally be a year's worth of features. That's the new normal in the AI era, and VibeTunnel is here to help you keep up.
 
