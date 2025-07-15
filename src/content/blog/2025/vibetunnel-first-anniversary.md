@@ -9,7 +9,7 @@ unlisted: true
 
 It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/), and since AI time runs so much faster, let's call it VibeTunnel's first anniversary! 
 
-For those just joining in: VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't additive enough already!
+VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't additive enough already!
 
 Now, let's review what happened in a ~~year~~ month.
 
@@ -85,15 +85,15 @@ Agents help a lot in writing code, but there's still everything else: Product ma
 
 ## Thank You!
 
-VibeTunnel wouldn't be where it is today without our amazing contributors. Special thanks to:
+VibeTunnel wouldn't be where it is today without our amazing contributors:
 
 **Core Team**: [Mario Zechner](https://github.com/badlogic) (291 commits) and [Armin Ronacher](https://github.com/mitsuhiko) (132 commits) who helped build the foundation and shaped the architecture.
 
-**Major Contributors**: [Manuel Maly](https://github.com/manuelmaly) (72), [Helmut Januschka](https://github.com/hjanuschka) (55), [Jeff Hurray](https://github.com/jhurray) (36), and [David Collado](https://github.com/collado-dev) (14) for their significant features and improvements.
+**Major Contributors**: [Manuel Maly](https://github.com/manuelmaly) (72), [Helmut Januschka](https://github.com/hjanuschka) (55), [Jeff Hurray](https://github.com/jhurray) (36), and [David Collado](https://github.com/collado-dev) (14) for their significant contributions.
 
 **Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Clay Warren, Chris Reynolds, Madhava Jay, Michi Hoffmann, Raghav Sethi, Tao Xu, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Zhiqiang Zhou, and noppe - every contribution matters!
 
-**Our Robot Overlords**: Cursor Agent, blacksmith-sh[bot], and devin-ai-integration[bot] - yes, we used AI agents to build a tool for AI agents. It's agents all the way down! 🤖
+**Our Robot Overlords**: Claude, Cursor Agent, blacksmith-sh[bot], and devin-ai-integration[bot] - in all honesty tho, it's 98% Claude 🤖.
 
 Together, we've built something special with **2,842 commits** from 32 contributors. Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
 
