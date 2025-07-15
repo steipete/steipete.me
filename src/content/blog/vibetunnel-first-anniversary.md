@@ -9,10 +9,12 @@ It's been one month since we released the first version of VibeTunnel, and since
 
 ## The Numbers
 
-Let's start with some hard data. VibeTunnel has grown from **49,133 lines of code** in beta.3 to **144,021 lines** in beta.10 – that's almost a 3x increase in just one month! Here's how the codebase evolved:
+Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in beta.1 to **144,021 lines** in beta.10 – that's a 36x increase in just one month! Here's how the codebase evolved:
 
 | Release | Date | Total LOC | Code | Tests | Mac | Web | iOS |
 |---------|------|-----------|------|-------|-----|-----|-----|
+| beta.1 | Jun 17 | 4,012 | 4,012 | 0 | 0 | 4,012 | 0 |
+| beta.2 | Jun 19 | 11,673 | 9,562 | 2,111 | 0 | 11,673 | 0 |
 | beta.3 | Jun 23 | 49,133 | 40,809 | 8,324 | 14,266 | 18,082 | 16,785 |
 | beta.4 | Jun 27 | 80,247 | 61,695 | 18,552 | 14,700 | 41,432 | 24,115 |
 | beta.5 | Jun 30 | 91,428 | 68,300 | 23,128 | 15,234 | 52,042 | 24,152 |
@@ -27,9 +29,9 @@ What's fascinating is the test coverage – we've maintained a healthy **33% tes
 ## Development Velocity
 
 The pace has been intense:
-- **553 commits** across 8 beta releases
-- **282 commits** in the first sprint alone (beta.3 to beta.4)
-- An average of **79 commits per release**
+- **553 commits** across 10 beta releases
+- **282 commits** in the first major sprint (beta.3 to beta.4)
+- An average of **55 commits per release**
 - **10 contributors** with Peter Steinberger leading at 406 commits
 
 The most active period was the initial sprint where we added fundamental features like web-based file editing, terminal recording, and the foundation for cross-platform support.
