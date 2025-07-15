@@ -24,17 +24,18 @@ Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code
 | beta.9 | Jul 11 | 138,584 | 103,586 | 34,998 | 32,660 | 79,374 | 26,550 |
 | beta.10 | Jul 15 | 144,021 | 107,942 | 36,079 | 34,462 | 83,009 | 26,550 |
 
-What's fascinating is the test coverage – we've maintained a healthy **33% test-to-code ratio** throughout the rapid development. The web component saw the most growth (4.6x), while the Mac app doubled in size. The iOS app stabilized after beta.7, focusing on refinement rather than new features.
+What's fascinating is the test coverage – starting from zero tests in beta.1, we quickly ramped up to maintain a healthy **33% test-to-code ratio** from beta.3 onwards. The web component saw explosive growth (20x from beta.1), while the Mac app was introduced in beta.3 and more than doubled in size. The iOS app also debuted in beta.3 and stabilized after beta.7, focusing on refinement rather than new features.
 
 ## Development Velocity
 
 The pace has been intense:
-- **553 commits** across 10 beta releases
-- **282 commits** in the first major sprint (beta.3 to beta.4)
-- An average of **55 commits per release**
+- **1,264 commits** across 10 beta releases
+- **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and iOS apps
+- **275 commits** in just two days (beta.1 to beta.2)
+- An average of **126 commits per release**
 - **10 contributors** with Peter Steinberger leading at 406 commits
 
-The most active period was the initial sprint where we added fundamental features like web-based file editing, terminal recording, and the foundation for cross-platform support.
+The most active period was the beta.2 to beta.3 sprint (436 commits) where we transformed VibeTunnel from a web-only prototype into a full cross-platform suite, adding both Mac and iOS apps, web-based file editing, terminal recording, and the foundation for multi-platform support.
 
 ## Key Technical Milestones
 
