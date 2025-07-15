@@ -13,33 +13,24 @@ VibeTunnel is an app that turns your web browser into a terminal for your Mac (o
 
 > **TL;DR** – 2.8k commits, 144k LOC, Mac/Linux/npm releases, 1.0 coming late July. Agents + humans = 🚀
 
-Now, let's review what happened in a ~~year~~ month.
-
 ## Growth & Velocity
 
-Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in b1 to **144,021 lines** in b10 – that's a 36x increase in just one month! Through **2,842 commits** from 32 contributors (including AI agents!), we've built something that might convince non-believers that large projects can indeed be built with agents.
+Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in b1 to **144,021 lines** in b10 – that's a 36x increase in just one month! Through **2,842 commits** from 32 contributors, we've built something that might convince non-believers that large projects can indeed be built with agents.
 
 | Release | Date | Total LOC | Tests | Mac | Web |
 |---------|------|-----------|-------|-----|-----|
 | beta.1 | Jun 17 | 4,012 | 0 | 0 | 4,012 |
-| beta.2 | Jun 19 | 11,673 | 2,111 | 0 | 11,673 |
 | beta.3 | Jun 23 | 49,133 | 8,324 | 14,266 | 18,082 |
-| beta.4 | Jun 27 | 80,247 | 18,552 | 14,700 | 41,432 |
-| beta.5 | Jun 30 | 91,428 | 23,128 | 15,234 | 52,042 |
 | beta.6 | Jul 3 | 106,263 | 27,890 | 20,305 | 61,554 |
-| beta.7/8 | Jul 8 | 133,239 | 34,051 | 30,765 | 75,924 |
-| beta.9 | Jul 11 | 138,584 | 34,998 | 32,660 | 79,374 |
 | beta.10 | Jul 15 | 144,021 | 36,079 | 34,462 | 83,009 |
 
 The pace has been intense: **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and iOS apps, averaging **126 commits per release**. Test coverage improved dramatically, and we even went full circle through Rust, Go, to Node as server backends, with plans to [bring Rust back](https://github.com/amantus-ai/vibetunnel/pull/297). And aren't languages really just implementation details, when you have agents?
-
-I wonder if there are other open source projects out there that operate at such velocity. This certainly wouldn't have been possible without agentic engineering.
 
 ## Memorable Milestones
 
 ### Terminal Title Management (b6)
 
-My personal fav feature landed in b6: the `vt title` command. As a maniac who runs multiple Claudes in parallel, I needed a way to track what each agent is up to. [This feature](/posts/command-your-claude-code-army-reloaded/) lets you dynamically update session names from within the terminal, and then vt updates the title of your terminal window. That was some gnarly ascii stream parsing to find the right spot to inject custom commands and make it fast...
+My personal fav feature landed in b6: the `vt title` command. As a maniac who runs multiple Claudes in parallel, I needed a way to track what each agent is up to. [This feature](/posts/command-your-claude-code-army-reloaded/) lets you dynamically update session names from within the terminal, and then vt updates the title of your terminal window.
 
 ### The Node-pty Fork (b9)
 
@@ -47,7 +38,7 @@ We had to fork Microsoft's node-pty. Using VibeTunnel randomly caused crashes in
 
 ### Repository Discovery (b10)
 
-Once the core features were stable, I could focus more on the Mac side. The new session picker automatically scans your project folder and shows your git repos. Small feature, but so convenient - saving developers 10-20 seconds per session start! Making this work was more work than you'd think - the Mac side can update it live through Mac -> Unix Socket -> Server -> WebSocket -> Frontend. Or from frontend back to Mac - gotta do it right!
+Once the core features were stable, I could focus more on the Mac side. The new session picker automatically scans your project folder and shows your git repos. Small feature, but so convenient - saving developers 10-20 seconds per session start!
 
 ## Key Learnings
 
@@ -61,7 +52,7 @@ I approach almost every new feature with a prompt that includes an issue, plenty
 
 ### Pathfinder Principle
 
-Since it's mostly me, I don't care so much about each PR only touching the parts that are needed. Often I add refactors to PRs for things that are related, and clean the code up as I fix bugs or build features. If you move this work into separate issues, it'll never get done. So I opt for slightly messier PRs that improve and fix the codebase gradually over perfect granular commits. Agents are really good in refactoring, but it won't happen automatically. [Consider this PR](https://github.com/amantus-ai/vibetunnel/pull/345): I could have merged the bandaid fix, but then opted to not only fix the root issue, but completely overhaul how messages are sent in the unix socket.
+I prefer opportunistic refactoring - fixing related issues while you're in the code anyway. [Consider this PR](https://github.com/amantus-ai/vibetunnel/pull/345): I could have merged the bandaid fix, but then opted to not only fix the root issue, but completely overhaul how messages are sent in the unix socket.
 
 ### Community Building Is Hard
 
@@ -69,7 +60,7 @@ Key lesson: Even "good first issues" can hide complexity. [This PR](https://gith
 
 ### It's Not Just Code
 
-Agents help a lot in writing code, but there's still everything else: Product management, reviewing bug reports, [replying to social media](https://x.com/VibeTunnel), [documentation](https://github.com/amantus-ai/vibetunnel/blob/main/README.md), [managing CI](https://github.com/amantus-ai/vibetunnel/actions), writing blog posts (yes we should have a project blog...), manually testing releases, [planning new features](https://github.com/amantus-ai/vibetunnel/issues?q=sort%3Aupdated-desc%20is%3Aissue%20is%3Aopen%20type%3AFeature), where they can't help that much. Sure, they can assist with writing blog posts, but after some experimentation I went back to writing most by hand, people wanna read my voice, not just my intent.
+Agents help with code, but product management, support, and documentation still need human touch - people want to read my voice, not just my intent.
 
 ## Thank You!
 
