@@ -34,11 +34,11 @@ My personal fav feature landed in b6: the `vt title` command. As a maniac who ru
 
 ### The Node-pty Fork (b9)
 
-We had to fork Microsoft's node-pty. Using VibeTunnel randomly caused crashes in VS Code - which should be completely unrelated. After some gnarly debugging, I found a thread-safety issue and some totally unnecessary socket code. Forked it and things are better now, eliminating the random crashes that were frustrating early adopters. Eventually though that code will be burned and replaced with Rust.
+We had to [fork Microsoft's node-pty](https://github.com/amantus-ai/vibetunnel/pull/304). Using VibeTunnel randomly caused crashes in VS Code - which should be completely unrelated. After some gnarly debugging, I found a thread-safety issue and some totally unnecessary socket code. Forked it and things are better now, eliminating the random crashes that were frustrating early adopters. Eventually though that code will be burned and replaced with Rust.
 
 ### Repository Discovery (b10)
 
-Once the core features were stable, I could focus more on the Mac side. The new session picker automatically scans your project folder and shows your git repos. Small feature, but so convenient - saving developers 10-20 seconds per session start!
+Once the core features were stable, I could focus more on the Mac side. The new [session picker automatically scans your project folder](https://github.com/amantus-ai/vibetunnel/pull/274) and shows your git repos. Small feature, but so convenient - saving developers 10-20 seconds per session start!
 
 ## Key Learnings
 
@@ -72,9 +72,9 @@ VibeTunnel wouldn't be where it is today without our amazing contributors:
 
 **Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Clay Warren, Chris Reynolds, Madhava Jay, Michi Hoffmann, Raghav Sethi, Tao Xu, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Zhiqiang Zhou, and noppe - every contribution matters!
 
-**Our Robot Overlords**: Claude, Cursor Agent, blacksmith-sh[bot], and devin-ai-integration[bot] - in all honesty tho, it's 98% Claude 🤖.
+**Our Robot Overlords**: Claude, Cursor Agent, and Devin - in all honesty tho, it's 98% Claude 🤖.
 
-Together, we've built something special with **2,842 commits** from 32 contributors. Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
+Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
 
 ## Looking Forward
 
