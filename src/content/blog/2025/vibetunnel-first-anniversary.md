@@ -11,13 +11,13 @@ It's been one month since we [released the first version of VibeTunnel](/posts/2
 
 VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't additive enough already!
 
-> **TL;DR** – 2.8k commits, 36× code growth, Mac/Linux/npm releases, 1.0 coming late July. Agents + humans = 🚀
+> **TL;DR** – 2.8k commits, 144k LOC, Mac/Linux/npm releases, 1.0 coming late July. Agents + humans = 🚀
 
 Now, let's review what happened in a ~~year~~ month.
 
-## The Numbers
+## Growth & Velocity
 
-Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in b1 to **144,021 lines** in b10 – that's a 36x increase in just one month! Does that count now as a big project, will it convince some non-believers that large projects can't be built with agents?
+Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code** in b1 to **144,021 lines** in b10 – that's a 36x increase in just one month! Through **2,842 commits** from 32 contributors (including AI agents!), we've built something that might convince non-believers that large projects can indeed be built with agents.
 
 | Release | Date | Total LOC | Tests | Mac | Web |
 |---------|------|-----------|-------|-----|-----|
@@ -31,20 +31,9 @@ Let's start with some hard data. VibeTunnel has grown from **4,012 lines of code
 | beta.9 | Jul 11 | 138,584 | 34,998 | 32,660 | 79,374 |
 | beta.10 | Jul 15 | 144,021 | 36,079 | 34,462 | 83,009 |
 
-Test coverage certainly could be higher, but dare I say, we definitely improved code quality over time.
+The pace has been intense: **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and iOS apps, averaging **126 commits per release**. Test coverage improved dramatically, and we even went full circle through Rust, Go, to Node as server backends, with plans to [bring Rust back](https://github.com/amantus-ai/vibetunnel/pull/297). And aren't languages really just implementation details, when you have agents?
 
-We also went through Rust, go, to Node as server backends, but are planning to [replace parts with Rust again](https://github.com/amantus-ai/vibetunnel/pull/297), to decrease memory overhead. Gotta go full circle! And aren't languages really just, like, whatever, when you have agents?
-
-## Development Velocity
-
-The pace has been intense:
-- **1,264 commits** across 10 beta releases (beta.1 to beta.10)
-- **436 commits** in the explosive growth phase (beta.2 to beta.3) where we added Mac and (totally vibed) iOS apps
-- **275 commits** in just two days (beta.1 to beta.2)
-- An average of **126 commits per release**
-- **2,842 total commits** from 32 contributors (including AI agents!) as of today
-
-I wonder if there are other open source projects out there that operate in such velocity. This certainly wouldn't have been possible without agentic engineering - especially considering that from beta 3 on it was mostly just me, as Armin and Mario moved on to other projects plus a few smaller external contributions.
+I wonder if there are other open source projects out there that operate at such velocity. This certainly wouldn't have been possible without agentic engineering.
 
 ## Memorable Milestones
 
