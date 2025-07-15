@@ -9,7 +9,7 @@ draft: true
 
 It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/), and since AI time runs so much faster, let's call it VibeTunnel's first anniversary! 
 
-For those just joining us: VibeTunnel is a tool that turns any web browser into a secure terminal for your Mac, perfect for running AI coding assistants like Claude Code from anywhere. Think of it as VS Code's terminal, but accessible from your phone, tablet, or any computer with a browser.
+For those just joining in: VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't additive enough already!
 
 Now, let's review what happened in a ~~year~~ month.
 
