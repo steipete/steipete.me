@@ -72,7 +72,7 @@ VibeTunnel wouldn't be where it is today without our amazing contributors:
 
 **Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Clay Warren, Chris Reynolds, Madhava Jay, Michi Hoffmann, Raghav Sethi, Tao Xu, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Zhiqiang Zhou, and noppe - every contribution matters!
 
-**Our Robot Overlords**: Claude, Cursor Agent, and Devin - in all honesty tho, it's 98% Claude 🤖.
+**Our Robot Overlords**: Claude, Cursor, and Devin - in all honesty tho, it's 98% Claude 🤖.
 
 Whether you fixed a typo, squashed a bug, or built entire features - thank you for vibing with us! 🚀
 
