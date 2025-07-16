@@ -82,4 +82,6 @@ We just shipped beta 11 and a standalone npm with Linux support and the bug list
 
 Oh, and one more thing - we're creating a VibeTunnel organization! As the project grows beyond its scrappy startup phase, we'll be moving the repository to its own org. This will help us better manage the ecosystem of tools, plugins, and integrations that are starting to emerge around VibeTunnel.
 
+Oh, and one more thing - we're creating a VibeTunnel organization! As the project grows beyond its scrappy startup phase, we'll be moving the repository to its own org. This will help us better manage the ecosystem of tools, plugins, and integrations that are starting to emerge around VibeTunnel.
+
 Since agents can't eat cake, I made them a different present: VibeTunnel is now on [vt.sh](https://vt.sh)! If you haven't tried it yet, now's the perfect time - [download the Mac app](https://github.com/amantus-ai/vibetunnel/releases) and post a picture on Twitter of the weirdest place you're vibin'!
