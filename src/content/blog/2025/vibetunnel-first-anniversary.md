@@ -68,7 +68,7 @@ VibeTunnel wouldn't be where it is today without our amazing contributors:
 
 **Core Team**: [Mario Zechner](https://github.com/badlogic) (291 commits) and [Armin Ronacher](https://github.com/mitsuhiko) (132 commits) who helped build the foundation and shaped the architecture.
 
-**Major Contributors**: [Manuel Maly](https://github.com/manuelmaly) (72), [Helmut Januschka](https://github.com/hjanuschka) (55), [Jeff Hurray](https://github.com/jhurray) (36), and [David Collado](https://github.com/colladodev) (14) for their significant contributions.
+**Major Contributors**: [Manuel Maly](https://github.com/manuelmaly) (72), [Helmut Januschka](https://github.com/hjanuschka) (55), and [Jeff Hurray](https://github.com/jhurray) (36) for their significant contributions.
 
 **Community Heroes**: Billy Irwin, Igor Tarasenko, David, Thomas Ricouard, Piotr, hewigovens, Clay Warren, Chris Reynolds, Madhava Jay, Michi Hoffmann, Raghav Sethi, Tao Xu, Devesh Shetty, Jan Remeš, Luis Nell, Luke, Marek Šuppa, Sandeep Aggarwal, Zhiqiang Zhou, and noppe - every contribution matters!
 
