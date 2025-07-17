@@ -9,7 +9,7 @@ unlisted: false
 
 It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) - let's call it VibeTunnel's first anniversary! 
 
-VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't additive enough already!
+VibeTunnel is an app that turns your web browser into a terminal for your Mac (or Linux), perfect for running agents like claude code or gemini from anywhere. Because these slot machines aren't addictive enough already!
 
 > **TL;DR** – 2.8k commits, 147k LOC, Mac/Linux/npm releases, 1.0 coming late July. Agents + humans = 🚀
 
@@ -41,7 +41,7 @@ We had to [fork Microsoft's node-pty](https://github.com/amantus-ai/vibetunnel/p
 
 Once the core features were stable, I could focus more on the Mac side. The new [session picker automatically scans your project folder](https://github.com/amantus-ai/vibetunnel/pull/274) and shows your git repos. Small feature, but so convenient - saving developers 10-20 seconds per session start!
 
-## Key Learnings
+## Key Lessons
 
 ### Agents Need Railguards
 
