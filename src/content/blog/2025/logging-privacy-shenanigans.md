@@ -135,7 +135,7 @@ To create a working profile, you need to customize it for your specific logging 
 ```
 
 <details>
-<summary><h3>Customizing the Profile</h3></summary>
+<summary><strong>Customizing the Profile</strong></summary>
 
 **Important**: You must replace the placeholder values:
 
