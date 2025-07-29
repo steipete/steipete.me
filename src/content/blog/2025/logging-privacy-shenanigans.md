@@ -75,7 +75,10 @@ The only reliable way to see private data is to tell macOS to capture it in the 
 
 ### Step 1: Create the Profile
 
-To create a working profile, you need to customize it for your specific logging subsystems. Here's the template:
+To create a working profile, you need to customize it for your specific logging subsystems.
+
+<details>
+<summary><strong>View Configuration Profile Template</strong></summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -133,6 +136,8 @@ To create a working profile, you need to customize it for your specific logging 
 </dict>
 </plist>
 ```
+
+</details>
 
 <details>
 <summary><strong>Customizing the Profile</strong></summary>
