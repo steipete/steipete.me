@@ -47,7 +47,7 @@ Here's where it gets interesting. Through testing, I discovered that Apple's red
 | UUIDs (`ABC-123-DEF`) | Redacted | ✓ Redacted |
 | Integers, booleans, floats | Public | ✓ Public |
 
-The discrepancy likely comes from hardcoded strings versus dynamically generated values. Apple's privacy system appears to use pattern matching to decide what to redact.
+The discrepancy comes from how Apple's logging system is implemented. The os_log function requires format strings to be compile-time constants (C string literals) for performance optimization. When you use string interpolation with dynamic values, the compiler and logging library work together to mark these as runtime data that needs privacy protection. Static strings embedded directly in your code are treated as part of the format string and assumed to be non-sensitive, while any runtime values (variables, computed properties, function returns) are automatically redacted to prevent accidental leakage of personal information.
 
 ## Old Solutions That No Longer Work
 
