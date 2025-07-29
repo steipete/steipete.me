@@ -2,6 +2,7 @@
 title: "Logging Privacy Shenanigans"
 pubDatetime: 2025-07-29T16:00:00.000+02:00
 description: "How Apple's log privacy redaction works and how to temporarily disable it for debugging"
+ogImage: "/assets/img/2025/logging-privacy-shenanigans/header.png"
 tags:
   - macOS
   - Logging
