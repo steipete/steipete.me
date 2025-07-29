@@ -228,7 +228,8 @@ For automated generation or manual creation, here's the complete mobileconfig st
 3. **Logging payload configuration** - Must use PayloadType: `com.apple.system.logging`
 4. **System and Subsystems configuration** - Enable-Private-Data flags
 
-### Full Working Template
+<details>
+<summary><strong>Full Working Template (for automated generation)</strong></summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -287,6 +288,8 @@ For automated generation or manual creation, here's the complete mobileconfig st
 </dict>
 </plist>
 ```
+
+</details>
 
 ### Key Implementation Details
 
