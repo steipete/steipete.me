@@ -1,2 +1,0 @@
-Header image placeholder for Poltergeist blog post.
-The actual image should show a terminal with Poltergeist output and ghost emoji.
