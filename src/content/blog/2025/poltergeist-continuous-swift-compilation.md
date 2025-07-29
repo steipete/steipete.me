@@ -22,7 +22,7 @@ Picture this: Claude makes a change, I run `swift build`. Wait 30 seconds. Test.
 
 ## The Problem: Swift Build Times Are Agent Killers
 
-When you're working with AI agents like Claude Code, the feedback loop is everything. Agents thrive on quick iterations - make a change, test it, adjust, repeat. But Swift's compile times were destroying this flow.
+When you're working with AI agents, the feedback loop is everything. Agents thrive on quick iterations - make a change, test it, adjust, repeat. But Swift's compile times were destroying this flow.
 
 Even worse, agents would sometimes forget to rebuild before testing, leading to confusing situations where we'd debug "issues" that were already fixed in the code but not in the binary. Or they'd rebuild unnecessarily, wasting precious time and context.
 
