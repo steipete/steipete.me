@@ -12,7 +12,7 @@ tags:
   - Developer Tools
 ---
 
-> **TL;DR** – Apple logs hide the juicy debugging bits as `<private>`. Install a configuration profile to reveal logs during debugging, or use `.public` in code for specific values.
+> **TL;DR** – Apple logs hide the juicy debugging bits as `<private>`. Drop plist files into `/Library/Preferences/Logging/Subsystems/` for a simpler solution, or install a configuration profile as an alternative.
 
 If you've ever tried debugging a macOS app using the unified logging system, you've probably encountered the dreaded `<private>` redaction. Your carefully crafted log messages turn into cryptic puzzles where the most important debugging information is hidden. Let me show you what's really going on and how to work around it.
 
@@ -74,13 +74,68 @@ sudo log show --predicate 'subsystem == "your.app"' --info
 
 Nope! The privacy redaction happens at **write time**, not read time. Once logged as `<private>`, the actual data is gone forever.
 
-## The Configuration Profile Solution
+## The Plist Solution (Preferred Method)
 
-The only reliable way to see private data is to tell macOS to capture it in the first place using a configuration profile. Here's how:
+Thanks to [Rasmus Sten](https://micro.blog/pajp/70072065) for pointing out this elegant solution! You don't need to use `.mobileconfig` files – you can simply drop plist files directly into `/Library/Preferences/Logging/Subsystems/`. This is actually what happens when you install a configuration profile anyway.
 
-### Step 1: Create the Profile
+### Step 1: Create a Plist File
 
-To create a working profile, you need to customize it for your specific logging subsystems.
+Create a file named after your subsystem (e.g., `com.mycompany.myapp.plist`) with this content:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>DEFAULT-OPTIONS</key>
+    <dict>
+        <key>Enable-Private-Data</key>
+        <true/>
+    </dict>
+</dict>
+</plist>
+```
+
+### Step 2: Install the Plist
+
+```bash
+# Create the directory if it doesn't exist
+sudo mkdir -p /Library/Preferences/Logging/Subsystems/
+
+# Copy your plist file
+sudo cp com.mycompany.myapp.plist /Library/Preferences/Logging/Subsystems/
+
+# Set proper permissions
+sudo chmod 644 /Library/Preferences/Logging/Subsystems/com.mycompany.myapp.plist
+```
+
+### Step 3: Generate Fresh Logs
+
+The configuration only affects **new** log entries. Run your app to generate fresh logs.
+
+### Step 4: Remove After Debugging
+
+```bash
+sudo rm /Library/Preferences/Logging/Subsystems/com.mycompany.myapp.plist
+```
+
+### Why This Method is Better
+
+- **Scriptable**: Can be added/removed programmatically from shell scripts
+- **No UI interaction**: No need to navigate System Settings
+- **Granular control**: Enable/disable specific subsystems instantly
+- **CI/CD friendly**: Perfect for automated testing environments
+
+### Documentation
+
+This approach is documented in:
+- Apple's [`os_log(5)` man page](https://www.manpagez.com/man/5/os_log/) (run `man 5 os_log` in Terminal)
+- [Apple Developer Forums](https://developer.apple.com/forums/thread/114166) confirming the `/Library/Preferences/Logging/Subsystems/` directory usage
+- [Der Flounder's detailed analysis](https://derflounder.wordpress.com/2025/05/05/accessing-subsystem-logging-configurations-used-by-the-macos-unified-logging-on-macos-sequoia/) of macOS Sequoia's logging configuration
+
+## The Configuration Profile Solution (Alternative Method)
+
+If you prefer a GUI approach or need to deploy settings across multiple machines, you can still use configuration profiles:
 
 <details>
 <summary><strong>View Configuration Profile Template</strong></summary>
@@ -198,7 +253,7 @@ Save the customized file as `EnablePrivateLogging.mobileconfig`.
 
 </details>
 
-### Step 2: Install the Profile
+### Installing Configuration Profiles
 
 1. Double-click the `.mobileconfig` file
 2. Navigate to:
@@ -207,13 +262,9 @@ Save the customized file as `EnablePrivateLogging.mobileconfig`.
 3. Click "Install..." and authenticate
 4. Wait 1-2 minutes for the system to apply changes
 
-### Step 3: Generate Fresh Logs
+### Removing Configuration Profiles
 
-The profile only affects **new** log entries. Existing `<private>` entries remain redacted forever.
-
-### Step 4: Remove After Debugging
-
-This profile is intended for developer machines during debugging sessions. Remember to remove it when you're done debugging by going back to the Profiles/Device Management section and clicking the minus (-) button.
+Go back to the Profiles/Device Management section and click the minus (-) button.
 
 ## The Code-Level Solution
 
@@ -231,17 +282,20 @@ This is the safest approach as you explicitly control what's exposed.
 
 ## Automating with Claude Code
 
-Instead of manually editing the profile XML, just give Claude Code this blog post URL and ask it to create a customized profile for your app. [Living in the future](/posts/2025/claude-code-is-my-computer/) means your documentation can be both human-readable and agent-executable.
+Instead of manually editing configuration files, just give Claude Code this blog post URL and ask it to create a customized plist or profile for your app. [Living in the future](/posts/2025/claude-code-is-my-computer/) means your documentation can be both human-readable and agent-executable.
 
 ## Summary
 
-Apple's log privacy is well-intentioned but can be frustrating during development. The configuration profile approach is your best bet for debugging, but remember:
+Apple's log privacy is well-intentioned but can be frustrating during development. The plist approach is your best bet for debugging:
 
 1. Privacy redaction happens at write time
 2. sudo can't recover what was never stored
-3. Simple strings might not be redacted (but don't rely on this)
-4. Always remove debugging profiles when done
+3. Direct plist files are simpler than configuration profiles
+4. Always remove debugging configurations when done
 
-For more details on this topic, check out Howard Oakley's excellent post: [Removing privacy censorship from the log](https://eclecticlight.co/2023/03/08/removing-privacy-censorship-from-the-log/).
+For more details on this topic, check out:
+- [Apple's os_log(5) man page](https://www.manpagez.com/man/5/os_log/) – The authoritative source
+- [Howard Oakley's excellent post](https://eclecticlight.co/2023/03/08/removing-privacy-censorship-from-the-log/) – Deep dive into log privacy
+- [Der Flounder's Sequoia analysis](https://derflounder.wordpress.com/2025/05/05/accessing-subsystem-logging-configurations-used-by-the-macos-unified-logging-on-macos-sequoia/) – Latest macOS changes
 
 Happy debugging, and may your logs be forever unredacted (but only when you need them to be)!
