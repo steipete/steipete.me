@@ -219,7 +219,7 @@ This is the safest approach as you explicitly control what's exposed.
 
 ## Automating with Claude Code
 
-Instead of manually editing the profile XML, just give Claude Code this blog post URL and ask it to create a customized profile for your app. Living in the future means your documentation can be both human-readable and agent-executable.
+Instead of manually editing the profile XML, just give Claude Code this blog post URL and ask it to create a customized profile for your app. [Living in the future](/posts/2025/claude-code-is-my-computer/) means your documentation can be both human-readable and agent-executable.
 
 ## Summary
 
