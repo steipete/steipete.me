@@ -270,7 +270,7 @@ For automated generation or manual creation, here's the complete mobileconfig st
         </dict>
     </array>
     <key>PayloadDescription</key>
-    <string>This profile enables logging of private data for debugging. IMPORTANT: Only install temporarily while debugging, then remove immediately.</string>
+    <string>This profile enables logging of private data for debugging.</string>
     <key>PayloadDisplayName</key>
     <string>Your App Private Data Logging</string>
     <key>PayloadIdentifier</key>
