@@ -94,11 +94,14 @@ The system consists of four main components:
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TRIGGER_NAME="poltergeist-swift-rebuild"
+LOCK_FILE="/tmp/peekaboo-poltergeist.lock"
 
 # Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
 # Ghost emoji for fun
@@ -108,7 +111,35 @@ function print_status() {
     echo -e "${GREEN}${GHOST} [Poltergeist]${NC} $1"
 }
 
+function print_error() {
+    echo -e "${RED}${GHOST} [Poltergeist]${NC} $1" >&2
+}
+
+function print_warning() {
+    echo -e "${YELLOW}${GHOST} [Poltergeist]${NC} $1"
+}
+
+function print_info() {
+    echo -e "${CYAN}${GHOST} [Poltergeist]${NC} $1"
+}
+
+function check_watchman() {
+    if ! command -v watchman &> /dev/null; then
+        print_error "Watchman not found!"
+        echo -e "${PURPLE}Install with:${NC} brew install watchman"
+        exit 1
+    fi
+}
+
 function start_watcher() {
+    check_watchman
+    
+    # Check if already running
+    if watchman watch-list 2>/dev/null | grep -q "$PROJECT_ROOT"; then
+        print_warning "Poltergeist is already haunting this project!"
+        return 0
+    fi
+    
     print_status "Summoning Poltergeist to watch your Swift files..."
     
     # Watch the project
@@ -135,7 +166,76 @@ function start_watcher() {
     }]
 EOF
     
-    print_status "Poltergeist is now haunting your Swift files!"
+    if [ $? -eq 0 ]; then
+        print_status "Poltergeist is now haunting your Swift files!"
+        print_info "Watching: Core/PeekabooCore, Core/AXorcist, Apps/CLI"
+        
+        # Create lock file
+        echo $$ > "$LOCK_FILE"
+    else
+        print_error "Failed to summon Poltergeist!"
+        exit 1
+    fi
+}
+
+function stop_watcher() {
+    check_watchman
+    
+    print_status "Sending Poltergeist to rest..."
+    
+    # Remove trigger first
+    if watchman trigger-del "$PROJECT_ROOT" "$TRIGGER_NAME" 2>/dev/null; then
+        print_info "Trigger removed successfully"
+    else
+        print_warning "No trigger found to remove"
+    fi
+    
+    # Remove the watch entirely to ensure clean state
+    if watchman watch-del "$PROJECT_ROOT" 2>/dev/null; then
+        print_info "Watch removed successfully"
+    else
+        print_warning "No watch found to remove"
+    fi
+    
+    # Remove lock file
+    rm -f "$LOCK_FILE"
+    
+    print_status "Poltergeist is now at rest 💤"
+}
+
+function show_status() {
+    check_watchman
+    
+    echo -e "\n${PURPLE}=== Poltergeist Status ===${NC}"
+    
+    # Check if watch exists
+    if watchman watch-list 2>/dev/null | grep -q "$PROJECT_ROOT"; then
+        echo -e "${GREEN}✓${NC} Project watch: ${GREEN}ACTIVE${NC}"
+        
+        # Check if trigger exists
+        if watchman trigger-list "$PROJECT_ROOT" 2>/dev/null | grep -q "$TRIGGER_NAME"; then
+            echo -e "${GREEN}✓${NC} Swift rebuild trigger: ${GREEN}HAUNTING${NC}"
+            echo ""
+            echo "Watching for changes in:"
+            echo "  • Core/PeekabooCore/**/*.swift"
+            echo "  • Core/AXorcist/**/*.swift"
+            echo "  • Apps/CLI/**/*.swift"
+            echo "  • **/Package.swift"
+            echo "  • **/Package.resolved"
+        else
+            echo -e "${RED}✗${NC} Swift rebuild trigger: ${RED}NOT FOUND${NC}"
+        fi
+    else
+        echo -e "${RED}✗${NC} Project watch: ${YELLOW}DORMANT${NC}"
+    fi
+    
+    # Show recent trigger activity
+    echo -e "\n${PURPLE}=== Recent Poltergeist Activity ===${NC}"
+    if [ -f "$PROJECT_ROOT/.poltergeist.log" ]; then
+        tail -n 5 "$PROJECT_ROOT/.poltergeist.log"
+    else
+        echo "No activity detected yet"
+    fi
 }
 
 # Main command handling
