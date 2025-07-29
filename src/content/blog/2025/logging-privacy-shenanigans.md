@@ -134,7 +134,8 @@ To create a working profile, you need to customize it for your specific logging 
 </plist>
 ```
 
-### Customizing the Profile
+<details>
+<summary><h3>Customizing the Profile</h3></summary>
 
 **Important**: You must replace the placeholder values:
 
@@ -170,6 +171,8 @@ To create a working profile, you need to customize it for your specific logging 
    ```
 
 Save the customized file as `EnablePrivateLogging.mobileconfig`.
+
+</details>
 
 ### Step 2: Install the Profile
 
