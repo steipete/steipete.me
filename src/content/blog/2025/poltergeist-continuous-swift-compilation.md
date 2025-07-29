@@ -415,25 +415,16 @@ echo "✅ Recovery signal sent to Poltergeist"
 
 ## Build Failure Recovery
 
-The trickiest part was handling build failures gracefully. The solution:
+The trickiest part was handling build failures gracefully. The solution ensures agents never get stuck:
 
 1. **Exit Code 42**: When the wrapper detects a build failure, it exits with code 42
 2. **Clear Instructions**: The error message tells agents exactly what to do
 3. **Exponential Backoff**: Poltergeist backs off after repeated failures (1min → 2min → 5min)
 4. **Recovery Signal**: After fixing errors, agents can signal Poltergeist to reset the backoff
 
-This ensures agents never get stuck - they either get a working binary or clear instructions on how to fix the problem.
+With Poltergeist running, the development experience is transformed - save a file and the binary is ready. The wrapper ensures you're always running fresh code, and build failures are detected and communicated clearly.
 
-## The Results: Faster Development
-
-With Poltergeist running, the development experience is transformed:
-
-- **No manual builds**: Save file, binary is ready
-- **No stale binaries**: The wrapper ensures you're always running fresh code
-- **Clear error handling**: Build failures are detected and communicated clearly
-- **Perfect for AI agents**: Agents can focus on writing code, not managing builds
-
-The best part? It's completely transparent. Whether you're a human developer or an AI agent, you just use the wrapper script and everything works.
+The best part? It's completely transparent. Whether you're a human developer or an AI agent, you just use the wrapper script and everything works. Agents can focus on writing code, not managing builds.
 
 ## Try It Yourself
 
