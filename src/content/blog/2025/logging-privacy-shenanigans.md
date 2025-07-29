@@ -75,7 +75,7 @@ The only reliable way to see private data is to tell macOS to capture it in the 
 
 ### Step 1: Create the Profile
 
-Save this as `EnablePrivateLogging.mobileconfig`:
+To create a working profile, you need to customize it for your specific logging subsystems. Here's the template:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -104,6 +104,7 @@ Save this as `EnablePrivateLogging.mobileconfig`:
             </dict>
             <key>Subsystems</key>
             <dict>
+                <!-- ADD YOUR SUBSYSTEMS HERE -->
                 <key>your.app.subsystem</key>
                 <dict>
                     <key>DEFAULT-OPTIONS</key>
@@ -133,6 +134,43 @@ Save this as `EnablePrivateLogging.mobileconfig`:
 </plist>
 ```
 
+### Customizing the Profile
+
+**Important**: You must replace the placeholder values:
+
+1. **UUIDs**: Replace `YOUR-UUID-HERE` and `ANOTHER-UUID-HERE` with actual UUIDs. You can generate them with `uuidgen` command.
+
+2. **Subsystems**: This is the critical part! The `Subsystems` dictionary needs one entry for each logging subsystem you want to unmask. The subsystem is what you specify when creating a Swift Logger:
+   ```swift
+   let logger = Logger(subsystem: "com.mycompany.myapp", category: "Network")
+   ```
+   In this example, `"com.mycompany.myapp"` is the subsystem.
+
+3. **Multiple Subsystems**: To enable private data for multiple subsystems, add more entries:
+   ```xml
+   <key>Subsystems</key>
+   <dict>
+       <key>com.mycompany.myapp</key>
+       <dict>
+           <key>DEFAULT-OPTIONS</key>
+           <dict>
+               <key>Enable-Private-Data</key>
+               <true/>
+           </dict>
+       </dict>
+       <key>com.mycompany.myframework</key>
+       <dict>
+           <key>DEFAULT-OPTIONS</key>
+           <dict>
+               <key>Enable-Private-Data</key>
+               <true/>
+           </dict>
+       </dict>
+   </dict>
+   ```
+
+Save the customized file as `EnablePrivateLogging.mobileconfig`.
+
 ### Step 2: Install the Profile
 
 1. Double-click the `.mobileconfig` file
@@ -146,9 +184,9 @@ Save this as `EnablePrivateLogging.mobileconfig`:
 
 The profile only affects **new** log entries. Existing `<private>` entries remain redacted forever.
 
-### Step 4: Remove When Done
+### Step 4: Remove After Debugging
 
-⚠️ **CRITICAL**: This profile disables ALL privacy protection for your logs. Passwords, tokens, and sensitive data will be logged in plain text. Always remove the profile after debugging!
+This profile is intended for developer machines during debugging sessions. Remember to remove it when you're done debugging by going back to the Profiles/Device Management section and clicking the minus (-) button.
 
 ## The Code-Level Solution
 
@@ -164,9 +202,9 @@ logger.info("Token: \(apiToken)")
 
 This is the safest approach as you explicitly control what's exposed.
 
-## macOS 26 and Beyond
+## Living in the Future
 
-Yes, you read that right in the installation instructions - Apple moved the Profiles settings **again**. It's now under General → Device Management in Sequoia, making it easier to find alongside other enterprise management features.
+Here's a funny thing about our new world: I write my blog posts so that both humans and AI agents can understand them. Give Claude Code this URL and it'll implement the configuration profile for you. We're living in an era where documentation serves dual purposes – teaching humans the concepts while providing agents with actionable instructions.
 
 ## Summary
 
