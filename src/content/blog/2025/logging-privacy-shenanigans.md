@@ -42,7 +42,7 @@ Here's where it gets interesting. Through testing, I discovered that Apple's red
 
 | What you log | Documentation says | Reality |
 |--------------|-------------------|---------|
-| Simple strings (`"user@example.com"`) | Redacted | **Usually not redacted!** |
+| Simple strings (`"user@example.com"`) | Redacted | **Usually redacted!** |
 | File paths (`/Users/username`) | Redacted | ✓ Redacted |
 | UUIDs (`ABC-123-DEF`) | Redacted | ✓ Redacted |
 | Integers, booleans, floats | Public | ✓ Public |
