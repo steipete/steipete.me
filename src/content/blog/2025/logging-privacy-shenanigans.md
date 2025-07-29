@@ -12,7 +12,7 @@ tags:
   - Developer Tools
 ---
 
-> **TL;DR** – Apple logs hide everything as `<private>` by default. Install a configuration profile to reveal logs during debugging, or use `.public` in code for specific values.
+> **TL;DR** – Apple logs hide the juicy debugging bits as `<private>`. Install a configuration profile to reveal logs during debugging, or use `.public` in code for specific values.
 
 If you've ever tried debugging a macOS app using the unified logging system, you've probably encountered the dreaded `<private>` redaction. Your carefully crafted log messages turn into cryptic puzzles where the most important debugging information is hidden. Let me show you what's really going on and how to work around it.
 
