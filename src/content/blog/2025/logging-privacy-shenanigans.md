@@ -98,152 +98,6 @@ To create a working profile, you need to customize it for your specific logging 
             <key>PayloadEnabled</key>
             <true/>
             <key>PayloadIdentifier</key>
-            <string>com.example.logging.EnablePrivateData</string>
-            <key>PayloadType</key>
-            <string>com.apple.system.logging</string>
-            <key>PayloadUUID</key>
-            <string>YOUR-UUID-HERE</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-            <key>System</key>
-            <dict>
-                <key>Enable-Private-Data</key>
-                <true/>
-            </dict>
-            <key>Subsystems</key>
-            <dict>
-                <!-- ADD YOUR SUBSYSTEMS HERE -->
-                <key>your.app.subsystem</key>
-                <dict>
-                    <key>DEFAULT-OPTIONS</key>
-                    <dict>
-                        <key>Enable-Private-Data</key>
-                        <true/>
-                    </dict>
-                </dict>
-            </dict>
-        </dict>
-    </array>
-    <key>PayloadDescription</key>
-    <string>Enable private data logging for debugging</string>
-    <key>PayloadDisplayName</key>
-    <string>Private Data Logging</string>
-    <key>PayloadIdentifier</key>
-    <string>com.example.PrivateDataLogging</string>
-    <key>PayloadRemovalDisallowed</key>
-    <false/>
-    <key>PayloadType</key>
-    <string>Configuration</string>
-    <key>PayloadUUID</key>
-    <string>ANOTHER-UUID-HERE</string>
-    <key>PayloadVersion</key>
-    <integer>1</integer>
-</dict>
-</plist>
-```
-
-</details>
-
-<br>
-
-<details>
-<summary><strong>Customizing the Profile</strong></summary>
-
-**Important**: You must replace the placeholder values:
-
-1. **UUIDs**: Replace `YOUR-UUID-HERE` and `ANOTHER-UUID-HERE` with actual UUIDs. You can generate them with `uuidgen` command.
-
-2. **Subsystems**: This is the critical part! The `Subsystems` dictionary needs one entry for each logging subsystem you want to unmask. The subsystem is what you specify when creating a Swift Logger:
-   ```swift
-   let logger = Logger(subsystem: "com.mycompany.myapp", category: "Network")
-   ```
-   In this example, `"com.mycompany.myapp"` is the subsystem.
-
-3. **Multiple Subsystems**: To enable private data for multiple subsystems, add more entries:
-   ```xml
-   <key>Subsystems</key>
-   <dict>
-       <key>com.mycompany.myapp</key>
-       <dict>
-           <key>DEFAULT-OPTIONS</key>
-           <dict>
-               <key>Enable-Private-Data</key>
-               <true/>
-           </dict>
-       </dict>
-       <key>com.mycompany.myframework</key>
-       <dict>
-           <key>DEFAULT-OPTIONS</key>
-           <dict>
-               <key>Enable-Private-Data</key>
-               <true/>
-           </dict>
-       </dict>
-   </dict>
-   ```
-
-Save the customized file as `EnablePrivateLogging.mobileconfig`.
-
-</details>
-
-### Step 2: Install the Profile
-
-1. Double-click the `.mobileconfig` file
-2. Navigate to:
-   - **macOS 15 (Sequoia) and later**: System Settings → General → Device Management
-   - **macOS 14 (Sonoma) and earlier**: System Settings → Privacy & Security → Profiles
-3. Click "Install..." and authenticate
-4. Wait 1-2 minutes for the system to apply changes
-
-### Step 3: Generate Fresh Logs
-
-The profile only affects **new** log entries. Existing `<private>` entries remain redacted forever.
-
-### Step 4: Remove After Debugging
-
-This profile is intended for developer machines during debugging sessions. Remember to remove it when you're done debugging by going back to the Profiles/Device Management section and clicking the minus (-) button.
-
-## The Code-Level Solution
-
-For production apps, mark specific non-sensitive values as public:
-
-```swift
-// This will always be visible
-logger.info("Session: \(sessionId, privacy: .public)")
-
-// This remains private by default
-logger.info("Token: \(apiToken)")
-```
-
-This is the safest approach as you explicitly control what's exposed.
-
-## Complete Implementation Reference
-
-For automated generation or manual creation, here's the complete mobileconfig structure with all required fields:
-
-### Required Components
-
-1. **XML Declaration and DOCTYPE** - Standard plist header
-2. **Profile-level metadata** - PayloadIdentifier, PayloadUUID, PayloadOrganization
-3. **Logging payload configuration** - Must use PayloadType: `com.apple.system.logging`
-4. **System and Subsystems configuration** - Enable-Private-Data flags
-
-<details>
-<summary><strong>Full Working Template</strong></summary>
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>PayloadContent</key>
-    <array>
-        <dict>
-            <key>PayloadDisplayName</key>
-            <string>ManagedClient logging</string>
-            <key>PayloadEnabled</key>
-            <true/>
-            <key>PayloadIdentifier</key>
             <string>com.yourapp.logging.EnablePrivateData</string>
             <key>PayloadType</key>
             <string>com.apple.system.logging</string>
@@ -291,25 +145,89 @@ For automated generation or manual creation, here's the complete mobileconfig st
 
 </details>
 
-### Key Implementation Details
+<br>
 
-- **Two UUIDs required**: Replace `GENERATE-UUID-1` and `GENERATE-UUID-2` with output from `uuidgen` command
-- **PayloadType values**: Top-level must be "Configuration", inner must be "com.apple.system.logging"
-- **Multiple subsystems**: Duplicate the subsystem dict structure for each subsystem you want to enable
-- **Removal permission**: Keep PayloadRemovalDisallowed as false for development profiles
-- **Organization name**: Replace "Your Organization" with your actual organization or app name
+<details>
+<summary><strong>Customizing the Profile</strong></summary>
 
-### Generating UUIDs
+**Critical Components to Replace:**
 
-To create the required UUIDs:
-```bash
-# Generate first UUID
-uuidgen
-# Generate second UUID
-uuidgen
+1. **UUIDs**: Two unique identifiers are required:
+   - Replace `GENERATE-UUID-1` and `GENERATE-UUID-2` with actual UUIDs
+   - Generate with: `uuidgen` (run twice for two different UUIDs)
+
+2. **Organization**: Replace `Your Organization` with your actual organization or app name
+
+3. **Subsystems**: The most critical part! Replace `your.app.subsystem` with your actual logging subsystem(s):
+   ```swift
+   let logger = Logger(subsystem: "com.mycompany.myapp", category: "Network")
+   ```
+   In this example, `"com.mycompany.myapp"` is the subsystem you need to add.
+
+4. **Multiple Subsystems**: To enable private data for multiple subsystems, duplicate the subsystem structure:
+   ```xml
+   <key>Subsystems</key>
+   <dict>
+       <key>com.mycompany.myapp</key>
+       <dict>
+           <key>DEFAULT-OPTIONS</key>
+           <dict>
+               <key>Enable-Private-Data</key>
+               <true/>
+           </dict>
+       </dict>
+       <key>com.mycompany.myframework</key>
+       <dict>
+           <key>DEFAULT-OPTIONS</key>
+           <dict>
+               <key>Enable-Private-Data</key>
+               <true/>
+           </dict>
+       </dict>
+   </dict>
+   ```
+
+**Key Implementation Details:**
+
+- **PayloadType values**: The top-level PayloadType must be `Configuration`, while the inner PayloadType (in PayloadContent) must be `com.apple.system.logging`
+- **PayloadRemovalDisallowed**: Keep this as `false` so you can easily remove the profile after debugging
+- **System section**: Enables private data for system-level logs
+- **DEFAULT-OPTIONS**: Required wrapper for subsystem options
+
+Save the customized file as `EnablePrivateLogging.mobileconfig`.
+
+</details>
+
+### Step 2: Install the Profile
+
+1. Double-click the `.mobileconfig` file
+2. Navigate to:
+   - **macOS 15 (Sequoia) and later**: System Settings → General → Device Management
+   - **macOS 14 (Sonoma) and earlier**: System Settings → Privacy & Security → Profiles
+3. Click "Install..." and authenticate
+4. Wait 1-2 minutes for the system to apply changes
+
+### Step 3: Generate Fresh Logs
+
+The profile only affects **new** log entries. Existing `<private>` entries remain redacted forever.
+
+### Step 4: Remove After Debugging
+
+This profile is intended for developer machines during debugging sessions. Remember to remove it when you're done debugging by going back to the Profiles/Device Management section and clicking the minus (-) button.
+
+## The Code-Level Solution
+
+For production apps, mark specific non-sensitive values as public:
+
+```swift
+// This will always be visible
+logger.info("Session: \(sessionId, privacy: .public)")
+
+// This remains private by default
+logger.info("Token: \(apiToken)")
 ```
 
-Replace the placeholder values in the template with these generated UUIDs.
+This is the safest approach as you explicitly control what's exposed.
 
 ## Automating with Claude Code
 
