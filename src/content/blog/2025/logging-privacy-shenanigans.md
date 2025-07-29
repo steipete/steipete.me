@@ -217,6 +217,97 @@ logger.info("Token: \(apiToken)")
 
 This is the safest approach as you explicitly control what's exposed.
 
+## Complete Implementation Reference
+
+For automated generation or manual creation, here's the complete mobileconfig structure with all required fields:
+
+### Required Components
+
+1. **XML Declaration and DOCTYPE** - Standard plist header
+2. **Profile-level metadata** - PayloadIdentifier, PayloadUUID, PayloadOrganization
+3. **Logging payload configuration** - Must use PayloadType: `com.apple.system.logging`
+4. **System and Subsystems configuration** - Enable-Private-Data flags
+
+### Full Working Template
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>PayloadDisplayName</key>
+            <string>ManagedClient logging</string>
+            <key>PayloadEnabled</key>
+            <true/>
+            <key>PayloadIdentifier</key>
+            <string>com.yourapp.logging.EnablePrivateData</string>
+            <key>PayloadType</key>
+            <string>com.apple.system.logging</string>
+            <key>PayloadUUID</key>
+            <string>GENERATE-UUID-1</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>System</key>
+            <dict>
+                <key>Enable-Private-Data</key>
+                <true/>
+            </dict>
+            <key>Subsystems</key>
+            <dict>
+                <key>your.app.subsystem</key>
+                <dict>
+                    <key>DEFAULT-OPTIONS</key>
+                    <dict>
+                        <key>Enable-Private-Data</key>
+                        <true/>
+                    </dict>
+                </dict>
+            </dict>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>This profile enables logging of private data for debugging. IMPORTANT: Only install temporarily while debugging, then remove immediately.</string>
+    <key>PayloadDisplayName</key>
+    <string>Your App Private Data Logging</string>
+    <key>PayloadIdentifier</key>
+    <string>com.yourapp.PrivateDataLogging</string>
+    <key>PayloadOrganization</key>
+    <string>Your Organization</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>GENERATE-UUID-2</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
+```
+
+### Key Implementation Details
+
+- **Two UUIDs required**: Replace `GENERATE-UUID-1` and `GENERATE-UUID-2` with output from `uuidgen` command
+- **PayloadType values**: Top-level must be "Configuration", inner must be "com.apple.system.logging"
+- **Multiple subsystems**: Duplicate the subsystem dict structure for each subsystem you want to enable
+- **Removal permission**: Keep PayloadRemovalDisallowed as false for development profiles
+- **Organization name**: Replace "Your Organization" with your actual organization or app name
+
+### Generating UUIDs
+
+To create the required UUIDs:
+```bash
+# Generate first UUID
+uuidgen
+# Generate second UUID
+uuidgen
+```
+
+Replace the placeholder values in the template with these generated UUIDs.
+
 ## Automating with Claude Code
 
 Instead of manually editing the profile XML, just give Claude Code this blog post URL and ask it to create a customized profile for your app. [Living in the future](/posts/2025/claude-code-is-my-computer/) means your documentation can be both human-readable and agent-executable.
