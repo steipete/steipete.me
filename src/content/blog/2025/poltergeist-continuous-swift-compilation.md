@@ -18,8 +18,6 @@ tags:
 
 I've been building [Peekaboo](https://peekaboo.dev/), a Swift CLI for macOS screenshots. Working with Claude Code has been great, but Swift compilation times were killing the flow.
 
-Picture this: Claude makes a change, I run `swift build`. Wait 30 seconds. Test. Find an issue. Claude fixes it. `swift build` again. Wait another 30 seconds. Too much time watching the compiler.
-
 ## The Problem: Swift Build Times Are Agent Killers
 
 When you're working with AI agents, the feedback loop is everything. Agents thrive on quick iterations - make a change, test it, adjust, repeat. But Swift's compile times were destroying this flow.
