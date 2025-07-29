@@ -139,6 +139,8 @@ To create a working profile, you need to customize it for your specific logging 
 
 </details>
 
+<br>
+
 <details>
 <summary><strong>Customizing the Profile</strong></summary>
 
