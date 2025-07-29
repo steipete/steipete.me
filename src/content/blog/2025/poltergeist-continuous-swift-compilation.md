@@ -1,6 +1,6 @@
 ---
 title: "Poltergeist: The Ghost That Keeps Your Swift CLI Fresh"
-pubDatetime: 2025-07-29T10:00:00+01:00
+pubDatetime: 2025-07-29T10:00:00.000+01:00
 description: "How I built a file watcher that haunts my Swift CLI, rebuilding it automatically whenever I save a file - and why it's been a game-changer for AI agent workflows"
 heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/header.png
 heroImageAlt: "Terminal showing Poltergeist rebuilding a Swift CLI with ghost emoji"
