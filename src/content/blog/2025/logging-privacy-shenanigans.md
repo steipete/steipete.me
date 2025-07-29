@@ -215,9 +215,9 @@ logger.info("Token: \(apiToken)")
 
 This is the safest approach as you explicitly control what's exposed.
 
-## Living in the Future
+## Automating with Claude Code
 
-Here's a funny thing about our new world: I write my blog posts so that both humans and AI agents can understand them. Give Claude Code this URL and it'll implement the configuration profile for you. We're living in an era where documentation serves dual purposes – teaching humans the concepts while providing agents with actionable instructions.
+Instead of manually editing the profile XML, just give Claude Code this blog post URL and ask it to create a customized profile for your app. Living in the future means your documentation can be both human-readable and agent-executable.
 
 ## Summary
 
