@@ -229,7 +229,7 @@ For automated generation or manual creation, here's the complete mobileconfig st
 4. **System and Subsystems configuration** - Enable-Private-Data flags
 
 <details>
-<summary><strong>Full Working Template (for automated generation)</strong></summary>
+<summary><strong>Full Working Template</strong></summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
