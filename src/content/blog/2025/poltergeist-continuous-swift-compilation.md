@@ -55,7 +55,7 @@ But automatic rebuilding is only half the solution. What happens when you try to
 
 That's where the smart wrapper script comes in:
 
-```bash
+```
 # Instead of: ./peekaboo
 # You run: ./scripts/peekaboo-wait.sh
 
