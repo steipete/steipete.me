@@ -1,6 +1,6 @@
 ---
 title: "Poltergeist: The Ghost That Keeps Your Swift CLI Fresh"
-pubDatetime: 2025-07-29T09:00:00.000+02:00
+pubDatetime: 2025-07-29T16:00:00.000+02:00
 description: "How I built a file watcher that haunts my Swift CLI, rebuilding it automatically whenever I save a file - and why it's been a game-changer for AI agent workflows"
 heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/header.png
 heroImageAlt: "Terminal showing Poltergeist rebuilding a Swift CLI with ghost emoji"
@@ -14,11 +14,11 @@ tags:
   - Automation
 ---
 
-**TL;DR**: Tired of manually rebuilding your Swift CLI every time you make a change? Meet Poltergeist - a file watcher that automatically rebuilds your CLI in the background, making development with AI agents 10x smoother.
+**TL;DR**: Tired of manually rebuilding your Swift CLI every time you make a change? Meet Poltergeist - a file watcher that automatically rebuilds your CLI in the background, making development with AI agents much smoother.
 
-I've been building [Peekaboo](https://peekaboo.dev/), a Swift CLI for lightning-fast macOS screenshots. Working with Claude Code to develop it has been amazing, but there was one massive pain point: Swift compilation times.
+I've been building [Peekaboo](https://peekaboo.dev/), a Swift CLI for macOS screenshots. Working with Claude Code has been great, but Swift compilation times were killing the flow.
 
-Picture this: Claude makes a change, I need to test it, so I run `swift build`. Wait 30 seconds. Test. Find an issue. Claude fixes it. `swift build` again. Wait another 30 seconds. Rinse and repeat. On a bad day, I'd spend more time watching the compiler than actually developing.
+Picture this: Claude makes a change, I run `swift build`. Wait 30 seconds. Test. Find an issue. Claude fixes it. `swift build` again. Wait another 30 seconds. Too much time watching the compiler.
 
 ## The Problem: Swift Build Times Are Agent Killers
 
@@ -415,20 +415,18 @@ echo "✅ Recovery signal sent to Poltergeist"
 
 </details>
 
-## Build Failure Recovery: The Secret Sauce
+## Build Failure Recovery
 
-One of the trickiest parts was handling build failures gracefully. Initially, agents would get stuck in loops - Poltergeist would fail to build, the agent would try to run the CLI, get an error, and then... confusion.
-
-The solution was a simple but effective protocol:
+The trickiest part was handling build failures gracefully. The solution:
 
 1. **Exit Code 42**: When the wrapper detects a build failure, it exits with code 42
 2. **Clear Instructions**: The error message tells agents exactly what to do
 3. **Exponential Backoff**: Poltergeist backs off after repeated failures (1min → 2min → 5min)
 4. **Recovery Signal**: After fixing errors, agents can signal Poltergeist to reset the backoff
 
-This means agents never get stuck. They either get a working binary or clear instructions on how to fix the problem.
+This ensures agents never get stuck - they either get a working binary or clear instructions on how to fix the problem.
 
-## The Results: 10x Faster Development
+## The Results: Faster Development
 
 With Poltergeist running, the development experience is transformed:
 
@@ -449,16 +447,6 @@ Want to add Poltergeist to your own Swift CLI project? The implementation above 
 4. Start haunting: `./poltergeist.sh haunt`
 
 Or if you're feeling adventurous, just show this blog post to Claude Code and ask it to set up Poltergeist for your project. The ghost is very friendly to AI agents!
-
-## What's Next?
-
-Poltergeist has made developing Peekaboo with AI agents incredibly smooth. But I'm already thinking about improvements:
-
-- **Universal Binary Support**: Automatically build for all architectures
-- **Test Runner Integration**: Run tests automatically after successful builds
-- **Multi-Platform Support**: Extend beyond macOS to Linux
-
-For now though, I'm just enjoying the magic of saving a file and having a fresh binary ready instantly. Sometimes the best tools are the ones that make you forget they're even there.
 
 Happy haunting! 👻
 
