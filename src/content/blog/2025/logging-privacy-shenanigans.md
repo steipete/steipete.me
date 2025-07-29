@@ -109,6 +109,8 @@ sudo cp com.mycompany.myapp.plist /Library/Preferences/Logging/Subsystems/
 sudo chmod 644 /Library/Preferences/Logging/Subsystems/com.mycompany.myapp.plist
 ```
 
+> **Important Gotcha**: When writing these plist files programmatically, you **must write them atomically**. Write to a temporary file first, then use `mv` to move it into place. This ensures the logging subsystem sees a complete, valid plist file. Thanks to [@pajp](https://micro.blog/pajp/70074973) for this crucial detail!
+
 ### Step 3: Generate Fresh Logs
 
 The configuration only affects **new** log entries. Run your app to generate fresh logs.
