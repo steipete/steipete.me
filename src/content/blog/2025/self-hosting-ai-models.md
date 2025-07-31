@@ -5,23 +5,50 @@ pubDatetime: 2025-07-31T10:00:00+01:00
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 ---
 
-# Self-Hosting AI Models After Claude's Usage Limits
+# Self-Hosting AI Models
 
-When Anthropic changed Claude Pro's subscription model from a 5-hour usage window to weekly limits, it hit me hard. As someone who burns through AI usage like it's going out of style, I suddenly found myself rationing my Claude interactions. The old model worked perfectly for my workflow: intense coding sessions where I could blast through problems. The new weekly caps? [Not so much](https://x.com/steipete/status/1949901121998508119).
+When Anthropic changed Claude Max's subscription model from a 5-hour usage window to weekly limits, [it hit me hard](https://x.com/steipete/status/1949901121998508119).
 
-This kicked off my journey into self-hosting large language models. After some research, I landed on [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/), a massive Mixture of Experts model with 480B total parameters (though only 35B active per token). What caught my eye was the native 256k token context window that can stretch to 1M tokens with YaRN. The coding capabilities? They're legitimately impressive, giving Claude 3.5 Sonnet a run for its money.
+I'm definitely part of the 1% that has got [**a ton**](https://x.com/steipete/status/1948549916604989706) of benefit out of their payment model, and I'm not entirely surprised that they're changing the deal, given the incredible demand for Claude Code. Much like Cursor's recent pricing changes, this caused a log of anger in the community, and it also triggered my curiosity on what other options are out there.
 
-The promise was tantalizing: run my own AI coding assistant with massive context windows, zero usage limits, and complete control over everything.
+Just to set the record straight tho: While I often worked 16h-days, I never automated Claude Code and was well within their Terms of Service. My Anthropic bill for July is at ~6000$, since I been using their GitHub Review bot, and while some people have been extracting the Max API Token to run on GitHub in the background, I opted to not break the rules and [pay up](https://x.com/steipete/status/1949908573452193866)... Anthropic, we cool?
+
+## Evaluating The Landscape
+
+Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast. There's quite a few contenders out there that are worth a look:
+
+- [opencode](https://opencode.ai/)
+Supports pretty much all providers. Getting better every day.
+
+- [charm crush](https://github.com/charmbracelet/crush)
+A new kid on the block, very cute. Had to [send a PR](https://github.com/charmbracelet/crush/pull/414) to make it work with vLLM.goo
+
+- [Claude Code with claude-code-router](https://github.com/musistudio/claude-code-router)
+Clever hack that patches Claude Code to use different models. Since CC is optimized for Anthropic's models, tool use and overall results aren't as good as with Sonnet or Opus.
+
+- [Cline](https://github.com/cline/cline)
+I used Cline for testing the model, but since it's a VS Code extension and not a cli, it doesn't fit my workflow.
+
+- [amp](https://ampcode.com/)
+Amp is a very opinionated CLI. It uses Claude Sonnet and has a tool that can invoke OpenAI's o3. Pricing is forwarded without markup. You can't use your subscription here, so until now, it wasn't interesting. I'd say their tool search is competitive and in parts maybe even better than Claude Code, will have to try this more.
+
+This is such a fast-moving space and [new tools](https://kiro.dev/) are released almost [daily](https://www.augmentcode.com/changelog/auggie-cli).
 
 ## The Infrastructure Journey
 
-My quest to self-host this beast was... educational.
+A few months ago I bought a Mac Studio with 512GB ram, top of the line, to experiment with models. Turns out, back then there just asn't anything great out there that could compete with Opus & Gemini. And then came Deepseek, and with that the realization that even the 512GB won't get me very far.
 
-First stop: Prime Intellect. For $8.20/hour, I got 4x H200 GPUs. Seemed like a great deal until I realized they were spot instances. You know what happens when you're downloading a 1TB model and your spot instance gets reclaimed? Complete data loss. Every. Single. Time. Lesson learned: spot instances and massive models don't mix.
+Yes, I can run Deepseek Coder V2 at ~25 tok/s or a quaitified version of R1 at ~8–15 tok/s, but that's not fun, and 128k context size is quite a bit of a downgrade compared to Claude's 200k or Gemini's 1Mio context. There's ways to connect multiple Studio's for more performance and/or less compressed models, but then we're talking 30k$+ for the setup.
 
-Next up: Vast.ai. This is where things got interesting. They advertised 4TB of storage (perfect for a 1TB model, right?), but when I actually got into the container, I discovered only 130GB was accessible. The rest? Locked away in the host filesystem where containers can't touch it. Classic bait and switch.
+It feels like there's a new chinese lab each week that releases better and more capable models. The release of [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/) got my attention, as it's the first model that achieves a similar score on SWE-bench as Claude Sonnet 4. Plus, it has a native 256k token context window that can stretch to 1M tokens with YaRN.
 
-But Vast.ai redeemed itself. After some hunting, I found an instance with 8x H200 GPUs packing 1.12TB of VRAM total. At $26.736/hour, it's not cheap, but it actually works. The setup I'm currently running:
+Running this needs some beefy hardware. NVidia's H200 (Hopper refresh) is currently the best top-of-the-line choice. There's also B200 (Blackwell), but they are extremely expensive to rent.
+
+My first stop was [Prime Intellect](https://www.primeintellect.ai/). For $8.20/hour, I got 4x H200 GPUs. Seemed like a great deal until I realized they were spot instances. That means that they can be disabled at any time if the cloud provider needs the capacity. That' be fine, but I found the machines were also extremly spotty with ssh access, and I've experienced lots of intermittend outages, even though I tried various locations. Can't recommend their service, so I eventually abandoned that.
+
+Next up: [Vast.ai](https://vast.ai/). I rented a rig of 8xH200 machines for ~$26/hr. That's 428.2 TFLOP. Retail price for that is ~$300k. Their machines have been very reliable and my base for experiments.
+
+The setup I'm currently running:
 
 ```bash
 8x NVIDIA H200 (143.7GB each = 1,150GB total VRAM)
@@ -38,54 +65,28 @@ Model: Qwen3-Coder-480B-A35B-Instruct-FP8
 
 Let's talk money, because that's what everyone asks about first.
 
-Running this setup costs $26.736 per hour. That's $641.66 per day if you run it 24/7, or about $213 for an 8-hour workday. For a full month? You're looking at $19,250. Yes, that's nearly 1,000x more expensive than Claude Pro's $20/month.
+Running this setup costs $26.736 per hour. That's $641.66 per day if you run it 24/7, or about $213 for an 8-hour workday. For a full month? You're looking at $19,250. Just about 1,000x more expensive than the Claude subscription.
 
-But here's the thing: Claude Pro gives you weekly limits. Once you hit them, you're done. With self-hosting, there are no limits. Zero. Nada. You can run it 24/7 if your wallet can handle it.
+With my rig I could set up the FP8-version of Qwen3 Coder 480B with a 400k context. FP8 means smaller float's, so you lose about 5-10% accuracy compared to the FP16-version, which is used for the benchmarks.
 
-The setup itself takes about 30 minutes if you follow a guide (or 2-4 hours if you hit the same authentication issues I did). The model download? Budget 1-2 hours for the 480GB transfer.
+Memory is absolutely everything at this scale. The KV cache (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. If you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
 
-## Client Integration Attempts
-
-Getting various AI coding assistants to work with the self-hosted model was an adventure.
-
-Cline was the clear winner. It connected seamlessly through the OpenAI-compatible API and actually used the full 400k context window. Just drop the config into VS Code settings and you're good to go.
-
-Cursor worked, sort of. It connected fine but seemed limited to smaller context windows no matter what I tried. Plus, there were some annoying streaming issues that made the experience less than ideal.
-
-Open Canvas? Complete failure. Vast.ai uses a Caddy proxy with authentication that Open Canvas just couldn't handle. I spent hours trying various workarounds before giving up.
-
-## Key Learnings
-
-After burning through way too much money and time, here's what I learned:
-
-Memory is absolutely everything at this scale. The KV cache (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. Do the math: if you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
-
-FP8 quantization is interesting. It cuts the model size in half (from 960GB to 480GB), which is great. But you can't use FP8 for the KV cache with current vLLM versions, so you're still stuck with massive memory requirements for context.
-
-The provider landscape is full of gotchas. Spot instances will ruin your day when they disappear mid-download. Container filesystems lie about available space. What they advertise and what you can actually use are two very different numbers.
-
-On the technical side, these flags are essential for getting decent performance:
-```bash
---tensor-parallel-size 8
---enable-expert-parallel
---enable-prefix-caching
---enable-chunked-prefill
---rope-scaling '{"rope_type":"yarn","factor":1.53}'
-```
+Setup is tricky, but since [Claude Code is my computer](/posts/2025/claude-code-is-my-computer), it was mostly a bit of prompting and about half an hour waiting until the rig was ready.
 
 ## Is It Worth It?
 
-Look, I'll be straight with you. Self-hosting makes sense only if you're hitting Claude Pro limits constantly and it's actually blocking your work. If you need those massive 100k+ token context windows for real work (not just because they sound cool), or if you have specific privacy requirements where you absolutely cannot send code to external services, then maybe it's worth considering.
+Simple answer: No. You can't stop and easily restart instances, at least not with Vast.ai. Restarted instances will be scheduled, but there's no guarantee you get a spot in that data center, so it might take days or weeks until your setup reboots. 
 
-But if you're using AI assistants casually, or Claude Pro's limits work fine for you, save your money. Seriously. And if you need the absolute best model performance, Claude 3.5 Sonnet is still superior to Qwen3-Coder-480B in many ways.
+Then even with 8 beefy H200 machines, there's compromises that make the model worse than it would be.
 
-## The Verdict
+You can rent the 1Mio-context version on Alibaba for $1-$6 In // $5-$60 Out per Million tokens, depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you.
 
-After all this experimentation, here's my take: Yes, you can self-host Qwen3-Coder-480B on Vast.ai. Yes, it works. Yes, you get 400k token context windows with zero usage limits.
+Compare to Anthropic: [$15 / $75 for Opus, $3 / $15 for Sonnet](https://www.anthropic.com/pricing#api.
+Google's Gemini 2.5 Pro: [$1.25-$2.50 / $10-$15](https://ai.google.dev/gemini-api/docs/pricing)
 
-But at $19,250/month, you're paying nearly 1,000x more than Claude Pro. The setup is complex, things break, and you'll spend hours troubleshooting random issues.
+To give you an idea, on an intense day I need maybe 500Mio tokens. Calculating the price is difficult tho, since many tokens are cached as you work through a session. The cost for that, when using Opus, would be about $1000; for Sonnet about $200 - that's similar to running my rig for 8h.
 
-The real value here isn't about saving money (you won't). It's about removing constraints. If you absolutely need unlimited AI coding assistance with massive context windows and you've got the budget, self-hosting gives you that freedom. Just know what you're getting into.
+The real value here isn't about saving money (you won't). It's about removing constraints. It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Just know what you're getting into.
 
 <details>
 <summary><strong>🤖 Detailed Setup Guide for AI Agents</strong></summary>
