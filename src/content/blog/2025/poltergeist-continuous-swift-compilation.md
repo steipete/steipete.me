@@ -1,53 +1,72 @@
 ---
-title: "Poltergeist: The Ghost That Keeps Your Swift CLI Fresh"
+title: "Poltergeist: The Ghost That Keeps Your Builds Fresh"
 pubDatetime: 2025-07-29T16:00:00.000+02:00
-description: "How I built a file watcher that haunts my Swift CLI, rebuilding it automatically whenever I save a file - and why it's been a game-changer for AI agent workflows"
-heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/header.png
+description: "How I built a universal file watcher that automatically rebuilds any project - TypeScript, Rust, Swift, or anything else - whenever you save a file"
+heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/poltergeist-header.png
 heroImageAlt: "Terminal showing Poltergeist rebuilding a Swift CLI with ghost emoji"
 tags:
-  - Swift
-  - CLI
   - Development
   - Build Tools
+  - TypeScript
+  - npm
+  - Open Source
   - AI Agents
   - Claude-Code
   - Automation
 ---
 
-**TL;DR**: Tired of manually rebuilding your Swift CLI every time you make a change? Meet Poltergeist - a file watcher that automatically rebuilds your CLI in the background, making development with AI agents much smoother.
+**TL;DR**: Tired of manually rebuilding your project every time you make a change? Meet [Poltergeist](https://github.com/steipete/poltergeist) - a universal file watcher that automatically rebuilds any project in the background. Now available as an npm package and fully open source!
 
-I've been building [Peekaboo](https://peekaboo.dev/), a Swift CLI for macOS screenshots. Working with Claude Code has been great, but Swift compilation times were killing the flow.
+I've been building [Peekaboo](https://peekaboo.dev/), a Swift project for macOS automation. Working with Claude Code has been great, but compilation times were killing the flow - whether I was working on the CLI tool or the Mac app. That's when I realized this wasn't just a Swift problem - it's a universal developer experience issue.
 
-## The Problem: Swift Build Times Are Agent Killers
+## The Problem: Build Times Are Agent Killers
 
-When you're working with AI agents, the feedback loop is everything. Agents thrive on quick iterations - make a change, test it, adjust, repeat. But Swift's compile times were destroying this flow.
+When you're working with AI agents, the feedback loop is everything. Agents thrive on quick iterations - make a change, test it, adjust, repeat. But compile times were destroying this flow - whether it's Swift, TypeScript, Rust, or any compiled language.
 
 Even worse, agents would sometimes forget to rebuild before testing, leading to confusing situations where we'd debug "issues" that were already fixed in the code but not in the binary. Or they'd rebuild unnecessarily, wasting precious time and context.
 
 I needed something that would:
-1. Automatically detect when Swift files change
+1. Automatically detect when source files change
 2. Rebuild in the background without interrupting my workflow
 3. Handle build failures gracefully
 4. Work seamlessly with AI agents
 
 ## Enter Poltergeist 👻
 
-Poltergeist is a file watcher that haunts your Swift project, automatically rebuilding your CLI whenever source files change. It's built on Facebook's [Watchman](https://facebook.github.io/watchman/) - a file watching service that's battle-tested at scale.
+Poltergeist is a universal file watcher that haunts your project, automatically rebuilding your code whenever source files change. It's built on Facebook's [Watchman](https://facebook.github.io/watchman/) - a file watching service that's battle-tested at scale. Now completely rewritten in TypeScript and available as an [npm package](https://www.npmjs.com/package/@steipete/poltergeist)!
+
+What makes Poltergeist special is its **universal architecture** - it can watch and rebuild:
+- **Any CLI tool** - TypeScript, Rust, Go, Swift, you name it
+- **Desktop apps** - with auto-relaunch on macOS
+- **Web projects** - webpack, Vite, or custom build systems
+- **Literally anything** - if it has a build command, Poltergeist can watch it
 
 Here's how it looks in action:
 
 ```bash
-$ npm run poltergeist:haunt
-👻 [Poltergeist] Summoning Poltergeist to watch your Swift files...
-👻 [Poltergeist] Poltergeist is now haunting your Swift files!
-👻 [Poltergeist] Watching: Core/PeekabooCore, Core/AXorcist, Apps/CLI
+# Install globally
+$ npm install -g @steipete/poltergeist
 
-# Now when you save a Swift file...
-🔨 Rebuilding Swift CLI (git: abc123)...
-✅ Build complete in 12.3s
+# Initialize in any project
+$ poltergeist init
+
+# Start watching
+$ poltergeist haunt
+👻 [Poltergeist] Summoning Poltergeist to watch your Swift files...
+👻 [Poltergeist] Starting in ALL mode - watching both CLI and Mac app
+👻 [Poltergeist] CLI trigger created: poltergeist-cli-rebuild
+👻 [Poltergeist] Mac app trigger created: poltergeist-mac-rebuild
+
+# When you save a file...
+🔨 [cli] Building with: cargo build --release
+✅ [cli] Build complete in 12.3s
+
+# Or for a TypeScript project
+🔨 [cli] Building with: npm run build
+✅ [cli] Build complete in 2.1s
 ```
 
-The beauty is that it runs completely in the background. You edit files, Poltergeist rebuilds. By the time you're ready to test, the fresh binary is waiting for you.
+The beauty is that it runs completely in the background. You edit files, Poltergeist rebuilds. By the time you're ready to test, the fresh binary is waiting for you. For Mac apps, it even **automatically quits and relaunches** the app after a successful build - perfect for rapid UI iteration!
 
 ## The Smart Wrapper: Never Run Stale Code Again
 
@@ -65,6 +84,8 @@ That's where the smart wrapper script comes in:
 # 3. Detects build failures and tells you exactly what to do
 ```
 
+For Mac apps, Poltergeist handles the entire lifecycle automatically - no wrapper needed!
+
 When a build fails, instead of cryptic errors or stale binaries, you get:
 
 ```
@@ -75,24 +96,117 @@ Error: Cannot find 'someMethod' in scope
 🔧 TO FIX: Run 'npm run build:swift' to see and fix the compilation errors.
 ```
 
-## The Architecture: How It All Fits Together
+## From Bash to TypeScript: A Complete Rewrite
+
+The original Poltergeist was a collection of bash scripts. It worked, but it was getting complex. So I rewrote it in TypeScript, and now it's:
+
+- **An npm package**: `npm install -g @steipete/poltergeist`
+- **Configuration-driven**: One `poltergeist.config.json` per project
+- **Language agnostic**: Works with any build system
+- **Open source**: [github.com/steipete/poltergeist](https://github.com/steipete/poltergeist)
 
 <details>
-<summary>View the complete Poltergeist implementation</summary>
+<summary>View example configurations for different languages</summary>
 
-The system consists of four main components:
+The system uses a **configuration-driven architecture** that makes it easy to adapt to any Swift project:
 
-### 1. The Watcher Script (poltergeist.sh)
+### TypeScript/Node.js Project
 
-```bash
-#!/bin/bash
-# Poltergeist - The Swift CLI File Watcher
+```json
+{
+  "cli": {
+    "enabled": true,
+    "buildCommand": "npm run build",
+    "outputPath": "./dist/index.js",
+    "statusFile": "/tmp/ts-build-status.json",
+    "lockFile": "/tmp/ts-build.lock",
+    "watchPaths": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "package.json",
+      "tsconfig.json"
+    ],
+    "settlingDelay": 500
+  }
+}
+```
+
+### Rust Project
+
+```json
+{
+  "cli": {
+    "enabled": true,
+    "buildCommand": "cargo build --release",
+    "outputPath": "./target/release/my-cli",
+    "statusFile": "/tmp/rust-build-status.json",
+    "lockFile": "/tmp/rust-build.lock",
+    "watchPaths": [
+      "src/**/*.rs",
+      "Cargo.toml",
+      "Cargo.lock"
+    ],
+    "settlingDelay": 1000
+  }
+}
+```
+
+### Swift Project
+
+```json
+{
+  "cli": {
+    "enabled": true,
+    "buildCommand": "swift build -c release",
+    "outputPath": "./.build/release/my-tool",
+    "statusFile": "/tmp/swift-build-status.json",
+    "lockFile": "/tmp/swift-build.lock",
+    "watchPaths": [
+      "Sources/**/*.swift",
+      "Package.swift"
+    ]
+  },
+  "macApp": {
+    "enabled": true,
+    "buildCommand": "xcodebuild -workspace MyApp.xcworkspace -scheme MyApp build",
+    "bundleId": "com.example.myapp",
+    "autoRelaunch": true,
+    "watchPaths": [
+      "MyApp/**/*.swift",
+      "MyApp/**/*.storyboard"
+    ]
+  }
+}
+```
+
+</details>
+
+## The TypeScript Architecture
+
+The new TypeScript implementation is modular and extensible:
+
+```typescript
+// Main orchestrator that coordinates everything
+export class Poltergeist extends EventEmitter {
 # A ghost that watches your Swift files and rebuilds when they change
+# Supports both CLI tools and Mac apps with auto-relaunch
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-TRIGGER_NAME="poltergeist-swift-rebuild"
-LOCK_FILE="/tmp/peekaboo-poltergeist.lock"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CONFIG_FILE="$PROJECT_ROOT/poltergeist.config.json"
+
+# Mode selection (cli, mac, or all)
+MODE="all"
+if [ "$1" = "--cli" ]; then
+    MODE="cli"
+    shift
+elif [ "$1" = "--mac" ]; then
+    MODE="mac"
+    shift
+elif [ "$1" = "--all" ]; then
+    MODE="all"
+    shift
+fi
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -251,9 +365,10 @@ case "${1:-help}" in
         echo "Usage: poltergeist [haunt|rest|status]"
         ;;
 esac
-```
+}
 
-### 2. The Build Handler (poltergeist-handler.sh)
+// Watchman client for efficient file watching
+export class WatchmanClient extends EventEmitter {
 
 ```bash
 #!/bin/bash
@@ -305,7 +420,10 @@ fi
 rm -f "$BUILD_LOCK"
 ```
 
-### 3. The Smart Wrapper (peekaboo-wait.sh)
+}
+
+// Pluggable builders for different targets
+export abstract class Builder {
 
 ```bash
 #!/bin/bash
@@ -401,14 +519,15 @@ done
 exec "$BINARY_PATH" "$@"
 ```
 
-### 4. Recovery Signal Script
+}
+
+// And specialized builders
+export class CLIBuilder extends Builder {
 
 ```bash
-#!/bin/bash
-# Signal Poltergeist to reset its backoff timer after fixing build errors
-RECOVERY_SIGNAL="/tmp/peekaboo-build-recovery"
-touch "$RECOVERY_SIGNAL"
-echo "✅ Recovery signal sent to Poltergeist"
+}
+
+export class MacAppBuilder extends Builder {
 ```
 
 </details>
@@ -428,16 +547,37 @@ The best part? It's completely transparent. Whether you're a human developer or 
 
 ## Try It Yourself
 
-Want to add Poltergeist to your own Swift CLI project? The implementation above is everything you need. Just:
+Want to add Poltergeist to your project? It's now easier than ever:
 
-1. Install Watchman: `brew install watchman`
-2. Copy the scripts to your project
-3. Adjust the paths in the watcher configuration
-4. Start haunting: `./poltergeist.sh haunt`
+```bash
+# Install globally
+npm install -g @steipete/poltergeist
 
-Or if you're feeling adventurous, just show this blog post to Claude Code and ask it to set up Poltergeist for your project. The ghost is very friendly to AI agents!
+# In your project directory
+poltergeist init
+
+# Edit poltergeist.config.json to match your project
+
+# Start watching
+poltergeist haunt
+```
+
+Check out the [GitHub repository](https://github.com/steipete/poltergeist) for more examples and documentation. The ghost is very friendly to all languages and build systems!
+
+## What's Next?
+
+Poltergeist is just getting started. Some ideas for the future:
+
+- **Multiple build targets**: Watch frontend and backend simultaneously
+- **Build notifications**: Desktop notifications when builds complete
+- **Performance metrics**: Track build times and optimize
+- **Plugin system**: Extend Poltergeist with custom behaviors
+
+Contributions are welcome! The project is MIT licensed and open for collaboration.
 
 Happy haunting! 👻
+
+_Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) or install it from [npm](https://www.npmjs.com/package/@steipete/poltergeist)._
 
 <style>
   details {
