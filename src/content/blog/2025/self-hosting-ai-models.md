@@ -7,7 +7,7 @@ tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 
 # Self-Hosting AI Models After Claude's Usage Limits
 
-When Anthropic changed Claude Pro's subscription model from a 5-hour usage window to weekly limits, it hit me hard. As someone who burns through AI usage like it's going out of style, I suddenly found myself rationing my Claude interactions. The old model worked perfectly for my workflow: intense coding sessions where I could blast through problems. The new weekly caps? Not so much.
+When Anthropic changed Claude Pro's subscription model from a 5-hour usage window to weekly limits, it hit me hard. As someone who burns through AI usage like it's going out of style, I suddenly found myself rationing my Claude interactions. The old model worked perfectly for my workflow: intense coding sessions where I could blast through problems. The new weekly caps? [Not so much](https://x.com/steipete/status/1949901121998508119).
 
 This kicked off my journey into self-hosting large language models. After some research, I landed on [Qwen3-Coder-480B](https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct), a massive Mixture of Experts model with 480B total parameters (though only 35B active per token). What caught my eye was the native 262k token context window that can stretch to over 760k tokens. The coding capabilities? They're legitimately impressive, giving Claude 3.5 Sonnet a run for its money.
 
@@ -21,11 +21,13 @@ First stop: Prime Intellect. For $8.20/hour, I got 4x H200 GPUs. Seemed like a g
 
 Next up: Vast.ai. This is where things got interesting. They advertised 4TB of storage (perfect for a 1TB model, right?), but when I actually got into the container, I discovered only 130GB was accessible. The rest? Locked away in the host filesystem where containers can't touch it. Classic bait and switch.
 
-But Vast.ai redeemed itself. After some hunting, I found an instance with 8x H200 GPUs packing 1.15TB of VRAM total. At $12.40/hour, it wasn't cheap, but it actually worked. The setup that finally clicked:
+But Vast.ai redeemed itself. After some hunting, I found an instance with 8x H200 GPUs packing 1.12TB of VRAM total. At $26.73/hour, it's not cheap, but it actually works. The setup I'm currently running:
 
 ```bash
 8x NVIDIA H200 (143.7GB each = 1,150GB total VRAM)
-Cost: $0.383/hr per GPU = $12.40/hour total
+Cost: $26.73/hr (Instance 24530457)
+DLPerf: 3116.7 (excellent performance score)
+Network: 13TB/month, 3.4 Gbps up/2.7 Gbps down
 Context: 400,000 tokens achieved
 Model: Qwen3-Coder-480B-A35B-Instruct-FP8
 ```
@@ -34,7 +36,7 @@ Model: Qwen3-Coder-480B-A35B-Instruct-FP8
 
 Let's talk money, because that's what everyone asks about first.
 
-Running this setup costs $12.40 per hour. If you're running it 8 hours a day, that's $99.20 daily. For a full month at 160 hours? You're looking at $1,984. Yes, that's roughly 100x more expensive than Claude Pro's $20/month.
+Running this setup costs $26.73 per hour. If you're running it 8 hours a day, that's $213.84 daily. For a full month at 160 hours? You're looking at $4,276. Yes, that's over 200x more expensive than Claude Pro's $20/month.
 
 But here's the thing: Claude Pro gives you weekly limits. Once you hit them, you're done. With self-hosting, there are no limits. Zero. Nada. You can run it 24/7 if your wallet can handle it.
 
@@ -79,7 +81,7 @@ But if you're using AI assistants casually, or Claude Pro's limits work fine for
 
 After all this experimentation, here's my take: Yes, you can self-host Qwen3-Coder-480B on Vast.ai. Yes, it works. Yes, you get 400k token context windows with zero usage limits.
 
-But at roughly $2,000/month, you're paying 100x more than Claude Pro. The setup is complex, things break, and you'll spend hours troubleshooting random issues.
+But at roughly $4,300/month, you're paying over 200x more than Claude Pro. The setup is complex, things break, and you'll spend hours troubleshooting random issues.
 
 The real value here isn't about saving money (you won't). It's about removing constraints. If you absolutely need unlimited AI coding assistance with massive context windows and you've got the budget, self-hosting gives you that freedom. Just know what you're getting into.
 
