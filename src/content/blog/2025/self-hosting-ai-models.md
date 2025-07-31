@@ -1,7 +1,7 @@
 ---
 title: "Self-Hosting AI Models: Breaking Free from Claude Pro's Usage Limits"
 description: "After Claude Pro nerfed its 5-hour window to weekly usage limits, I explored self-hosting Qwen3-Coder-480B on Vast.ai. Here's what I learned about costs, setup, and working with 400k token context windows."
-pubDatetime: 2025-01-31T10:00:00+01:00
+pubDatetime: 2025-07-31T10:00:00+01:00
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 ---
 
