@@ -9,7 +9,7 @@ tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 
 When Anthropic changed Claude Pro's subscription model from a 5-hour usage window to weekly limits, it hit me hard. As someone who burns through AI usage like it's going out of style, I suddenly found myself rationing my Claude interactions. The old model worked perfectly for my workflow: intense coding sessions where I could blast through problems. The new weekly caps? [Not so much](https://x.com/steipete/status/1949901121998508119).
 
-This kicked off my journey into self-hosting large language models. After some research, I landed on [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/), a massive Mixture of Experts model with 480B total parameters (though only 35B active per token). What caught my eye was the native 262k token context window that can stretch to over 760k tokens. The coding capabilities? They're legitimately impressive, giving Claude 3.5 Sonnet a run for its money.
+This kicked off my journey into self-hosting large language models. After some research, I landed on [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/), a massive Mixture of Experts model with 480B total parameters (though only 35B active per token). What caught my eye was the native 256k token context window that can stretch to 1M tokens with YaRN. The coding capabilities? They're legitimately impressive, giving Claude 3.5 Sonnet a run for its money.
 
 The promise was tantalizing: run my own AI coding assistant with massive context windows, zero usage limits, and complete control over everything.
 
