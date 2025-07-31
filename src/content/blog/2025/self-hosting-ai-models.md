@@ -21,11 +21,13 @@ First stop: Prime Intellect. For $8.20/hour, I got 4x H200 GPUs. Seemed like a g
 
 Next up: Vast.ai. This is where things got interesting. They advertised 4TB of storage (perfect for a 1TB model, right?), but when I actually got into the container, I discovered only 130GB was accessible. The rest? Locked away in the host filesystem where containers can't touch it. Classic bait and switch.
 
-But Vast.ai redeemed itself. After some hunting, I found an instance with 8x H200 GPUs packing 1.12TB of VRAM total. At $26.73/hour, it's not cheap, but it actually works. The setup I'm currently running:
+But Vast.ai redeemed itself. After some hunting, I found an instance with 8x H200 GPUs packing 1.12TB of VRAM total. At $26.736/hour, it's not cheap, but it actually works. The setup I'm currently running:
 
 ```bash
 8x NVIDIA H200 (143.7GB each = 1,150GB total VRAM)
-Cost: $26.73/hr (Instance 24530457)
+Cost: $26.736/hr total ($26.353/hr GPU + $0.383/hr disk)
+Daily: $641.66/day
+Monthly: $19,249.92/month
 DLPerf: 3116.7 (excellent performance score)
 Network: 13TB/month, 3.4 Gbps up/2.7 Gbps down
 Context: 400,000 tokens achieved
@@ -36,7 +38,7 @@ Model: Qwen3-Coder-480B-A35B-Instruct-FP8
 
 Let's talk money, because that's what everyone asks about first.
 
-Running this setup costs $26.73 per hour. If you're running it 8 hours a day, that's $213.84 daily. For a full month at 160 hours? You're looking at $4,276. Yes, that's over 200x more expensive than Claude Pro's $20/month.
+Running this setup costs $26.736 per hour. That's $641.66 per day if you run it 24/7, or about $213 for an 8-hour workday. For a full month? You're looking at $19,250. Yes, that's nearly 1,000x more expensive than Claude Pro's $20/month.
 
 But here's the thing: Claude Pro gives you weekly limits. Once you hit them, you're done. With self-hosting, there are no limits. Zero. Nada. You can run it 24/7 if your wallet can handle it.
 
@@ -81,7 +83,7 @@ But if you're using AI assistants casually, or Claude Pro's limits work fine for
 
 After all this experimentation, here's my take: Yes, you can self-host Qwen3-Coder-480B on Vast.ai. Yes, it works. Yes, you get 400k token context windows with zero usage limits.
 
-But at roughly $4,300/month, you're paying over 200x more than Claude Pro. The setup is complex, things break, and you'll spend hours troubleshooting random issues.
+But at $19,250/month, you're paying nearly 1,000x more than Claude Pro. The setup is complex, things break, and you'll spend hours troubleshooting random issues.
 
 The real value here isn't about saving money (you won't). It's about removing constraints. If you absolutely need unlimited AI coding assistance with massive context windows and you've got the budget, self-hosting gives you that freedom. Just know what you're getting into.
 
