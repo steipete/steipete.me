@@ -40,8 +40,6 @@ I have high hopes for Gemini CLI, and with it, the [Qwen Code fork](https://x.co
 
 There are [so](https://github.com/RooCodeInc/Roo-Code) [many](https://kiro.dev/) [more](https://www.augmentcode.com/changelog/auggie-cli) tools out there in all colors and sizes, and it's really impressive how important tooling & the right system prompt are (e.g. [RooCode drawing diagrams!](https://x.com/steipete/status/1951080437188624564)). IMO that's Claude Code's strength: it's optimized for just one model, and it shows.
 
-**Verdict:** Claude Code as terminal, opencode as coding agent for simpler tasks, claude code for tricky code and Gemini for debugging.
-
 ## The Infrastructure Journey
 
 My main goals for this exploration are twofold: I don't wanna be too dependent on one company & tool (Anthropic), and I want to have a less costy solution for my heavy use.
@@ -101,6 +99,8 @@ To give you an idea, on an intense day I need maybe 500 Mio tokens. Calculating 
 Realistically, using Qwen 3 Coder with openhands is now a very usable and cost effective alternative today. And in a month when the subscription nerving takes effect, things will look different again.
 
 It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Commercially tho, paying per token is the economically saner choice.
+
+**Verdict:** Claude Code as terminal + coding, opencode + Qwen on Alibaba as alternative coding agent for simpler tasks (or when the subscription is used up) and Gemini for debugging.
 
 <details>
 <summary><strong>🤖 Detailed Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</strong></summary>
