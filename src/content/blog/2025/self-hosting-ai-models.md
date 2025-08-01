@@ -87,7 +87,9 @@ Those numbers probably made you wince. So here's the honest assessment after bur
 
 Simple answer: No. You can't stop and easily restart instances, at least not with the hardware provider I tested. Restarted instances will be scheduled, but there's no guarantee you get a spot in that data center, so it might take days or weeks until your setup reboots.
 
-What about performance? I naively thought that I'd get better performance with my personal 8xH200 rig, so I ran some tests. And since I couldn't find a simple benchmark tool, [I vibed one in go](https://x.com/steipete/status/1951288839814725862). Turns out, performance is about the same. Maybe that changes once someone gets the B200 racks working.
+What about performance? I naively thought that I'd get better performance with my personal 8xH200 rig, so I ran some tests. And since I couldn't find a simple benchmark tool, [I vibed one in go](https://x.com/steipete/status/1951288839814725862). Turns out, Alibaba is slightly faster than my best optimized 8xH200 rig. Maybe that changes once someone gets the B200 racks working.
+
+If you want REAL performance and also a damn good deal, check out [Cerebra's new offering](https://www.cerebras.ai/blog/qwen3-coder-480b-is-live-on-cerebras) that came out today. Cerebras Code Max, 5000 messages per day for $200/month. About 20x faster than Claude 4 Sonnet.
 
 You can rent the 1 Mio-context version of Qwen 3 Coder on Alibaba for [$1-$6 In / $5-$60 Out per Million tokens](https://www.alibabacloud.com/help/en/model-studio/models#8e453767fbkka), depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you, and you quickly run into bottlenecks if more than one person accesses your server concurrently.
 
