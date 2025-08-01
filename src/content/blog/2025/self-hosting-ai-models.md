@@ -21,19 +21,19 @@ Just to set the record straight tho: While I often worked 16h-days, I never auto
 Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast! There's quite a few contenders out there that are worth a look:
 
 - [opencode](https://opencode.ai/)
-This seems to be the [most promising](https://x.com/steipete/status/1951288839814725862) alternative currently. It supports pretty much all providers and gets better every day. It has an optimized prompt for Qwen 3 Coder, and produced quite good results. I'll definitely be using this more.
+In my tests, opencode is the [most promising](https://x.com/steipete/status/1951288839814725862) alternative currently. It supports pretty much all providers and gets better every day. It has an optimized prompt for Qwen 3 Coder, and produces good results. I'll definitely be using this more.
 
 - [charm crush](https://github.com/charmbracelet/crush)
-I *really* want to love this one. It's gorgeous and fun to use. No surprise, it's backed by a company that makes fun cli tools and that shows. Crush was released just yesterday and it's still early. [It has problems with the edit tool and sometimes just gets stuck](https://x.com/steipete/status/1951288839814725862), at least when using it with Qwen 3 Coder. I had to [send a PR](https://github.com/charmbracelet/crush/pull/414) to make it work with self hosted inference. There's a whole team working on it so my hopes are up. If you use Anthropic's models, I'm sure it performs much better.
+I *really* want to love this one. It's gorgeous and fun to use. No surprise, it's backed by a company that makes fun cli tools and that shows. Crush was released just yesterday and it's still early. [It has problems with the edit tool and sometimes just gets stuck](https://x.com/steipete/status/1951288839814725862), at least when using it with Qwen 3 Coder. I had to [send a PR](https://github.com/charmbracelet/crush/pull/414) to make it work with self hosted inference. There's a whole team working on it so my hopes are up. If you use Anthropic's models, I'm sure it performs much better. Personal deal-breaker: The non-working text selection. You can't click on links either. I use this a lot so it'd really disruptive for my workflow.
 
 - [Claude Code with claude-code-router](https://github.com/musistudio/claude-code-router)
 Clever hack that patches Claude Code to use different models. Since CC is optimized for Anthropic's models, tool use and overall results aren't as good as with Sonnet or Opus. I didn't explore this further.
 
 - [Cline](https://github.com/cline/cline)
-I used Cline for testing the model, but since it's a VS Code extension and not a cli, it doesn't fit my workflow, and generally [I haven't been impressed](https://x.com/steipete/status/1951062013913727332).
+I used Cline for testing the model, but since it's a VS Code extension and not a cli, it doesn't fit my workflow, and generally [I haven't been impressed by it](https://x.com/steipete/status/1951062013913727332).
 
 - [amp](https://ampcode.com/)
-Amp is a very opinionated CLI. It uses Claude Sonnet and has a tool that can invoke OpenAI's o3. Pricing is forwarded without markup. You can't use your subscription here, so until now, it wasn't interesting. It's hyped, in my tests [it didn't impress me tho](https://x.com/steipete/status/1951059420193968581).
+Amp is a very opinionated CLI. It uses Claude Sonnet and has a tool that can invoke OpenAI's o3. Pricing is forwarded without markup. You can't use your subscription here, so until now, it wasn't interesting. It's hyped, in my tests [it didn't impress me tho](https://x.com/steipete/status/1951059420193968581). Some people swear by it tho, and it's certaily more token efficient than Claude Code.
 
 - [Gemini CLI](https://github.com/google-gemini/gemini-cli) / [Qwen Code](https://github.com/QwenLM/qwen-code)
 I have high hopes for Gemini CLI, and with it, the [Qwen Code fork](https://x.com/steipete/status/1951058436030079159). Gemini is REALLY FAST. I use it to debug tricky issues that need a large context space. Tool calling is still [very broken "I'm just a file"](https://x.com/steipete/status/1942113964231442876) and [it can be really lazy](https://x.com/steipete/status/1951301660950581709), however it's open source and a lot of folks are working on making it better. As for the Quen Code fork, we'll see if they keep up with the fast-paced development of Gemini or abandon it. I worry it'll be the latter, at least from looking at the current pace of updates.
