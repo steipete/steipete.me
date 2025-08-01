@@ -6,9 +6,9 @@ heroImage: "/assets/img/2025/self-hosting-ai-models/hero.png"
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 ---
 
-**TL;DR:** Claude Code is still king, Qwen 3 Coder + opencode is a strong contender tho. Have high hopes for Gemini cli and Crush.
-
 When Anthropic changed Claude Max's subscription model from a 5-hour usage window to weekly limits, [it hit me hard](https://x.com/steipete/status/1949901121998508119).
+
+**TL;DR:** Claude Code is still king, Qwen 3 Coder + opencode is a strong contender tho. Have high hopes for Gemini cli and Crush.
 
 ## Claude Code Anonymous
 
@@ -16,11 +16,9 @@ I'm definitely part of the 1% that has got [**a ton**](https://x.com/steipete/st
 
 Just to set the record straight tho: While I often worked 16h-days, I never automated Claude Code and was well within their Terms of Service. My Anthropic bill for July is at [~6000$](https://x.com/steipete/status/1949908573452193866), since I've been using their GitHub Review bot, and while some people have been extracting the Max API Token to run on GitHub in the background, I opted to not break the rules and pay up... so Anthropic, we cool?
 
-Btw: I'm organizing the first Claude Code Anonymous meetup in London on August 18. For people who build. DM me if you're interested!
-
 ## Evaluating The Landscape
 
-Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast! There's quite a few contenders out there that are worth a look:
+So what are the alternatives? I spend some time testing every promising tool I could find. Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast! There's quite a few contenders out there that are worth a look:
 
 - [opencode](https://opencode.ai/)
 In my tests, opencode is the [most promising](https://x.com/steipete/status/1951288839814725862) alternative currently. It supports pretty much all providers and gets better every day. It has an optimized prompt for Qwen 3 Coder, and produces good results. I'll definitely be using this more.
@@ -66,22 +64,26 @@ The setup I'm currently running:
 8x H200 (1128GB GPU VRAM)
 176 CPU, 1450GB RAM
 Ubuntu 24.04, CUDA 12.8
-€13.698/h
+$15/h
 ```
 
-With my rig I could set up the FP8-version of Qwen3 Coder 480B with a 400k context. FP8 means smaller float's, so you lose a few percent accuracy compared to the FP16-version, which is used for the benchmarks. For the Qwen model these losses are insignificant though, and it's a big performance win, plus squeezing in the FP16 model would leave us with maybe 32k tokens of context.
+With my rig I could set up the FP8[^1]-version of Qwen3 Coder 480B with a 400k context. FP8 means smaller float's, so you lose a few percent accuracy compared to the FP16-version, which is used for the benchmarks. For the Qwen model these losses are insignificant though, and it's a big performance win, plus squeezing in the FP16 model would leave us with maybe 32k tokens of context.
 
-Memory is absolutely everything at this scale. The KV cache (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. If you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
+Memory is absolutely everything at this scale. The KV cache[^2] (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. If you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
 
 Setup is tricky, but since [Claude Code is my computer](/posts/2025/claude-code-is-my-computer), it was mostly a bit of prompting and about half an hour waiting until the rig was ready - at least for H200.
 
-Currently sparse instances of B200 are an incredibly good deal (~€4/h) and they also been extremely stable in my tests. I also understand why: this hardware is so new that you'll unlikely succeed running models efficiently on it. [I spent all day on this and got it partially running](https://x.com/steipete/status/1951217528161567193), but at no point was it faster than a 8xH200 rig. That will change in a few weeks tho as software catches up.
+Currently sparse instances of B200 are an incredibly good deal (~$4/h) and they also been extremely stable in my tests. I also understand why: this hardware is so new that you'll unlikely succeed running models efficiently on it. [I spent all day on this and got it partially running](https://x.com/steipete/status/1951217528161567193), but at no point was it faster than a 8xH200 rig. That will change in a few weeks tho as software catches up.
+
+Insane if you think about it: The 3 8xB200 rack hardware I rented here is worth about 2 Mio Dollar.
 
 ## Cost Analysis
 
-Let's talk money, because that's what everyone asks about first.
+With the technical setup sorted, let's get to the question everyone's really asking about: Money.
 
-Running this setup costs €13.698/h per hour. That's ~€300 per day if you run it 24/7, or about €10,000/month. You could recreate the machine every day to save money, but setting this up also takes 30-60 minutes each morning. That would drive cost down to ~€100 a day and ~€2,300 a month (if we just count work days, but who doesn't work on the weekends?)
+Running this setup costs $15/h per hour. That's ~$360 per day if you run it 24/7, or about $11,000/month. You could recreate the machine every day to save money, but setting this up also takes 30-60 minutes each morning. That would drive cost down to ~$120 a day and ~$2,600 a month (if we just count work days, but who doesn't work on the weekends?)
+
+Those numbers probably made you wince. So here's the honest assessment after burning through all that cash:
 
 ## Is It Worth It?
 
@@ -175,7 +177,7 @@ pkill -f vllm.entrypoints.openai.api_server || true
 /venv/main/bin/python -m vllm.entrypoints.openai.api_server \
   --model Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8 \
   --served-model-name qwen3-coder \
-  --tensor-parallel-size 8 \
+  --tensor-parallel-size 8[^3] \
   --enable-expert-parallel \
   --gpu-memory-utilization 0.95 \
   --max-model-len 400000 \
@@ -442,3 +444,13 @@ find /workspace/models -type f -mtime +7 -delete
 This completes the detailed setup guide for AI agents. The entire process should take 2-3 hours including model download time.
 
 </details>
+
+[^1]: **FP8/FP16** - Floating-point precision formats. FP16 uses 16 bits per number (higher accuracy), FP8 uses 8 bits (lower memory usage, slightly less accurate).
+
+[^2]: **KV Cache** - Key-Value cache stores the model's "memory" of previous tokens in the conversation, enabling efficient context handling without recomputing everything.
+
+[^3]: **Tensor Parallel Size** - Splits the model across multiple GPUs. Size 8 means the model is distributed across 8 GPUs working together.
+
+---
+**Btw:** I'm organizing the first Claude Code Anonymous meetup in London on August 18. For people who build. DM me if you're interested!
+---
