@@ -1,12 +1,10 @@
 ---
 title: "Self-Hosting AI Models After Claude's Usage Limits"
-description: "After Claude Pro nerfed its 5-hour window to weekly usage limits, I explored self-hosting Qwen3-Coder-480B on Vast.ai. Here's what I learned about costs, setup, and working with 400k token context windows."
+description: "My $6000 Anthropic bill got me exploring alternatives. I spent €13.698/hour running Qwen3-Coder-480B on 8xH200 GPUs with 400k context. Spoiler: Claude Code is still king, but the landscape is heating up fast."
 pubDatetime: 2025-07-31T10:00:00+01:00
 heroImage: "/assets/img/2025/self-hosting-ai-models/hero.png"
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 ---
-
-# Self-Hosting AI Models
 
 **TL;DR:** Claude Code is still king, Qwen 3 Coder + opencode is a strong contender tho. Have high hopes for Gemini cli and Crush.
 
