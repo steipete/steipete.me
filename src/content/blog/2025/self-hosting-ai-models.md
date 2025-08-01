@@ -11,85 +11,90 @@ When Anthropic changed Claude Max's subscription model from a 5-hour usage windo
 
 I'm definitely part of the 1% that has got [**a ton**](https://x.com/steipete/status/1948549916604989706) of benefit out of their payment model, and I'm not entirely surprised that they're changing the deal, given the incredible demand for Claude Code. Much like Cursor's recent pricing changes, this caused a log of anger in the community, and it also triggered my curiosity on what other options are out there.
 
-Just to set the record straight tho: While I often worked 16h-days, I never automated Claude Code and was well within their Terms of Service. My Anthropic bill for July is at ~6000$, since I been using their GitHub Review bot, and while some people have been extracting the Max API Token to run on GitHub in the background, I opted to not break the rules and [pay up](https://x.com/steipete/status/1949908573452193866)... Anthropic, we cool?
+Just to set the record straight tho: While I often worked 16h-days, I never automated Claude Code and was well within their Terms of Service. My Anthropic bill for July is at ~6000$, since I been using their GitHub Review bot, and while some people have been extracting the Max API Token to run on GitHub in the background, I opted to not break the rules and [pay up](https://x.com/steipete/status/1949908573452193866)... so Anthropic, we cool?
 
 ## Evaluating The Landscape
 
-Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast. There's quite a few contenders out there that are worth a look:
+Claude Code is insofar hard to replace, as it's this genius blend of amazing model & tooling. But the landscape is changing fast! There's quite a few contenders out there that are worth a look:
 
 - [opencode](https://opencode.ai/)
-Supports pretty much all providers. Getting better every day.
+This seems to be the [most promising](https://x.com/steipete/status/1951288839814725862) alternative currently. It supports pretty much all providers and gets better every day. It has an optimized prompt for Qwen 3 Coder, and produced quite good results. I'll definitely be using this more.
 
 - [charm crush](https://github.com/charmbracelet/crush)
-A new kid on the block, very cute. Had to [send a PR](https://github.com/charmbracelet/crush/pull/414) to make it work with vLLM.goo
+I *really* want to love this one. It's gorgeous and fun to use. No surprise, it's backed by a company that makes fun cli tools and that shows. Crush was released just yesterday and it's still early. [It has problems with the edit tool and sometimes just gets stuck](https://x.com/steipete/status/1951288839814725862), at least when using it with Qwen 3 Coder. I had to [send a PR](https://github.com/charmbracelet/crush/pull/414) to make it work with self hosted inference. There's a whole team working on it so my hopes are up. If you use Anthropic's models, I'm sure it performs much better.
 
 - [Claude Code with claude-code-router](https://github.com/musistudio/claude-code-router)
-Clever hack that patches Claude Code to use different models. Since CC is optimized for Anthropic's models, tool use and overall results aren't as good as with Sonnet or Opus.
+Clever hack that patches Claude Code to use different models. Since CC is optimized for Anthropic's models, tool use and overall results aren't as good as with Sonnet or Opus. I didn't explore this further.
 
 - [Cline](https://github.com/cline/cline)
-I used Cline for testing the model, but since it's a VS Code extension and not a cli, it doesn't fit my workflow.
+I used Cline for testing the model, but since it's a VS Code extension and not a cli, it doesn't fit my workflow, and generally [I haven't been impressed](https://x.com/steipete/status/1951062013913727332).
 
 - [amp](https://ampcode.com/)
-Amp is a very opinionated CLI. It uses Claude Sonnet and has a tool that can invoke OpenAI's o3. Pricing is forwarded without markup. You can't use your subscription here, so until now, it wasn't interesting. I'd say their tool search is competitive and in parts maybe even better than Claude Code, will have to try this more.
+Amp is a very opinionated CLI. It uses Claude Sonnet and has a tool that can invoke OpenAI's o3. Pricing is forwarded without markup. You can't use your subscription here, so until now, it wasn't interesting. It's hyped, in my tests [it didn't impress me tho](https://x.com/steipete/status/1951059420193968581).
 
-This is such a fast-moving space and [new tools](https://kiro.dev/) are released almost [daily](https://www.augmentcode.com/changelog/auggie-cli).
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) / [Qwen Code](https://github.com/QwenLM/qwen-code)
+I have high hopes for Gemini CLI, and with it, the [Qwen Code fork](https://x.com/steipete/status/1951058436030079159). Gemini is REALLY FAST. I use it to debug tricky issues that need a large context space. Tool calling is still [very broken "I'm just a file"](https://x.com/steipete/status/1942113964231442876) and [it can be really lazy](https://x.com/steipete/status/1951301660950581709), however it's open source and a lot of folks are working on making it better. As for the Quen Code fork, we'll see if they keep up with the fast-paced development of Gemini or abandon it. I worry it'll be the latter, at least from looking at the current pace of updates.
+
+There are [so](https://github.com/RooCodeInc/Roo-Code) [many](https://kiro.dev/) [more](https://www.augmentcode.com/changelog/auggie-cli) tools out there in all colors and sizes, and it's really impressive how important tooling & the right system prompt are (e.g. [RooCode drawing diagrams!](https://x.com/steipete/status/1951080437188624564)). IMO that's Claude Code's strength: it's optimized for just one model, and it shows.
+
+**Verdict:** Claude Code as terminal, opencode as coding agent for simpler tasks, claude code for tricky code and Gemini for debugging.
 
 ## The Infrastructure Journey
 
-A few months ago I bought a Mac Studio with 512GB ram, top of the line, to experiment with models. Turns out, back then there just asn't anything great out there that could compete with Opus & Gemini. And then came Deepseek, and with that the realization that even the 512GB won't get me very far.
+My main goals for this exploration are twofold: I don't wanna be too dependent on one company & tool (Anthropic), and I want to have a less costy solution for my heavy use.
+
+A few months ago I bought a Mac Studio with 512GB ram, top of the line, to experiment with models (and because it's prettyyh). Turns out, back then there just asn't anything great out there that could compete with Opus & Gemini. And then came Deepseek, and with that the realization that even the 512GB won't get me very far.
 
 Yes, I can run Deepseek Coder V2 at ~25 tok/s or a quaitified version of R1 at ~8–15 tok/s, but that's not fun, and 128k context size is quite a bit of a downgrade compared to Claude's 200k or Gemini's 1Mio context. There's ways to connect multiple Studio's for more performance and/or less compressed models, but then we're talking 30k$+ for the setup.
 
-It feels like there's a new chinese lab each week that releases better and more capable models. The release of [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/) got my attention, as it's the first model that achieves a similar score on SWE-bench as Claude Sonnet 4. Plus, it has a native 256k token context window that can stretch to 1M tokens with YaRN.
+Hardware is one thing - we also need capable models. These days, chinese labs releases better and more capable models on an almost weekly basis. The release of [Qwen3-Coder-480B](https://qwenlm.github.io/blog/qwen3-coder/) got my attention, as it's the first model that achieves a similar score on SWE-bench as Claude Sonnet 4. Plus, it has a native 256k token context window that can stretch to 1M tokens with YaRN.
 
-Running this needs some beefy hardware. NVidia's H200 (Hopper refresh) is currently the best top-of-the-line choice. There's also B200 (Blackwell), but they are extremely expensive to rent.
+Running this needs some beefy hardware. NVidia's H200 (Hopper refresh) is currently the best top-of-the-line choice. There's also B200 (Blackwell), but they are usually even more expensive to rent, and software support is still quite weak.
 
-My first stop was [Prime Intellect](https://www.primeintellect.ai/). For $8.20/hour, I got 4x H200 GPUs. Seemed like a great deal until I realized they were spot instances. That means that they can be disabled at any time if the cloud provider needs the capacity. That' be fine, but I found the machines were also extremly spotty with ssh access, and I've experienced lots of intermittend outages, even though I tried various locations. Can't recommend their service, so I eventually abandoned that.
+I've been experimenting with [Prime Intellect](https://www.primeintellect.ai/), [Vast.ai](https://vast.ai/) and [DataCrunch](https://datacrunch.io/). Prices for 8xH200 machines range from $5-30, depending on location, availability and if you rent a spot instance or a regular one. Now spot instances are instances that are available temporarily. Whenever data centers need more capacity, they will simply deprovision it and use it again.
 
-Next up: [Vast.ai](https://vast.ai/). I rented a rig of 8xH200 machines for ~$26/hr. That's 428.2 TFLOP. Retail price for that is ~$300k. Their machines have been very reliable and my base for experiments.
+In my tests, if you get a H200 spot instance it'll likely disappear before you are finished setting it up. They can be incredibly cheap, but it aint fun when you suddenly have to stop working and set up a new rack because of peak demand. We're talking $6/h for spot instances vs $14/h for a regular 8xH200 rack, at least on DataCrunch, which seems to be one of the cheapest (while still reliable in my tests) options out there. On vast.ai, a similar setup is more like ~$26/h, and double that again if you look at AWS.
 
 The setup I'm currently running:
 
 ```bash
-8x NVIDIA H200 (143.7GB each = 1,150GB total VRAM)
-Cost: $26.736/hr total ($26.353/hr GPU + $0.383/hr disk)
-Daily: $641.66/day
-Monthly: $19,249.92/month
-DLPerf: 3116.7 (excellent performance score)
-Network: 13TB/month, 3.4 Gbps up/2.7 Gbps down
-Context: 400,000 tokens achieved
-Model: Qwen3-Coder-480B-A35B-Instruct-FP8
+8x H200 (1128GB GPU VRAM)
+176 CPU, 1450GB RAM
+Ubuntu 24.04, CUDA 12.8
+€13.698/h
 ```
+
+With my rig I could set up the FP8-version of Qwen3 Coder 480B with a 400k context. FP8 means smaller float's, so you lose a few percent accuracy compared to the FP16-version, which is used for the benchmarks. For the Qwen model these losses are insignificant though, and it's a big performance win, plus squeezing in the FP16 model would leave us with maybe 32k tokens of context.
+
+Memory is absolutely everything at this scale. The KV cache (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. If you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
+
+Setup is tricky, but since [Claude Code is my computer](/posts/2025/claude-code-is-my-computer), it was mostly a bit of prompting and about half an hour waiting until the rig was ready - at least for H200.
+
+Currently sparse instances of B200 are an incredibly good deal (~€4/h) and they also been extremly stable in my tests. I also understand why: this hardware is so new that you'll unlikely succeed running models efficiently on it. I spent all day on this and got it partially running, but at no point was it faster than a 8xH200 rig. That will change in a few weeks tho as software catches up.
 
 ## Cost Analysis
 
 Let's talk money, because that's what everyone asks about first.
 
-Running this setup costs $26.736 per hour. That's $641.66 per day if you run it 24/7, or about $213 for an 8-hour workday. For a full month? You're looking at $19,250. Just about 1,000x more expensive than the Claude subscription.
-
-With my rig I could set up the FP8-version of Qwen3 Coder 480B with a 400k context. FP8 means smaller float's, so you lose about 5-10% accuracy compared to the FP16-version, which is used for the benchmarks.
-
-Memory is absolutely everything at this scale. The KV cache (that's what stores the conversation context) eats about 4.2MB per token when using FP16 precision. If you want a 1M token context window, you'd need 17-30 H200 GPUs. That's why I "only" got 400k tokens with 8 GPUs.
-
-Setup is tricky, but since [Claude Code is my computer](/posts/2025/claude-code-is-my-computer), it was mostly a bit of prompting and about half an hour waiting until the rig was ready.
+Running this setup costs €13.698/h per hour. That's ~€300 per day if you run it 24/7, or about €10,000/month. You could recreate the machine every day to save money, but setting this up also takes 30-60 minutes each morning. That would drive cost down to ~€100 a day and ~€2,300 a month (if we just count work days, but who doesn't work on the weekends?)
 
 ## Is It Worth It?
 
-Simple answer: No. You can't stop and easily restart instances, at least not with Vast.ai. Restarted instances will be scheduled, but there's no guarantee you get a spot in that data center, so it might take days or weeks until your setup reboots. 
+Simple answer: No. You can't stop and easily restart instances, at least not with the hardware provider I tested. Restarted instances will be scheduled, but there's no guarantee you get a spot in that data center, so it might take days or weeks until your setup reboots. 
 
-Then even with 8 beefy H200 machines, there's compromises that make the model worse than it would be.
+You can rent the 1 Mio-context version of Qwen 3 Coder on Alibaba for $1-$6 In // $5-$60 Out per Million tokens, depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you, and you quickly run into bottlenecks if more than one person accesses your server concurrently.
 
-You can rent the 1Mio-context version on Alibaba for $1-$6 In // $5-$60 Out per Million tokens, depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you.
-
-Compare to Anthropic: [$15 / $75 for Opus, $3 / $15 for Sonnet](https://www.anthropic.com/pricing#api.
+Compare to Anthropic: [$15 / $75 for Opus, $3 / $15 for Sonnet](https://www.anthropic.com/pricing#api)
 Google's Gemini 2.5 Pro: [$1.25-$2.50 / $10-$15](https://ai.google.dev/gemini-api/docs/pricing)
 
-To give you an idea, on an intense day I need maybe 500Mio tokens. Calculating the price is difficult tho, since many tokens are cached as you work through a session. The cost for that, when using Opus, would be about $1000; for Sonnet about $200 - that's similar to running my rig for 8h.
+To give you an idea, on an intense day I need maybe 500 Mio tokens. Calculating the price is difficult tho, since many tokens are cached as you work through a session. The cost for that, when using Opus, would be about $1000; for Sonnet about $200 - that's similar to running my rig for 8h. Using other models is significantly cheaper.
 
-The real value here isn't about saving money (you won't). It's about removing constraints. It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Just know what you're getting into.
+Realistically, using Qwen 3 Coder with openhands is now a very realistic and cost effective alternative today. And in a month when the subscription nerving takes effect, things will look different again.
+
+It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Commercially tho, paying per token is the economically saner choice.
 
 <details>
-<summary><strong>🤖 Detailed Setup Guide for AI Agents</strong></summary>
+<summary><strong>🤖 Detailed Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</strong></summary>
 
 ## Complete Setup Instructions for Self-Hosting Qwen3-Coder-480B
 
