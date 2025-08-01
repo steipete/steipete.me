@@ -99,14 +99,14 @@ Google's Gemini 2.5 Pro: [$1.25-$2.50 / $10-$15](https://ai.google.dev/gemini-ap
 
 To give you an idea, on an intense day I need maybe 500 Mio tokens. Calculating the price is difficult tho, since many tokens are cached as you work through a session. The cost for that, when using Opus, would be about $1000; for Sonnet about $200 - that's similar to running my rig for 8h. Using other models is significantly cheaper.
 
-Realistically, using Qwen 3 Coder with openhands is now a very usable and cost effective alternative today. And in a month when the subscription nerving takes effect, things will look different again.
+Realistically, using Qwen 3 Coder with opencode is now a very usable and cost effective alternative today. And in a month when the subscription nerving takes effect, things will look different again.
 
 It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Commercially tho, paying per token is the economically saner choice.
 
 **Verdict:** Claude Code as terminal + coding, opencode + Qwen on Alibaba as alternative coding agent for simpler tasks (or when the subscription is used up) and Gemini for debugging.
 
 <details>
-<summary>🤖 Detailed Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</summary>
+<summary>🤖 Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</summary>
 
 ## Complete Setup Instructions for Self-Hosting Qwen3-Coder-480B
 
