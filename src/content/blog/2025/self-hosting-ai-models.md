@@ -1,6 +1,6 @@
 ---
 title: "Self-Hosting AI Models After Claude's Usage Limits"
-description: "My $6000 Anthropic bill got me exploring alternatives. I spent €13.698/hour running Qwen3-Coder-480B on 8xH200 GPUs with 400k context. Spoiler: Claude Code is still king, but the landscape is heating up fast."
+description: "After Claude Pro changed to weekly limits, I explored self-hosting Qwen3-Coder-480B with 400k context windows. Here's what I learned about costs, alternatives, and why Claude Code still dominates the landscape."
 pubDatetime: 2025-07-31T10:00:00+01:00
 heroImage: "/assets/img/2025/self-hosting-ai-models/hero.png"
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
