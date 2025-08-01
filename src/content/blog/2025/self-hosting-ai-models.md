@@ -71,7 +71,7 @@ Memory is absolutely everything at this scale. The KV cache (that's what stores 
 
 Setup is tricky, but since [Claude Code is my computer](/posts/2025/claude-code-is-my-computer), it was mostly a bit of prompting and about half an hour waiting until the rig was ready - at least for H200.
 
-Currently sparse instances of B200 are an incredibly good deal (~€4/h) and they also been extremely stable in my tests. I also understand why: this hardware is so new that you'll unlikely succeed running models efficiently on it. I spent all day on this and got it partially running, but at no point was it faster than a 8xH200 rig. That will change in a few weeks tho as software catches up.
+Currently sparse instances of B200 are an incredibly good deal (~€4/h) and they also been extremely stable in my tests. I also understand why: this hardware is so new that you'll unlikely succeed running models efficiently on it. [I spent all day on this and got it partially running](https://x.com/steipete/status/1951217528161567193), but at no point was it faster than a 8xH200 rig. That will change in a few weeks tho as software catches up.
 
 ## Cost Analysis
 
