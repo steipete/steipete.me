@@ -91,7 +91,7 @@ Simple answer: No. You can't stop and easily restart instances, at least not wit
 
 What about performance? I naively thought that I'd get better performance with my personal 8xH200 rig, so I ran some tests. And since I couldn't find a simple benchmark tool, [I vibed one in go](https://x.com/steipete/status/1951288839814725862). Turns out, performance is about the same. Maybe that changes once someone gets the B200 racks working.
 
-You can rent the 1 Mio-context version of Qwen 3 Coder on Alibaba for $1-$6 In / $5-$60 Out per Million tokens, depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you, and you quickly run into bottlenecks if more than one person accesses your server concurrently.
+You can rent the 1 Mio-context version of Qwen 3 Coder on Alibaba for [$1-$6 In / $5-$60 Out per Million tokens](https://www.alibabacloud.com/help/en/model-studio/models#8e453767fbkka), depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you, and you quickly run into bottlenecks if more than one person accesses your server concurrently.
 
 Compare to Anthropic: [$15 / $75 for Opus, $3 / $15 for Sonnet](https://www.anthropic.com/pricing#api)
 Google's Gemini 2.5 Pro: [$1.25-$2.50 / $10-$15](https://ai.google.dev/gemini-api/docs/pricing)
