@@ -52,7 +52,7 @@ Hardware is one thing - we also need capable models. These days, chinese labs re
 
 Running this needs some beefy hardware. NVidia's H200 (Hopper refresh) is currently the best top-of-the-line choice. There's also B200 (Blackwell), but they are usually even more expensive to rent, and software support is still quite weak.
 
-I've been experimenting with [Prime Intellect](https://www.primeintellect.ai/), [Vast.ai](https://vast.ai/) and [DataCrunch](https://datacrunch.io/). Prices for 8xH200 machines range from $5-30, depending on location, availability and if you rent a spot instance or a regular one. Now spot instances are instances that are available temporarily. Whenever data centers need more capacity, they will simply deprovision it and use it again.
+I've been experimenting with [Prime Intellect](https://www.primeintellect.ai/), [Vast.ai](https://vast.ai/) and [DataCrunch](https://datacrunch.io/). Prices for 8xH200 machines range from $5-30/hour, depending on location, availability and if you rent a spot instance or a regular one. Now spot instances are instances that are available temporarily. Whenever data centers need more capacity, they will simply deprovision it and use it again.
 
 In my tests, if you get a H200 spot instance it'll likely disappear before you are finished setting it up. They can be incredibly cheap, but it aint fun when you suddenly have to stop working and set up a new rack because of peak demand. We're talking $6/h for spot instances vs $14/h for a regular 8xH200 rack, at least on DataCrunch, which seems to be one of the cheapest (while still reliable in my tests) options out there. On vast.ai, a similar setup is more like ~$26/h, and double that again if you look at AWS.
 
@@ -94,6 +94,7 @@ If you want REAL performance and also a damn good deal, check out [Cerebra's new
 You can rent the 1 Mio-context version of Qwen 3 Coder on Alibaba for [$1-$6 In / $5-$60 Out per Million tokens](https://www.alibabacloud.com/help/en/model-studio/models#8e453767fbkka), depending how much context you're using. That's a lot of tokens you have to burn to make self-hosting cost effective. And yes, a self-hosted runner could be shared, but the economics are still against you, and you quickly run into bottlenecks if more than one person accesses your server concurrently.
 
 Compare to Anthropic: [$15 / $75 for Opus, $3 / $15 for Sonnet](https://www.anthropic.com/pricing#api)
+
 Google's Gemini 2.5 Pro: [$1.25-$2.50 / $10-$15](https://ai.google.dev/gemini-api/docs/pricing)
 
 To give you an idea, on an intense day I need maybe 500 Mio tokens. Calculating the price is difficult tho, since many tokens are cached as you work through a session. The cost for that, when using Opus, would be about $1000; for Sonnet about $200 - that's similar to running my rig for 8h. Using other models is significantly cheaper.
@@ -105,7 +106,7 @@ It's great to know that open-source models are a merely 6-12 month behind the be
 **Verdict:** Claude Code as terminal + coding, opencode + Qwen on Alibaba as alternative coding agent for simpler tasks (or when the subscription is used up) and Gemini for debugging.
 
 <details>
-<summary><strong>🤖 Detailed Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</strong></summary>
+<summary>🤖 Detailed Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</summary>
 
 ## Complete Setup Instructions for Self-Hosting Qwen3-Coder-480B
 
