@@ -10,11 +10,13 @@ tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
 
 When Anthropic changed Claude Max's subscription model from a 5-hour usage window to weekly limits, [it hit me hard](https://x.com/steipete/status/1949901121998508119).
 
-## Clauding Hard
+## Claude Code Anonymous
 
 I'm definitely part of the 1% that has got [**a ton**](https://x.com/steipete/status/1948549916604989706) of benefit out of their payment model, and I'm not entirely surprised that they're changing the deal, given the incredible demand for Claude Code. Much like [Cursor's recent pricing changes](https://www.reddit.com/r/cursor/comments/1lrc7q8/cursor_pricing_changed_after_12_days/), this caused a lot of anger in the community, and it also triggered my curiosity on what other options are out there.
 
 Just to set the record straight tho: While I often worked 16h-days, I never automated Claude Code and was well within their Terms of Service. My Anthropic bill for July is at [~6000$](https://x.com/steipete/status/1949908573452193866), since I've been using their GitHub Review bot, and while some people have been extracting the Max API Token to run on GitHub in the background, I opted to not break the rules and pay up... so Anthropic, we cool?
+
+Btw: I'm organizing the first Claude Code Anonymous meetup in London on August 18. For people who build. DM me if you're interested!
 
 ## Evaluating The Landscape
 
