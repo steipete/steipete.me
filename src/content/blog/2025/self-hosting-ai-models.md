@@ -103,7 +103,7 @@ Realistically, using Qwen 3 Coder with opencode is now a very usable and cost ef
 
 It's great to know that open-source models are a merely 6-12 month behind the best commercial ones, and that it's absolutely possible to host them yourself. Commercially tho, paying per token is the economically saner choice.
 
-**Verdict:** Claude Code as terminal + coding, opencode + Qwen on Alibaba as alternative coding agent for simpler tasks (or when the subscription is used up) and Gemini for debugging.
+**Verdict:** Claude Code as terminal + coding, opencode + Qwen on Alibaba (or Cerebas for speeeeeed!) as alternative coding agent for simpler tasks (or when the subscription is used up) and Gemini for debugging.
 
 <details>
 <summary>🤖 Setup Guide for AI Agents to Self-Hosting Qwen3-Coder-480B on 8xH200</summary>
