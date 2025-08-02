@@ -9,7 +9,7 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 **New perspectives on AI-assisted development from the field.** 
 
-This August edition features three compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, and a candid look at AI automation experiments that didn't work as expected.
+This August edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
 
 ## Six Weeks of Claude Code
 
@@ -52,3 +52,17 @@ Armin provides a candid retrospective on AI coding experiments that failed, offe
 - **Practical principles**: Only automate consistently performed tasks, manually evaluate automation effectiveness, and be willing to discard ineffective workflows
 
 > The key lesson is that AI is incredibly powerful for execution but still needs human guidance for strategy and quality assurance—automation should amplify human decision-making, not replace it.
+
+## MCPs are Boring (or: Why we are losing the Sparkle of LLMs)
+
+[Watch the video](https://www.youtube.com/watch?v=J3oJqan2Gv8) by Manuel Odendahl ([@programwithai](https://x.com/programwithai)) • July 2025 • 32 min
+
+Manuel presents a provocative technical argument that MCPs artificially limit LLM capabilities by forcing structured tool calls instead of leveraging their superior code generation abilities. His presentation challenges the entire foundation of current agentic development practices with concrete performance data and working implementations.
+
+- **Tool calling inefficiency exposed**: Traditional MCPs waste massive resources—20,000 tokens, $0.50, and 5 minutes for queries that code generation handles in 500 tokens with deterministic results
+- **Dynamic tool creation paradigm**: Demonstrates how LLMs can generate exactly the tools needed in real-time rather than being constrained by predefined schemas, with live examples showing SQL query optimization and API creation
+- **Recursive development potential**: Introduces "ask LLM to write code that writes code" methodology, enabling infinite tool creation loops where generated code creates libraries, views, and reusable functions
+- **Concrete implementation**: Shows JavaScript sandbox with SQLite and web server libraries that transforms from single eval tool into full CRM application with REST endpoints and web interface
+- **Performance metrics**: Quantifies improvements—15 tool calls reduced to 1, significant token savings, and 2-3 second execution vs traditional multi-minute workflows
+
+> LLMs are absolute magic and we should think recursively—if you ask the LLM to do something, ask it to write code to do something, then ask it to write code to write code. They create words that create more words, and ultimately make things happen in the real world.
