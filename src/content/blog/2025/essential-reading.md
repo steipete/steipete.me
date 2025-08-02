@@ -1,8 +1,8 @@
 ---
 title: "Essential Reading for Agentic Engineers"
 description: "A curated collection of must-read articles and videos for mastering Claude Code, agentic coding workflows, and the future of AI-assisted development"
-pubDatetime: 2025-07-01T02:00:00+01:00
-modDatetime: 2025-08-02T02:00:00+01:00
+pubDatetime: "2025-07-01T02:00:00+00:00"
+lastUpdated: "2025-07-02"
 heroImage: /assets/img/2025/essential-reading/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering"
 tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
@@ -109,45 +109,3 @@ Andrej presents a framework for understanding software evolution through three p
 - **Agents need new interfaces**: Documentation must evolve from human-centric ("click this") to machine-actionable commands
 
 > We are at a historic moment where software is fundamentally changing... Being fluent in all three paradigms will be valuable for future engineers.
-
-## Six Weeks of Claude Code
-
-[Read the article](https://blog.puzzmo.com/posts/2025/07/30/six-weeks-of-claude-code/) by Orta Therox ([@orta](https://x.com/orta)) • July 2025 • 12 min
-
-Orta shares his experience integrating Claude Code into daily development work at Puzzmo, highlighting both the transformative potential and practical challenges of AI-assisted coding:
-
-- **Workflow transformation**: Claude Code excels at research, analysis, and cross-codebase tasks that would normally take hours of manual exploration
-- **Context is crucial**: Success depends heavily on providing rich context through CLAUDE.md files and clear project documentation
-- **Best use cases**: Shines for unfamiliar codebases, debugging complex issues, and tasks requiring broad codebase understanding
-- **Limitations matter**: Struggles with nuanced decisions requiring deep domain knowledge and can introduce subtle bugs in complex scenarios
-- **Team adoption**: Requires cultural shift and training, but early adopters see significant productivity gains
-
-> Claude Code isn't replacing developers—it's amplifying their ability to work with unfamiliar code and tackle complex problems faster.
-
-## Full-Breadth Developers
-
-[Read the article](https://justin.searls.co/posts/full-breadth-developers/) by Justin Searls ([@searls](https://x.com/searls)) • July 2025 • 15 min
-
-Justin explores how AI tools are enabling a new archetype of "full-breadth developers" who can work effectively across the entire technology stack, contrasting this with traditional specialization:
-
-- **Breadth over depth**: AI enables developers to work competently across multiple domains without years of specialization in each
-- **Cognitive load reduction**: AI handles the minutiae of syntax, configuration, and boilerplate, freeing developers to focus on higher-level design
-- **Democratization of expertise**: Complex tasks that once required specialists become accessible to generalists with AI assistance
-- **New skill requirements**: Success requires strong prompt engineering, system thinking, and the ability to verify AI-generated solutions
-- **Career implications**: The most valuable developers may be those who can orchestrate AI across multiple domains rather than deep specialists
-
-> We're moving from an era where depth was king to one where breadth plus AI might be the winning combination.
-
-## Things That Didn't Work
-
-[Read the article](https://lucumr.pocoo.org/2025/7/30/things-that-didnt-work/) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • July 2025 • 18 min
-
-Armin provides a candid retrospective on AI coding experiments that failed, offering valuable lessons for developers navigating the AI-assisted development landscape:
-
-- **Context pollution**: Long conversations with AI lead to degraded performance as context becomes muddled with false starts and corrections
-- **Over-automation pitfalls**: Fully autonomous AI workflows often fail catastrophically, requiring human intervention at critical decision points
-- **Domain expertise still matters**: AI struggles with nuanced architectural decisions and domain-specific optimization that require deep understanding
-- **Testing becomes crucial**: AI-generated code requires more rigorous testing since subtle bugs are harder to spot during review
-- **Tool limitations**: Current AI tools excel at implementation but struggle with system design and long-term architectural consistency
-
-> The key lesson is that AI is incredibly powerful for execution but still needs human guidance for strategy and quality assurance.

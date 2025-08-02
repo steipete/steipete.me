@@ -9,7 +9,7 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 **New perspectives on AI-assisted development from the field.** 
 
-This August edition features two compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, and a thought-provoking analysis of how AI tools are reshaping developer career paths.
+This August edition features three compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, and a candid look at AI automation experiments that didn't work as expected.
 
 ## Six Weeks of Claude Code
 
@@ -38,3 +38,17 @@ Justin explores how AI tools are enabling a new archetype of "full-breadth devel
 - **Democratization**: Complex tasks that once required specialists become accessible to generalists with AI assistance, creating opportunities for adaptable, multi-skilled developers
 
 > We're moving from an era where depth was king to one where breadth plus AI might be the winning combination for creating software that truly matters.
+
+## Things That Didn't Work
+
+[Read the article](https://lucumr.pocoo.org/2025/7/30/things-that-didnt-work/) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • July 2025 • 18 min
+
+Armin provides a candid retrospective on AI coding experiments that failed, offering valuable lessons for developers navigating the AI-assisted development landscape. His honest analysis of what didn't work provides essential balance to the enthusiasm around AI automation.
+
+- **Automation failure modes**: Documents specific failed experiments with slash commands, hooks, and print mode automation—most pre-built commands went unused due to limitations like unstructured argument passing and lack of file-based autocomplete
+- **Over-automation dangers**: Warns that elaborate automation leads to disengagement and actually degrades AI performance, with critical insight that "LLMs are already bad enough as they are, but whenever I lean in on automation I notice that it becomes even easier to disengage"
+- **Context over complexity**: Demonstrates that "simply talking to the machine and giving clear instructions outperforms elaborate pre-written prompts"—flexibility and adaptability matter more than sophisticated workflows
+- **Human engagement imperative**: Emphasizes the need to maintain active mental engagement and avoid becoming passive consumers of AI-generated solutions
+- **Practical principles**: Only automate consistently performed tasks, manually evaluate automation effectiveness, and be willing to discard ineffective workflows
+
+> The key lesson is that AI is incredibly powerful for execution but still needs human guidance for strategy and quality assurance—automation should amplify human decision-making, not replace it.
