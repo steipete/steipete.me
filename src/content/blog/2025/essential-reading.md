@@ -109,3 +109,7 @@ Andrej presents a framework for understanding software evolution through three p
 - **Agents need new interfaces**: Documentation must evolve from human-centric ("click this") to machine-actionable commands
 
 > We are at a historic moment where software is fundamentally changing... Being fluent in all three paradigms will be valuable for future engineers.
+
+---
+
+**Continue Reading**: Check out [Essential Reading for Agentic Engineers - August 2025](/posts/essential-reading-august-2025) for fresh perspectives from the field, including real-world productivity reports and technical deep-dives into the evolving landscape of AI-assisted development.
