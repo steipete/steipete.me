@@ -2,7 +2,7 @@
 title: "Essential Reading for Agentic Engineers"
 description: "A curated collection of must-read articles and videos for mastering Claude Code, agentic coding workflows, and the future of AI-assisted development"
 pubDatetime: "2025-07-01T02:00:00+00:00"
-lastUpdated: "2025-08-01"
+modDatetime: "2025-08-01T02:00:00+00:00"
 heroImage: /assets/img/2025/essential-reading/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering"
 tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
