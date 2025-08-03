@@ -101,7 +101,9 @@ For Mac apps, this happens automatically - the app quits, rebuilds, and relaunch
 
 The system now works with any project. Here are some real examples:
 
-**Rust Project**:
+<details>
+<summary><strong>Rust Project Example</strong></summary>
+
 ```json
 {
   "targets": [
@@ -116,8 +118,11 @@ The system now works with any project. Here are some real examples:
 }
 ```
 
+</details>
 
-**Multiple Targets**:
+<details>
+<summary><strong>Multiple Targets Example</strong></summary>
+
 ```json
 {
   "targets": [
@@ -142,6 +147,8 @@ The system now works with any project. Here are some real examples:
   ]
 }
 ```
+
+</details>
 
 The intelligence comes from focus detection - Poltergeist learns which targets you're actively working on and prioritizes their builds. Edit the frontend, and the frontend builds first. Edit the Mac app, and the Mac app builds first. Touch shared code, and all dependent targets rebuild in the right order. A quick push notification lets you know when each rebuild finishes.
 
