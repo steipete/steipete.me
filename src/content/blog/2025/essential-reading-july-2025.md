@@ -69,4 +69,4 @@ Manuel presents a provocative technical argument that MCPs artificially limit LL
 
 ---
 
-*This builds on my [original Essential Reading collection](/posts/essential-reading) with fresh insights from the field.*
+*This builds on my [original Essential Reading collection](/posts/2025/essential-reading) with fresh insights from the field.*

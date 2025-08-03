@@ -112,4 +112,4 @@ Andrej presents a framework for understanding software evolution through three p
 
 ---
 
-**Continue Reading**: Check out [Essential Reading for Agentic Engineers - July 2025](/posts/essential-reading-july-2025) for fresh perspectives from the field, including real-world productivity reports and technical deep-dives into the evolving landscape of AI-assisted development.
+**Continue Reading**: Check out [Essential Reading for Agentic Engineers - July 2025](/posts/2025/essential-reading-july-2025) for fresh perspectives from the field, including real-world productivity reports and technical deep-dives into the evolving landscape of AI-assisted development.
