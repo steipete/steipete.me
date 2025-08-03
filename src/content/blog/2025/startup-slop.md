@@ -43,7 +43,7 @@ I mean dang, these days I write more words manually for blog posts than I do for
 
 You can create slop with or without agents, as you can create great work with or without. Agents are just another tool.
 
-claude: commit, push and merge PR.
+claude: commit, push and [merge PR](https://github.com/steipete/steipete.me/pull/207).
 
 ---
 
