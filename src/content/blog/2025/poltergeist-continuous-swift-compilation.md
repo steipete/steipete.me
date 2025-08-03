@@ -47,8 +47,7 @@ Here's what makes it different:
 # Install globally
 npm install -g @steipete/poltergeist
 
-# Create a simple config
-cat > poltergeist.config.json << EOF
+# Create poltergeist.config.json
 {
   "version": "1.0",
   "projectType": "swift", 
@@ -63,7 +62,6 @@ cat > poltergeist.config.json << EOF
     }
   ]
 }
-EOF
 
 # Start watching
 poltergeist haunt
