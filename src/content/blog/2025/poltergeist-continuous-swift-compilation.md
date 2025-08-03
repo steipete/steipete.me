@@ -1,6 +1,6 @@
 ---
 title: "Poltergeist: The Ghost That Keeps Your Builds Fresh"
-pubDatetime: 2025-08-02T16:00:00.000+02:00
+pubDatetime: 2025-08-03T16:00:00.000+02:00
 description: "How I built a universal file watcher that automatically rebuilds any project - TypeScript, Rust, Swift, or anything else - whenever you save a file"
 heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/header.png
 heroImageAlt: "Terminal showing Poltergeist rebuilding a Swift CLI with ghost emoji"
