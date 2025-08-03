@@ -69,24 +69,16 @@ poltergeist haunt
 
 That's it. Edit Swift files, and Poltergeist rebuilds automatically.
 
-## Never Run Stale Code
+## Smart Background Builds
 
-The real magic is in the details. What happens when you try to run your CLI while it's rebuilding? Or when a build fails?
+The system handles edge cases gracefully. When builds fail, you get clear feedback through the status system:
 
-Poltergeist creates smart wrapper scripts that handle these edge cases. Instead of running `./my-tool` directly, you run the wrapper, which:
-
-- Checks if the binary is newer than your source files
-- Waits for any ongoing builds to complete
-- Detects build failures and shows clear error messages
-
-When builds fail, you get helpful output:
-
-```
-❌ Build failed: error: Cannot find 'someMethod' in scope
-🔧 Check the full build output for details
+```bash
+poltergeist status
+# Shows: ❌ Build failed: error: Cannot find 'someMethod' in scope
 ```
 
-For Mac apps, this happens automatically - the app quits, rebuilds, and relaunches without any wrapper needed.
+For Mac apps, Poltergeist automatically quits and relaunches the app after successful rebuilds. For CLI tools, you simply run the latest built binary - Poltergeist ensures it's always fresh.
 
 ## Beyond Swift
 
@@ -147,10 +139,22 @@ Most importantly, it's invisible when it works and helpful when it doesn't.
 ## Get Started
 
 ```bash
+# Install globally
 npm install -g @steipete/poltergeist
-cd your-project
-poltergeist init
+
+# Create poltergeist.config.json in your project
+# (See the Swift example above)
+
+# Start watching
 poltergeist haunt
+
+# Stop watching  
+poltergeist stop
+
+# Check status
+poltergeist status
 ```
+
+You need to create the config file manually - there's no auto-detection yet. But that's actually fine since you want control over what gets built and how.
 
 Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for full documentation and examples. The ghost is friendly to all languages and build systems.
