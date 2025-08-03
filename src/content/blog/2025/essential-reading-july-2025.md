@@ -1,15 +1,15 @@
 ---
-title: "Essential Reading for Agentic Engineers - August 2025"
+title: "Essential Reading for Agentic Engineers - July 2025"
 description: "Fresh insights on AI-assisted development: practical experiences with Claude Code and the evolving landscape of full-breadth developers in the age of AI"
 pubDatetime: 2025-08-02T02:00:00+01:00
-heroImage: /assets/img/2025/essential-reading-august/hero.png
-heroImageAlt: "Essential Reading for Agentic Engineering - August 2025"
+heroImage: /assets/img/2025/essential-reading-july/hero.png
+heroImageAlt: "Essential Reading for Agentic Engineering - July 2025"
 tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
 ---
 
 **New perspectives on AI-assisted development from the field.** 
 
-This August edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
+This July edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
 
 ## Six Weeks of Claude Code
 
