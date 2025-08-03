@@ -82,8 +82,8 @@ Poltergeist creates smart wrapper scripts that handle these edge cases. Instead 
 When builds fail, you get helpful output:
 
 ```
-❌ Build failed: Cannot find 'someMethod' in scope
-🔧 Run 'swift build' to see full compilation errors
+❌ Build failed: error: Cannot find 'someMethod' in scope
+🔧 Check the full build output for details
 ```
 
 For Mac apps, this happens automatically - the app quits, rebuilds, and relaunches without any wrapper needed.
@@ -107,19 +107,6 @@ The system now works with any project. Here are some real examples:
 }
 ```
 
-**Docker Development**:
-```json
-{
-  "targets": [
-    {
-      "name": "api-server",
-      "type": "docker",
-      "buildCommand": "docker build -t myapp:dev .",
-      "watchPaths": ["src/**/*", "Dockerfile"]
-    }
-  ]
-}
-```
 
 **Multiple Targets**:
 ```json
