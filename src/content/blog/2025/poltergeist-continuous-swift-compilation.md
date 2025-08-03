@@ -167,21 +167,4 @@ Key features include intelligent build prioritization, configurable parallelizat
 
 Most importantly, it's invisible when it works and helpful when it doesn't.
 
-## Key Commands
-
-```bash
-# Management
-poltergeist stop           # Stop watching
-poltergeist status         # Check build status  
-poltergeist logs           # View build logs
-poltergeist list           # List configured targets
-
-# Smart execution
-pgrun my-cli --help        # Run fresh binary (waits for builds)
-pgrun my-cli --force       # Run even if build failed
-pgrun my-cli --timeout 60000  # Custom timeout
-```
-
-Poltergeist automatically detects your project type (Swift, Node.js, Rust, Python, or mixed) and applies optimized exclusions. Advanced features include build parallelization, focus detection, native notifications, and performance profiles for different project sizes.
-
 Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for full documentation and examples. The ghost is friendly to all languages and build systems.
