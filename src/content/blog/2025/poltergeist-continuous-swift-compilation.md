@@ -25,9 +25,9 @@ Worse, AI agents would sometimes forget to rebuild before testing, leading to de
 
 So I wrote a quick bash script to watch Swift files and auto-rebuild in the background. Problem solved - for Swift.
 
-But then I started using the same pattern for other projects. TypeScript builds. Rust compilation. Docker images. Python packages. Every language had the same problem: the gap between "save file" and "ready to test."
+But then I realized this would be incredibly useful for any kind of project. I already had both the CLI and Mac app building automatically, and I figured out this could work for so many other use cases.
 
-That's when I realized this wasn't a Swift problem. It was a universal developer experience problem.
+That's when I decided to make this more of a thing - a universal developer experience solution.
 
 ## The Universal Solution
 
