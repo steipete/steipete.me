@@ -104,59 +104,9 @@ For Mac apps, this happens automatically - the app quits, rebuilds, and relaunch
 
 ## Beyond Swift
 
-The system now works with any project. Here are some real examples:
+The system now works with any project - Rust, Node.js, Python, Docker, or mixed codebases. The build system is intelligent: it analyzes your file change patterns and prioritizes active targets, so editing the frontend builds the frontend first, while shared code triggers dependent rebuilds in the right order.
 
-<details>
-<summary><strong>Rust Project Example</strong></summary>
-
-```json
-{
-  "targets": [
-    {
-      "name": "my-cli",
-      "type": "executable", 
-      "buildCommand": "cargo build --release",
-      "outputPath": "./target/release/my-cli",
-      "watchPaths": ["src/**/*.rs", "Cargo.toml"]
-    }
-  ]
-}
-```
-
-</details>
-
-
-<details>
-<summary><strong>Multiple Targets Example</strong></summary>
-
-```json
-{
-  "targets": [
-    {
-      "name": "frontend",
-      "type": "executable",
-      "buildCommand": "npm run build",
-      "watchPaths": ["frontend/src/**/*"]
-    },
-    {
-      "name": "backend", 
-      "type": "executable",
-      "buildCommand": "cargo build --release",
-      "watchPaths": ["backend/src/**/*.rs"]
-    },
-    {
-      "name": "tests",
-      "type": "test",
-      "testCommand": "npm test",
-      "watchPaths": ["**/*.test.js"]
-    }
-  ]
-}
-```
-
-</details>
-
-The intelligence comes from focus detection and priority scoring - Poltergeist analyzes your file change patterns and prioritizes active targets. Edit the frontend, and the frontend builds first. Edit the Mac app, and the Mac app builds first. The build queue manages parallel execution and deduplication automatically. Native macOS notifications with customizable sounds let you know when each rebuild finishes.
+See the [GitHub repository](https://github.com/steipete/poltergeist) for configuration examples and advanced usage.
 
 ## The Impact
 
