@@ -167,36 +167,21 @@ Key features include intelligent build prioritization, configurable parallelizat
 
 Most importantly, it's invisible when it works and helpful when it doesn't.
 
-## Get Started
+## Key Commands
 
 ```bash
-# Install globally
-npm install -g @steipete/poltergeist
+# Management
+poltergeist stop           # Stop watching
+poltergeist status         # Check build status  
+poltergeist logs           # View build logs
+poltergeist list           # List configured targets
 
-# Create poltergeist.config.json in your project
-# (See the Swift example above)
-
-# Start watching
-poltergeist haunt
-
-# Stop watching  
-poltergeist stop
-
-# Check status
-poltergeist status
-
-# View build logs
-poltergeist logs
-
-# List configured targets
-poltergeist list
-
-# Run executables (smart wrapper)
-pgrun my-cli --version
+# Smart execution
+pgrun my-cli --help        # Run fresh binary (waits for builds)
+pgrun my-cli --force       # Run even if build failed
+pgrun my-cli --timeout 60000  # Custom timeout
 ```
 
-Poltergeist automatically detects your project type (Swift, Node.js, Rust, Python, or mixed) based on configuration files and applies optimized exclusions. You can customize the configuration with advanced options like build parallelization, focus detection, notifications, and performance profiles.
-
-The `pgrun` command is the smart wrapper that ensures you never run stale or failed builds - it automatically waits for builds to complete and shows clear error messages when things go wrong.
+Poltergeist automatically detects your project type (Swift, Node.js, Rust, Python, or mixed) and applies optimized exclusions. Advanced features include build parallelization, focus detection, native notifications, and performance profiles for different project sizes.
 
 Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for full documentation and examples. The ghost is friendly to all languages and build systems.
