@@ -65,20 +65,37 @@ npm install -g @steipete/poltergeist
 
 # Start watching
 poltergeist haunt
+
+# Run your tool (always fresh!)
+pgrun my-cli --help
 ```
 
-That's it. Edit Swift files, and Poltergeist rebuilds automatically.
+That's it. Edit Swift files, and Poltergeist rebuilds automatically. Use `pgrun` to run fresh binaries.
 
-## Smart Background Builds
+## Never Run Stale Code
 
-The system handles edge cases gracefully. When builds fail, you get clear feedback through the status system:
+The real magic is in the details. What happens when you try to run your CLI while it's rebuilding? Or when a build fails?
+
+Poltergeist includes `pgrun` - a smart wrapper that handles these edge cases. Instead of running `./my-tool` directly, you run:
 
 ```bash
-poltergeist status
-# Shows: ❌ Build failed: error: Cannot find 'someMethod' in scope
+pgrun my-tool [arguments]
 ```
 
-For Mac apps, Poltergeist automatically quits and relaunches the app after successful rebuilds. For CLI tools, you simply run the latest built binary - Poltergeist ensures it's always fresh.
+The wrapper automatically:
+- Checks if the binary is newer than your source files
+- Waits for any ongoing builds to complete with a progress spinner
+- Detects build failures and shows clear error messages
+- Only executes fresh binaries when builds succeed
+
+When builds fail, you get helpful output:
+
+```bash
+❌ Last build failed
+🔧 Run `poltergeist logs` for details or use --force to run anyway
+```
+
+For Mac apps, this happens automatically - the app quits, rebuilds, and relaunches. For CLI tools, `pgrun` ensures you never accidentally test stale code.
 
 ## Beyond Swift
 
@@ -153,8 +170,13 @@ poltergeist stop
 
 # Check status
 poltergeist status
+
+# Run executables (smart wrapper)
+pgrun my-cli --version
 ```
 
 You need to create the config file manually - there's no auto-detection yet. But that's actually fine since you want control over what gets built and how.
+
+The `pgrun` command is the smart wrapper that ensures you never run stale or failed builds - it automatically waits for builds to complete and shows clear error messages when things go wrong.
 
 Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for full documentation and examples. The ghost is friendly to all languages and build systems.
