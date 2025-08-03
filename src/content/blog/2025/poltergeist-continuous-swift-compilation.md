@@ -149,7 +149,7 @@ The system now works with any project. Here are some real examples:
 }
 ```
 
-The intelligence comes from focus detection - Poltergeist learns which targets you're actively working on and prioritizes their builds. Edit the frontend, and the frontend builds first. Touch shared code, and all dependent targets rebuild in the right order.
+The intelligence comes from focus detection - Poltergeist learns which targets you're actively working on and prioritizes their builds. Edit the frontend, and the frontend builds first. Edit the Mac app, and the Mac app builds first. Touch shared code, and all dependent targets rebuild in the right order. A quick push notification lets you know when each rebuild finishes.
 
 ## The Impact
 
