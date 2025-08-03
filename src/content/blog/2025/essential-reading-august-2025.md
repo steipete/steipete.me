@@ -11,8 +11,6 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 This August edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
 
-*This builds on our [original Essential Reading collection](/posts/essential-reading) with fresh insights from the field.*
-
 ## Six Weeks of Claude Code
 
 [Read the article](https://blog.puzzmo.com/posts/2025/07/30/six-weeks-of-claude-code/) by Orta Therox ([@orta](https://x.com/orta)) • July 2025 • 12 min
@@ -68,3 +66,7 @@ Manuel presents a provocative technical argument that MCPs artificially limit LL
 - **Performance metrics**: Quantifies improvements—15 tool calls reduced to 1, significant token savings, and 2-3 second execution vs traditional multi-minute workflows
 
 > LLMs are absolute magic and we should think recursively—if you ask the LLM to do something, ask it to write code to do something, then ask it to write code to write code. They create words that create more words, and ultimately make things happen in the real world.
+
+---
+
+*This builds on my [original Essential Reading collection](/posts/essential-reading) with fresh insights from the field.*
