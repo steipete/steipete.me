@@ -37,15 +37,20 @@ Here's what makes it different:
 
 **Target Flexibility**: Instead of hardcoded CLI and Mac app builders, Poltergeist supports unlimited targets. Executables, libraries, frameworks, test suites, Docker images, custom scripts - anything with a build command.
 
-**Intelligence**: The system learns what you're working on and prioritizes those builds. If you're editing the frontend, it builds the frontend first. If you touch shared code, it knows which targets depend on it.
+**Intelligence**: The system uses focus detection and priority scoring to build what you're working on first. If you're editing the frontend, it builds the frontend first. The build queue manages dependencies and parallelization automatically.
 
 **Background Operation**: Everything happens invisibly. Save a file, and by the time you're ready to test, the fresh binary is waiting. For Mac apps, it even quits and relaunches automatically.
 
 ## Quick Start
 
+**Requirements**: [Node.js 20.0.0+](https://nodejs.org) and [Watchman](https://facebook.github.io/watchman/docs/install.html)
+
 ```bash
 # Install globally
 npm install -g @steipete/poltergeist
+
+# Or run directly
+npx @steipete/poltergeist haunt
 
 # Create poltergeist.config.json
 {
@@ -150,13 +155,15 @@ The system now works with any project. Here are some real examples:
 
 </details>
 
-The intelligence comes from focus detection - Poltergeist learns which targets you're actively working on and prioritizes their builds. Edit the frontend, and the frontend builds first. Edit the Mac app, and the Mac app builds first. Touch shared code, and all dependent targets rebuild in the right order. A quick push notification lets you know when each rebuild finishes.
+The intelligence comes from focus detection and priority scoring - Poltergeist analyzes your file change patterns and prioritizes active targets. Edit the frontend, and the frontend builds first. Edit the Mac app, and the Mac app builds first. The build queue manages parallel execution and deduplication automatically. Native macOS notifications with customizable sounds let you know when each rebuild finishes.
 
 ## The Impact
 
 What started as a Swift build watcher became something much bigger. The development feedback loop went from "save, wait, build, test" to just "save, test." AI agents stop forgetting to rebuild. Humans stop context-switching to build management.
 
-The system is built on Facebook's Watchman for rock-solid file watching, with TypeScript for maintainability and npm for easy distribution. It works on macOS, Linux, and Windows, with smart exclusions that avoid watching irrelevant files.
+The system is built on Facebook's Watchman for rock-solid file watching, with TypeScript for maintainability and npm for easy distribution. It works on macOS, Linux, and Windows, with 70+ optimized exclusion patterns that avoid watching irrelevant files like `node_modules`, `DerivedData`, and `target/` directories.
+
+Key features include intelligent build prioritization, configurable parallelization, performance profiles (conservative/balanced/aggressive), cross-platform state management, and automatic project type detection for Swift, Node.js, Rust, Python, and mixed projects.
 
 Most importantly, it's invisible when it works and helpful when it doesn't.
 
@@ -178,11 +185,17 @@ poltergeist stop
 # Check status
 poltergeist status
 
+# View build logs
+poltergeist logs
+
+# List configured targets
+poltergeist list
+
 # Run executables (smart wrapper)
 pgrun my-cli --version
 ```
 
-You need to create the config file manually - there's no auto-detection yet. But that's actually fine since you want control over what gets built and how.
+Poltergeist automatically detects your project type (Swift, Node.js, Rust, Python, or mixed) based on configuration files and applies optimized exclusions. You can customize the configuration with advanced options like build parallelization, focus detection, notifications, and performance profiles.
 
 The `pgrun` command is the smart wrapper that ensures you never run stale or failed builds - it automatically waits for builds to complete and shows clear error messages when things go wrong.
 
