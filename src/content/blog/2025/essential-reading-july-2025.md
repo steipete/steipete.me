@@ -67,6 +67,20 @@ Manuel presents a provocative technical argument that MCPs artificially limit LL
 
 > LLMs are absolute magic and we should think recursively—if you ask the LLM to do something, ask it to write code to do something, then ask it to write code to write code. They create words that create more words, and ultimately make things happen in the real world.
 
+## Coding with LLMs in Summer 2025
+
+[Read the article](https://antirez.com/news/154) by Salvatore Sanfilippo ([@antirez](https://x.com/antirez)) • July 2025 • 8 min
+
+Antirez (creator of Redis) shares practical insights from using LLMs for coding, emphasizing the critical importance of keeping humans "in the loop" while leveraging AI's transformative capabilities for software development.
+
+- **Human-guided approach**: Advocates against "vibe coding" where LLMs handle everything autonomously—developers must provide extensive context, detailed specifications, and remain actively involved in the process
+- **LLM capabilities**: Demonstrates how advanced models like "Gemini 2.5 PRO" and "Claude Opus 4" can eliminate bugs before deployment, enable rapid solution exploration, and accelerate work with unfamiliar technologies
+- **Collaborative methodology**: Treats LLMs as powerful design partners for exploring potential solutions and architectural decisions, while maintaining human oversight and validation
+- **Practical workflow**: Recommends manual code transfer between environments, using multiple LLMs for complex problems, and providing rich context to maximize AI effectiveness
+- **Developer evolution**: Positions LLM-assisted coding as a fundamental shift requiring new skills while preserving core engineering judgment and problem-solving abilities
+
+> The key is to use LLMs as incredibly capable assistants that can handle implementation details and exploration, while developers focus on architecture, validation, and maintaining quality standards.
+
 ---
 
-*This builds on my [original Essential Reading collection](/posts/2025/essential-reading) with fresh insights from the field.*
+*This builds on my [original Essential Reading collection](/posts/2025/essential-reading) with fresh insights from the field. Continue with [Essential Reading for Agentic Engineers - August 2025](/posts/2025/essential-reading-august-2025) for perspectives on how AI is fundamentally reshaping developer identity and career paths.*
