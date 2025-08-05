@@ -82,7 +82,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
             <ul>
               {featuredPosts.map((data) => (
-                <Card variant="h3" {...data} />
+                <Card variant="h3" {...data} showImage={false} />
               ))}
             </ul>
           </section>
@@ -97,7 +97,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
           <ul>
             {recentPosts.map(
               (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />,
+                index < SITE.postPerIndex && <Card variant="h3" {...data} showImage={false} />,
             )}
           </ul>
         </section>
