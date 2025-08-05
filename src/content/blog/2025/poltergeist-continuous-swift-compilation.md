@@ -98,7 +98,7 @@ To improve code quality, I searched for [a idiomatic, modern go guide](https://g
 
 Ultimately I decided against go, since I'm not super comfortable in it, and with [bun's SPA mode](https://x.com/jarredsumner/status/1952827266440019986), startup time is at ~44ms, and it's perfect to distribute as single binary (~59 MB) on homebrew.
 
-There's also the ecosystem argument that I didn't see initially. Poltergeist uses watchman under the hood which has superb TypeScript bindings, but no official go bindings, leading to more code to maintain. The only project that exists hasn't been maintained in years.
+There's also the ecosystem argument that I didn't see initially. Poltergeist uses watchman under the hood which has superb TypeScript bindings, but no official go bindings, leading to more code to maintain. [The only go binding project](https://github.com/sjansen/watchman) that exists hasn't been maintained in years.
 
 I kept this experiment on GitHub - [check out poltergohst](https://github.com/steipete/poltergohst).
 
