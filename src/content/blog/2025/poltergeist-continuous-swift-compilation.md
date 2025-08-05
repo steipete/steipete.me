@@ -76,7 +76,7 @@ My process with Claude Code was to convert all important files (sources, tests, 
 
 I didn't use any todo structure for the conversion and simply nudged Claude a few times to continue - models tend to stop eventually (after ~30-60 min loops), no sophisticated prompts were required though.
 
-While I built Poltergeist mostly with Claude Sonnet, I did the conversion with [Opus 4.1](https://www.anthropic.com/news/claude-opus-4-1), to celebrate it's release. To improve code quality, I searched for [an idiomatic, modern Go guide](https://gist.github.com/ashokallu/47a70a70c7f6857ff29e1cd3cb97bbd3) and ran a few refactors with that.
+While I built Poltergeist mostly with Claude Sonnet, I did the conversion with [Opus 4.1](https://www.anthropic.com/news/claude-opus-4-1), to celebrate its release. To improve code quality, I searched for [an idiomatic, modern Go guide](https://gist.github.com/ashokallu/47a70a70c7f6857ff29e1cd3cb97bbd3) and ran a few refactors with that.
 
 Ultimately I decided against Go, since I'm not super comfortable in it, and with [Bun's SPA mode](https://x.com/jarredsumner/status/1952827266440019986), startup time is at ~44ms, and it's perfect to distribute as a single binary (~20 MB compressed) on Homebrew.
 
