@@ -62,7 +62,7 @@ I don't use Claude's plan mode, simply saying "plan only" works equally well and
 
 After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focused - thus the explicit separation.
 
-I add CI early on GitHub (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
+I add [CI early on GitHub](https://github.com/steipete/poltergeist/actions/runs/16762891298) (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
 
 While writing this blog post, I asked Claude about his opinion on my language choice, and [it didn't give me the answer I expected](https://x.com/steipete/status/1952748261472641170). So - you can already guess - I did the obvious thing and let it loop a few hours to rewrite it in Go.
 
