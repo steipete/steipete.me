@@ -2,6 +2,7 @@
 title: "Peekaboo 2.0 – Free the CLI from its MCP shackles"
 pubDatetime: 2025-07-03T02:00:00.000+01:00
 description: "Peekaboo 2.0 ditches the MCP-only approach for a CLI-first architecture, because CLIs are the universal interface that both humans and AI agents can actually use effectively"
+heroImage: /assets/img/2025/peekaboo-2-freeing-the-cli-from-its-mcp-shackles/banner.png
 tags:
   - MCP
   - CLI

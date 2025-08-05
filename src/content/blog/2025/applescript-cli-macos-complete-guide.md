@@ -2,6 +2,7 @@
 title: "Making AppleScript Work in macOS CLI Tools: The Undocumented Parts"
 pubDatetime: 2025-07-03T14:00:00.000+01:00
 description: "How to make AppleScript work in macOS CLI tools without permission dialogs blaming Terminal. A deep dive into Info.plist embedding, TCC, and undocumented APIs born from building Terminator MCP."
+heroImage: /assets/img/2025/applescript-cli-macos-complete-guide/header.png
 tags:
   - macOS
   - Development
@@ -13,8 +14,6 @@ tags:
   - AI
   - Cursor
 ---
-
-![Making AppleScript Work in macOS CLI Tools](/assets/img/2025/applescript-cli-macos-complete-guide/header.png)
 
 *Or: How I Learned to Stop Fighting TCC and Embrace the Info.plist*
 

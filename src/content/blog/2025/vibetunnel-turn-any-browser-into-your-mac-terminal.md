@@ -2,6 +2,7 @@
 title: "VibeTunnel: Turn Any Browser into Your Mac's Terminal"
 pubDatetime: 2025-06-16T12:00:00.000+01:00
 description: "We built a browser-based terminal controller in one day using Claude Code, named pipes, and Xterm.js. No SSH needed, just open your browser and start typing. Check and command your agents on the go!"
+heroImage: /assets/img/2025/vibetunnel/hero.jpg
 tags:
   - Terminal
   - Web Development
@@ -10,8 +11,6 @@ tags:
   - Open Source
   - Hackathon
 ---
-
-![VibeTunnel: Browser-Based Terminal Access](/assets/img/2025/vibetunnel/hero.jpg)
 
 **TL;DR**: We built a browser-based terminal controller working around 24 hours using Claude Code, named pipes, and Xterm.js. No SSH needed, just open your browser and start typing. Check and command your agents on the go!
 

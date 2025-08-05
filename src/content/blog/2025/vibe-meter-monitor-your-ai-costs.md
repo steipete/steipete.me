@@ -2,6 +2,7 @@
 title: "Vibe Meter: Monitor Your AI Costs"
 pubDatetime: 2025-06-04T12:00:00.000+01:00
 description: "How I built Vibe Meter, a macOS menu bar app to track AI spending in real-time - from workshop demo to shipped product in three days."
+heroImage: /assets/img/2025/vibe-meter/hero.jpg
 tags:
   - AI
   - Development
@@ -10,8 +11,6 @@ tags:
   - Cursor
   - Side Projects
 ---
-
-![Vibe Meter: Monitor Your AI Costs](/assets/img/2025/vibe-meter/hero.jpg)
 
 My Cursor bill hit $900 for the month. I needed a simple way to track AI spending without constantly checking dashboards. That frustration sparked [Vibe Meter](https://www.vibemeter.ai/) - my first shipped Mac app built in three intense days.
 
