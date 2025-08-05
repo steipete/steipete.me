@@ -84,7 +84,7 @@ Lastly, npm is a great distribution channel.
 
 Plot twist: While writing this blog post, I asked claude about his opinion on my language choice, and [it didn't give me the answer i expected](https://x.com/steipete/status/1952748261472641170). So I let it loop a few hours and made a rewrite in go.
 
-## The Goification
+## From Poltergeist to Poltergohst
 
 Porting your project to a different language would been nuts just a year ago, these days I can just use agents and let them run in loops until it's done. I saw this as an experiment to again try out open models and alternative cli's [and tweeted about it here](https://x.com/steipete/status/1952748261472641170) - there's still too many bugs around Qwen 3 Coder and GLM 4.5 with opencode and crush that I can't recommend either.
 
