@@ -86,15 +86,14 @@ I kept this experiment on GitHub - [check out poltergohst](https://github.com/st
 
 ## Seance Time
 
-Download [Watchman](https://facebook.github.io/watchman/docs/install.html) and then summon the friendly spirit.
+Download [Watchman](https://facebook.github.io/watchman/docs/install.html) and then summon the friendly spirit. Pick homebrew if you're on a modern Mac, otherwise npm.
 
-- Modern arm-based Mac: Homebrew, get the standalone binary
-- Linux/Windows/Intel Mac: npm + [Node.js 20+](https://nodejs.org)
- 
 ```bash
+# For modern macOS
+brew tap steipete/tap
 brew install poltergeist
 
-# Install globally
+# Windows, Linux, Intel Mac (Node 20+)
 npm install -g @steipete/poltergeist
 
 # Auto-detect and configure your project
