@@ -53,6 +53,8 @@ Lastly, npm is a great distribution channel.
 
 You've already noticed - I love building developer tools and stuff that makes my life easier. Poltergeist seemed like such an obvious idea, that I was surprised that it didn't exist yet.
 
+I usually use [my spec.md based approach](https://steipete.me/posts/2025/understanding-codebases-with-ai-gemini-workflow) for new projects, however this one evolved from some bash scripts to a full-blown dev tool, so there's no spec, just a lot of prompts and iterating.
+
 Building it almost felt too easy. Agents are extremely good at writing TypeScript and Go, so Claude one-shotted most of my prompts. I use WhisperFlow and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
 
 The process is in most cases: <long prompt> + plan only ultrathink. 
