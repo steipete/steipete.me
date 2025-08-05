@@ -17,11 +17,11 @@ tags:
   - Swift
 ---
 
-**TL;DR**: [Poltergeist](https://github.com/steipete/poltergeist) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.
+**TL;DR**: [Poltergeist](https://polter.build) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.
 
 ## The Story
 
-In agentic engineering, loop iteration speed is everything. While building [Peekaboo](https://peekaboo.boo/), a macOS OS automation agent/cli/mcp written in Swift, my main friction point is build time. Swift isn't famous for its fast compiler, and it's especially noticeable once you start doing more web dev. In the time Swift is calculating dependencies, my TypeScript project already recompiled.
+In agentic engineering, loop iteration speed is everything. While building [Peekaboo](https://peekaboo.boo), a macOS OS automation agent/cli/mcp written in Swift, my main friction point is build time. Swift isn't famous for its fast compiler, and it's especially noticeable once you start doing more web dev. In the time Swift is calculating dependencies, my TypeScript project already recompiled.
 
 Worse, agents would sometimes forget to rebuild before testing, leading to debugging sessions on code that was already fixed.
 
@@ -53,7 +53,7 @@ You've already noticed - I love building developer tools and stuff that makes my
 
 I usually use [my spec.md based approach](https://steipete.me/posts/2025/understanding-codebases-with-ai-gemini-workflow) for new projects, however this one evolved from some bash scripts to a full-blown dev tool, so there's no spec, just a lot of prompts and iterating.
 
-Building it almost felt too easy. Agents are extremely good at writing TypeScript and Go, so Claude one-shotted most of my prompts. I use [WisprFlow](https://wisprflow.ai/) and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
+Building it almost felt too easy. Agents are extremely good at writing TypeScript and Go, so Claude one-shotted most of my prompts. I use [WisprFlow](https://wisprflow.ai) and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
 
 The process is in most cases: long prompt + plan only ultrathink. 
 Sometimes also: Give me a few options - esp. when I'm unsure what to do.
@@ -74,7 +74,7 @@ They both have potential but just aren't well-tested yet with open models and yo
 
 My process with Claude Code was to convert all important files (sources, tests, not examples) to one big 1.1MB markdown file, and then copy/paste the complete text with the command "convert to Go". That way you work around the 256KB limit that would make claude only read the file partially and slowly.
 
-There are many websites to do the GitHub conversion, [I prefer this one](https://repo2txt.simplebasedomain.com/) as it makes it easy to select file types and is fast+simple.
+There are many websites to do the GitHub conversion, [I prefer this one](https://repo2txt.simplebasedomain.com) as it makes it easy to select file types and is fast+simple.
 
 I didn't use any todo structure for the conversion and simply nudged Claude a few times to continue - models tend to stop eventually (after ~30-60 min loops), no sophisticated prompts were required though.
 
@@ -114,4 +114,4 @@ Oh, before I forget - there's also a native macOS menu bar app! It still needs s
 
 Poltergeist is a new kind of tool that's built for humans and agents in mind - something we'll surely see more of in the future. You install it once and then forget about it, since it fades into the background, your agent will use it automatically and you can use it or keep doing things the manual way. It's the perfect invisible addition - you don't see it, yet it's here and helps you get results faster.
 
-The best tools are invisible until you need them, then indispensable once you have them. [Poltergeist](https://github.com/steipete/poltergeist) is both - and it's just one `init` away.
+The best tools are invisible until you need them, then indispensable once you have them. [Poltergeist](https://polter.build) is both - and it's just one `init` away.
