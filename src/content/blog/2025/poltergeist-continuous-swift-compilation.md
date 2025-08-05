@@ -21,7 +21,7 @@ tags:
 
 ## The Story
 
-I am building [Peekaboo](https://peekaboo.boo/), a macOS OS automation agent/cli/mcp written in Swift. I heavily use agentic engineering to build it - with the main friction being build times. Swift isn't famous for it's fast compiler, and it's especially noticable once you start doing more web dev. In the time Swift is calculating dependencies, my TypeScript project already recompled.
+In agentic engineering, loop iteration speed is everything. While building[Peekaboo](https://peekaboo.boo/), a macOS OS automation agent/cli/mcp written in Swift, my main friction point is build time. Swift isn't famous for it's fast compiler, and it's especially noticable once you start doing more web dev. In the time Swift is calculating dependencies, my TypeScript project already recompled.
 
 Worse, agents would sometimes forget to rebuild before testing, leading to debugging sessions on code that was already fixed.
 
@@ -39,39 +39,6 @@ While there's tools like `watchexec`, I didn't find anything that was designed w
 
 Everything happens invisibly. Save a file, and by the time you're ready to test, the fresh binary is waiting. For Mac apps, it even quits and relaunches automatically. (Yes, true hot reload would be nice, but that's something for the future)
 
-## Zero-Configuration Setup
-
-**Requirements**: [Node.js 20.0.0+](https://nodejs.org) and [Watchman](https://facebook.github.io/watchman/docs/install.html)
-
-The magic of modern Poltergeist is that it **auto-configures itself**:
-
-```bash
-# Install globally
-npm install -g @steipete/poltergeist
-
-# Auto-detect and configure your project
-poltergeist init
-
-# That's it! Start watching
-poltergeist haunt
-
-# Run your tool (always fresh!)
-polter my-cli --help
-```
-
-**What just happened?**
-
-1. `poltergeist init` **analyzed your project**:
-   - Detected project type (Swift, CMake, Node.js, Rust, Python, mixed)
-   - Found all build targets automatically
-   - Generated optimal watch patterns
-   - Created a complete `poltergeist.config.json`
-
-2. For **CMake projects**, it even parses `CMakeLists.txt` to find executables and libraries
-3. For **Swift projects**, it discovers Xcode projects and Package.swift configurations
-
-Check out the [GitHub repository](https://github.com/steipete/poltergeist) for the full guide - here I wanna focus on how I built it.
-
 ## Channeling the Spirit
 
 I've built Poltergeist completely with Claude Code. It's a build tool and in the beginning I didn't plan to make it a thing, only once I saw how useful it is, I decided to spend extra time and focus on it to make it it's own thing. It started as a bunch of bash scripts, eventually I asked my agent to convert these into TypeScript and then kept iterating on it.
@@ -82,7 +49,20 @@ Why TypeScript? Agents can write it extremely well, the iteration flow is amazin
 
 Lastly, npm is a great distribution channel.
 
-Plot twist: While writing this blog post, I asked claude about his opinion on my language choice, and [it didn't give me the answer i expected](https://x.com/steipete/status/1952748261472641170). So I let it loop a few hours and made a rewrite in go.
+## Dancing with Agents
+
+You've already noticed - I love building developer tools and stuff that makes my life easier. Poltergeist seemed like such an obvious idea, that I was surprosed that it didn't exist yet.
+
+Building it almost felt too easy. Agents are extremely good at writing Typescript and go, so Claude one-shotted most of my prompts. I use WisprFlow and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
+
+The process is in most cases: <long prompt> + plan only ultrathink. 
+Sometimes also: Give me a few options - esp. when I'm unsure what do do.
+
+I don't use claude's plan mode, simply saying "plan only" works equally well and fits my flow better. I often iterate multiple times on a plan before I type "y" to build it. After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focussed - thus the explicit separation.
+
+I add CI early on GitHub (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
+
+While writing this blog post, I asked claude about his opinion on my language choice, and [it didn't give me the answer i expected](https://x.com/steipete/status/1952748261472641170). So - you can already guess - I did the obvious thing and let it loop a few hours to rewrite it in go.
 
 ## From Poltergeist to Poltergohst
 
@@ -102,21 +82,33 @@ There's also the ecosystem argument that I didn't see initially. Poltergeist use
 
 I kept this experiment on GitHub - [check out poltergohst](https://github.com/steipete/poltergohst).
 
-## Dancing with Agents
+## Seance Time
 
-You've already noticed - I love building developer tools and stuff that makes my life easier. Poltergeist seemed like such an obvious idea, that I was surprosed that it didn't exist yet.
+Download [Watchman](https://facebook.github.io/watchman/docs/install.html) and then summon the friendly spirit.
 
-Building it almost felt too easy. Agents are extremely good at writing Typescript and go, so Claude one-shotted most of my prompts. I use WisprFlow and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
+- Got a modern arm-based Mac? use Homebrew, get the standalone binary
+- Linux/Windows/old Mac -> npm (with [Node.js 20+](https://nodejs.org))
+ 
+```bash
+brew install poltergeist
 
-The process is in most cases: <long prompt> + plan only ultrathink. 
-Sometimes also: Give me a few options - esp. when I'm unsure what do do.
+# Install globally
+npm install -g @steipete/poltergeist
 
-I don't use claude's plan mode, simply saying "plan only" works equally well and fits my flow better. I often iterate multiple times on a plan before I type "y" to build it. After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focussed - thus the explicit separation.
+# Auto-detect and configure your project
+poltergeist init
 
-I add CI early on GitHub (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
+# That's it! Start watching
+poltergeist haunt
+
+# Run your tool (always fresh!)
+polter my-cli --help
+```
+
+Check out the [GitHub repository](https://github.com/steipete/poltergeist) for the full guide - here I wanna focus on how I built it.\
 
 ### Catch the Ghost
 
 Poltergeist is new kind of tool that's built for humans and agents in mind - something we'll sure see more of in the future. You install it once and then forget about it, since it fades in the backgrorund, your agent will use it automatically and you can use it or keep doing things the manual way. It's the perfect invisible addition - you don't see it, yet it's here and helps you get results faster.
 
-Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for complete documentation or download it on npm or brew now. The ghost is friendly to all languages, build systems, and developers who value their time, and is just one `init` away.
+The best tools are invisible until you need them, then indispensable once you have them. [Poltergeist](https://github.com/steipete/poltergeist) is both - and it's just one `init` away.
