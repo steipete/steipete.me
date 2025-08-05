@@ -17,31 +17,27 @@ tags:
   - Swift
 ---
 
-**TL;DR**: What started as a simple Swift build watcher became a zero-config universal build automation system. [Poltergeist](https://github.com/steipete/poltergeist) automatically detects your project type, configures itself, and rebuilds everything in the background whenever you save a file - no more waiting for builds or running stale code.
+**TL;DR**: [Poltergeist](https://github.com/steipete/poltergeist) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.
 
 ## The Story
 
-I was building [Peekaboo](https://peekaboo.dev/), a macOS automation tool written in Swift. Working with Claude Code was fantastic, but there was one constant friction: build times. Every change meant waiting for Swift Package Manager to compile the CLI tool and Xcode to build the Mac app. The feedback loop was killing productivity.
+I am building [Peekaboo](https://peekaboo.boo/), a macOS OS automation agent/cli/mcp written in Swift. I heavily use agentic engineering to build it - with the main friction being build times. Swift isn't famous for it's fast compiler, and it's especially noticable once you start doing more web dev. In the time Swift is calculating dependencies, my TypeScript project already recompled.
 
-Worse, AI agents would sometimes forget to rebuild before testing, leading to debugging sessions on code that was already fixed. Or they'd rebuild unnecessarily, burning through time and context windows.
+Worse, agents would sometimes forget to rebuild before testing, leading to debugging sessions on code that was already fixed.
 
-So I wrote a quick bash script to watch Swift files and auto-rebuild in the background. Problem solved - for Swift.
+Polgergeist fixes that. It builds in the background as soon as a file has been changed, accelerating the code/debug loop for both agents and humans.
 
-But then I realized this would be incredibly useful for any kind of project. I already had both the CLI and Mac app building automatically, and I figured out this could work for so many other use cases.
+So I wrote a quick bash script to watch Swift files and auto-rebuild in the background. Problem solved - for Swift. But then I realized this would be incredibly useful for any kind of project. I already had both the CLI and Mac app building automatically, and I figured out this could work for so many other use cases.
 
-That's when I decided to make this more of a thing - a universal developer experience solution.
+That's when I decided to make this more of a thing - and went into another rabbit hole of building tools for my agents so I can be faster building tools for my agents.
 
 ## The Universal Solution
 
-I rewrote the entire system in TypeScript with one goal: make it work for any project, any language, any build system. [Poltergeist](https://github.com/steipete/poltergeist) became a universal file watcher that haunts your projects.
+I rewrote the entire system in TypeScript with one goal: make it work for any project, any language, any build system. [Poltergeist](https://github.com/steipete/poltergeist) became a universal file watcher that 'haunts' your projects.
 
-Here's what makes it different:
+While there's tools like `watchexec`, I didn't find anything that was designed with an agentic engineering flow in mind. Poltergeist even detects if a human or agent calls it and adds helful messages for agents to steer them to correct usage, even without polluting your AGENTS.ms file.
 
-**Target Flexibility**: Instead of hardcoded CLI and Mac app builders, Poltergeist supports unlimited targets. Executables, libraries, frameworks, test suites, Docker images, custom scripts - anything with a build command.
-
-**Intelligence**: The system uses focus detection and priority scoring to build what you're working on first. If you're editing the frontend, it builds the frontend first. The build queue manages dependencies and parallelization automatically.
-
-**Background Operation**: Everything happens invisibly. Save a file, and by the time you're ready to test, the fresh binary is waiting. For Mac apps, it even quits and relaunches automatically.
+Everything happens invisibly. Save a file, and by the time you're ready to test, the fresh binary is waiting. For Mac apps, it even quits and relaunches automatically. (Yes, true hot reload would be nice, but that's something for the future)
 
 ## Zero-Configuration Setup
 
@@ -73,161 +69,52 @@ polter my-cli --help
 
 2. For **CMake projects**, it even parses `CMakeLists.txt` to find executables and libraries
 3. For **Swift projects**, it discovers Xcode projects and Package.swift configurations
-4. **Smart defaults** mean no manual configuration - `enabled: true`, optimal timings, performance profiles
 
-**Example auto-generated config for a CMake project:**
+Check out the [GitHub repository](https://github.com/steipete/poltergeist) for the full guide - here I wanna focus on how I built it.
 
-```json
-{
-  "version": "1.0",
-  "projectType": "cmake",
-  "targets": [
-    {
-      "name": "spine-c-debug", 
-      "type": "cmake-executable",
-      "targetName": "spine-c",
-      "buildType": "Debug",
-      "watchPaths": [
-        "**/CMakeLists.txt",
-        "src/**/*.{c,cpp,h}",
-        "cmake/**/*.cmake"
-      ]
-    }
-  ]
-}
-```
+## Channeling the Spirit
 
-Edit any source file, and Poltergeist rebuilds automatically with smart reconfiguration when CMakeLists.txt changes.
+I've built Poltergeist completely with Claude Code. It's a build tool and in the beginning I didn't plan to make it a thing, only once I saw how useful it is, I decided to spend extra time and focus on it to make it it's own thing. It started as a bunch of bash scripts, eventually I asked my agent to convert these into TypeScript and then kept iterating on it.
 
-## Never Run Stale Code Again
+Sentences like "all autogenerated code" are insofar not meaningful anymore, as I've surely written (or rather: taked), 20 pages of prompts to perfect the design. With AI, english is the new programming language, and the fact that it's TypeScript is more an implementation detail.
 
-The real magic is in the details. What happens when you try to run your CLI while it's rebuilding? Or when a build fails?
+Why TypeScript? Agents can write it extremely well, the iteration flow is amazingly fast, compilation is instant, it's cross-platform and Watchman has Type-Script bindings for it. 
 
-Poltergeist includes `polter` - a smart execution wrapper that handles these edge cases. Instead of running `./my-tool` directly, you run:
+Lastly, npm is a great distribution channel.
 
-```bash
-polter my-tool [arguments]
-```
+Plot twist: While writing this blog post, I asked claude about his opinion on my language choice, and [it didn't give me the answer i expected](https://x.com/steipete/status/1952748261472641170). So I let it loop a few hours and made a rewrite in go.
 
-The wrapper automatically:
-- **Discovers your project**: Finds the poltergeist configuration from any directory
-- **Checks build freshness**: Verifies the binary is newer than your source files  
-- **Waits intelligently**: Shows live progress for ongoing builds with time elapsed
-- **Fails fast**: Detects build failures and shows clear error messages
-- **Guarantees freshness**: Only executes when builds succeed
+## The Goification
 
-**Real-time feedback during builds:**
+Porting your project to a different language would been nuts just a year ago, these days I can just use agents and let them run in loops until it's done. I saw this as an experiment to again try out open models and alternative cli's [and tweeted about it here](https://x.com/steipete/status/1952748261472641170) - there's still too many bugs around Qwen 3 Coder and GLM 4.5 with opencode and crush that I can't recommend either.
 
-```bash
-🔨 Waiting for build to complete... (8s elapsed)
-✅ Build completed successfully! Executing fresh binary...
-```
+They both have potential but just aren't well-tested yet with open models and you'll eventually encounter API errors and slowdowns. Which is unfortunate, since Qwen 3 Coder's 1 Mio context window would have been perfect to absorb the whole project in one go and convert it.
 
-**When builds fail:**
+My process with claude code was to convert all important files (sources, tests, not examples) to one big 1.1MB markdown fil, and then copy/paste the complete text with the command "convert to go". There's many websites to do the github conversion, [I prefer this one](https://repo2txt.simplebasedomain.com/) as it makes it easy to select file types and is fast+simple.
 
-```bash
-❌ Build failed! Cannot execute stale binary.
-🔧 Run `poltergeist logs` for details or use --force to run anyway
-```
+I didn't use any todo structure for the converesion and simply nudged claude a few times to continue - models tend to stope eventually (after ~30-60 min loops), no sophisticated prompts were required tho.
 
-**Graceful fallback when Poltergeist isn't running:**
+To improve code quality, I searched for [a idiomatic, modern go guide](https://gist.github.com/ashokallu/47a70a70c7f6857ff29e1cd3cb97bbd3) and ran a few refactors with that.
 
-```bash
-⚠️  POLTERGEIST NOT RUNNING - EXECUTING POTENTIALLY STALE BINARY
-   The binary may be outdated. For fresh builds, start Poltergeist:
-   poltergeist haunt
+Ultimately I decided against go, since I'm not super comfortable in it, and with [bun's SPA mode](https://x.com/jarredsumner/status/1952827266440019986), startup time is at ~44ms, and it's perfect to distribute as single binary (~59 MB) on homebrew.
 
-✅ Running binary: my-app (potentially stale)
-```
+I kept this experiment on GitHub - [check out poltergohst](https://github.com/steipete/poltergohst).
 
-For Mac apps, this happens automatically - the app quits, rebuilds, and relaunches. For CLI tools, `polter` ensures you never accidentally test stale code while providing helpful fallbacks.
+## Dancing with Agents
 
-## Universal Language Support
+You've already noticed - I love building developer tools and stuff that makes my life easier. Poltergeist seemed like such an obvious idea, that I was surprosed that it didn't exist yet.
 
-Poltergeist now supports **any project type** with intelligent auto-detection:
+Building it almost felt too easy. Agents are extremely good at writing Typescript and go, so Claude one-shotted most of my prompts. I use WisprFlow and my prompts are usually quite long ramblings. I learned that talking more and giving *reason* to the things you want, really helps agents to understand and build the right thing.
 
-### Supported Project Types
-- **Swift**: Package.swift and Xcode projects with automatic scheme detection
-- **CMake**: Parses `CMakeLists.txt` to find executables, libraries, and custom targets
-- **Node.js**: Package.json detection with TypeScript/JavaScript build workflows  
-- **Rust**: Cargo.toml projects with debug/release target generation
-- **Python**: pyproject.toml and requirements.txt with test integration
-- **Mixed**: Multi-language projects with combined optimization patterns
+The process is in most cases: <long prompt> + plan only ultrathink. 
+Sometimes also: Give me a few options - esp. when I'm unsure what do do.
 
-### Multi-Project Architecture
+I don't use claude's plan mode, simply saying "plan only" works equally well and fits my flow better. I often iterate multiple times on a plan before I type "y" to build it. After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focussed - thus the explicit separation.
 
-Here's where it gets really powerful: **each project runs independently**. You can have 10 different projects running Poltergeist simultaneously:
+I add CI early on GitHub (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
 
-```bash
-# Terminal 1 - Swift project
-cd ~/projects/my-swift-app
-poltergeist haunt
+### Catch the Ghost
 
-# Terminal 2 - CMake C++ project  
-cd ~/projects/spine-c
-poltergeist haunt
+Poltergeist is new kind of tool that's built for humans and agents in mind - something we'll sure see more of in the future. You install it once and then forget about it, since it fades in the backgrorund, your agent will use it automatically and you can use it or keep doing things the manual way. It's the perfect invisible addition - you don't see it, yet it's here and helps you get results faster.
 
-# Terminal 3 - From anywhere, see all projects
-poltergeist status
-```
-
-Each project gets its own background process, but `poltergeist status` shows everything through a shared state system in `/tmp/poltergeist/`. One project crashing never affects others.
-
-### Intelligent Build System
-
-The build system analyzes your behavior:
-- **Focus Detection**: Editing frontend files prioritizes frontend builds
-- **Smart Queuing**: Parallel builds with dependency-aware scheduling  
-- **Pattern Learning**: Builds what you're actively working on first
-- **Resource Management**: Configurable parallelization prevents system overload
-
-### Advanced Features You Don't Think About
-
-- **Atomic State Management**: Lock-free file operations prevent corruption
-- **Heartbeat Monitoring**: Automatic cleanup of stale processes
-- **Cross-Platform State**: Works identically on macOS, Linux, Windows
-- **Performance Profiles**: Conservative/balanced/aggressive optimization modes
-- **Smart Exclusions**: 70+ patterns avoid watching irrelevant files
-- **Structured Logging**: Machine-readable JSON logs for integration
-
-See the [GitHub repository](https://github.com/steipete/poltergeist) for advanced configuration and integration examples.
-
-## The Real Impact
-
-What started as a Swift build watcher became a **fundamental shift in development workflow**. The feedback loop went from "save, wait, build, test" to just "save, test." But the deeper impact is more subtle:
-
-### For Developers
-- **Mental load reduction**: No more "did I rebuild?" anxiety
-- **Context preservation**: Never lose flow state to build management
-- **Confidence**: Always running the latest code, never chasing phantom bugs
-- **Multi-project workflow**: Jump between projects without build coordination overhead
-
-### For AI Agents (like Claude Code)
-- **Reliability**: Never forget to rebuild before testing changes
-- **Efficiency**: No wasted cycles rebuilding unnecessarily  
-- **Debugging accuracy**: Always testing the actual current code
-- **Workflow consistency**: Same commands work across any project type
-
-### Architecture That Scales
-
-The system is built on **battle-tested foundations**:
-
-- **Facebook's Watchman**: Rock-solid file watching that powers Facebook, WhatsApp, and countless other large-scale systems
-- **TypeScript**: Type-safe, maintainable codebase with excellent tooling
-- **Distributed Design**: Each project isolated, shared state through atomic file operations
-- **npm Distribution**: Easy installation and updates across all platforms
-
-**Technical highlights:**
-- **Lock-free state management**: Multiple processes coordinate without deadlocks
-- **Atomic file operations**: State corruption is impossible
-- **Smart resource usage**: Avoids watching 70+ irrelevant patterns (`node_modules`, `DerivedData`, etc.)
-- **Graceful degradation**: Works even when Watchman isn't available
-- **Zero-config experience**: Automatic detection and setup for any project
-
-### Beyond Build Automation
-
-Poltergeist represents a philosophy: **development tools should fade into the background**. When they work, you don't think about them. When they fail, they guide you toward solutions.
-
-The most telling metric isn't features or performance - it's that after a few days, you completely forget it's running. Until you work on a project without it, and suddenly everything feels slow and manual again.
-
-Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for complete documentation. The ghost is friendly to all languages, build systems, and developers who value their flow state.
+Check out [Poltergeist on GitHub](https://github.com/steipete/poltergeist) for complete documentation or download it on npm or brew now. The ghost is friendly to all languages, build systems, and developers who value their time, and is just one `init` away.
