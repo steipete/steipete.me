@@ -104,7 +104,7 @@ poltergeist haunt
 polter my-cli --help
 ```
 
-Oh, before I forget - there's also a native macOS menu bar app! It still needs some work so I haven't released it yet, you can totally get the source though and play with it. With that you'll always see if Poltergeist is compiling and if your build is red or green. Might just call it Ghostbuster.
+Oh, before I forget - there's also a native macOS menu bar app! It still needs some work so I haven't released it yet, you can totally [get the source though](https://github.com/steipete/poltergeist/tree/main/apps/mac) and play with it. With that you'll always see if Poltergeist is compiling and if your build is red or green. Might just call it Ghostbuster.
 
 ### Catch the Ghost
 
