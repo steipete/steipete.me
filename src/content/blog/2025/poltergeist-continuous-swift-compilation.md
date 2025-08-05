@@ -88,7 +88,7 @@ I kept this experiment on GitHub - [check out poltergohst](https://github.com/st
 
 ## Seance Time
 
-Download [Watchman](https://facebook.github.io/watchman/docs/install.html) and then summon the friendly spirit. Pick homebrew if you're on a modern Mac, otherwise npm.
+Pick homebrew if you're on a modern Mac, otherwise npm. The npm version needs [Watchman](https://facebook.github.io/watchman/docs/install.html) and [Node](https://nodejs.org/en/download).
 
 ```bash
 # For modern macOS
