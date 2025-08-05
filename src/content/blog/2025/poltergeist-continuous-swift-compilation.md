@@ -68,7 +68,7 @@ While writing this blog post, I asked Claude about his opinion on my language ch
 
 ## From Poltergeist to Poltergohst
 
-Porting your project to a different language would have been nuts just a year ago, these days I can just use agents and let them run in loops until it's done. I saw this as an experiment to again try out open models and alternative CLIs [and tweeted about it here](https://x.com/steipete/status/1952748261472641170) - there are still too many bugs around Qwen 3 Coder and GLM 4.5 with OpenCode and Crush that I can't recommend either.
+Porting your project to a different language would have been nuts just a few months ago, these days I can just use agents and let them run in loops until it's done. I saw this as an experiment to again try out open models and alternative CLIs [and tweeted about it here](https://x.com/steipete/status/1952748261472641170) - there are still too many bugs around Qwen 3 Coder and GLM 4.5 with OpenCode and Crush that I can't recommend either.
 
 They both have potential but just aren't well-tested yet with open models and you'll eventually encounter API errors and slowdowns. Which is unfortunate, since Qwen 3 Coder's 1 Mio context window would have been perfect to absorb the whole project in one go and convert it.
 
