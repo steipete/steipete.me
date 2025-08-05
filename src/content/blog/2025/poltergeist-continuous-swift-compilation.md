@@ -58,7 +58,9 @@ Building it almost felt too easy. Agents are extremely good at writing TypeScrip
 The process is in most cases: long prompt + plan only ultrathink. 
 Sometimes also: Give me a few options - esp. when I'm unsure what to do.
 
-I don't use Claude's plan mode, simply saying "plan only" works equally well and fits my flow better. I often iterate multiple times on a plan before I type "y" to build it. After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focused - thus the explicit separation.
+I don't use Claude's plan mode, simply saying "plan only" works equally well and fits my flow better (and [don't get me started on subagents](https://x.com/steipete/status/1952763998266372231)). I often iterate multiple times on a plan before I type "y" to build it. 
+
+After it's done I usually write "add tests + update docs" - adding tests per feature is much better than trying to add them at the end, plus if you have the feature in your context, writing tests will almost always uncover bugs in the feature implementation, and since the agent has all context it's the best time to fix it. If I prompt everything at once they usually still stop and seem less focused - thus the explicit separation.
 
 I add CI early on GitHub (again, simply ask cc) which is another layer of testing, that way I can make sure the project works with all OSes, not just on my Mac.
 
