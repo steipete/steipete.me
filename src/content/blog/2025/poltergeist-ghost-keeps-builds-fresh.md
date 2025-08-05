@@ -2,7 +2,7 @@
 title: "Poltergeist: The Ghost That Keeps Your Builds Fresh"
 pubDatetime: 2025-08-05T16:00:00.000+02:00
 description: "Meet Poltergeist: an AI-friendly universal build watcher that auto-detects and rebuilds any project—Swift, Rust, Node.js, CMake, or anything else—the moment you save a file. Zero config, just haunting productivity."
-heroImage: /assets/img/2025/poltergeist-continuous-swift-compilation/header.png
+heroImage: /assets/img/2025/poltergeist-ghost-keeps-builds-fresh/header.png
 heroImageAlt: "Terminal showing Poltergeist rebuilding a Swift CLI with ghost emoji"
 tags:
   - Development
