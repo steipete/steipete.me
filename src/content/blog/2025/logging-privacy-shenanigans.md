@@ -1,6 +1,6 @@
 ---
 title: "Logging Privacy Shenanigans"
-pubDatetime: 2025-07-29T16:00:00.000+02:00
+pubDatetime: 2025-07-29T09:00:00.000+02:00
 description: "Apple's logs redact your debugging data as <private>. Here's what actually gets hidden, why old tricks don't work anymore, and the only reliable way to see your logs again."
 heroImage: /assets/img/2025/logging-privacy-shenanigans/header.png
 tags:
