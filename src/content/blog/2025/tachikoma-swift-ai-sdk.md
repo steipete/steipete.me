@@ -1,7 +1,7 @@
 ---
 title: "Tachikoma: A Modern Swift AI SDK Built by (and for) Agents"
 description: "The story of how I built a modern Swift AI SDK completely with Claude Code, inspired by Vercel's AI SDK design, and why sometimes building your own is the right choice."
-pubDatetime: 2025-08-06T14:00:00.000+02:00
+pubDatetime: 2025-08-05T18:00:00.000+02:00
 heroImage: /assets/img/2025/tachikoma-swift-ai-sdk/hero.png
 heroImageAlt: "Tachikoma Swift AI SDK logo with code snippets"
 tags: ["swift", "ai", "sdk", "llm", "claude-code", "open-source", "automation", "development-tools", "agents"]
