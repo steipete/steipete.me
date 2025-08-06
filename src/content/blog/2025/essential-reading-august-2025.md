@@ -27,6 +27,22 @@ Thomas presents groundbreaking research from interviews with 22 developers who'v
 
 The research reveals "realistic optimists" who acknowledge disruption while embracing growth opportunities, focusing less on "time saved" and more on "increasing ambition"—expanding the scope and complexity of what they can accomplish rather than just working faster.
 
+## The Hidden Cost of AI-Assisted Learning
+
+[Read the article](https://nmn.gl/blog/ai-and-learning) by Nemil Dalal ([@nemild](https://x.com/nemild)) • August 2025 • 8 min
+
+Nemil presents a sobering counterpoint to AI evangelism, examining how AI tools may be creating a generation of developers who can ship code without truly understanding it—trading deep knowledge for quick fixes.
+
+- **The learning crisis**: Junior developers increasingly rely on AI-generated solutions without understanding the underlying principles, potentially creating a knowledge gap that compounds over time as they advance in their careers
+- **Pattern matching vs. understanding**: AI tools excel at providing working code snippets, but developers miss the crucial struggle phase where deep understanding forms—the difference between knowing how to use a solution and understanding why it works
+- **Long-term implications**: While senior developers leverage AI to amplify existing knowledge, juniors risk building on shaky foundations: "We're going to pay for this later" when complex debugging or architectural decisions require fundamental understanding
+- **Balanced approach**: The author advocates for intentional learning practices—interrogating AI solutions, building from scratch periodically, and engaging in meaningful code reviews that go beyond "does it work?" to "why does it work this way?"
+- **Generational divide**: A stark contrast emerges between developers who learned pre-AI (with strong fundamentals to verify AI output) and those learning with AI from day one (potentially lacking the foundation to recognize subtle errors or inefficiencies)
+
+> "We're trading deep understanding for quick fixes, and while it feels great in the moment, we're going to pay for this later."
+
+This critical perspective complements the optimistic evolution narrative, highlighting that while AI transforms how we work, the fundamentals of software engineering—problem decomposition, algorithmic thinking, and system design—remain essential for those who want to lead rather than just participate in the AI-augmented future.
+
 ---
 
 *This builds on insights from my [July 2025 collection](/posts/2025/essential-reading-july-2025) and [original Essential Reading](/posts/2025/essential-reading) with fresh perspectives on the evolving identity of software engineers in the AI era.*
