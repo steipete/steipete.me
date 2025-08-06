@@ -59,6 +59,22 @@ Colton delivers a much-needed reality check on the hyperbolic claims of 10x or 1
 
 This grounded perspective serves as an antidote to both AI evangelism and doom-saying, reminding us that while AI tools are valuable additions to our toolkit, the core skills of software engineering—understanding problems, designing solutions, and building maintainable systems—remain fundamentally human endeavors.
 
+## The End of Platform Dominance
+
+[Read the article](https://www.aparker.io/post/3lvjepuyf4q2w) by Austin Parker • August 2025 • 10 min
+
+Austin presents a visionary thesis on how AI will fundamentally restructure the software industry, shifting from today's platform monopolies to tomorrow's ecosystem of small, custom applications built on open protocols.
+
+- **Time economics revolution**: Platforms rose to dominance when developer time was expensive, but "AI makes time very, very, very cheap"—fundamentally altering the economic equation that has driven software architecture for decades
+- **The abstraction trap**: Current software is built at the wrong layer: "We've built all of these abstractions, but they're all built on top of middlemen who would like their 30% cut"—AI enables bypassing these costly intermediaries
+- **Custom over commodity**: With AI reducing development time from months to minutes, "Custom applications will become the norm, not the exception"—why use generic tools when bespoke solutions cost virtually nothing to create?
+- **The scale paradox**: Parker asks the essential question: "Why do I need planet-scale infrastructure to share baby photos with, like, 5 people?"—highlighting how AI enables right-sized solutions instead of one-size-fits-all platforms
+- **Hardware convergence**: Within 5 years, consumer devices will have onboard AI rivaling today's best models, enabling truly personal computing where applications are generated on-demand for specific needs
+
+> "All code is technical debt"—a provocative reframing that suggests the future isn't about accumulating codebases but generating disposable, purpose-built applications as needed.
+
+This radical vision complements our exploration of role transformation by imagining not just how engineers will work differently, but how the entire software ecosystem will restructure around AI's ability to make custom development trivially cheap, potentially ending the era of platform monopolies.
+
 ---
 
 *This builds on insights from my [July 2025 collection](/posts/2025/essential-reading-july-2025) and [original Essential Reading](/posts/2025/essential-reading) with fresh perspectives on the evolving identity of software engineers in the AI era.*
