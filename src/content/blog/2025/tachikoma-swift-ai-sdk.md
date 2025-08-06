@@ -7,41 +7,37 @@ heroImageAlt: "Tachikoma Swift AI SDK logo with code snippets"
 tags: ["swift", "ai", "sdk", "llm", "claude-code", "open-source", "automation", "development-tools", "agents"]
 ---
 
-tl;dr: [Tachikoma](https://github.com/steipete/Tachikoma) is a modern Swift AI SDK that started life embedded in Peekaboo v2, grew too big for its home, and became its own thing. Built entirely with Claude Code and inspired by Vercel's AI SDK, it's what happens when you can't find the right tool and agents make building your own surprisingly feasible.
+tl;dr: [Tachikoma](https://github.com/steipete/Tachikoma) is a modern Swift AI SDK that started life in Peekaboo v2, grew into its own thing, and was built entirely with Claude Code. Inspired by Vercel's AI SDK, it's what happens when agents make building your own surprisingly feasible.
 
 ## The Accidental SDK
 
-You know how these things go. You start with a simple need - just image analysis for [Peekaboo](https://peekaboo.boo) version 2. Nothing fancy. Just needed to analyze screenshots and understand what's on screen for my macOS automation tool. Easy enough, right?
+You know how these things go. Started with a simple need - image analysis for [Peekaboo](https://peekaboo.boo) v2. Just needed to analyze screenshots for my macOS automation tool.
 
-So I looked around at the Swift AI SDK landscape. There's [MacPaw's OpenAI](https://github.com/MacPaw/OpenAI) package, which is solid and community-driven. There's [SwiftOpenAI](https://github.com/jamesrochabrun/SwiftOpenAI) by James Rochabrun that claims to be the most complete. [SwiftAnthropic](https://github.com/jamesrochabrun/SwiftAnthropic) for Claude fans. [SwiftClaude](https://github.com/GeorgeLyon/SwiftClaude) by George Lyon. And a bunch more.
+I looked around at the Swift AI SDK landscape. There's [MacPaw's OpenAI](https://github.com/MacPaw/OpenAI), [SwiftOpenAI](https://github.com/jamesrochabrun/SwiftOpenAI), [SwiftAnthropic](https://github.com/jamesrochabrun/SwiftAnthropic), [SwiftClaude](https://github.com/GeorgeLyon/SwiftClaude). All fine packages by smart folks.
 
-They're all fine packages. Good work by smart folks. But here's the thing - they all felt like OpenAI came first and everything else was bolted on after. The APIs felt like thin wrappers around REST endpoints. You'd switch providers and suddenly the interface is different. Parameters change. Methods don't line up. It's like each provider lives in its own universe.
+But they all felt like OpenAI came first and everything else was bolted on. Switch providers and suddenly the interface is different. Parameters change. Methods don't line up. Each provider lives in its own universe.
 
-My use case seemed simple enough in the beginning. Just image analysis for Peekaboo. So I started writing my own little wrapper. Just a few hundred lines, nothing serious. Then naturally my needs expanded. I wanted to use Claude for some things, GPT-4 for others, maybe Ollama for local stuff. By then I was already invested. The code was there, working, and frankly - with agents helping - continuing to build seemed easier than migrating to something else.
+My use case seemed simple enough. So I started writing my own wrapper. Few hundred lines, nothing serious. Then my needs expanded - Claude for some things, GPT-4 for others, Ollama for local stuff. By then I was already invested and with agents helping, continuing seemed easier than migrating.
 
 ## The Refactoring Mess
 
-What started as a neat little module inside Peekaboo grew into this sprawling beast. Files everywhere. Providers multiplying. The architecture was getting messy and I knew it needed to move out. Time to give it its own home.
+What started as a module inside Peekaboo grew into this sprawling beast. The extraction was quite the adventure. Claude Code and I broke everything. Multiple times. Functions stopped working, types didn't match, imports went missing. At one point we had three different module structures fighting each other.
 
-The extraction and refactoring was actually quite the adventure. Claude Code and I broke everything. Multiple times. Functions stopped working, types didn't match up, imports went missing. At one point we had three different module structures fighting each other. The git history from that weekend is... not pretty.
-
-But here's the wild part - we just kept going. Error after error, we'd fix one thing, break two others, fix those, break something else. It's the kind of refactoring that would've driven me insane doing manually. But with an agent? You just keep prompting. "Fix the type errors." "Make the tests pass." "Now the providers are broken, fix those." Eventually, through sheer persistence and probably a few thousand Claude API calls, everything clicked back into place.
+But we just kept going. Error after error. "Fix the type errors." "Make the tests pass." "Now the providers are broken." It's the kind of refactoring that would've driven me insane manually. But with an agent? You just keep prompting. Eventually, through sheer persistence, everything clicked back into place.
 
 ## The API Problem
 
-Once we got it working again, I looked at what we'd built and... wasn't proud of it. The API was functional but awkward. Too many configuration objects. Weird method names. The provider system was overly complex. It worked, but it didn't feel right.
+Once it worked again, I looked at what we'd built and wasn't proud. The API was functional but awkward. Too many configuration objects. Weird method names. It didn't feel right.
 
-That's when I remembered Vercel's [AI SDK](https://github.com/vercel/ai). I'd been following it since launch and always admired how clean and intuitive the API felt. You just call `generate()` or `stream()` and it works. Switch models? Change one parameter. Tools? Just pass them in. Everything flows naturally.
-
-So I grabbed their docs, studied the patterns, and decided - let's steal the good ideas but make them Swift idiomatic. Not a port, but an inspired-by redesign. Take what works in JavaScript/TypeScript and translate it to modern Swift patterns.
+That's when I remembered Vercel's [AI SDK](https://github.com/vercel/ai). Clean, intuitive API. You just call `generate()` or `stream()` and it works. Switch models? Change one parameter. So I grabbed their docs, studied the patterns, and decided - let's steal the good ideas but make them Swift idiomatic.
 
 ## Building with Agents
 
-This whole SDK was built with Claude Code. Every. Single. Line. And yeah, sentences like "all autogenerated code" don't mean much anymore. I probably wrote 50+ pages of prompts refining this thing. The fact that it's Swift code is almost an implementation detail at this point - English is the programming language, Claude is the compiler.
+This SDK was built entirely with Claude Code. I probably wrote 50+ pages of prompts refining this thing. English is the programming language, Claude is the compiler.
 
-The process goes something like this: Long rambling prompt explaining what I want. Claude writes a plan. I tell it what's wrong with the plan. New plan. Maybe a third plan. Then "okay build it." It writes code. Tests fail. "Fix the tests." More code. "Add error handling." More code. "Actually, can we make this API cleaner?" Refactor. "Add tests for the new stuff." Tests. "Update the docs." Documentation.
+The process: Long rambling prompt. Claude writes a plan. I critique it. New plan. "Okay build it." Code. Tests fail. "Fix the tests." More code. "Add error handling." Refactor. "Add tests." Documentation.
 
-What's fascinating is how natural this feels now. I'm not writing code, I'm having a conversation about what the code should do. And somehow, through that conversation, working software emerges.
+What's fascinating is how natural this feels now. I'm not writing code, I'm having a conversation about what the code should do. And working software emerges.
 
 ## The Design
 
@@ -85,38 +81,34 @@ No singletons anywhere. No global state. Everything's properly typed, properly a
 
 ## The Name
 
-Why Tachikoma? If you know Ghost in the Shell, you get it immediately. They're these spider-tank AIs that start out as tools but develop consciousness, personality, even philosophy. They question their existence, develop empathy, and ultimately sacrifice themselves for their human partners.
+Why Tachikoma? If you know Ghost in the Shell, you get it. They're spider-tank AIs that start as tools but develop consciousness, personality, philosophy. They question existence, develop empathy, ultimately sacrifice themselves for their humans.
 
-It felt perfect for an AI SDK. These models start as tools, but as they get more sophisticated, they're becoming something more. They reason, they plan, they create. The line between tool and intelligence keeps blurring. Just like the Tachikoma, our AI tools are evolving from simple utilities into something approaching actual intelligence.
+Perfect for an AI SDK. These models start as tools, but they're becoming something more. They reason, plan, create. The line between tool and intelligence keeps blurring.
 
-Plus, I wanted a name that wasn't boring. No "SwiftAI" or "AIKit" or whatever. Something with personality. Something memorable. Something that makes you smile when you type `import Tachikoma`.
+Plus, I wanted a name with personality. Something that makes you smile when you type `import Tachikoma`.
 
 ## Why This Matters
 
-Here's the thing - a year ago, building your own AI SDK would've been insane. The amount of work, the complexity, the testing across all these providers... it's a massive undertaking.
+A year ago, building your own AI SDK would've been insane. The complexity, testing across providers... massive undertaking.
 
-But with agents? I built this entire thing through conversations. The refactoring that would've taken weeks took a weekend. The API design that would've required careful planning and iteration? We tried five different approaches in an afternoon until one felt right.
+But with agents? I built this through conversations. The refactoring that would've taken weeks took a weekend. We tried five different API approaches in an afternoon until one felt right.
 
-This changes everything about how we should think about build vs. buy decisions. If you can describe what you want clearly enough, and you have an agent that can code well enough, building your own becomes surprisingly viable. Not for everything - don't go rebuilding PostgreSQL - but for these kinds of focused libraries? Why not?
+This changes the build vs. buy equation. If you can describe what you want clearly and have an agent that codes well, building your own becomes viable. Not for everything, but for focused libraries? Why not?
 
 ## The Open Source Reality
 
-Tachikoma is open source, MIT licensed, and ready to use. But here's the honest truth - I built this for me, for Peekaboo, for my specific needs. If it helps others, fantastic. If not, that's fine too.
+Tachikoma is open source, MIT licensed. I built this for me, for Peekaboo. If it helps others, great. If not, that's fine.
 
-The code's all there. Tests are passing. Documentation exists. It works with OpenAI, Anthropic, Grok, Google, Mistral, Groq, Ollama, and a bunch more. You can extend it, fork it, or just steal the ideas you like.
+The code's there. Tests pass. Works with OpenAI, Anthropic, Grok, Google, Mistral, Groq, Ollama, and more. Fork it, extend it, steal the ideas.
 
-But the real story isn't the SDK itself. It's that we're entering an era where a single developer with an AI agent can build what used to take a team. Where the friction of creating custom tools drops so low that "just build your own" becomes a reasonable answer.
+But the real story? We're entering an era where a single developer with an AI agent can build what used to take a team. The friction of creating custom tools drops so low that "just build your own" becomes reasonable.
 
 ## Looking Forward
 
-Tachikoma will keep evolving as Peekaboo needs new features. When Claude gets new capabilities, they'll show up here. When I need better streaming or new providers or whatever comes next, we'll add it.
+The beauty of building with agents? Adding features is just another conversation. "Hey Claude, add support for OpenAI structured outputs." Done. "Add streaming tool calls?" Sure. "New provider?" No problem.
 
-The beauty of building with agents is that adding features is just another conversation. "Hey Claude, add support for the new OpenAI structured outputs." Done. "Can we add streaming tool calls?" Sure. "Make it work with that new provider." No problem.
+This is the future. Not writing code, but having conversations about what code should exist. Not debugging for hours, but asking an agent to fix what's broken. Iterating through possibilities at the speed of thought.
 
-This is the future of development. Not writing code, but having conversations about what code should exist. Not debugging for hours, but asking an agent to fix what's broken. Not carefully planning architectures, but iterating through possibilities at the speed of thought.
+[Tachikoma is on GitHub](https://github.com/steipete/Tachikoma). Use it, fork it, or see what agent-written production code looks like. 
 
-Welcome to the age of conversational programming. Where English is the language, agents are the compilers, and the only limit is how clearly you can describe what you want.
-
-[Tachikoma is on GitHub](https://github.com/steipete/Tachikoma). Use it, fork it, or just read it to see what agent-written production code looks like. 
-
-Because if nothing else, it's proof that the build vs. buy equation has fundamentally changed. And that's the real story here.
+Because if nothing else, it's proof that the build vs. buy equation has fundamentally changed. And that's the real story.
