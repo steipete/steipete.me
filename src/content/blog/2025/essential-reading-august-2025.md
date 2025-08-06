@@ -43,6 +43,22 @@ Nemil presents a sobering counterpoint to AI evangelism, examining how AI tools 
 
 This critical perspective complements the optimistic evolution narrative, highlighting that while AI transforms how we work, the fundamentals of software engineering—problem decomposition, algorithmic thinking, and system design—remain essential for those who want to lead rather than just participate in the AI-augmented future.
 
+## Reality Check: AI's Actual Impact on Productivity
+
+[Read the article](https://colton.dev/blog/curing-your-ai-10x-engineer-imposter-syndrome/) by Colton Anglin • August 2025 • 6 min
+
+Colton delivers a much-needed reality check on the hyperbolic claims of 10x or 100x productivity gains from AI, offering reassurance to engineers experiencing imposter syndrome in the face of aggressive AI marketing.
+
+- **The math doesn't add up**: Claims of 10x productivity ignore that most engineering time isn't spent typing code—it's spent thinking, debugging, reviewing, and coordinating with teams, none of which AI fundamentally accelerates
+- **Real productivity gains**: AI excels at specific tasks—writing one-off scripts, generating boilerplate, handling repetitive patterns—but these represent a small fraction of engineering work, yielding realistic improvements of perhaps 20-30% in specific contexts
+- **The correction overhead**: AI-generated code often requires significant manual review and fixing, sometimes taking longer than writing from scratch: "A competent engineer will figure this stuff out in less than a week of moderate AI usage"
+- **Psychological impact**: The constant barrage of "10x engineer" claims creates unnecessary anxiety and imposter syndrome, when in reality, experienced engineers quickly discover AI's actual limitations through hands-on use
+- **Finding balance**: The author advocates for using AI where it genuinely helps (scripts, boilerplate) while maintaining confidence in human skills for complex problem-solving, system design, and the creative aspects of engineering that bring satisfaction
+
+> "Real engineers were now 10-100x more productive than I was"—the anxiety-inducing thought that the author ultimately debunks through practical experience and mathematical analysis.
+
+This grounded perspective serves as an antidote to both AI evangelism and doom-saying, reminding us that while AI tools are valuable additions to our toolkit, the core skills of software engineering—understanding problems, designing solutions, and building maintainable systems—remain fundamentally human endeavors.
+
 ---
 
 *This builds on insights from my [July 2025 collection](/posts/2025/essential-reading-july-2025) and [original Essential Reading](/posts/2025/essential-reading) with fresh perspectives on the evolving identity of software engineers in the AI era.*
