@@ -2,6 +2,7 @@
 title: "Peekaboo MCP – lightning-fast macOS screenshots for AI agents"
 pubDatetime: 2025-06-07T12:00:00.000+01:00
 description: "Turn your blind AI into a visual debugger with instant screenshot capture and analysis"
+heroImage: /assets/img/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents/banner.png
 tags:
   - MCP
   - Claude

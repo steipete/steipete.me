@@ -2,6 +2,7 @@
 title: "Vibe Meter 2.0: Calculating Claude Code Usage with Token Counting"
 description: "How I built support for Anthropic Claude subscriptions in Vibe Meter 2.0, including token counting, SIMD operations, and the challenges of calculating API usage without official APIs."
 pubDatetime: 2025-06-15T18:00:00+00:00
+heroImage: /assets/img/2025/vibe-meter-2-claude-code-usage-calculation/header.png
 tags:
   - Swift
   - Claude
@@ -9,8 +10,6 @@ tags:
   - Development
   - Tools
 ---
-
-![Vibe Meter 2.0 Header](/assets/img/2025/vibe-meter-2-claude-code-usage-calculation/header.png)
 
 **TL;DR**: Built Vibe Meter 2.0 to track Claude Code subscription usage by parsing JSON-L files and counting tokens with a SIMD-accelerated BPE tokenizer. No official API exists, so I approximated usage by counting every token. The project grew to 47K lines of Swift with 92% test coverage, all written with CC using "thinking" triggers and modern Swift idioms.
 

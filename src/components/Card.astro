@@ -4,14 +4,16 @@ import type { CollectionEntry } from "astro:content";
 import { getPath } from "@/utils/getPath";
 import Datetime from "./Datetime.astro";
 import { calculateReadingTime } from "@/utils/readingTime";
+import { Image } from "astro:assets";
 
 export interface Props extends CollectionEntry<"blog"> {
   variant?: "h2" | "h3";
+  showImage?: boolean;
 }
 
-const { variant = "h2", data, id, filePath, body } = Astro.props;
+const { variant = "h2", data, id, filePath, body, showImage = true } = Astro.props;
 
-const { title, description, pubDatetime, modDatetime, timezone } = data;
+const { title, description, pubDatetime, modDatetime, timezone, heroImage } = data;
 const readingTime = calculateReadingTime(body);
 
 const headerProps = {
@@ -21,21 +23,43 @@ const headerProps = {
 ---
 
 <li class="my-8">
-  <a
-    href={getPath(id, filePath)}
-    class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
-  >
-    {
-      variant === "h2" ? (
-        <h2 {...headerProps}>{title}</h2>
-      ) : (
-        <h3 {...headerProps}>{title}</h3>
-      )
-    }
-  </a>
-  <div class="flex items-center gap-3">
-    <Datetime {pubDatetime} {modDatetime} {timezone} />
-    <span class="text-sm italic opacity-80">• {readingTime}</span>
+  <div>
+    <a
+      href={getPath(id, filePath)}
+      class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+    >
+      {
+        variant === "h2" ? (
+          <h2 {...headerProps}>{title}</h2>
+        ) : (
+          <h3 {...headerProps}>{title}</h3>
+        )
+      }
+    </a>
+    <div class="flex items-center gap-3 mb-3">
+      <Datetime {pubDatetime} {modDatetime} {timezone} />
+      <span class="text-sm italic opacity-80">• {readingTime}</span>
+    </div>
+    <div class="flex gap-4 items-start">
+      {showImage && heroImage && (
+        <a 
+          href={getPath(id, filePath)}
+          class="flex-shrink-0 hidden sm:block group"
+        >
+          <Image
+            src={heroImage}
+            alt={title}
+            width={140}
+            height={79}
+            class="rounded shadow-sm transition-all duration-200 group-hover:shadow-md group-hover:scale-105 object-cover"
+            format="webp"
+            quality={80}
+            loading="lazy"
+            densities={[1, 2]}
+          />
+        </a>
+      )}
+      <p class="opacity-80 flex-1">{description}</p>
+    </div>
   </div>
-  <p class="mt-3 opacity-80">{description}</p>
 </li>
