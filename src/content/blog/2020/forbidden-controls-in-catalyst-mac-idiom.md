@@ -36,9 +36,7 @@ While working on our [PDF Viewer](https://pdfviewer.io) update for Big Sur and s
 
 ## Catalyst Mac Idiom
 
-Let’s take a step back — what’s the Catalyst Mac Idiom? With macOS 11 Big Sur, Catalyst learned a new presentation mode. Next to the classic mode where Catalyst apps are scaled to 77 percent and retain their iPad look, there’s a **new Optimize Interface for Mac mode** that doesn’t use scaling and replaces various UIKit controls with AppKit counterparts.
-
-![Xcode Selector for Catalyst Idiom](/assets/img/2020/mac-idiom-forbidden-controls/mac-idiom-selector.png)
+Let’s take a step back — what’s the Catalyst Mac Idiom? With macOS 11 Big Sur, Catalyst learned a new presentation mode. Next to the classic mode where Catalyst apps are scaled to 77 percent and retain their iPad look, there's a **new Optimize Interface for Mac mode** that doesn't use scaling and replaces various UIKit controls with AppKit counterparts.
 
 The new mode is available with Big Sur, and apps can be built so that they use scaling on Catalina and the new Mac mode on Big Sur. We’ll be releasing a new version of [PDF Viewer for Mac](https://pdfviewer.io) using the new optimized mode as soon as Apple finalizes Big Sur.
 

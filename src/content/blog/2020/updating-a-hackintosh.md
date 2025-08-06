@@ -51,9 +51,7 @@ Now the fun part starts! OpenCore is configured with one giant `config.plist` an
 
 Use [OCConfigCompare](https://github.com/corpnewt/OCConfigCompare) to compare between the `sample.plist` and your `config.plist` The script has an auto-download feature, but since I used a nightly here, I set a manual folder.
 
-Use Xcode to edit the plist files, and be meticulous. Don’t forget that your configuration contains different settings, so be on the lookout for if a key has to simply be renamed and migrate your values.
-
-![OpenCore Config](/assets/img/2020/hackintosh/opencore-config.png)
+Use Xcode to edit the plist files, and be meticulous. Don't forget that your configuration contains different settings, so be on the lookout for if a key has to simply be renamed and migrate your values.
 
 Done? Good. [Upload the file here](https://opencore.slowgeek.com/) for a quick check and go back and fix the parts you missed. :)
 

@@ -20,8 +20,6 @@ AIDescription: true
 
 The excitement around Apple's new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here's an early report after a week of testing.
 
-[![](/assets/img/2020/m1/m1.jpg)](https://unsplash.com/photos/vJqGI6-diO8)
-
 Let me first start with the things everybody already talks about: Yes, this machine is blazingly fast. Safari is the snappiest it's ever been; the fans never turn on (there are none in the Air); the battery lasts for a very long time; and most apps just work, even though the architecture is completely different. The exceptions to "it just works" are anything that uses virtualization (because the hypervisor framework is limited), kernel extensions, or low-level tools.
 
 ## Xcode

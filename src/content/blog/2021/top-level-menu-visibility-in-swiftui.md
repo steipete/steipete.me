@@ -62,8 +62,6 @@ CommandMenu("Animals") {
 
 However if we try the same at the top level, we get an error: `"Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'"`gs. The SwiftUI-team didn't implement any branching logic into the `@CommandsBuilder`.
 
-![Closure containing control flow statement cannot be used with result builder 'CommandsBuilder'](/assets/img/2021/top-level-menu-visibility-swiftui/flow-statement.png)
-
 After [a discussion on Twitter](https://twitter.com/steipete/status/1380518850073092096?s=21), there really doesn't seem a SwiftUI-way to trigger the visibility of top-level menus. @LeoNatan suggested to [drop back into AppKit](https://twitter.com/leonatan/status/1380545179157925888?s=21), and that's what I ended up doing:
 
 ```swift
