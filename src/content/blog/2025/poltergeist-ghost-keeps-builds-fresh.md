@@ -17,7 +17,7 @@ tags:
   - Swift
 ---
 
-**TL;DR**: [Poltergeist](https://polter.build) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.
+**TL;DR**: [Poltergeist](http://polter.build) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.
 
 ## The Story
 
@@ -114,4 +114,4 @@ Oh, before I forget - there's also a native macOS menu bar app! It still needs s
 
 Poltergeist is a new kind of tool that's built for humans and agents in mind - something we'll surely see more of in the future. You install it once and then forget about it, since it fades into the background, your agent will use it automatically and you can use it or keep doing things the manual way. It's the perfect invisible addition - you don't see it, yet it's here and helps you get results faster.
 
-The best tools are invisible until you need them, then indispensable once you have them. [Poltergeist](https://polter.build) is both - and it's just one `init` away.
+The best tools are invisible until you need them, then indispensable once you have them. [Poltergeist](http://polter.build) is both - and it's just one `init` away.
