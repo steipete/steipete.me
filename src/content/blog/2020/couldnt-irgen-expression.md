@@ -31,8 +31,6 @@ The debugger from Xcode 11.5 (11E608c) fails to print information about variable
 Example command: `po window`
 Result: `error: Couldn't IRGen expression, no additional error`
 
-![](/assets/img/2020/lldb-debugging/xcode-lldb.png)
-
 Why didn't we see this before? All our examples work, as they use the new `xcframework` format — and for some reason, everything works when using XCframeworks.[^1] We also only recently started to use Swift in our SDK, after [Swift's ABI became stable](https://pspdfkit.com/blog/2018/binary-frameworks-swift/).
 
 [^1]: Unless you also copy out the dSYM files, in which case LLDB fails.

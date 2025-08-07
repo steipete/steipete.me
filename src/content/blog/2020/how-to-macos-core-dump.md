@@ -27,8 +27,6 @@ If you just started reading now, check out the backstory: [Kernel Panics and Sur
 
 The problem seemingly fixed, I brushed it off and almost forgot about it, but two months after I reported my issue via Feedback Assistant, Apple replied!
 
-![Apple Feedback](/assets/img/2020/appleintelframebuffer/feedback.png)
-
 I mean, it’s something. But it’s also somewhat of a joke. After my initial reaction of getting mad at how bad Apple’s communication is here, I started seeing this as a challenge and began my search to determine what they could have possibly meant with “Core Dump.”
 
 ## The Great Core Dump Mystery

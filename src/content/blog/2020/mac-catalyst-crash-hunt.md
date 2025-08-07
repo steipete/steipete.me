@@ -182,9 +182,7 @@ e -l objc -O -- [[[[[[NSApplication sharedApplication] mainWindow] firstResponde
 
 ## Thread Access Check
 
-The Catalyst glue calls `documentState` on `RTIInputSystemServiceSession`. Let’s look at it via Hopper:
-
-![](/assets/img/2020/catalyst-crash-fix/RTIInputSystemSession-documentState.png)
+The Catalyst glue calls `documentState` on `RTIInputSystemServiceSession`. Let's look at it via Hopper:
 
 This is the default implementation of a `nonatomic` property; there are no locking intrinsics here. From looking at the crash, I’m guessing this is a race condition. Let’s verify this via adding breakpoints on `-[RTIInputSystemServiceSession documentState]` and `-[RTIInputSystemServiceSession setDocumentState]`:
 

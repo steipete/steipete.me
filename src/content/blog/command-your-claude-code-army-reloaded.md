@@ -8,8 +8,6 @@ tags: ["ai", "claude", "productivity", "vibetunnel", "terminal"]
 
 Managing multiple Claude Code sessions just got a whole lot easier. With [VibeTunnel](https://vibetunnel.sh/)'s new terminal title management feature, you can now see at a glance what each Claude instance is working on across your projects.
 
-![VibeTunnel showing multiple Claude sessions with descriptive titles](/assets/img/2025/command-your-claude-code-army-reloaded/vibetunnel.png)
-
 The screenshot above shows the power of this feature: each Claude session displays exactly what it's working on, and Claude does this automatically without us having to ask for it. You can also set custom titles via `vt title "Custom title"` for more control. Clicking on a session selects that terminal, and you can also click on the folder icon to open Finder or on the Git info to open your Git client. This is all new in VibeTunnel 1.0 Beta 6, which you can download at [vibetunnel.sh](https://vibetunnel.sh/).
 
 I tried the solution from my [previous post](/posts/2025/commanding-your-claude-code-army/), but Claude kept rewriting the terminal title, so I needed a better solution—hence this VibeTunnel integration. Note that this only works for Claude instances that are started with the `vt` command as prefix (e.g., `vt claude`).

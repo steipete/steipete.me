@@ -156,6 +156,7 @@ First of all, [assembly is hard](https://twitter.com/steipete/status/12700351794
 
 ![Me trying to make sense of this via drawing](/assets/img/2020/calling-super/arm64-registers.jpg)
 
+
 **Caller-saved registers** ("clobbered") are registers you can freely work with and use as temporary variables. It's normal that a call writes temporary values into these registers. Some of them (specifically `x0-x7`) are used to transport parameters when calling other functions.
 
 **Callee-saved registers** ("call-preserved") are registers that are expected to stay the same after your function returns. The best idea is to simply not touch them.[^3]
