@@ -5,8 +5,6 @@ pubDatetime: 2025-01-19T10:00:00+01:00
 tags: ["ai", "productivity", "burnout", "development", "personal"]
 ---
 
-# Just one more prompt.
-
 Hi, my name is Peter and I'm a Claudoholic. I'm addicted to agentic engineering. And sometimes I just vibe-code.
 
 Most of you know me as @steipete on Twitter. I was an iOS developer/Entrepreneur in a previous life, and now I do... everything. I work on a ton of projects.
