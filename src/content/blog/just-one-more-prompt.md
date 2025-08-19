@@ -30,26 +30,20 @@ And don't get me wrong - I am having a blast. I learned so so much, I built incr
 
 And you might not realize how important that was for me. I burned out after selling my company in 2021 and basically didn't touch my computer for 3 years. I only used my phone... like a normie! So, having found my way back, the pendulum did swing heavily in the other direction.
 
-The last few months feel like a blur, and just as I learned how to get away from chemical drugs (by the way, this is *especially* hard in London), I'm on a new journey how to better control my slot machine addiction.
+The last few months feel like a blur, and I'm on a new journey how to better control my slot machine addiction. Honestly, I'm failing quite hard. I'm having way too much fun here, and there are all these ideas in my head that need to be codified.
 
-And honestly, I'm failing quite hard. I'm having way too much fun here, and there are all these ideas in my head that need to be codified.
+I know I'm not alone, when I text my friends at 4am and they are also still up. I call them the Black Eye Club. And [on Reddit](https://www.reddit.com/r/ClaudeAI/comments/1ljurdc/is_this_kind_of_addiction_normal_with_you_claude/?share_id=zX0B6-zPByvTq1GKeRZvq) you there's plenty of reports as well, about people that can't sleep anymore.
 
-I know I'm not alone, when I text my friends at 4am and they are also still up. I call them the Black Eye Club.
-
-And on Reddit you there's plenty of reports as well, about people that can't sleep anymore.
-
-Gergely Orosz wrote in his Pragmatic Engineer Newsletter just a few days ago:
+Gergely Orosz wrote in his [Pragmatic Engineer Newsletter](https://blog.pragmaticengineer.com/new-trend-extreme-hours-at-ai-startups/) just a few days ago:
     "New trend: extreme hours for AI startup workers. Pulling 80+ hour work weeks – including weekends – is becoming the norm across AI startups, and is unlikely to stop while AI is so hot."
 
-I also see this as a theme that's industry-wide. Cognition CEO Scott Wu posted on Twitter:
+I also see this as a theme that's industry-wide. Cognition CEO Scott Wu [posted on Twitter](https://x.com/ScottWu46/status/1952776198947520659):
 
     "Cognition has an extreme performance culture. We routinely are at the office through the weekend and do some of our best work late into the night. Many of us literally live where we work.".
-https://x.com/ScottWu46/status/1952776198947520659
 
-Kennan Davison from Icon, an AI Marketing generator tweeted: "why do 6 [days of work] when you can do 7".
-https://x.com/kennandavison/status/1899505804677677188
+Kennan Davison from Icon, an AI Marketing generator [tweeted](https://x.com/kennandavison/status/1899505804677677188): "why do 6 [days of work] when you can do 7".
 
-Google cofounder Sergey Brin told staff in the tech giant's AI unit: "60 hours a week is the sweet spot of productivity".
+Google cofounder Sergey Brin [told staff in the tech giant's AI unit](https://nypost.com/2025/02/28/business/googles-sergey-brin-says-60-hours-per-week-in-office-is-sweet-spot-of-productivity-as-ai-race-heats-up): "60 hours a week is the sweet spot of productivity".
 
 I allowed myself to be sucked into the vortex for a while. This is exactly how I started my last company. I don't believe you can do that with "regular" working hours. Or to be more specific, I can't do that with 40h weeks. I work in waves, a period of very intense work, followed by a period of slacking off. Heck, I even know which game I'm going to enjoy next, once I manage to rip myself away from the slot machines.
 
@@ -60,4 +54,4 @@ A tiny yet meaningful tweak I did the other day was adding the session time to C
 
 So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a full-breadth developers. you are at risk. I'd love to hear your strategies after our talk round is done.
 
-Thanks for letting me share, and keep coding back, it works if you ship it.
+Thanks for letting me share.
