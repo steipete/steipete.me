@@ -56,6 +56,6 @@ One of my passion projects is [VibeTunnel](/posts/2025/vibetunnel-turn-any-brows
 I also realize that it's time now to slow down a bit, as it's gotten to an unhealthy level.
 A tiny yet meaningful tweak I did the other day was [adding the session time to Claude's status line](https://gist.github.com/steipete/8396e512171d31e934f0013e5651691e). Serves as a reminder that time is just FLYING when you're in the flow.
 
-So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a [full-breadth developer](https://justin.searls.co/posts/full-breadth-developers/), you are at risk. I'd love to hear your strategies after our talk round is done.
+So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a full-breadth developer, you are at risk. I'd love to hear your strategies after our talk round is done.
 
 Thanks for letting me share.
