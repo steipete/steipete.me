@@ -25,11 +25,9 @@ And it doesn't stop. The more I build, the more ideas for projects I get. And th
 
 AI was supposed to save time, yet I work more than ever before, I have more FOMO than ever before. I dedicate pretty much all my waking time to this, yet it doesn't feel enough. One week in AI feels like a month in the real world.
 
-I'm fun at parties when I tell people about the coming AGI apocalypse, and the 1000 stories of moments where AI just abso - fucking - lutely blew my mind.
+I'm fun at parties when I tell people about the coming AGI apocalypse, and the 1000 stories of moments where AI just abso - fucking - lutely blew my mind. Don't get me wrong - I am having a blast. I learned so so much, I built incredibly cool stuff, and [my spark is back](/posts/2025/finding-my-spark-again).
 
-And don't get me wrong - I am having a blast. I learned so so much, I built incredibly cool stuff, and [my spark is back](/posts/2025/finding-my-spark-again).
-
-And you might not realize how important that was for me. I burned out after selling my company in 2021 and basically didn't touch my computer for 3 years. I only used my phone... like a normie! So, having found my way back, the pendulum did swing heavily in the other direction.
+You might not realize how important that was for me. I burned out after selling my company in 2021 and basically didn't touch my computer for 3 years. I only used my phone... like a normie! So, having found my way back, the pendulum did swing heavily in the other direction.
 
 The last few months feel like a blur, and I'm on a new journey how to better control my slot machine addiction. Honestly, I'm failing quite hard. I'm having way too much fun here, and there are all these ideas in my head that need to be codified.
 
