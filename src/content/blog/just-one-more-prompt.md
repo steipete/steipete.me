@@ -5,22 +5,16 @@ pubDatetime: 2025-08-19T10:00:00+02:00
 tags: ["ai", "productivity", "burnout", "development", "personal"]
 ---
 
-Hi, my name is Peter and I'm a Claudoholic. I'm addicted to agentic engineering. And sometimes I just vibe-code.
+This is my writeup for the talk I gave at [Claude Code Anonymous meeting in London](http://claudeanon.club/).
 
-Most of you know me as @steipete on Twitter. I was an iOS developer/Entrepreneur in a previous life, and now I do... everything. I work on a ton of projects.
-
-Business Insider would call me an "inference whale".
-
-Wired did a recent article about the funeral of Claude 3.5 and power users. They found me since I was leading the high score for a while. 
-
-You all know that the clock is ticking and we have 10 days left before Anthropic tightens our subs. My contact at Wired told me that she's not sure, but I might just be "the guy".
+Hi, my name is Peter and I'm a Claudoholic. I'm addicted to agentic engineering. And sometimes I just vibe-code. Most of you know me as @steipete on Twitter. I was an iOS developer/Entrepreneur in a previous life, and now I do... everything. I work on a ton of projects.
 
 So. Now you might understand why we call it Claude Code Anonymous. This meetup is for builders. For full-breadth developers. For the people who see the revolution and can't sleep anymore.
 
-Since I'm one of the organizers and knee-deep in AI, I've thought quite hard what I wanna talk about in these 5 minutes. 
+Since I'm one of the organizers and knee-deep in AI, I've thought quite hard what I wanna talk about in these 5 minutes.
 
 - My latest strategies how to best use agents?
-- My adventures in running open models on Nvidia's H200?
+- My adventures in [running open models on Nvidia's H200](/posts/2025/self-hosting-ai-models)?
 - Alternative agents like opencode, charm?
 - A preview of my upcoming talk "You can just do things?"
 
@@ -64,6 +58,6 @@ One of my passion projects is VibeTunnel, a Mac app that tunnels terminal cli's 
 I also realize that it's time now to slow down a bit, as it's gotten to an unhealthy level.
 A tiny yet meaningful tweak I did the other day was adding the session time to Claude's status line. Serves as a reminder that time is just FLYING when you're in the flow. You can find that on my GitHub as gist, just ask Claude to copy that.
 
-So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a full-breadth developers. you are at risk. I'd love to hear your strategies after our talk round is done. 
+So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a full-breadth developers. you are at risk. I'd love to hear your strategies after our talk round is done.
 
 Thanks for letting me share, and keep coding back, it works if you ship it.
