@@ -36,15 +36,20 @@ The last few months feel like a blur, and I'm on a new journey how to better con
 I know I'm not alone, when I text my friends at 4am and they are also still up. I call them the Black Eye Club. And [on Reddit](https://www.reddit.com/r/ClaudeAI/comments/1ljurdc/is_this_kind_of_addiction_normal_with_you_claude/?share_id=zX0B6-zPByvTq1GKeRZvq) there's plenty of reports as well, about people that can't sleep anymore.
 
 Gergely Orosz wrote in his [Pragmatic Engineer Newsletter](https://blog.pragmaticengineer.com/new-trend-extreme-hours-at-ai-startups/) just a few days ago:
-    "New trend: extreme hours for AI startup workers. Pulling 80+ hour work weeks – including weekends – is becoming the norm across AI startups, and is unlikely to stop while AI is so hot."
+
+> "New trend: extreme hours for AI startup workers. Pulling 80+ hour work weeks – including weekends – is becoming the norm across AI startups, and is unlikely to stop while AI is so hot."
 
 I also see this as a theme that's industry-wide. Cognition CEO Scott Wu [posted on Twitter](https://x.com/ScottWu46/status/1952776198947520659):
 
-    "Cognition has an extreme performance culture. We routinely are at the office through the weekend and do some of our best work late into the night. Many of us literally live where we work.".
+> "Cognition has an extreme performance culture. We routinely are at the office through the weekend and do some of our best work late into the night. Many of us literally live where we work."
 
-Kennan Davison from Icon, an AI Marketing generator [tweeted](https://x.com/kennandavison/status/1899505804677677188): "why do 6 [days of work] when you can do 7".
+Kennan Davison from Icon, an AI Marketing generator [tweeted](https://x.com/kennandavison/status/1899505804677677188):
 
-Google cofounder Sergey Brin [told staff in the tech giant's AI unit](https://nypost.com/2025/02/28/business/googles-sergey-brin-says-60-hours-per-week-in-office-is-sweet-spot-of-productivity-as-ai-race-heats-up): "60 hours a week is the sweet spot of productivity".
+> "why do 6 [days of work] when you can do 7"
+
+Google cofounder Sergey Brin [told staff in the tech giant's AI unit](https://nypost.com/2025/02/28/business/googles-sergey-brin-says-60-hours-per-week-in-office-is-sweet-spot-of-productivity-as-ai-race-heats-up):
+
+> "60 hours a week is the sweet spot of productivity"
 
 I allowed myself to be sucked into the vortex for a while. This is exactly how I started my last company. I don't believe you can do that with "regular" working hours. Or to be more specific, I can't do that with 40h weeks. I work in waves, a period of very intense work, followed by a period of slacking off. Heck, I even know which game I'm going to enjoy next, once I manage to rip myself away from the slot machines.
 
