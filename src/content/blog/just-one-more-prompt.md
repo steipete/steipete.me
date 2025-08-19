@@ -1,7 +1,7 @@
 ---
 title: "Just One More Prompt"
 description: "Hi, my name is Peter and I'm a Claudoholic. A reflection on AI addiction, extreme work culture, and the blurry line between productivity and obsession in the age of agentic engineering."
-pubDate: "2025-01-19T10:00:00+01:00"
+pubDatetime: 2025-01-19T10:00:00+01:00
 tags: ["ai", "productivity", "burnout", "development", "personal"]
 ---
 
