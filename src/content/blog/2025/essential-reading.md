@@ -67,6 +67,20 @@ Anthropic's engineering team shares comprehensive best practices for maximizing 
 
 > Claude performs best when it has a clear target to iterate against: a visual mock, a test case, or another kind of output.
 
+## MCP vs CLI: A Data-Driven Tool Comparison
+
+[Read the article](https://mariozechner.at/posts/2025-08-15-mcp-vs-cli/) by Mario Zechner ([@badlogicgames](https://x.com/badlogicgames)) • August 2025 • 12 min
+
+Mario runs a rigorous evaluation comparing Model Context Protocol (MCP) servers against CLI tools for agentic workflows, with surprising results:
+
+- **Many MCPs are redundant**: They often reimplement functionality already available in better CLI tools
+- **Context window pollution**: Some MCPs flood the context with unnecessary information, degrading agent performance
+- **When MCPs make sense**: No good CLI alternative exists, CLI output is too verbose, LLM lacks shell access, or stateful tools benefit from persistent connections
+- **Empirical testing matters**: Through 120 evaluation runs across debugging tasks, tmux outperformed custom tools with "lowest cost and consistent clean execution"
+- **Choose tools pragmatically**: Tool effectiveness varies by task - prefer simpler interfaces and existing CLI tools when available
+
+> All tools achieved 100% success rate... The main differentiators were efficiency and ease of use.
+
 ## Building a macOS App Entirely with Claude Code
 
 [Read the article](https://www.indragie.com/blog/i-shipped-a-macos-app-built-entirely-by-claude-code) by Indragie Karunaratne ([@indragie](https://x.com/indragie)) • July 2025 • 19 min
@@ -95,6 +109,20 @@ Alberto offers a sobering counterpoint to AI coding enthusiasm after discovering
 - **Return to fundamentals**: Sometimes pen and paper planning beats AI-generated solutions
 
 > I'm not asking it to write new things from scratch... I'm the senior dev. The LLM is the assistant.
+
+## AI is a Money Trap: The Economics of Generative AI
+
+[Read the article](https://www.wheresyoured.at/ai-is-a-money-trap/) by Ed Zitron ([@edzitron](https://x.com/edzitron)) • January 2025 • 25 min
+
+Ed delivers a scathing economic analysis of the generative AI industry, arguing that it's fundamentally unsustainable and heading for collapse:
+
+- **No viable business model**: After three years and billions in investment, no AI startup has achieved profitability or demonstrated a path to it
+- **Massive capital destruction**: Companies like OpenAI and Anthropic are burning billions while generating minimal revenue relative to their costs
+- **Infrastructure bubble**: Big Tech's AI data center investments are consuming a significant portion of US economic growth with little return
+- **Systemic economic risks**: The AI bubble is artificially sustained by venture capital and big tech spending, threatening broader economic stability when it bursts
+- **No exit strategies**: Inflated valuations make acquisitions impossible and public offerings unviable
+
+> The generative AI industry is, at its core, unnatural. It does not make significant revenue compared to its unbelievable costs.
 
 ## The Evolution of Software: From 1.0 to 3.0
 
