@@ -16,8 +16,8 @@ Since I'm one of the organizers and knee-deep in AI, I've thought quite hard wha
 
 - My latest strategies how to best use agents?
 - My adventures in [running open models on Nvidia's H200](/posts/2025/self-hosting-ai-models)?
-- Alternative agents like opencode, charm?
-- A preview of my upcoming talk "You can just do things?"
+- [Alternative agents](https://x.com/steipete/status/1952763187553513658) like opencode, charm?
+- A preview of my [upcoming talk](https://github.com/steipete/speaking) "You can just do things?"
 
 Yes, you can just do things. That's the beauty and the problem. Once you realize how powerful these agents are - this realization that you can finally build everything you ever wanted to build. All these ideas and side projects that you've been thinking about for years, but never had the time to do.
 
