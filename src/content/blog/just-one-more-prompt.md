@@ -8,9 +8,9 @@ tags: ["ai", "productivity", "burnout", "development", "personal"]
 
 This is my writeup for the talk I gave at [Claude Code Anonymous meeting in London](http://claudeanon.club/).
 
-Hi, my name is Peter and I'm a Claudoholic. I'm addicted to agentic engineering. And sometimes I just vibe-code. Most of you know me as @steipete on Twitter. I was an iOS developer/Entrepreneur in a previous life, and now I do... everything. I work on a ton of projects.
+Hi, my name is Peter and I'm a Claudoholic. I'm addicted to agentic engineering. And sometimes I just vibe-code. Most of you know me as [@steipete](https://twitter.com/steipete) on Twitter. I was an iOS developer/Entrepreneur in a previous life, and now I do... everything. I work on a ton of projects.
 
-So. Now you might understand why we call it Claude Code Anonymous. This meetup is for builders. For full-breadth developers. For the people who see the revolution and can't sleep anymore.
+So. Now you might understand why we call it Claude Code Anonymous. This meetup is for builders. For [full-breadth developers](https://justin.searls.co/posts/full-breadth-developers/). For the people who see the revolution and can't sleep anymore.
 
 Since I'm one of the organizers and knee-deep in AI, I've thought quite hard what I wanna talk about in these 5 minutes.
 
@@ -53,6 +53,6 @@ One of my passion projects is [VibeTunnel](/posts/2025/vibetunnel-turn-any-brows
 I also realize that it's time now to slow down a bit, as it's gotten to an unhealthy level.
 A tiny yet meaningful tweak I did the other day was [adding the session time to Claude's status line](https://gist.github.com/steipete/8396e512171d31e934f0013e5651691e). Serves as a reminder that time is just FLYING when you're in the flow.
 
-So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a full-breadth developer, you are at risk. I'd love to hear your strategies after our talk round is done.
+So here it is. My story. May it serve as a warning for some here that aren't mainlining cli just yet. If you love to build things, if you are a [full-breadth developer](https://justin.searls.co/posts/full-breadth-developers/), you are at risk. I'd love to hear your strategies after our talk round is done.
 
 Thanks for letting me share.
