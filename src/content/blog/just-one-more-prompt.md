@@ -2,7 +2,7 @@
 title: "Just One More Prompt"
 description: "Hi, my name is Peter and I'm a Claudoholic. A reflection on AI addiction, extreme work culture, and the blurry line between productivity and obsession in the age of agentic engineering."
 pubDatetime: 2025-08-19T10:00:00+02:00
-heroImage: /assets/img/2025/just-one-more-prompt/hero.png
+heroImage: /assets/img/2025/just-one-more-prompt/hero.jpg
 tags: ["ai", "productivity", "burnout", "development", "personal"]
 ---
 
@@ -43,7 +43,7 @@ I also see this as a theme that's industry-wide. Cognition CEO Scott Wu [posted 
 
 Kennan Davison from Icon, an AI Marketing generator [tweeted](https://x.com/kennandavison/status/1899505804677677188):
 
-> "why do 6 [days of work] when you can do 7"
+> why do 6 [days of work] when you can do 7
 
 Google cofounder Sergey Brin [told staff in the tech giant's AI unit](https://nypost.com/2025/02/28/business/googles-sergey-brin-says-60-hours-per-week-in-office-is-sweet-spot-of-productivity-as-ai-race-heats-up):
 
