@@ -63,7 +63,7 @@ This grounded perspective serves as an antidote to both AI evangelism and doom-s
 
 ## The End of Platform Dominance
 
-[Read the article](https://www.aparker.io/post/3lvjepuyf4q2w) by Austin Parker • August 2025 • 10 min
+[Read the article](https://www.aparker.io/post/3lvjepuyf4q2w) by Austin Parker ([@aparker.io](https://bsky.app/profile/aparker.io)) • August 2025 • 10 min
 
 Austin presents a visionary thesis on how AI will fundamentally restructure the software industry, shifting from today's platform monopolies to tomorrow's ecosystem of small, custom applications built on open protocols.
 
