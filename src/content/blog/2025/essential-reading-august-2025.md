@@ -31,9 +31,9 @@ The research reveals "realistic optimists" who acknowledge disruption while embr
 
 ## The Hidden Cost of AI-Assisted Learning
 
-[Read the article](https://nmn.gl/blog/ai-and-learning) by Nemil Dalal ([@nemild](https://x.com/nemild)) • 8 min
+[Read the article](https://nmn.gl/blog/ai-and-learning) by Namanyay Goel ([@NamanyayG](https://x.com/NamanyayG)) • 8 min
 
-Nemil presents a sobering counterpoint to AI evangelism, examining how AI tools may be creating a generation of developers who can ship code without truly understanding it—trading deep knowledge for quick fixes.
+Namanyay presents a sobering counterpoint to AI evangelism, examining how AI tools may be creating a generation of developers who can ship code without truly understanding it—trading deep knowledge for quick fixes.
 
 - **The learning crisis**: Junior developers increasingly rely on AI-generated solutions without understanding the underlying principles, potentially creating a knowledge gap that compounds over time as they advance in their careers
 - **Pattern matching vs. understanding**: AI tools excel at providing working code snippets, but developers miss the crucial struggle phase where deep understanding forms—the difference between knowing how to use a solution and understanding why it works
