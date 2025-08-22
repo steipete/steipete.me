@@ -25,7 +25,7 @@ Thomas presents groundbreaking research from interviews with developers who've m
 - **Skills evolution**: New emphasis on AI fluency, agent orchestration, human-AI collaboration, and product understanding, while foundational programming knowledge becomes essential for verification and quality control
 - **Educational implications**: Computer science curricula must evolve from syntax memorization to AI-assisted problem-solving, teaching students to frame problems, guide AI, and critique solutions rather than just write loops
 
-> "Either you have to embrace the AI, or you get out of your career... I think of myself as [a] mediocre engineer, and I feel this AI reset is giving me a chance to build skills that will bring me closer to excellence."
+> Either you have to embrace the AI, or you get out of your career... I think of myself as [a] mediocre engineer, and I feel this AI reset is giving me a chance to build skills that will bring me closer to excellence.
 
 The research reveals "realistic optimists" who acknowledge disruption while embracing growth opportunities, focusing less on "time saved" and more on "increasing ambition"—expanding the scope and complexity of what they can accomplish rather than just working faster.
 
@@ -41,7 +41,7 @@ Nemil presents a sobering counterpoint to AI evangelism, examining how AI tools 
 - **Balanced approach**: The author advocates for intentional learning practices—interrogating AI solutions, building from scratch periodically, and engaging in meaningful code reviews that go beyond "does it work?" to "why does it work this way?"
 - **Generational divide**: A stark contrast emerges between developers who learned pre-AI (with strong fundamentals to verify AI output) and those learning with AI from day one (potentially lacking the foundation to recognize subtle errors or inefficiencies)
 
-> "We're trading deep understanding for quick fixes, and while it feels great in the moment, we're going to pay for this later."
+> We're trading deep understanding for quick fixes, and while it feels great in the moment, we're going to pay for this later.
 
 This critical perspective complements the optimistic evolution narrative, highlighting that while AI transforms how we work, the fundamentals of software engineering—problem decomposition, algorithmic thinking, and system design—remain essential for those who want to lead rather than just participate in the AI-augmented future.
 
@@ -57,7 +57,7 @@ Colton delivers a much-needed reality check on the hyperbolic claims of 10x or 1
 - **Psychological impact**: The constant barrage of "10x engineer" claims creates unnecessary anxiety and imposter syndrome, when in reality, experienced engineers quickly discover AI's actual limitations through hands-on use
 - **Finding balance**: The author advocates for using AI where it genuinely helps (scripts, boilerplate) while maintaining confidence in human skills for complex problem-solving, system design, and the creative aspects of engineering that bring satisfaction
 
-> "Real engineers were now 10-100x more productive than I was"—the anxiety-inducing thought that the author ultimately debunks through practical experience and mathematical analysis.
+> Real engineers were now 10-100x more productive than I was—the anxiety-inducing thought that the author ultimately debunks through practical experience and mathematical analysis.
 
 This grounded perspective serves as an antidote to both AI evangelism and doom-saying, reminding us that while AI tools are valuable additions to our toolkit, the core skills of software engineering—understanding problems, designing solutions, and building maintainable systems—remain fundamentally human endeavors.
 
@@ -73,7 +73,7 @@ Austin presents a visionary thesis on how AI will fundamentally restructure the 
 - **The scale paradox**: Parker asks the essential question: "Why do I need planet-scale infrastructure to share baby photos with, like, 5 people?"—highlighting how AI enables right-sized solutions instead of one-size-fits-all platforms
 - **Hardware convergence**: Within 5 years, consumer devices will have onboard AI rivaling today's best models, enabling truly personal computing where applications are generated on-demand for specific needs
 
-> "All code is technical debt"—a provocative reframing that suggests the future isn't about accumulating codebases but generating disposable, purpose-built applications as needed.
+> All code is technical debt—a provocative reframing that suggests the future isn't about accumulating codebases but generating disposable, purpose-built applications as needed.
 
 This radical vision complements our exploration of role transformation by imagining not just how engineers will work differently, but how the entire software ecosystem will restructure around AI's ability to make custom development trivially cheap, potentially ending the era of platform monopolies.
 
@@ -89,7 +89,7 @@ Geoffrey presents a critical analysis of Model Context Protocol (MCP) servers, w
 - **Security nightmares**: Third-party MCP servers introduce supply chain risks and potential attack vectors—malicious actors could inject context that manipulates AI behavior, creating a new class of security vulnerabilities enterprises aren't prepared for
 - **Strategic recommendations**: Limit MCP servers to essential tools, prefer first-party integrations from trusted vendors, and consider dynamically enabling/disabling servers based on specific workflow stages rather than loading everything at once
 
-> "The proliferation of MCP servers is creating a tragedy of the commons in your context window—everyone wants their tool included, but the cumulative effect is making the AI assistant worse, not better."
+> The proliferation of MCP servers is creating a tragedy of the commons in your context window—everyone wants their tool included, but the cumulative effect is making the AI assistant worse, not better.
 
 This technical deep-dive challenges the current enthusiasm around MCP servers, arguing that restraint and strategic thinking about context allocation will deliver better results than the current "more is better" approach that's dominating the ecosystem.
 
