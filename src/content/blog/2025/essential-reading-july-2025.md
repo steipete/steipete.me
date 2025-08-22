@@ -9,11 +9,11 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 **New perspectives on AI-assisted development from the field.** 
 
-This July edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
+This edition features four compelling articles that showcase the evolving landscape of agentic engineering: a detailed experience report from a team successfully integrating Claude Code into production workflows, a thought-provoking analysis of how AI tools are reshaping developer career paths, a candid look at AI automation experiments that didn't work as expected, and a technical deep-dive challenging conventional wisdom about MCP limitations.
 
 ## Six Weeks of Claude Code
 
-[Read the article](https://blog.puzzmo.com/posts/2025/07/30/six-weeks-of-claude-code/) by Orta Therox ([@orta](https://x.com/orta)) • July 2025 • 12 min
+[Read the article](https://blog.puzzmo.com/posts/2025/07/30/six-weeks-of-claude-code/) by Orta Therox ([@orta](https://x.com/orta)) • 12 min
 
 Orta shares his experience integrating Claude Code into daily development work at Puzzmo, providing one of the most detailed real-world productivity assessments available. His team completed 15+ significant engineering tasks in just six weeks, demonstrating measurable impact on technical debt resolution and feature development.
 
@@ -27,7 +27,7 @@ Orta shares his experience integrating Claude Code into daily development work a
 
 ## Full-Breadth Developers
 
-[Read the article](https://justin.searls.co/posts/full-breadth-developers/) by Justin Searls ([@searls](https://x.com/searls)) • July 2025 • 15 min
+[Read the article](https://justin.searls.co/posts/full-breadth-developers/) by Justin Searls ([@searls](https://x.com/searls)) • 15 min
 
 Justin explores how AI tools are enabling a new archetype of "full-breadth developers" who can work effectively across the entire technology stack, fundamentally challenging traditional specialization models and career development paths.
 
@@ -41,7 +41,7 @@ Justin explores how AI tools are enabling a new archetype of "full-breadth devel
 
 ## Things That Didn't Work
 
-[Read the article](https://lucumr.pocoo.org/2025/7/30/things-that-didnt-work/) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • July 2025 • 18 min
+[Read the article](https://lucumr.pocoo.org/2025/7/30/things-that-didnt-work/) by Armin Ronacher ([@mitsuhiko](https://x.com/mitsuhiko)) • 18 min
 
 Armin provides a candid retrospective on AI coding experiments that failed, offering valuable lessons for developers navigating the AI-assisted development landscape. His honest analysis of what didn't work provides essential balance to the enthusiasm around AI automation.
 
@@ -55,7 +55,7 @@ Armin provides a candid retrospective on AI coding experiments that failed, offe
 
 ## MCPs are Boring (or: Why we are losing the Sparkle of LLMs)
 
-[Watch the video](https://www.youtube.com/watch?v=J3oJqan2Gv8) by Manuel Odendahl ([@programwithai](https://x.com/programwithai)) • July 2025 • 32 min
+[Watch the video](https://www.youtube.com/watch?v=J3oJqan2Gv8) by Manuel Odendahl ([@programwithai](https://x.com/programwithai)) • 32 min
 
 Manuel presents a provocative technical argument that MCPs artificially limit LLM capabilities by forcing structured tool calls instead of leveraging their superior code generation abilities. His presentation challenges the entire foundation of current agentic development practices with concrete performance data and working implementations.
 
@@ -69,7 +69,7 @@ Manuel presents a provocative technical argument that MCPs artificially limit LL
 
 ## Coding with LLMs in Summer 2025
 
-[Read the article](https://antirez.com/news/154) by Salvatore Sanfilippo ([@antirez](https://x.com/antirez)) • July 2025 • 8 min
+[Read the article](https://antirez.com/news/154) by Salvatore Sanfilippo ([@antirez](https://x.com/antirez)) • 8 min
 
 Antirez (creator of Redis) shares practical insights from using LLMs for coding, emphasizing the critical importance of keeping humans "in the loop" while leveraging AI's transformative capabilities for software development.
 
