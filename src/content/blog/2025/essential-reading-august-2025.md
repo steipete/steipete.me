@@ -75,21 +75,21 @@ Austin presents a visionary thesis on how AI will fundamentally restructure the 
 
 This radical vision complements our exploration of role transformation by imagining not just how engineers will work differently, but how the entire software ecosystem will restructure around AI's ability to make custom development trivially cheap, potentially ending the era of platform monopolies.
 
-## Why Capital Allocators Need to Study Software
+## Less is More: The Hidden Costs of MCP Server Proliferation
 
-[Read the article](https://ghuntley.com/allocations/) by Geoffrey Huntley ([@GeoffreyHuntley](https://x.com/GeoffreyHuntley)) • August 2025 • 15 min
+[Read the article](https://ghuntley.com/allocations/) by Geoffrey Huntley ([@GeoffreyHuntley](https://x.com/GeoffreyHuntley)) • August 2025 • 10 min
 
-Geoffrey delivers a compelling argument for why capital allocators must understand software development cycles and AI's fundamental economics, explaining how misaligned incentives are creating systematic value destruction across the industry.
+Geoffrey presents a critical analysis of Model Context Protocol (MCP) servers, warning that the rush to add more tools and integrations is actually degrading AI coding assistant performance rather than improving it.
 
-- **The misalignment crisis**: VCs push for continuous deployment and move-fast-break-things while enterprises demand stability and reliability—creating a fundamental tension that AI amplifies rather than resolves, leading to billions in wasted capital
-- **Software development reality**: Huntley demolishes the myth of "software eating the world" by revealing that most enterprise software is terrible user experience wrapped in vendor lock-in: "The dirty secret is that most software doesn't actually make users more productive"
-- **AI's true economics**: While AI dramatically reduces code generation costs, it doesn't address the real expenses: maintenance, integration, security, and the human coordination required to make systems work together—areas where costs are actually increasing
-- **The capital destruction cycle**: Companies raise massive rounds based on AI hype, burn cash pursuing unsustainable growth, then collapse when reality hits—meanwhile, sustainable businesses get starved of capital because they can't promise impossible returns
-- **Investment implications**: Successful capital allocation in the AI era requires understanding that value creation comes from solving real problems with sustainable business models, not from chasing the latest technical trends or platform plays
+- **Context window economics**: Every MCP server and tool consumes precious tokens from your LLM's limited context window—adding more tools means less space for actual code and reasoning, creating a fundamental trade-off that most developers don't realize
+- **The allocation paradox**: "Less is more. The more you allocate into the context window of an LLM... the worse the outcomes you're going to get"—each additional tool increases cognitive overhead and reduces the AI's ability to focus on the actual task
+- **Tool proliferation problems**: Multiple similar tools create non-deterministic behavior where the LLM struggles to choose between overlapping capabilities, leading to confusion and errors rather than enhanced functionality
+- **Security nightmares**: Third-party MCP servers introduce supply chain risks and potential attack vectors—malicious actors could inject context that manipulates AI behavior, creating a new class of security vulnerabilities enterprises aren't prepared for
+- **Strategic recommendations**: Limit MCP servers to essential tools, prefer first-party integrations from trusted vendors, and consider dynamically enabling/disabling servers based on specific workflow stages rather than loading everything at once
 
-> "The best investment opportunities aren't in the companies promising to 'revolutionize everything with AI'—they're in the boring businesses using AI to incrementally improve specific workflows for customers who will actually pay."
+> "The proliferation of MCP servers is creating a tragedy of the commons in your context window—everyone wants their tool included, but the cumulative effect is making the AI assistant worse, not better."
 
-This financial perspective adds crucial context to our technical discussions, reminding us that sustainable software development isn't just about writing better code—it's about aligning economic incentives with long-term value creation rather than short-term hype cycles.
+This technical deep-dive challenges the current enthusiasm around MCP servers, arguing that restraint and strategic thinking about context allocation will deliver better results than the current "more is better" approach that's dominating the ecosystem.
 
 ---
 
