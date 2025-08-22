@@ -9,7 +9,7 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 **The reinvention of software development is happening now.** 
 
-This August edition explores the profound transformation occurring in our profession through the lens of developers who've fully embraced AI-assisted workflows. Based on interviews with 22 developers at the forefront of this shift, we examine how the role of software engineer is evolving from code writer to AI orchestrator—and what that means for careers, education, and the future of our craft.
+This August edition explores the profound transformation occurring in our profession through the lens of developers who've fully embraced AI-assisted workflows. Based on interviews with 22 developers at the forefront of this shift, we examine how the role of software engineer is evolving from code writer to AI orchestrator—and what that means for careers, education, investment, and the future of our craft.
 
 ## Developers, Reinvented
 
@@ -74,6 +74,22 @@ Austin presents a visionary thesis on how AI will fundamentally restructure the 
 > "All code is technical debt"—a provocative reframing that suggests the future isn't about accumulating codebases but generating disposable, purpose-built applications as needed.
 
 This radical vision complements our exploration of role transformation by imagining not just how engineers will work differently, but how the entire software ecosystem will restructure around AI's ability to make custom development trivially cheap, potentially ending the era of platform monopolies.
+
+## Why Capital Allocators Need to Study Software
+
+[Read the article](https://ghuntley.com/allocations/) by Geoffrey Huntley ([@GeoffreyHuntley](https://x.com/GeoffreyHuntley)) • August 2025 • 15 min
+
+Geoffrey delivers a compelling argument for why capital allocators must understand software development cycles and AI's fundamental economics, explaining how misaligned incentives are creating systematic value destruction across the industry.
+
+- **The misalignment crisis**: VCs push for continuous deployment and move-fast-break-things while enterprises demand stability and reliability—creating a fundamental tension that AI amplifies rather than resolves, leading to billions in wasted capital
+- **Software development reality**: Huntley demolishes the myth of "software eating the world" by revealing that most enterprise software is terrible user experience wrapped in vendor lock-in: "The dirty secret is that most software doesn't actually make users more productive"
+- **AI's true economics**: While AI dramatically reduces code generation costs, it doesn't address the real expenses: maintenance, integration, security, and the human coordination required to make systems work together—areas where costs are actually increasing
+- **The capital destruction cycle**: Companies raise massive rounds based on AI hype, burn cash pursuing unsustainable growth, then collapse when reality hits—meanwhile, sustainable businesses get starved of capital because they can't promise impossible returns
+- **Investment implications**: Successful capital allocation in the AI era requires understanding that value creation comes from solving real problems with sustainable business models, not from chasing the latest technical trends or platform plays
+
+> "The best investment opportunities aren't in the companies promising to 'revolutionize everything with AI'—they're in the boring businesses using AI to incrementally improve specific workflows for customers who will actually pay."
+
+This financial perspective adds crucial context to our technical discussions, reminding us that sustainable software development isn't just about writing better code—it's about aligning economic incentives with long-term value creation rather than short-term hype cycles.
 
 ---
 
