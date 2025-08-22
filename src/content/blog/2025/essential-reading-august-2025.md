@@ -11,7 +11,7 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 This August edition cuts through the AI hype with five essential perspectives that reveal both the promise and peril of our evolving profession. From developers documenting their four-stage evolution from AI skeptics to strategists, to sobering warnings about junior developers losing fundamental skills, to reality checks on inflated productivity claims—these articles provide the nuanced understanding you need to navigate the AI transformation intelligently. We also explore why platform monopolies may crumble under AI's economics and why adding more MCP servers might be making your AI assistant worse, not better.
 
-🤖 *Heads Up: This is an AI-assisted article. All posts are hand-picked tho, so jump right in.*
+🤖 *Heads Up: [Summaries are AI-Assisted](/posts/2025/startup-slop). All posts are hand-picked tho, so jump right in.*
 
 ## Developers, Reinvented
 
