@@ -9,13 +9,13 @@ tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-
 
 **The reinvention of software development is happening now.** 
 
-This August edition explores the profound transformation occurring in our profession through the lens of developers who've fully embraced AI-assisted workflows. Based on interviews with 22 developers at the forefront of this shift, we examine how the role of software engineer is evolving from code writer to AI orchestrator—and what that means for careers, education, investment, and the future of our craft.
+This August edition cuts through the AI hype with five essential perspectives that reveal both the promise and peril of our evolving profession. From developers documenting their four-stage evolution from AI skeptics to strategists, to sobering warnings about junior developers losing fundamental skills, to reality checks on inflated productivity claims—these articles provide the nuanced understanding you need to navigate the AI transformation intelligently. We also explore why platform monopolies may crumble under AI's economics and why adding more MCP servers might be making your AI assistant worse, not better.
 
 ## Developers, Reinvented
 
 [Read the article](https://ashtom.github.io/developers-reinvented) by Thomas Dohmke ([@ashtom](https://x.com/ashtom)) • August 2025 • 11 min
 
-Thomas presents groundbreaking research from interviews with 22 developers who've made AI tools central to their workflows, revealing a four-stage evolution that's reshaping software development from skepticism to strategic AI orchestration.
+Thomas presents groundbreaking research from interviews with developers who've made AI tools central to their workflows, revealing a four-stage evolution that's reshaping software development from skepticism to strategic AI orchestration.
 
 - **The four-stage evolution**: From AI Skeptic (dabbling with completions) to AI Strategist (orchestrating multi-agent workflows with planning and coding models), with each stage requiring different mindsets and skill development
 - **Role transformation in action**: Advanced practitioners describe their work shifting from "writing code to architecting and verifying implementation work carried out by AI agents"—focusing on delegation (context engineering, prompt design) and verification (validating AI output against objectives)
