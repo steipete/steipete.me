@@ -1,7 +1,7 @@
 ---
 title: "Essential Reading for Agentic Engineers - August 2025"
 description: "The evolution of developer identity in the age of AI: insights from 22 developers who've embraced AI-first workflows and are redefining what it means to be a software engineer"
-pubDatetime: 2025-08-03T02:00:00+01:00
+pubDatetime: 2025-08-22T02:00:00+01:00
 heroImage: /assets/img/2025/essential-reading-august/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering - August 2025"
 tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows", "career-development"]
