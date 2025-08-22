@@ -79,7 +79,7 @@ This radical vision complements our exploration of role transformation by imagin
 
 ## Less is More: The Hidden Costs of MCP Server Proliferation
 
-[Read the article](https://ghuntley.com/allocations/) by Geoffrey Huntley ([@GeoffreyHuntley](https://x.com/GeoffreyHuntley)) • August 2025 • 10 min
+[Read the article](https://ghuntley.com/allocations/) by Geoffrey Huntley ([@geoff](https://x.com/GeoffreyHuntley)) • August 2025 • 10 min
 
 Geoffrey presents a critical analysis of Model Context Protocol (MCP) servers, warning that the rush to add more tools and integrations is actually degrading AI coding assistant performance rather than improving it.
 
