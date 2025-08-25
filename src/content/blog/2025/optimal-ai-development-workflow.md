@@ -39,7 +39,7 @@ When I'm not refactoring I usually run 1-2 agents; for cleanup/tests/UI work ~4 
 
 The hardest part is distributed system design, picking the right dependencies, platforms and a forward-thinking database schema.
 
-I've been building an incredible amount of custom infra, admin pages, CLIs to help both me and the agents and that work did speed me up so much. Would have never done that with the old ways.
+I've been building an incredible amount of custom infra, [admin pages](https://x.com/steipete/status/1958956225800151465), CLIs to help both me and the agents and that work did speed me up so much. Would have never done that with the old ways.
 
 ## Testing Strategy
 
