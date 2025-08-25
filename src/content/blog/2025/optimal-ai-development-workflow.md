@@ -53,7 +53,7 @@ Pick services that have CLIs: vercel, psql, gh, axiom. Agents can use them, one 
 
 ## Results and Comparisons
 
-Got an insane amount done with this setup. Other CLIs/models still don't come close. Codex can't search (asking "google best practices" is usually better than context). Cursor/GPT-5 takes FOREVER and doesn't share its thinking, so it's hard to steer. GPT-5 also is much more literal in how you have to prompt it - it's a great model but not the best agent, you have to be more precise and specific.
+Got an insane amount done with this setup. Other CLIs/models still don't come close. [Codex can't search](https://x.com/steipete/status/1954593439347032167) (asking "google best practices" is usually better than context). Cursor/GPT-5 takes FOREVER and doesn't share its thinking, so it's hard to steer. GPT-5 also is much more literal in how you have to prompt it - it's a great model but not the best agent, you have to be more precise and specific.
 
 Still don't see how this could be moved to background agents. I steer the models a lot as I notice them drifting off - that's much harder if they run in the background.
 
