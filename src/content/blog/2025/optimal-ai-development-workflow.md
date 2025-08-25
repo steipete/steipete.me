@@ -19,7 +19,7 @@ VS Code's terminal is too unstable, had plenty freezes when pasting in large amo
 
 ## Tools and Their Reality
 
-Gemini can be great, but its [edit tools are too messy](https://x.com/steipete/status/1942113964231442876), so using it less and less. GPT-5 for reviewing plans works even better than Gemini.
+Gemini can be great, but its edit tools are [too](https://x.com/steipete/status/1942113964231442876) [messy](https://x.com/steipete/status/1955941943218713006/photo/1), so using it less and less. GPT-5 for reviewing plans works even better than Gemini.
 
 Yes, all of these work on main. I tried the whole [worktree setup](https://x.com/steipete/status/1956340397900177686), just slows me down. If you pick areas of work carefully you can work on multiple areas without much cross-pollination.
 
