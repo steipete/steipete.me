@@ -9,7 +9,7 @@ tags: ["ai", "claude", "development", "claude-code", "workflow", "productivity",
 
 **TL;DR: Ghostty + Claude Code + minimal tooling = maximum productivity. Less is more.**
 
-It's time for an update on my workflow, which keeps evolving.
+It's time for an [update on my workflow](https://x.com/steipete/status/1960114479028486429), which keeps evolving.
 
 Went fully back to Ghostty for my main setup, with [VS Code on the side](https://x.com/steipete/status/1954691261279146029/photo/1) to look up code and Cursor/GPT-5 for reviews (sometimes also the CLI). I tried [Zed](https://zed.dev/), just can't deal with a terminal that looks [like](https://x.com/steipete/status/1955690682477134124/photo/1) [this](https://x.com/steipete/status/1959259921439969326).
 
