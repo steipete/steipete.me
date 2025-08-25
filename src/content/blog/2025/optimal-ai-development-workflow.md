@@ -7,7 +7,7 @@ heroImageAlt: "AI Development Workflow Setup"
 tags: ["ai", "claude", "development", "claude-code", "workflow", "productivity", "tools", "best-practices"]
 ---
 
-**TL;DR: Ghostty + Claude Code + minimal tooling = maximum productivity. Less is more.**
+**TL;DR: Ghostty + Claude Code + minimal tooling = maximum productivity. [Less is more](https://x.com/steipete/status/1952439355340943534).**
 
 It's time for an [update on my workflow](https://x.com/steipete/status/1960114479028486429), which keeps evolving.
 
