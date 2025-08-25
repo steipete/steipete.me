@@ -29,6 +29,8 @@ Having the initial topic in the [statusline + session ID](https://x.com/steipete
 
 Using plan mode and iterating is key. Smaller tasks I do right away, bigger I write in a file and let GPT-5 review.
 
+Often I manage with small prompts, sometimes I brainstorm and it's amazing how much sense agents can make out of my [incoherent thoughts](https://x.com/steipete/status/1958233967548850235).
+
 When I'm not refactoring I usually run 1-2 agents; for cleanup/tests/UI work ~4 seems to be the sweet spot. All depends on the blast radius of the work.
 
 ## The Hard Parts
