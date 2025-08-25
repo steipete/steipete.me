@@ -25,7 +25,7 @@ Claude often makes a mess but it's equally great in refactoring and cleaning up.
 
 ## Planning and Context Management
 
-Having the initial topic in the statusbar + session ID in case I need to switch accounts or restart a session is super helpful.
+Having the initial topic in the [statusline + session ID](https://x.com/steipete/status/1958903434322526214) in case I need to switch accounts or restart a session is super helpful.
 
 Using plan mode and iterating is key. Smaller tasks I do right away, bigger I write in a file and let GPT-5 review.
 
