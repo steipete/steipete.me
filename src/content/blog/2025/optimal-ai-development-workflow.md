@@ -7,6 +7,8 @@ heroImageAlt: "AI Development Workflow Setup"
 tags: ["ai", "claude", "development", "claude-code", "workflow", "productivity", "tools", "best-practices"]
 ---
 
+**TL;DR: Ghostty + Claude Code + minimal tooling = maximum productivity. Less is more.**
+
 Went fully back to Ghostty for my main setup, with VS Code on the side to look up code and Cursor/GPT-5 for reviews (sometimes also the CLI).
 
 VS Code's terminal is too unstable, had plenty freezes when pasting in large amounts of text. Nothing beats Ghostty.
