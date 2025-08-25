@@ -45,9 +45,9 @@ I've been building an incredible amount of custom infra, [admin pages](https://x
 
 Bigger changes always get tests. Automated ones usually aren't great, but the model almost always finds issues when you ask it to write tests IN THE SAME CONTEXT. Context is precious, don't waste it.
 
-## Less is More
+## [Less is More](https://x.com/steipete/status/1952439355340943534)
 
-Even [removed my last MCP](https://x.com/steipete/status/1952439355340943534/photo/1), since Claude sometimes would go off spinning up Playwright unasked when it could simply read the code - which is faster and pollutes the context less.
+Even [removed my last MCP](https://x.com/steipete/status/1958679613489524952), since Claude sometimes would go off spinning up Playwright unasked when it could simply read the code - which is faster and pollutes the context less.
 
 Pick services that have CLIs: vercel, psql, gh, axiom. Agents can use them, one line in CLAUDE.md is enough "logs: axiom or vercel cli". "Database: psql + one example how to load env correctly so the loop is faster"
 
