@@ -58,5 +58,3 @@ Got an insane amount done with this setup. Other CLIs/models still don't come cl
 Still don't see how this could be moved to background agents. I steer the models a lot as I notice them drifting off - that's much harder if they run in the background.
 
 The new rate limits will go into effect August 28 and that'll definitely suck. Guess I'll just pay up. No perfect alternative for now.
-
-*(Big cleanup/migration day eve here)*
