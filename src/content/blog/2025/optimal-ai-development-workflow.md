@@ -19,7 +19,7 @@ VS Code's terminal is too unstable, had plenty freezes when pasting in large amo
 
 Gemini can be great, but its edit tools are too messy, so using it less and less. GPT-5 for reviewing plans works even better than Gemini.
 
-Yes, all of these work on main. I tried the whole worktree setup, just slows me down. If you pick areas of work carefully you can work on multiple areas without much cross-pollination.
+Yes, all of these work on main. I tried the whole [worktree setup](https://x.com/steipete/status/1956340397900177686), just slows me down. If you pick areas of work carefully you can work on multiple areas without much cross-pollination.
 
 Claude often makes a mess but it's equally great in refactoring and cleaning up. Important to do both to not create too much technical debt.
 
