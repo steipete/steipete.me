@@ -6,6 +6,8 @@ heroImage: /assets/img/2025/live-coding-session-building-arena/hero.jpg
 tags: ["live-coding", "arena", "development", "ai", "productivity"]
 ---
 
+Recently 
+
 Join me for an unfiltered look at building Arena - a live coding session where you can see the real development process in action. No scripts, no perfect outcomes, just authentic problem-solving and coding as it happens.
 
 **I built and shipped a brand‑new feature live (in \~1 hour). Here's the play‑by‑play + what I learned.**
