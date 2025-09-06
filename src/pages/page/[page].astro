@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { SITE } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection("blog");
@@ -13,8 +13,7 @@ export async function getStaticPaths({ paginate }) {
     // If we already have a post with this id, only keep the newer one
     if (
       !idMap.has(post.id) ||
-      new Date(post.data.pubDatetime) >
-        new Date(idMap.get(post.id).data.pubDatetime)
+      new Date(post.data.pubDatetime) > new Date(idMap.get(post.id).data.pubDatetime)
     ) {
       idMap.set(post.id, post);
     }

@@ -1,5 +1,5 @@
-import readingTime from 'reading-time';
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
 
 export function calculateReadingTime(content: string): string {
   const stats = readingTime(content);
@@ -8,12 +8,12 @@ export function calculateReadingTime(content: string): string {
 }
 
 export async function getReadingTime(postId: string): Promise<string> {
-  const posts = await getCollection('blog');
-  const post = posts.find(p => p.id === postId);
-  
+  const posts = await getCollection("blog");
+  const post = posts.find((p) => p.id === postId);
+
   if (!post || !post.body) {
-    return '5 min read'; // fallback
+    return "5 min read"; // fallback
   }
-  
+
   return calculateReadingTime(post.body);
 }

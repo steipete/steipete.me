@@ -34,7 +34,9 @@ export async function getStaticPaths() {
           postSlug.match(/^(\d{4})-\d{2}-\d{2}/)
           ? postSlug.substring(0, 4)
           : // If no year can be found, use the current year as fallback
-            new Date().getFullYear().toString();
+            new Date()
+              .getFullYear()
+              .toString();
 
       // Create a slug with the year prefix
       const yearSlug = `${year}/${postSlug.replace(/^\d{4}-\d{2}-\d{2}-/, "")}`;

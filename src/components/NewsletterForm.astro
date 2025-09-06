@@ -1,9 +1,9 @@
 ---
 export interface Props {
-  variant?: 'default' | 'compact';
+  variant?: "default" | "compact";
 }
 
-const { variant = 'default' } = Astro.props;
+const { variant = "default" } = Astro.props;
 ---
 
 <div class={variant === 'default' ? 'newsletter-box bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-6 my-8' : 'newsletter-compact mt-6'}>

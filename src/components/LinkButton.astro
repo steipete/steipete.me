@@ -8,14 +8,7 @@ export interface Props {
   disabled?: boolean;
 }
 
-const {
-  id,
-  href,
-  class: className = "",
-  ariaLabel,
-  title,
-  disabled = false,
-} = Astro.props;
+const { id, href, class: className = "", ariaLabel, title, disabled = false } = Astro.props;
 ---
 
 {

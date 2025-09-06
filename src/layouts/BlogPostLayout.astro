@@ -1,19 +1,18 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "../components/FormattedDate.astro";
-import Layout from "./Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import NewsletterForm from "../components/NewsletterForm.astro";
 import { SITE } from "@/config";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import Layout from "./Layout.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   slug: string;
   readingTime?: string;
 };
 
-const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } =
-  Astro.props;
+const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } = Astro.props;
 
 // Enforce canonical URL to always be /posts/ path without trailing slash
 // This matches Vercel's trailingSlash: false configuration

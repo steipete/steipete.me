@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async () => {
   const markdownContent = `# Peter Steinberger (@steipete)
@@ -25,8 +25,8 @@ AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub
   return new Response(markdownContent, {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 };

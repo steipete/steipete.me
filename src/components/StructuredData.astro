@@ -17,7 +17,7 @@ if (type === "BlogPosting") {
     author: {
       "@type": "Person",
       name: data.author || "Peter Steinberger",
-      url: "https://steipete.me/about"
+      url: "https://steipete.me/about",
     },
     datePublished: data.pubDatetime.toISOString(),
     dateModified: data.modDatetime?.toISOString() || data.pubDatetime.toISOString(),
@@ -26,18 +26,18 @@ if (type === "BlogPosting") {
       name: "Peter Steinberger",
       logo: {
         "@type": "ImageObject",
-        url: "https://steipete.me/peter-avatar.jpg"
-      }
+        url: "https://steipete.me/peter-avatar.jpg",
+      },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": data.url
+      "@id": data.url,
     },
     image: data.ogImage || "https://steipete.me/peter-avatar.jpg",
     articleSection: data.tags?.[0] || "Technology",
     keywords: data.tags?.join(", ") || "",
     wordCount: data.wordCount,
-    timeRequired: data.readingTime
+    timeRequired: data.readingTime,
   };
 } else if (type === "Person") {
   structuredData = {
@@ -49,10 +49,11 @@ if (type === "BlogPosting") {
     sameAs: [
       "https://github.com/steipete",
       "https://twitter.com/steipete",
-      "https://bsky.app/profile/steipete.me"
+      "https://bsky.app/profile/steipete.me",
     ],
     jobTitle: "Software Engineer",
-    description: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix."
+    description:
+      "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
   };
 } else if (type === "WebSite") {
   structuredData = {
@@ -60,16 +61,17 @@ if (type === "BlogPosting") {
     "@type": "WebSite",
     name: "Peter Steinberger",
     url: "https://steipete.me",
-    description: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
+    description:
+      "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
     author: {
       "@type": "Person",
-      name: "Peter Steinberger"
+      name: "Peter Steinberger",
     },
     potentialAction: {
       "@type": "SearchAction",
       target: "https://steipete.me/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 ---

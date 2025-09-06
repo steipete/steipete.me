@@ -1,7 +1,7 @@
 ---
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import IconCalendar from "@/assets/icons/IconCalendar.svg";
 import { SITE } from "@/config";
 
@@ -25,8 +25,7 @@ const {
 } = Astro.props;
 
 /* ========== Formatted Datetime ========== */
-const latestDatetime =
-  modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime;
+const latestDatetime = modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime;
 const datetime = dayjs(latestDatetime).tz(postTimezone || SITE.timezone);
 
 const date = datetime.format("D MMM, YYYY"); // e.g., '22 Mar, 2025'

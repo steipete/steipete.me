@@ -163,7 +163,9 @@ export function getPageCriticalCSS(pagePath: string): string {
   // You can customize critical CSS per page type
   if (pagePath === "/" || pagePath === "") {
     // Homepage specific critical CSS
-    return criticalCSS + `
+    return (
+      criticalCSS +
+      `
       /* Hero section */
       #hero img {
         width: 10rem;
@@ -171,12 +173,15 @@ export function getPageCriticalCSS(pagePath: string): string {
         border-radius: 9999px;
         object-fit: cover;
       }
-    `;
+    `
+    );
   }
-  
+
   if (pagePath.startsWith("/posts/")) {
     // Blog post specific critical CSS
-    return criticalCSS + `
+    return (
+      criticalCSS +
+      `
       /* Article typography */
       .prose {
         color: rgb(var(--foreground));
@@ -199,8 +204,9 @@ export function getPageCriticalCSS(pagePath: string): string {
         font-size: 0.875rem;
         line-height: 1.7142857;
       }
-    `;
+    `
+    );
   }
-  
+
   return criticalCSS;
 }

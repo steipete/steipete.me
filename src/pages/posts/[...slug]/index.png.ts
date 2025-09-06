@@ -1,8 +1,8 @@
+import { type CollectionEntry, getCollection } from "astro:content";
 import type { APIRoute } from "astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-import { getPath } from "@/utils/getPath";
-import { generateOgImageForPost } from "@/utils/generateOgImages";
 import { SITE } from "@/config";
+import { generateOgImageForPost } from "@/utils/generateOgImages";
+import { getPath } from "@/utils/getPath";
 
 export async function getStaticPaths() {
   if (!SITE.dynamicOgImage) {
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   }
 
   const posts = await getCollection("blog").then((p) =>
-    p.filter(({ data }) => !data.draft && !data.ogImage),
+    p.filter(({ data }) => !data.draft && !data.ogImage)
   );
 
   return posts.map((post) => ({
@@ -27,10 +27,7 @@ export const GET: APIRoute = async ({ props }) => {
     });
   }
 
-  return new Response(
-    await generateOgImageForPost(props as CollectionEntry<"blog">),
-    {
-      headers: { "Content-Type": "image/png" },
-    },
-  );
+  return new Response(await generateOgImageForPost(props as CollectionEntry<"blog">), {
+    headers: { "Content-Type": "image/png" },
+  });
 };

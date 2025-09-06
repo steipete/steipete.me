@@ -1,10 +1,10 @@
 ---
-import { slugifyStr } from "@/utils/slugify";
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getPath } from "@/utils/getPath";
-import Datetime from "./Datetime.astro";
 import { calculateReadingTime } from "@/utils/readingTime";
-import { Image } from "astro:assets";
+import { slugifyStr } from "@/utils/slugify";
+import Datetime from "./Datetime.astro";
 
 export interface Props extends CollectionEntry<"blog"> {
   variant?: "h2" | "h3";

@@ -1,19 +1,18 @@
 ---
-import Hr from "./Hr.astro";
-import IconX from "@/assets/icons/IconX.svg";
+import IconArchive from "@/assets/icons/IconArchive.svg";
+import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
-import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
-import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
-import LinkButton from "./LinkButton.astro";
+import IconX from "@/assets/icons/IconX.svg";
 import { SITE } from "@/config";
+import Hr from "./Hr.astro";
+import LinkButton from "./LinkButton.astro";
 
 const { pathname } = Astro.url;
 
 // Remove trailing slash from current pathname if exists
-const currentPath =
-  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
   const currentPathArray = currentPath.split("/").filter((p) => p.trim());
