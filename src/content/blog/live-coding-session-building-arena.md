@@ -8,22 +8,11 @@ tags: ["live-coding", "arena", "development", "ai", "productivity"]
 
 Join me for an unfiltered look at building Arena - a live coding session where you can see the real development process in action. No scripts, no perfect outcomes, just authentic problem-solving and coding as it happens.
 
-**I built and shipped a brand‑new feature live (in \~1 hour). Here's the play‑by‑play + what I learned.**  
-*5‑minute read*
+**I built and shipped a brand‑new feature live (in \~1 hour). Here's the play‑by‑play + what I learned.**
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe 
-    src="https://www.youtube.com/embed/68BS5GCRcBo" 
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-    frameborder="0" 
-    allowfullscreen
-    title="Live Coding Session: Building Arena">
-  </iframe>
-</div>
+{% youtube https://www.youtube.com/watch?v=68BS5GCRcBo %}
 
 This AI-assisted development session captures the messy, iterative nature of real development work - the debugging, the false starts, the moments of breakthrough, and everything in between. Whether you're curious about AI-assisted development workflows or just enjoy watching code come to life, this raw footage shows what building software actually looks like.
-
----
 
 ### TL;DR
 
@@ -31,8 +20,6 @@ This AI-assisted development session captures the messy, iterative nature of rea
 * Did it with **AI agents** (GPT "Codex" for repo‑aware coding), **no branches**, heavy linting/formatting, and a few glue CLIs.
 * Key moves: **keep context clean**, **let the agent read the repo**, **cache long jobs**, **paste errors back in**, **write tests after** to catch drift.
 * Result: working POC, with a couple of fun bugs (e.g., team score mismatch) found and fixed on‑air.
-
----
 
 ## What we built (live)
 
@@ -44,8 +31,6 @@ This AI-assisted development session captures the messy, iterative nature of rea
   * **Infra touches:** DB migration for `arena_cache`, long‑running job in the background, streaming UI, auth‑guarded page
 
 First run produced a **pair score of 89** and a **team score of 88** (which uncovered a small logic mismatch we then corrected).
-
----
 
 ## Stack & setup (quick tour)
 
@@ -63,8 +48,6 @@ First run produced a **pair score of 89** and a **team score of 88** (which unco
 * **Docs ingestion:** pull only what's needed, prefer **markdown** via a crawler over raw HTML to save tokens.
 * **Validation:** schema validation on inputs; fail fast and surface helpful messages.
 
----
-
 ## How the live build unfolded
 
 1. **Prompt the plan:** "Build 'Arena' with a 4‑user picker, cap total tweets at 1,000, fetch/store text only, analyze styles/interests, compute pair + team compatibility, cache results."
@@ -79,8 +62,6 @@ First run produced a **pair score of 89** and a **team score of 88** (which unco
 5. **Tight debug loop:** paste console/server errors **directly into the agent**; it patches fast because the whole repo context is live.
 6. **Add quality net:** ask the agent to **write tests after the feature**—good at catching its own drift.
 
----
-
 ## Tactics that mattered (and you can reuse)
 
 * **Keep the model's head in your repo.** Minimize tool noise and only inject docs when needed; markdown > HTML to conserve context.
@@ -93,8 +74,6 @@ First run produced a **pair score of 89** and a **team score of 88** (which unco
 * **Avoid local models for this workload.** Context and stability matter more than shaving milliseconds.
 * **CLIs beat MCP sprawl.** A 2‑hour CLI wrapper (logs, API pulls) pays for itself and keeps context small.
 * **Small "proof" projects unblock big features.** If streaming or a protocol is hard, build a tiny in‑repo example that works, then transplant.
-
----
 
 ## Mini‑playbook (the prompts that worked)
 
@@ -111,8 +90,6 @@ First run produced a **pair score of 89** and a **team score of 88** (which unco
 
   * "Here's the exact error from the server/devtools: <paste> — fix and explain the change."
 
----
-
 ## Q\&A highlights (condensed)
 
 * **Why Codex over Claude Code?** Codex actually **reads more of the repo** without handholding; requires fewer "look here, then there" hints. Claude still useful for search/web, but for coding Codex felt faster end‑to‑end.
@@ -120,8 +97,6 @@ First run produced a **pair score of 89** and a **team score of 88** (which unco
 * **Manual approvals for agent actions?** No. That becomes "Windows Vista prompts." Use Git + backups; review diffs; move fast.
 * **Repo prompts & MCP servers?** Nice idea, but they bloat context and introduce fragility. **Lean instructions + small CLIs** work better.
 * **Compaction & long sessions?** Plan features to **fit the context**. If you expect many loops (e.g., test repairs), use the flow that compacts well—or split the task.
-
----
 
 ## What broke (and how we recovered)
 
