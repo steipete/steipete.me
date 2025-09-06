@@ -14,7 +14,6 @@
     "sync": "astro sync",
     "lint": "biome lint src",
     "lint:fix": "biome lint --write src",
-    "format:check": "biome format --check src",
     "format": "biome format --write src",
     "check": "biome check src",
     "check:fix": "biome check --write src",

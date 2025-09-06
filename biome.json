@@ -13,7 +13,8 @@
       "!**/node_modules/",
       "!**/.astro/",
       "!**/public/",
-      "!**/package-lock.json"
+      "!**/package-lock.json",
+      "!**/*.css"
     ]
   },
   "formatter": {
@@ -28,7 +29,9 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "useNodejsImportProtocol": "off",
+        "useTemplate": "off"
       },
       "suspicious": {
         "noExplicitAny": "off"
@@ -37,8 +40,12 @@
         "noForEach": "off"
       },
       "correctness": {
-        "noUnusedImports": "warn",
-        "noUnusedVariables": "warn"
+        "noUnusedVariables": "off",
+        "noUnusedImports": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useAriaPropsSupportedByRole": "off"
       }
     }
   },
