@@ -36,4 +36,4 @@ As Code of Conduct we've been using the Cocoapods one: ["tl:dr: Don’t be a Jer
 
 ## What Now?
 
-Do you want to see Claude Code Anonymous in your city? Make it happen! I'm happy to help with reachout via Twitter, just [email](mailto:steipete@gmail.com) or [DM](https://x.com/steipete) me.
+Do you want to see Claude Code Anonymous in your city? Make it happen! I'm happy to help with outreach via Twitter, just [email](mailto:steipete@gmail.com) or [DM](https://x.com/steipete) me.
