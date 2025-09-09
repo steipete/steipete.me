@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Anonymous"
-description: "A support group for developers addicted to AI-powered coding assistance"
+description: "Introducing Claude Code Anonymous - a new meetup format for full-breadth developers to share their AI-powered development experiences through lightning talks"
 pubDatetime: 2025-09-09T12:00:00+02:00
 heroImage: /assets/img/2025/claude-code-anonymous/hero.png
 tags: ["ai", "claude", "humor", "development", "productivity"]
