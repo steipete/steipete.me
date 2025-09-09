@@ -32,7 +32,7 @@ It's really quite simple: Find a space, organize some drinks and spread the word
 
 So far every event had far more interest than space available, so we've been reviewing people to make sure that builders are there - this is not a space for folks who just look to hire or market their product. Same rules apply to lightning talks. Show us what you learned, not what you sell.
 
-As Code of Conduct we've been using the Cocoapods one which tl:dr's to ["Don’t be a Jerk"](https://cocoapods.org/legal)
+As Code of Conduct we've been using the Cocoapods one: ["tl:dr: Don’t be a Jerk"](https://cocoapods.org/legal)
 
 ## What Now?
 
