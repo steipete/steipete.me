@@ -8,7 +8,7 @@ tags: ["ai", "claude", "meetup", "development"]
 
 A few weeks ago I reconnected with an old friend of mine, [Orta Therox](https://orta.io/) and we both discussed how Claude Code completely changed how we approach building software, and that we both have trouble thinking about anything else. Out of this conversation came an idea, and we created a new meetup format, Claude Code Anonymous.
 
-There were quite a few people who wanted to join this event but were not in London, so in [High-Agency-Style](https://www.highagency.com/), I encouraged them to start their own chapters in their cities, and now we have events in [London](https://luma.com/u5rompg9), [Vienna](https://luma.com/q50cmcb2), [Berlin](https://luma.com/5lizqnpz), [Cologne](https://luma.com/j1fr97j3), [San Francisco](https://luma.com/i37ahi52), and more cities coming soon.
+There were quite a few people who wanted to join this event but were not in London, so in [High-Agency-Style](https://www.highagency.com/), I encouraged them to start their own chapters in their cities, and now we have events in [London](https://luma.com/u5rompg9), [Vienna](https://luma.com/q50cmcb2), [Berlin](https://luma.com/5lizqnpz), [Cologne](https://luma.com/j1fr97j3), [San Francisco](https://luma.com/i37ahi52), and more cities coming soon. The first London meetup was such a success that we're doing another one on October 13th.
 
 ## What is Claude Code Anonymous
 
