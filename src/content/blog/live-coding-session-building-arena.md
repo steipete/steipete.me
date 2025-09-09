@@ -6,24 +6,23 @@ heroImage: /assets/img/2025/live-coding-session-building-arena/hero.png
 tags: ["live-coding", "arena", "development", "ai", "productivity"]
 ---
 
-tl:dr: I built and shipped a brand‑new feature live (in \~1 hour). Here's the play‑by‑play + what I learned.
+**tl;dr: I built and shipped a brand‑new feature live (in \~1 hour). Here's the play‑by‑play + what I learned.**
 
 {% youtube https://www.youtube.com/watch?v=68BS5GCRcBo %}
 
-Join me for an unfiltered look at building Arena - a live coding session where you can see my development process in action, unscripted. 
+Join me for an unfiltered look at building Arena - a live coding session where you can see my development process in action, unscripted. Read more about [my AI development workflow here](/posts/2025/optimal-ai-development-workflow).
 
 🤖 Here's an AI-assisted summary of what you can see in the video:
 
 ## What we built
 
 * **Feature:** *Arena* — a new feature in my upcoming project, to see how well 2–4 users from X match
+* **Input:** Twitter/X user handles
+* **Pipeline:** fetch N tweets per user (shares a 1,000‑tweet budget), strip to necessary fields, run profile analysis, then **score compatibility** (per pair + whole team)
+* **UX:** user picker + "Analyze" button, results table, cached runs selectable under the search box
+* **Infra touches:** DB migration for `arena_cache`, long‑running job in the background, streaming UI, auth‑guarded page
 
-  * **Input:** Twitter/X user handles
-  * **Pipeline:** fetch N tweets per user (shares a 1,000‑tweet budget), strip to necessary fields, run profile analysis, then **score compatibility** (per pair + whole team)
-  * **UX:** user picker + "Analyze" button, results table, cached runs selectable under the search box
-  * **Infra touches:** DB migration for `arena_cache`, long‑running job in the background, streaming UI, auth‑guarded page
-
-I managed to complete the feature in ~1h, and we got a  **pair score of 89** for me and [@intellectronica]https://x.com/intellectronica).
+I managed to complete the feature in ~1h, and we got a  **pair score of 89** for me and [@intellectronica](https://x.com/intellectronica).
 
 ## Stack & Setup
 
