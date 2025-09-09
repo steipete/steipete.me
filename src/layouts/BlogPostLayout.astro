@@ -193,6 +193,63 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
 
     let foundTwitterEmbeds = false;
     let foundYoutubeEmbeds = false;
+
+    // Helper to extract a YouTube video ID from various URL formats
+    const extractYouTubeId = (input) => {
+      let videoId = input;
+      try {
+        if (videoId.includes("youtube.com/watch")) {
+          const url = new URL(videoId);
+          videoId = url.searchParams.get("v") || "";
+        } else if (videoId.includes("youtu.be/")) {
+          videoId = videoId.split("youtu.be/")[1]?.split("?")[0] || "";
+        } else if (videoId.includes("youtube.com/embed/")) {
+          videoId = videoId.split("youtube.com/embed/")[1]?.split("?")[0] || "";
+        }
+      } catch (_) {
+        // If URL parsing fails, fall back to the raw input
+      }
+      return videoId;
+    };
+
+    // 1) Pre-pass: replace whole-paragraph shortcodes (most common case)
+    const pNodes = article.querySelectorAll("p");
+    pNodes.forEach((p) => {
+      const text = (p.textContent || "").trim();
+      const twMatch = text.match(/\{% twitter (https:\/\/[^\s]+) %\}/);
+      const ytMatch = text.match(/\{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %\}/);
+
+      if (twMatch && twMatch[1]) {
+        foundTwitterEmbeds = true;
+        const url = twMatch[1];
+        const placeholder = document.createElement("div");
+        placeholder.className = "twitter-tweet-placeholder";
+        placeholder.dataset.tweetUrl = url;
+        placeholder.innerHTML = `
+          <blockquote class="twitter-tweet">
+            <a href="${url}">Loading tweet...</a>
+          </blockquote>
+        `;
+        p.replaceWith(placeholder);
+      } else if (ytMatch && ytMatch[1]) {
+        foundYoutubeEmbeds = true;
+        const videoId = extractYouTubeId(ytMatch[1]);
+        const container = document.createElement("div");
+        container.className = "youtube-embed-container";
+        container.innerHTML = `
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/${videoId}"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        `;
+        p.replaceWith(container);
+      }
+    });
     
     // Check if there are any Twitter blockquotes already in the HTML
     const twitterBlockquotes = article.querySelectorAll('blockquote.twitter-tweet');
@@ -202,7 +259,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       initializeTwitterWidgets();
     }
 
-    // Process all text content in the article
+    // 2) Fallback: process any remaining text nodes that still contain shortcodes
     const walker = document.createTreeWalker(
       article,
       NodeFilter.SHOW_TEXT,
@@ -235,16 +292,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       content = content.replace(youtubeEmbedRegex, (match, videoId) => {
         foundYoutubeEmbeds = true;
         hasChanges = true;
-
-        // Extract video ID from URL if needed
-        if (videoId.includes("youtube.com/watch")) {
-          const url = new URL(videoId);
-          videoId = url.searchParams.get("v") || "";
-        } else if (videoId.includes("youtu.be/")) {
-          videoId = videoId.split("youtu.be/")[1]?.split("?")[0] || "";
-        } else if (videoId.includes("youtube.com/embed/")) {
-          videoId = videoId.split("youtube.com/embed/")[1]?.split("?")[0] || "";
-        }
+        videoId = extractYouTubeId(videoId);
 
         return `<div class="youtube-embed-container">
             <iframe
