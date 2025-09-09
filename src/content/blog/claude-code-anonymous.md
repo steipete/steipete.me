@@ -16,6 +16,8 @@ Over the last few months I noticed that not everyone gets hooked the same way wi
 
 Claude Code Anonymous is the wordplay on this phenomenon. We wanted to create a space for people to be able to talk through their experiences, and understand that for some it's hard to speak publicly about using AI / LLM tooling. Talks are not recorded, nor is there a live-stream. The recipe is simple: get a group of like-minded people together, provide a space, drinks, pizza, and focus on the social aspect.
 
+## Meetup Structure
+
 These meetups are structured as a series of lightning talks, ~5m long with talks which start along the lines of: "I was X when Claude Code Y". ​So, "I was impressed when Claude Code figured out a bug I had been...", "I was disappointed when Claude Code deleted my production database" etc.
 
 Intro + Talks should be one hour sharp, so there's 2-3h left for social and talking. I've been in too many meetups where the talks were too long and people left right after the talks - the goal of Claude Code Anonymous is to meet likeminded people more than watching long talks. And the 5m limit is there so that there's more people who can show off their work, and it's a good starting point for a talk later on.
