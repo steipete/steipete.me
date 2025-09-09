@@ -22,11 +22,11 @@ These meetups are structured as a series of lightning talks, ~5m long with talks
 
 Intro + Talks should be one hour sharp, so there's 2-3h left for social and talking. I've been in too many meetups where the talks were too long and people left right after the talks - the goal of Claude Code Anonymous is to meet likeminded people more than watching long talks. And the 5m limit is there so that there's more people who can show off their work, and it's a good starting point for a talk later on.
 
-## Why just Claude Code and not X?
+## Why Claude Code and not X?
 
 Don't take the name too literal. We're open for any agentic work. We just picked the name Claude Code to target builders and not marketing or HR folks. Calling it "agentic engineering" would attract a different kind of audience. Of course you can talk about any tool you like, be it codex, opencode, Cursor or whatever!
 
-## How can I start a meetup?
+## How do I start a meetup?
 
 It's really quite simple: Find a space, organize some drinks and spread the word. We've been using [Luma](https://luma.com/) as event platform, and I suggest to let people apply with some questions such as "What are you building" and their social profile. So far every event had far more interest than space available, so we've been reviewing people to make sure that builders are there - this is not a space for folks who just look to hire or market their product. Same rules apply to lightning talks. Show us what you learned, not what you sell.
 
