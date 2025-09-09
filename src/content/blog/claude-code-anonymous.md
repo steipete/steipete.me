@@ -32,4 +32,4 @@ As Code of Conduct we've been using the Cocoapods one which tl:dr's to ["Don’t
 
 ## What Now?
 
-Do you want to see Claude Code Anonymous in your city? Make it happen! I'm happy to help with reachout via Twitter, just email or DM me.
+Do you want to see Claude Code Anonymous in your city? Make it happen! I'm happy to help with reachout via Twitter, just [email](mailto:steipete@gmail.com) or [DM](https://x.com/steipete) me.
