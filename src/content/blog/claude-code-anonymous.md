@@ -1,9 +1,9 @@
 ---
 title: "Claude Code Anonymous"
-description: "Introducing Claude Code Anonymous - a new meetup format for full-breadth developers to share their AI-powered development experiences through lightning talks"
+description: "Introducing Claude Code Anonymous - a new meetup format for full-breadth developers"
 pubDatetime: 2025-09-09T12:00:00+02:00
 heroImage: /assets/img/2025/claude-code-anonymous/hero.png
-tags: ["ai", "claude", "humor", "development", "productivity"]
+tags: ["ai", "claude", "meetup", "development"]
 ---
 
 A few weeks ago I reconnected with an old friend of mine, [Orta Therox](https://orta.io/) and we both discussed how Claude Code completely changed how we approach building software, and that we both have trouble thinking about anything else. Out of this conversation came an idea, and we created a new meetup format, Claude Code Anonymous.
