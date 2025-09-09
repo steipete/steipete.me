@@ -12,9 +12,9 @@ Join me for an unfiltered look at building Arena - a live coding session where y
 
 {% youtube https://www.youtube.com/watch?v=68BS5GCRcBo %}
 
-🤖 Here's an AI-assisted summary of what you can see in the video:
-
 ## What we built
+
+🤖 Heads up! This is an AI-Assisted summary.
 
 * **Feature:** *Arena* — a new feature in my upcoming project, to see how well 2–4 users from X match
 * **Input:** Twitter/X user handles
@@ -61,4 +61,4 @@ I managed to complete the feature in ~1h, and we got a  **pair score of 89** for
 * **Repo prompts & MCP servers?** Nice idea, but they bloat context and introduce fragility. **Lean instructions + small CLIs** work better.
 * **Compaction & long sessions?** Plan features to **fit the context**. If you expect many loops (e.g., test repairs), use the flow that compacts well - or split the task.
 
-If you want to read more about my agent workflow, check [my AI development workflow here](/posts/2025/optimal-ai-development-workflow).
+If you want to read more about my agent workflow, check [my AI development post here](/posts/2025/optimal-ai-development-workflow).
