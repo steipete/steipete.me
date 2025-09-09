@@ -62,3 +62,5 @@ I managed to complete the feature in ~1h, and we got a  **pair score of 89** for
 * **Compaction & long sessions?** Plan features to **fit the context**. If you expect many loops (e.g., test repairs), use the flow that compacts well - or split the task.
 
 If you want to read more about my agent workflow, check [my AI development post here](/posts/2025/optimal-ai-development-workflow).
+
+For more advanced prompting techniques with GPT-5, also check out the [OpenAI GPT-5 Prompting Guide](https://cookbook.openai.com/examples/gpt-5/gpt-5_prompting_guide).
