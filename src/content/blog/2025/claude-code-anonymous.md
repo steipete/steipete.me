@@ -26,6 +26,8 @@ Intro + Talks should be one hour sharp, so there's 2-3h left for social and talk
 
 Don't take the name too literal. We're open for any agentic work. We just picked the name Claude Code to target builders and not marketing or HR folks. Calling it "agentic engineering" would attract a different kind of audience. Of course you can talk about any tool you like, be it codex, opencode, Cursor or whatever!
 
+IMO Claude Code is the defining agent that really started the revolution, so I made it the proprietary eponym. Like Jacuzzi or Tupperware. If you wanna be neutral, call it Agents Anonymous 🕵️‍♂️
+
 ## How do I start a meetup?
 
 It's really quite simple: Find a space, organize some drinks and spread the word. We've been using [Luma](https://luma.com/) as event platform, and I suggest to let people apply with some questions such as "What are you building" and their social profile.
