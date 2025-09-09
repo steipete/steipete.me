@@ -6,11 +6,11 @@ heroImage: /assets/img/2025/live-coding-session-building-arena/hero.png
 tags: ["live-coding", "arena", "development", "ai", "productivity"]
 ---
 
-**tl;dr: I built and shipped a brand-new feature live (in ~1 hour). Here's the play-by-play + what I learned.**
+**tl;dr: I built and shipped a brand-new feature live (in ~1 hour), watch how I approach agentic engineering with codex**
+
+Join me for an unfiltered look at building Arena - a live coding session where you can see my development process in action, unscripted. Thanks to Eleanor Berger for motivating me to do this video and for organizing the live event!
 
 {% youtube https://www.youtube.com/watch?v=68BS5GCRcBo %}
-
-Join me for an unfiltered look at building Arena - a live coding session where you can see my development process in action, unscripted. Read more about [my AI development workflow here](/posts/2025/optimal-ai-development-workflow).
 
 🤖 Here's an AI-assisted summary of what you can see in the video:
 
@@ -42,15 +42,15 @@ I managed to complete the feature in ~1h, and we got a  **pair score of 89** for
 
 ## Tactics that mattered
 
-* **Keep the model's head in your repo.** Minimize tool noise and only inject docs when needed; markdown > HTML to conserve context.
-* **Let Codex plan or "plan-only" on demand.** It proposes next steps that are usually solid; green-light them in sequence.
+* **Keep the agent context clean.** Minimize tool noise and only inject docs when needed; markdown > HTML to conserve context.
+* **Let codex plan on demand.** It proposes next steps that are usually solid; green-light them in sequence.
 * **Cache long tasks early.** Add a table + background job queue before you polish UI; this saves you from re-running expensive analysis.
 * **Copy-paste errors verbatim.** Don't over-explain; just drop logs in and let the agent fix what broke.
 * **Comments as spec.** Ask for clear intent comments near tricky code; they're for you and for the agent on the next session.
 * **Write tests afterwards, not first.** These agents are great at back-filling tests once the shape exists, and that's usually enough to catch regressions.
-* **Work on `main`, commit surgically.** You still get speed with safety. Backups + Git are your airbags.
+* **Work on `main`, commit surgically.** You still get speed with safety. Backups + Git are your safety net.
 * **Avoid local models for this workload.** Context and stability matter more than shaving milliseconds.
-* **CLIs beat MCP sprawl.** A 2-hour CLI wrapper (logs, API pulls) pays for itself and keeps context small.
+* **CLIs beat MCPs.** A 2-hour CLI wrapper (logs, API pulls) pays for itself and keeps context small.
 * **Small "proof" projects unblock big features.** If streaming or a protocol is hard, build a tiny in-repo example that works, then transplant.
 
 ## Q&A highlights
@@ -60,3 +60,5 @@ I managed to complete the feature in ~1h, and we got a  **pair score of 89** for
 * **Manual approvals for agent actions?** No. That becomes "Windows Vista prompts." Use Git + backups; review diffs; move fast.
 * **Repo prompts & MCP servers?** Nice idea, but they bloat context and introduce fragility. **Lean instructions + small CLIs** work better.
 * **Compaction & long sessions?** Plan features to **fit the context**. If you expect many loops (e.g., test repairs), use the flow that compacts well - or split the task.
+
+If you want to read more about my agent workflow, check [my AI development workflow here](/posts/2025/optimal-ai-development-workflow).
