@@ -72,7 +72,7 @@
         {
           "type": "header",
           "key": "accept",
-          "value": "(?i).*text/markdown.*"
+          "value": ".*text/markdown.*"
         }
       ],
       "destination": "/index.md"
@@ -83,7 +83,7 @@
         {
           "type": "header",
           "key": "accept",
-          "value": "(?i).*text/markdown.*"
+          "value": ".*text/markdown.*"
         }
       ],
       "destination": "/about.md"
@@ -94,7 +94,7 @@
         {
           "type": "header",
           "key": "accept",
-          "value": "(?i).*text/markdown.*"
+          "value": ".*text/markdown.*"
         }
       ],
       "destination": "/archives.md"
@@ -105,7 +105,7 @@
         {
           "type": "header",
           "key": "accept",
-          "value": "(?i).*text/markdown.*"
+          "value": ".*text/markdown.*"
         }
       ],
       "destination": "/posts.md"
@@ -116,7 +116,7 @@
         {
           "type": "header",
           "key": "accept",
-          "value": "(?i).*text/markdown.*"
+          "value": ".*text/markdown.*"
         }
       ],
       "destination": "/posts/:path*.md"
