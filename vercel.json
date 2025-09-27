@@ -9,6 +9,7 @@
     {
       "source": "/:path*.md",
       "has": [{ "type": "host", "value": "steipete.me" }],
+      "missing": [{ "type": "header", "key": "accept", "value": "(?i).*text/markdown.*" }],
       "destination": "https://steipete.md/:path*",
       "permanent": false
     },
