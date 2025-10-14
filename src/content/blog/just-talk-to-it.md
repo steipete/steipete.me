@@ -1,6 +1,6 @@
 ---
 title: 'Just Talk To It - the no-bs Way of Agentic Engineering'
-description: 'A practical guide to working with AI coding agents without the hype'
+description: 'A practical guide to working with AI coding agents without the hype.'
 pubDatetime: 2025-10-14T10:00:00+01:00
 heroImage: /assets/img/2025/just-talk-to-it/curve-angentic.jpg
 tags: ["ai", "claude", "engineering", "productivity"]
