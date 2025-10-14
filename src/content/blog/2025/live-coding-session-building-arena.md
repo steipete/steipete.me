@@ -1,6 +1,6 @@
 ---
 title: "Live Coding Session: Building Arena"
-description: "Watch me build Arena live - a real-time collaborative coding session exploring AI-powered development workflows"
+description: "Watch me build Arena live - a real-time collaborative coding session exploring AI-powered development workflows."
 pubDatetime: 2025-09-06T12:00:00+02:00
 heroImage: /assets/img/2025/live-coding-session-building-arena/hero.png
 tags: ["live-coding", "arena", "development", "ai", "productivity"]

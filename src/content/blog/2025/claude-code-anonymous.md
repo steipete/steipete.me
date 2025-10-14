@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Anonymous"
-description: "Introducing Claude Code Anonymous - a new meetup format for full-breadth developers"
+description: "Introducing Claude Code Anonymous - a new meetup format for full-breadth developers."
 pubDatetime: 2025-09-09T12:00:00+02:00
 heroImage: /assets/img/2025/claude-code-anonymous/hero.png
 tags: ["ai", "claude", "meetup", "development"]
