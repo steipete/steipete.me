@@ -58,13 +58,13 @@ IMO there's simply not much space between the end user and the model company. I 
 
 I like that we have tools like amp or Factory, I just don't see them surviving long-term. Both codex and claude code are getting better with every release, and they all converge to the same ideas and feature set. Some might have a temporary edge with better todo lists, steering or slight dx features, but I don't see them significantly out-competing the big AI companies.
 
-amp moved away from GPT-5 as driver and now calls it their ["oracle"](https://ampcode.com/news/gpt-5-oracle). Meanwhile I use codex and basically constantly work with the smarter model, the oracle. [Yes, there are benchmarks](https://x.com/btibor91/status/1976299256383250780), but given the skewed usage numbers, I don't trust them. codex gets me far better results than amp.
+amp moved away from GPT-5 as driver and now calls it their ["oracle"](https://ampcode.com/news/gpt-5-oracle). Meanwhile I use codex and basically constantly work with the smarter model, the oracle. [Yes, there are benchmarks](https://x.com/btibor91/status/1976299256383250780), but given the skewed usage numbers, I don't trust them. codex gets me far better results than amp. I have to give them kudos tho for session sharing, they push some interesting ideas ahead.
 
-Factory, unconvinced. Their marketing videos are just too cringe, and any company that tries to get my attentions with free tokens in my DMs reduce my respect for them. If you're that good, you don't need to convince me by giving me free stuff. Additionally, some posts on Twitter about it have this paid influencer smell. If you use claude code tho, you'll feel right at home with the [signature flicker](https://x.com/badlogicgames/status/1977103325192667323).
+Factory, unconvinced. Their videos are a bit cringe, I do hear good things in my timeline about it tho, even if images aren't supported (yet) and they have the [signature flicker](https://x.com/badlogicgames/status/1977103325192667323).
 
 Cursor... it's tab completion model is industry leading, if you still write code yourself. I use VS Code mostly, I do like them pushing things like browser automation and plan mode tho. I did experiment with GPT-5-Pro but [Cursor still has the same bugs that annoyed me back in May](https://x.com/steipete/status/1976226900516209035). I hear that's being worked on tho, so it stays in my dock.
 
-Others like Auggie were a blip on my timeline and nobody ever mentioned them again. In the end they all wrap either GPT-5 and/or Sonnet and are very replaceable. RAG might been helpful for Sonnet, but GPT-5 is so good at searching at you don't need a separate vector index for your code.
+Others like Auggie were a blip on my timeline and nobody ever mentioned them again. In the end they all wrap either GPT-5 and/or Sonnet and are replaceable. RAG might been helpful for Sonnet, but GPT-5 is so good at searching at you don't need a separate vector index for your code.
 
 The most promising candidates are opencode and crush, esp. in combination with open models. You can totally use your OpenAI or Anthropic sub with them as well ([thanks to clever hax](https://x.com/steipete/status/1977286197375647870)), but it's questionable if that is allowed, and what's the point of using a less capable harness for the model optimized for codex or Claude Code.
 
