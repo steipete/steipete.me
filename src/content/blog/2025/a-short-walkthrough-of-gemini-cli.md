@@ -49,8 +49,16 @@ cat my_script.js | gemini "Explain this code"
 
 The CLI is designed to be used in conjunction with other command-line tools. You can chain commands together to create powerful workflows. For instance, you could find all JavaScript files in a directory, and for each one, ask Gemini to check for potential bugs:
 
+**Linux/macOS:**
+
 ```bash
 find . -name "*.js" -print0 | xargs -0 -I {} sh -c 'cat {} | gemini "Find potential bugs in this code" && echo "Checked {}"'
+```
+
+**Windows:**
+
+```batch
+for /r %i in (*.js) do @(gemini "Find potential bugs in this code" < "%i" && echo "Checked %i")
 ```
 
 This is just a glimpse of what you can do with the Gemini CLI. By integrating it into your development process, you can automate tasks, get quick answers to your questions, and ultimately become a more productive developer.
