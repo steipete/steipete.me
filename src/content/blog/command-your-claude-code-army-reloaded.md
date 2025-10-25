@@ -1,68 +1,59 @@
 ---
-title: 'Command your Claude Code Army, Reloaded'
-description: 'Enhance your Claude Code workflow with VibeTunnel terminal title management for better multi-session tracking'
-pubDatetime: 2025-07-03T01:00:00+01:00
-heroImage: /assets/img/2025/command-your-claude-code-army-reloaded/vibetunnel.png
-tags: ["ai", "claude", "productivity", "vibetunnel", "terminal"]
+title: 'Getting Started with the Gemini CLI'
+description: 'A walkthrough of the Gemini CLI, a powerful tool for interacting with Google\'s Gemini models.'
+pubDatetime: 2025-10-25T10:00:00+01:00
+heroImage: /assets/images/AstroPaper-v5.png
+tags: ["ai", "gemini", "cli", "google", "development"]
 ---
 
-Managing multiple Claude Code sessions just got a whole lot easier. With [VibeTunnel](https://vibetunnel.sh/)'s new terminal title management feature, you can now see at a glance what each Claude instance is working on across your projects.
+The Gemini CLI is a powerful command-line interface that allows you to interact with Google's Gemini models directly from your terminal. This post will walk you through the basics of setting up and using the Gemini CLI to enhance your development workflow.
 
-The screenshot above shows the power of this feature: each Claude session displays exactly what it's working on, and Claude does this automatically without us having to ask for it. You can also set custom titles via `vt title "Custom title"` for more control. Clicking on a session selects that terminal, and you can also click on the folder icon to open Finder or on the Git info to open your Git client. This is all new in VibeTunnel 1.0 Beta 6, which you can download at [vibetunnel.sh](https://vibetunnel.sh/).
+## Installation
 
-I tried the solution from my [previous post](/posts/2025/commanding-your-claude-code-army/), but Claude kept rewriting the terminal title, so I needed a better solution—hence this VibeTunnel integration. Note that this only works for Claude instances that are started with the `vt` command as prefix (e.g., `vt claude`).
+First, you'll need to have the Gemini CLI installed. If you haven't already, you can typically install it via a package manager like npm or by following the instructions on the official Gemini documentation.
 
-## VibeTunnel Terminal Title Management
-
-Here's the complete section to add to your `~/.claude/CLAUDE.md` file:
-
-```
-## VibeTunnel Terminal Title Management
-
-When working in VibeTunnel sessions, actively use the `vt title` command to communicate your current actions and progress:
-
-### Usage
-vt title "Current action - project context"
-
-### Guidelines
-- **Update frequently**: Set the title whenever you start a new task, change focus, or make significant progress
-- **Be descriptive**: Use the title to explain what you're currently doing (e.g., "Analyzing test failures", "Refactoring auth module", "Writing documentation")
-- **Include context**: Add PR numbers, file names, or feature names when relevant
-- **Think of it as a status indicator**: The title helps users understand what you're working on at a glance
-- If `vt` command fails (only works inside VibeTunnel), simply ignore the error and continue
-
-### Examples
-# When starting a task
-vt title "Setting up Git app integration"
-
-# When debugging
-vt title "Debugging CI failures - playwright tests"
-
-# When working on a PR
-vt title "Implementing unique session names - github.com/amantus-ai/vibetunnel/pull/456"
-
-# When analyzing code
-vt title "Analyzing session-manager.ts for race conditions"
-
-# When writing tests
-vt title "Adding tests for GitAppLauncher"
-
-### When to Update
-- At the start of each new task or subtask
-- When switching between different files or modules
-- When changing from coding to testing/debugging
-- When waiting for long-running operations (builds, tests)
-- Whenever the user might wonder "what is Claude doing right now?"
-
-This helps users track your progress across multiple VibeTunnel sessions and understand your current focus.
+```bash
+npm install -g @google/gemini-cli
 ```
 
-## Implementation
+Once installed, you can verify the installation by running:
 
-To enable this feature in your Claude Code setup, you have two options:
+```bash
+gemini --version
+```
 
-1. **Automatic setup**: Simply paste the URL of this blog post into Claude and tell it to set it up for you.
+## Basic Usage
 
-2. **Manual setup**: Add the configuration above to your global Claude rules at `~/.claude/CLAUDE.md`. You can also check out the [full gist](https://gist.github.com/steipete/c297c84e1684c330b3325825d835da03) for additional implementation details.
+The Gemini CLI can be used for a variety of tasks, from simple queries to more complex, multi-turn conversations. Here's how you can ask a simple question:
 
-By keeping your terminal titles updated, you can effectively manage your "Claude Code Army" - running multiple AI assistants in parallel across different projects while maintaining clear visibility into what each one is doing.
+```bash
+gemini "What is the capital of France?"
+```
+
+The CLI will then print the model's response directly to your terminal.
+
+## Advanced Features
+
+The Gemini CLI is more than just a question-and-answer tool. It supports a range of advanced features that can be integrated into your scripts and workflows.
+
+### Working with Files
+
+You can pipe the content of a file to the Gemini CLI to ask questions about it or to have it perform a task based on the content. For example, to ask the CLI to explain a piece of code:
+
+```bash
+cat my_script.js | gemini "Explain this code"
+```
+
+### Chaining Commands
+
+The CLI is designed to be used in conjunction with other command-line tools. You can chain commands together to create powerful workflows. For instance, you could find all JavaScript files in a directory, and for each one, ask Gemini to check for potential bugs:
+
+```bash
+find . -name "*.js" -print0 | xargs -0 -I {} sh -c 'cat {} | gemini "Find potential bugs in this code" && echo "Checked {}"'
+```
+
+This is just a glimpse of what you can do with the Gemini CLI. By integrating it into your development process, you can automate tasks, get quick answers to your questions, and ultimately become a more productive developer.
+
+## Conclusion
+
+The Gemini CLI is a versatile tool that brings the power of Gemini to your command line. Whether you're a developer, a data scientist, or just someone who loves to experiment with AI, the Gemini CLI is a valuable addition to your toolkit.
