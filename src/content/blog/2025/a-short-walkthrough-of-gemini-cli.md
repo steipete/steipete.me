@@ -1,6 +1,6 @@
 ---
 title: 'Getting Started with the Gemini CLI'
-description: 'A walkthrough of the Gemini CLI, a powerful tool for interacting with Google\'s Gemini models.'
+description: "A walkthrough of the Gemini CLI, a powerful tool for interacting with Google's Gemini models."
 pubDatetime: 2025-10-25T10:00:00+01:00
 heroImage: /assets/images/AstroPaper-v5.png
 tags: ["ai", "gemini", "cli", "google", "development"]
