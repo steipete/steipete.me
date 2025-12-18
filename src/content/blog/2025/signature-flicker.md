@@ -42,10 +42,9 @@ Google felt this recently when they switched to their new TUI. In there, [you ha
 Compare to OpenAI's codex, which uses retained mode and I can interact with text just like I expect:
 ![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
 
-And then there's OpenCode:
-![opencode text demo](/assets/img/2025/signature-flicker/opencode-text.gif)
-
 However, codex has bugs in their renderer, so [they are actively working on replacing it with an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md).
+
+And then there's OpenCode: ![opencode text demo](/assets/img/2025/signature-flicker/opencode-text.gif) It automatically scrolls when close to a border, which isn't a great experience at all when on a small screen, search doesn't work, there's no scrollbar and I can't right click -> paste into the input box.
 
 ## Verdict
 
