@@ -23,13 +23,12 @@ For a coding agent that mostly emits text with limited interactivity, I believe 
 
 Anthropic seems to agree. Ink, the React-based terminal renderer they originally used, didn't support incremental rendering and would redraw large chunks of text, causing flickers. [This has since been fixed upstream](https://github.com/vadimdemedes/ink/pull/781), but Anthropic wanted more control and [built their own renderer from scratch](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React as the component model.
 
-> This is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. — it would not feel like your browser. (...)
-We value this native experience a lot. We may explore alternate screen mode in the future, but our bar is quite high.
+> This is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. — it would not feel like your browser. (...) We value this native experience a lot. We may explore alternate screen mode in the future, but our bar is quite high.
 > — [Thariq](https://x.com/trq212/status/2001552877698056370), Anthropic
 
 ## The Landscape
 
-The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all moved to alt mode, however with Gemini backlash was too large so they reverted their new TUI already.
+The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all switched, however with Gemini backlash was too large so they reverted their new TUI already.
 
 OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in Zig, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
