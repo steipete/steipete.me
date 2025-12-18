@@ -7,6 +7,8 @@ tags: ["ai", "terminal", "tui", "claude-code", "codex", "gemini", "development",
 
 **tl;dr: Hell froze over. Anthropic fixed Claude Code's signature flicker in their latest update (2.0.72)**
 
+![Claude Code flickering](/assets/img/2025/signature-flicker/claude-flicker.gif)
+
 If there's one thing everybody noticed about Claude Code (apart from it revolutionizing how we build software), [it's the flickering](https://www.reddit.com/r/ClaudeAI/comments/1lxs53r/what_is_this_madness/). It's unfair to point to Anthropic since they are not alone: other TUIs such as Cursor, or really anything based on [Ink](https://github.com/vadimdemedes/ink) have the same issue. It's also not an easy problem at all. Claude Code uses React under the hood.[^1]
 
 ## The Issue
