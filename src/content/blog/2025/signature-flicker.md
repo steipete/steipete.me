@@ -30,17 +30,11 @@ Anthropic seems to agree. Ink, the React-based terminal renderer Claude Code ori
 
 ## The Landscape
 
-Over the last year, most new coding agents have converged on alt-screen TUIs — often after fighting flicker — but the results haven't been great.
-
-Amp, OpenCode, and Gemini all switched, however, Gemini's backlash was too large so they reverted their new TUI already.
-
-OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
-
-## The Problem
-
-So what's my big gripe with alt mode? It breaks features such as text selection, [native scrolling](https://x.com/mitchellh/status/1978934533170041118) or [search](https://x.com/mitchellh/status/1993728538344906978). Of course this can be implemented in the TUI, but it won't feel *right*.
+Over the last year, most new coding agents have converged on alt-screen TUIs — often after fighting flicker — but the results haven't been great. So what's my big gripe with alt mode? It breaks features such as text selection, [native scrolling](https://x.com/mitchellh/status/1978934533170041118) or [search](https://x.com/mitchellh/status/1993728538344906978). Of course this can be implemented in the TUI, but it won't feel *right*.
 
 ### Amp
+
+Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
 ![amp find demo](/assets/img/2025/signature-flicker/amp-find.gif)
 
@@ -50,17 +44,19 @@ So what's my big gripe with alt mode? It breaks features such as text selection,
 
 ### Gemini
 
-Google felt this recently when they switched to their new TUI. [They did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/), only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This wasn't a minor tweak — it was a full reversal of a carefully engineered TUI, because users overwhelmingly preferred native terminal behavior over visual polish.
+Google [did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/) about their new alt-mode TUI, only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This wasn't a minor tweak — it was a full reversal of a carefully engineered TUI, because users overwhelmingly preferred native terminal behavior over visual polish.
 
 ![gemini text selection demo](/assets/img/2025/signature-flicker/gemini-textselect.gif)
 
 ### OpenCode
 
+OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320).
+
 ![opencode text demo](/assets/img/2025/signature-flicker/opencode-text.gif)
 
 - Auto-scroll near the viewport border makes small screens painful
-- No scrollbar; search doesn’t work the way you expect
-- Right click → paste into the input box doesn’t work
+- No scrollbar; search doesn't work the way you expect
+- Right click → paste into the input box doesn't work
 
 ### Codex
 
