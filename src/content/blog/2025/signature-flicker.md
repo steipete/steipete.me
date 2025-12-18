@@ -46,7 +46,7 @@ So what's my big gripe with alt mode? It breaks features such as text selection,
 
 ### Gemini
 
-Google felt this recently when they switched to their new TUI. In there, [you had to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This caused enough outrage that they quickly rolled back the code and are redesigning their TUI.
+Google felt this recently when they switched to their new TUI. In there, [you had to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This caused enough outrage that they quickly rolled back the code and are redesigning their TUI. (They tweeted "We've temporarily rolled back our updated UI to give it more time to bake." a while back but since deleted that tweet...)
 
 ![gemini text selection demo](/assets/img/2025/signature-flicker/gemini-textselect.gif)
 
