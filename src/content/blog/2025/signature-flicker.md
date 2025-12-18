@@ -44,7 +44,7 @@ Amp used Ink and shared Claude's flickering but [eventually wrote their own rend
 
 ### Gemini
 
-Google [did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/) about their new alt-mode TUI, only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This wasn't a minor tweak — it was a full reversal of a carefully engineered TUI, because users overwhelmingly preferred native terminal behavior over visual polish.
+Google [did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/) about their new alt-mode TUI, only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067).
 
 ![gemini text selection demo](/assets/img/2025/signature-flicker/gemini-textselect.gif)
 
