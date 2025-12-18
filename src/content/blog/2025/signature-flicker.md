@@ -9,7 +9,7 @@ tags: ["ai", "terminal", "tui", "claude-code", "codex", "gemini", "development",
 
 If there's one thing everybody noticed about Claude Code (apart from it revolutionizing how we build software), [it's the flickering](https://www.reddit.com/r/ClaudeAI/comments/1lxs53r/what_is_this_madness/).
 
-It's unfair to point to Anthropic since they are not alone: other TUIs such as Cursor, or really anything based on [Ink](https://github.com/vadimdemedes/ink) have the same issue. It's also not an easy problem at all. Claude Code uses React under the hood. (Yes, I made the same weird look when I first learned about this, but it's kinda beautiful.) React's concepts are flexible enough that it doesn't require a browser as a frontend - and Ink is such an alternative render backend.
+It's unfair to point to Anthropic since they are not alone: other TUIs such as Cursor, or really anything based on [Ink](https://github.com/vadimdemedes/ink) have the same issue. It's also not an easy problem at all. Claude Code uses React under the hood.[^1]
 
 ## The Issue
 
@@ -27,7 +27,7 @@ I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://gi
 
 ## The Landscape
 
-The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all moved to alt mode, however with Gemini backslash was too large so they reverted their new TUI already. 
+The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all moved to alt mode, however with Gemini backslash was too large so they reverted their new TUI already.
 
 OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) based on zig, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
@@ -75,3 +75,5 @@ Alt mode can be great for dashboards, but for coding agents I want the terminal�
 - Search like it’s a terminal
 
 It’s 2025. We can have smooth rendering *and* keep the terminal’s superpowers.
+
+[^1]: Yes, I made the same weird look when I first learned about this, but it's kinda beautiful. React's concepts are flexible enough that it doesn't require a browser as a frontend — and Ink is such an alternative render backend.
