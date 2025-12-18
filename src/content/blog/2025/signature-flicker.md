@@ -17,17 +17,20 @@ There are two ways to solve this:
 1. Switch to alt mode and take complete control over the terminal viewport.
 2. Carefully re-render changed parts while leaving the scrollback unchanged.
 
-Neither option is great, and there are different tradeoffs. I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to [Swift "TauTUI"](https://github.com/steipete/TauTUI), and while Codex mostly auto-translated the code, I was curious how this actually works. [Mario is explaining the tradeoffs for these modes really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6), so I'm not gonna repeat this here.
+Neither option is great, and each comes with tradeoffs. [Mario Zechner explains these really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6) in his write-up on building pi-coding-agent, so I won't repeat the details here. I've spent time with option 2 myself, having ported [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to Swift as [TauTUI](https://github.com/steipete/TauTUI) (Codex did most of the auto-translation).
 
-Ink, the dependency Anthropic used for the longest time didn't support incremental rendering and was re-rendering loads of text, which caused flickers. [This has since been fixed](https://github.com/vadimdemedes/ink/pull/781), however Anthropic wanted more control and [built their own renderer](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React.
+For a coding agent that mostly emits text with limited interactivity, I believe carefully re-rendering only changed parts — while remaining a good terminal citizen — is the better approach.
 
-> this is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. - it would not feel like your browser - [@trq212, Claude Code Dev](https://x.com/trq212/status/2001552877698056370)
+Anthropic seems to agree. Ink, the React-based terminal renderer they originally used, didn't support incremental rendering and would redraw large chunks of text, causing flickers. [This has since been fixed upstream](https://github.com/vadimdemedes/ink/pull/781), but Anthropic wanted more control and [built their own renderer from scratch](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React as the component model.
 
-I'll argue that Anthropic [made the right choice](https://x.com/trq212/status/2001439030613864735) for a coding agent - which really is a long stream of text with some bits of interactivity.
+> This is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. — it would not feel like your browser.
+> — [@trq212](https://x.com/trq212/status/2001552877698056370)
+
+I'd argue Anthropic [made the right call](https://x.com/trq212/status/2001439030613864735). A coding agent is fundamentally a long stream of text with occasional interactivity — exactly the kind of tool that should feel native to your terminal.
 
 ## The Landscape
 
-The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all moved to alt mode, however with Gemini backslash was too large so they reverted their new TUI already.
+The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all moved to alt mode, however with Gemini backlash was too large so they reverted their new TUI already.
 
 OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in Zig, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
@@ -51,7 +54,7 @@ Google felt this recently when they switched to their new TUI. In there, [you ha
 
 ### Codex
 
-Compare to OpenAI's Codex, which uses retained mode and lets me interact with text just like I expect:
+Compare to OpenAI's Codex, which stays in the primary screen buffer and lets me interact with text just like I expect:
 
 ![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
 
