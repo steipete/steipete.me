@@ -7,23 +7,23 @@ tags: ["ai", "terminal", "tui", "claude-code", "codex", "gemini", "development",
 
 **tl;dr: Hell froze over. Anthropic fixed Claude Code's signature flicker in their latest update (2.0.72)**
 
-If there's one thing everybody noticed about Claude Code (apart from it revolutionizing how we build software), [it's the flickering](https://www.reddit.com/r/ClaudeAI/comments/1lxs53r/what_is_this_madness/).
-
-It's unfair to point to Anthropic since they are not alone: other TUIs such as Cursor, or really anything based on [Ink](https://github.com/vadimdemedes/ink) have the same issue. It's also not an easy problem at all. Claude Code uses React under the hood.[^1]
+If there's one thing everybody noticed about Claude Code (apart from it revolutionizing how we build software), [it's the flickering](https://www.reddit.com/r/ClaudeAI/comments/1lxs53r/what_is_this_madness/). It's unfair to point to Anthropic since they are not alone: other TUIs such as Cursor, or really anything based on [Ink](https://github.com/vadimdemedes/ink) have the same issue. It's also not an easy problem at all. [^1]
 
 ## The Issue
 
-The main problem of Ink ~~is~~ was that it didn't support incremental rendering. [This has since been fixed](https://github.com/vadimdemedes/ink/pull/781), however Anthropic wanted more control and [built their own renderer](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React.
+Terminals haven't really been designed for interactivity. It's possible to use [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) to reposition the cursor and write over existing text, but that easily leads to flickering if not done well.
 
 There are two ways how to solve this:
 1. Switch to alt mode and take complete control over the terminal viewport.
-2. Wrestle with the terminal and build a differential render engine.
+2. Carefully re-render changed parts while leaving the scrollback unchanged.
 
-Neither option is great, and there's different tradeoffs. I'll argue that Anthropic [made the right choice](https://x.com/trq212/status/2001439030613864735) for a coding agent - which really is a long stream of text with some bits of interactivity.
+Neither option is great, and there's different tradeoffs. I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to [Swift "TauTUI"](https://github.com/steipete/TauTUI), and while Codex mostly auto-translated the code, I was curious how this actually works. [Mario is explaining the tradeoffs for these modes really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6), so I'm not gonna repeat this here.
 
-> this is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. - it would not feel like your browser - [@trq212](https://x.com/trq212/status/2001552877698056370)
+Ink, the dependency Anthopic used for the longest time didn't support incremental rendering and was re-rendering loads of text, which caused flickers. [This has since been fixed](https://github.com/vadimdemedes/ink/pull/781), however Anthropic wanted more control and [built their own renderer](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React.
 
-I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to [Swift "TauTUI"](https://github.com/steipete/TauTUI), and while Codex mostly auto-translated the code, I was curious how this actually works. [Mario is explaining the tradeoffs for these modes really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6), so I'm not gonna repeat this here.
+> this is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. - it would not feel like your browser - [@trq212, Claude Code Dev](https://x.com/trq212/status/2001552877698056370)
+
+I'll argue that Anthropic [made the right choice](https://x.com/trq212/status/2001439030613864735) for a coding agent - which really is a long stream of text with some bits of interactivity.
 
 ## The Landscape
 
@@ -76,4 +76,4 @@ Alt mode can be great for dashboards, but for coding agents I want the terminal�
 
 It’s 2025. We can have smooth rendering *and* keep the terminal’s superpowers.
 
-[^1]: Yes, I made the same weird look when I first learned about this, but it's kinda beautiful. React's concepts are flexible enough that it doesn't require a browser as a frontend — and Ink is such an alternative render backend.
+[^1]: Claude Code uses React under the hood. Yes, I made the same weird look when I first learned about this, but it's kinda beautiful. React's concepts are flexible enough that it doesn't require a browser as a frontend — and Ink is such an alternative render backend.
