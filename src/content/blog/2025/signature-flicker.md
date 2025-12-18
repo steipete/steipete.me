@@ -70,7 +70,7 @@ However, Codex has bugs in their renderer, so [they are actively working on repl
 
 ## Verdict
 
-Claude Code proves you can kill flicker without giving up the terminal’s muscle memory.
+Claude Code and [shittycodingagent.ai](https://shittycodingagent.ai/) prove you can kill flicker without giving up the terminal's muscle memory.
 
 Alt mode can be great for dashboards, but for coding agents I want the terminal’s built-ins to stay *native*:
 - Select text like it’s a terminal
