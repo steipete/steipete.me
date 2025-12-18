@@ -1,8 +1,8 @@
 ---
 title: "The Signature Flicker"
-pubDatetime: 2025-12-18T10:00:00+01:00
-description: "TBD"
-draft: true
+pubDatetime: 2025-12-18T01:00:00+01:00
+description: "Why terminal UIs still flicker—and why alt-mode TUIs keep breaking selection/search, with examples from Claude Code, Codex, and Gemini."
+tags: ["ai", "terminal", "tui", "claude-code", "codex", "gemini", "development", "tools"]
 ---
 
 tl;dr: Hell froze over. Anthropic fixed Claude Code's [signature flicker](https://www.reddit.com/r/ClaudeAI/comments/1lxs53r/what_is_this_madness/) in their latest update (2.0.72)
