@@ -14,7 +14,10 @@ if (breadcrumbList[0] === "posts") {
 
 // if breadcrumb is Home > Tags > [tag] > [page] <etc>
 // replace [tag] > [page] with [tag] (page number)
-if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
+if (
+  breadcrumbList[0] === "tags" &&
+  !Number.isNaN(Number(breadcrumbList[2]))
+) {
   breadcrumbList.splice(
     1,
     3,

@@ -26,10 +26,10 @@ export async function getStaticPaths() {
         };
       }
 
-      // For posts not in year directories, extract year from metadata or slug
-      const pubDate = post.data.pubDatetime || post.data.date;
-      const year = pubDate
-        ? pubDate.getFullYear().toString()
+	// For posts not in year directories, extract year from metadata or slug
+	      const pubDate = post.data.pubDatetime;
+	      const year = pubDate
+	        ? pubDate.getFullYear().toString()
         : // Fallback: Try to extract year from slug if it starts with a date pattern
           postSlug.match(/^(\d{4})-\d{2}-\d{2}/)
           ? postSlug.substring(0, 4)
@@ -54,9 +54,9 @@ type Props = {
   yearSlug: string;
 };
 
-const { post, yearSlug } = Astro.props;
-const { Content } = await render(post);
-const readingTime = calculateReadingTime(post.body);
+	const { post, yearSlug } = Astro.props;
+	const { Content } = await render(post);
+	const readingTime = calculateReadingTime(post.body ?? "");
 ---
 
 <BlogPostLayout {...post.data} slug={yearSlug} readingTime={readingTime}>

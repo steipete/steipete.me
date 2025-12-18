@@ -1,11 +1,12 @@
----
-import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
-import { SITE } from "../../consts";
-import Layout from "../../layouts/Layout.astro";
+	---
+	import { getCollection } from "astro:content";
+	import type { GetStaticPathsOptions } from "astro";
+	import FormattedDate from "../../components/FormattedDate.astro";
+	import { SITE } from "../../consts";
+	import Layout from "../../layouts/Layout.astro";
 
-export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection("blog");
+	export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+	  const allPosts = await getCollection("blog");
 
   // Deduplicate posts by id if there are any duplicates
   const idMap = new Map();
@@ -19,12 +20,12 @@ export async function getStaticPaths({ paginate }) {
     }
   });
 
-  // Convert back to array and sort
-  const sortedPosts = Array.from(idMap.values()).sort((a, b) => {
-    const dateA = new Date(a.data.pubDatetime || a.data.date || 0).valueOf();
-    const dateB = new Date(b.data.pubDatetime || b.data.date || 0).valueOf();
-    return dateB - dateA;
-  });
+	  // Convert back to array and sort
+	  const sortedPosts = Array.from(idMap.values()).sort((a, b) => {
+	    const dateA = a.data.pubDatetime.valueOf();
+	    const dateB = b.data.pubDatetime.valueOf();
+	    return dateB - dateA;
+	  });
 
   return paginate(sortedPosts, { pageSize: 10 });
 }
@@ -47,11 +48,9 @@ const { data: posts, currentPage, lastPage } = page;
               </a>
             </h2>
 
-            <div class="flex items-center text-sm text-muted-foreground mb-4">
-              <FormattedDate
-                date={new Date(post.data.pubDatetime || post.data.date)}
-              />
-            </div>
+	            <div class="flex items-center text-sm text-muted-foreground mb-4">
+	              <FormattedDate date={post.data.pubDatetime} />
+	            </div>
 
             {post.data.description && (
               <p class="text-muted-foreground mb-4">{post.data.description}</p>

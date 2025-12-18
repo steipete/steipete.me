@@ -14,17 +14,17 @@ type Props = CollectionEntry<"blog">["data"] & {
 
 const { title, description, pubDatetime, modDatetime, heroImage, slug, readingTime } = Astro.props;
 
-// Enforce canonical URL to always be /posts/ path without trailing slash
-// This matches Vercel's trailingSlash: false configuration
-const canonicalPath = `/posts/${slug}`;
-const canonicalURL = new URL(canonicalPath, Astro.site);
+	// Enforce canonical URL to always be /posts/ path without trailing slash
+	// This matches Vercel's trailingSlash: false configuration
+	const canonicalPath = `/posts/${slug}`;
+	const canonicalURL = new URL(canonicalPath, Astro.site).toString();
 ---
 
 <Layout
   title={title}
   description={description}
-  canonicalURL={canonicalURL}
-  scrollSmooth={true}
+	  canonicalURL={canonicalURL}
+	  scrollSmooth={true}
 >
   <Header />
 
@@ -181,9 +181,9 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     }
   }
 
-  function processEmbeds() {
-    const article = document.querySelector("#article");
-    if (!article) return;
+	  function processEmbeds() {
+	    const article = document.querySelector("#article");
+	    if (!article) return;
 
     // Look for Twitter embeds in the entire article content
     const twitterEmbedRegex = /\{% twitter (https:\/\/[^\s]+) %\}/g;
@@ -191,14 +191,14 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
     const youtubeEmbedRegex =
       /\{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %\}/g;
 
-    let foundTwitterEmbeds = false;
-    let foundYoutubeEmbeds = false;
+	    let foundTwitterEmbeds = false;
+	    let foundYoutubeEmbeds = false;
 
-    // Helper to extract a YouTube video ID from various URL formats
-    const extractYouTubeId = (input) => {
-      let videoId = input;
-      try {
-        if (videoId.includes("youtube.com/watch")) {
+	    // Helper to extract a YouTube video ID from various URL formats
+	    const extractYouTubeId = (input: string) => {
+	      let videoId = input;
+	      try {
+	        if (videoId.includes("youtube.com/watch")) {
           const url = new URL(videoId);
           videoId = url.searchParams.get("v") || "";
         } else if (videoId.includes("youtu.be/")) {
@@ -259,23 +259,18 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
       initializeTwitterWidgets();
     }
 
-    // 2) Fallback: process any remaining text nodes that still contain shortcodes
-    const walker = document.createTreeWalker(
-      article,
-      NodeFilter.SHOW_TEXT,
-      null,
-      false,
-    );
+	    // 2) Fallback: process any remaining text nodes that still contain shortcodes
+	    const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
 
-    const textNodes = [];
-    let node;
-    while ((node = walker.nextNode())) {
-      textNodes.push(node);
-    }
+	    const textNodes: Node[] = [];
+	    let node;
+	    while ((node = walker.nextNode())) {
+	      textNodes.push(node);
+	    }
 
-    textNodes.forEach((textNode) => {
-      let content = textNode.textContent;
-      let hasChanges = false;
+	    textNodes.forEach((textNode) => {
+	      let content = textNode.textContent ?? "";
+	      let hasChanges = false;
 
       // Process Twitter embeds
       content = content.replace(twitterEmbedRegex, (match, url) => {
@@ -307,19 +302,20 @@ const canonicalURL = new URL(canonicalPath, Astro.site);
           </div>`;
       });
 
-      if (hasChanges) {
-        // Replace the text node with HTML content
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = content;
+	      if (hasChanges) {
+	        // Replace the text node with HTML content
+	        const tempDiv = document.createElement("div");
+	        tempDiv.innerHTML = content;
 
-        // Replace the text node with the new HTML elements
-        const parent = textNode.parentNode;
-        while (tempDiv.firstChild) {
-          parent.insertBefore(tempDiv.firstChild, textNode);
-        }
-        parent.removeChild(textNode);
-      }
-    });
+	        // Replace the text node with the new HTML elements
+	        const parent = textNode.parentNode;
+	        if (!parent) return;
+	        while (tempDiv.firstChild) {
+	          parent.insertBefore(tempDiv.firstChild, textNode);
+	        }
+	        parent.removeChild(textNode);
+	      }
+	    });
 
     // Initialize Twitter widgets if we found Twitter embeds
     if (foundTwitterEmbeds) {

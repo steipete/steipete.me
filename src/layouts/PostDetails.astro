@@ -39,7 +39,7 @@ const {
 } = post.data;
 
 const { Content } = await render(post);
-const readingTime = calculateReadingTime(post.body);
+	const readingTime = calculateReadingTime(post.body ?? "");
 
 let ogImageUrl: string | undefined;
 
@@ -88,7 +88,7 @@ const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost = currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
 
 // Calculate word count for structured data
-const wordCount = post.body.split(/\s+/).length;
+	const wordCount = (post.body ?? "").split(/\s+/).length;
 ---
 
 <Layout {...layoutProps}>
