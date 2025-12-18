@@ -34,7 +34,7 @@ Over the last year, most new coding agents have converged on alt-screen TUIs —
 
 ### Amp
 
-Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
+Amp used Ink and shared Claude's flickering but [eventually wrote their own renderer, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
 ![amp find demo](/assets/img/2025/signature-flicker/amp-find.gif)
 
