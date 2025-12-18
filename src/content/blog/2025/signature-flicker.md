@@ -21,14 +21,16 @@ Neither option is great, and each comes with tradeoffs. [Mario Zechner explains 
 
 For a coding agent that mostly emits text with limited interactivity, I believe carefully re-rendering only changed parts — while remaining a good terminal citizen — is the better approach.
 
-Anthropic seems to agree. Ink, the React-based terminal renderer they originally used, didn't support incremental rendering and would redraw large chunks of text, causing flickers. [This has since been fixed upstream](https://github.com/vadimdemedes/ink/pull/781), but Anthropic wanted more control and [built their own renderer from scratch](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React as the component model.
+Anthropic seems to agree. Ink, the React-based terminal renderer Claude Code originally used, didn't support the kind of fine-grained incremental updates needed for a long-running interactive UI. [This has since improved upstream](https://github.com/vadimdemedes/ink/pull/781), but Anthropic needed tighter control, so they [rewrote the renderer from scratch](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590) — while still keeping React as the component model.
 
 > This is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. — it would not feel like your browser. (...) We value this native experience a lot. We may explore alternate screen mode in the future, but our bar is quite high.
 > — [Thariq](https://x.com/trq212/status/2001552877698056370), Anthropic
 
 ## The Landscape
 
-The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all switched, however, Gemini's backlash was too large so they reverted their new TUI already.
+Over the last year, most new coding agents have converged on alt-screen TUIs — often after fighting flicker — but the results haven't been great.
+
+Amp, OpenCode, and Gemini all switched, however, Gemini's backlash was too large so they reverted their new TUI already.
 
 OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
@@ -46,7 +48,7 @@ So what's my big gripe with alt mode? It breaks features such as text selection,
 
 ### Gemini
 
-Google felt this recently when they switched to their new TUI. [They did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/), only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067).
+Google felt this recently when they switched to their new TUI. [They did a big announcement on their blog](https://developers.googleblog.com/en/making-the-terminal-beautiful-one-pixel-at-a-time/), only to learn that users hate it and then [rolled it back not even a week later](https://github.com/google-gemini/gemini-cli/discussions/13633). In the new TUI, [you have to press CTRL-S to enter selection mode to copy text](https://github.com/google-gemini/gemini-cli/discussions/13067). This wasn't a minor tweak — it was a full reversal of a carefully engineered TUI, because users overwhelmingly preferred native terminal behavior over visual polish.
 
 ![gemini text selection demo](/assets/img/2025/signature-flicker/gemini-textselect.gif)
 
@@ -64,13 +66,13 @@ Compare to OpenAI's Codex, which stays in the primary screen buffer and lets me 
 
 ![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
 
-However, Codex has bugs in their renderer, so [they are actively working on replacing it with an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md). Here's me hoping they reverse course.
+Codex isn't perfect — it flickers occasionally — but it already nails the part that matters most: it behaves like a terminal. That makes [their current direction toward an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md) feel like a regression, not an upgrade. Here's hoping they reverse course.
 
 ## Verdict
 
 Claude Code and [pi](https://shittycodingagent.ai/) prove you can kill flicker without giving up the terminal's muscle memory.
 
-Alt mode can be great for dashboards, but for coding agents I want the terminal’s built-ins to stay *native*:
+Alt mode can be great for dashboards. For coding agents, though, I want the terminal's built-ins to stay *native*:
 - Select text like it’s a terminal
 - Scrollback like it’s a terminal
 - Search like it’s a terminal
