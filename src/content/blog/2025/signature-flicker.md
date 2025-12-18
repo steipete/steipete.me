@@ -17,7 +17,7 @@ There are two ways how to solve this:
 1. Switch to alt mode and take complete control over the terminal viewport.
 2. Wrestle with the terminal and build an differential render engine.
 
-Neither option is great, and there's different tradeoffs. I'll argue that Anthropic made the right choice for a coding agent - which really is a long stream of text with some bits of interactivity.
+Neither option is great, and there's different tradeoffs. I'll argue that Anthropic [made the right choice](https://x.com/trq212/status/2001439030613864735) for a coding agent - which really is a long stream of text with some bits of interactivity.
 
 I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to [Swift "TauTUI"](https://github.com/steipete/TauTUI), and while codex mostly auto-translated the code, I was curious how this actually works. [Mario is explaining the tradeoffs for these modes really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6), so I'm not gonna repeat this here.
 
