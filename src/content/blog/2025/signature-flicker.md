@@ -50,7 +50,7 @@ Google [did a big announcement on their blog](https://developers.googleblog.com/
 
 ### OpenCode
 
-OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320).
+OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript and Zig, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320).
 
 ![opencode text demo](/assets/img/2025/signature-flicker/opencode-text.gif)
 
