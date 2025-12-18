@@ -28,7 +28,7 @@ Anthropic seems to agree. Ink, the React-based terminal renderer they originally
 
 ## The Landscape
 
-The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all switched, however with Gemini backlash was too large so they reverted their new TUI already.
+The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all switched, however, Gemini's backlash was too large so they reverted their new TUI already.
 
 OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
