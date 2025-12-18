@@ -64,7 +64,7 @@ Compare to OpenAI's Codex, which stays in the primary screen buffer and lets me 
 
 ![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
 
-Codex isn't perfect — it flickers occasionally — but it already nails the part that matters most: it behaves like a terminal. That makes [their current direction toward an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md) feel like a regression, not an upgrade. Here's hoping they reverse course.
+Codex isn't perfect — it sometimes overwrites lines of text — but it already nails the part that matters most: it behaves like a terminal. That makes [their current direction toward an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md) feel like a regression, not an upgrade. Here's hoping they reverse course.
 
 ## Verdict
 
