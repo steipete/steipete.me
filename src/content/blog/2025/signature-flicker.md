@@ -30,7 +30,7 @@ Anthropic seems to agree. Ink, the React-based terminal renderer they originally
 
 The landscape seems to shift towards alt mode: Amp, OpenCode, and Gemini all switched, however with Gemini backlash was too large so they reverted their new TUI already.
 
-OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in Zig, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
+OpenCode did some great engineering and built [opentui](https://github.com/sst/opentui) in TypeScript, which renders SolidJS or React. It's not without downsides, e.g. [it doesn't work in the standard macOS Terminal](https://github.com/sst/opencode/issues/4043#issuecomment-3519627447) for anything below macOS 26 or [GNOME's Terminal](https://github.com/sst/opencode/issues/4320). Amp used Ink and shared Claude's flickering but [eventually wrote their own, switching to alt mode in September](https://ampcode.com/news/look-ma-no-flicker).
 
 ## The Problem
 
@@ -50,14 +50,6 @@ Google felt this recently when they switched to their new TUI. In there, [you ha
 
 ![gemini text selection demo](/assets/img/2025/signature-flicker/gemini-textselect.gif)
 
-### Codex
-
-Compare to OpenAI's Codex, which stays in the primary screen buffer and lets me interact with text just like I expect:
-
-![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
-
-However, Codex has bugs in their renderer, so [they are actively working on replacing it with an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md).
-
 ### OpenCode
 
 ![opencode text demo](/assets/img/2025/signature-flicker/opencode-text.gif)
@@ -65,6 +57,14 @@ However, Codex has bugs in their renderer, so [they are actively working on repl
 - Auto-scroll near the viewport border makes small screens painful
 - No scrollbar; search doesn’t work the way you expect
 - Right click → paste into the input box doesn’t work
+
+### Codex
+
+Compare to OpenAI's Codex, which stays in the primary screen buffer and lets me interact with text just like I expect:
+
+![codex real demo](/assets/img/2025/signature-flicker/codex-real.gif)
+
+However, Codex has bugs in their renderer, so [they are actively working on replacing it with an alt-mode TUI](https://github.com/openai/codex/blob/main/codex-rs/tui2/docs/tui_viewport_and_history.md). Here's me hoping they reverse course.
 
 ## Verdict
 
