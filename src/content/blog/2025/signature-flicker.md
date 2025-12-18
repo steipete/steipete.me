@@ -19,6 +19,8 @@ There are two ways how to solve this:
 
 Neither option is great, and there's different tradeoffs. I'll argue that Anthropic [made the right choice](https://x.com/trq212/status/2001439030613864735) for a coding agent - which really is a long stream of text with some bits of interactivity.
 
+> this is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. - it would not feel like your browser - [@trq212](https://x.com/trq212/status/2001552877698056370)
+
 I've spent quite a bit with option 2 since I wrote a port of [pi-tui](https://github.com/badlogic/pi-mono/tree/main/packages/tui) to [Swift "TauTUI"](https://github.com/steipete/TauTUI), and while codex mostly auto-translated the code, I was curious how this actually works. [Mario is explaining the tradeoffs for these modes really well](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_6), so I'm not gonna repeat this here.
 
 ## The Landscape
