@@ -24,7 +24,7 @@ For a coding agent that mostly emits text with limited interactivity, I believe 
 Anthropic seems to agree. Ink, the React-based terminal renderer they originally used, didn't support incremental rendering and would redraw large chunks of text, causing flickers. [This has since been fixed upstream](https://github.com/vadimdemedes/ink/pull/781), but Anthropic wanted more control and [built their own renderer from scratch](https://github.com/anthropics/claude-code/issues/769#issuecomment-3667315590), while keeping React as the component model.
 
 > This is kind of like if a website were to do their own text rendering, highlighting, mouse movement, context menu, etc. — it would not feel like your browser.
-> — [@trq212](https://x.com/trq212/status/2001552877698056370)
+> — [Thariq](https://x.com/trq212/status/2001552877698056370), Anthropic
 
 I'd argue Anthropic [made the right call](https://x.com/trq212/status/2001439030613864735). A coding agent is fundamentally a long stream of text with occasional interactivity — exactly the kind of tool that should feel native to your terminal.
 
