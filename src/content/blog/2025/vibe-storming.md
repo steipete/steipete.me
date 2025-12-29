@@ -70,6 +70,8 @@ I know... you came here to learn how to build faster, and I'm just writing a mar
 
 - I tried linear or other issue trackers, but nothing did stick. Important idea I try right away, and everything else I'll either remember or it wasn't important. Of course I have public bug trackers for bugs for folks that use oy open source code, but when I find a bug, I'll immediately prompt it - much faster than writing it down and then later having to switch context back to it.
 
+- Whatever you build, start with the model and a CLI first. I had this idea of [a Chrome extension to summarize YouTube](https://x.com/steipete/status/2005320848543298009) vids in my head for a long time. Last week I started working on summarize, a cli that converts anything to markdown and then feeds that to a model for summarization. First I got the core right, and once that worked great I build the whole extension in a day. I'm quite in love with it. Runs on local, free or paid models. Transcribes video or audio locally. Talks to a local daemon so it's super fast. [Give it a go!](https://github.com/steipete/summarize/releases/latest)
+
 - Oh yeah, my to-go model is codex 5.2 high. Again, KISS. There's very little benefit to xhigh other than it being far slower, and I don't wanna spend time thinking about different modes or "ultrathink". So pretty much everything runs on high. GPT 5.2 and codex are close enough that changing models makes no sense, so I just use that.
 
 That's it, for now. I plan on writing more again and have quite a backlog on ideas in my head, just having too much fun building things. If you wanna hear more ramblings and ideas how to build in this new world, [follow me on Twitter](https://x.com/steipete).
