@@ -66,6 +66,8 @@ I know... you came here to **learn how to build faster**, and I'm just writing a
 
 - Markdowns. Many times I write "**write docs to docs/*.md**" and simply let the model pick a filename. The more obvious you design the structure for what the model is trained on, the easier your work will be. After all, I don't design codebases to be easy to navigate for me, I engineer them so agents can work in it efficiently. Fighting the model is often a waste of time and tokens.
 
+## Tooling & Infrastructure
+
 - **What's still hard?** Picking the right dependency and framework to set on is something I invest quite some time on. Is this well-maintained? How about peer dependencies? Is it popular = will have enough world knowledge so agents have an easy time? Equally, system design. Will we communicate via web sockets? HTML? What do I put into the server and what into the client? How and which data flows where to where? Often these are things that are a bit harder to explain to a model and where research and thinking pays off.
 
 - Since I manage lots of projects, often I let an agent simply run in my project folder and when I figure out a new pattern, I ask it to "**find all my recent go projects** and implement this change there too + update changelog". Each of my project has a raised patch version in that file and when I revisit it, some improvements are already waiting for me to test.
