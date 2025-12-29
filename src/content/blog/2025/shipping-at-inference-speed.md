@@ -20,6 +20,8 @@ The real unlock into [building like a factory](https://github.com/steipete/) was
 
 The important decisions these days are **language/ecosystem and dependencies**. My go-to languages are TypeScript for web stuff, Go for CLIs and Swift if it needs to use macOS stuff or has UI. Go wasn't something I gave even the slightest thought even a few months ago, but eventually I played around and found that agents are really great at writing it, and its simple type system makes linting fast.
 
+Folks building Mac or iOS stuff: You don't need Xcode much anymore. [I don't even use xcodeproj files](https://github.com/steipete/clawdis/tree/main/apps/ios). Swift's build infra is good enough for most things these days. codex knows how to run iOS apps and how to deal with the Simulator. No special stuff or MCPs needed.
+
 ## codex vs Opus
 
 I'm writing this post here while codex crunches through a huge, multi-hour refactor and un-slops older crimes of Opus 4.0. People on Twitter often ask me what's the big difference between Opus and codex and why it even matters because the benchmarks are so close. IMO it's getting harder and harder to trust benchmarks - you need to try both to really understand. Whatever OpenAI did in post-training, codex has been trained to read LOTS of code before starting. 
@@ -42,11 +44,13 @@ To give you another example on how far models have come. One of my early intense
 
 Why did I even un-dust it, you ask? My current focus is [Clawdis](https://clawdis.ai/), an AI assistant that has **full access to everything** on [all my computers](https://x.com/steipete/status/2005213014778409280/photo/1), [messages](https://imsg.to/), [emails](https://github.com/steipete/gogcli), [home automation](https://www.openhue.io/cli/openhue-cli), [cameras](https://camsnap.ai/), lights, [music](https://sonoscli.sh/), heck it can even control the [temperature of my bed](https://eightctl.sh/). Ofc it also has [its own voice](https://github.com/steipete/sag/), [a CLI to tweet](https://github.com/steipete/bird) and its own [Twitter account](https://x.com/clawdbot).
 
-Clawd [can see and control my screen](https://www.peekaboo.boo/) and sometimes makes snarky remarks, but I also wanted to give him the ability to check on my agents, and getting a **character stream** is just far more efficient than looking at images... basically I'm building an army for a [space lobster](https://x.com/clawdbot/status/2002154669347647876), because what could possibly go wrong.
+Clawd [can see and control my screen](https://www.peekaboo.boo/) and sometimes makes snarky remarks, but I also wanted to give him the ability to check on my agents, and getting a **character stream** is just far more efficient than looking at images... if this will work out, we'll see!
 
 ## My Workflow
 
-I know... you came here to **learn how to build faster**, and I'm just writing a marketing-pitch for OpenAI. I haven't changed my workflow all that much from [my last take at it in October](https://steipete.me/posts/just-talk-to-it).
+I know... you came here to **learn how to build faster**, and I'm just writing a marketing-pitch for OpenAI. I hope Anthropic is cooking Opus 5 and the tides turn again. Competition is good!
+
+I haven't changed my workflow all that much from [my last take at it in October](https://steipete.me/posts/just-talk-to-it).
 
 - I usually work on [**multiple projects**](https://x.com/steipete/status/2005083410482733427/photo/1) at the same time. Depending on complexity that can be between 3-8. The context switching can be tiresome, I really only can do that when I'm working at home, in silence and concentrated. It's a lot of mental models to shuffle. Luckily most software is boring. Creating a CLI to [check up on your food delivery](https://ordercli.sh/) doesn't need a lot of thinking. Usually my focus is on one big project and satellite projects that chug along. When you do enough agentic engineering, you develop a feeling for what's gonna be easy and where the model likely will struggle, so often I just put in a prompt, codex will chug along for 30 minutes and I have what I need. Sometimes it takes a little fiddling or creativity, but often things are straightforward.
 
