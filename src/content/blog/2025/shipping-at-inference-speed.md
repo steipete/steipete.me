@@ -88,7 +88,9 @@ I know... you came here to **learn how to build faster**, and I'm just writing a
 
 - My go-to model is **gpt-5.2-codex high**. Again, KISS. There's very little benefit to xhigh other than it being far slower, and I don't wanna spend time thinking about different modes or "ultrathink". So pretty much everything runs on high. GPT 5.2 and codex are close enough that changing models makes no sense, so I just use that.
 
-- This is my `~/.codex/config.toml`:
+## My Config
+
+This is my `~/.codex/config.toml`:
 ```
 model = "gpt-5.2-codex"
 model_reasoning_effort = "high"
