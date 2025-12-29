@@ -48,7 +48,7 @@ Clawd [can see and control my screen](https://www.peekaboo.boo/) and sometimes m
 
 ## My Workflow
 
-I know... you came here to **learn how to build faster**, and I'm just writing a marketing-pitch for OpenAI. I hope Anthropic is cooking Opus 5 and the tides turn again. Competition is good!
+I know... you came here to **learn how to build faster**, and I'm just writing a marketing-pitch for OpenAI. I hope Anthropic is cooking Opus 5 and the tides turn again. Competition is good! At the same time, I *love* Opus as general purpose model. My AI agent wouldn't be half as fun running on GPT 5. Opus has something [special](https://soul.md/) that makes it a delight to work with. I use it for most of my computer automation tasks and ofc it powers Clawd🦞.
 
 I haven't changed my workflow all that much from [my last take at it in October](https://steipete.me/posts/just-talk-to-it).
 
