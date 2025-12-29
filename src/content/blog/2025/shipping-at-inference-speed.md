@@ -84,9 +84,26 @@ I know... you came here to **learn how to build faster**, and I'm just writing a
 
 - My to-go model is **gpt-5.2-codex high**. Again, KISS. There's very little benefit to xhigh other than it being far slower, and I don't wanna spend time thinking about different modes or "ultrathink". So pretty much everything runs on high. GPT 5.2 and codex are close enough that changing models makes no sense, so I just use that.
 
-- If you use codex, make sure to set these:
+- This is my `~/.codex/config.toml`:
 ```
+model = "gpt-5.2-codex"
+model_reasoning_effort = "high"
+tool_output_token_limit = 25000
+# Leave room for native compaction near the 272–273k context window.
+# Formula: 273000 - (tool_output_token_limit + 15000)
+# With tool_output_token_limit=25000 ⇒ 273000 - (25000 + 15000) = 233000
+model_auto_compact_token_limit = 233000
+[features]
+ghost_commit = false
+unified_exec = true
+apply_patch_freeform = true
+web_search_request = true
+skills = true
+shell_snapshot = true
 
+[projects."/Users/steipete/Projects"]
+trust_level = "trusted"
 ```
+This allows the model to read more in one go, the defaults are a bit small and can limit what it sees. Silently, which is a pain and something they'll eventualyl fix. Also, web search is still not on by default? `unified_exec` replaced tmux and my old `runner` script, rest's neat too. And don't be scared about compactation, ever since OpenAI switched to their new /compact endpoint, this works well enough that tasks can run across many compacts and will be finished. It'll make things slower, but often acts like a review, and the model will find bugs when it looks at code again.
 
 That's it, for now. I plan on writing more again and have quite a backlog on ideas in my head, just having **too much fun building things**. If you wanna hear more ramblings and ideas how to build in this new world, [follow me on Twitter](https://x.com/steipete).
