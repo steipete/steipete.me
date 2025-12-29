@@ -8,7 +8,7 @@ tags: ["ai", "codex", "workflow"]
 
 ## What Changed Since May
 
-It's incredible how far "vibe coding" has come this year. Whereas in ~May I was amazed that *some* prompts produced code that worked out of the box, **this is now my expectation**. I can ship code now at a speed that seems unreal. Since I'm apparently [**one of the top 10 codex users in the world**](https://x.com/thsottiaux/status/2004789121492156583) atm, it's time for an update on my workflow.
+Since I'm apparently [**one of the top 10 codex users in the world**](https://x.com/thsottiaux/status/2004789121492156583) atm, it's time for an update on my workflow. It's incredible how far "vibe coding" has come this year. Whereas in ~May I was amazed that *some* prompts produced code that worked out of the box, **this is now my expectation**. I can ship code now at a speed that seems unreal.
 
 It's funny how these agents work. There's been this argument a few weeks ago that one needs to write code in order to feel bad architecture and that using agents creates a disconnection - and I **couldn't disagree more**. When you spend enough time with agents, you know exactly how long sth should take, and when codex comes back and hasn't solved it in one shot, I already get suspicious.
 
