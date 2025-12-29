@@ -42,7 +42,7 @@ To give you another example on how far models have come. One of my early intense
 
 Why did I even un-dust it, you ask? My current focus is [Clawdis](http://clawdis.ai/), an AI assistant that has **full access to everything** on [all my computers](https://x.com/steipete/status/2005213014778409280/photo/1), [messages](https://imsg.to/), [emails](https://github.com/steipete/gogcli), [home automation](https://www.openhue.io/cli/openhue-cli), [cameras](https://camsnap.ai/), lights, [music](https://sonoscli.sh/), heck it can even control the [temperature of my bed](https://eightctl.sh/). Ofc it also has [its own voice](https://github.com/steipete/sag/), [a CLI to tweet](https://github.com/steipete/bird) and it's own [Twitter account](https://x.com/clawdbot).
 
-Clawd [can see and control my screen](https://www.peekaboo.boo/) and sometimes makes snarky remarks, but I also wanted to give him the ability to check on my agents, and getting a **character stream** is just far more efficient than looking at images... basically I'm building an army for a space lobster and hope it won't [EXFOILIATE](https://x.com/clawdbot/status/2002154669347647876) my nudes.
+Clawd [can see and control my screen](https://www.peekaboo.boo/) and sometimes makes snarky remarks, but I also wanted to give him the ability to check on my agents, and getting a **character stream** is just far more efficient than looking at images... basically I'm building an army for a [space lobster](https://x.com/clawdbot/status/2002154669347647876), because what could possibly go wrong.
 
 ## My Workflow
 
