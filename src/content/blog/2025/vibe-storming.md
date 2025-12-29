@@ -1,6 +1,6 @@
 ---
-title: "Vibe Storming"
-description: "TBD"
+title: "Shipping at Inference-Speed"
+description: "My current codex workflow: CLI-first loops, queueing, and why GPT 5.2 changed what fast feels like."
 draft: false
 pubDatetime: 2025-12-28T12:00:00+01:00
 tags: ["ai", "codex", "workflow"]
@@ -15,8 +15,6 @@ The amount of software I can create is now mostly limited by inference time and 
 The real unlock into building like a factory was GPT 5. It took me a few weeks after the release to see it - and for codex to catch up on features that claude code had, and a bit to learn and understand the differences, but then I started trusting the model more and more. These days I don't read much code anymore. I watch the stream and sometimes look at key parts, but I gotta be honest - most code I don't read. I do know where which components are and how things are structured and how the overall system is designed, and that's usually all that's needed. 
 
 The important decisions these days are language/ecosystem and dependencies. My go-to languages are TypeScript for web stuff, Go for CLIs and Swift if it needs to use macOS stuff or has UI. Go wasn't something I gave even the slightest thought even a few months ago, but eventually I played around and found that agents are really great at writing it, and its simple type system makes linting fast.
-
-The real unlock that makes all of this feel like I'm in the future is GPT 5.2 (and codex). There's really not much difference between the two, other than output format and that codex is just relentless and will not stop until whatever task you throw at it is done.
 
 I'm writing this post here while codex crunches through a huge, multi-hour refactor and un-slops older crimes of Opus 4.0. People on Twitter often ask me what's the big difference between Opus and codex and why it even matters because the benchmarks are so close. IMO it's getting harder and harder to trust benchmarks - you need to try both to really understand. Whatever OpenAI did in post-training, but codex has been trained to read LOTS of code before starting. Sometimes it just silently reads files for 10, 15 minutes before starting to write any code. On the one hand that's annoying, on the other hand that's amazing because it greatly increases the chance that it fixes the right thing. Opus on the other hand is much more eager - great for smaller edits - not so good for larger features or refactors, it often doesn't read the whole file or misses parts and then delivers inefficient outcomes or misses sth. I noticed that even tho codex sometimes takes 4x longer than Opus for comparable tasks, I'm often faster because I don't have to go back and fix the fix, sth that felt quite normal when I was still using Claude Code. 
 
@@ -71,5 +69,7 @@ I know... you came here to learn how to build faster, and I'm just writing a mar
 - In the past I often took dedicated days to refactor and clean up projects, I do this much more ad-hoc now. Whenever prompts start taking too long or I see sth ugly flying by in the code stream, I'll deal with it right away.
 
 - I tried linear or other issue trackers, but nothing did stick. Important idea I try right away, and everything else I'll either remember or it wasn't important. Of course I have public bug trackers for bugs for folks that use oy open source code, but when I find a bug, I'll immediately prompt it - much faster than writing it down and then later having to switch context back to it.
+
+- Oh yeah, my to-go model is codex 5.2 high. Again, KISS. There's very little benefit to xhigh other than it being far slower, and I don't wanna spend time thinking about different modes or "ultrathink". So pretty much everything runs on high. GPT 5.2 and codex are close enough that changing models makes no sense, so I just use that.
 
 That's it, for now. I plan on writing more again and have quite a backlog on ideas in my head, just having too much fun building things. If you wanna hear more ramblings and ideas how to build in this new world, [follow me on Twitter](https://x.com/steipete).
