@@ -6,25 +6,35 @@ pubDatetime: 2025-12-28T12:00:00+01:00
 tags: ["ai", "codex", "workflow"]
 ---
 
+## What Changed Since May
+
 It's incredible how far "vibe coding" has come this year. Whereas in ~May I was amazed that *some* prompts produced code that worked out of the box, this is now my expectation. I can ship code now at a speed that seems unreal. Since I'm apparently [one of the top 10 codex users in the world](https://x.com/thsottiaux/status/2004789121492156583) atm, it's time for an update on my workflow.
 
 It's funny how these agents work. There's been this argument a few weeks ago that one needs to write code in order to feel bad architecture and that using agents creates a disconnection - and I couldn't disagree more. When you spend enough time with agents, you know exactly how long sth should take, and when codex comes back and hasn't solved it in one shot, I already get suspicious.
 
 The amount of software I can create is now mostly limited by inference time and hard thinking. And let's be honest - most software does not require hard thinking. Most apps shove data from one form to another, maybe store it somewhere, and then show it to the user in some way or another. The simplest form is text, so by default, whatever I wanna build, it starts as CLI. Agents can call it directly and verify output - closing the loop.
 
+## The Model Shift
+
 The real unlock into building like a factory was GPT 5. It took me a few weeks after the release to see it - and for codex to catch up on features that claude code had, and a bit to learn and understand the differences, but then I started trusting the model more and more. These days I don't read much code anymore. I watch the stream and sometimes look at key parts, but I gotta be honest - most code I don't read. I do know where which components are and how things are structured and how the overall system is designed, and that's usually all that's needed. 
 
 The important decisions these days are language/ecosystem and dependencies. My go-to languages are TypeScript for web stuff, Go for CLIs and Swift if it needs to use macOS stuff or has UI. Go wasn't something I gave even the slightest thought even a few months ago, but eventually I played around and found that agents are really great at writing it, and its simple type system makes linting fast.
 
+## codex vs Opus
+
 I'm writing this post here while codex crunches through a huge, multi-hour refactor and un-slops older crimes of Opus 4.0. People on Twitter often ask me what's the big difference between Opus and codex and why it even matters because the benchmarks are so close. IMO it's getting harder and harder to trust benchmarks - you need to try both to really understand. Whatever OpenAI did in post-training, but codex has been trained to read LOTS of code before starting. Sometimes it just silently reads files for 10, 15 minutes before starting to write any code. On the one hand that's annoying, on the other hand that's amazing because it greatly increases the chance that it fixes the right thing. Opus on the other hand is much more eager - great for smaller edits - not so good for larger features or refactors, it often doesn't read the whole file or misses parts and then delivers inefficient outcomes or misses sth. I noticed that even tho codex sometimes takes 4x longer than Opus for comparable tasks, I'm often faster because I don't have to go back and fix the fix, sth that felt quite normal when I was still using Claude Code. 
 
 codex also allowed me to unlearn lots of charades that were necessary with Claude Code. Instead of "plan mode", I simply start a conversation with the model, ask a question, let it google, explore code, create a plan together, and when I'm happy with what I see, I write "build" or "write plan to docs/*.md and build this". Plan mode feels like a hack that was necessary for older generations of models that were not great at adhering to prompts, so we had to take away their edit tools. There's [a highly misunderstood tweet of mine](https://x.com/steipete/status/2001228002953158928) that's still circling around that showed me that most people don't get that [plan mode is not magic](https://lucumr.pocoo.org/2025/12/17/what-is-plan-mode/).
+
+## Oracle
 
 The step from GPT 5/5.1 to 5.2 was massive. I built [oracle 🧿](https://github.com/steipete/oracle) about a month ago - it's a CLI that allows the agent to run GPT 5 Pro and upload files + a prompt and manages sessions so answers can be retrieved later. I did this because many times when agents were stuck, I asked it to write everything into a markdown file and then did the query myself, and that felt like a repetitive waste of time - and an opportunity to close the loop. The instructions are in my global AGENTS.MD file and the model sometimes by itself triggered oracle when it got stuck. I used this multiple times per day. It was a massive unlock. Pro is insanely good at doing a speed-run across ~50 websites and then thinking really hard at it and in almost every case nailed the response. Sometimes it's fast and takes 10 minutes, but I had runs that took more than an hour.
 
 Now that GPT 5.2 is out, I have far fewer situations where I need it. I do use Pro myself sometimes for research, but the cases where I asked the model to "ask the oracle" went from multiple times per day to a few times per week. I'm not mad about this - building oracle was super fun and I learned lots about browser automation, Windows and finally took my time to look into skills, after dismissing that Idea for quite some time. What it does show is how much better 5.2 got for many real-life coding tasks. It one-shots almost anything I throw at it.
 
 Another massive win is the knowledge cutoff date. GPT 5.2 goes till end of August whereas Opus is stuck in mid-March - that's about 5 months. Which is significant when you wanna use the latest available tools. 
+
+## A Concrete Example: VibeTunnel
 
 To give you another example on how far models have come. One of my early intense projects was [VibeTunnel](https://vibetunnel.sh/). A terminal-multiplexer so you can code on-the-go. I poured pretty much all my time into this earlier this year, and after 2 months it was so good that I caught myself coding from my phone while out with friends... and decided that this is something I should stop, more for mental health than anything. Back then I tried to rewrite a core part of the multiplexer away from TypeScript, and the older models consistently failed me. I tried Rust, Go... god beware, even zig. Of course I could have finished this refactor, but it would have required lots of manual work, so I never got around completing this before I put it to rest. Last week I un-dusted this and gave codex a two sentence prompt to convert the whole forwarding-system to zig, and it ran over 5h and multiple compactions and delivered a working conversion in one shot.
 
