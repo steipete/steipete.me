@@ -1,6 +1,6 @@
 ---
 title: "Shipping at Inference-Speed"
-description: "My current codex workflow: CLI-first loops, queueing, and why GPT 5.2 changed what fast feels like."
+description: "Why I stopped reading code and started watching it stream by."
 draft: false
 pubDatetime: 2025-12-28T12:00:00+01:00
 tags: ["ai", "codex", "workflow"]
