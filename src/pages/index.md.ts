@@ -1,26 +1,18 @@
 import type { APIRoute } from "astro";
+import { SITE } from "@/config";
 
 export const GET: APIRoute = async () => {
-  const markdownContent = `# Peter Steinberger (@steipete)
+  const markdownContent = `# ${SITE.title}
 
-AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.
+${SITE.desc}
 
 ## Navigation
 
 - [About](/about.md)
-- [Recent Posts](/posts.md)
-- [Archives](/archives.md)
-- [RSS Feed](/rss.xml)
-
-## Links
-
-- Twitter: [@steipete](https://twitter.com/steipete)
-- GitHub: [@steipete](https://github.com/steipete)
-- Email: steipete@gmail.com
 
 ---
 
-*This is the markdown-only version of steipete.me. Visit [steipete.me](https://steipete.me) for the full experience.*`;
+This is the markdown version of the homepage. Replace the placeholder content in the site config and page files with your own CV information.`;
 
   return new Response(markdownContent, {
     status: 200,

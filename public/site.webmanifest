@@ -1,7 +1,7 @@
 {
-  "name": "Peter Steinberger",
-  "short_name": "Peter Steinberger",
-  "description": "iOS developer, entrepreneur, founder of PSPDFKit (acquired), vibe coding my next project",
+  "name": "Your Name",
+  "short_name": "Your Name",
+  "description": "Personal CV website and portfolio.",
   "icons": [
     {
       "src": "/favicon.ico",

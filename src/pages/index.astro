@@ -1,113 +1,75 @@
 ---
-import { getCollection } from "astro:content";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import IconRss from "@/assets/icons/IconRss.svg";
-import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Hr from "@/components/Hr.astro";
-import LinkButton from "@/components/LinkButton.astro";
 import Socials from "@/components/Socials.astro";
 import StructuredData from "@/components/StructuredData.astro";
-import { SITE, SOCIALS } from "@/config";
+import { SOCIALS, SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const posts2025AndLater = sortedPosts.filter(({ data }) => data.pubDatetime.getFullYear() >= 2025);
-const featuredPosts = posts2025AndLater.filter(({ data }) => data.featured);
-const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
 
-<Layout description="Peter Steinberger: AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.">
+<Layout description={SITE.desc}>
   <StructuredData type="WebSite" data={{}} />
   <StructuredData type="Person" data={{}} />
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pt-6 pb-4">
-      <div class="flex flex-col sm:flex-row items-start gap-4">
-        <a href="/about" class="block mx-auto sm:mx-0 group">
-          <img 
-            src="/peter-avatar.jpg" 
-            alt="Peter Steinberger" 
-            class="w-40 h-40 rounded-full object-cover flex-shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
+      <div class="mx-auto flex max-w-3xl flex-col items-start gap-4 px-4 sm:flex-row">
+        <a href="/about" class="group mx-auto block sm:mx-0">
+          <img
+            src="/avatar.jpg"
+            alt={SITE.title}
+            class="h-40 w-40 rounded-full object-cover flex-shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
           />
         </a>
         <div class="flex-1 text-center sm:text-left">
-          <div class="flex items-center gap-2 justify-center sm:justify-start">
-            <h1 class="my-2 inline-block text-2xl font-bold sm:my-4 sm:text-3xl">
-              Hi, I'm @steipete.
-            </h1>
-            <a
-              target="_blank"
-              href="/rss.xml"
-              class="inline-block"
-              aria-label="rss feed"
-              title="RSS Feed"
-            >
-              <IconRss
-                width={20}
-                height={20}
-                class="scale-125 stroke-accent stroke-3"
-              />
-              <span class="sr-only">RSS Feed</span>
-            </a>
-          </div>
-          <p>
-            AI-powered tools from Swift roots to web frontiers.<br />
-            Every commit lands on GitHub for you to fork & remix.
+          <h1 class="my-2 text-3xl font-bold sm:my-4 sm:text-4xl">
+            {SITE.title}
+          </h1>
+          <p class="max-w-2xl text-base leading-7 text-muted-foreground">
+            Hi, I'm Nik, an SRE/DevOps engineer. This is my CV site and blog, where I share my experience, projects, and thoughts.
           </p>
-          {
-            // only display if at least one social link is enabled
-            SOCIALS.filter((social) => social.active).length > 0 && (
-              <div class="mt-4 flex flex-row items-center justify-center sm:justify-start">
-                <Socials />
-              </div>
-            )
-          }
         </div>
+        {
+          SOCIALS.filter((social) => social.active).length > 0 && (
+            <div class="mt-4 flex flex-row items-center justify-center sm:justify-start">
+              <Socials />
+            </div>
+          )
+        }
       </div>
     </section>
 
     <Hr />
 
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-            <ul>
-              {featuredPosts.map((data) => (
-                <Card variant="h3" {...data} showImage={false} />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
-
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} showImage={false} />,
-            )}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block" />
-      </LinkButton>
-    </div>
+    <section class="mx-auto max-w-3xl px-4 py-10">
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div class="rounded-lg border border-border p-5">
+          <h2 class="text-xl font-semibold">About</h2>
+          <p class="mt-3 text-sm leading-6 text-muted-foreground">
+            Use this section for a short professional introduction, your specialization, and the type of roles or clients you are looking for.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border p-5">
+          <h2 class="text-xl font-semibold">Experience</h2>
+          <p class="mt-3 text-sm leading-6 text-muted-foreground">
+            Add your work history, key achievements, and the technologies you want to emphasize in your CV.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border p-5">
+          <h2 class="text-xl font-semibold">Projects</h2>
+          <p class="mt-3 text-sm leading-6 text-muted-foreground">
+            Showcase selected projects, products, case studies, or portfolio links that support your profile.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border p-5">
+          <h2 class="text-xl font-semibold">Contacts</h2>
+          <p class="mt-3 text-sm leading-6 text-muted-foreground">
+            Replace the placeholder social links in the config with your GitHub, LinkedIn, email, and any other relevant channels.
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
   <Footer />
 </Layout>

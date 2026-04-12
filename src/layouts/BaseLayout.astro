@@ -21,17 +21,5 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
       </main>
     </div>
     <Analytics />
-
-    <script>
-      // Mobile sidebar toggle
-      const sidebarToggle = document.createElement("button");
-      sidebarToggle.classList.add("sidebar-toggle");
-      sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      document.body.appendChild(sidebarToggle);
-
-	      sidebarToggle.addEventListener("click", () => {
-	        document.getElementById("sidebar")?.classList.toggle("show");
-	      });
-	    </script>
-	  </body>
-	</html>
+  </body>
+</html>
