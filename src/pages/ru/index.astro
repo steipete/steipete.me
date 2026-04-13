@@ -7,15 +7,15 @@ import { SITE } from "@/config";
 import { profileContent } from "@/data/profile";
 import Layout from "@/layouts/Layout.astro";
 
-const content = profileContent.en;
+const content = profileContent.ru;
 const siteUrl = SITE.website.endsWith("/") ? SITE.website.slice(0, -1) : SITE.website;
 ---
 
 <Layout
   title={content.siteTitle}
   description={content.siteDescription}
-  lang="en"
-  canonicalURL={`${siteUrl}/`}
+  lang="ru"
+  canonicalURL={`${siteUrl}/ru/`}
   alternateLinks={[
     { href: `${siteUrl}/`, hreflang: "en" },
     { href: `${siteUrl}/ru/`, hreflang: "ru" },

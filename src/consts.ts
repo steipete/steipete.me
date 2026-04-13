@@ -32,9 +32,9 @@ interface Site {
 // Site configuration
 export const SITE: Site = {
   website: "https://example.com/",
-  author: "Your Name",
-  profile: "https://example.com/about",
-  desc: "Personal CV website and portfolio.",
+  author: "Nikita Borisov",
+  profile: "https://www.linkedin.com/in/nikita-borisov-34b1b9381/",
+  desc: "SRE/DevOps engineer focused on cloud infrastructure, reliability, automation, and practical AI adoption.",
   title: "Nikita Borisov",
   ogImage: "avatar.jpg",
   lightAndDarkMode: true,
@@ -71,12 +71,16 @@ export const NAV_LINKS: SocialLink[] = [
 // Social media links
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: "#",
+    href: "https://github.com/yemmi17",
     label: "GitHub",
   },
   {
-    href: "#",
+    href: "https://www.linkedin.com/in/nikita-borisov-34b1b9381/",
     label: "LinkedIn",
+  },
+  {
+    href: "mailto:nikitabrworkjob@gmail.com",
+    label: "Email",
   },
 ];
 

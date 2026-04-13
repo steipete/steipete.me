@@ -48,8 +48,9 @@ if (type === "BlogPosting") {
     name: SITE.author,
     url: siteUrl,
     image: imageUrl,
-    jobTitle: "Software Engineer",
-    description: SITE.desc,
+    jobTitle: data.jobTitle || "SRE/DevOps Engineer",
+    description: data.description || SITE.desc,
+    sameAs: data.sameAs || [],
   };
 } else if (type === "WebSite") {
   structuredData = {
@@ -57,7 +58,7 @@ if (type === "BlogPosting") {
     "@type": "WebSite",
     name: SITE.title,
     url: siteUrl,
-    description: SITE.desc,
+    description: data.description || SITE.desc,
     author: {
       "@type": "Person",
       name: SITE.author,

@@ -13,6 +13,8 @@ export interface Props {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  lang?: string;
+  alternateLinks?: Array<{ href: string; hreflang: string }>;
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
@@ -24,6 +26,8 @@ const {
   description = SITE.desc,
   ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/favicon.ico",
   canonicalURL = new URL(Astro.url.pathname, Astro.url),
+  lang = "en",
+  alternateLinks = [],
   scrollSmooth = false,
 } = Astro.props;
 
@@ -31,13 +35,18 @@ const socialImageURL = new URL(ogImage, Astro.url);
 ---
 
 <!doctype html>
-<html lang={`${SITE.lang ?? "en"}`} class={`${scrollSmooth && "scroll-smooth"}`}>
+<html lang={lang} class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="view-transition" content="same-origin" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
+    {
+      alternateLinks.map((link) => (
+        <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+      ))
+    }
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>

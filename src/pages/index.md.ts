@@ -12,7 +12,7 @@ ${SITE.desc}
 
 ---
 
-This is the markdown version of the homepage. Replace the placeholder content in the site config and page files with your own CV information.`;
+This is the markdown version of the homepage with a short profile summary and a link to the About page.`;
 
   return new Response(markdownContent, {
     status: 200,

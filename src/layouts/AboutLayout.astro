@@ -12,15 +12,26 @@ export interface Props {
 }
 
 const { frontmatter } = Astro.props;
+const isRussian = Astro.url.pathname === "/ru/about" || Astro.url.pathname.startsWith("/ru/about/");
+const siteUrl = SITE.website.endsWith("/") ? SITE.website.slice(0, -1) : SITE.website;
+const canonicalURL = isRussian ? `${siteUrl}/ru/about/` : `${siteUrl}/about/`;
+const alternateLinks = [
+  { href: `${siteUrl}/about/`, hreflang: "en" },
+  { href: `${siteUrl}/ru/about/`, hreflang: "ru" },
+  { href: `${siteUrl}/about/`, hreflang: "x-default" },
+];
 ---
 
-<Layout title={`${frontmatter.title} | ${SITE.title}`} description={frontmatter.description}>
+<Layout
+  title={`${frontmatter.title} | ${SITE.title}`}
+  description={frontmatter.description}
+  lang={isRussian ? "ru" : "en"}
+  canonicalURL={canonicalURL}
+  alternateLinks={alternateLinks}
+>
   <Header />
   <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
-    <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0 mt-8">
-      <h1 class="text-2xl tracking-wider sm:text-3xl">{frontmatter.title}</h1>
-      <slot />
-    </section>
+    <slot />
   </main>
   <Footer />
 </Layout>

@@ -1,17 +1,10 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
-description: "Short profile and background summary."
+description: "Background, stack, and professional interests of Nikita Borisov."
 ---
 
-This page is ready for your personal information.
+import ProfileAbout from "@/components/ProfileAbout.astro";
+import { profileContent } from "@/data/profile";
 
-Add here:
-
-- a short introduction
-- your core stack or specialization
-- work experience highlights
-- education, certifications, or notable achievements
-- contact details or collaboration preferences
-
-The original author's bio, photos, newsletter, GitHub widgets, and personal links were removed so this page can serve as a clean CV placeholder.
+<ProfileAbout content={profileContent.en} />

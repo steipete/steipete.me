@@ -1,0 +1,41 @@
+---
+import type { ProfileContent } from "@/data/profile";
+
+export interface Props {
+  content: ProfileContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section id="about" class="prose mt-8 mb-28 max-w-3xl prose-img:border-0">
+  <h1 class="text-2xl tracking-wider sm:text-3xl">{content.aboutTitle}</h1>
+
+  {
+    content.aboutIntro.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))
+  }
+
+  {
+    content.aboutSections.map((section) => (
+      <>
+        <h2>{section.title}</h2>
+        <ul>
+          {section.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </>
+    ))
+  }
+
+  <h2>{content.contactTitle}</h2>
+  <ul>
+    {
+      content.contacts.map((contact) => (
+        <li>
+          {contact.label}: <a href={contact.href}>{contact.text}</a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,29 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import ProfileAbout from "@/components/ProfileAbout.astro";
+import { SITE } from "@/config";
+import { profileContent } from "@/data/profile";
+import Layout from "@/layouts/Layout.astro";
+
+const content = profileContent.ru;
+const siteUrl = SITE.website.endsWith("/") ? SITE.website.slice(0, -1) : SITE.website;
+---
+
+<Layout
+  title={`${content.aboutTitle} | ${content.siteTitle}`}
+  description={content.aboutDescription}
+  lang="ru"
+  canonicalURL={`${siteUrl}/ru/about/`}
+  alternateLinks={[
+    { href: `${siteUrl}/about/`, hreflang: "en" },
+    { href: `${siteUrl}/ru/about/`, hreflang: "ru" },
+    { href: `${siteUrl}/about/`, hreflang: "x-default" },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
+    <ProfileAbout content={content} />
+  </main>
+  <Footer />
+</Layout>

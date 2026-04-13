@@ -1,15 +1,20 @@
 import type { APIRoute } from "astro";
-import { readFileSync } from "fs";
-import { join } from "path";
+import { profileContent } from "@/data/profile";
 
 export const GET: APIRoute = async () => {
   try {
-    // Read the raw MDX content
-    const filePath = join(process.cwd(), "src/pages/about.mdx");
-    const rawContent = readFileSync(filePath, "utf-8");
+    const content = profileContent.en;
+    const sections = content.aboutSections
+      .map(
+        (section) => `## ${section.title}\n\n${section.items.map((item) => `- ${item}`).join("\n")}`
+      )
+      .join("\n\n");
+    const contacts = content.contacts
+      .map((contact) => `- ${contact.label}: ${contact.text} (${contact.href})`)
+      .join("\n");
+    const markdownContent = `# ${content.aboutTitle}\n\n${content.aboutIntro.join("\n\n")}\n\n${sections}\n\n## ${content.contactTitle}\n\n${contacts}`;
 
-    // Return the markdown content with proper headers
-    return new Response(rawContent, {
+    return new Response(markdownContent, {
       status: 200,
       headers: {
         "Content-Type": "text/markdown; charset=utf-8",

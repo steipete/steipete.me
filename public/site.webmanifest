@@ -1,7 +1,7 @@
 {
-  "name": "Your Name",
-  "short_name": "Your Name",
-  "description": "Personal CV website and portfolio.",
+  "name": "Nikita Borisov",
+  "short_name": "Nikita",
+  "description": "SRE/DevOps engineer focused on cloud infrastructure, reliability, automation, and practical AI adoption.",
   "icons": [
     {
       "src": "/favicon.ico",

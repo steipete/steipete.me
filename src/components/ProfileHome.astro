@@ -1,0 +1,67 @@
+---
+import Socials from "@/components/Socials.astro";
+import type { ProfileContent } from "@/data/profile";
+import { SOCIALS } from "@/config";
+
+export interface Props {
+  content: ProfileContent;
+}
+
+const { content } = Astro.props;
+const homePath = content.locale === "ru" ? "/ru/" : "/";
+---
+
+<main id="main-content" data-layout="index" data-home-path={homePath}>
+  <section id="hero" class="pt-6 pb-4">
+    <div class="mx-auto flex max-w-3xl flex-col items-start gap-4 px-4 sm:flex-row">
+      <a href={content.locale === "ru" ? "/ru/about" : "/about"} class="group mx-auto block sm:mx-0">
+        <img
+          src="/avatar.jpg"
+          alt={content.siteTitle}
+          class="h-40 w-40 rounded-full object-cover flex-shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
+        />
+      </a>
+      <div class="flex-1 text-center sm:text-left">
+        <h1 class="my-2 text-3xl font-bold sm:my-4 sm:text-4xl">
+          {content.heroTitle}
+        </h1>
+        <p class="max-w-2xl text-base leading-7 text-muted-foreground">
+          {content.heroSummary}
+        </p>
+      </div>
+      {
+        SOCIALS.filter((social) => social.active).length > 0 && (
+          <div class="mt-4 flex flex-row items-center justify-center sm:justify-start">
+            <Socials />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-10">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        content.homeSections.map((section) => (
+          <div class="rounded-lg border border-border p-5">
+            <h2 class="text-xl font-semibold">{section.title}</h2>
+            <p class="mt-3 text-sm leading-6 text-muted-foreground">
+              {section.body}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</main>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const mainContent = document.querySelector("#main-content") as HTMLElement | null;
+    const indexLayout = mainContent?.dataset?.layout;
+    const homePath = mainContent?.dataset?.homePath || "/";
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", homePath);
+    }
+  });
+</script>

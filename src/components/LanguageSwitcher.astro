@@ -1,0 +1,33 @@
+---
+const { pathname } = Astro.url;
+const isRussian = pathname === "/ru" || pathname.startsWith("/ru/");
+const englishPath = isRussian ? pathname.replace(/^\/ru/, "") || "/" : pathname || "/";
+const russianPath = isRussian ? pathname : `/ru${pathname === "/" ? "" : pathname}`;
+---
+
+<div class="flex items-center gap-2 text-sm font-medium">
+  <a
+    href={englishPath}
+    class:list={[
+      "rounded-full border px-3 py-1 transition-colors",
+      isRussian
+        ? "border-border text-muted-foreground hover:border-accent hover:text-accent"
+        : "border-accent bg-accent/10 text-accent",
+    ]}
+    aria-current={!isRussian ? "page" : undefined}
+  >
+    EN
+  </a>
+  <a
+    href={russianPath}
+    class:list={[
+      "rounded-full border px-3 py-1 transition-colors",
+      isRussian
+        ? "border-accent bg-accent/10 text-accent"
+        : "border-border text-muted-foreground hover:border-accent hover:text-accent",
+    ]}
+    aria-current={isRussian ? "page" : undefined}
+  >
+    RU
+  </a>
+</div>

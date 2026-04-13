@@ -1,12 +1,15 @@
 ---
 import Hr from "./Hr.astro";
 import Socials from "./Socials.astro";
+import { profileContent } from "@/data/profile";
 
 export interface Props {
   noMarginTop?: boolean;
 }
 
 const { noMarginTop = false } = Astro.props;
+const isRussian = Astro.url.pathname === "/ru" || Astro.url.pathname.startsWith("/ru/");
+const content = profileContent[isRussian ? "ru" : "en"];
 ---
 
 <footer class:list={["w-full", { "mt-auto": !noMarginTop }]}>
@@ -15,9 +18,9 @@ const { noMarginTop = false } = Astro.props;
     class="flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"
   >
     <Socials centered />
-    <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
+    <div class="my-2 flex max-w-xl flex-col items-center text-center sm:flex-row">
       <span class="text-sm text-muted-foreground">
-        Placeholder CV template. Replace the name, links, and page content with your own details.
+        {content.footerTagline}
       </span>
     </div>
   </div>

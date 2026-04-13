@@ -4,16 +4,27 @@ import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconX from "@/assets/icons/IconX.svg";
 import { SITE } from "@/config";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
 import Hr from "./Hr.astro";
 
 const { pathname } = Astro.url;
 const currentPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+const isRussian = pathname === "/ru" || pathname.startsWith("/ru/");
+const aboutHref = isRussian ? "/ru/about" : "/about";
+const aboutLabel = isRussian ? "Обо мне" : "About";
+const skipToContentLabel = isRussian ? "Перейти к содержимому" : "Skip to content";
+const openMenuLabel = isRussian ? "Открыть меню" : "Open menu";
+const closeMenuLabel = isRussian ? "Закрыть меню" : "Close menu";
+const toggleThemeLabel = isRussian ? "Переключить тему" : "Toggle theme";
+const stripLocalePrefix = (path: string) => path.replace(/^\/ru(?=\/|$)/, "") || "/";
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter((p) => p.trim());
-  const pathArray = path.split("/").filter((p) => p.trim());
+  const normalizedCurrentPath = stripLocalePrefix(currentPath);
+  const normalizedPath = stripLocalePrefix(path);
+  const currentPathArray = normalizedCurrentPath.split("/").filter((p) => p.trim());
+  const pathArray = normalizedPath.split("/").filter((p) => p.trim());
 
-  return currentPath === path || currentPathArray[0] === pathArray[0];
+  return normalizedCurrentPath === normalizedPath || currentPathArray[0] === pathArray[0];
 };
 ---
 
@@ -23,7 +34,7 @@ const isActive = (path: string) => {
     href="#main-content"
     class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
-    Skip to content
+    {skipToContentLabel}
   </a>
   <div
     id="nav-container"
@@ -46,9 +57,11 @@ const isActive = (path: string) => {
         <button
           id="menu-btn"
           class="focus-outline self-end p-2 sm:hidden"
-          aria-label="Open Menu"
+          aria-label={openMenuLabel}
           aria-expanded="false"
           aria-controls="menu-items"
+          data-open-label={openMenuLabel}
+          data-close-label={closeMenuLabel}
         >
           <IconX id="close-icon" class="hidden" />
           <IconMenuDeep id="menu-icon" />
@@ -63,9 +76,12 @@ const isActive = (path: string) => {
           ]}
         >
           <li class="col-span-2">
-            <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
-              About
+            <a href={aboutHref} class:list={{ "active-nav": isActive(aboutHref) }}>
+              {aboutLabel}
             </a>
+          </li>
+          <li class="col-span-2 flex items-center justify-center sm:justify-start">
+            <LanguageSwitcher />
           </li>
           {
             SITE.lightAndDarkMode && (
@@ -73,7 +89,7 @@ const isActive = (path: string) => {
                 <button
                   id="theme-btn"
                   class="focus-outline relative size-12 p-4 sm:size-8 hover:[&>svg]:stroke-accent"
-                  title="Toggles light & dark"
+                  title={toggleThemeLabel}
                   aria-label="auto"
                   aria-live="polite"
                 >
@@ -101,9 +117,11 @@ const isActive = (path: string) => {
 
     menuBtn.addEventListener("click", () => {
       const openMenu = menuBtn.getAttribute("aria-expanded") === "true";
+      const openLabel = menuBtn.getAttribute("data-open-label") || "Open menu";
+      const closeLabel = menuBtn.getAttribute("data-close-label") || "Close menu";
 
       menuBtn.setAttribute("aria-expanded", openMenu ? "false" : "true");
-      menuBtn.setAttribute("aria-label", openMenu ? "Open Menu" : "Close Menu");
+      menuBtn.setAttribute("aria-label", openMenu ? openLabel : closeLabel);
 
       menuItems.classList.toggle("hidden");
       menuIcon.classList.toggle("hidden");
