@@ -84,5 +84,16 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@10.33.2",
+  "pnpm": {
+    "overrides": {
+      "lodash@<=4.17.23": ">=4.18.0",
+      "lodash@>=4.0.0 <=4.17.22": ">=4.17.23",
+      "lodash@>=4.0.0 <=4.17.23": ">=4.18.0",
+      "serialize-javascript@<7.0.5": ">=7.0.5",
+      "serialize-javascript@<=7.0.2": ">=7.0.3",
+      "tmp@<=0.2.3": ">=0.2.4",
+      "yaml@>=2.0.0 <2.8.3": ">=2.8.3"
+    }
+  }
 }
