@@ -22,11 +22,11 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #000000;
-  --foreground: #f4f4f5;
+  --background: #fdfdfd;
+  --foreground: #282728;
   --accent: #006cac;
-  --muted: #18181b;
-  --border: #27272a;
+  --muted: #e6e6e6;
+  --border: #ece9e9;
 }
 
 html[data-theme="dark"] {
