@@ -22,19 +22,19 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
+  --background: #000000;
+  --foreground: #f4f4f5;
   --accent: #006cac;
-  --muted: #e6e6e6;
-  --border: #ece9e9;
+  --muted: #18181b;
+  --border: #27272a;
 }
 
 html[data-theme="dark"] {
-  --background: #212737;
+  --background: #000000;
   --foreground: #eaedf3;
   --accent: #ff6b01;
-  --muted: #343f60bf;
-  --border: #ab4b08;
+  --muted: #18181b;
+  --border: #27272a;
 }
 
 @theme {
