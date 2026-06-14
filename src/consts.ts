@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://sarwanshukry.com/",
   author: "Sarwan Shafeeq",
   profile: "https://sarwanshukry.com/about",
-  desc: "Personal website of Sarwan Shafeeq.",
+  desc: "ICT Engineer and Data Analyst based in Erbil, Iraq, using data analytics and technology to support strategic decisions and innovation.",
   title: "Sarwan Shafeeq",
   ogImage: "",
   lightAndDarkMode: true,
@@ -70,6 +70,14 @@ export const NAV_LINKS: SocialLink[] = [
 
 // Social media links
 export const SOCIAL_LINKS: SocialLink[] = [
+  {
+    href: "https://github.com/Sarwan-09",
+    label: "GitHub",
+  },
+  {
+    href: "https://www.linkedin.com/in/sarwan-shafeeq-2a387127b/",
+    label: "LinkedIn",
+  },
   {
     href: "/rss.xml",
     label: "RSS",

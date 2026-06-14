@@ -3,7 +3,9 @@ import type { APIRoute } from "astro";
 export const GET: APIRoute = async () => {
   const markdownContent = `# Sarwan Shafeeq
 
-Personal website of Sarwan Shafeeq.
+ICT Engineer and Data Analyst based in Erbil, Iraq.
+
+I use data analytics, data science, and technology to support strategic decisions and innovation.
 
 ## Navigation
 
@@ -14,6 +16,8 @@ Personal website of Sarwan Shafeeq.
 
 ## Links
 
+- GitHub: [Sarwan-09](https://github.com/Sarwan-09)
+- LinkedIn: [Sarwan Shafeeq](https://www.linkedin.com/in/sarwan-shafeeq-2a387127b/)
 - RSS: [/rss.xml](/rss.xml)
 
 ---

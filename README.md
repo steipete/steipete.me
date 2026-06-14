@@ -4,7 +4,7 @@ This is the source code for my personal website, built with [Astro](https://astr
 
 ## About
 
-This website hosts Sarwan Shafeeq's personal site and blog.
+This website hosts Sarwan Shafeeq's personal site and blog. Sarwan is an ICT Engineer and Data Analyst based in Erbil, Iraq.
 
 ## Project Structure
 

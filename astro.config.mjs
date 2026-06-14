@@ -103,7 +103,7 @@ export default defineConfig({
     react(),
     AstroPWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico"],
+      includeAssets: ["favicon.svg", "favicon.ico"],
       manifest: {
         name: "Sarwan Shafeeq",
         short_name: "Sarwan",
@@ -116,9 +116,9 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "favicon.ico",
-            sizes: "48x48",
-            type: "image/x-icon",
+            src: "favicon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
           },
         ],
       },

@@ -3,10 +3,10 @@ import { SITE } from "./consts";
 export const SOCIALS = [
   {
     name: "Github",
-    href: "",
+    href: "https://github.com/Sarwan-09",
     linkTitle: ` ${SITE.title} on Github`,
     icon: "github",
-    active: false,
+    active: true,
   },
   {
     name: "X",
@@ -24,10 +24,10 @@ export const SOCIALS = [
   },
   {
     name: "LinkedIn",
-    href: "",
+    href: "https://www.linkedin.com/in/sarwan-shafeeq-2a387127b/",
     linkTitle: `${SITE.title} on LinkedIn`,
     icon: "linkedin",
-    active: false,
+    active: true,
   },
   {
     name: "Mail",
