@@ -1,12 +1,12 @@
-# Instructions for Claude
+# Project Instructions
 
-This document contains important instructions and notes for Claude when working on this project.
+This document contains important instructions and notes when working on this project.
 
 ## CRITICAL GUIDELINES
 
 ### NEVER CREATE BLOG POSTS WITHOUT CONSENT
 
-- **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from steipete
+- **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from Sarwan
 - Do not write or propose new blog content unless specifically requested
 - Only help with editing or fixing existing posts when asked
 
@@ -74,16 +74,7 @@ npm run preview
 
    - Modify the appropriate layout files in `/src/layouts/`
 
-5. **Fixing broken images**:
-
-   - Blog posts reference images in the `/public/assets/img/` directory structure
-   - The original files can be found in `/temp-repos/steipete.com/assets/img/`
-   - Images must be copied to the matching public directory structure
-   - Fixed images should be committed to the repository
-   - Use `find` command to locate the original images
-   - Common image paths follow the pattern: `/assets/img/YEAR/POST-NAME/IMAGE.jpg`
-
-6. **Dependency Updates**:
+5. **Dependency Updates**:
    - Always use proper tooling to check for latest versions:
 
      ```bash

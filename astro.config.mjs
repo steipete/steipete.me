@@ -103,12 +103,11 @@ export default defineConfig({
     react(),
     AstroPWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "peter-avatar.jpg"],
+      includeAssets: ["favicon.ico"],
       manifest: {
-        name: "Peter Steinberger",
-        short_name: "steipete",
-        description:
-          "AI-powered tools from Swift roots to web frontiers. Everything I build is open source.",
+        name: "Sarwan Shafeeq",
+        short_name: "Sarwan",
+        description: "Personal website of Sarwan Shafeeq.",
         theme_color: "#006cac",
         background_color: "#fdfdfd",
         display: "standalone",
@@ -120,18 +119,6 @@ export default defineConfig({
             src: "favicon.ico",
             sizes: "48x48",
             type: "image/x-icon",
-          },
-          {
-            src: "peter-avatar.jpg",
-            sizes: "192x192",
-            type: "image/jpeg",
-            purpose: "any",
-          },
-          {
-            src: "peter-avatar.jpg",
-            sizes: "512x512",
-            type: "image/jpeg",
-            purpose: "any maskable",
           },
         ],
       },

@@ -1,10 +1,10 @@
-# Peter Steinberger's Personal Website
+# Sarwan Shafeeq's Personal Website
 
 This is the source code for my personal website, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
 
 ## About
 
-I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
+This website hosts Sarwan Shafeeq's personal site and blog.
 
 ## Project Structure
 
