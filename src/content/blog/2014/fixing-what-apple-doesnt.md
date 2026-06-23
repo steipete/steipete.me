@@ -12,6 +12,8 @@ tags:
   - Reveal
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 It's one of those days where Apple's sloppiness on iOS 7 is driving me nuts. Don't get me wrong; I have a lot of respect in pulling off something as big as iOS 7 in such a short amount of time. It's just that I see what's coming in iOS 7.1 and so many annoyances of iOS 7 still aren't fixed.

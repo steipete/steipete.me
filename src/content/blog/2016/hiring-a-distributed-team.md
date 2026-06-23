@@ -6,6 +6,8 @@ tags:
   - Company
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Who you hire can have a dramatic effect on your team’s culture and company’s productivity. People are the most influential factor in determining the success or failure of a company. Hiring is difficult and comes with high stakes. Make the wrong hire and you could be living with the consequences for longer than you’d expect. Make the right hire and you might be surprised by the asset the person becomes to your company. Add the additional variable of hiring someone who is distributed for a remote team and it gets even more complex. During the past six years at PSPDFKit, we’ve slowly learned what’s important, what works, and what doesn’t work, at least for us.

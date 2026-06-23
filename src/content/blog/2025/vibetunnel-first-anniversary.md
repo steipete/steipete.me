@@ -4,7 +4,7 @@ description: "It's been one month since we released the first version of VibeTun
 pubDatetime: 2025-07-16T20:00:00+01:00
 heroImage: "/assets/img/2025/vibetunnel-first-anniversary/header.png"
 tags: ["vibetunnel", "ai", "terminal", "tools"]
-unlisted: false
+unlisted: true
 ---
 
 It's been one month since we [released the first version of VibeTunnel](/posts/2025/vibetunnel-turn-any-browser-into-your-mac-terminal/) - let's call it VibeTunnel's first anniversary! 

@@ -6,6 +6,8 @@ tags:
   - Products
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Yesterday at the [Apple Event](http://www.apple.com/apple-events/september-2016/), next to iPhone 7 and Apple Watch Series 2, Apple announced something interesting: real-time collaboration for iWork across Mac, iPad, iPhone and the web.

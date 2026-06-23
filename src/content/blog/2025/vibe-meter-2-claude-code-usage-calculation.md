@@ -9,6 +9,8 @@ tags:
   - AI
   - Development
   - Tools
+unlisted: true
+
 ---
 
 **TL;DR**: Built Vibe Meter 2.0 to track Claude Code subscription usage by parsing JSON-L files and counting tokens with a SIMD-accelerated BPE tokenizer. No official API exists, so I approximated usage by counting every token. The project grew to 47K lines of Swift with 92% test coverage, all written with CC using "thinking" triggers and modern Swift idioms.

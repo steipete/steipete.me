@@ -6,8 +6,9 @@ import Header from "@/components/Header.astro";
 import { SITE } from "@/consts";
 import Layout from "@/layouts/Layout.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
+import getSortedPosts from "@/utils/getSortedPosts";
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = getSortedPosts(await getCollection("blog"));
 
 const months = [
   "January",
@@ -25,11 +26,11 @@ const months = [
 ];
 ---
 
-<Layout title={`Posts | ${SITE.title}`} description="Archive of all blog posts by Peter Steinberger. iOS, Swift, web development, and open source insights.">
+<Layout title={`Posts | ${SITE.title}`} description={`Archive of ${SITE.title} blog posts.`}>
   <Header />
   <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-4">
     <h1 class="text-2xl font-semibold sm:text-3xl mt-8">All Posts</h1>
-    <p class="mt-2 mb-6 italic">Browse all blog posts by year and month</p>
+    <p class="mt-2 mb-6 italic">Browse blog posts by year and month</p>
     {
       Object.entries(
         getPostsByGroupCondition(posts, (post) => {

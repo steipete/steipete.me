@@ -8,6 +8,8 @@ tags:
   - Objective-C
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Earlier this year, we released [PSPDFKit for iOS (7.7)][] and [PDF Viewer (3.0)][]. In both of these releases, we improved our [Document Editor][] to support [drag and drop][] for iPads on iOS 11 and above.

@@ -17,6 +17,8 @@ tags:
   - Objective-C-Runtime
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 I built a thing! [InterposeKit](https://github.com/steipete/InterposeKit) is a modern library for elegantly swizzling in Swift. It’s on GitHub, fully written in Swift 5.2+, and works on `@objc dynamic` Swift functions or Objective-C instance methods.

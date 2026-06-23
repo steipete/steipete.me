@@ -8,6 +8,8 @@ tags:
   - Swift
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Swizzling (other languages call this “monkey patching”) is the process of replacing a certain functionality or adding custom code before the original code is called. For example, you could swizzle `UIViewController.viewDidAppear` to be informed whenever a view controller is displayed. This affects all uses of `UIViewController` within your process/app, including controllers owned by third-party frameworks or Apple frameworks. This is also what Google does in its Firebase Analytics SDK.

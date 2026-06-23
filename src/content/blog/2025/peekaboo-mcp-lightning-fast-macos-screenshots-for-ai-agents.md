@@ -10,6 +10,8 @@ tags:
   - macOS
   - Screenshots
   - Developer Tools
+unlisted: true
+
 ---
 
 **TL;DR**: Peekaboo is a macOS-only MCP server that enables AI agents to capture screenshots of applications, or the entire system, with optional visual question answering through local or remote AI models.

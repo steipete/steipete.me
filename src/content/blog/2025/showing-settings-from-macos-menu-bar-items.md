@@ -10,6 +10,8 @@ tags:
   - MenuBarExtra
   - Settings
 draft: false
+unlisted: true
+
 ---
 
 Opening a settings window from a macOS menu bar app should be trivial. It's not. After spending hours debugging, I'm documenting the gotchas to save you the same frustration.

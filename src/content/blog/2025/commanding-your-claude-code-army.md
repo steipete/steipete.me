@@ -12,6 +12,8 @@ tags:
   - Productivity
   - Claude-Code
   - DevOps
+unlisted: true
+
 ---
 
 > **Update**: There's a better solution now! Check out [Command Your Claude Code Army, Reloaded](/posts/2025/command-your-claude-code-army-reloaded/) for VibeTunnel integration that gives Claude automatic title management.

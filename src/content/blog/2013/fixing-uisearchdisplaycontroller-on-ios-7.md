@@ -12,6 +12,8 @@ tags:
   - Animation
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 iOS 7 is great, but it's still very much a 1.0. I've spent a lot of time working around iOS 7-specific bugs in [PSPDFKit](http://pspdfkit.com) and will share some of my work here.

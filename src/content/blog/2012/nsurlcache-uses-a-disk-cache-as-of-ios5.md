@@ -8,6 +8,8 @@ tags:
   - performance
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 While writing [AFDownloadRequestOperation](https://github.com/steipete/AFDownloadRequestOperation), a new subclass for [AFNetworking](https://github.com/AFNetworking/AFNetworking), I discovered that the behavior of NSURLCache changed between iOS 4.x and iOS 5.x.

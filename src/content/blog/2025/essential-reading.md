@@ -6,6 +6,8 @@ lastUpdated: "2025-07-02"
 heroImage: /assets/img/2025/essential-reading/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering"
 tags: ["ai", "testing", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows"]
+unlisted: true
+
 ---
 
 **Kickstart your transition from vibe coding to agentic engineering.** 

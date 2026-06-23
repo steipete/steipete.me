@@ -10,6 +10,8 @@ tags:
   - Best-Practices
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 You're using KVO, right? So you most likely have already written code like this:

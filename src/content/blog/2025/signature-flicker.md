@@ -3,6 +3,8 @@ title: "The Signature Flicker"
 pubDatetime: 2025-12-18T01:00:00+01:00
 description: "Hell froze over. Anthropic fixed Claude Code's signature flicker in their latest update (2.0.72)"
 tags: ["ai", "terminal", "tui", "claude-code", "codex", "gemini", "development", "tools"]
+unlisted: true
+
 ---
 
 **tl;dr: Hell froze over. Anthropic fixed Claude Code's signature flicker in their latest update (2.0.72)**

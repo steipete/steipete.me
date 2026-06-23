@@ -11,6 +11,8 @@ tags:
   - Compatibility
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Now that Xcode 4.4 has finally reached Golden Master and [you can submit apps](https://devforums.apple.com/message/694250#694250), here's a trick to use [subscripting](http://clang.llvm.org/docs/ObjectiveCLiterals.html) _right now_. Yes, Apple will introduce this feature in a future version of OS X and iOS, but why wait? Here's the snippet from [PSPDFKit, my iOS PDF framework](http://pspdfkit.com), to make it work:

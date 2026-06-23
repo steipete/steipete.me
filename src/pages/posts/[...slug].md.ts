@@ -1,11 +1,12 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
+import postFilter from "@/utils/postFilter";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const posts = await getCollection("blog");
 
-  return posts.map((post) => ({
+  return posts.filter(postFilter).map((post) => ({
     params: { slug: post.id },
     props: { post },
   }));

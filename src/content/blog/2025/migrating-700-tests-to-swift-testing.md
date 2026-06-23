@@ -13,6 +13,8 @@ tags:
   - Migration
   - iOS
   - macOS
+unlisted: true
+
 ---
 
 **TL;DR**: I let Claude Code convert 700+ tests to Swift Testing, watched it fail spectacularly, created an AI-generated playbook, then watched it succeed brilliantly. The difference? Better instructions.

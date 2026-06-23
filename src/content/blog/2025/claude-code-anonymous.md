@@ -4,6 +4,8 @@ description: "Introducing Claude Code Anonymous - a new meetup format for full-b
 pubDatetime: 2025-09-09T12:00:00+02:00
 heroImage: /assets/img/2025/claude-code-anonymous/hero.png
 tags: ["ai", "claude", "meetup", "development"]
+unlisted: true
+
 ---
 
 A few weeks ago I reconnected with an old friend of mine, [Orta Therox](https://orta.io/) and we both discussed how Claude Code completely changed how we approach building software, and that we both have trouble thinking about anything else. Out of this conversation came an idea, and we created a new meetup format, Claude Code Anonymous.

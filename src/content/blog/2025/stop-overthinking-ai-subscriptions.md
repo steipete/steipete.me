@@ -12,6 +12,8 @@ tags:
   - Development
   - ROI
   - Vibe-Coding
+unlisted: true
+
 ---
 
 I've been working heavily with AI for the past few months, and many times when I post something on Twitter, the replies are predictable: "Oh my god, how much did you pay for that?"

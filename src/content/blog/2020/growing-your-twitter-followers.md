@@ -10,6 +10,8 @@ tags:
   - community
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 I've been using Twitter for almost 12 years now. It can be challenging to navigate your timeline, so today I'm sharing some tips to keep it fun.

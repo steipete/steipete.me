@@ -11,6 +11,8 @@ tags:
   - Privacy
   - AI
 draft: false
+unlisted: true
+
 ---
 
 **tl;dr**: I built a [free, open source analytics backend](https://stats.store) for Sparkle because all existing solutions are ancient, and I wanted to know how many people use [VibeTunnel](https://vibetunnel.sh) without being creepy about it.

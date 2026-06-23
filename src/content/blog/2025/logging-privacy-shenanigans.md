@@ -10,6 +10,8 @@ tags:
   - Debugging
   - Swift
   - Developer Tools
+unlisted: true
+
 ---
 
 > **TL;DR** – Apple logs hide the juicy debugging bits as `<private>`. Drop plist files into `/Library/Preferences/Logging/Subsystems/` for a simpler solution, or install a configuration profile as an alternative.

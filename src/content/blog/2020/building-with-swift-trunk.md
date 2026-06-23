@@ -19,6 +19,8 @@ tags:
   - APINotes
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 I recently started the adventure of building PSPDFKit with the [Swift trunk development snapshot](https://swift.org/download/). I did this both in order to verify a fix for the [SR-12933 LLDB debugging issue](https://steipete.com/posts/couldnt-irgen-expression/) and to be better prepared for the Xcode 12 release at WWDC.

@@ -4,6 +4,8 @@ description: "After Claude Pro changed to weekly limits, I explored self-hosting
 pubDatetime: 2025-07-31T10:00:00+01:00
 heroImage: "/assets/img/2025/self-hosting-ai-models/hero.png"
 tags: ["ai", "self-hosting", "llm", "claude", "qwen", "vast.ai", "gpu"]
+unlisted: true
+
 ---
 
 When Anthropic changed Claude Max's subscription model from a 5-hour usage window to weekly limits, [it hit me hard](https://x.com/steipete/status/1949901121998508119).

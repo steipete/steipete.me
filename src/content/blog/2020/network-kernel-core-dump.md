@@ -16,6 +16,8 @@ tags:
   - Technical-Guide
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 A week after Apple's initial "macOS Core Dump" reply, and me sending a lot of questions their way, I got a really nice, human reply that explains the process via networking and a second Mac.

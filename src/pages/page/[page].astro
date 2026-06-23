@@ -4,6 +4,7 @@
 	import FormattedDate from "../../components/FormattedDate.astro";
 	import { SITE } from "../../consts";
 	import Layout from "../../layouts/Layout.astro";
+	import getSortedPosts from "../../utils/getSortedPosts";
 
 	export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 	  const allPosts = await getCollection("blog");
@@ -20,12 +21,12 @@
     }
   });
 
-	  // Convert back to array and sort
-	  const sortedPosts = Array.from(idMap.values()).sort((a, b) => {
-	    const dateA = a.data.pubDatetime.valueOf();
-	    const dateB = b.data.pubDatetime.valueOf();
-	    return dateB - dateA;
-	  });
+	  // Convert back to array and apply the public post filter/sort.
+	  const sortedPosts = getSortedPosts(Array.from(idMap.values()));
+
+  if (sortedPosts.length === 0) {
+    return [];
+  }
 
   return paginate(sortedPosts, { pageSize: 10 });
 }

@@ -6,6 +6,8 @@ draft: true
 heroImage: /assets/img/2025/tachikoma-swift-ai-sdk/hero.png
 heroImageAlt: "Tachikoma Swift AI SDK logo with code snippets"
 tags: ["swift", "ai", "sdk", "llm", "claude-code", "open-source", "automation", "development-tools", "agents"]
+unlisted: true
+
 ---
 
 tl;dr: [Tachikoma](https://github.com/steipete/Tachikoma) is a modern Swift AI SDK that started life in Peekaboo v2, grew into its own thing, and was built entirely with Claude Code. Inspired by Vercel's AI SDK, it's what happens when agents make building your own surprisingly feasible.

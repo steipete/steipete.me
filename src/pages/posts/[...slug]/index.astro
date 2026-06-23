@@ -15,14 +15,7 @@ export async function getStaticPaths() {
     props: { post },
   }));
 
-  // Also include unlisted posts so they can be accessed via direct URL
-  const unlistedPosts = await getCollection("blog", ({ data }) => !data.draft && data.unlisted);
-  const unlistedResult = unlistedPosts.map((post) => ({
-    params: { slug: getPath(post.id, post.filePath, false) },
-    props: { post },
-  }));
-
-  return [...postResult, ...unlistedResult];
+  return postResult;
 }
 
 const { post } = Astro.props;

@@ -4,6 +4,8 @@ description: "Watch me build Arena live - a real-time collaborative coding sessi
 pubDatetime: 2025-09-06T12:00:00+02:00
 heroImage: /assets/img/2025/live-coding-session-building-arena/hero.png
 tags: ["live-coding", "arena", "development", "ai", "productivity"]
+unlisted: true
+
 ---
 
 **tl;dr: I built and shipped a brand-new feature live (in ~1 hour), watch how I approach agentic engineering with codex**

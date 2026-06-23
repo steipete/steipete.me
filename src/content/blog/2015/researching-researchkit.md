@@ -14,6 +14,8 @@ tags:
   - NSSecureCoding
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Apple's first [GitHub-released open source project](https://github.com/ResearchKit/ResearchKit/) is a big thing. There's much to learn here - I've spent some time reading through the source, here are my observations.

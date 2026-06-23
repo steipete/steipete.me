@@ -6,6 +6,8 @@ heroImage: /assets/img/2025/llm-codes-transform-developer-docs/hero.png
 heroImageAlt: "llm.codes interface showing documentation conversion tool"
 tags: ["tools", "ai", "development", "documentation", "llms"]
 draft: false
+unlisted: true
+
 ---
 
 **TL;DR**: <a href="https://llm.codes" target="_blank">llm.codes</a> converts JavaScript-heavy Apple docs (and 69+ other sites) into a clean llms.txt that AI agents can actually read.

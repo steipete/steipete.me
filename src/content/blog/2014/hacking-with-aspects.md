@@ -13,6 +13,8 @@ tags:
   - Hopper
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 I've recently spent a few days extracting and polishing the AOP code from [PSPDFKit](http://pspdfkit.com), and the result of this is called [Aspects - a delightful, simple library for aspect oriented programming.](https://github.com/steipete/Aspects)

@@ -11,6 +11,8 @@ tags:
   - PSPDFKit
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 A few days ago I booked my flight back to [Austria](https://p.twimg.com/Ak83Q74CEAAprvc.jpg). Starting on April 13, I'm a <strong>full-time indie</strong> again.

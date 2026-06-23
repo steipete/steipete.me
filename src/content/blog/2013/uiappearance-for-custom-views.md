@@ -9,6 +9,8 @@ tags:
   - UIAppearance
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 UIAppearance is hardly a new technology, since it was first introduced at WWDC 2011, but it still doesn't have the adoption it deserves (guilty as charged here as well). Since most apps are IOS 5 only now, there's no excuse anymore to not adopt it. Also, chances are quite high that at least some properties of your classes already support UIAppearance implicitly, since the preprocessor macro to 'enable' UIAppearance is actually defined to be empty:

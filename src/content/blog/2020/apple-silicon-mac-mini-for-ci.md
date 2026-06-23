@@ -15,6 +15,8 @@ tags:
   - Xcode
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Ever since the M1 was announced, I've been curious how well Apple's new Mac mini would perform for our CI system. A few days ago, we finally got access to two M1 Mac minis hosted on MacStadium (8-core M1, 16&nbsp;GB unified memory, 1&nbsp;TB SSD, 1&nbsp;GbE).

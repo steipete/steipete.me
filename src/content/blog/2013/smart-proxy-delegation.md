@@ -12,6 +12,8 @@ tags:
   - PSPDFKit
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 When calling optional delegates, the regular pattern is to check using respondsToSelector:, then actually call the method. This is straightforward and easy to understand:

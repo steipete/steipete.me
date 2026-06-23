@@ -10,6 +10,8 @@ tags:
   - macOS
   - Cursor
   - Side Projects
+unlisted: true
+
 ---
 
 My Cursor bill hit $900 for the month. I needed a simple way to track AI spending without constantly checking dashboards. That frustration sparked [Vibe Meter](https://www.vibemeter.ai/) - my first shipped Mac app built in three intense days.

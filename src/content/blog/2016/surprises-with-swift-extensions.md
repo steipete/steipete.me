@@ -7,6 +7,8 @@ tags:
   - Development
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 tl;dr: Swift extensions on Objective-C classes still need to be prefixed. You can use `@objc(prefix_name)` to keep the name pretty in Swift and expose a prefixed version for the ObjC runtime.

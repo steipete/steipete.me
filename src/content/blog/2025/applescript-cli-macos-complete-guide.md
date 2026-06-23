@@ -13,6 +13,8 @@ tags:
   - MCP
   - AI
   - Cursor
+unlisted: true
+
 ---
 
 *Or: How I Learned to Stop Fighting TCC and Embrace the Info.plist*

@@ -5,6 +5,8 @@ pubDatetime: 2025-08-22T02:00:00+01:00
 heroImage: /assets/img/2025/essential-reading-august/hero.png
 heroImageAlt: "Essential Reading for Agentic Engineering - August 2025"
 tags: ["ai", "claude", "development", "claude-code", "best-practices", "agentic-coding", "productivity", "workflows", "career-development"]
+unlisted: true
+
 ---
 
 **The reinvention of software development is happening now.** 

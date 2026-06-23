@@ -17,6 +17,8 @@ tags:
   - Stack-Management
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 While working on [InterposeKit](https://interposekit.com/), I had a rather specific need: Create an implementation that simply calls `super`, but at runtime instead of at compile time. Doesn't sound so hard, does it? Well, here we go again.

@@ -11,6 +11,8 @@ tags:
   - Best-Practices
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 There seems to be [some](http://stackoverflow.com/questions/1496015/is-it-possible-to-center-content-in-a-uiscrollview-like-apples-photos-app/3479059) [confusion](http://stackoverflow.com/questions/1316451/center-content-of-uiscrollview-when-smaller/14188223) around the net when it comes to the best way to center a view within an UIScrollView.

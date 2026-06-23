@@ -16,6 +16,8 @@ tags:
   - kernel_task
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 A good story is nuanced and complicated, and it contains surprise twists and a happy ending. Me owning an LG UltraFine 5K delivers on all of that. So let’s dive right in:

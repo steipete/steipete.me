@@ -13,7 +13,7 @@ interface Props {
 const {
   title = SITE.title,
   description = SITE.desc,
-  image = "/images/og.png",
+  image,
   type = "website",
   canonicalURL = new URL(Astro.url.pathname, Astro.site),
 } = Astro.props;
@@ -30,15 +30,15 @@ const criticalCSS = getPageCriticalCSS(Astro.url.pathname);
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" href="/peter-avatar.jpg" />
+<link rel="apple-touch-icon" href="/favicon.ico" />
 <link rel="manifest" href="/manifest.webmanifest" />
 
 <!-- PWA Meta Tags -->
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="steipete" />
-<meta name="application-name" content="Peter Steinberger" />
+<meta name="apple-mobile-web-app-title" content={SITE.title} />
+<meta name="application-name" content={SITE.title} />
 <meta name="msapplication-TileColor" content="#006cac" />
 
 <!-- Primary Meta Tags -->
@@ -64,15 +64,15 @@ const criticalCSS = getPageCriticalCSS(Astro.url.pathname);
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.site)} />
+{image && <meta property="og:image" content={new URL(image, Astro.site)} />}
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="@steipete" />
-<meta name="twitter:creator" content="@steipete" />
+<meta name="twitter:site" content="@jasontopia" />
+<meta name="twitter:creator" content="@jasontopia" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image, Astro.site)} />
+{image && <meta name="twitter:image" content={new URL(image, Astro.site)} />}
 
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />

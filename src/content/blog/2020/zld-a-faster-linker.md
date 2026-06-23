@@ -16,6 +16,8 @@ tags:
   - Build-Settings
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 zld is [a drop-in replacement of Apple's linker](https://github.com/michaeleisel/zld) that uses optimized data structures and parallelizing to speed things up. It comes with a great promise:

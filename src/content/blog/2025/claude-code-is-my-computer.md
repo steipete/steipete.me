@@ -13,6 +13,8 @@ tags:
   - Claude-Code
   - DevOps
   - Automation
+unlisted: true
+
 ---
 
 **TL;DR**: I run Claude Code in no-prompt mode; it saves me an hour a day and hasn't broken my Mac in two months. The $200/month [Max plan](/posts/2025/stop-overthinking-ai-subscriptions/) pays for itself.

@@ -10,6 +10,8 @@ tags:
   - Claude Code
   - Open Source
   - Hackathon
+unlisted: true
+
 ---
 
 **TL;DR**: We built a browser-based terminal controller working around 24 hours using Claude Code, named pipes, and Xterm.js. No SSH needed, just open your browser and start typing. Check and command your agents on the go!

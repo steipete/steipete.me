@@ -7,6 +7,8 @@ tags:
   - Development
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 `UITableView` is a cornerstone of classical iOS development and one of the oldest classes. It's used in pretty much all iOS apps and has been around since iPhone OS 2.0. So why would we propose deprecating one of the most used classes?

@@ -4,6 +4,8 @@ description: 'A practical guide to working with AI coding agents without the hyp
 pubDatetime: 2025-10-14T10:00:00+01:00
 heroImage: /assets/img/2025/just-talk-to-it/curve-angentic.jpg
 tags: ["ai", "claude", "engineering", "productivity"]
+unlisted: true
+
 ---
 
 I've been more quiet here lately as I'm knee-deep working on my latest project. Agentic engineering has become so good that it now writes pretty much 100% of my code. And yet I see so many folks trying to solve issues and generating these elaborated charades instead of getting sh*t done.

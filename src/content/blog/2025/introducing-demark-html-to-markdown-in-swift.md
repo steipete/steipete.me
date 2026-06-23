@@ -4,6 +4,8 @@ description: "How I vibe coded my first Swift package using existing JavaScript 
 pubDatetime: 2025-06-01T19:45:00+01:00
 heroImage: /assets/img/2025/demark/banner.png
 tags: ["swift", "open-source", "development", "ai", "personal"]
+unlisted: true
+
 ---
 
 I recently found myself needing a component that converts messy, potentially malformed HTML to clean Markdown in Swift. After searching around, I couldn't find anything that really fit my needs, so I decided to write my own. The result is [Demark](https://github.com/steipete/Demark) – my first Swift package that's now available on the [Swift Package Index](https://swiftpackageindex.com/steipete/Demark).

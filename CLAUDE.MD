@@ -6,7 +6,7 @@ This document contains important instructions and notes for Claude when working 
 
 ### NEVER CREATE BLOG POSTS WITHOUT CONSENT
 
-- **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from steipete
+- **NEVER CREATE BLOG POSTS WITHOUT EXPLICIT CONSENT** from Jasontopia
 - Do not write or propose new blog content unless specifically requested
 - Only help with editing or fixing existing posts when asked
 
@@ -77,7 +77,7 @@ npm run preview
 5. **Fixing broken images**:
 
    - Blog posts reference images in the `/public/assets/img/` directory structure
-   - The original files can be found in `/temp-repos/steipete.com/assets/img/`
+   - Imported legacy images live under `/public/assets/img/`
    - Images must be copied to the matching public directory structure
    - Fixed images should be committed to the repository
    - Use `find` command to locate the original images

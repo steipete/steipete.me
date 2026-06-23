@@ -7,6 +7,8 @@ tags:
   - Development
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Another fascinating WWDC is behind us. This year we again witnessed a whole host of newly presented features and refinements to the Swift language, now already in its fourth installment. It's great to see how the language has progressed over the last couple years. Unfortunately, since binary compatibility has been delayed further (at least there's a [Manifesto](https://github.com/apple/swift/blob/master/docs/ABIStabilityManifesto.md) now), and module stability is still even further away, we are unable to use Swift in our binary PSPDFKit SDK. However, we do use it for our tests and in [PDF Viewer](https://pdfviewer.io).

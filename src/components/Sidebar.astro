@@ -5,12 +5,9 @@ import { SITE_TITLE } from "../consts";
 <div id="sidebar">
   <div id="nav-wrapper">
 	    <div id="profile-wrapper" class="d-flex flex-column">
-	      <div id="avatar" class="d-flex justify-content-center">
-	        <a href="/">
-	          <img
-	            src="https://gravatar.com/avatar/832ece085bfe2c7c5b0ed6be62d7e675?s=240&d=mp"
-	            alt="Peter Steinberger's avatar"
-	          />
+      <div id="avatar" class="d-flex justify-content-center">
+        <a href="/" aria-label="Jasontopia home">
+          <div aria-hidden="true" class="jasontopia-sidebar-avatar">J</div>
         </a>
       </div>
       <div class="profile-text mt-3">
@@ -18,7 +15,7 @@ import { SITE_TITLE } from "../consts";
           <a href="/">{SITE_TITLE}</a>
         </div>
         <div id="site-subtitle" class="font-italic">
-          iOS Developer, Entrepreneur, and Open Source Contributor
+          AI solopreneur building singular leverage with AI
         </div>
       </div>
     </div>
@@ -47,17 +44,14 @@ import { SITE_TITLE } from "../consts";
 
   <div class="sidebar-bottom">
     <div class="social-links">
-      <a href="https://github.com/steipete" target="_blank">
+      <a href="https://github.com/jasontopia" target="_blank">
         <i class="fab fa-github-alt"></i>
       </a>
-      <a href="https://twitter.com/steipete" target="_blank">
+      <a href="https://x.com/jasontopia" target="_blank">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://www.linkedin.com/in/steipete/" target="_blank">
+      <a href="https://www.linkedin.com/in/jasontopia/" target="_blank">
         <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="mailto:peter@steipete.me">
-        <i class="fas fa-envelope"></i>
       </a>
       <a href="/rss.xml" target="_blank">
         <i class="fas fa-rss"></i>
@@ -89,3 +83,18 @@ import { SITE_TITLE } from "../consts";
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 />
+
+<style>
+  .jasontopia-sidebar-avatar {
+    align-items: center;
+    background: var(--accent);
+    border-radius: 9999px;
+    color: var(--background);
+    display: flex;
+    font-size: 4rem;
+    font-weight: 700;
+    height: 10rem;
+    justify-content: center;
+    width: 10rem;
+  }
+</style>

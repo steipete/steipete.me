@@ -8,6 +8,8 @@ tags:
   - UIKit
   - AppKit
   - Observation
+unlisted: true
+
 ---
 
 **TL;DR**: iOS 18 and macOS 15 secretly ship with automatic observation tracking for UIKit/AppKit. Enable it with a plist key, and your views magically update when your `@Observable` models change. No more manual `setNeedsDisplay()` calls!

@@ -9,7 +9,7 @@ import Main from "@/layouts/Main.astro";
 const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
 ---
 
-<Layout title={`Search | ${SITE.title}`} description="Search through Peter Steinberger's blog posts on iOS development, Swift, and open source projects.">
+<Layout title={`Search | ${SITE.title}`} description={`Search ${SITE.title}.`}>
   <Header />
   <Main pageTitle="Search" pageDesc="Search any article ...">
     <div id="pagefind-search" transition:persist data-backurl={backUrl}></div>
@@ -71,7 +71,7 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
       // Auto-focus the search input and add placeholder
       if (searchInput) {
         searchInput.focus();
-        searchInput.placeholder = "Search posts, e.g. 'Swift concurrency'";
+        searchInput.placeholder = "Search posts";
       }
       searchInput?.addEventListener("input", resetSearchParam);
       clearButton?.addEventListener("click", resetSearchParam);

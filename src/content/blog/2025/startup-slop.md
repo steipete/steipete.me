@@ -5,6 +5,8 @@ pubDatetime: 2025-08-02T16:00:00.000+02:00
 heroImage: /assets/img/2025/startup-slop/hero.png
 heroImageAlt: "A stylized image representing startup culture and AI-generated content controversy"
 tags: ["ai", "writing", "content-creation", "community", "claude-code", "automation", "blogging", "opinion", "controversy"]
+unlisted: true
+
 ---
 
 tl:dr: My website is banned on http://lobste.rs as "startup slop", because I use agents to help me write parts of my blog posts.

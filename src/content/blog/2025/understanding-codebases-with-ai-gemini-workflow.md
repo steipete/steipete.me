@@ -5,6 +5,8 @@ pubDatetime: 2025-06-25T12:00:00+00:00
 heroImage: "/assets/img/2025/understanding-codebases-with-ai-gemini-workflow/header.png"
 heroImageAlt: "Google AI Studio with repo2txt markdown loaded for code analysis"
 tags: ["ai", "productivity", "coding", "gemini", "development"]
+unlisted: true
+
 ---
 
 **TL;DR**: Convert GitHub repos to markdown with [repo2txt](https://repo2txt.simplebasedomain.com/), drag into [Google AI Studio](https://aistudio.google.com/prompts/new_chat), and ask questions. Gemini's massive context window makes it amazing for code comprehension.

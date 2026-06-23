@@ -1,10 +1,12 @@
-# Peter Steinberger's Personal Website
+# Jasontopia
 
-This is the source code for my personal website, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
+This is the source code for jasontopia.me, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
 
 ## About
 
-I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
+Jasontopia is an AI solopreneur building singular leverage with AI - sharing model shifts, tools, and monetization playbooks.
+
+Inherited posts from the previous site are kept in `src/content/blog` for now, but are marked `unlisted: true` so they are not generated into public post pages, listings, RSS, tag pages, search, or sitemap output.
 
 ## Project Structure
 
@@ -25,7 +27,6 @@ I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contribut
 ├── astro.config.mjs     # Astro configuration
 ├── vercel.json          # Vercel deployment and CSP configuration
 ├── package.json         # Project dependencies and scripts
-├── tailwind.config.mjs  # Tailwind CSS configuration
 └── LICENSE              # Dual license (CC BY 4.0 + MIT)
 ```
 
@@ -36,6 +37,8 @@ I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contribut
 | `pnpm install`         | Installs dependencies                       |
 | `pnpm run dev`         | Starts local dev server at `localhost:4321` |
 | `pnpm run build`       | Build the production site to `./dist/`      |
+| `pnpm run build:check` | Type-check, build, and index search         |
+| `pnpm run check`       | Run format and lint checks                  |
 | `pnpm run preview`     | Preview the build locally, before deploying |
 
 ## Deployment

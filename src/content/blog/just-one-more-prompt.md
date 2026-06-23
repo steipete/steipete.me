@@ -4,6 +4,8 @@ description: "Hi, my name is Peter and I'm a Claudoholic. A reflection on AI add
 pubDatetime: 2025-08-19T10:00:00+02:00
 heroImage: /assets/img/2025/just-one-more-prompt/hero.jpg
 tags: ["ai", "productivity", "burnout", "development", "personal"]
+unlisted: true
+
 ---
 
 This is my writeup for the talk I gave at [Claude Code Anonymous meeting in London](http://claudeanon.club/).

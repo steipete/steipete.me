@@ -4,6 +4,8 @@ description: "Why I stopped reading code and started watching it stream by."
 draft: false
 pubDatetime: 2025-12-28T12:00:00+01:00
 tags: ["ai", "codex", "workflow"]
+unlisted: true
+
 ---
 
 ## What Changed Since May

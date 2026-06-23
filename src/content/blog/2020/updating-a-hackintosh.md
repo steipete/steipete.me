@@ -16,6 +16,8 @@ tags:
   - Custom-PC
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 With macOS 10.15.5 out, it was time to update my Hackintosh again. This does take a bit more preparation than updating genuine Mac hardware. Since a few folks on Twitter were curious, here’s how this works.

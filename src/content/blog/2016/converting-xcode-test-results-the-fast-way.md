@@ -8,6 +8,8 @@ tags:
   - Testing
 source: pspdfkit.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Testing is very important at PSPDFKit. We're building an SDK. When you give your API to other developers, there are many more things that can go wrong. For a long time, we've been using either a combination of xcodebuild with [xcpretty](https://github.com/supermarin/xcpretty) or [Facebook's xctool](https://github.com/facebook/xctool). No tool is perfect though. [xctool](https://github.com/facebook/xctool) is an alternative to xcodebuild but uses much of it under the hood and often breaks when Xcode is updated. At some point Facebook deprecated it, and currently it doesn't work with Xcode 8 anymore. [xcpretty](https://github.com/supermarin/xcpretty) is really good. It parses the very verbose output of xcodebuild and prints it into something sane that a human can read. A big shout-out to [Marin Usalj](https://twitter.com/_supermarin), who maintains the project.

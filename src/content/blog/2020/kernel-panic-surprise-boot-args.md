@@ -15,6 +15,8 @@ tags:
   - MacBook-Pro
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 On March 24, 2020, my 16-inch MacBook Pro greeted me with a kernel panic. I ignored it the first time, but it started to become an everyday thing. There I was, having enjoyed a short moment of a bug-free setup, and it was interrupted yet again.

@@ -10,6 +10,8 @@ tags:
   - Sparkle
   - Notarization
   - Swift
+unlisted: true
+
 ---
 
 *Or: How I Learned to Stop Worrying and Love the XPC Services*

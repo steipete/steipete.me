@@ -16,6 +16,8 @@ tags:
   - Testing
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 The excitement around Apple's new M1 chip is [everywhere](https://www.singhkays.com/blog/apple-silicon-m1-black-magic/). I bought a MacBook Air 16&nbsp;GB M1 to see how viable it is as a main development machine — here's an early report after a week of testing.

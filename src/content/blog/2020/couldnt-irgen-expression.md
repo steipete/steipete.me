@@ -16,6 +16,8 @@ tags:
   - SwiftModule
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 <style type="text/css">

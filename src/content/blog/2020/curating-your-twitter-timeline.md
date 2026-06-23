@@ -11,6 +11,8 @@ tags:
   - Content Curation
 source: steipete.com
 AIDescription: true
+unlisted: true
+
 ---
 
 Your timeline defines your Twitter experience. Learn strategies how to pick your followers, how to hide what's not interesting and how to mute negative people and keep Twitter fun for you. This is the second part of my Twitter series about Gardening Your Twitter.

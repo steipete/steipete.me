@@ -12,6 +12,8 @@ tags:
   - Foundation
 source: petersteinberger.com
 AIDescription: true
+unlisted: true
+
 ---
 
 [Daniel Eggert](https://twitter.com/danielboedewadt) asked me on Twitter what's the best way to retrofit the new `containsString:` method on `NSString` for iOS 7. Apple quietly added this method to Foundation in iOS 8 - it's a small but great addition and reduces common code ala `[path rangeOfString:@"User"].location != NSNotFound` to the more convenient and readable `[path containsString:@"User"]`.

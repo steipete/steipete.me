@@ -4,6 +4,8 @@ description: "I'm joining OpenAI to work on bringing agents to everyone. OpenCla
 pubDatetime: 2026-02-15T01:00:00+01:00
 tags: ["ai", "openai", "openclaw", "agents"]
 draft: false
+unlisted: true
+
 ---
 
 **tl;dr: I'm joining OpenAI to work on bringing agents to everyone. [OpenClaw](https://openclaw.ai/) will move to a foundation and stay open and independent.**

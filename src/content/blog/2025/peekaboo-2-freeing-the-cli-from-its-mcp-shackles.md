@@ -11,6 +11,8 @@ tags:
   - Screenshots
   - Developer Tools
   - AI Agents
+unlisted: true
+
 ---
 
 A few weeks ago I [built Peekaboo](https://steipete.me/posts/2025/peekaboo-mcp-lightning-fast-macos-screenshots-for-ai-agents), lightning-fast macOS screenshots for AI agents. The twist? Not only is it really fast at screenshots, it can also use a separate agent to answer queries - saving precious context space for your main agent. Plus, in contrast to the macOS `screencapture`, it doesn't need user action or steals app focus.

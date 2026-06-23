@@ -15,6 +15,8 @@ tags:
   - Automation
   - CMake
   - Swift
+unlisted: true
+
 ---
 
 **TL;DR**: [Poltergeist](http://polter.build) is an AI-friendly universal file-watcher that auto-detects any project and rebuilds them as soon as a file has been changed. It's `npm run dev` for native apps, with automatic configuration, notifications and a smart build queue.

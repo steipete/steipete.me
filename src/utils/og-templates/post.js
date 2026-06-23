@@ -1,5 +1,6 @@
 import satori from "satori";
 // import { html } from "satori-html";
+import { SITE } from "@/config";
 import loadGoogleFonts from "../loadGoogleFont";
 
 /**
@@ -7,10 +8,8 @@ import loadGoogleFonts from "../loadGoogleFont";
  *
  * This template generates social media preview cards for blog posts.
  *
- * CUSTOMIZATION: We override the default behavior to show "steipete.me"
- * on the right side instead of the author name (Peter Steinberger).
- * This avoids redundancy since the author name already appears on the left
- * with "by Peter Steinberger".
+ * Shows the canonical site host on the right side instead of repeating the
+ * author name that already appears on the left.
  */
 
 // const markup = html`<div
@@ -213,7 +212,7 @@ export default async (post) => {
                             type: "span",
                             props: {
                               style: { overflow: "hidden", fontWeight: "bold" },
-                              children: "steipete.me",
+                              children: new URL(SITE.website).hostname,
                             },
                           },
                         ],
@@ -231,7 +230,7 @@ export default async (post) => {
       width: 1200,
       height: 630,
       embedFont: true,
-      fonts: await loadGoogleFonts(post.data.title + post.data.author + "steipete.me" + "by"),
+      fonts: await loadGoogleFonts(post.data.title + post.data.author + SITE.website + "by"),
     },
   );
 };
