@@ -1,59 +1,82 @@
 # Jasontopia
 
-This is the source code for jasontopia.me, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
+Source for the Jasontopia personal website at <https://jasontopia.me>.
 
-## About
+The site is an Astro blog/site with React components, Tailwind styling, Pagefind search, RSS, sitemap generation, PWA support, and Vercel analytics. The current visual style is intentionally preserved; avoid broad design refreshes unless that is the explicit task.
 
-Jasontopia is an AI solopreneur building singular leverage with AI - sharing model shifts, tools, and monetization playbooks.
+## Tech Stack
 
-Inherited posts from the previous site are kept in `src/content/blog` for now, but are marked `unlisted: true` so they are not generated into public post pages, listings, RSS, tag pages, search, or sitemap output.
+- Astro
+- React
+- Tailwind CSS
+- pnpm
+- Vercel
+
+## Local Development
+
+This project uses pnpm. The expected Node version is `>=24.0.0`.
+
+```sh
+pnpm install
+pnpm run dev
+```
+
+The dev server starts with `astro dev`, usually at <http://localhost:4321>.
+
+## Build And Check
+
+```sh
+pnpm run build
+pnpm run build:check
+pnpm run check
+pnpm run preview
+```
+
+- `pnpm run build` builds the Astro site and creates the Pagefind index in `dist/`.
+- `pnpm run build:check` runs `astro check`, builds the site, and creates the Pagefind index.
+- `pnpm run check` runs formatting and lint checks.
+- `pnpm run preview` previews the built site locally.
+
+Use `pnpm run check:fix` for local format/lint fixes.
+
+## Deployment
+
+The project is configured for Vercel in `vercel.json`:
+
+- Framework: Astro
+- Install command: `pnpm install --frozen-lockfile`
+- Build command: `pnpm run build`
+- Output directory: `dist`
+- Dev command: `pnpm run dev`
+
+The canonical domain is `https://jasontopia.me`. Vercel redirects `www.jasontopia.me` and other configured host/path variants to the canonical domain, and `astro.config.mjs` uses `SITE.website` for the site URL.
+
+## Content Notes
+
+Blog content lives in `src/content/blog/`, with many posts organized by year. Legacy imported posts remain in the repo for now, but hidden posts are marked with `unlisted: true`; draft posts use `draft: true`.
+
+Public post filtering excludes drafts, unlisted posts, and future scheduled posts outside the configured margin. Keep legacy content hidden/unlisted unless there is an explicit decision to publish it.
 
 ## Project Structure
 
 ```text
-├── public/               # Static assets (images, fonts, favicon)
-│   ├── assets/          # Images for blog posts
-│   └── fonts/           # Web fonts
+.
+├── public/              # Static assets served as-is
 ├── src/
-│   ├── assets/          # Icons and images used in components
-│   ├── components/      # Reusable UI components
-│   │   └── ui/          # React components
-│   ├── content/         # Content collections
-│   │   └── blog/        # Blog posts in Markdown format (organized by year)
-│   ├── layouts/         # Page layouts and templates
-│   ├── pages/           # Routes and pages
-│   ├── styles/          # Global styles and CSS
-│   └── utils/           # Utility functions
-├── astro.config.mjs     # Astro configuration
-├── vercel.json          # Vercel deployment and CSP configuration
-├── package.json         # Project dependencies and scripts
-└── LICENSE              # Dual license (CC BY 4.0 + MIT)
+│   ├── assets/          # Local icons and images used by the app
+│   ├── components/      # Astro and React UI components
+│   ├── content/         # Astro content collections
+│   │   └── blog/        # Blog posts in Markdown/MDX
+│   ├── layouts/         # Page and post layouts
+│   ├── pages/           # Astro routes and generated markdown endpoints
+│   ├── styles/          # Global, Tailwind, typography, and custom styles
+│   └── utils/           # Site utilities, filters, OG image helpers
+├── astro.config.mjs     # Astro integrations and build configuration
+├── package.json         # Scripts, dependencies, pnpm metadata
+├── pnpm-lock.yaml       # pnpm lockfile
+└── vercel.json          # Vercel build, redirects, rewrites, and headers
 ```
-
-## Commands
-
-| Command                | Action                                      |
-| :--------------------- | :------------------------------------------ |
-| `pnpm install`         | Installs dependencies                       |
-| `pnpm run dev`         | Starts local dev server at `localhost:4321` |
-| `pnpm run build`       | Build the production site to `./dist/`      |
-| `pnpm run build:check` | Type-check, build, and index search         |
-| `pnpm run check`       | Run format and lint checks                  |
-| `pnpm run preview`     | Preview the build locally, before deploying |
-
-## Deployment
-
-This site is set up for easy deployment on Vercel. Just connect your GitHub repository to Vercel, and it will automatically build and deploy the site when changes are pushed.
 
 ## License
 
-This repository uses dual licensing:
-
-- **Documentation & Blog Posts**: Licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
-- **Code & Code Snippets**: Licensed under the [MIT License](LICENSE)
-
-See the [LICENSE](LICENSE) file for full details.
-
-## Special Thanks
-
-Special thanks to [Sat Naing](https://github.com/satnaing) for creating the excellent [AstroPaper theme](https://astro-paper.pages.dev/) that served as the foundation for this website. Their thoughtful design and clean architecture made it a joy to build upon.
+See [LICENSE](LICENSE).

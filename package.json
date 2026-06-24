@@ -68,10 +68,8 @@
     "vite": "^6.3.5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json}": [
-      "oxfmt --write",
-      "oxlint --fix"
-    ]
+    "*.{js,mjs,cjs,ts,tsx,json}": "oxfmt --write",
+    "*.{js,mjs,cjs,ts,tsx}": "oxlint --fix"
   },
   "config": {
     "commitizen": {
@@ -91,6 +89,10 @@
       "serialize-javascript@<=7.0.2": ">=7.0.3",
       "tmp@<=0.2.3": ">=0.2.4",
       "yaml@>=2.0.0 <2.8.3": ">=2.8.3"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
