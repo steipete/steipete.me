@@ -32,7 +32,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "@vite-pwa/astro": "^1.2.0",
-    "astro": "^7.0.6",
+    "astro": "^7.1.0",
     "astro-embed": "^0.13.1",
     "dayjs": "^1.11.21",
     "fuse.js": "^7.4.2",
