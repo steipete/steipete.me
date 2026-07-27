@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- Refreshed Astro, React, Tailwind, lint/build tooling, and security-pinned transitive dependencies; moved pnpm overrides into the supported workspace configuration.
+
 ### Added
 - steipete.md domain support for markdown-only viewing (#130, #139)
   - Visit steipete.md to automatically see markdown versions of all pages
