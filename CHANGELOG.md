@@ -6,25 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Changed
-- Refreshed Astro, React, Tailwind, lint/build tooling, and security-pinned transitive dependencies; moved pnpm overrides into the supported workspace configuration.
+**Highlights:** Read the site as plain Markdown at steipete.md; dependency maintenance includes the latest Astro and image-processing security fixes.
 
-### Added
-- steipete.md domain support for markdown-only viewing (#130, #139)
-  - Visit steipete.md to automatically see markdown versions of all pages
-  - Client-side redirect handles domain detection and .md routing
-  - Works around Vercel's limitations with domain-based rewrites for static sites
-- Markdown (.md) endpoint support for all pages - append `.md` to any URL to get raw markdown content
-  - Blog posts: `/posts/YEAR/post-slug.md`
-  - Root pages: `/about.md`
-- Raw markdown served with `Content-Type: text/plain` and proper caching headers
-- Redirect from steipete.me/*.md URLs to steipete.md/* (#133)
-
-### Fixed
-- Slow theme switching animation on iPhone Safari (#122)
-  - Removed universal CSS transitions that caused performance issues
-  - Targeted only elements that actually change during theme switching
-  - Added hardware acceleration for iOS Safari using transform3d
+- Added steipete.md domain support and raw Markdown endpoints for blog posts, the home page, about, archives, and post listings, with plain-text content types and caching (#130, #139).
+- Redirected steipete.me Markdown URLs to steipete.md (#133).
+- Fixed slow theme switching on iPhone Safari by limiting transitions to themed elements and enabling hardware acceleration (#122).
+- Updated Astro to 7.3.2 and Sharp to 0.35.4, refreshed compatible dependencies, and resolved the remaining vulnerable transitive dependencies that blocked Dependabot security updates; includes the Astro/SVGO update from #266, thanks @dependabot.
+- Updated checkout and Node setup actions to their current releases while retaining Node 24 and frozen pnpm installs.
+- Refreshed React, Tailwind, lint/build tooling, and security-pinned transitive dependencies; moved pnpm overrides into the supported workspace configuration.
 
 ## [2025-01-06]
 
