@@ -1,4 +1,4 @@
-import { SITE } from "./config";
+import { SITE } from "./config.ts";
 
 export const SOCIALS = [
   {
@@ -31,7 +31,7 @@ export const SOCIALS = [
   },
   {
     name: "Mail",
-    href: "mailto:peter@steipete.me",
+    href: `mailto:${SITE.email}`,
     linkTitle: `Send an email to ${SITE.title}`,
     icon: "mail",
     active: true,

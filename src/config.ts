@@ -3,6 +3,7 @@ export const BLOG_PATH = "src/content/blog";
 interface Site {
   website: string;
   author: string;
+  email: string;
   profile: string;
   desc: string;
   title: string;
@@ -26,6 +27,7 @@ interface Site {
 export const SITE: Site = {
   website: "https://steipete.me/",
   author: "Peter Steinberger",
+  email: "peter@steipete.me",
   profile: "https://steipete.me/about",
   desc: "AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub for you to fork & remix.",
   title: "Peter Steinberger",

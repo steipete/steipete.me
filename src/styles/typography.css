@@ -70,3 +70,15 @@
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }
+
+.prose .youtube-embed {
+  margin-block: 2rem;
+}
+
+.prose .youtube-embed iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}

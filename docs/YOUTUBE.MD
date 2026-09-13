@@ -34,7 +34,7 @@ Using a youtu.be short URL:
 
 ## How It Works
 
-The post layouts convert these shortcodes in rendered article content to YouTube iframes in the browser.
+The Markdown build pipeline converts these shortcodes to responsive YouTube iframes. Surrounding prose and formatting are preserved, and shortcode examples inside code remain literal. YouTube iframes are present in the initial HTML; no page-side shortcode replacement is needed. Twitter shortcodes and legacy `<TwitterEmbed id="..." />` tags produce a fallback link that Twitter widgets enhance in the browser.
 
 ## Twitter Embeds for Comparison
 

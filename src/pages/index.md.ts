@@ -1,3 +1,4 @@
+import { SITE } from "@/config";
 import { markdownResponse } from "@/utils/markdownResponse";
 import type { APIRoute } from "astro";
 
@@ -17,7 +18,7 @@ AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub
 
 - Twitter: [@steipete](https://twitter.com/steipete)
 - GitHub: [@steipete](https://github.com/steipete)
-- Email: steipete@gmail.com
+- Email: ${SITE.email}
 
 ---
 
