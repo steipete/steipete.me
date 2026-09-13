@@ -31,16 +31,14 @@ const iconMap = {
   <div class="text-center flex flex-wrap gap-1">
     {
       SHARE_LINKS.map((social) => {
-        const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+        const IconComponent = iconMap[social.icon];
         return (
           <LinkButton
             href={`${social.href + URL}`}
             class="p-3 sm:p-2 hover:rotate-6"
             title={social.linkTitle}
           >
-            {IconComponent && (
-              <IconComponent class="inline-block size-8 sm:size-6 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent" />
-            )}
+            <IconComponent class="inline-block size-8 sm:size-6 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent" />
             <span class="sr-only">{social.linkTitle}</span>
           </LinkButton>
         );

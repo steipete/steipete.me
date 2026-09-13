@@ -8,24 +8,9 @@
 	export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 	  const allPosts = await getCollection("blog");
 
-  // Deduplicate posts by id if there are any duplicates
-  const idMap = new Map();
-  allPosts.forEach((post) => {
-    // If we already have a post with this id, only keep the newer one
-    if (
-      !idMap.has(post.id) ||
-      new Date(post.data.pubDatetime) > new Date(idMap.get(post.id).data.pubDatetime)
-    ) {
-      idMap.set(post.id, post);
-    }
-  });
-
-	  // Convert back to array and sort
-	  const sortedPosts = Array.from(idMap.values()).sort((a, b) => {
-	    const dateA = a.data.pubDatetime.valueOf();
-	    const dateB = b.data.pubDatetime.valueOf();
-	    return dateB - dateA;
-	  });
+  const sortedPosts = allPosts.sort((a, b) =>
+    b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf(),
+  );
 
   return paginate(sortedPosts, { pageSize: 10 });
 }

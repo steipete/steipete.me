@@ -25,16 +25,14 @@ const iconMap = {
 <div class:list={["flex-wrap justify-center gap-1", { flex: centered }]}>
   {
     SOCIALS.filter((social) => social.active).map((social) => {
-      const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+      const IconComponent = iconMap[social.icon];
       return (
         <LinkButton
           href={social.href}
           class="p-2 hover:rotate-6 sm:p-1"
           title={social.linkTitle}
         >
-          {IconComponent && (
-            <IconComponent class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
-          )}
+          <IconComponent class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
           <span class="sr-only">{social.linkTitle}</span>
         </LinkButton>
       );
