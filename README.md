@@ -47,7 +47,7 @@ The site began with [Sat Naing's AstroPaper theme](https://github.com/satnaing/a
 
 Drafts never publish. Scheduled posts publish within the configured 15-minute margin; development can preview future posts. Unlisted posts are accessible directly and omitted from listings and search. Each post keeps its established canonical URL; legacy aliases redirect to it.
 
-Vercel routing middleware serves Markdown for explicit `Accept: text/markdown` requests and on steipete.md. It honors media-type quality values and handles GET/HEAD only. `pnpm run preview` serves static files; verify host/header negotiation on a Vercel preview.
+Vercel routing middleware serves Markdown for explicit `Accept: text/markdown` requests and on steipete.md. It honors media-type quality values and handles GET/HEAD only. Markdown-file redirects to steipete.md preserve the full document path, including `index.md`. `pnpm run preview` serves static files; verify host/header negotiation on a Vercel preview.
 
 Article shortcuts: J/Right moves to the next post, K/Left to the previous post; editing fields and code-block arrow scrolling retain their normal keys. Escape closes the mobile navigation. Browser behavior is initialized and disposed through `src/scripts/page.ts`; the early theme script remains separate to prevent a color flash.
 
