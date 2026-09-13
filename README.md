@@ -31,13 +31,13 @@ Dependency updates must be at least 48 hours old (`minimumReleaseAge` in `pnpm-w
 - `src/utils/`: post selection, URLs, reading time, and social preview generation.
 - `public/`: stable asset URLs, fonts, and the early theme script.
 - `astro.config.mjs`: Markdown processing, sitemap, PWA, and Vite configuration.
-- `vercel.json`: build settings, redirects, Markdown negotiation, and HTTP headers.
+- `vercel.json`: build settings, redirects, and HTTP headers; `src/proxy.ts` negotiates Markdown before Vercel serves static files.
 
 See [AGENTS.md](AGENTS.md) for contribution conventions and [docs/YOUTUBE.MD](docs/YOUTUBE.MD) for video embeds.
 
 ## Deployment
 
-Vercel builds GitHub pushes automatically with a frozen pnpm install and `pnpm run build`. There is no separate deployment script in this repository.
+Vercel builds GitHub pushes automatically with Corepack, a frozen pnpm install, and `pnpm run build`. It uses the static preset (`framework: null`) so the routing proxy runs before the existing Astro-generated files in `dist/`. The Astro preset reserves middleware ownership for the framework and rejects a custom proxy. There is no separate deployment script in this repository.
 
 ## License
 
@@ -46,3 +46,5 @@ Blog posts and documentation are [CC BY 4.0](https://creativecommons.org/license
 The site began with [Sat Naing's AstroPaper theme](https://github.com/satnaing/astro-paper).
 
 Drafts never publish. Scheduled posts publish within the configured 15-minute margin; development can preview future posts. Unlisted posts are accessible directly and omitted from listings and search. Each post keeps its established canonical URL; legacy aliases redirect to it.
+
+Vercel routing middleware serves Markdown for explicit `Accept: text/markdown` requests and on steipete.md. It honors media-type quality values and handles GET/HEAD only. `pnpm run preview` serves static files; verify host/header negotiation on a Vercel preview.
