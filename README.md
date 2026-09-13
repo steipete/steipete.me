@@ -6,6 +6,8 @@ Source for [steipete.me](https://steipete.me), built with [Astro](https://astro.
 
 Use Node 24 or newer and the pnpm version pinned in `package.json` (`corepack enable`).
 
+CI checks both Node 24 LTS and Node 26. Node 25 and newer do not bundle Corepack; install it first with `npm install --global corepack@0.36.0` when needed.
+
 | Command | Action |
 | --- | --- |
 | `pnpm install --frozen-lockfile` | Install the checked-in dependencies |
