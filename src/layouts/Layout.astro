@@ -106,6 +106,10 @@ const socialImageURL = new URL(ogImage, Astro.url);
     }
 
     <ClientRouter />
+    <script>
+      import { installPageLifecycle } from "@/scripts/page";
+      installPageLifecycle(document);
+    </script>
 
     <script is:inline src="/toggle-theme.js"></script>
     

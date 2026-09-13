@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Fixed article and search handlers surviving page transitions, restored keyboard/menu behavior, and made code-copy failures recoverable; theme initialization is repeatable and newsletter controls use the active theme palette.
+
 - Fixed YouTube/Twitter embeds and legacy Twitter tags with build-time rendering that preserves surrounding prose and code examples; videos now size responsively.
 - Corrected duplicate/invalid article structured data and reading durations, and aligned the Markdown homepage contact address with the site configuration.
 
