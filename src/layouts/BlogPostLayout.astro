@@ -192,7 +192,6 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
       /\{% youtube (https:\/\/[^\s]+|[a-zA-Z0-9_-]+) %\}/g;
 
 	    let foundTwitterEmbeds = false;
-	    let foundYoutubeEmbeds = false;
 
 	    // Helper to extract a YouTube video ID from various URL formats
 	    const extractYouTubeId = (input: string) => {
@@ -232,7 +231,6 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
         `;
         p.replaceWith(placeholder);
       } else if (ytMatch && ytMatch[1]) {
-        foundYoutubeEmbeds = true;
         const videoId = extractYouTubeId(ytMatch[1]);
         const container = document.createElement("div");
         container.className = "youtube-embed-container";
@@ -273,7 +271,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
 	      let hasChanges = false;
 
       // Process Twitter embeds
-      content = content.replace(twitterEmbedRegex, (match, url) => {
+      content = content.replace(twitterEmbedRegex, (_match, url) => {
         foundTwitterEmbeds = true;
         hasChanges = true;
         return `<div class="twitter-tweet-placeholder" data-tweet-url="${url}">
@@ -284,8 +282,7 @@ const canonicalURL = new URL(canonicalPath, Astro.site).toString();
       });
 
       // Process YouTube embeds
-      content = content.replace(youtubeEmbedRegex, (match, videoId) => {
-        foundYoutubeEmbeds = true;
+      content = content.replace(youtubeEmbedRegex, (_match, videoId) => {
         hasChanges = true;
         videoId = extractYouTubeId(videoId);
 

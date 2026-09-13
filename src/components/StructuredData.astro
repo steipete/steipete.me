@@ -1,8 +1,18 @@
 ---
-export interface Props {
-  type: "BlogPosting" | "Person" | "WebSite";
-  data: any;
-}
+import type { CollectionEntry } from "astro:content";
+
+type ArticleData = Pick<CollectionEntry<"blog">["data"],
+  "title" | "description" | "author" | "pubDatetime" | "modDatetime" | "tags"
+> & {
+  url: string;
+  ogImage?: string;
+  wordCount: number;
+  readingTime: string;
+};
+
+export type Props =
+  | { type: "BlogPosting"; data: ArticleData }
+  | { type: "Person" | "WebSite"; data: Record<string, never> };
 
 const { type, data } = Astro.props;
 
@@ -76,4 +86,4 @@ if (type === "BlogPosting") {
 }
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

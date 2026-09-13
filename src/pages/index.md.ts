@@ -1,3 +1,4 @@
+import { markdownResponse } from "@/utils/markdownResponse";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async () => {
@@ -22,11 +23,5 @@ AI-powered tools from Swift roots to web frontiers. Every commit lands on GitHub
 
 *This is the markdown-only version of steipete.me. Visit [steipete.me](https://steipete.me) for the full experience.*`;
 
-  return new Response(markdownContent, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/markdown; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
-    },
-  });
+  return markdownResponse(markdownContent);
 };

@@ -1,9 +1,0 @@
----
-// Redirect all pagination pages to main posts page since we're using archives layout
-export async function getStaticPaths() {
-  return [];
-}
-
-// This will redirect to the main posts page
-return Astro.redirect("/posts");
----
