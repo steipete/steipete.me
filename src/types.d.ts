@@ -1,9 +1,9 @@
 declare module "remark-collapse" {
   interface CollapseOptions {
-    test?: string;
-    summary?: string;
+    test: string;
+    summary?: string | ((heading: string) => string);
   }
 
-  const remarkCollapse: (options?: CollapseOptions) => unknown;
+  const remarkCollapse: import("@astrojs/markdown-remark").RemarkPlugin<[CollapseOptions]>;
   export default remarkCollapse;
 }

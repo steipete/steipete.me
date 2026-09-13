@@ -9,8 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "sync": "astro sync",
-    "lint": "oxlint --deny-warnings --import-plugin --react-plugin src astro.config.mjs",
-    "lint:fix": "oxlint --fix --deny-warnings --import-plugin --react-plugin src astro.config.mjs",
+    "lint": "oxlint --deny-warnings --import-plugin src astro.config.mjs public/toggle-theme.js",
+    "lint:fix": "oxlint --fix --deny-warnings --import-plugin src astro.config.mjs public/toggle-theme.js",
     "format": "git ls-files '*.js' '*.mjs' '*.cjs' '*.ts' '*.tsx' '*.json' | xargs oxfmt --write",
     "format:check": "git ls-files '*.js' '*.mjs' '*.cjs' '*.ts' '*.tsx' '*.json' | xargs oxfmt --check",
     "check": "pnpm run format:check && pnpm run lint",
@@ -19,10 +19,11 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/mdx": "^7.0.8",
-    "@astrojs/react": "^6.0.5",
+    "@astrojs/markdown-remark": "^7.3.1",
+    "@astrojs/mdx": "^8.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@ibm/plex-mono": "^2.5.0",
     "@pagefind/default-ui": "^1.5.2",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.3.3",
@@ -30,40 +31,28 @@
     "@vercel/speed-insights": "^2.0.0",
     "@vite-pwa/astro": "^1.2.0",
     "astro": "^7.3.2",
-    "astro-embed": "^0.13.1",
+    "astro-embed": "^0.14.0",
     "dayjs": "^1.11.23",
-    "fuse.js": "^7.5.0",
-    "github-slugger": "^2.0.0",
-    "gray-matter": "^4.0.3",
     "lodash.kebabcase": "^4.1.1",
     "pagefind": "^1.5.2",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
     "reading-time": "^1.5.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
-    "satori": "^0.29.1",
+    "satori": "^0.33.4",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "unist-util-visit": "^5.1.0",
-    "zod": "^4.6.2"
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "@types/lodash.kebabcase": "^4.1.9",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "autoprefixer": "^10.5.6",
     "commitizen": "^4.3.2",
-    "cosmiconfig": "^9.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "oxfmt": "^0.60.0",
-    "oxlint": "^1.82.0",
-    "postcss": "^8.5.28"
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [
@@ -81,5 +70,5 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@12.4.1"
 }
