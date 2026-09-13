@@ -62,9 +62,6 @@ importers:
       astro:
         specifier: ^7.3.2
         version: 7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
-      astro-embed:
-        specifier: ^0.14.0
-        version: 0.14.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(typescript@6.0.3)
       dayjs:
         specifier: ^1.11.23
         version: 1.11.23
@@ -131,38 +128,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       ajv: '>=8'
-
-  '@astro-community/astro-embed-baseline-status@0.2.2':
-    resolution: {integrity: sha512-07TBEb+xQWWZfMuoHohcZv/r2VSB80/1xN5iLhzSqavLmdsMyebEnbc6tvw3yMkxvX9IBLduNA5SxvVkpmowNQ==}
-
-  '@astro-community/astro-embed-bluesky@0.2.3':
-    resolution: {integrity: sha512-smevGXIBZTOwsS4S4KpSRzQp9v2C2DOg/3kR5cfpLB9Tc1TG4WFy2qxY6zyxzMfHsEAk7RsLdkQqrdEQ8ylf6A==}
-
-  '@astro-community/astro-embed-gist@0.1.0':
-    resolution: {integrity: sha512-wP3EoBZZjDoPLH6TZzem8jDJxOuweDoK5zWmSra0QBKz3Lry1tZGCwKII5mlnOL2AmTKLrfqrBXTxSGwb7AimQ==}
-
-  '@astro-community/astro-embed-integration@0.13.0':
-    resolution: {integrity: sha512-lHan0L43UIdFZYomXn9s/9zd5a5Z+w82D0Gs2PjarWG5MUbHPMcuaLbbFLxASEeDaBBM0BexT4/G+8W+5qLvIQ==}
-    peerDependencies:
-      astro: ^7.2.4
-
-  '@astro-community/astro-embed-link-preview@0.3.1':
-    resolution: {integrity: sha512-TI++efm08+kJqxqA7bvxBr7+Zt4yCceA6s3wvAQJ87eiaxbLqAFUSQ+paQD66ET9dIC+IuKzHOMwsoDfqBidYw==}
-
-  '@astro-community/astro-embed-mastodon@0.1.1':
-    resolution: {integrity: sha512-g5Mt1H6GxjkIvXC0HcKqLanZgXHu1e0vNqiQJ8ckryPKmbijYPfhGJYJLPHxE6PaFEA5tmwcmJouVcMPMjf2Kg==}
-
-  '@astro-community/astro-embed-twitter@0.5.11':
-    resolution: {integrity: sha512-6cmyQY4LVVJj6x7qC6XrhWcxNffLvR+QGE/iw5HTOtAn60AStr6u+IX2Txpy6N6bta0DLjGqhTBhkC3NxmVKJg==}
-
-  '@astro-community/astro-embed-utils@0.2.0':
-    resolution: {integrity: sha512-Ia70AMCFOUOSoaMfMaK7Ovk7VyIY4opwzBJoA6GeL+omkvpFwDbSWmA8MOiMF4gJC0j/1dgrEir+txIb+WvsCA==}
-
-  '@astro-community/astro-embed-vimeo@0.3.12':
-    resolution: {integrity: sha512-VLNcsniT5qZ/7GaSGFWnX4ar0qcGyAYB1HQnAH362Zjqs0QI2he9u1nWv1kEx4xr3fZVxl6D2QuNN4xKtd8/ig==}
-
-  '@astro-community/astro-embed-youtube@0.5.10':
-    resolution: {integrity: sha512-hVlx77KQLjKzElVQnrU5znQ5/E60keVSAPrhuWvQQHuqva5auJtt8YBpOThkwDMuEKXjQybEF1/3C07RZ8MAOQ==}
 
   '@astrojs/check@0.9.10':
     resolution: {integrity: sha512-zgx/UQMozdjOa3bOxjgeCFdtpE3c9rRX6xHwa+2QXvy8z8Akifu2AtubHyv/zzC2znO8dl8fFWL4K+Ba9kS8HQ==}
@@ -286,38 +251,6 @@ packages:
 
   '@astrojs/yaml2ts@0.2.4':
     resolution: {integrity: sha512-8oddpOae35pJsXPQXhTkM0ypfKPskVsh2bCxRtbf7e+/Epw2nReakFYpLKjZMEr75CsoF203PMnCocpfz0s69A==}
-
-  '@atcute/atproto@4.0.4':
-    resolution: {integrity: sha512-aEp5wQVPVbZcFJUwoi54tyT+ehRI/xtPe9T0zIvcryHAVXF/zxHtNboM+htbZLOAGsDFsqzgCyxph0Bafw7L8w==}
-    peerDependencies:
-      '@atcute/lexicons': ^2.0.0
-
-  '@atcute/bluesky-richtext-segmenter@3.0.2':
-    resolution: {integrity: sha512-LXsUuElLQ/gQe2g04SzgTeEbSwhcnmswioGdneve8e3vE+FU353EjuEVIsnA/H5rnGeLswLdrua7Io1twezynA==}
-
-  '@atcute/bluesky@4.0.21':
-    resolution: {integrity: sha512-6PgLoO9fQ33PwhF4LzQ7wkewiheixgms+V895cKhJ2IbrkZA74VtiqpRet/hL+dmr7Zk9lv+xmGNZYEUPO9kuw==}
-    peerDependencies:
-      '@atcute/lexicons': ^2.0.0
-
-  '@atcute/client@5.1.2':
-    resolution: {integrity: sha512-V3MOJudmmbuiFfrmLR3/ZGA+PKcI4E4ZNEDGKMX/YrvFrHyElD1/gb8NxLesrlIcHefiulqfX9dAl6hOkIt7CA==}
-    peerDependencies:
-      '@atcute/lexicons': ^2.0.0
-
-  '@atcute/identity@2.0.2':
-    resolution: {integrity: sha512-amr/EQceqVtBVmjBK4uUF7nKKYuRttadigpvOcAn4dnO6SNSwSjQi8KDH9LnukEotPsSP4UDsQvNfHWEoUcslw==}
-    peerDependencies:
-      '@atcute/lexicons': ^2.0.0
-
-  '@atcute/lexicons@2.1.0':
-    resolution: {integrity: sha512-cqbtPfFctoddrSFBt65xyD7st01d8rNntyinRfRhlRPGlqEg8FWacgc7piBw0SAs1SG+5BoV3d3mhzWfQHcByg==}
-
-  '@atcute/uint8array@1.1.5':
-    resolution: {integrity: sha512-1SFCXOtjE3ismP92CqzbOfYSwJmPPPFbj798wLXSpLv2hSd5OIaUrTh6EqRVR1VZ3ZhR+vaBmd3kxAN0wkw+gQ==}
-
-  '@atcute/util-text@1.3.4':
-    resolution: {integrity: sha512-u2UAM7iSM09sQaSG9jtxWFSPgB8boVj50/BoyMvYnhVgGBu+nXIuAcdDUQCsZA44YZgTPPhN/b86JX+jH7SPzQ==}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -1599,11 +1532,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@parse5/tools@0.7.0':
-    resolution: {integrity: sha512-JDvrGhc8kYBq7/SM4obJkpgwWo6pRjF/fo9CCaiJyVOkDf203Ciq2UF6TjzCFXKs7Q/zS2sS4deyBx0XzRvh9Q==}
-    peerDependencies:
-      parse5: 7.x || 8.x
-
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     resolution: {integrity: sha512-FrJibrAk6v29eabIPgcTUMPXiEz8ssrAk7TXxsiZzww9UTQ1Z5KAbFJs+Z0Ez+VZTYgnE5IQJqBcoSiMebtPHA==}
     engines: {node: '>= 10'}
@@ -2010,9 +1938,6 @@ packages:
     resolution: {integrity: sha512-fCTuZK4QBa+39Oz9l4OGfJfz+GpwCp3AqO7Zch3to99xHPgstVsRFpeQ8LNd2o1Gv8raL2mCFwiaHh7bFSp5DQ==}
     engines: {node: '>=22'}
 
-  '@standard-schema/spec@1.1.0':
-    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
-
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
 
@@ -2392,16 +2317,6 @@ packages:
     resolution: {integrity: sha512-LElXdjswlqjWrPpJFg1Fx4wpkOCxj1TDHlSV4PlaRxHGWko024xICaa97ZkMfs6DRKlCguiAI+rbXv5GWwXIkg==}
     hasBin: true
 
-  astro-auto-import@0.6.0:
-    resolution: {integrity: sha512-ru98hrmIZcLvNIcQWtGHKlYE2C+5+8dp86vGnDiGpdmqcFcG/Tn7uNVGhF1CUkvxNRtE+YZhmWTD94lnxY++rA==}
-    peerDependencies:
-      astro: ^7.2.4
-
-  astro-embed@0.14.0:
-    resolution: {integrity: sha512-VpOnmbeReZvjhK9SYEEsGKZOXBJtrSBMohkVnUwi2ue+qZ19jhM5I3p6SE1NYTi6NY2yoRKJb8J2OtjVDR3lMQ==}
-    peerDependencies:
-      astro: ^5.0.0 || ^6.0.0-alpha || ^7.0.0
-
   astro@7.3.2:
     resolution: {integrity: sha512-ysTcdpGP61XZpHoMRYC/CK19DQ94qkBvzXMtXEo0gEqPNkmOU/Tv++CtWmzaI4nF2Ck8RXFdiWvdlTWa2oOr9w==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
@@ -2684,9 +2599,6 @@ packages:
   css-select@6.0.0:
     resolution: {integrity: sha512-rZZVSLle8v0+EY8QAkDWrKhpgt6SA5OtHsgBnsj6ZaLb5dmDVOWUDtQitd9ydxxvEjhewNudS6eTVU7uOyzvXw==}
 
-  css-selector-parser@3.3.0:
-    resolution: {integrity: sha512-Y2asgMGFqJKF4fq4xHDSlFYIkeVfRsm69lQC1q9kbEsH5XtnINTMrweLkjYMeaUgiXBy/uvKeO/a1JHTNnmB2g==}
-
   css-to-react-native@3.2.0:
     resolution: {integrity: sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==}
 
@@ -2846,10 +2758,6 @@ packages:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
     engines: {node: '>=0.12'}
 
-  entities@8.1.0:
-    resolution: {integrity: sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA==}
-    engines: {node: '>=20.19.0'}
-
   env-paths@2.2.1:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
     engines: {node: '>=6'}
@@ -2916,9 +2824,6 @@ packages:
   escape-string-regexp@5.0.0:
     resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
     engines: {node: '>=12'}
-
-  esm-env@1.2.2:
-    resolution: {integrity: sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==}
 
   estree-util-attach-comments@3.0.0:
     resolution: {integrity: sha512-cKUwm/HUcTDsYh/9FgnuFqpfquUbwIqwKM26BVCGDPVgvaCl/nDCCjUfiLlx6lsEZ3Z4RFxNbOQ60pkaEwFxGw==}
@@ -3679,9 +3584,6 @@ packages:
     engines: {node: '>=22.22.1'}
     hasBin: true
 
-  lite-youtube-embed@0.3.4:
-    resolution: {integrity: sha512-aXgxpwK7AIW58GEbRzA8EYaY4LWvF3FKak6B9OtSJmuNyLhX2ouD4cMTxz/yR5HFInhknaYd2jLWOTRTvT8oAw==}
-
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
 
@@ -4102,9 +4004,6 @@ packages:
 
   parse5@7.3.0:
     resolution: {integrity: sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==}
-
-  parse5@8.0.1:
-    resolution: {integrity: sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==}
 
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
@@ -4706,9 +4605,6 @@ packages:
     resolution: {integrity: sha512-hpbDzxUY9BFwX+UeBnxv3Sh1q7HFxj48DTmXchNgRa46lO8uj3/1iEn3MiNUYTg1g9ctIqXCCERn8gYZhHC5lQ==}
     engines: {node: '>=4'}
 
-  unicode-segmenter@0.17.3:
-    resolution: {integrity: sha512-hKZwqBjJDmqNrq1+LjDxck1qLzJFcLLJM2Xq92ORRHOuau6GSHeELmn+uyk6zNH1CK9mogrUJGP9WJCJUQXMAw==}
-
   unicode-trie@2.0.0:
     resolution: {integrity: sha512-x7bc76x0bm4prf1VLg79uhAzKw8DVboClSN5VxJuQ+LKDOVEW9CdH+VY7SP+vX7xCYQqzzgQpFqz15zeLvAtZQ==}
 
@@ -4739,9 +4635,6 @@ packages:
 
   unist-util-remove-position@5.0.0:
     resolution: {integrity: sha512-Hp5Kh3wLxv0PHj9m2yZhhLt58KzPtEYKQQ4yxfYFEO7EvHwzyDYnduhHnY1mDxoqr7VUwVuHXk9RXKIiYS1N8Q==}
-
-  unist-util-select@5.1.0:
-    resolution: {integrity: sha512-4A5mfokSHG/rNQ4g7gSbdEs+H586xyd24sdJqF1IWamqrLHvYb+DH48fzxowyOhOfK7YSqX+XlCojAyuuyyT2A==}
 
   unist-util-stringify-position@4.0.0:
     resolution: {integrity: sha512-0ASV06AAoKCDkS2+xw5RXJywruurpbC4JZSm7nr7MOt1ojAzvyyaO+UxZf18j8FCF6kmzCZKcAgN/yu2gm2XgQ==}
@@ -4833,14 +4726,6 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  valibot@1.5.0:
-    resolution: {integrity: sha512-nil6AkP2TChWL43Z5uJ6GTxX01CUA+g8LWUM+N/rB9NBbkUMaUsi9PUNzlUPgoKASgmx9f7eGOYpJ04/fSa6FQ==}
-    peerDependencies:
-      typescript: '>=5'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
@@ -5185,64 +5070,6 @@ snapshots:
       jsonpointer: 5.0.1
       leven: 3.1.0
 
-  '@astro-community/astro-embed-baseline-status@0.2.2':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-
-  '@astro-community/astro-embed-bluesky@0.2.3(typescript@6.0.3)':
-    dependencies:
-      '@atcute/atproto': 4.0.4(@atcute/lexicons@2.1.0)
-      '@atcute/bluesky': 4.0.21(@atcute/lexicons@2.1.0)
-      '@atcute/bluesky-richtext-segmenter': 3.0.2
-      '@atcute/client': 5.1.2(@atcute/lexicons@2.1.0)(typescript@6.0.3)
-      '@atcute/lexicons': 2.1.0
-    transitivePeerDependencies:
-      - typescript
-
-  '@astro-community/astro-embed-gist@0.1.0':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-
-  '@astro-community/astro-embed-integration@0.13.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(typescript@6.0.3)':
-    dependencies:
-      '@astro-community/astro-embed-bluesky': 0.2.3(typescript@6.0.3)
-      '@astro-community/astro-embed-gist': 0.1.0
-      '@astro-community/astro-embed-link-preview': 0.3.1
-      '@astro-community/astro-embed-mastodon': 0.1.1
-      '@astro-community/astro-embed-twitter': 0.5.11
-      '@astro-community/astro-embed-vimeo': 0.3.12
-      '@astro-community/astro-embed-youtube': 0.5.10
-      '@types/unist': 3.0.3
-      astro: 7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
-      astro-auto-import: 0.6.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))
-      unist-util-select: 5.1.0
-    transitivePeerDependencies:
-      - typescript
-
-  '@astro-community/astro-embed-link-preview@0.3.1':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-      '@parse5/tools': 0.7.0(parse5@8.0.1)
-      parse5: 8.0.1
-
-  '@astro-community/astro-embed-mastodon@0.1.1':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-
-  '@astro-community/astro-embed-twitter@0.5.11':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-
-  '@astro-community/astro-embed-utils@0.2.0': {}
-
-  '@astro-community/astro-embed-vimeo@0.3.12':
-    dependencies:
-      '@astro-community/astro-embed-utils': 0.2.0
-
-  '@astro-community/astro-embed-youtube@0.5.10':
-    dependencies:
-      lite-youtube-embed: 0.3.4
-
   '@astrojs/check@0.9.10(prettier@3.9.6)(typescript@6.0.3)':
     dependencies:
       '@astrojs/language-server': 2.16.16(prettier@3.9.6)(typescript@6.0.3)
@@ -5414,44 +5241,6 @@ snapshots:
   '@astrojs/yaml2ts@0.2.4':
     dependencies:
       yaml: 2.9.0
-
-  '@atcute/atproto@4.0.4(@atcute/lexicons@2.1.0)':
-    dependencies:
-      '@atcute/lexicons': 2.1.0
-
-  '@atcute/bluesky-richtext-segmenter@3.0.2': {}
-
-  '@atcute/bluesky@4.0.21(@atcute/lexicons@2.1.0)':
-    dependencies:
-      '@atcute/atproto': 4.0.4(@atcute/lexicons@2.1.0)
-      '@atcute/lexicons': 2.1.0
-
-  '@atcute/client@5.1.2(@atcute/lexicons@2.1.0)(typescript@6.0.3)':
-    dependencies:
-      '@atcute/identity': 2.0.2(@atcute/lexicons@2.1.0)(typescript@6.0.3)
-      '@atcute/lexicons': 2.1.0
-    transitivePeerDependencies:
-      - typescript
-
-  '@atcute/identity@2.0.2(@atcute/lexicons@2.1.0)(typescript@6.0.3)':
-    dependencies:
-      '@atcute/lexicons': 2.1.0
-      valibot: 1.5.0(typescript@6.0.3)
-    transitivePeerDependencies:
-      - typescript
-
-  '@atcute/lexicons@2.1.0':
-    dependencies:
-      '@atcute/uint8array': 1.1.5
-      '@atcute/util-text': 1.3.4
-      '@standard-schema/spec': 1.1.0
-      esm-env: 1.2.2
-
-  '@atcute/uint8array@1.1.5': {}
-
-  '@atcute/util-text@1.3.4':
-    dependencies:
-      unicode-segmenter: 0.17.3
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -6660,10 +6449,6 @@ snapshots:
   '@pagefind/windows-x64@1.5.2':
     optional: true
 
-  '@parse5/tools@0.7.0(parse5@8.0.1)':
-    dependencies:
-      parse5: 8.0.1
-
   '@resvg/resvg-js-android-arm-eabi@2.6.2':
     optional: true
 
@@ -6927,8 +6712,6 @@ snapshots:
 
   '@simple-libs/stream-utils@2.0.0':
     optional: true
-
-  '@standard-schema/spec@1.1.0': {}
 
   '@tailwindcss/node@4.3.3':
     dependencies:
@@ -7228,26 +7011,6 @@ snapshots:
       is-array-buffer: 3.0.5
 
   astring@1.9.0: {}
-
-  astro-auto-import@0.6.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)):
-    dependencies:
-      acorn: 8.18.0
-      astro: 7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
-
-  astro-embed@0.14.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(typescript@6.0.3):
-    dependencies:
-      '@astro-community/astro-embed-baseline-status': 0.2.2
-      '@astro-community/astro-embed-bluesky': 0.2.3(typescript@6.0.3)
-      '@astro-community/astro-embed-gist': 0.1.0
-      '@astro-community/astro-embed-integration': 0.13.0(astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0))(typescript@6.0.3)
-      '@astro-community/astro-embed-link-preview': 0.3.1
-      '@astro-community/astro-embed-mastodon': 0.1.1
-      '@astro-community/astro-embed-twitter': 0.5.11
-      '@astro-community/astro-embed-vimeo': 0.3.12
-      '@astro-community/astro-embed-youtube': 0.5.10
-      astro: 7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - typescript
 
   astro@7.3.2(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.4)(@vercel/functions@3.9.7)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.0):
     dependencies:
@@ -7603,8 +7366,6 @@ snapshots:
       domutils: 3.2.2
       nth-check: 2.1.1
 
-  css-selector-parser@3.3.0: {}
-
   css-to-react-native@3.2.0:
     dependencies:
       camelize: 1.0.1
@@ -7765,8 +7526,6 @@ snapshots:
 
   entities@6.0.1: {}
 
-  entities@8.1.0: {}
-
   env-paths@2.2.1:
     optional: true
 
@@ -7918,8 +7677,6 @@ snapshots:
   escape-string-regexp@1.0.5: {}
 
   escape-string-regexp@5.0.0: {}
-
-  esm-env@1.2.2: {}
 
   estree-util-attach-comments@3.0.0:
     dependencies:
@@ -8733,8 +8490,6 @@ snapshots:
     optionalDependencies:
       yaml: 2.9.0
 
-  lite-youtube-embed@0.3.4: {}
-
   lodash.debounce@4.0.8: {}
 
   lodash.kebabcase@4.1.1: {}
@@ -9465,10 +9220,6 @@ snapshots:
   parse5@7.3.0:
     dependencies:
       entities: 6.0.1
-
-  parse5@8.0.1:
-    dependencies:
-      entities: 8.1.0
 
   path-browserify@1.0.1: {}
 
@@ -10250,8 +10001,6 @@ snapshots:
 
   unicode-property-aliases-ecmascript@2.2.0: {}
 
-  unicode-segmenter@0.17.3: {}
-
   unicode-trie@2.0.0:
     dependencies:
       pako: 0.2.9
@@ -10304,14 +10053,6 @@ snapshots:
       '@types/unist': 3.0.3
       unist-util-visit: 5.1.0
 
-  unist-util-select@5.1.0:
-    dependencies:
-      '@types/unist': 3.0.3
-      css-selector-parser: 3.3.0
-      devlop: 1.1.0
-      nth-check: 2.1.1
-      zwitch: 2.0.4
-
   unist-util-stringify-position@4.0.0:
     dependencies:
       '@types/unist': 3.0.3
@@ -10355,10 +10096,6 @@ snapshots:
       picocolors: 1.1.1
 
   util-deprecate@1.0.2: {}
-
-  valibot@1.5.0(typescript@6.0.3):
-    optionalDependencies:
-      typescript: 6.0.3
 
   vfile-location@5.0.3:
     dependencies:
