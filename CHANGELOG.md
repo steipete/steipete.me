@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Enabled weekly Dependabot checks for npm and GitHub Actions with the existing release-age and TypeScript/jsdom compatibility policy.
 - Updated Markdown table parsing to micromark-extension-gfm-table 2.1.2 and CI to cover Node 26 alongside Node 24 LTS, with Corepack 0.36.0 bootstrapping pinned pnpm.
 - Fixed draft and scheduled posts leaking through a competing article route; HTML, Markdown, social images, archives, and search now share publication rules, with legacy article URLs retained as redirects.
 - Fixed Markdown content negotiation and JavaScript-free steipete.md access with Vercel routing middleware before static-file lookup; restored nested legacy blog redirects and preserved dated post URLs.

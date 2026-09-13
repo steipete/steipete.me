@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 2
+    ignore:
+      # Astro check requires the TypeScript compiler API.
+      - dependency-name: typescript
+        versions: [">=7.0.0"]
+      # jsdom 30 excludes the declared Node 24.0 minimum.
+      - dependency-name: jsdom
+        versions: [">=30.0.0"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 2
