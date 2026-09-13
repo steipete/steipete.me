@@ -37,7 +37,7 @@ See [AGENTS.md](AGENTS.md) for contribution conventions and [docs/YOUTUBE.MD](do
 
 ## Deployment
 
-Vercel builds GitHub pushes automatically with a frozen pnpm install and `pnpm run build`. There is no separate deployment script in this repository.
+Vercel builds GitHub pushes automatically with Corepack, a frozen pnpm install, and `pnpm run build`. It uses the static preset (`framework: null`) so the routing proxy runs before the existing Astro-generated files in `dist/`. The Astro preset reserves middleware ownership for the framework and rejects a custom proxy. There is no separate deployment script in this repository.
 
 ## License
 
