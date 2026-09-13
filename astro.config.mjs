@@ -2,7 +2,7 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
-import react from "@astrojs/react";
+import { unified } from "@astrojs/markdown-remark";
 import tailwindcss from "@tailwindcss/vite";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
@@ -15,12 +15,13 @@ export default defineConfig({
   site: SITE.website,
   trailingSlash: "never",
   markdown: {
-    remarkPlugins: [
-      remarkToc,
-      // @ts-ignore - TypeScript has issues with remark plugin tuple syntax
-      [remarkCollapse, { test: "Table of contents" }],
-      remarkLazyLoadImages,
-    ],
+    processor: unified({
+      remarkPlugins: [
+        remarkToc,
+        [remarkCollapse, { test: "Table of contents" }],
+        remarkLazyLoadImages,
+      ],
+    }),
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "min-light", dark: "night-owl" },
@@ -100,7 +101,6 @@ export default defineConfig({
         return item;
       },
     }),
-    react(),
     AstroPWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "peter-avatar.jpg"],

@@ -16,7 +16,9 @@ Use Node 24 or newer and the pnpm version pinned in `package.json` (`corepack en
 | `pnpm run build:check` | Type-check and build the site and search index |
 | `pnpm run preview` | Serve the production build for browser verification |
 
-Search requires a production build. Social preview images are generated during the build and currently download their fonts from Google Fonts.
+Search requires a production build. Social preview images are generated during the build using the licensed IBM Plex Mono fonts from `@ibm/plex-mono`; the build does not download fonts.
+
+Dependency updates must be at least 48 hours old (`minimumReleaseAge` in `pnpm-workspace.yaml`). TypeScript stays on 6.x because `astro check` needs the compiler API that TypeScript 7 does not yet provide.
 
 ## Project structure
 
