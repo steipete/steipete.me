@@ -1,4 +1,5 @@
 ---
+import postFilter from "@/utils/postFilter";
 import { getCollection } from "astro:content";
 import PostArchive from "@/components/PostArchive.astro";
 import Footer from "@/components/Footer.astro";
@@ -6,7 +7,7 @@ import Header from "@/components/Header.astro";
 import { SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = await getCollection("blog", postFilter);
 
 ---
 

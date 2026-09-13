@@ -1,10 +1,11 @@
+import { publishedPostFilter } from "@/utils/postFilter";
 import { markdownResponse } from "@/utils/markdownResponse";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const posts = await getCollection("blog", publishedPostFilter);
 
   return posts.map((post) => ({
     params: { slug: post.id },

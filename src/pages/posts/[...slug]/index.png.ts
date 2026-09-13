@@ -1,3 +1,4 @@
+import { publishedPostFilter } from "@/utils/postFilter";
 import { type CollectionEntry, getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { SITE } from "@/config";
@@ -9,8 +10,9 @@ export async function getStaticPaths() {
     return [];
   }
 
-  const posts = await getCollection("blog").then((p) =>
-    p.filter(({ data }) => !data.draft && !data.ogImage),
+  const posts = await getCollection(
+    "blog",
+    (post) => publishedPostFilter(post) && !post.data.ogImage,
   );
 
   return posts.map((post) => ({

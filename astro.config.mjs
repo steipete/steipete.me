@@ -1,7 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
+import { ChangeFreqEnum } from "@astrojs/sitemap";
+import { indexableSitemap } from "./src/utils/sitemap";
 import { unified } from "@astrojs/markdown-remark";
 import tailwindcss from "@tailwindcss/vite";
 import remarkToc from "remark-toc";
@@ -30,7 +31,7 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
-    sitemap({
+    indexableSitemap({
       filter: (page) => {
         // Always exclude archives if not showing them
         if (!SITE.showArchives && page.endsWith("/archives")) return false;

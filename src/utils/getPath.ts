@@ -1,5 +1,5 @@
-import { BLOG_PATH } from "@/content.config";
-import { slugifyStr } from "./slugify";
+import { BLOG_PATH } from "../config.ts";
+import { slugifyStr } from "./slugify.ts";
 
 export function getPath(id: string, filePath: string | undefined, includeBase = true) {
   const pathSegments = filePath

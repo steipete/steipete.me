@@ -13,7 +13,8 @@ Use Node 24 or newer and the pnpm version pinned in `package.json` (`corepack en
 | `pnpm run check` | Check formatting and lint |
 | `pnpm exec astro check` | Check Astro and TypeScript sources |
 | `pnpm run build` | Build the static site and Pagefind search index into `dist/` |
-| `pnpm run build:check` | Type-check and build the site and search index |
+| `pnpm run test` | Run unit regressions |
+| `pnpm run build:check` | Type-check, test, build, and verify public artifacts |
 | `pnpm run preview` | Serve the production build for browser verification |
 
 Search requires a production build. Social preview images are generated during the build using the licensed IBM Plex Mono fonts from `@ibm/plex-mono`; the build does not download fonts.
@@ -43,3 +44,5 @@ Vercel builds GitHub pushes automatically with a frozen pnpm install and `pnpm r
 Blog posts and documentation are [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); code and code snippets are [MIT](LICENSE).
 
 The site began with [Sat Naing's AstroPaper theme](https://github.com/satnaing/astro-paper).
+
+Drafts never publish. Scheduled posts publish within the configured 15-minute margin; development can preview future posts. Unlisted posts are accessible directly and omitted from listings and search. Each post keeps its established canonical URL; legacy aliases redirect to it.
