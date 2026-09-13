@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Compatibility: removed the nonfunctional `deploy`, `add-source-metadata`, and `remove-tags` package scripts; their target scripts were absent. Vercel continues to deploy GitHub pushes automatically.
+
 **Highlights:** Read the site as plain Markdown at steipete.md; dependency maintenance includes the latest Astro and image-processing security fixes.
 
 - Added steipete.md domain support and raw Markdown endpoints for blog posts, the home page, about, archives, and post listings, with plain-text content types and caching (#130, #139).

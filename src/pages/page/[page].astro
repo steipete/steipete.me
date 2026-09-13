@@ -2,7 +2,7 @@
 	import { getCollection } from "astro:content";
 	import type { GetStaticPathsOptions } from "astro";
 	import FormattedDate from "../../components/FormattedDate.astro";
-	import { SITE } from "../../consts";
+	import { SITE } from "../../config";
 	import Layout from "../../layouts/Layout.astro";
 
 	export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {

@@ -1,56 +1,43 @@
 # Peter Steinberger's Personal Website
 
-This is the source code for my personal website, built with [Astro](https://astro.build) and deployed on [Vercel](https://vercel.com).
+Source for [steipete.me](https://steipete.me), built with [Astro](https://astro.build), styled with Tailwind CSS, and deployed on Vercel. Blog posts also have plain Markdown endpoints for [steipete.md](https://steipete.md).
 
-## About
+## Development
 
-I'm Peter Steinberger, an iOS developer, entrepreneur, and open source contributor. This website hosts my personal blog and information about my work.
+Use Node 24 or newer and the pnpm version pinned in `package.json` (`corepack enable`).
 
-## Project Structure
+| Command | Action |
+| --- | --- |
+| `pnpm install --frozen-lockfile` | Install the checked-in dependencies |
+| `pnpm run dev` | Start the local development server at `localhost:4321` |
+| `pnpm run check` | Check formatting and lint |
+| `pnpm exec astro check` | Check Astro and TypeScript sources |
+| `pnpm run build` | Build the static site and Pagefind search index into `dist/` |
+| `pnpm run build:check` | Type-check and build the site and search index |
+| `pnpm run preview` | Serve the production build for browser verification |
 
-```text
-├── public/               # Static assets (images, fonts, favicon)
-│   ├── assets/          # Images for blog posts
-│   └── fonts/           # Web fonts
-├── src/
-│   ├── assets/          # Icons and images used in components
-│   ├── components/      # Reusable UI components
-│   │   └── ui/          # React components
-│   ├── content/         # Content collections
-│   │   └── blog/        # Blog posts in Markdown format (organized by year)
-│   ├── layouts/         # Page layouts and templates
-│   ├── pages/           # Routes and pages
-│   ├── styles/          # Global styles and CSS
-│   └── utils/           # Utility functions
-├── astro.config.mjs     # Astro configuration
-├── vercel.json          # Vercel deployment and CSP configuration
-├── package.json         # Project dependencies and scripts
-├── tailwind.config.mjs  # Tailwind CSS configuration
-└── LICENSE              # Dual license (CC BY 4.0 + MIT)
-```
+Search requires a production build. Social preview images are generated during the build and currently download their fonts from Google Fonts.
 
-## Commands
+## Project structure
 
-| Command                | Action                                      |
-| :--------------------- | :------------------------------------------ |
-| `pnpm install`         | Installs dependencies                       |
-| `pnpm run dev`         | Starts local dev server at `localhost:4321` |
-| `pnpm run build`       | Build the production site to `./dist/`      |
-| `pnpm run preview`     | Preview the build locally, before deploying |
+- `src/pages/`: HTML routes, RSS, robots.txt, and Markdown endpoints.
+- `src/layouts/` and `src/components/`: Astro page templates and reusable UI.
+- `src/content/blog/`: Markdown posts; `src/content.config.ts` defines frontmatter.
+- `src/config.ts`: site settings; `src/constants.ts`: social and sharing links.
+- `src/styles/global.css` and `typography.css`: Tailwind and article styles.
+- `src/utils/`: post selection, URLs, reading time, and social preview generation.
+- `public/`: stable asset URLs, fonts, and the early theme script.
+- `astro.config.mjs`: Markdown processing, sitemap, PWA, and Vite configuration.
+- `vercel.json`: build settings, redirects, Markdown negotiation, and HTTP headers.
+
+See [AGENTS.md](AGENTS.md) for contribution conventions and [docs/YOUTUBE.MD](docs/YOUTUBE.MD) for video embeds.
 
 ## Deployment
 
-This site is set up for easy deployment on Vercel. Just connect your GitHub repository to Vercel, and it will automatically build and deploy the site when changes are pushed.
+Vercel builds GitHub pushes automatically with a frozen pnpm install and `pnpm run build`. There is no separate deployment script in this repository.
 
 ## License
 
-This repository uses dual licensing:
+Blog posts and documentation are [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); code and code snippets are [MIT](LICENSE).
 
-- **Documentation & Blog Posts**: Licensed under [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
-- **Code & Code Snippets**: Licensed under the [MIT License](LICENSE)
-
-See the [LICENSE](LICENSE) file for full details.
-
-## Special Thanks
-
-Special thanks to [Sat Naing](https://github.com/satnaing) for creating the excellent [AstroPaper theme](https://astro-paper.pages.dev/) that served as the foundation for this website. Their thoughtful design and clean architecture made it a joy to build upon.
+The site began with [Sat Naing's AstroPaper theme](https://github.com/satnaing/astro-paper).

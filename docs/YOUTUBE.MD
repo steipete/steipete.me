@@ -34,7 +34,7 @@ Using a youtu.be short URL:
 
 ## How It Works
 
-The site uses the `MDXTwitterTransform.astro` component to scan for these patterns in blog post content and replace them with proper YouTube embeds. The component detects special tags using regex and inserts responsive iframes.
+The post layouts convert these shortcodes in rendered article content to YouTube iframes in the browser.
 
 ## Twitter Embeds for Comparison
 
@@ -47,6 +47,6 @@ Twitter embeds work in a similar way:
 ## Best Practices
 
 1. Always use the `{% youtube %}` syntax instead of direct iframe embeds
-2. This ensures content won't be blocked by privacy-focused browsers
+2. Playback requires access to YouTube; browser privacy settings may block the iframe
 3. The embed is responsive and will adjust to different screen sizes
 4. Works with all YouTube URL formats (full youtube.com URLs, youtu.be short URLs, or just the video ID)
