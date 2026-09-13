@@ -90,6 +90,9 @@ const nextPost = currentPostIndex !== allPosts.length ? allPosts[currentPostInde
 ---
 
 <Layout {...layoutProps}>
+  <div class="progress-container fixed top-0 z-10 h-1 w-full bg-background" aria-hidden="true">
+    <div id="reading-progress" class="h-1 w-0 bg-accent"></div>
+  </div>
   <StructuredData 
     type="BlogPosting" 
     data={{
@@ -179,8 +182,6 @@ const nextPost = currentPostIndex !== allPosts.length ? allPosts[currentPostInde
     <div 
       data-pagefind-ignore 
       class="flex flex-col sm:flex-row justify-between gap-6"
-      data-prev-url={prevPost ? `/posts/${prevPost.slug}` : ''}
-      data-next-url={nextPost ? `/posts/${nextPost.slug}` : ''}
     >
       {
         prevPost && (
@@ -216,165 +217,6 @@ const nextPost = currentPostIndex !== allPosts.length ? allPosts[currentPostInde
   </main>
   <Footer />
 </Layout>
-
-<script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
-  function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
-
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-accent";
-    progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
-    progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
-    document.body.appendChild(progressContainer);
-  }
-  createProgressBar();
-
-  /** Update the progress bar
-   *  when user scrolls */
-  function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
-        const myBar = document.getElementById("myBar");
-        if (myBar) {
-          myBar.style.width = scrolled + "%";
-        }
-      }
-    });
-  }
-  updateScrollProgress();
-
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6"),
-    );
-    for (const heading of headings) {
-      heading.classList.add("group");
-      const link = document.createElement("a");
-      link.className =
-        "heading-link ml-2 opacity-0 group-hover:opacity-100 focus:opacity-100";
-      link.href = "#" + heading.id;
-
-      const span = document.createElement("span");
-      span.ariaHidden = "true";
-      span.innerText = "#";
-      link.appendChild(span);
-      heading.appendChild(link);
-    }
-  }
-  addHeadingLinks();
-
-  /** Attaches copy buttons to code blocks in the document,
-   * allowing users to copy code easily. */
-  function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
-
-    for (const codeBlock of codeBlocks) {
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
-
-      const copyButton = document.createElement("button");
-      copyButton.className =
-        "copy-code absolute right-3 -top-3 rounded bg-muted px-2 py-1 text-xs leading-4 text-foreground font-medium";
-      copyButton.innerHTML = copyButtonLabel;
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
-
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
-
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
-    }
-
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      // visual feedback that task is completed
-      button.innerText = "Copied";
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
-    }
-  }
-  attachCopyButtons();
-
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
-  function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    });
-  }
-  backToTop();
-
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
-  );
-
-  /** Add lazy loading to all images in the article */
-  function addLazyLoading() {
-    const article = document.querySelector("#article");
-    if (!article) return;
-    
-    const images = article.querySelectorAll("img:not([loading])");
-    images.forEach((img) => {
-      img.setAttribute("loading", "lazy");
-    });
-  }
-  addLazyLoading();
-
-  /** Keyboard navigation for posts */
-  function setupKeyboardNavigation() {
-    const navContainer = document.querySelector('[data-prev-url]');
-    if (!navContainer) return;
-    
-    const prevUrl = navContainer.getAttribute('data-prev-url');
-    const nextUrl = navContainer.getAttribute('data-next-url');
-    
-    document.addEventListener('keydown', (e) => {
-      // Ignore if user is typing in an input, textarea, or contenteditable
-      if (e.target.matches('input, textarea, [contenteditable="true"]')) return;
-      
-      // J key for next post
-      if (e.key === 'j' && nextUrl) {
-        window.location.href = nextUrl;
-      }
-      // K key for previous post
-      else if (e.key === 'k' && prevUrl) {
-        window.location.href = prevUrl;
-      }
-    });
-  }
-  setupKeyboardNavigation();
-
-</script>
 
 <script>
   document.addEventListener("astro:page-load", () => window.twttr?.widgets?.load());
