@@ -1,3 +1,5 @@
+export const BLOG_PATH = "src/content/blog";
+
 interface Site {
   website: string;
   author: string;

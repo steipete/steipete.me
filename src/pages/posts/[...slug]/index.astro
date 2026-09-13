@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostDetails from "@/layouts/PostDetails.astro";
 import { getPath } from "@/utils/getPath";
+import { publishedPostFilter } from "@/utils/postFilter";
 import getSortedPosts from "@/utils/getSortedPosts";
 
 export interface Props {
@@ -9,20 +10,11 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft && !data.unlisted);
-  const postResult = posts.map((post) => ({
+  const posts = await getCollection("blog", publishedPostFilter);
+  return posts.map((post) => ({
     params: { slug: getPath(post.id, post.filePath, false) },
     props: { post },
   }));
-
-  // Also include unlisted posts so they can be accessed via direct URL
-  const unlistedPosts = await getCollection("blog", ({ data }) => !data.draft && data.unlisted);
-  const unlistedResult = unlistedPosts.map((post) => ({
-    params: { slug: getPath(post.id, post.filePath, false) },
-    props: { post },
-  }));
-
-  return [...postResult, ...unlistedResult];
 }
 
 const { post } = Astro.props;

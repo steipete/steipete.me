@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
-    "build:check": "astro check && astro build && pagefind --site dist",
+    "build:check": "astro check && pnpm run test && pnpm run build && pnpm run test:build",
     "preview": "astro preview",
     "astro": "astro",
     "sync": "astro sync",
@@ -15,7 +15,9 @@
     "format:check": "git ls-files '*.js' '*.mjs' '*.cjs' '*.ts' '*.tsx' '*.json' | xargs oxfmt --check",
     "check": "pnpm run format:check && pnpm run lint",
     "check:fix": "pnpm run format && pnpm run lint:fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "node --test tests/*.test.mjs",
+    "test:build": "node --test tests/build/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

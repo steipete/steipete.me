@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Fixed draft and scheduled posts leaking through a competing article route; HTML, Markdown, social images, archives, and search now share publication rules, with legacy article URLs retained as redirects.
+
 - Made social-image builds deterministic and independent of Google Fonts outages by bundling the existing IBM Plex Mono font; CI now enforces Astro type checking alongside build, lint, and formatting.
 - Updated compatible MDX, social-image, formatter, and pnpm tooling, removed unused theme dependencies, and enforce a 48-hour minimum dependency release age; Node 24 and TypeScript 6 compatibility are retained.
 
