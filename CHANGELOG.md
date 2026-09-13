@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fixed draft and scheduled posts leaking through a competing article route; HTML, Markdown, social images, archives, and search now share publication rules, with legacy article URLs retained as redirects.
 - Fixed Markdown content negotiation and JavaScript-free steipete.md access with Vercel routing middleware before static-file lookup; restored nested legacy blog redirects and preserved dated post URLs.
+- Preserved Markdown document paths when redirecting to steipete.md, fixing the homepage `index.md` redirect to a missing `/index` route.
 - Fixed YouTube/Twitter embeds and legacy Twitter tags with build-time rendering that preserves surrounding prose and code examples; videos now size responsively.
 - Fixed article and search handlers surviving page transitions, restored keyboard/menu behavior, and made code-copy failures recoverable; theme initialization is repeatable and newsletter controls use the active theme palette.
 - Corrected duplicate/invalid article structured data and reading durations, and aligned the Markdown homepage contact address with the site configuration.

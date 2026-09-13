@@ -21,7 +21,7 @@
           "value": "(?i).*text/markdown.*"
         }
       ],
-      "destination": "https://steipete.md/:path*",
+      "destination": "https://steipete.md/:path*.md",
       "permanent": false
     },
     {
