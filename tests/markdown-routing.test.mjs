@@ -1,19 +1,18 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import proxy from "../src/proxy.ts";
-import { markdownTarget, prefersMarkdown } from "../src/utils/markdownRouting.ts";
+import proxy, { markdownTarget, prefersMarkdown } from "../src/proxy.ts";
 
 const request = (path, accept, method = "GET", host = "steipete.me") =>
   new Request(`https://${host}${path}`, { method, headers: accept ? { accept } : {} });
 
-test("explicit Markdown negotiation runs before static HTML lookup", async () => {
-  const response = await proxy(request("/posts/2025/example?source=test", "text/markdown"));
+test("explicit Markdown negotiation runs before static HTML lookup", () => {
+  const response = proxy(request("/posts/2025/example?source=test", "text/markdown"));
   assert.equal(
     response.headers.get("x-middleware-rewrite"),
     "https://steipete.me/posts/2025/example.md?source=test",
   );
   assert.equal(
-    (await proxy(request("/posts/2025/example", "text/html"))).headers.get("x-middleware-next"),
+    proxy(request("/posts/2025/example", "text/html")).headers.get("x-middleware-next"),
     "1",
   );
 });
