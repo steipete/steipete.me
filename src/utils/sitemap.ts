@@ -1,6 +1,37 @@
 import { existsSync, readFileSync } from "node:fs";
 import type { AstroIntegration } from "astro";
-import sitemap from "@astrojs/sitemap";
+import sitemap, { ChangeFreqEnum, type SitemapItem } from "@astrojs/sitemap";
+
+export function serializeSitemapItem(item: SitemapItem, now = new Date()): SitemapItem {
+  const path = new URL(item.url).pathname.replace(/\/+$/, "") || "/";
+  const result: SitemapItem = {
+    ...item,
+    url: path === "/" ? item.url : item.url.replace(/\/+$/, ""),
+    changefreq: ChangeFreqEnum.MONTHLY,
+    priority: 0.5,
+  };
+  const postYear = /^\/posts\/(\d{4})(?:\/|$)/.exec(path)?.[1];
+  if (path === "/") {
+    result.priority = 1;
+    result.changefreq = ChangeFreqEnum.DAILY;
+    result.lastmod = now.toISOString();
+  } else if (["/posts", "/about", "/search"].includes(path)) {
+    result.priority = 0.9;
+    result.changefreq = ChangeFreqEnum.WEEKLY;
+  } else if (postYear) {
+    const age = now.getUTCFullYear() - Number(postYear);
+    result.priority = age <= 1 ? 0.8 : age <= 5 ? 0.6 : 0.4;
+    result.changefreq =
+      age <= 1 ? ChangeFreqEnum.WEEKLY : age <= 5 ? ChangeFreqEnum.MONTHLY : ChangeFreqEnum.YEARLY;
+  } else if (path.startsWith("/tags/")) {
+    result.priority = 0.1;
+    result.changefreq = ChangeFreqEnum.YEARLY;
+  } else if (/\/page\/\d+$/.test(path)) {
+    result.priority = 0.4;
+    result.changefreq = ChangeFreqEnum.WEEKLY;
+  }
+  return result;
+}
 
 export function hasNoIndex(html: string) {
   return (html.match(/<meta\b[^>]*>/gi) ?? []).some(

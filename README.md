@@ -50,3 +50,5 @@ Drafts never publish. Scheduled posts publish within the configured 15-minute ma
 Vercel routing middleware serves Markdown for explicit `Accept: text/markdown` requests and on steipete.md. It honors media-type quality values and handles GET/HEAD only. `pnpm run preview` serves static files; verify host/header negotiation on a Vercel preview.
 
 Article shortcuts: J/Right moves to the next post, K/Left to the previous post; editing fields and code-block arrow scrolling retain their normal keys. Escape closes the mobile navigation. Browser behavior is initialized and disposed through `src/scripts/page.ts`; the early theme script remains separate to prevent a color flash.
+
+Archive grouping and the homepage year cutoff use the post’s configured timezone (or the site default), matching publication-date formatting independently of the build machine timezone. Grouping remains based on publication dates even when a card displays an updated date. Sitemap recency advances with the current UTC year.

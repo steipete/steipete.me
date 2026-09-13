@@ -6,18 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-- Fixed article and search handlers surviving page transitions, restored keyboard/menu behavior, and made code-copy failures recoverable; theme initialization is repeatable and newsletter controls use the active theme palette.
-
-- Fixed YouTube/Twitter embeds and legacy Twitter tags with build-time rendering that preserves surrounding prose and code examples; videos now size responsively.
-- Corrected duplicate/invalid article structured data and reading durations, and aligned the Markdown homepage contact address with the site configuration.
-
-- Fixed Markdown content negotiation and JavaScript-free steipete.md access with Vercel routing middleware before static-file lookup; restored nested legacy blog redirects and preserved dated post URLs.
-
 - Fixed draft and scheduled posts leaking through a competing article route; HTML, Markdown, social images, archives, and search now share publication rules, with legacy article URLs retained as redirects.
-
+- Fixed Markdown content negotiation and JavaScript-free steipete.md access with Vercel routing middleware before static-file lookup; restored nested legacy blog redirects and preserved dated post URLs.
+- Fixed YouTube/Twitter embeds and legacy Twitter tags with build-time rendering that preserves surrounding prose and code examples; videos now size responsively.
+- Fixed article and search handlers surviving page transitions, restored keyboard/menu behavior, and made code-copy failures recoverable; theme initialization is repeatable and newsletter controls use the active theme palette.
+- Corrected duplicate/invalid article structured data and reading durations, and aligned the Markdown homepage contact address with the site configuration.
+- Fixed sitemap recency falling behind the calendar and made archive year/month grouping consistent across build-machine timezones.
 - Made social-image builds deterministic and independent of Google Fonts outages by bundling the existing IBM Plex Mono font; CI now enforces Astro type checking alongside build, lint, and formatting.
 - Updated compatible MDX, social-image, formatter, and pnpm tooling, removed unused theme dependencies, and enforce a 48-hour minimum dependency release age; Node 24 and TypeScript 6 compatibility are retained.
-
 - Compatibility: removed the nonfunctional `deploy`, `add-source-metadata`, and `remove-tags` package scripts; their target scripts were absent. Vercel continues to deploy GitHub pushes automatically.
 
 **Highlights:** Read the site as plain Markdown at steipete.md; dependency maintenance includes the latest Astro and image-processing security fixes.

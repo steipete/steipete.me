@@ -1,4 +1,5 @@
 ---
+import { getPostDate } from "@/utils/postDate";
 import { getCollection } from "astro:content";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import IconRss from "@/assets/icons/IconRss.svg";
@@ -17,7 +18,7 @@ import getSortedPosts from "@/utils/getSortedPosts";
 const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
-const posts2025AndLater = sortedPosts.filter(({ data }) => data.pubDatetime.getFullYear() >= 2025);
+const posts2025AndLater = sortedPosts.filter(({ data }) => getPostDate(data.pubDatetime, data.timezone).year() >= 2025);
 const featuredPosts = posts2025AndLater.filter(({ data }) => data.featured);
 const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
