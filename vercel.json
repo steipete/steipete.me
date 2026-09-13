@@ -8,24 +8,45 @@
   "redirects": [
     {
       "source": "/:path*.md",
-      "has": [{ "type": "host", "value": "steipete.me" }],
-      "missing": [{ "type": "header", "key": "accept", "value": "(?i).*text/markdown.*" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "steipete.me"
+        }
+      ],
+      "missing": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "(?i).*text/markdown.*"
+        }
+      ],
       "destination": "https://steipete.md/:path*",
       "permanent": false
     },
     {
+      "source": "/blog/a-new-beginning",
+      "destination": "/posts/2025/finding-my-spark-again",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/posts",
+      "permanent": true
+    },
+    {
       "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
-      "destination": "/posts/:slug",
+      "destination": "/posts/:year/:slug",
       "permanent": true
     },
     {
       "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug",
-      "destination": "/posts/:slug",
+      "destination": "/posts/:year/:slug",
       "permanent": true
     },
     {
-      "source": "/blog/:slug([^\\/]+)$",
-      "destination": "/posts/:slug",
+      "source": "/blog/:path*",
+      "destination": "/posts/:path*",
       "permanent": true
     },
     {
@@ -33,15 +54,14 @@
       "destination": "/tags/:category",
       "permanent": true
     },
-    { "source": "/tag/:tag", "destination": "/tags/:tag", "permanent": true },
     {
-      "source": "/20:year/:month/:day/:slug(.*)",
-      "destination": "/posts/:slug",
+      "source": "/tag/:tag",
+      "destination": "/tags/:tag",
       "permanent": true
     },
     {
-      "source": "/blog/a-new-beginning/",
-      "destination": "/posts/finding-my-spark-again",
+      "source": "/20:year/:month/:day/:slug(.*)",
+      "destination": "/posts/:slug",
       "permanent": true
     },
     {
@@ -64,41 +84,6 @@
       ],
       "destination": "https://steipete.me/:path*",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "(?i).*text/markdown.*"
-        }
-      ],
-      "destination": "/index.md"
-    },
-    {
-      "source": "/(about|archives|posts)",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "(?i).*text/markdown.*"
-        }
-      ],
-      "destination": "/$1.md"
-    },
-    {
-      "source": "/posts/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "(?i).*text/markdown.*"
-        }
-      ],
-      "destination": "/posts/:path*.md"
     }
   ],
   "headers": [
@@ -145,5 +130,9 @@
         }
       ]
     }
-  ]
+  ],
+  "proxy": {
+    "entrypoint": "src/proxy.ts",
+    "matcher": ["/", "/about", "/archives", "/posts", "/posts/:path*"]
+  }
 }
