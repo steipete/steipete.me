@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Card from "./Card.astro";
-import { groupPosts } from "@/utils/groupPosts";
+import { postsByYear, postsByMonth } from "@/utils/groupPosts";
 
 interface Props {
   posts: CollectionEntry<"blog">[];
@@ -25,29 +25,18 @@ const months = [
 ---
 
 {
-  Object.entries(
-    groupPosts(posts, (post) =>
-      post.data.pubDatetime.getFullYear(),
-    ),
-  )
-    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+  postsByYear(posts)
     .map(([year, yearGroup]) => (
       <div class="mb-8">
         <h2 class="text-2xl font-bold mb-6 border-b border-accent pb-2">
           {year}
           <sup class="text-sm ml-1">{yearGroup.length}</sup>
         </h2>
-        {Object.entries(
-          groupPosts(
-            yearGroup,
-            (post) => post.data.pubDatetime.getMonth() + 1,
-          ),
-        )
-          .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
+        {postsByMonth(yearGroup)
           .map(([month, monthGroup]) => (
             <div class="mt-8">
               <h3 class="text-xl font-bold mb-4">
-                {months[Number(month) - 1]}
+                {months[month - 1]}
                 <sup class="text-sm ml-1">{monthGroup.length}</sup>
               </h3>
               <ul>

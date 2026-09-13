@@ -1,13 +1,19 @@
 import type { CollectionEntry } from "astro:content";
+import { getPostDate } from "./postDate.ts";
 
 type Post = CollectionEntry<"blog">;
 
-export function groupPosts(posts: Post[], key: (post: Post) => number) {
-  return Object.fromEntries(Map.groupBy(posts, key));
+function groupPosts(posts: Post[], key: (post: Post) => number) {
+  return [...Map.groupBy(posts, key)].sort(([a], [b]) => b - a);
 }
 
 export function postsByYear(posts: Post[]) {
-  return Object.entries(groupPosts(posts, (post) => post.data.pubDatetime.getFullYear())).sort(
-    ([a], [b]) => Number(b) - Number(a),
+  return groupPosts(posts, (post) => getPostDate(post.data.pubDatetime, post.data.timezone).year());
+}
+
+export function postsByMonth(posts: Post[]) {
+  return groupPosts(
+    posts,
+    (post) => getPostDate(post.data.pubDatetime, post.data.timezone).month() + 1,
   );
 }
