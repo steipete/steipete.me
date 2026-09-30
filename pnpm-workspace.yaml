@@ -11,6 +11,7 @@ overrides:
   "yaml@>=2.0.0 <2.8.3": ">=2.8.3"
 
 minimumReleaseAge: 2880
+minimumReleaseAgeStrict: true
 
 allowBuilds:
   '@ibm/plex-mono': false
