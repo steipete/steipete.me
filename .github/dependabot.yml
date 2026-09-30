@@ -6,6 +6,10 @@ updates:
       interval: weekly
     cooldown:
       default-days: 2
+    groups:
+      compatible-dependencies:
+        patterns: ["*"]
+        update-types: [minor, patch]
     ignore:
       # Astro check requires the TypeScript compiler API.
       - dependency-name: typescript
