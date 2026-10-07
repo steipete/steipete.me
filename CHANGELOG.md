@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Refreshed compatible Vercel, social-image, formatter, linter, and pnpm dependencies while preserving the 48-hour release-age policy and Node 24 minimum; includes #280, thanks @dependabot.
 - Updated pnpm to restore Dependabot lockfile updates while retaining strict 48-hour release-age verification, and refreshed compatible build dependencies.
 - Enabled weekly Dependabot checks for npm and GitHub Actions with the existing release-age and TypeScript/jsdom compatibility policy.
 - Updated Markdown table parsing to micromark-extension-gfm-table 2.1.2 and CI to cover Node 26 alongside Node 24 LTS, with Corepack 0.36.0 bootstrapping pinned pnpm.

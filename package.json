@@ -30,7 +30,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/functions": "^3.9.9",
+    "@vercel/functions": "^3.9.11",
     "@vercel/speed-insights": "^2.0.0",
     "@vite-pwa/astro": "^1.2.0",
     "astro": "^7.3.5",
@@ -40,7 +40,7 @@
     "reading-time": "^1.5.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
-    "satori": "^0.33.5",
+    "satori": "^0.35.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
@@ -54,8 +54,8 @@
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.6.0",
-    "oxfmt": "^0.70.0",
-    "oxlint": "^1.85.0"
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json}": [
@@ -73,5 +73,5 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@12.7.0"
+  "packageManager": "pnpm@12.9.1"
 }
