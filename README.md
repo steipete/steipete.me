@@ -23,7 +23,7 @@ Search requires a production build. Social preview images are generated during t
 
 Dependency updates must be at least 48 hours old (`minimumReleaseAge` in `pnpm-workspace.yaml`). TypeScript stays on 6.x because `astro check` needs the compiler API that TypeScript 7 does not yet provide.
 
-Dependabot checks npm packages and GitHub Actions weekly with a two-day cooldown for version updates and groups compatible npm patch/minor updates. Its compatibility holds match the manual update policy: TypeScript 7 lacks the compiler API, and jsdom 30 requires Node 24.15 or newer. Security updates remain enabled and must pass the frozen install and full CI checks. The pinned pnpm 12.9 supports Dependabot’s `--lockfile-only --no-save` updates with strict release-age verification enabled.
+Dependabot checks npm packages and GitHub Actions weekly with a two-day cooldown for version updates and groups compatible npm patch/minor updates. Its compatibility holds match the manual update policy: TypeScript 7 lacks the compiler API, and jsdom 30 requires Node 24.15 or newer. Security updates remain enabled and must pass the frozen install and full CI checks. The pinned pnpm 12.10 supports Dependabot’s `--lockfile-only --no-save` updates with strict release-age verification enabled.
 
 ## Project structure
 
