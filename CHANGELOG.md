@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Refreshed compatible Astro, MDX, Vercel middleware, social-image, and pnpm dependencies while preserving the 48-hour release cooldown and Node 24 minimum; includes #287, thanks @dependabot.
 - Refreshed compatible Astro, social-image, formatter, linter, and pnpm dependencies plus transitive build tooling, preserving the 48-hour release cooldown, Node 24 minimum, and Dependabot lockfile-update compatibility.
 - Refreshed compatible Astro, MDX, formatter, linter, and pnpm dependencies plus the HTTP cache-policy library and Node setup action; updated Satori past its broken Node ESM initialization and added a social-image regression test. Fixed source-map and selector-parser denial-of-service advisories while retaining the 48-hour release cooldown and Node 24 minimum; includes #282, #283, and #284, thanks @dependabot.
 - Refreshed compatible Vercel, social-image, formatter, linter, and pnpm dependencies while preserving the 48-hour release-age policy and Node 24 minimum; includes #280, thanks @dependabot.
