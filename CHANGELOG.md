@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Patch the transitive Zod 4 validator used by Vercel tooling to prevent unbounded memory use when validating oversized collections (GHSA-mrhx-c7xc-m3w5).
 - Refresh compatible Astro, Markdown, MDX, and Vercel dependencies while preserving the 48-hour cooldown, Node 24 minimum, and TypeScript 6 compatibility. (#289, thanks @dependabot)
 - Refresh compatible Astro checking, Vercel functions, social-image, formatter, and linter dependencies while preserving the 48-hour release cooldown and Node 24 minimum.
 
