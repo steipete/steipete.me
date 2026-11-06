@@ -1,17 +1,15 @@
 ---
+import { getPostDate } from "@/utils/postDate";
+
 interface Props {
   date: Date;
+  timezone?: string;
 }
 
-const { date } = Astro.props;
+const { date, timezone } = Astro.props;
+const datetime = getPostDate(date, timezone);
 ---
 
-<time datetime={date.toISOString()}>
-  {
-    date.toLocaleDateString("en-us", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
+<time datetime={datetime.toISOString()}>
+  {datetime.format("D MMM, YYYY")}
 </time>

@@ -1,5 +1,6 @@
 import { postsByYear } from "@/utils/groupPosts";
 import { markdownResponse } from "@/utils/markdownResponse";
+import { getPostDate } from "@/utils/postDate";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import getSortedPosts from "@/utils/getSortedPosts";
@@ -14,10 +15,7 @@ export const GET: APIRoute = async () => {
     markdownContent += `## ${year}\n\n`;
 
     for (const post of yearPosts) {
-      const date = post.data.pubDatetime.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
+      const date = getPostDate(post.data.pubDatetime, post.data.timezone).format("MMM D");
       markdownContent += `- ${date}: [${post.data.title}](/posts/${post.id}.md)\n`;
     }
 

@@ -35,7 +35,7 @@ const { data: posts, currentPage, lastPage } = page;
             </h2>
 
 	            <div class="flex items-center text-sm text-muted-foreground mb-4">
-	              <FormattedDate date={post.data.pubDatetime} />
+	              <FormattedDate date={post.data.pubDatetime} timezone={post.data.timezone} />
 	            </div>
 
             {post.data.description && (
