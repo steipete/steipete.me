@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 	import FormattedDate from "../../components/FormattedDate.astro";
 	import { SITE } from "../../config";
 	import Layout from "../../layouts/Layout.astro";
+	import { legacyPageHref } from "@/utils/legacyPageHref";
 
 	export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 	  const allPosts = await getCollection("blog", postFilter);
@@ -59,7 +60,7 @@ const { data: posts, currentPage, lastPage } = page;
       {
         currentPage > 1 && (
           <a
-            href={currentPage - 1 === 1 ? "/" : `/page/${currentPage - 1}`}
+            href={legacyPageHref(currentPage - 1)}
             class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
           >
             ← Previous
@@ -70,7 +71,7 @@ const { data: posts, currentPage, lastPage } = page;
       {
         Array.from({ length: lastPage }).map((_, i) => (
           <a
-            href={i === 0 ? "/" : `/page/${i + 1}`}
+            href={legacyPageHref(i + 1)}
             class={`px-4 py-2 rounded-md ${
               currentPage === i + 1
                 ? "bg-primary text-primary-foreground"
