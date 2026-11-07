@@ -32,7 +32,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/functions": "^3.10.4",
     "@vercel/speed-insights": "^2.0.0",
-    "@vite-pwa/astro": "^1.2.0",
+    "@vite-pwa/astro": "^2.0.0",
     "astro": "^7.4.4",
     "dayjs": "^1.11.23",
     "lodash.kebabcase": "^4.1.1",
