@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Updated the PWA integration to @vite-pwa/astro 2.0.2 and its named `AstroPWAIntegration` export, keeping the generated service worker's precache list, offline fallback, runtime caching, and outdated-cache cleanup unchanged. (#296, thanks @dependabot)
 - Patch Workbox's transitive glob cancellation and minimatch denial-of-service advisories.
 - Refresh compatible Astro, Markdown, Vercel, tree traversal, and lint tooling while preserving the 48-hour cooldown and Node 24 minimum. Thanks @dependabot. (#291)
 - Patch the transitive Zod 4 validator used by Vercel tooling to prevent unbounded memory use when validating oversized collections (GHSA-mrhx-c7xc-m3w5).
