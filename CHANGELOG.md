@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- Keep legacy pagination on the all-years list and format listing dates in each post's configured timezone. Thanks @SebTardif. (#293, #294)
+- Patch Astro and XML-parser security advisories and refresh compatible dependencies, including PWA 2, within the 48-hour cooldown and Node 24 minimum. Thanks @dependabot. (#295–#299)
+
 - Patch Workbox's transitive glob cancellation and minimatch denial-of-service advisories.
 - Refresh compatible Astro, Markdown, Vercel, tree traversal, and lint tooling while preserving the 48-hour cooldown and Node 24 minimum. Thanks @dependabot. (#291)
 - Patch the transitive Zod 4 validator used by Vercel tooling to prevent unbounded memory use when validating oversized collections (GHSA-mrhx-c7xc-m3w5).

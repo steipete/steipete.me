@@ -9,7 +9,7 @@ import remarkCollapse from "remark-collapse";
 import { remarkEmbeds } from "./src/utils/remarkEmbeds.mjs";
 import { remarkLazyLoadImages } from "./src/utils/remarkLazyLoadImages.mjs";
 import { SITE } from "./src/config";
-import AstroPWA from "@vite-pwa/astro";
+import { AstroPWAIntegration } from "@vite-pwa/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,7 +36,7 @@ export default defineConfig({
       filter: (page) => SITE.showArchives || new URL(page).pathname !== "/archives",
       serialize: (item) => serializeSitemapItem(item),
     }),
-    AstroPWA({
+    AstroPWAIntegration({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "peter-avatar.jpg"],
       manifest: {

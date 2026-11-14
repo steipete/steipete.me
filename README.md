@@ -55,4 +55,6 @@ Vercel routing middleware serves Markdown for explicit `Accept: text/markdown` r
 
 Article shortcuts: J/Right moves to the next post, K/Left to the previous post; editing fields and code-block arrow scrolling retain their normal keys. Escape closes the mobile navigation. Browser behavior is initialized and disposed through `src/scripts/page.ts`; the early theme script remains separate to prevent a color flash.
 
+The all-years `/page/N` list keeps its previous and numbered links within that list, including `/page/1`. Markdown and legacy listing dates use the post's configured timezone.
+
 Archive grouping and the homepage year cutoff use the post’s configured timezone (or the site default), matching publication-date formatting independently of the build machine timezone. Grouping remains based on publication dates even when a card displays an updated date. Sitemap recency advances with the current UTC year.
