@@ -35,7 +35,7 @@ const { data: posts, currentPage, lastPage } = page;
             </h2>
 
 	            <div class="flex items-center text-sm text-muted-foreground mb-4">
-	              <FormattedDate date={post.data.pubDatetime} />
+	              <FormattedDate date={post.data.pubDatetime} timezone={post.data.timezone} />
 	            </div>
 
             {post.data.description && (
@@ -59,7 +59,7 @@ const { data: posts, currentPage, lastPage } = page;
       {
         currentPage > 1 && (
           <a
-            href={currentPage - 1 === 1 ? "/" : `/page/${currentPage - 1}`}
+            href={`/page/${currentPage - 1}`}
             class="px-4 py-2 bg-secondary rounded-md hover:bg-accent"
           >
             ← Previous
@@ -70,7 +70,7 @@ const { data: posts, currentPage, lastPage } = page;
       {
         Array.from({ length: lastPage }).map((_, i) => (
           <a
-            href={i === 0 ? "/" : `/page/${i + 1}`}
+            href={`/page/${i + 1}`}
             class={`px-4 py-2 rounded-md ${
               currentPage === i + 1
                 ? "bg-primary text-primary-foreground"
